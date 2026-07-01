@@ -48,215 +48,252 @@
     </p>
 
     {{ form_start(form) }}
-    <div class="card rounded-lg p-6 mb-4">
-        <div class="border-b-1 border-b-[var(--border-color)] mb-4">
-            <h2 class="text-lg font-bold text-[var(--text-primary)]">
-                {{ 'user.page_my_account.avatar' | trans({}, 'user') }}
-            </h2>
-            <div class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">
-                {{ 'user.page_my_account.avatar.subtitle' | trans({}, 'user') }}
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <div>
+                <div class="card-title">
+                    <svg class="card-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" style="color: var(--primary)">
+                        <path stroke="currentColor" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                    </svg>
+                    {{ 'user.page_my_account.avatar' | trans({}, 'user') }}
+                </div>
+                <p class="card-subtitle">
+                    {{ 'user.page_my_account.avatar.subtitle' | trans({}, 'user') }}
+                </p>
             </div>
         </div>
-
-        <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6">
-            <div class="avatar-preview">
-                {% if user.avatar is not null %}
-                    <img src="{{ asset(avatarDirectory ~ user.avatar) }}" class="w-30 h-max object-fit-cover" />
-                {% else %}
-                    <span class="bg-[var(--primary)] p-5">{{ field_value(form.email) | slice(0,2) }}</span>
-                {% endif %}
-                <div class="avatar-upload-overlay"
-                     onclick="document.getElementById('{{ field_id(form.avatar) }}').click()">
-                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                    </svg>
+        <div class="p-5">
+            <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6">
+                <div class="avatar-preview">
+                    {% if user.avatar is not null %}
+                        <img src="{{ asset(avatarDirectory ~ user.avatar) }}" class="w-30 h-max object-fit-cover" />
+                    {% else %}
+                        <span class="bg-[var(--primary)] p-5">{{ field_value(form.email) | slice(0,2) }}</span>
+                    {% endif %}
+                    <div class="avatar-upload-overlay"
+                         onclick="document.getElementById('{{ field_id(form.avatar) }}').click()">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                    </div>
                 </div>
-            </div>
-            <div>
-                <div class="form-group">
+                <div>
+                    <div class="form-group">
 
-                    <h3 class="font-semibold mb-2 text-[var(--text-primary)]">{{ 'user.page_my_account.avatar.recommandation' | trans({}, 'user') }}</h3>
+                        <h3 class="font-semibold mb-2 text-[var(--text-primary)]">{{ 'user.page_my_account.avatar.recommandation' | trans({}, 'user') }}</h3>
 
-                    <ul class="space-y-1 text-sm text-[var(--text-secondary)]">
-                        <li class="flex items-start gap-2">
-                            <svg class="icon-sm flex-shrink-0 mt-0.5" style="color: var(--primary);" fill="none"
-                                 stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                      d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            {{ 'user.page_my_account.avatar.format' | trans({}, 'user') }}
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <svg class="icon-sm flex-shrink-0 mt-0.5" style="color: var(--primary);" fill="none"
-                                 stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                      d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            {{ 'user.page_my_account.avatar.weight' | trans({}, 'user') }}
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <svg class="icon-sm flex-shrink-0 mt-0.5" style="color: var(--primary);" fill="none"
-                                 stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                      d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            {{ 'user.page_my_account.avatar.size' | trans({}, 'user') }}
-                        </li>
-                    </ul>
-
-                    <div class="form-file mt-3">
-                        <input type="file" class="form-file-input" id="{{ field_id(form.avatar) }}"
-                               name="{{ field_name(form.avatar) }}">
-
-                        <div class="flex gap-10">
-                            <label for="{{ field_id(form.avatar) }}" class="form-file-label">
-                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <ul class="space-y-1 text-sm text-[var(--text-secondary)]">
+                            <li class="flex items-start gap-2">
+                                <svg class="icon-sm flex-shrink-0 mt-0.5" style="color: var(--primary);" fill="none"
+                                     stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                          d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                                          d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                {{ field_label(form.avatar) }}
-                            </label>
-
-                            {% if user.avatar is not null %}
-                            <a href="{{ path('admin_user_delete_avatar') }}" class="btn btn-danger btn-md">
-                                <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                {{ 'user.page_my_account.avatar.format' | trans({}, 'user') }}
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <svg class="icon-sm flex-shrink-0 mt-0.5" style="color: var(--primary);" fill="none"
+                                     stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                          d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                {{ 'user.page_my_account.avatar.delete' | trans({}, 'user') }}
-                            </a>
-                            {% endif %}
+                                {{ 'user.page_my_account.avatar.weight' | trans({}, 'user') }}
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <svg class="icon-sm flex-shrink-0 mt-0.5" style="color: var(--primary);" fill="none"
+                                     stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                {{ 'user.page_my_account.avatar.size' | trans({}, 'user') }}
+                            </li>
+                        </ul>
+
+                        <div class="form-file mt-3">
+                            <input type="file" class="form-file-input" id="{{ field_id(form.avatar) }}"
+                                   name="{{ field_name(form.avatar) }}">
+
+                            <div class="flex gap-10">
+                                <label for="{{ field_id(form.avatar) }}" class="form-file-label">
+                                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                              d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                                    </svg>
+                                    {{ field_label(form.avatar) }}
+                                </label>
+
+                                {% if user.avatar is not null %}
+                                    <a href="{{ path('admin_user_delete_avatar') }}" class="btn btn-danger btn-md">
+                                        <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                        </svg>
+                                        {{ 'user.page_my_account.avatar.delete' | trans({}, 'user') }}
+                                    </a>
+                                {% endif %}
+                            </div>
+                            <span class="form-file-name"
+                                  id="file-name-{{ field_id(form.avatar) }}">{{ field_help(form.avatar) }}</span>
                         </div>
-                        <span class="form-file-name"
-                              id="file-name-{{ field_id(form.avatar) }}">{{ field_help(form.avatar) }}</span>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 
-    <div class="card rounded-lg p-6 mb-4 pb-14">
-
-        <div class="border-b-1 border-b-[var(--border-color)] mb-4">
-            <h2 class="text-lg font-bold text-[var(--text-primary)]">
-                {{ 'user.page_my_account.personal_data' | trans({}, 'user') }}
-            </h2>
-            <div class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">
-                {{ 'user.page_my_account.personal_data.description' | trans({}, 'user') }}
+    <div class="card mb-4">
+        <div class="card-header">
+            <div>
+                <div class="card-title">
+                    <svg class="card-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" style="color: var(--primary)">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 6H5m2 3H5m2 3H5m2 3H5m2 3H5m11-1a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2M7 3h11a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Zm8 7a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z"/>
+                    </svg>
+                    {{ 'user.page_my_account.personal_data' | trans({}, 'user') }}
+                </div>
+                <p class="card-subtitle">
+                    {{ 'user.page_my_account.personal_data.description' | trans({}, 'user') }}
+                </p>
             </div>
         </div>
+        <div class="p-5 pb-13">
+            <div class="form-group">
+                <label class="form-label">{{ field_label(form.email) }}</label>
+                <input type="text" class="form-input" value="{{ field_value(form.email) }}" placeholder="{{ 'user.page_my_account.email.placeholder' | trans({}, 'user') }}"
+                       id="{{ field_id(form.email) }}" name="{{ field_name(form.email) }}" disabled>
+                <span class="form-text">{{ field_help(form.email) }}</span>
+            </div>
 
-        <div class="form-group">
-            <label class="form-label">{{ field_label(form.email) }}</label>
-            <input type="text" class="form-input" value="{{ field_value(form.email) }}" placeholder="{{ 'user.page_my_account.email.placeholder' | trans({}, 'user') }}"
-                   id="{{ field_id(form.email) }}" name="{{ field_name(form.email) }}" disabled>
-            <span class="form-text">{{ field_help(form.email) }}</span>
+            <div class="form-group">
+                <label class="form-label">{{ field_label(form.login) }}</label>
+                <input type="text" class="form-input" value="{{ field_value(form.login) }}" placeholder="{{ 'user.page_my_account.login.placeholder' | trans({}, 'user') }}"
+                       id="{{ field_id(form.login) }}" name="{{ field_name(form.login) }}">
+                <span class="form-text">{{ field_help(form.login) }}</span>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">{{ field_label(form.firstname) }}</label>
+                <input type="text" class="form-input" value="{{ field_value(form.firstname) }}" placeholder="{{ 'user.page_my_account.firstname.placeholder' | trans({}, 'user') }}"
+                       id="{{ field_id(form.firstname) }}" name="{{ field_name(form.firstname) }}">
+                <span class="form-text">{{ field_help(form.firstname) }}</span>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">{{ field_label(form.lastname) }}</label>
+                <input type="text" class="form-input" value="{{ field_value(form.lastname) }}" placeholder="{{ 'user.page_my_account.lastname.placeholder' | trans({}, 'user') }}"
+                       id="{{ field_id(form.lastname) }}" name="{{ field_name(form.lastname) }}">
+                <span class="form-text">{{ field_help(form.lastname) }}</span>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">{{ field_label(form.description) }}</label>
+                <textarea type="text" class="form-input" id="{{ field_id(form.description) }}"
+                          name="{{ field_name(form.description) }}">{{ field_value(form.description) }}</textarea>
+                <span class="form-text">{{ field_help(form.description) }}</span>
+            </div>
+
+            {{ form_end(form) }}
         </div>
-
-        <div class="form-group">
-            <label class="form-label">{{ field_label(form.login) }}</label>
-            <input type="text" class="form-input" value="{{ field_value(form.login) }}" placeholder="{{ 'user.page_my_account.login.placeholder' | trans({}, 'user') }}"
-                   id="{{ field_id(form.login) }}" name="{{ field_name(form.login) }}">
-            <span class="form-text">{{ field_help(form.login) }}</span>
-        </div>
-
-        <div class="form-group">
-            <label class="form-label">{{ field_label(form.firstname) }}</label>
-            <input type="text" class="form-input" value="{{ field_value(form.firstname) }}" placeholder="{{ 'user.page_my_account.firstname.placeholder' | trans({}, 'user') }}"
-                   id="{{ field_id(form.firstname) }}" name="{{ field_name(form.firstname) }}">
-            <span class="form-text">{{ field_help(form.firstname) }}</span>
-        </div>
-
-        <div class="form-group">
-            <label class="form-label">{{ field_label(form.lastname) }}</label>
-            <input type="text" class="form-input" value="{{ field_value(form.lastname) }}" placeholder="{{ 'user.page_my_account.lastname.placeholder' | trans({}, 'user') }}"
-                   id="{{ field_id(form.lastname) }}" name="{{ field_name(form.lastname) }}">
-            <span class="form-text">{{ field_help(form.lastname) }}</span>
-        </div>
-
-        <div class="form-group">
-            <label class="form-label">{{ field_label(form.description) }}</label>
-            <textarea type="text" class="form-input" id="{{ field_id(form.description) }}"
-                      name="{{ field_name(form.description) }}">{{ field_value(form.description) }}</textarea>
-            <span class="form-text">{{ field_help(form.description) }}</span>
-        </div>
-
-        {{ form_end(form) }}
-
     </div>
 
-    <div class="card rounded-lg p-6 mb-4">
-
-        <div class="border-b-1 border-b-[var(--border-color)] mb-4">
-            <h2 class="text-lg font-bold text-[var(--text-primary)]">
-                {{ 'user.page_my_account.password_change' | trans({}, 'user') }}
-            </h2>
-            <div class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">
-                {{ 'user.page_my_account.password_change.description' | trans({}, 'user') }}
+    <div class="card mb-4">
+        <div class="card-header">
+            <div>
+                <div class="card-title">
+                    <svg class="card-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" style="color: var(--primary)">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 20a16.405 16.405 0 0 1-5.092-5.804A16.694 16.694 0 0 1 5 6.666L12 4l7 2.667a16.695 16.695 0 0 1-1.908 7.529A16.406 16.406 0 0 1 12 20Z"/>
+                    </svg>
+                    {{ 'user.page_my_account.password_change' | trans({}, 'user') }}
+                </div>
+                <p class="card-subtitle">
+                    {{ 'user.page_my_account.password_change.description' | trans({}, 'user') }}
+                </p>
             </div>
         </div>
-
-        <div {{ vue_component('Admin/System/User/ChangePassword', {'url_change_password' : path('admin_user_change_my_password'),
-            'translate' : changePasswordTranslate, 'fullScreen' : true}) }}></div>
+        <div class="p-5">
+            <div {{ vue_component('Admin/System/User/ChangePassword', {'url_change_password' : path('admin_user_change_my_password'),
+                'translate' : changePasswordTranslate, 'fullScreen' : true}) }}></div>
+        </div>
     </div>
-
 
 
     {% if not is_granted(constant('App\\Utils\\System\\User\\Role::ROLE_SUPER_ADMIN')) %}
-        <div class="card rounded-lg p-6 mb-4" style="border-color: var(--btn-danger);">
-            <div class="border-b-1 border-b-[var(--border-color)] mb-4">
-                <h2 class="text-lg font-bold text-[var(--btn-danger)]">
-                    {{ 'user.page_my_account.danger' | trans({}, 'user') }}
-                </h2>
-                <div class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">
-                    {{ 'user.page_my_account.danger.description' | trans({}, 'user') }}
+        <div class="card mb-4" style="border-color: var(--btn-danger);">
+            <div class="card-header">
+                <div>
+                    <div class="card-title">
+                        <svg class="card-icon" style="color: var(--btn-danger);" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 13V8m0 8h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                        </svg>
+                        <span class="text-[var(--btn-danger)]">
+                            {{ 'user.page_my_account.danger' | trans({}, 'user') }}
+                        </span>
+                    </div>
+                    <p class="card-subtitle">
+                        {{ 'user.page_my_account.danger.description' | trans({}, 'user') }}
+                    </p>
                 </div>
             </div>
-
-
-            <div {{ vue_component('Admin/System/User/MyAccountDangerZone', {'url_disabled' : path('admin_user_self_disabled'),
-                'url_delete' : path('admin_user_self_delete'),
-                'translate' : dangerZoneTranslate,
-                'can_delete' : canDelete, 'can_replace' : canReplace
-            }) }}></div>
-
+            <div class="p-5">
+                <div {{ vue_component('Admin/System/User/MyAccountDangerZone', {'url_disabled' : path('admin_user_self_disabled'),
+                    'url_delete' : path('admin_user_self_delete'),
+                    'translate' : dangerZoneTranslate,
+                    'can_delete' : canDelete, 'can_replace' : canReplace
+                }) }}></div>
+            </div>
         </div>
     {% endif %}
 
     {% if is_granted(constant('App\\Utils\\System\\User\\Role::ROLE_SUPER_ADMIN')) %}
-        <div class="card rounded-lg p-6">
-            <div class="border-b-1 border-b-[var(--border-color)] mb-4">
-                <h2 class="text-lg font-bold text-[var(--text-primary)]">
-                    {{ 'user.page_my_account.options.divers' | trans({}, 'user') }}
-                </h2>
-                <div class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">
-                    {{ 'user.page_my_account.options.divers.description' | trans({}, 'user') }}
+        <div class="card mb-4">
+            <div class="card-header">
+                <div>
+                    <div class="card-title">
+                        <svg class="card-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" style="color: var(--primary)">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13v-2a1 1 0 0 0-1-1h-.757l-.707-1.707.535-.536a1 1 0 0 0 0-1.414l-1.414-1.414a1 1 0 0 0-1.414 0l-.536.535L14 4.757V4a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1v.757l-1.707.707-.536-.535a1 1 0 0 0-1.414 0L4.929 6.343a1 1 0 0 0 0 1.414l.536.536L4.757 10H4a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h.757l.707 1.707-.535.536a1 1 0 0 0 0 1.414l1.414 1.414a1 1 0 0 0 1.414 0l.536-.535 1.707.707V20a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-.757l1.707-.708.536.536a1 1 0 0 0 1.414 0l1.414-1.414a1 1 0 0 0 0-1.414l-.535-.536.707-1.707H20a1 1 0 0 0 1-1Z"/>
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+
+                        </svg>
+                        {{ 'user.page_my_account.options.divers' | trans({}, 'user') }}
+                    </div>
+                    <p class="card-subtitle">
+                        {{ 'user.page_my_account.options.divers.description' | trans({}, 'user') }}
+                    </p>
                 </div>
             </div>
-
-            <div {{ vue_component('Admin/System/User/MyAccountMoreOptions', {'url' : path('admin_user_update_user_data'),
-                'translate' : moreOptionsTranslate,
-                'datas' : moreOptionsDatas
-            }) }}></div>
+            <div class="p-5">
+                <div {{ vue_component('Admin/System/User/MyAccountMoreOptions', {'url' : path('admin_user_update_user_data'),
+                    'translate' : moreOptionsTranslate,
+                    'datas' : moreOptionsDatas
+                }) }}></div>
+            </div>
         </div>
     {% endif %}
 
-    <div class="card rounded-lg p-6 mt-4">
 
-        <div class="border-b-1 border-b-[var(--border-color)] mb-4">
-            <h2 class="text-lg font-bold text-[var(--text-primary)]">
-                {{ 'user.page_my_account.statistiques' | trans({}, 'user') }}
-            </h2>
-            <div class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">
-                {{ 'user.page_my_account.statistiques.description' | trans({}, 'user') }}
+    <div class="card mb-4">
+        <div class="card-header">
+            <div>
+                <div class="card-title">
+                    <svg class="card-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" style="color: var(--primary)">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v15a1 1 0 0 0 1 1h15M8 16l2.5-5.5 3 3L17.273 7 20 9.667"/>
+                    </svg>
+                    {{ 'user.page_my_account.statistiques' | trans({}, 'user') }}
+                </div>
+                <p class="card-subtitle">
+                    {{ 'user.page_my_account.statistiques.description' | trans({}, 'user') }}
+                </p>
             </div>
         </div>
-
-        <div>...</div>
+        <div class="p-5">
+            <div>...</div>
+        </div>
     </div>
+
 
     {% for label, messages in app.flashes %}
         {% for message in messages %}
