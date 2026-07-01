@@ -594,19 +594,21 @@ export default defineComponent({
   </div>
 
   <div v-else>
-    <div class="card rounded-lg relative overflow-visible mb-5">
-      <div class="px-5 py-4 border-b flex items-center gap-2" style="border-color: var(--border-color)">
-        <svg class="w-4 h-4" style="color: var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M15 10l4.553-2.069A1 1 0 0121 8.82V15.18a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"
-          ></path>
-        </svg>
-        <span class="text-sm font-semibold" style="color: var(--text-primary)">{{ translate.title_demo }}</span>
+    <div class="card mb-4">
+      <div class="card-header">
+        <div class="card-title">
+          <svg class="card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-width="2"
+              d="M15 10l4.553-2.069A1 1 0 0121 8.82V15.18a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"
+            />
+          </svg>
+          {{ translate.title_demo }}
+        </div>
       </div>
-      <div class="p-4">
+      <div class="p-5">
         <Component
           v-if="selectComponent"
           :is="selectComponent"
@@ -704,27 +706,33 @@ export default defineComponent({
       </div>
     </div>
 
-    <div class="card rounded-lg overflow-hidden mb-5">
-      <div class="px-5 py-4 border-b flex items-center gap-2" style="border-color: var(--border-color)">
-        <svg class="w-4 h-4" style="color: var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-          ></path>
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-          ></path>
-        </svg>
-        <span class="text-sm font-semibold" style="color: var(--text-primary)">{{ translate.title_global_form }}</span>
-        <div class="ml-auto flex items-center gap-3">
+    <div class="card mb-4">
+      <div class="card-header">
+        <div>
+          <div class="card-title">
+            <svg class="card-icon" style="color: var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+              ></path>
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+              ></path>
+            </svg>
+
+            {{ translate.title_global_form }}
+          </div>
+        </div>
+
+        <div class="card-actions">
           <div class="input-addon-group">
-            <span class="input-addon input-addon-left"
-              ><svg
+            <span class="input-addon input-addon-left">
+              <svg
                 class="icon-sm"
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
@@ -739,14 +747,18 @@ export default defineComponent({
                   stroke-linejoin="round"
                   stroke-width="2"
                   d="m13 19 3.5-9 3.5 9m-6.125-2h5.25M3 7h7m0 0h2m-2 0c0 1.63-.793 3.926-2.239 5.655M7.5 6.818V5m.261 7.655C6.79 13.82 5.521 14.725 4 15m3.761-2.345L5 10m2.761 2.655L10.2 15"
-                ></path></svg></span
-            ><select id="select-language" class="form-input form-input-sm" style="width: 120px" v-model="currentLocale">
+                ></path>
+              </svg>
+            </span>
+
+            <select id="select-language" class="form-input form-input-sm" style="width: 120px" v-model="currentLocale">
               <option value="" selected>{{ translate.select_locale }}</option>
               <option v-for="(language, key) in locales.localesTranslate" :value="key">
                 {{ language }}
               </option>
             </select>
           </div>
+
           <button
             class="btn btn-sm btn-primary flex items-center gap-2"
             :disabled="
@@ -766,7 +778,7 @@ export default defineComponent({
           </button>
         </div>
       </div>
-      <div class="p-4">
+      <div class="p-5">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-5">
           <div class="space-y-4">
             <div class="form-group">
@@ -860,15 +872,30 @@ export default defineComponent({
     </div>
 
     <div class="grid grid-cols-1 xl:grid-cols-5 gap-6 items-stretch">
-      <div class="card rounded-lg overflow-hidden xl:col-span-2 flex flex-col" style="max-height: 680px">
-        <div class="px-5 py-4 border-b flex items-center gap-2 shrink-0" style="border-color: var(--border-color)">
-          <svg class="w-4 h-4" style="color: var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-          </svg>
-          <span class="text-sm font-semibold" style="color: var(--text-primary)">{{
-            translate.title_architecture
-          }}</span>
-          <div class="ml-auto flex items-center gap-1.5">
+      <div class="card xl:col-span-2 flex flex-col" style="max-height: 680px">
+        <div class="card-header">
+          <div>
+            <div class="card-title">
+              <svg
+                class="card-icon"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                style="color: var(--primary)"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                ></path>
+              </svg>
+
+              {{ translate.title_architecture }}
+            </div>
+          </div>
+
+          <div class="card-actions">
             <div
               v-if="invalidElementIds.length > 0"
               class="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold transition-colors cursor-pointer bg-(--alert-danger-bg) text-(--alert-danger-text)"
@@ -876,13 +903,12 @@ export default defineComponent({
               <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"></path>
               </svg>
-              {{ invalidElementIds.length }}
-              {{ translate.error }}
+              {{ invalidElementIds.length }} {{ translate.error }}
             </div>
           </div>
         </div>
 
-        <div class="p-3 flex-1 overflow-y-auto min-h-0" ref="rootListRef">
+        <div class="py-3 px-5 flex-1 overflow-y-auto min-h-0" ref="rootListRef">
           <menu-tree
             v-for="menuElement in menu.menuElements"
             :key="menuElement.id"
@@ -901,38 +927,47 @@ export default defineComponent({
             @select="select($event)"
           />
         </div>
-        <div class="p-3">
-          <div class="mt-3 shrink-0">
-            <button class="btn-add-root" @click="newMenuElement(null)">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-              </svg>
-              {{ translate.btn_new_menu_element }}
-            </button>
-          </div>
+
+        <div class="p-5">
+          <button class="btn-add-root" @click="newMenuElement(null)">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+            </svg>
+            {{ translate.btn_new_menu_element }}
+          </button>
         </div>
       </div>
-      <div class="card rounded-lg overflow-hidden xl:col-span-3">
-        <div class="px-5 py-4 border-b flex items-center gap-2" style="border-color: var(--border-color)">
-          <svg class="w-4 h-4" style="color: var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-            ></path>
-          </svg>
-          <span
-            class="text-sm font-semibold"
-            style="color: var(--text-primary)"
-            v-html="
-              menuElementSelected === null
-                ? translate.no_select_menu_form
-                : translate.no_select_menu_form + ' #' + menuElementSelected.id
-            "
-          ></span>
 
-          <div v-if="idSelected !== 0" class="ml-auto flex items-center gap-1.5">
+      <div class="card xl:col-span-3">
+        <div class="card-header">
+          <div>
+            <div class="card-title">
+              <svg
+                class="card-icon"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                style="color: var(--primary)"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                ></path>
+              </svg>
+
+              <span
+                v-html="
+                  menuElementSelected === null
+                    ? translate.no_select_menu_form
+                    : translate.no_select_menu_form + ' #' + menuElementSelected.id
+                "
+              ></span>
+            </div>
+          </div>
+
+          <div class="card-actions" v-if="idSelected !== 0">
             <template v-for="(localeLabel, key) in locales.localesTranslate" :key="key">
               <div
                 @click="currentLocale = key"
@@ -945,7 +980,6 @@ export default defineComponent({
                   currentLocale === key ? 'ring-2 ring-offset-1 ring-(--primary)' : '',
                 ]"
               >
-                <!-- Valide -->
                 <svg
                   v-if="localeValidationState[key]"
                   class="w-3 h-3"
@@ -955,10 +989,11 @@ export default defineComponent({
                 >
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
                 </svg>
-                <!-- Invalide -->
+
                 <svg v-else class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12" />
                 </svg>
+
                 {{ key.toUpperCase() }}
               </div>
             </template>
@@ -974,8 +1009,10 @@ export default defineComponent({
               d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"
             ></path>
           </svg>
+
           <p class="font-semibold" style="color: var(--text-secondary)">{{ translate.no_select_menu_form_msg }}</p>
           <p class="text-sm mt-1" style="color: var(--text-light)">{{ translate.no_select_menu_form_msg_2 }}</p>
+
           <div class="help-list">
             <div class="help-item">
               <span class="help-icon" style="background-color: #d1fae5; color: #059669">+</span>
@@ -995,6 +1032,7 @@ export default defineComponent({
             </div>
           </div>
         </div>
+
         <menu-element-form
           v-else
           :translate="translate.menu_form"

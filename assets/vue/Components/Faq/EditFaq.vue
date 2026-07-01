@@ -604,18 +604,14 @@ export default defineComponent({
     </div>
     <div v-else>
       <div
-        class="border rounded-lg p-6 mb-4 mt-4"
+        class="card mb-4"
         :class="faq.disabled ? 'border-2 border-[var(--alert-warning-border)]' : 'border-[var(--border-color)]'"
       >
-        <div class="border-b-1 border-b-[var(--border-color)] mb-4 flex justify-between items-start">
+        <div class="card-header">
           <div>
-            <h2 class="text-lg font-bold text-[var(--text-primary)]">{{ translate.edit_faq }}</h2>
-            <p class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">{{ translate.edit_faq_sub_title }}</p>
-          </div>
-          <div class="input-addon-group">
-            <span class="input-addon input-addon-left">
+            <div class="card-title">
               <svg
-                class="icon"
+                class="card-icon"
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -626,31 +622,61 @@ export default defineComponent({
                 <path
                   stroke="currentColor"
                   stroke-linecap="round"
-                  stroke-linejoin="round"
                   stroke-width="2"
-                  d="m13 19 3.5-9 3.5 9m-6.125-2h5.25M3 7h7m0 0h2m-2 0c0 1.63-.793 3.926-2.239 5.655M7.5 6.818V5m.261 7.655C6.79 13.82 5.521 14.725 4 15m3.761-2.345L5 10m2.761 2.655L10.2 15"
+                  d="M20 6H10m0 0a2 2 0 1 0-4 0m4 0a2 2 0 1 1-4 0m0 0H4m16 6h-2m0 0a2 2 0 1 0-4 0m4 0a2 2 0 1 1-4 0m0 0H4m16 6H10m0 0a2 2 0 1 0-4 0m4 0a2 2 0 1 1-4 0m0 0H4"
                 />
               </svg>
-            </span>
-            <select
-              id="select-language"
-              class="form-input"
-              @change="switchLocale($event)"
-              style="width: 120px"
-              :disabled="!checkIsNotEmpty"
-            >
-              <option
-                v-for="(language, key) in locales.localesTranslate"
-                :value="key"
-                :selected="String(key) === currentLocale"
+
+              {{ translate.edit_faq }}
+            </div>
+
+            <p class="card-subtitle">
+              {{ translate.edit_faq_sub_title }}
+            </p>
+          </div>
+
+          <div class="card-actions">
+            <div class="input-addon-group">
+              <span class="input-addon input-addon-left">
+                <svg
+                  class="card-icon"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="m13 19 3.5-9 3.5 9m-6.125-2h5.25M3 7h7m0 0h2m-2 0c0 1.63-.793 3.926-2.239 5.655M7.5 6.818V5m.261 7.655C6.79 13.82 5.521 14.725 4 15m3.761-2.345L5 10m2.761 2.655L10.2 15"
+                  />
+                </svg>
+              </span>
+
+              <select
+                id="select-language"
+                class="form-input"
+                @change="switchLocale($event)"
+                style="width: 120px"
+                :disabled="!checkIsNotEmpty"
               >
-                {{ language }}
-              </option>
-            </select>
+                <option
+                  v-for="(language, key) in locales.localesTranslate"
+                  :value="key"
+                  :selected="String(key) === currentLocale"
+                >
+                  {{ language }}
+                </option>
+              </select>
+            </div>
           </div>
         </div>
 
-        <div class="form-group mb-3">
+        <div class="form-group px-5 pt-5">
           <div class="form-switch form-switch-inline">
             <input
               class="switch-input no-control event-input"
@@ -664,13 +690,15 @@ export default defineComponent({
               "
             />
             <label class="switch-toggle" for="disabled_faq"></label>
-            <label class="swith-label" for="disabled_faq"
-              ><span class="switch-label-text"> {{ translate.input_disabled_faq_label }} </span></label
-            >
+            <label class="swith-label" for="disabled_faq">
+              <span class="switch-label-text">{{ translate.input_disabled_faq_label }}</span>
+            </label>
           </div>
-          <span v-if="faq.disabled" class="form-text text-warning"
-            >⚠ {{ translate.input_disabled_faq_help_disabled }}</span
-          >
+
+          <span v-if="faq.disabled" class="form-text text-warning">
+            ⚠ {{ translate.input_disabled_faq_help_disabled }}
+          </span>
+
           <span v-else class="form-text">
             <svg class="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
@@ -684,8 +712,9 @@ export default defineComponent({
           </span>
         </div>
 
-        <div class="form-group">
+        <div class="form-group px-5 pb-5">
           <label class="form-label">{{ translate.input_faq_title }}</label>
+
           <input
             type="text"
             class="form-input"
@@ -698,9 +727,11 @@ export default defineComponent({
               )
             "
           />
-          <span v-if="getValueByLocale(faq.faqTranslations, 'title') === ''" class="form-text text-error"
-            >✗ {{ translate.input_faq_title_error }}</span
-          >
+
+          <span v-if="getValueByLocale(faq.faqTranslations, 'title') === ''" class="form-text text-error">
+            ✗ {{ translate.input_faq_title_error }}
+          </span>
+
           <span v-else class="form-text">
             <svg class="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
@@ -710,8 +741,8 @@ export default defineComponent({
                 d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
               ></path>
             </svg>
-            {{ translate.input_faq_title_help }}</span
-          >
+            {{ translate.input_faq_title_help }}
+          </span>
         </div>
       </div>
       <div ref="categoriesListRef" class="space-y-4">

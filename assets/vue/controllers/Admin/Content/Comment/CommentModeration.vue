@@ -379,9 +379,28 @@ export default defineComponent({
       ></search-paginate>
     </div>
     <div class="flex flex-col gap-6">
-      <div class="card rounded-lg overflow-hidden">
-        <div class="px-5 py-4" style="border-bottom: 1px solid var(--border-color)">
-          <h3 class="text-sm font-semibold" style="color: var(--text-primary)">{{ translate.statistiques }}</h3>
+      <div class="card mb-4">
+        <div class="card-header">
+          <div>
+            <div class="card-title">
+              <svg
+                class="card-icon"
+                style="color: var(--primary)"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 4.5V19a1 1 0 0 0 1 1h15M7 14l4-4 4 4 5-5m0 0h-3.207M20 9v3.207"
+                />
+              </svg>
+              {{ translate.statistiques }}
+            </div>
+          </div>
         </div>
         <div class="p-5 grid grid-cols-3 gap-3">
           <div
@@ -413,18 +432,27 @@ export default defineComponent({
           </div>
         </div>
       </div>
-
-      <div class="card rounded-lg overflow-hidden">
-        <div class="flex items-center gap-2 px-5 py-4" style="border-bottom: 1px solid var(--border-color)">
-          <svg class="w-4 h-4" style="color: var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
-            ></path>
-          </svg>
-          <h3 class="text-sm font-semibold" style="color: var(--text-primary)">{{ translate.legend_search }}</h3>
+      <div class="card mb-4">
+        <div class="card-header">
+          <div>
+            <div class="card-title">
+              <svg
+                class="card-icon"
+                style="color: var(--primary)"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
+                ></path>
+              </svg>
+              {{ translate.legend_search }}
+            </div>
+          </div>
         </div>
         <div class="p-5 flex flex-col gap-4">
           <div class="form-group" style="margin-bottom: 0">
@@ -455,17 +483,27 @@ export default defineComponent({
           </div>
         </div>
       </div>
-      <div class="card rounded-lg overflow-hidden">
-        <div class="flex items-center gap-2 px-5 py-4" style="border-bottom: 1px solid var(--border-color)">
-          <svg class="w-4 h-4" style="color: var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-            ></path>
-          </svg>
-          <h3 class="text-sm font-semibold" style="color: var(--text-primary)">{{ translate.selection_title }}</h3>
+      <div class="card mb-4">
+        <div class="card-header">
+          <div>
+            <div class="card-title">
+              <svg
+                class="card-icon"
+                style="color: var(--primary)"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                ></path>
+              </svg>
+              {{ translate.selection_title }}
+            </div>
+          </div>
         </div>
         <div class="p-5 flex flex-col gap-4">
           <div

@@ -1,8 +1,8 @@
 user:
   User:
-    email: lmillet@yahoo.fr
-    password: $2y$04$UEIlsAvQn.nw/DqCpxRcbuLpvYLTr122xBxY.DtLcetZJeXgO9a6u
-    login: mlaine
+    email: navarro.pierre@tele2.fr
+    password: $2y$04$NHgaCfrTnbKYVfC2A6CIzuQltW6dpbNNeUM6CBAhyesGRou9LcVnG
+    login: zhernandez
     firstname: ''
     lastname: ''
     roles: ROLE_SUPER_ADMIN

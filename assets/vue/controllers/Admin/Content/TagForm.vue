@@ -277,190 +277,243 @@ export default {
   </div>
 
   <div v-else>
-    <div class="card rounded-lg p-6 mb-4 mt-4">
-      <div class="border-b-1 border-b-[var(--border-color)] mb-4">
-        <h2 class="text-lg font-bold text-[var(--text-primary)]">{{ this.translate.styleTitle }}</h2>
-        <p class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">{{ this.translate.styleDescription }}</p>
-      </div>
-
-      <div class="flex justify-between gap-10">
-        <div class="form-group w-7/12">
-          <label for="tagColor" class="form-label">{{ this.translate.colorTitle }} </label>
-          <div class="flex items-center gap-3">
-            <input
-              type="color"
-              @change="
-                this.isErrorHexa = false;
-                this.msgErrorExa = '';
-              "
-              class="form-color"
-              id="tagColor"
-              v-model="this.tag.color"
-            />
-
-            <input
-              type="text"
-              class="form-input flex-1"
-              :class="this.msgErrorExa !== '' ? 'is-invalid' : ''"
-              id="tagColorinput"
-              v-model="this.tag.color"
-              size="7"
-              style="width: auto"
-              @change="this.checkValideHex()"
-              maxlength="7"
-            />
+    <div class="card mb-4">
+      <div class="card-header">
+        <div>
+          <div class="card-title">
+            <svg
+              class="card-icon"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+              style="color: var(--primary)"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M18.045 3.007 12.31 3a1.965 1.965 0 0 0-1.4.585l-7.33 7.394a2 2 0 0 0 0 2.805l6.573 6.631a1.957 1.957 0 0 0 1.4.585 1.965 1.965 0 0 0 1.4-.585l7.409-7.477A2 2 0 0 0 21 11.479v-5.5a2.972 2.972 0 0 0-2.955-2.972Zm-2.452 6.438a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"
+              />
+            </svg>
+            {{ this.translate.styleTitle }}
           </div>
-          <span v-if="this.msgErrorExa" class="form-text text-error">✗ {{ this.msgErrorExa }}</span>
-          <span v-else class="form-text">Choisissez une couleur pour identifier visuellement ce tag</span>
-        </div>
-
-        <div class="w-3/12">
-          <label for="tagColor" class="form-label">{{ this.translate.renduTitle }} </label>
-          <div v-for="key in this.locales.locales">
-            <div v-for="translation in tag.tagTranslations">
-              <div v-if="translation.locale === key" class="text-[var(--text-primary)] text-sm mb-1">
-                {{ this.locales.localesTranslate[key] }} :
-                <span class="badge rounded-pill badge-nat" :style="'background-color: ' + tag.color">{{
-                  translation.label
-                }}</span>
-              </div>
-            </div>
-          </div>
+          <p class="card-subtitle">
+            {{ this.translate.styleDescription }}
+          </p>
         </div>
       </div>
-    </div>
-
-    <div class="card rounded-lg p-6">
-      <div class="border-b-1 border-b-[var(--border-color)] mb-4">
-        <h2 class="text-lg font-bold text-[var(--text-primary)]">{{ this.translate.textTitle }}</h2>
-        <p class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">{{ this.translate.textDescription }}</p>
-      </div>
-
-      <div v-for="key in this.locales.locales">
-        <div v-for="translation in tag.tagTranslations">
-          <div v-if="translation.locale === key">
-            <div class="form-group mt-4">
-              <label :for="'label-' + translation.locale" class="form-label"
-                >{{ this.translate.formInputLabelLabel }} {{ this.locales.localesTranslate[key] }}
-              </label>
+      <div class="p-5">
+        <div class="flex justify-between gap-10">
+          <div class="form-group w-7/12">
+            <label for="tagColor" class="form-label">{{ this.translate.colorTitle }} </label>
+            <div class="flex items-center gap-3">
               <input
-                type="text"
-                :class="this.isNoEmptyInput(translation.id)"
-                class="form-input"
-                :id="'label-' + translation.locale"
-                :placeholder="this.translate.formInputLabelPlaceholder"
-                @blur="!translation.label ? (showErrors = true) : ''"
-                :disabled="this.isDisabled(translation.locale)"
-                v-model="translation.label"
-                v-on="
-                  this.autoCopy && translation.locale === this.locales.current
-                    ? { keyup: () => this.copyLabel(translation.label) }
-                    : {}
+                type="color"
+                @change="
+                  this.isErrorHexa = false;
+                  this.msgErrorExa = '';
                 "
+                class="form-color"
+                id="tagColor"
+                v-model="this.tag.color"
               />
 
-              <div class="form-switch float-end mt-2" v-if="translation.locale === this.locales.current">
-                <input
-                  type="checkbox"
-                  class="switch-input"
-                  id="switch-basic"
-                  role="switch"
-                  :checked="this.autoCopy ? true : false"
-                />
-                <label class="switch-toggle" @click="this.toggleCopy()"></label>
-                <span class="switch-label" @click="this.toggleCopy()"
-                  ><span
-                    class="switch-label-text"
-                    style="font-weight: 400; font-size: 0.8125rem; color: var(--text-secondary)"
-                    >{{ this.translate.autoCopy }}</span
-                  ></span
-                >
+              <input
+                type="text"
+                class="form-input flex-1"
+                :class="this.msgErrorExa !== '' ? 'is-invalid' : ''"
+                id="tagColorinput"
+                v-model="this.tag.color"
+                size="7"
+                style="width: auto"
+                @change="this.checkValideHex()"
+                maxlength="7"
+              />
+            </div>
+            <span v-if="this.msgErrorExa" class="form-text text-error">✗ {{ this.msgErrorExa }}</span>
+            <span v-else class="form-text">Choisissez une couleur pour identifier visuellement ce tag</span>
+          </div>
+
+          <div class="w-3/12">
+            <label for="tagColor" class="form-label">{{ this.translate.renduTitle }} </label>
+            <div v-for="key in this.locales.locales">
+              <div v-for="translation in tag.tagTranslations">
+                <div v-if="translation.locale === key" class="text-[var(--text-primary)] text-sm mb-1">
+                  {{ this.locales.localesTranslate[key] }} :
+                  <span class="badge rounded-pill badge-nat" :style="'background-color: ' + tag.color">{{
+                    translation.label
+                  }}</span>
+                </div>
               </div>
-              <span
-                v-if="this.isErrorLabel && (translation.locale === this.locales.current || !this.autoCopy)"
-                class="form-text text-error"
-                >✗
-                {{ this.translate.formInputLabelError }}
-              </span>
             </div>
           </div>
         </div>
       </div>
+    </div>
 
-      <div class="flex flex-wrap gap-3 pt-4 mt-5 flex-row-reverse">
-        <button
-          v-if="this.tag.id !== null"
-          type="button"
-          class="btn btn-sm btn-danger"
-          @click="this.showModalConfirmDelete = true"
-        >
-          <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-            ></path>
-          </svg>
-          {{ this.translate.btnDelete }}
-        </button>
-        <button type="button" class="btn btn-outline-dark btn-sm" onclick="window.history.back()">
-          <svg
-            class="icon"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            fill="none"
-            viewBox="0 0 24 24"
+    <div class="card mb-4">
+      <div class="card-header">
+        <div>
+          <div class="card-title">
+            <svg
+              class="card-icon"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+              style="color: var(--primary)"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+              />
+            </svg>
+            {{ this.translate.textTitle }}
+          </div>
+          <p class="card-subtitle">
+            {{ this.translate.textDescription }}
+          </p>
+        </div>
+      </div>
+      <div class="p-5">
+        <div v-for="key in this.locales.locales">
+          <div v-for="translation in tag.tagTranslations">
+            <div v-if="translation.locale === key">
+              <div class="form-group">
+                <label :for="'label-' + translation.locale" class="form-label"
+                  >{{ this.translate.formInputLabelLabel }} {{ this.locales.localesTranslate[key] }}
+                </label>
+                <input
+                  type="text"
+                  :class="this.isNoEmptyInput(translation.id)"
+                  class="form-input"
+                  :id="'label-' + translation.locale"
+                  :placeholder="this.translate.formInputLabelPlaceholder"
+                  @blur="!translation.label ? (showErrors = true) : ''"
+                  :disabled="this.isDisabled(translation.locale)"
+                  v-model="translation.label"
+                  v-on="
+                    this.autoCopy && translation.locale === this.locales.current
+                      ? { keyup: () => this.copyLabel(translation.label) }
+                      : {}
+                  "
+                />
+
+                <div class="form-switch float-end mt-2" v-if="translation.locale === this.locales.current">
+                  <input
+                    type="checkbox"
+                    class="switch-input"
+                    id="switch-basic"
+                    role="switch"
+                    :checked="this.autoCopy ? true : false"
+                  />
+                  <label class="switch-toggle" @click="this.toggleCopy()"></label>
+                  <span class="switch-label" @click="this.toggleCopy()"
+                    ><span
+                      class="switch-label-text"
+                      style="font-weight: 400; font-size: 0.8125rem; color: var(--text-secondary)"
+                      >{{ this.translate.autoCopy }}</span
+                    ></span
+                  >
+                </div>
+                <span
+                  v-if="this.isErrorLabel && (translation.locale === this.locales.current || !this.autoCopy)"
+                  class="form-text text-error"
+                  >✗
+                  {{ this.translate.formInputLabelError }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap gap-3 pt-4 mt-5 flex-row-reverse">
+          <button
+            v-if="this.tag.id !== null"
+            type="button"
+            class="btn btn-sm btn-danger"
+            @click="this.showModalConfirmDelete = true"
           >
-            <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-            />
-          </svg>
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+              ></path>
+            </svg>
+            {{ this.translate.btnDelete }}
+          </button>
+          <button type="button" class="btn btn-outline-dark btn-sm" onclick="window.history.back()">
+            <svg
+              class="icon"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+              />
+            </svg>
 
-          {{ this.translate.btnCancel }}
-        </button>
-        <button
-          class="btn btn-sm btn-primary"
-          @click="this.save()"
-          :disabled="this.canSubmit()"
-          v-html="this.getLabelSubmit()"
-        ></button>
+            {{ this.translate.btnCancel }}
+          </button>
+          <button
+            class="btn btn-sm btn-primary"
+            @click="this.save()"
+            :disabled="this.canSubmit()"
+            v-html="this.getLabelSubmit()"
+          ></button>
+        </div>
       </div>
     </div>
 
-    <div
-      v-if="this.tag.id !== null && this.templateStat !== ''"
-      class="card p-4 mb-6 mt-4"
-      style="background-color: var(--bg-hover)"
-    >
-      <h3>
-        <svg
-          class="w-4 h-4 inline"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          fill="none"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M4 4v15a1 1 0 0 0 1 1h15M8 16l2.5-5.5 3 3L17.273 7 20 9.667"
-          />
-        </svg>
+    <div v-if="this.tag.id !== null && this.templateStat !== ''" class="card mb-4">
+      <div class="card-header">
+        <div>
+          <div class="card-title">
+            <svg
+              class="card-icon"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+              style="color: var(--primary)"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 4v15a1 1 0 0 0 1 1h15M8 16l2.5-5.5 3 3L17.273 7 20 9.667"
+              />
+            </svg>
 
-        {{ this.translate.statTitle }}
-      </h3>
-      <div class="form-text" v-html="this.templateStat"></div>
+            {{ this.translate.statTitle }}
+          </div>
+        </div>
+      </div>
+      <div class="p-5">
+        <div class="form-text" v-html="this.templateStat"></div>
+      </div>
     </div>
   </div>
 

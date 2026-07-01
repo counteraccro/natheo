@@ -59,14 +59,27 @@ export default {
 </script>
 
 <template>
-  <div class="card rounded-lg overflow-hidden">
-    <div class="px-4 sm:px-6 py-4 border-b flex items-center justify-between" style="border-color: var(--border-color)">
-      <h3 class="text-lg font-semibold">{{ this.translate.title }}</h3>
-      <a :href="this.urls.url_comments" class="text-sm font-medium hover:underline" style="color: var(--primary)">{{
-        this.translate.link_comment
-      }}</a>
+  <div class="card mb-4">
+    <div class="card-header">
+      <div>
+        <div class="card-title">
+          <svg class="card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-width="2" d="M9 17h6l3 3v-3h2V9h-2M4 4h11v8H9l-3 3v-3H4V4Z" />
+          </svg>
+          {{ this.translate.title }}
+        </div>
+      </div>
+      <a
+        :href="this.urls.url_comments"
+        class="text-sm font-medium hover:underline flex items-center gap-1"
+        style="color: var(--primary)"
+      >
+        {{ this.translate.link_comment }}
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-width="2" d="M13 5h6m0 0v6m0-6L10 14m-4 5h8a2 2 0 0 0 2-2v-3" />
+        </svg>
+      </a>
     </div>
-
     <AlertDanger v-if="this.errorMessage !== null" :text="this.errorMessage" />
 
     <div class="overflow-x-auto" v-if="this.result !== null">
