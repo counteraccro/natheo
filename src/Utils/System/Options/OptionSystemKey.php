@@ -11,12 +11,6 @@ namespace App\Utils\System\Options;
 class OptionSystemKey
 {
     /**
-     * Clé option pour récupérer l'expéditeur des emails
-     * @var string
-     */
-    const string OS_MAIL_FROM = 'OS_MAIL_FROM';
-
-    /**
      * Clé option pour récupérer l'email de réponse
      * @var string
      */

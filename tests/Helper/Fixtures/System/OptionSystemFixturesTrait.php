@@ -122,7 +122,7 @@ trait OptionSystemFixturesTrait
         $this->createOptionSystem($data);
 
         $data = [
-            'key' => OptionSystemKey::OS_MAIL_FROM,
+            'key' => OptionSystemEnum::OS_MAIL_FROM->value,
             'value' => 'support@natheo.fr',
         ];
         $this->createOptionSystem($data);
