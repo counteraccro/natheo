@@ -11,12 +11,6 @@ namespace App\Utils\System\Options;
 class OptionSystemKey
 {
     /**
-     * Clé option langue par défaut pour le site
-     * @var string
-     */
-    const string OS_DEFAULT_LANGUAGE = 'OS_DEFAULT_LANGUAGE';
-
-    /**
      * Clé option nb élements par défaut pour les users
      * @var string
      */
