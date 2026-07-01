@@ -34,6 +34,7 @@ enum OptionSystem: string
 
     const CONFIG = [
         self::OS_SITE_NAME->value => ['default' => 'Nathéo CMS'],
+        self::OS_OPEN_SITE->value => ['default' => '0'],
     ];
 
     /**
