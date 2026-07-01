@@ -11,12 +11,6 @@ namespace App\Utils\System\Options;
 class OptionSystemKey
 {
     /**
-     * Clé option qui permet de sauvegarder ou non les logs
-     * @var string
-     */
-    const string OS_LOG_DOCTRINE = 'OS_LOG_DOCTRINE';
-
-    /**
      * Clé option pour récupérer l'expéditeur des emails
      * @var string
      */
