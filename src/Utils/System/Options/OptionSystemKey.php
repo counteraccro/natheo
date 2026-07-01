@@ -11,11 +11,6 @@ namespace App\Utils\System\Options;
 class OptionSystemKey
 {
     /**
-     * Clé pour le logo du site
-     */
-    const string OS_LOGO_SITE = 'OS_LOGO_SITE';
-
-    /**
      * Clé option site ouvert
      * @var string
      */

@@ -622,7 +622,7 @@ class PageController extends AppAdminController
 
         $siteName = $optionSystemService->getValueByKey(OptionSystem::OS_SITE_NAME->value);
         $url = $optionSystemService->getValueByKey(OptionSystemKey::OS_ADRESSE_SITE);
-        $logo = $optionSystemService->getValueByKey(OptionSystemKey::OS_LOGO_SITE);
+        $logo = $optionSystemService->getValueByKey(OptionSystem::OS_LOGO_SITE->value);
 
         return $this->render('admin/content/page/preview.html.twig', [
             'datas' => [

@@ -98,7 +98,7 @@ trait OptionSystemFixturesTrait
         $this->createOptionSystem($data);
 
         $data = [
-            'key' => OptionSystemKey::OS_LOGO_SITE,
+            'key' => OptionSystemEnum::OS_LOGO_SITE->value,
             'value' => 'bi-yin-yang',
         ];
         $this->createOptionSystem($data);
