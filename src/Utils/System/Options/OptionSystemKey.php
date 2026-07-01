@@ -11,12 +11,6 @@ namespace App\Utils\System\Options;
 class OptionSystemKey
 {
     /**
-     * Clé option authorisation suppression de données
-     * @var string
-     */
-    const string OS_ALLOW_DELETE_DATA = 'OS_ALLOW_DELETE_DATA';
-
-    /**
      * Clé option langue par défaut pour le site
      * @var string
      */

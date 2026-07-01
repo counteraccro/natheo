@@ -139,7 +139,7 @@ class OptionSystemService extends AppAdminService
      */
     public function canDelete(): bool
     {
-        if ($this->getValueByKey(OptionSystemKey::OS_ALLOW_DELETE_DATA) == 1) {
+        if ($this->getValueByKey(OptionSystemEnum::OS_ALLOW_DELETE_DATA->value) == 1) {
             return true;
         }
         return false;

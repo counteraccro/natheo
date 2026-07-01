@@ -86,7 +86,7 @@ trait OptionSystemFixturesTrait
         $this->createOptionSystem($data);
 
         $data = [
-            'key' => OptionSystemKey::OS_ALLOW_DELETE_DATA,
+            'key' => OptionSystemEnum::OS_ALLOW_DELETE_DATA->value,
             'value' => '1',
         ];
         $this->createOptionSystem($data);

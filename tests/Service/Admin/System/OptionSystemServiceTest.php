@@ -141,11 +141,11 @@ class OptionSystemServiceTest extends AppWebTestCase
      */
     public function testCanDelete(): void
     {
-        $this->optionSystemService->saveValueByKee(OptionSystemKey::OS_ALLOW_DELETE_DATA, '1');
+        $this->optionSystemService->saveValueByKee(OptionSystemEnum::OS_ALLOW_DELETE_DATA->value, '1');
         $result = $this->optionSystemService->canDelete();
         $this->assertTrue($result);
 
-        $this->optionSystemService->saveValueByKee(OptionSystemKey::OS_ALLOW_DELETE_DATA, '0');
+        $this->optionSystemService->saveValueByKee(OptionSystemEnum::OS_ALLOW_DELETE_DATA->value, '0');
         $result = $this->optionSystemService->canDelete();
         $this->assertFalse($result);
     }
