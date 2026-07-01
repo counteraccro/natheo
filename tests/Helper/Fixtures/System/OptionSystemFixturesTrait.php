@@ -116,7 +116,7 @@ trait OptionSystemFixturesTrait
         $this->createOptionSystem($data);
 
         $data = [
-            'key' => OptionSystemKey::OS_LOG_DOCTRINE,
+            'key' => OptionSystemEnum::OS_LOG_DOCTRINE->value,
             'value' => '1',
         ];
         $this->createOptionSystem($data);

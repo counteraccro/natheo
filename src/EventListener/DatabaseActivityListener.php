@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace App\EventListener;
 
+use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Admin\System\OptionSystemService;
 use App\Service\LoggerService;
 use App\Utils\System\Options\OptionSystemKey;
@@ -88,7 +89,7 @@ class DatabaseActivityListener
     private function logActivity(string $action, LifecycleEventArgs $args): void
     {
         $entity = $args->getObject();
-        $value = $this->optionSystemService->getValueByKey(OptionSystemKey::OS_LOG_DOCTRINE);
+        $value = $this->optionSystemService->getValueByKey(OptionSystem::OS_LOG_DOCTRINE->value);
 
         if ($value !== '1') {
             return;

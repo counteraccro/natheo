@@ -80,6 +80,12 @@ enum OptionSystem: string
      */
     case OS_NB_ELEMENT = 'OS_NB_ELEMENT';
 
+    /**
+     * Clé option qui permet de sauvegarder ou non les logs
+     * @var string
+     */
+    case OS_LOG_DOCTRINE = 'OS_LOG_DOCTRINE';
+
     const CONFIG = [
         self::OS_SITE_NAME->value => ['default' => 'Nathéo CMS'],
         self::OS_OPEN_SITE->value => ['default' => '0'],
