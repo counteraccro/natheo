@@ -11,12 +11,6 @@ namespace App\Utils\System\Options;
 class OptionSystemKey
 {
     /**
-     * Clé option site ouvert
-     * @var string
-     */
-    const string OS_OPEN_SITE = 'OS_OPEN_SITE';
-
-    /**
      * Valeur par défaut de la clé OS_OPEN_SITE
      * @var string
      */

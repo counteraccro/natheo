@@ -31,7 +31,7 @@ class DashboardService extends AppAdminService
         $optionSystem = $this->getOptionSystemService();
         $siteName = $optionSystem->getValueByKey(OptionSystem::OS_SITE_NAME->value);
         $adresseSite = $optionSystem->getValueByKey(OptionSystemKey::OS_ADRESSE_SITE);
-        $openSite = $optionSystem->getValueByKey(OptionSystemKey::OS_OPEN_SITE);
+        $openSite = $optionSystem->getValueByKey(OptionSystem::OS_OPEN_SITE->value);
         $apiTokensDefault = $this->findBy(ApiToken::class, [
             'token' => [ApiTokenConst::API_TOKEN_READ, ApiTokenConst::API_TOKEN_WRITE, ApiTokenConst::API_TOKEN_ADMIN],
         ]);
@@ -53,7 +53,7 @@ class DashboardService extends AppAdminService
                     domain: 'dashboard',
                 ),
             ],
-            OptionSystemKey::OS_OPEN_SITE => [
+            OptionSystem::OS_OPEN_SITE->value => [
                 'success' => true,
                 'msg' => $translator->trans(
                     'dashboard.block.help.first.connexion.site.open.success',
@@ -91,7 +91,7 @@ class DashboardService extends AppAdminService
         }
 
         if ($openSite === OptionSystemKey::OS_OPEN_SITE_DEFAULT_VALUE) {
-            $body[OptionSystemKey::OS_OPEN_SITE] = [
+            $body[OptionSystem::OS_OPEN_SITE->value] = [
                 'success' => false,
                 'msg' => $translator->trans(
                     'dashboard.block.help.first.connexion.site.open.warning',

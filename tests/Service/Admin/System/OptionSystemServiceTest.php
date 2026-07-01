@@ -56,9 +56,9 @@ class OptionSystemServiceTest extends AppWebTestCase
         $this->assertEquals(OptionSystemEnum::OS_SITE_NAME->value, $result->getKey());
         $this->assertEquals('Nathéo CMS', $result->getValue());
 
-        $result = $this->optionSystemService->getByKey(OptionSystemKey::OS_OPEN_SITE);
+        $result = $this->optionSystemService->getByKey(OptionSystemEnum::OS_OPEN_SITE->value);
         $this->assertInstanceOf(OptionSystem::class, $result);
-        $this->assertEquals(OptionSystemKey::OS_OPEN_SITE, $result->getKey());
+        $this->assertEquals(OptionSystemEnum::OS_OPEN_SITE->value, $result->getKey());
         $this->assertEquals('1', $result->getValue());
 
         $result = $this->optionSystemService->getByKey(OptionSystemKey::OS_DEFAULT_LANGUAGE);
@@ -79,7 +79,7 @@ class OptionSystemServiceTest extends AppWebTestCase
         $this->assertNotNull($result);
         $this->assertEquals('Nathéo CMS', $result);
 
-        $result = $this->optionSystemService->getValueByKey(OptionSystemKey::OS_OPEN_SITE);
+        $result = $this->optionSystemService->getValueByKey(OptionSystemEnum::OS_OPEN_SITE->value);
         $this->assertNotNull($result);
         $this->assertEquals('1', $result);
 

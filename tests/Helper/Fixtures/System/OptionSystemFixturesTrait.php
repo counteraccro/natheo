@@ -50,7 +50,7 @@ trait OptionSystemFixturesTrait
         $this->createOptionSystem($data);
 
         $data = [
-            'key' => OptionSystemKey::OS_OPEN_SITE,
+            'key' => OptionSystemEnum::OS_OPEN_SITE->value,
             'value' => '1',
         ];
         $this->createOptionSystem($data);

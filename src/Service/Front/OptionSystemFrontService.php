@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace App\Service\Front;
 
+use App\Enum\Admin\System\Options\OptionSystem;
 use App\Utils\System\Options\OptionSystemKey;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -24,7 +25,7 @@ class OptionSystemFrontService extends AppFrontService
     public function isOpenSite(): bool
     {
         $optionSystemService = $this->getOptionSystemService();
-        $result = $optionSystemService->getValueByKey(OptionSystemKey::OS_OPEN_SITE);
+        $result = $optionSystemService->getValueByKey(OptionSystem::OS_OPEN_SITE->value);
         if ($result === '1') {
             return true;
         }

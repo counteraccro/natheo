@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace App\Security;
 
+use App\Enum\Admin\System\Options\OptionSystem;
 use App\Http\Api\ApiResponse;
 use App\Service\Admin\System\OptionSystemService;
 use App\Utils\System\Options\OptionSystemKey;
@@ -88,7 +89,7 @@ class ApiAuthenticator extends AbstractAuthenticator
      */
     private function isOpenApi(): void
     {
-        $isOpenApi = intval($this->optionSystemService->getValueByKey(OptionSystemKey::OS_OPEN_SITE));
+        $isOpenApi = intval($this->optionSystemService->getValueByKey(OptionSystem::OS_OPEN_SITE->value));
         if ($isOpenApi === 0) {
             throw new HttpException(
                 Response::HTTP_FORBIDDEN,
