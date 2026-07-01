@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace App\Service\Admin\System;
 
+use App\Enum\Admin\System\Options\OptionSystem as OptionSystemEnum;
 use App\Entity\Admin\System\OptionSystem;
 use App\Service\Admin\AppAdminService;
 use App\Utils\System\Options\OptionSystemKey;
@@ -152,7 +153,7 @@ class OptionSystemService extends AppAdminService
      */
     public function canReplace(): bool
     {
-        if ($this->getValueByKey(OptionSystemKey::OS_REPLACE_DELETE_USER) == 1) {
+        if ($this->getValueByKey(OptionSystemEnum::OS_REPLACE_DELETE_USER->value) == 1) {
             return true;
         }
         return false;

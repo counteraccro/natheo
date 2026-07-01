@@ -74,7 +74,7 @@ trait OptionSystemFixturesTrait
         $this->createOptionSystem($data);
 
         $data = [
-            'key' => OptionSystemKey::OS_REPLACE_DELETE_USER,
+            'key' => OptionSystemEnum::OS_REPLACE_DELETE_USER->value,
             'value' => '1',
         ];
         $this->createOptionSystem($data);

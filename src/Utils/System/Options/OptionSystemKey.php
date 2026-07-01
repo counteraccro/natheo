@@ -11,12 +11,6 @@ namespace App\Utils\System\Options;
 class OptionSystemKey
 {
     /**
-     * Clé option remplacement user delete
-     * @var string
-     */
-    const string OS_REPLACE_DELETE_USER = 'OS_REPLACE_DELETE_USER';
-
-    /**
      * Clé option confirmation quitter form
      * @var string
      */

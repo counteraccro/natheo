@@ -50,6 +50,12 @@ enum OptionSystem: string
      */
     case OS_FRONT_SCRIPT_END_BODY = 'OS_FRONT_SCRIPT_END_BODY';
 
+    /**
+     * Clé option remplacement user delete
+     * @var string
+     */
+    case OS_REPLACE_DELETE_USER = 'OS_REPLACE_DELETE_USER';
+
     const CONFIG = [
         self::OS_SITE_NAME->value => ['default' => 'Nathéo CMS'],
         self::OS_OPEN_SITE->value => ['default' => '0'],

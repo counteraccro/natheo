@@ -14,6 +14,7 @@ use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\System\User;
 use App\Enum\Admin\Global\Breadcrumb;
 use App\Enum\Admin\Global\Notification\Notification;
+use App\Enum\Admin\System\Options\OptionSystem;
 use App\Form\Admin\User\MyAccountType;
 use App\Form\Admin\User\UserAddType;
 use App\Form\Admin\User\UserType;
@@ -197,7 +198,7 @@ class UserController extends AppAdminController
         }
 
         $canDelete = $optionSystemService->getValueByKey(OptionSystemKey::OS_ALLOW_DELETE_DATA);
-        $canReplace = $optionSystemService->getValueByKey(OptionSystemKey::OS_REPLACE_DELETE_USER);
+        $canReplace = $optionSystemService->getValueByKey(OptionSystem::OS_REPLACE_DELETE_USER->value);
 
         $msg = $msg_error = null;
         if ($canDelete === '1') {
@@ -357,7 +358,7 @@ class UserController extends AppAdminController
         }
 
         $canDelete = $optionSystemService->getValueByKey(OptionSystemKey::OS_ALLOW_DELETE_DATA);
-        $canReplace = $optionSystemService->getValueByKey(OptionSystemKey::OS_REPLACE_DELETE_USER);
+        $canReplace = $optionSystemService->getValueByKey(OptionSystem::OS_REPLACE_DELETE_USER->value);
 
         return $this->render('admin/system/user/my_account.html.twig', [
             'breadcrumb' => $breadcrumb,

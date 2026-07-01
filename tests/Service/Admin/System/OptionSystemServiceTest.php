@@ -158,11 +158,11 @@ class OptionSystemServiceTest extends AppWebTestCase
      */
     public function testCanReplace(): void
     {
-        $this->optionSystemService->saveValueByKee(OptionSystemKey::OS_REPLACE_DELETE_USER, '1');
+        $this->optionSystemService->saveValueByKee(OptionSystemEnum::OS_REPLACE_DELETE_USER->value, '1');
         $result = $this->optionSystemService->canReplace();
         $this->assertTrue($result);
 
-        $this->optionSystemService->saveValueByKee(OptionSystemKey::OS_REPLACE_DELETE_USER, '0');
+        $this->optionSystemService->saveValueByKee(OptionSystemEnum::OS_REPLACE_DELETE_USER->value, '0');
         $result = $this->optionSystemService->canReplace();
         $this->assertFalse($result);
     }
