@@ -11,12 +11,6 @@ namespace App\Utils\System\Options;
 class OptionSystemKey
 {
     /**
-     * Clé pour le temps de validité du lien de changement de mot de passe
-     * @var string
-     */
-    const string OS_MAIL_RESET_PASSWORD_TIME = 'OS_MAIL_RESET_PASSWORD_TIME';
-
-    /**
      * Défini si on créé des dossiers physiques ou non pour la médiathèque
      * @var string
      */

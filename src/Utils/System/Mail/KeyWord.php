@@ -333,7 +333,7 @@ class KeyWord
         OptionSystemService $optionSystemService,
     ): array {
         $url = $optionSystemService->getValueByKey(OptionSystem::OS_ADRESSE_SITE->value);
-        $minutes = $optionSystemService->getValueByKey(OptionSystemKey::OS_MAIL_RESET_PASSWORD_TIME);
+        $minutes = $optionSystemService->getValueByKey(OptionSystem::OS_MAIL_RESET_PASSWORD_TIME->value);
 
         $tab = $this->getGlobalKeyWord($user, $optionSystemService);
         $tab2 = [

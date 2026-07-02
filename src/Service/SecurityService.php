@@ -12,6 +12,7 @@ namespace App\Service;
 
 use App\Entity\Admin\System\User;
 use App\Entity\Admin\System\UserData;
+use App\Enum\Admin\System\Options\OptionSystem;
 use App\Repository\Admin\System\UserDataRepository;
 use App\Service\Admin\System\OptionSystemService;
 use App\Utils\System\Options\OptionSystemKey;
@@ -66,7 +67,7 @@ class SecurityService extends AppService
             return null;
         }
 
-        $time = $this->optionSystemService->getValueByKey(OptionSystemKey::OS_MAIL_RESET_PASSWORD_TIME);
+        $time = $this->optionSystemService->getValueByKey(OptionSystem::OS_MAIL_RESET_PASSWORD_TIME->value);
         $now = new \DateTime();
 
         if (

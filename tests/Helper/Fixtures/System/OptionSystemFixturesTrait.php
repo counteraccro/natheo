@@ -158,7 +158,7 @@ trait OptionSystemFixturesTrait
         $this->createOptionSystem($data);
 
         $data = [
-            'key' => OptionSystemKey::OS_MAIL_RESET_PASSWORD_TIME,
+            'key' => OptionSystemEnum::OS_MAIL_RESET_PASSWORD_TIME->value,
             'value' => '20',
         ];
         $this->createOptionSystem($data);

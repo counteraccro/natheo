@@ -128,6 +128,12 @@ enum OptionSystem: string
      */
     case OS_PURGE_NOTIFICATION = 'OS_PURGE_NOTIFICATION';
 
+    /**
+     * Clé pour le temps de validité du lien de changement de mot de passe
+     * @var string
+     */
+    case OS_MAIL_RESET_PASSWORD_TIME = 'OS_MAIL_RESET_PASSWORD_TIME';
+
     const CONFIG = [
         self::OS_SITE_NAME->value => ['default' => 'Nathéo CMS'],
         self::OS_OPEN_SITE->value => ['default' => '0'],
