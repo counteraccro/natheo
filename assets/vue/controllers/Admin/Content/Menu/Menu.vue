@@ -48,7 +48,7 @@ export default defineComponent({
       required: true,
     },
     id: {
-      type: Number as PropType<number>,
+      type: [Number, null] as PropType<number | null>,
       required: true,
     },
   },
