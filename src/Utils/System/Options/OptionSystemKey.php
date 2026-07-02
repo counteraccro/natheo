@@ -11,12 +11,6 @@ namespace App\Utils\System\Options;
 class OptionSystemKey
 {
     /**
-     * Clé option signature email
-     * @var string
-     */
-    const string OS_MAIL_SIGNATURE = 'OS_MAIL_SIGNATURE';
-
-    /**
      * Clé option envoi email
      * @var string
      */

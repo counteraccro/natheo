@@ -140,7 +140,7 @@ trait OptionSystemFixturesTrait
         $this->createOptionSystem($data);
 
         $data = [
-            'key' => OptionSystemKey::OS_MAIL_SIGNATURE,
+            'key' => OptionSystemEnum::OS_MAIL_SIGNATURE->value,
             'value' => "<hr />Cordialement, <br />L'équipe de Natheo CMS",
         ];
         $this->createOptionSystem($data);

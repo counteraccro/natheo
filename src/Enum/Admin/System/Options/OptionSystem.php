@@ -105,10 +105,10 @@ enum OptionSystem: string
     case OS_ADRESSE_SITE = 'OS_ADRESSE_SITE';
 
     /**
-     * Valeur par défaut pour la clé OS_ADRESSE_SITE
+     * Clé option signature email
      * @var string
      */
-    const string OS_ADRESSE_SITE_DEFAULT_VALUE = 'http://www.value-must-be-change.com';
+    case OS_MAIL_SIGNATURE = 'OS_MAIL_SIGNATURE';
 
     const CONFIG = [
         self::OS_SITE_NAME->value => ['default' => 'Nathéo CMS'],
