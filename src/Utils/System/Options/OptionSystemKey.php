@@ -11,12 +11,6 @@ namespace App\Utils\System\Options;
 class OptionSystemKey
 {
     /**
-     * Clé pour l'activation des notifications
-     * @var string
-     */
-    const string OS_NOTIFICATION = 'OS_NOTIFICATION';
-
-    /**
      * Clé pour la purge des notifications
      * @var string
      */

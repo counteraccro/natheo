@@ -167,7 +167,7 @@ class OptionSystemService extends AppAdminService
      */
     public function canNotification(): bool
     {
-        if ($this->getValueByKey(OptionSystemKey::OS_NOTIFICATION) == 1) {
+        if ($this->getValueByKey(OptionSystemEnum::OS_NOTIFICATION->value) == 1) {
             return true;
         }
         return false;

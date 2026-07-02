@@ -71,7 +71,8 @@
             </button>
 
             <!-- Notifications -->
-            {%set notification = get_option_system_value_by_key(constant('App\\Utils\\System\\Options\\OptionSystemKey::OS_NOTIFICATION')) %}
+            {% set notification = get_option_system_value_by_key(os_notification) %}
+
 
             {% if notification is same as("1") %}
             <a href="{{ path('admin_notification_index') }}" class="relative p-2 hover:bg-gray-100 rounded-lg transition">

@@ -86,7 +86,7 @@ class ApiOptionSystemControllerTest extends AppApiTestCase
             'GET',
             $this->router->generate('api_options_systems_get_by_key', [
                 'api_version' => self::API_VERSION,
-                'key' => OptionSystemKey::OS_NOTIFICATION,
+                'key' => OptionSystem::OS_NOTIFICATION->value,
             ]),
             server: $this->getCustomHeaders(),
         );

@@ -311,7 +311,7 @@ class UserControllerTest extends AppWebTestCase
         /** @var OptionSystemService $optionSystemService */
         $optionSystemService = $this->container->get(OptionSystemService::class);
         $optionSystemService->saveValueByKee(OptionSystem::OS_MAIL_NOTIFICATION->value, '1');
-        $optionSystemService->saveValueByKee(OptionSystemKey::OS_NOTIFICATION, '1');
+        $optionSystemService->saveValueByKee(OptionSystem::OS_NOTIFICATION->value, '1');
         $this->client->loginUser($userToDisable, 'admin');
         $this->client->request('POST', $this->router->generate('admin_user_self_disabled'));
         $this->assertResponseIsSuccessful();
@@ -366,7 +366,7 @@ class UserControllerTest extends AppWebTestCase
         /** @var OptionSystemService $optionSystemService */
         $optionSystemService = $this->container->get(OptionSystemService::class);
         $optionSystemService->saveValueByKee(OptionSystem::OS_MAIL_NOTIFICATION->value, '1');
-        $optionSystemService->saveValueByKee(OptionSystemKey::OS_NOTIFICATION, '1');
+        $optionSystemService->saveValueByKee(OptionSystem::OS_NOTIFICATION->value, '1');
         $optionSystemService->saveValueByKee(OptionSystem::OS_ALLOW_DELETE_DATA->value, '1');
         $optionSystemService->saveValueByKee(OptionSystem::OS_REPLACE_DELETE_USER->value, '1');
         $this->client->loginUser($userToDelete, 'admin');
@@ -402,7 +402,7 @@ class UserControllerTest extends AppWebTestCase
         $userToDelete = $this->createUser();
         $optionSystemService = $this->container->get(OptionSystemService::class);
         $optionSystemService->saveValueByKee(OptionSystem::OS_MAIL_NOTIFICATION->value, '1');
-        $optionSystemService->saveValueByKee(OptionSystemKey::OS_NOTIFICATION, '1');
+        $optionSystemService->saveValueByKee(OptionSystem::OS_NOTIFICATION->value, '1');
         $optionSystemService->saveValueByKee(OptionSystem::OS_ALLOW_DELETE_DATA->value, '1');
         $optionSystemService->saveValueByKee(OptionSystem::OS_REPLACE_DELETE_USER->value, '0');
         $this->client->loginUser($userToDelete, 'admin');

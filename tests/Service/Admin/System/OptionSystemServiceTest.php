@@ -175,11 +175,11 @@ class OptionSystemServiceTest extends AppWebTestCase
      */
     public function testCanNotification(): void
     {
-        $this->optionSystemService->saveValueByKee(OptionSystemKey::OS_NOTIFICATION, '1');
+        $this->optionSystemService->saveValueByKee(OptionSystemEnum::OS_NOTIFICATION->value, '1');
         $result = $this->optionSystemService->canNotification();
         $this->assertTrue($result);
 
-        $this->optionSystemService->saveValueByKee(OptionSystemKey::OS_NOTIFICATION, '0');
+        $this->optionSystemService->saveValueByKee(OptionSystemEnum::OS_NOTIFICATION->value, '0');
         $result = $this->optionSystemService->canNotification();
         $this->assertFalse($result);
     }

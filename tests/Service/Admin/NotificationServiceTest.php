@@ -13,6 +13,7 @@ use App\Entity\Admin\Notification;
 use App\Enum\Admin\Global\Notification\KeyConfig;
 use App\Enum\Admin\Global\Notification\Notification as NotificationEnum;
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\System\Options\OptionSystem;
 use App\Repository\Admin\NotificationRepository;
 use App\Service\Admin\NotificationService;
 use App\Service\Admin\System\OptionSystemService;
@@ -47,7 +48,7 @@ class NotificationServiceTest extends AppWebTestCase
         $user = $this->createUser();
 
         $optionSystemService = $this->container->get(OptionSystemService::class);
-        $optionSystemService->saveValueByKee(OptionSystemKey::OS_NOTIFICATION, '0');
+        $optionSystemService->saveValueByKee(OptionSystem::OS_NOTIFICATION->value, '0');
 
         $this->notificationService->add($user, NotificationEnum::SELF_DELETE->value, [
             'login' => $user->getLogin(),
@@ -56,7 +57,7 @@ class NotificationServiceTest extends AppWebTestCase
         $user = $this->notificationService->findOneById(User::class, $user->getId());
         $this->assertCount(0, $user->getNotifications());
 
-        $optionSystemService->saveValueByKee(OptionSystemKey::OS_NOTIFICATION, '1');
+        $optionSystemService->saveValueByKee(OptionSystem::OS_NOTIFICATION->value, '1');
 
         $this->notificationService->add($user, NotificationEnum::SELF_DELETE->value, [
             'login' => $user->getLogin(),
@@ -82,13 +83,13 @@ class NotificationServiceTest extends AppWebTestCase
         $user = $this->createUser();
 
         $optionSystemService = $this->container->get(OptionSystemService::class);
-        $optionSystemService->saveValueByKee(OptionSystemKey::OS_NOTIFICATION, '0');
+        $optionSystemService->saveValueByKee(OptionSystem::OS_NOTIFICATION->value, '0');
         $user = $this->notificationService->addForFixture($user, NotificationEnum::SELF_DISABLED->value, [
             'login' => $user->getLogin(),
         ]);
         $this->assertCount(0, $user->getNotifications());
 
-        $optionSystemService->saveValueByKee(OptionSystemKey::OS_NOTIFICATION, '1');
+        $optionSystemService->saveValueByKee(OptionSystem::OS_NOTIFICATION->value, '1');
         $user = $this->notificationService->addForFixture($user, NotificationEnum::SELF_DISABLED->value, [
             'login' => $user->getLogin(),
         ]);
