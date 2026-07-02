@@ -152,7 +152,7 @@ trait OptionSystemFixturesTrait
         $this->createOptionSystem($data);
 
         $data = [
-            'key' => OptionSystemKey::OS_PURGE_NOTIFICATION,
+            'key' => OptionSystemEnum::OS_PURGE_NOTIFICATION->value,
             'value' => '30',
         ];
         $this->createOptionSystem($data);

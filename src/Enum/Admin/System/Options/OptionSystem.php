@@ -122,6 +122,12 @@ enum OptionSystem: string
      */
     case OS_NOTIFICATION = 'OS_NOTIFICATION';
 
+    /**
+     * Clé pour la purge des notifications
+     * @var string
+     */
+    case OS_PURGE_NOTIFICATION = 'OS_PURGE_NOTIFICATION';
+
     const CONFIG = [
         self::OS_SITE_NAME->value => ['default' => 'Nathéo CMS'],
         self::OS_OPEN_SITE->value => ['default' => '0'],

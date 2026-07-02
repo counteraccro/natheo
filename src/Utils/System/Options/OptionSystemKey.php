@@ -11,12 +11,6 @@ namespace App\Utils\System\Options;
 class OptionSystemKey
 {
     /**
-     * Clé pour la purge des notifications
-     * @var string
-     */
-    const string OS_PURGE_NOTIFICATION = 'OS_PURGE_NOTIFICATION';
-
-    /**
      * Clé pour le temps de validité du lien de changement de mot de passe
      * @var string
      */

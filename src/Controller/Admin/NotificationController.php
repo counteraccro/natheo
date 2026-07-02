@@ -12,6 +12,7 @@ namespace App\Controller\Admin;
 use App\Entity\Admin\System\User;
 use App\Enum\Admin\Global\Breadcrumb;
 use App\Enum\Admin\Global\Notification\Category;
+use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Admin\GridService;
 use App\Service\Admin\NotificationService;
 use App\Service\Admin\System\OptionSystemService;
@@ -56,7 +57,7 @@ class NotificationController extends AppAdminController
         if (!$optionSystemService->canNotification()) {
             return $this->redirectToRoute('admin_dashboard_index');
         }
-        $nbDay = $optionSystemService->getValueByKey(OptionSystemKey::OS_PURGE_NOTIFICATION);
+        $nbDay = $optionSystemService->getValueByKey(OptionSystem::OS_PURGE_NOTIFICATION->value);
 
         $breadcrumb = [
             Breadcrumb::DOMAIN->value => 'notification',
@@ -209,7 +210,7 @@ class NotificationController extends AppAdminController
     #[Route('/ajax/purge', name: 'purge', methods: ['POST'])]
     public function purge(OptionSystemService $optionSystemService, NotificationService $notificationService): Response
     {
-        $nbDay = $optionSystemService->getValueByKey(OptionSystemKey::OS_PURGE_NOTIFICATION);
+        $nbDay = $optionSystemService->getValueByKey(OptionSystem::OS_PURGE_NOTIFICATION->value);
         $notificationService->purge(intval($nbDay), $this->getUser()->getId());
         return $this->json(['success' => true]);
     }
