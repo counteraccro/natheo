@@ -110,6 +110,12 @@ enum OptionSystem: string
      */
     case OS_MAIL_SIGNATURE = 'OS_MAIL_SIGNATURE';
 
+    /**
+     * Clé option envoi email
+     * @var string
+     */
+    case OS_MAIL_NOTIFICATION = 'OS_MAIL_NOTIFICATION';
+
     const CONFIG = [
         self::OS_SITE_NAME->value => ['default' => 'Nathéo CMS'],
         self::OS_OPEN_SITE->value => ['default' => '0'],

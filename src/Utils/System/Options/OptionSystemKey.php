@@ -11,12 +11,6 @@ namespace App\Utils\System\Options;
 class OptionSystemKey
 {
     /**
-     * Clé option envoi email
-     * @var string
-     */
-    const string OS_MAIL_NOTIFICATION = 'OS_MAIL_NOTIFICATION';
-
-    /**
      * Clé pour l'activation des notifications
      * @var string
      */

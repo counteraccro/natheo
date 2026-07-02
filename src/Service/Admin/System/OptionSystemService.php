@@ -125,7 +125,7 @@ class OptionSystemService extends AppAdminService
      */
     public function canSendMailNotification(): bool
     {
-        if ($this->getValueByKey(OptionSystemKey::OS_MAIL_NOTIFICATION) == 1) {
+        if ($this->getValueByKey(OptionSystemEnum::OS_MAIL_NOTIFICATION->value) == 1) {
             return true;
         }
         return false;

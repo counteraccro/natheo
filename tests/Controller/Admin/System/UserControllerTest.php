@@ -310,7 +310,7 @@ class UserControllerTest extends AppWebTestCase
         // Désactivation user
         /** @var OptionSystemService $optionSystemService */
         $optionSystemService = $this->container->get(OptionSystemService::class);
-        $optionSystemService->saveValueByKee(OptionSystemKey::OS_MAIL_NOTIFICATION, '1');
+        $optionSystemService->saveValueByKee(OptionSystem::OS_MAIL_NOTIFICATION->value, '1');
         $optionSystemService->saveValueByKee(OptionSystemKey::OS_NOTIFICATION, '1');
         $this->client->loginUser($userToDisable, 'admin');
         $this->client->request('POST', $this->router->generate('admin_user_self_disabled'));
@@ -365,7 +365,7 @@ class UserControllerTest extends AppWebTestCase
         //delete user - Anonymisation
         /** @var OptionSystemService $optionSystemService */
         $optionSystemService = $this->container->get(OptionSystemService::class);
-        $optionSystemService->saveValueByKee(OptionSystemKey::OS_MAIL_NOTIFICATION, '1');
+        $optionSystemService->saveValueByKee(OptionSystem::OS_MAIL_NOTIFICATION->value, '1');
         $optionSystemService->saveValueByKee(OptionSystemKey::OS_NOTIFICATION, '1');
         $optionSystemService->saveValueByKee(OptionSystem::OS_ALLOW_DELETE_DATA->value, '1');
         $optionSystemService->saveValueByKee(OptionSystem::OS_REPLACE_DELETE_USER->value, '1');
@@ -401,7 +401,7 @@ class UserControllerTest extends AppWebTestCase
         //Delete user - delete
         $userToDelete = $this->createUser();
         $optionSystemService = $this->container->get(OptionSystemService::class);
-        $optionSystemService->saveValueByKee(OptionSystemKey::OS_MAIL_NOTIFICATION, '1');
+        $optionSystemService->saveValueByKee(OptionSystem::OS_MAIL_NOTIFICATION->value, '1');
         $optionSystemService->saveValueByKee(OptionSystemKey::OS_NOTIFICATION, '1');
         $optionSystemService->saveValueByKee(OptionSystem::OS_ALLOW_DELETE_DATA->value, '1');
         $optionSystemService->saveValueByKee(OptionSystem::OS_REPLACE_DELETE_USER->value, '0');

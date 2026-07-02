@@ -146,7 +146,7 @@ trait OptionSystemFixturesTrait
         $this->createOptionSystem($data);
 
         $data = [
-            'key' => OptionSystemKey::OS_MAIL_NOTIFICATION,
+            'key' => OptionSystemEnum::OS_MAIL_NOTIFICATION->value,
             'value' => '1',
         ];
         $this->createOptionSystem($data);
