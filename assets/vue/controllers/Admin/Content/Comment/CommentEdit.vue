@@ -174,37 +174,41 @@ export default defineComponent({
   <div v-else>
     <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
       <div class="xl:col-span-2 flex flex-col gap-6">
-        <div class="card rounded-lg overflow-hidden">
-          <div class="flex items-center justify-between px-6 py-4">
-            <div class="flex items-center gap-2">
-              <svg class="w-4 h-4" style="color: var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-                ></path>
-              </svg>
-              <span class="text-sm font-semibold" style="color: var(--text-primary)">{{ translate.commentTitle }}</span>
+        <div class="card mb-4">
+          <div class="card-header">
+            <div>
+              <div class="card-title">
+                <svg
+                  class="card-icon"
+                  style="color: var(--primary)"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                  ></path>
+                </svg>
+                {{ translate.commentTitle }}
+              </div>
             </div>
-            <span
-              class="text-xs px-2 py-1 rounded-full font-medium"
-              style="background-color: var(--primary-lighter); color: var(--primary)"
-              >Markdown</span
-            >
           </div>
-          <MarkdownEditor
-            :me-id="String(comment.id)"
-            :me-value="comment.comment"
-            :me-translate="translate.markdown"
-            :me-key-words="[]"
-            :me-rows="16"
-            :me-save="true"
-            :me-preview="false"
-            @editor-value="updateValue"
-          />
+          <div class="p-5">
+            <MarkdownEditor
+              :me-id="String(comment.id)"
+              :me-value="comment.comment"
+              :me-translate="translate.markdown"
+              :me-key-words="[]"
+              :me-rows="16"
+              :me-save="true"
+              :me-preview="false"
+              @editor-value="updateValue"
+            />
+          </div>
         </div>
-
         <div class="flex items-center justify-between px-6 py-4 rounded-lg card">
           <a :href="urls.index" class="inline-flex items-center gap-2 btn btn-sm btn-outline-dark">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -229,10 +233,29 @@ export default defineComponent({
           </button>
         </div>
       </div>
+
       <div class="flex flex-col gap-6">
-        <div class="card rounded-lg overflow-hidden">
-          <div class="px-5 py-4" style="border-bottom: 1px solid var(--border-color)">
-            <h3 class="text-sm font-semibold" style="color: var(--text-primary)">{{ translate.status }}</h3>
+        <div class="card mb-4">
+          <div class="card-header">
+            <div>
+              <div class="card-title">
+                <svg
+                  class="card-icon"
+                  style="color: var(--primary)"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="m8.032 12 1.984 1.984 4.96-4.96m4.55 5.272.893-.893a1.984 1.984 0 0 0 0-2.806l-.893-.893a1.984 1.984 0 0 1-.581-1.403V7.04a1.984 1.984 0 0 0-1.984-1.984h-1.262a1.983 1.983 0 0 1-1.403-.581l-.893-.893a1.984 1.984 0 0 0-2.806 0l-.893.893a1.984 1.984 0 0 1-1.403.581H7.04A1.984 1.984 0 0 0 5.055 7.04v1.262c0 .527-.209 1.031-.581 1.403l-.893.893a1.984 1.984 0 0 0 0 2.806l.893.893c.372.372.581.876.581 1.403v1.262a1.984 1.984 0 0 0 1.984 1.984h1.262c.527 0 1.031.209 1.403.581l.893.893a1.984 1.984 0 0 0 2.806 0l.893-.893a1.985 1.985 0 0 1 1.403-.581h1.262a1.984 1.984 0 0 0 1.984-1.984V15.7c0-.527.209-1.031.581-1.403Z"
+                  ></path>
+                </svg>
+                {{ translate.status }}
+              </div>
+            </div>
           </div>
           <div class="p-5">
             <div class="flex items-center gap-2 mb-4">
@@ -276,9 +299,28 @@ export default defineComponent({
             </div>
           </div>
         </div>
-        <div class="card rounded-lg overflow-hidden">
-          <div class="px-5 py-4" style="border-bottom: 1px solid var(--border-color)">
-            <h3 class="text-sm font-semibold" style="color: var(--text-primary)">{{ translate.titleInfo }}</h3>
+
+        <div class="card mb-4">
+          <div class="card-header">
+            <div>
+              <div class="card-title">
+                <svg
+                  class="card-icon"
+                  style="color: var(--primary)"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M7.556 8.5h8m-8 3.5H12m7.111-7H4.89a.896.896 0 0 0-.629.256.868.868 0 0 0-.26.619v9.25c0 .232.094.455.26.619A.896.896 0 0 0 4.89 16H9l3 4 3-4h4.111a.896.896 0 0 0 .629-.256.868.868 0 0 0 .26-.619v-9.25a.868.868 0 0 0-.26-.619.896.896 0 0 0-.63-.256Z"
+                  ></path>
+                </svg>
+                {{ translate.titleInfo }}
+              </div>
+            </div>
           </div>
           <ul class="divide-y divide-[var(--border-color)]">
             <!-- Auteur -->
@@ -391,9 +433,27 @@ export default defineComponent({
           </ul>
         </div>
 
-        <div class="card rounded-lg overflow-hidden">
-          <div class="px-5 py-4" style="border-bottom: 1px solid var(--border-color)">
-            <h3 class="text-sm font-semibold" style="color: var(--text-primary)">{{ translate.page_associated }}</h3>
+        <div class="card mb-4">
+          <div class="card-header">
+            <div>
+              <div class="card-title">
+                <svg
+                  class="card-icon"
+                  style="color: var(--primary)"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                  ></path>
+                </svg>
+                {{ translate.page_associated }}
+              </div>
+            </div>
           </div>
           <div class="p-5">
             <div class="flex items-start gap-3">

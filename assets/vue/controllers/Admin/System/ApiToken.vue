@@ -211,22 +211,42 @@ export default {
 </script>
 
 <template>
-  <div class="card rounded-lg p-6 mb-4 mt-4">
+  <div class="card mb-4">
     <div v-if="this.loading">
       <skeleton-form />
     </div>
-    <div v-else>
-      <div class="border-b-1 border-b-[var(--border-color)] mb-4">
-        <h2 class="text-lg font-bold text-[var(--text-primary)]">
+    <div class="card-header">
+      <div>
+        <div class="card-title">
+          <svg
+            class="card-icon"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+            style="color: var(--primary)"
+          >
+            <path
+              fill="currentColor"
+              d="M6.94318 11h-.85227l.96023-2.90909h1.07954L9.09091 11h-.85227l-.63637-2.10795h-.02272L6.94318 11Zm-.15909-1.14773h1.60227v.59093H6.78409v-.59093ZM9.37109 11V8.09091h1.25571c.2159 0 .4048.04261.5667.12784.162.08523.2879.20502.3779.35937.0899.15436.1349.33476.1349.5412 0 .20833-.0464.38873-.1392.54119-.0918.15246-.2211.26989-.3878.35229-.1657.0824-.3593.1236-.5809.1236h-.75003v-.61367h.59093c.0928 0 .1719-.0161.2372-.0483.0663-.03314.1169-.08002.152-.14062.036-.06061.054-.13211.054-.21449 0-.08334-.018-.15436-.054-.21307-.0351-.05966-.0857-.10511-.152-.13636-.0653-.0322-.1444-.0483-.2372-.0483h-.2784V11h-.78981Zm3.41481-2.90909V11h-.7898V8.09091h.7898Z"
+            />
+            <path
+              stroke="currentColor"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"
+            />
+          </svg>
           <span v-if="this.apiToken.id === null">
             {{ this.translate.title_add }}
           </span>
           <span v-else>
             {{ this.translate.title_edit }}
           </span>
-        </h2>
-
-        <p class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">
+        </div>
+        <p class="card-subtitle">
           <span v-if="this.apiToken.id === null">
             {{ this.translate.description_add }}
           </span>
@@ -235,7 +255,8 @@ export default {
           </span>
         </p>
       </div>
-
+    </div>
+    <div class="p-5">
       <div class="form-group">
         <label for="api-token-name" class="form-label required">{{ this.translate.title_label }}</label>
         <input
