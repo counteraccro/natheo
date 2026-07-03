@@ -57,6 +57,9 @@ export default defineComponent({
   mounted() {
     this.loadPage();
     this.currentLocale = this.locales.current;
+    this.$nextTick(() => {
+      initFlowbite();
+    });
   },
 
   watch: {
