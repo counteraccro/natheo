@@ -212,22 +212,17 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="card rounded-lg relative overflow-visible mb-5">
-    <div class="px-5 py-4 border-b flex items-center gap-2" style="border-color: var(--border-color)">
-      <svg class="w-4 h-4" style="color: var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M4 6h16M4 10h16M4 14h16M4 18h16"
-        ></path>
-      </svg>
-      <span class="text-sm font-semibold" style="color: var(--text-primary)">{{
-        translate.page_content_form.title
-      }}</span>
+  <div class="card mb-4">
+    <div class="card-header">
+      <div class="card-title">
+        <svg class="card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+        </svg>
+        {{ translate.page_content_form.title }}
+      </div>
     </div>
 
-    <div class="p-4">
+    <div class="p-5">
       <div class="form-group">
         <label for="list-render-page" class="form-label">{{ translate.page_content_form.list_categories_label }}</label>
         <select id="list-render-page" class="form-input" v-model="page.category">
@@ -283,17 +278,19 @@ export default defineComponent({
     </div>
   </div>
 
-  <div class="card rounded-lg relative overflow-visible mb-5">
-    <div class="px-5 py-4 border-b flex items-center gap-2" style="border-color: var(--border-color)">
-      <svg class="w-4 h-4" style="color: var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M5.005 11.19V12l6.998 4.042L19 12v-.81M5 16.15v.81L11.997 21l6.998-4.042v-.81M12.003 3 5.005 7.042l6.998 4.042L19 7.042 12.003 3Z"
-        ></path>
-      </svg>
-      <span class="text-sm font-semibold" style="color: var(--text-primary)">{{ translate.page_content.title }}</span>
+  <div class="card mb-4">
+    <div class="card-header">
+      <div class="card-title">
+        <svg class="card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-width="2"
+            d="M5.005 11.19V12l6.998 4.042L19 12v-.81M5 16.15v.81L11.997 21l6.998-4.042v-.81M12.003 3 5.005 7.042l6.998 4.042L19 7.042 12.003 3Z"
+          />
+        </svg>
+        {{ translate.page_content.title }}
+      </div>
     </div>
     <div class="p-4">bbb</div>
   </div>
