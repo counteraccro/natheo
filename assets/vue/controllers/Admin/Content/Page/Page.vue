@@ -9,10 +9,12 @@ import { Locales, Page, PageData, PageTranslations, Urls } from '@/ts/Page/type'
 import axios from 'axios';
 import PageContent from '@/vue/Components/Page/PageContent.vue';
 import { initFlowbite } from 'flowbite';
+import MediathequeModale from '@/vue/Components/Global/MarkdownEditor/Mediatheque.vue';
 
 export default defineComponent({
   name: 'Page',
   components: {
+    MediathequeModale,
     PageContent,
     SkeletonPageSEO,
     SkeletonPageSave,
@@ -177,6 +179,10 @@ export default defineComponent({
           url: payload.field === 'url' ? payload.value : '',
         });
       }
+    },
+
+    handleUpdateHeaderImg(url: string | null) {
+      this.page.headerImg = url;
     },
 
     handleSectionErrors(payload: {
@@ -403,6 +409,7 @@ export default defineComponent({
           :urls="urls"
           @update-translation="handleUpdatePageTranslation"
           @update:section-errors="handleSectionErrors"
+          @update-header-img="handleUpdateHeaderImg"
         />
       </div>
       <div class="hidden" id="page-seo" role="tabpanel" aria-labelledby="profile-tab2">Seo</div>
@@ -475,6 +482,8 @@ export default defineComponent({
       </button>
     </div>
   </div>
+
+  <MediathequeModale :url-media="urls.load_media" :translate="translate.page_content_form.mediatheque" />
 </template>
 
 <style scoped></style>

@@ -46,6 +46,8 @@ export default defineComponent({
       urlWatchReady: false,
       autoSlugEnabled: {} as Record<string, boolean>,
       isAutoSlugging: false,
+      headerImg: this.page.headerImg ?? (null as string | null),
+      showMediaModal: false,
     };
   },
   mounted() {
@@ -53,7 +55,7 @@ export default defineComponent({
       this.urlWatchReady = true;
     });
   },
-  emits: ['update-translation', 'update:section-errors'],
+  emits: ['update-translation', 'update:section-errors', 'update-header-img'],
   computed: {
     currentAutoSlugEnabled: {
       get(): boolean {
@@ -207,6 +209,24 @@ export default defineComponent({
       this.isAutoSlugging = true;
       this.currentUrl = this.slugify(this.currentTitre);
     },
+
+    openMediaPicker(): void {
+      window.dispatchEvent(
+        new CustomEvent('natheo:open-media', {
+          detail: {
+            onSelect: (media: { url: string }) => {
+              this.headerImg = media.url;
+              this.$emit('update-header-img', media.url);
+            },
+          },
+        })
+      );
+    },
+
+    removeHeaderImg(): void {
+      this.headerImg = null;
+      this.$emit('update-header-img', null);
+    },
   },
 });
 </script>
@@ -223,6 +243,45 @@ export default defineComponent({
     </div>
 
     <div class="p-5">
+      <div class="form-group">
+        <label class="form-label">{{ translate.page_content_form.header_img_title }}</label>
+
+        <div v-if="headerImg" class="relative rounded-lg overflow-hidden mb-3" style="height: 160px">
+          <img :src="headerImg" class="w-full h-full object-cover" alt="" />
+          <div
+            class="absolute inset-0 flex items-center justify-center gap-2 opacity-0 hover:opacity-100 transition-opacity"
+            style="background-color: rgba(0, 0, 0, 0.45)"
+          >
+            <button type="button" class="btn btn-sm btn-primary" @click="openMediaPicker">
+              {{ translate.page_content_form.header_img_change }}
+            </button>
+            <button type="button" class="btn btn-sm btn-danger" @click="removeHeaderImg">
+              {{ translate.page_content_form.header_img_remove }}
+            </button>
+          </div>
+        </div>
+
+        <div v-else>
+          <button
+            type="button"
+            class="w-full flex flex-col items-center justify-center gap-2 py-8 rounded-lg border-2 border-dashed transition-all cursor-pointer"
+            style="border-color: var(--border-dark); color: var(--text-secondary)"
+            @mouseenter="($event.currentTarget as HTMLElement).style.borderColor = 'var(--primary)'"
+            @mouseleave="($event.currentTarget as HTMLElement).style.borderColor = 'var(--border-dark)'"
+            @click="openMediaPicker"
+          >
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2" stroke-width="1.5" />
+              <circle cx="8.5" cy="8.5" r="1.5" stroke-width="1.5" />
+              <polyline points="21 15 16 10 5 21" stroke-width="1.5" />
+            </svg>
+            <span class="text-sm font-medium">{{ translate.page_content_form.header_img_no_img }}</span>
+          </button>
+        </div>
+
+        <div class="form-text">{{ translate.page_content_form.header_img_help }}</div>
+      </div>
+
       <div class="form-group">
         <label for="list-render-page" class="form-label">{{ translate.page_content_form.list_categories_label }}</label>
         <select id="list-render-page" class="form-input" v-model="page.category">
@@ -253,7 +312,21 @@ export default defineComponent({
       <div class="form-group">
         <label class="form-label">{{ translate.page_content_form.input_url_label }}</label>
         <div class="relative">
-          <input type="text" class="form-input" :class="fieldErrors.url ? 'is-invalid' : ''" v-model="currentUrl" />
+          <div class="input-addon-group">
+            <span class="input-addon input-addon-left">
+              <svg class="w-4 h-4 me-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
+                ></path>
+              </svg>
+              {{ pageDatas.list_categories[page.category].toLowerCase() }}/</span
+            >
+            <input type="text" class="form-input" :class="fieldErrors.url ? 'is-invalid' : ''" v-model="currentUrl" />
+          </div>
+
           <svg
             v-if="isCheckingUrl"
             class="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 animate-spin"
@@ -274,6 +347,14 @@ export default defineComponent({
           {{ translate.page_content_form.input_url_info }}
         </div>
         <div v-if="fieldErrors.url" class="form-text text-error">✗ {{ fieldErrors.url }}</div>
+      </div>
+
+      <div class="form-group">
+        <label for="list-render-page" class="form-label">{{ translate.page_content_form.list_render_label }}</label>
+        <select id="list-render-page" class="form-input" v-model="page.render">
+          <option v-for="(value, key) in pageDatas.list_render" :value="parseInt(key)">{{ value }}</option>
+        </select>
+        <div id="list-status-help" class="form-text">{{ translate.page_content_form.list_render_help }}</div>
       </div>
     </div>
   </div>
