@@ -37,7 +37,7 @@ page.page_content_form.input.url.info: "Url d'accès à votre page"
 page.page_content_form.input.titre.label: 'Titre de la page'
 page.page_content_form.input.titre.info: "Texte qui va permettre d'identifier la page"
 page.onglet.history: Historique
-page.msg.auto_save.success: 'Sauvegarde auto réalisée avec succès'
+page.msg.auto_save.success: 'Sauvegarde auto réalisée avec succès à'
 page.page_history.title: 'Historique des modifications'
 page.page_history.description: "Liste de l'ensemble des modifications faite sur cette page "
 page.page_history.empty: 'Aucun historique pour le moment'
@@ -104,10 +104,6 @@ page.page_history.time: Date
 page.page_history.user: Utilisateur
 page.page_history.action: Action
 page.page_history.error: 'Une erreur est survenue lors de la restauration des données'
-page.toast.title.success: 'Succès !'
-page.toast.title.error: 'Erreur !'
-page.toast.time: "A l'instant"
-page.toast.title.auto_save: 'Sauvegarde auto'
 page.tag.auto_complete.empty.result: 'Aucun résultat pour ce tag, cliquez sur "ajouter" pour le créer'
 page.content.type.faq: Faq
 page.content.faq.list: 'Choisir une FAQ parmi la liste'
@@ -182,3 +178,5 @@ page.btn.back: Retour
 page.btn.new: 'Nouvelle page'
 page.page_content_form.input.titre.error: 'Le titre de la page ne peut pas être vide'
 page.page_content.auto_slug.label: "Générer automatiquement l'url"
+page.msg.auto_save.error: "Une erreur est survenue lors de la sauvegarde automatique"
+page.msg.auto_save.run: "En cours de sauvegarde..."
