@@ -53,6 +53,9 @@ export default defineComponent({
         string,
         { hasError: boolean; errorsByLocale: Record<string, Record<string, string>> }
       >,
+      autoSaveTimeout: null as ReturnType<typeof setTimeout> | null,
+      autoSaveStatus: 'idle' as 'idle' | 'saving' | 'saved' | 'error',
+      autoSaveTime: '' as string,
     };
   },
 
@@ -71,6 +74,24 @@ export default defineComponent({
           initFlowbite();
         });
       }
+    },
+    page: {
+      deep: true,
+      handler() {
+        if (this.hasAnyError) {
+          return;
+        }
+
+        if (this.autoSaveTimeout) {
+          clearTimeout(this.autoSaveTimeout);
+        }
+
+        this.autoSaveStatus = 'idle';
+
+        this.autoSaveTimeout = setTimeout(() => {
+          this.autoSave();
+        }, 2000);
+      },
     },
   },
 
@@ -144,6 +165,24 @@ export default defineComponent({
         })
         .finally(() => {
           this.loading = false;
+        });
+    },
+
+    /**
+     * Sauvegarde auto
+     */
+    autoSave() {
+      this.autoSaveStatus = 'saving';
+
+      axios
+        .put(this.urls.auto_save, { page: this.page })
+        .then(() => {
+          this.autoSaveStatus = 'saved';
+          const now = new Date();
+          this.autoSaveTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        })
+        .catch(() => {
+          this.autoSaveStatus = 'error';
         });
     },
 
@@ -432,10 +471,45 @@ export default defineComponent({
     class="fixed right-0 bottom-0 left-0 lg:left-64 z-40 shrink-0 px-4 sm:px-6 py-3 flex items-center justify-between bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]"
   >
     <div class="flex items-center gap-2 flex-1 min-w-0">
-      <p v-if="!hasAnyError" class="text-xs flex items-center gap-2 text-gray-500 dark:text-gray-400 shrink-0">
-        <span class="w-2 h-2 rounded-full inline-block shrink-0 bg-amber-500"></span>
-        Modifications non sauvegardées
-      </p>
+      <template v-if="!hasAnyError">
+        <p
+          v-if="autoSaveStatus === 'saving'"
+          class="text-xs flex items-center gap-2 text-gray-500 dark:text-gray-400 shrink-0"
+        >
+          <svg class="w-3 h-3 animate-spin shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+            />
+          </svg>
+          {{ translate.loading }}
+        </p>
+        <p
+          v-else-if="autoSaveStatus === 'saved'"
+          class="text-xs flex items-center gap-2 shrink-0"
+          style="color: var(--alert-success-text)"
+        >
+          <span
+            class="w-2 h-2 rounded-full inline-block shrink-0"
+            style="background-color: var(--alert-success-text)"
+          ></span>
+          {{ translate.auto_save_success }} {{ autoSaveTime }}
+        </p>
+        <p
+          v-else-if="autoSaveStatus === 'error'"
+          class="text-xs flex items-center gap-2 shrink-0"
+          style="color: var(--alert-danger-text)"
+        >
+          <span class="w-2 h-2 rounded-full inline-block shrink-0" style="background-color: var(--btn-danger)"></span>
+          {{ translate.auto_save_error }}
+        </p>
+        <p v-else class="text-xs flex items-center gap-2 text-gray-500 dark:text-gray-400 shrink-0">
+          <span class="w-2 h-2 rounded-full inline-block shrink-0 bg-amber-500"></span>
+          Modifications non sauvegardées
+        </p>
+      </template>
       <div v-else class="text-xs flex items-center gap-2 min-w-0" style="color: var(--alert-danger-text)">
         <span class="w-2 h-2 rounded-full inline-block shrink-0" style="background-color: var(--btn-danger)"></span>
         <span class="truncate">{{ allErrorMessages[0] }}</span>
