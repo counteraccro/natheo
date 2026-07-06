@@ -10,10 +10,12 @@ import axios from 'axios';
 import PageContent from '@/vue/Components/Page/PageContent.vue';
 import { initFlowbite } from 'flowbite';
 import MediathequeModale from '@/vue/Components/Global/MarkdownEditor/Mediatheque.vue';
+import PageHistory from '@/vue/Components/Page/PageHistory.vue';
 
 export default defineComponent({
   name: 'Page',
   components: {
+    PageHistory,
     MediathequeModale,
     PageContent,
     SkeletonPageSEO,
@@ -56,6 +58,7 @@ export default defineComponent({
       autoSaveTimeout: null as ReturnType<typeof setTimeout> | null,
       autoSaveStatus: 'idle' as 'idle' | 'saving' | 'saved' | 'error',
       autoSaveTime: '' as string,
+      activeTab: 'content' as string,
     };
   },
 
@@ -234,6 +237,14 @@ export default defineComponent({
         errorsByLocale: payload.errorsByLocale,
       };
     },
+
+    /**
+     * Restautation de la page
+     * @param page
+     */
+    handleRestoreHistory(page: Page) {
+      this.page = page;
+    },
   },
 });
 </script>
@@ -333,6 +344,7 @@ export default defineComponent({
             role="tab"
             :aria-controls="translate.onglet_content"
             aria-selected="true"
+            @click="activeTab = 'content'"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
@@ -359,6 +371,7 @@ export default defineComponent({
             role="tab"
             :aria-controls="translate.onglet_seo"
             aria-selected="false"
+            @click="activeTab = 'seo'"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
@@ -380,6 +393,7 @@ export default defineComponent({
             role="tab"
             :aria-controls="translate.onglet_tags"
             aria-selected="false"
+            @click="activeTab = 'tag'"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
@@ -401,6 +415,7 @@ export default defineComponent({
             role="tab"
             :aria-controls="translate.onglet_history"
             aria-selected="false"
+            @click="activeTab = 'history'"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
@@ -422,6 +437,7 @@ export default defineComponent({
             role="tab"
             :aria-controls="translate.onglet_save"
             aria-selected="false"
+            @click="activeTab = 'save'"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
@@ -453,7 +469,15 @@ export default defineComponent({
       </div>
       <div class="hidden" id="page-seo" role="tabpanel" aria-labelledby="profile-tab2">Seo</div>
       <div class="hidden" id="page-tag" role="tabpanel" aria-labelledby="profile-tab3">Tag</div>
-      <div class="hidden" id="page-history" role="tabpanel" aria-labelledby="profile-tab3">History</div>
+      <div class="hidden" id="page-history" role="tabpanel" aria-labelledby="profile-tab3">
+        <PageHistory
+          :id="id"
+          :urls="urls"
+          :translate="translate.page_history"
+          :active="activeTab === 'history'"
+          @restore-history="handleRestoreHistory"
+        />
+      </div>
       <div class="hidden" id="page-save" role="tabpanel" aria-labelledby="profile-tab3">Save</div>
     </div>
   </div>
