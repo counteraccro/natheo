@@ -252,4 +252,10 @@ export interface PageMenuItem {
   id: number;
 }
 
+export interface PageHistoryEntry {
+  id: number;
+  time: string;
+  user: string;
+}
+
 export type PageMenus = Record<string, PageMenuItem>;
