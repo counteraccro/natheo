@@ -12,7 +12,6 @@ namespace App\Tests\Controller\Admin\System;
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Admin\System\OptionSystemService;
 use App\Tests\AppWebTestCase;
-use App\Utils\System\Options\OptionSystemKey;
 
 class OptionSystemControllerTest extends AppWebTestCase
 {

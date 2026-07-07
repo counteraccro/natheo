@@ -21,7 +21,6 @@ use App\Utils\Content\Page\PageConst;
 use App\Utils\Content\Page\PageHistory;
 use App\Utils\Content\Page\PageStatistiqueKey;
 use App\Utils\Content\Tag\TagRender;
-use App\Utils\System\Options\OptionSystemKey;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Tools\Pagination\Paginator;

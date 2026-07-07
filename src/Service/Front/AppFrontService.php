@@ -11,7 +11,6 @@ namespace App\Service\Front;
 
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Enum\Front\Template;
-use App\Utils\System\Options\OptionSystemKey;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\Response;

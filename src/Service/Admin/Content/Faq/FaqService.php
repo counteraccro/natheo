@@ -20,7 +20,6 @@ use App\Utils\Content\Faq\FaqConst;
 use App\Utils\Content\Faq\FaqFactory;
 use App\Utils\Content\Faq\FaqStatistiqueKey;
 use App\Utils\Global\OrderEntity;
-use App\Utils\System\Options\OptionSystemKey;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Exception;
 use Psr\Container\ContainerExceptionInterface;

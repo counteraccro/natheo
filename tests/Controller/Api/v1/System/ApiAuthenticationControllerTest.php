@@ -12,7 +12,6 @@ namespace App\Tests\Controller\Api\v1\System;
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Admin\System\OptionSystemService;
 use App\Tests\Controller\Api\AppApiTestCase;
-use App\Utils\System\Options\OptionSystemKey;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ApiAuthenticationControllerTest extends AppApiTestCase

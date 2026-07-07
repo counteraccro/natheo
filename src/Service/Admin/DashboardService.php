@@ -13,7 +13,6 @@ use App\Entity\Admin\System\ApiToken;
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Repository\Admin\Content\Comment\CommentRepository;
 use App\Utils\System\ApiToken\ApiTokenConst;
-use App\Utils\System\Options\OptionSystemKey;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 

@@ -11,7 +11,6 @@ namespace App\Tests\Helper\Fixtures\System;
 use App\Entity\Admin\System\OptionSystem;
 use App\Enum\Admin\System\Options\OptionSystem as OptionSystemEnum;
 use App\Tests\Helper\FakerTrait;
-use App\Utils\System\Options\OptionSystemKey;
 
 trait OptionSystemFixturesTrait
 {
