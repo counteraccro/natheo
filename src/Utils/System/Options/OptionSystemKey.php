@@ -11,12 +11,6 @@ namespace App\Utils\System\Options;
 class OptionSystemKey
 {
     /**
-     * Path du dossier média
-     * @var string
-     */
-    const string OS_MEDIA_PATH = 'OS_MEDIA_PATH';
-
-    /**
      * URL public d'accès au média
      * @var string
      */

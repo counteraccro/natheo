@@ -112,7 +112,7 @@ class MediaFolderService extends AppAdminService
         $containerBag = $this->getContainerBag();
 
         $this->rootPath = $containerBag->get('kernel.project_dir');
-        $mediaFolder = $optionSystemService->getValueByKey(OptionSystemKey::OS_MEDIA_PATH);
+        $mediaFolder = $optionSystemService->getValueByKey(OptionSystem::OS_MEDIA_PATH->value);
         $rootWebPath = $optionSystemService->getValueByKey(OptionSystemKey::OS_MEDIA_URL);
 
         if ($mediaFolder === null || $mediaFolder === '') {

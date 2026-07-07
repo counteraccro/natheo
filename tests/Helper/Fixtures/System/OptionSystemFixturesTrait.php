@@ -170,7 +170,7 @@ trait OptionSystemFixturesTrait
         $this->createOptionSystem($data);
 
         $data = [
-            'key' => OptionSystemKey::OS_MEDIA_PATH,
+            'key' => OptionSystemEnum::OS_MEDIA_PATH->value,
             'value' => 'natheotheque',
         ];
         $this->createOptionSystem($data);
