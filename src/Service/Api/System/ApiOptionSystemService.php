@@ -38,7 +38,7 @@ class ApiOptionSystemService extends AppApiService
             OptionSystemKey::OS_FRONT_FOOTER_SOCIAL_TIKTOK_URL,
             OptionSystem::OS_FRONT_FOOTER_SOCIAL_LINKEDIN_URL->value,
             OptionSystem::OS_FRONT_FOOTER_SOCIAL_YOUTUBE_URL->value,
-            OptionSystemKey::OS_FRONT_FOOTER_SOCIAL_X_URL,
+            OptionSystem::OS_FRONT_FOOTER_SOCIAL_X_URL->value,
             OptionSystemKey::OS_FRONT_ROBOT_NO_INDEX,
             OptionSystemKey::OS_FRONT_ROBOT_NO_FOLLOW,
         ];

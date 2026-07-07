@@ -200,6 +200,12 @@ enum OptionSystem: string
      */
     case OS_FRONT_FOOTER_SOCIAL_YOUTUBE_URL = 'OS_FRONT_FOOTER_SOCIAL_YOUTUBE_URL';
 
+    /**
+     * Clé option front, url réseau social X
+     * @var string
+     */
+    case OS_FRONT_FOOTER_SOCIAL_X_URL = 'OS_FRONT_FOOTER_SOCIAL_X_URL';
+
     const CONFIG = [
         self::OS_SITE_NAME->value => ['default' => 'Nathéo CMS'],
         self::OS_OPEN_SITE->value => ['default' => '0'],

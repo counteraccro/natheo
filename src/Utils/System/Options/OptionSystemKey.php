@@ -11,12 +11,6 @@ namespace App\Utils\System\Options;
 class OptionSystemKey
 {
     /**
-     * Clé option front, url réseau social X
-     * @var string
-     */
-    const string OS_FRONT_FOOTER_SOCIAL_X_URL = 'OS_FRONT_FOOTER_SOCIAL_X_URL';
-
-    /**
      * Clé option front, url réseau social facebook
      * @var string
      */
