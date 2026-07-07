@@ -25,7 +25,6 @@ use App\Service\Api\Content\ApiMenuService;
 use App\Utils\Api\Content\ApiPageFormater;
 use App\Utils\Content\Page\PageConst;
 use App\Utils\Content\Page\PageStatistiqueKey;
-use App\Utils\System\Options\OptionUserKey;
 use App\Utils\System\User\PersonalData;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Tools\Pagination\Paginator;

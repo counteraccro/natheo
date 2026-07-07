@@ -15,7 +15,6 @@ use App\Repository\Admin\Content\Media\MediaRepository;
 use App\Utils\Content\Media\MediaConst;
 use App\Utils\Content\Media\MediaFolderConst;
 use App\Utils\Content\Media\Thumbnail;
-use App\Utils\System\Options\OptionUserKey;
 use App\Utils\System\User\PersonalData;
 use App\Utils\Utils;
 use Deprecated;

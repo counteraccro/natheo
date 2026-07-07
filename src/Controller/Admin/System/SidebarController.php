@@ -14,7 +14,6 @@ use App\Entity\Admin\System\SidebarElement;
 use App\Enum\Admin\Global\Breadcrumb;
 use App\Enum\Admin\System\Options\OptionUser;
 use App\Service\Admin\System\SidebarElementService;
-use App\Utils\System\Options\OptionUserKey;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;

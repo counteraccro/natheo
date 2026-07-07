@@ -22,7 +22,6 @@ use App\Service\Admin\System\OptionSystemService;
 use App\Service\Admin\System\User\UserDataService;
 use App\Tests\AppWebTestCase;
 use App\Utils\System\Mail\MailKey;
-use App\Utils\System\Options\OptionUserKey;
 use App\Utils\System\User\Anonymous;
 use App\Utils\System\User\UserDataKey;
 use Doctrine\ORM\NonUniqueResultException;

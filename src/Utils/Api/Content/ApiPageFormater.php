@@ -14,7 +14,6 @@ use App\Enum\Admin\System\Options\OptionUser;
 use App\Utils\Content\Page\PageConst;
 use App\Utils\Content\Page\PageStatistiqueKey;
 use App\Utils\Markdown;
-use App\Utils\System\Options\OptionUserKey;
 use App\Utils\System\User\PersonalData;
 use Doctrine\Common\Collections\Collection;
 

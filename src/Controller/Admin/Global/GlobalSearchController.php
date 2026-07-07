@@ -12,7 +12,6 @@ use App\Controller\Admin\AppAdminController;
 use App\Enum\Admin\Global\Breadcrumb;
 use App\Enum\Admin\System\Options\OptionUser;
 use App\Service\Admin\GlobalSearchService;
-use App\Utils\System\Options\OptionUserKey;
 use App\Utils\Translate\GlobalSearchTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;

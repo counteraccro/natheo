@@ -20,7 +20,6 @@ use App\Repository\Admin\Content\Page\PageRepository;
 use App\Service\Api\AppApiService;
 use App\Utils\Content\Page\PageConst;
 use App\Utils\Markdown;
-use App\Utils\System\Options\OptionUserKey;
 use App\Utils\System\User\PersonalData;
 use League\CommonMark\Exception\CommonMarkException;
 use Psr\Container\ContainerExceptionInterface;

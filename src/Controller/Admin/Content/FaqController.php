@@ -18,7 +18,6 @@ use App\Utils\Content\Faq\FaqConst;
 use App\Utils\Content\Faq\FaqFactory;
 use App\Utils\Content\Faq\FaqPopulate;
 use App\Utils\Content\Faq\FaqStatistiqueKey;
-use App\Utils\System\Options\OptionUserKey;
 use App\Utils\Translate\Content\FaqTranslate;
 use App\Utils\Translate\MarkdownEditorTranslate;
 use Exception;

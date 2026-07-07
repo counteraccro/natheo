@@ -12,7 +12,6 @@ use App\Enum\Admin\System\Options\OptionUser as OptionUserEnum;
 use App\Entity\Admin\System\OptionUser;
 use App\Entity\Admin\System\User;
 use App\Tests\Helper\FakerTrait;
-use App\Utils\System\Options\OptionUserKey;
 
 trait OptionUserFixturesTrait
 {
