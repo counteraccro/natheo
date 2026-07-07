@@ -70,7 +70,7 @@ trait OptionUserFixturesTrait
         $this->createOptionUser($user, $data);
 
         $data = [
-            'key' => OptionUserKey::OU_DEFAULT_PERSONAL_DATA_RENDER,
+            'key' => OptionUserEnum::OU_DEFAULT_PERSONAL_DATA_RENDER->value,
             'value' => 'email',
         ];
         $this->createOptionUser($user, $data);

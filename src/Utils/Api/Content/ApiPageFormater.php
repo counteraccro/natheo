@@ -10,6 +10,7 @@ use App\Entity\Admin\Content\Page\PageContent;
 use App\Entity\Admin\Content\Page\PageMeta;
 use App\Entity\Admin\Content\Tag\Tag;
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\System\Options\OptionUser;
 use App\Utils\Content\Page\PageConst;
 use App\Utils\Content\Page\PageStatistiqueKey;
 use App\Utils\Markdown;
@@ -103,7 +104,7 @@ class ApiPageFormater
      */
     private function getAuthor(User $user): string
     {
-        $render = $user->getOptionUserByKey(OptionUserKey::OU_DEFAULT_PERSONAL_DATA_RENDER)->getValue();
+        $render = $user->getOptionUserByKey(OptionUser::OU_DEFAULT_PERSONAL_DATA_RENDER->value)->getValue();
 
         $personalData = new PersonalData($user, $render);
         return $personalData->getPersonalData();

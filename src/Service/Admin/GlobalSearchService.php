@@ -16,6 +16,7 @@ use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\Content\Tag\Tag;
 use App\Entity\Admin\System\User;
 use App\Enum\Admin\System\Options\OptionSystem;
+use App\Enum\Admin\System\Options\OptionUser;
 use App\Utils\Content\Page\PageConst;
 use App\Utils\System\Options\OptionSystemKey;
 use App\Utils\System\Options\OptionUserKey;
@@ -119,7 +120,7 @@ class GlobalSearchService extends AppAdminService
 
         $personalData = new PersonalData(
             $user,
-            $user->getOptionUserByKey(OptionUserKey::OU_DEFAULT_PERSONAL_DATA_RENDER)->getValue(),
+            $user->getOptionUserByKey(OptionUser::OU_DEFAULT_PERSONAL_DATA_RENDER->value)->getValue(),
         );
 
         $label = $this->highlightText($search, $personalData->getPersonalData());
@@ -187,7 +188,7 @@ class GlobalSearchService extends AppAdminService
 
         $personalData = new PersonalData(
             $faq->getUser(),
-            $faq->getUser()->getOptionUserByKey(OptionUserKey::OU_DEFAULT_PERSONAL_DATA_RENDER)->getValue(),
+            $faq->getUser()->getOptionUserByKey(OptionUser::OU_DEFAULT_PERSONAL_DATA_RENDER->value)->getValue(),
         );
 
         $re = '/(\B||\b)((?-i:\w+[^\w\n]+){0,10}' . $search . '(\B||\b)(?-i:[^\w\n]+\w+){0,10})/mu';
@@ -258,7 +259,7 @@ class GlobalSearchService extends AppAdminService
 
         $personalData = new PersonalData(
             $menu->getUser(),
-            $menu->getUser()->getOptionUserByKey(OptionUserKey::OU_DEFAULT_PERSONAL_DATA_RENDER)->getValue(),
+            $menu->getUser()->getOptionUserByKey(OptionUser::OU_DEFAULT_PERSONAL_DATA_RENDER->value)->getValue(),
         );
 
         return [
@@ -306,7 +307,7 @@ class GlobalSearchService extends AppAdminService
         $router = $this->getRouter();
         $personalData = new PersonalData(
             $page->getUser(),
-            $page->getUser()->getOptionUserByKey(OptionUserKey::OU_DEFAULT_PERSONAL_DATA_RENDER)->getValue(),
+            $page->getUser()->getOptionUserByKey(OptionUser::OU_DEFAULT_PERSONAL_DATA_RENDER->value)->getValue(),
         );
 
         $url = $this->getOptionSystemService()->getValueByKey(OptionSystem::OS_ADRESSE_SITE->value);

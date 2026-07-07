@@ -294,7 +294,7 @@ class PageController extends AppAdminController
                 if ($meta->getName() === PageMeta::AUTHOR->value) {
                     $personalData = new PersonalData(
                         $this->getUser(),
-                        $this->optionUserService->getValueByKey(OptionUserKey::OU_DEFAULT_PERSONAL_DATA_RENDER),
+                        $this->optionUserService->getValueByKey(OptionUser::OU_DEFAULT_PERSONAL_DATA_RENDER->value),
                     );
                     $value = $personalData->getPersonalData();
                 }

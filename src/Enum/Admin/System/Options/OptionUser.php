@@ -29,6 +29,12 @@ enum OptionUser: string
      */
     case OU_NB_ELEMENT = 'OU_NB_ELEMENT';
 
+    /**
+     * Clé option pour l'affichage des données personnelles
+     * @var string
+     */
+    case OU_DEFAULT_PERSONAL_DATA_RENDER = 'OU_DEFAULT_PERSONAL_DATA_RENDER';
+
     const CONFIG = [];
 
     /**

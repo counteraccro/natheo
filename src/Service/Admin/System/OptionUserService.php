@@ -56,7 +56,7 @@ class OptionUserService extends AppAdminService
         }
 
         $options = [
-            OptionUserKey::OU_DEFAULT_PERSONAL_DATA_RENDER => 'email',
+            OptionUserEnum::OU_DEFAULT_PERSONAL_DATA_RENDER->value => 'email',
         ];
         foreach ($options as $key => $value) {
             $optionUser = new OptionUser();
