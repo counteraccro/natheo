@@ -206,6 +206,12 @@ enum OptionSystem: string
      */
     case OS_FRONT_FOOTER_SOCIAL_X_URL = 'OS_FRONT_FOOTER_SOCIAL_X_URL';
 
+    /**
+     * Clé option front, url réseau social facebook
+     * @var string
+     */
+    case OS_FRONT_FOOTER_SOCIAL_FACEBOOK_URL = 'OS_FRONT_FOOTER_SOCIAL_FACEBOOK_URL';
+
     const CONFIG = [
         self::OS_SITE_NAME->value => ['default' => 'Nathéo CMS'],
         self::OS_OPEN_SITE->value => ['default' => '0'],
