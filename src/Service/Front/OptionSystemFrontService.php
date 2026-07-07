@@ -41,7 +41,7 @@ class OptionSystemFrontService extends AppFrontService
     public function getMetaRobots($format = false): array
     {
         $optionSystemService = $this->getOptionSystemService();
-        $robotNoFollow = $optionSystemService->getValueByKey(OptionSystemKey::OS_FRONT_ROBOT_NO_FOLLOW);
+        $robotNoFollow = $optionSystemService->getValueByKey(OptionSystem::OS_FRONT_ROBOT_NO_FOLLOW->value);
         $robotNoIndex = $optionSystemService->getValueByKey(OptionSystem::OS_FRONT_ROBOT_NO_INDEX->value);
 
         if ($format) {
@@ -56,7 +56,7 @@ class OptionSystemFrontService extends AppFrontService
         }
 
         return [
-            OptionSystemKey::OS_FRONT_ROBOT_NO_FOLLOW => $robotNoFollow,
+            OptionSystem::OS_FRONT_ROBOT_NO_FOLLOW->value => $robotNoFollow,
             OptionSystem::OS_FRONT_ROBOT_NO_INDEX->value => $robotNoIndex,
         ];
     }

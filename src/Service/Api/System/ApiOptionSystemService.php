@@ -40,7 +40,7 @@ class ApiOptionSystemService extends AppApiService
             OptionSystem::OS_FRONT_FOOTER_SOCIAL_YOUTUBE_URL->value,
             OptionSystem::OS_FRONT_FOOTER_SOCIAL_X_URL->value,
             OptionSystem::OS_FRONT_ROBOT_NO_INDEX->value,
-            OptionSystemKey::OS_FRONT_ROBOT_NO_FOLLOW,
+            OptionSystem::OS_FRONT_ROBOT_NO_FOLLOW->value,
         ];
     }
 
