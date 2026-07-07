@@ -761,7 +761,7 @@ class UserController extends AppAdminController
     public function updateUserdata(Request $request, UserDataService $userDataService): Response
     {
         $data = json_decode($request->getContent(), true);
-        $userDataService->update($data['key'], $data['value'], $this->getUser());
+        $userDataService->update($data['key'], strval($data['value']), $this->getUser());
         return $this->json($userDataService->getResponseAjax());
     }
 }
