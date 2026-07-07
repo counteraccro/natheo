@@ -11,12 +11,6 @@ namespace App\Utils\System\Options;
 class OptionSystemKey
 {
     /**
-     * Temps de validité du token user
-     * @var string
-     */
-    const string OS_API_TIME_VALIDATE_USER_TOKEN = 'OS_API_TIME_VALIDATE_USER_TOKEN';
-
-    /**
      * Ouverture des commentaires
      * @var string
      */

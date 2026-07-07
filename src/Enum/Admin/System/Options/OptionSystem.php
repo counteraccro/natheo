@@ -152,6 +152,12 @@ enum OptionSystem: string
      */
     case OS_MEDIA_URL = 'OS_MEDIA_URL';
 
+    /**
+     * Temps de validité du token user
+     * @var string
+     */
+    case OS_API_TIME_VALIDATE_USER_TOKEN = 'OS_API_TIME_VALIDATE_USER_TOKEN';
+
     const CONFIG = [
         self::OS_SITE_NAME->value => ['default' => 'Nathéo CMS'],
         self::OS_OPEN_SITE->value => ['default' => '0'],

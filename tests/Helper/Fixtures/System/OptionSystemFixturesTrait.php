@@ -182,7 +182,7 @@ trait OptionSystemFixturesTrait
         $this->createOptionSystem($data);
 
         $data = [
-            'key' => OptionSystemKey::OS_API_TIME_VALIDATE_USER_TOKEN,
+            'key' => OptionSystemEnum::OS_API_TIME_VALIDATE_USER_TOKEN->value,
             'value' => '60',
         ];
         $this->createOptionSystem($data);
