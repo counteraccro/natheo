@@ -107,3 +107,6 @@ option_system:
     OS_FRONT_ROBOT_NO_FOLLOW:
         key: 'OS_FRONT_ROBOT_NO_FOLLOW'
         value: '0'
+    OS_THEME_SITE:
+        key: 'OS_THEME_SITE'
+        value: 'purple'
