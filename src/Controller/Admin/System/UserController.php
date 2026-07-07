@@ -15,6 +15,7 @@ use App\Entity\Admin\System\User;
 use App\Enum\Admin\Global\Breadcrumb;
 use App\Enum\Admin\Global\Notification\Notification;
 use App\Enum\Admin\System\Options\OptionSystem;
+use App\Enum\Admin\System\Options\OptionUser;
 use App\Form\Admin\User\MyAccountType;
 use App\Form\Admin\User\UserAddType;
 use App\Form\Admin\User\UserType;
@@ -77,7 +78,7 @@ class UserController extends AppAdminController
         return $this->render('admin/system/user/index.html.twig', [
             'breadcrumb' => $breadcrumb,
             'page' => 1,
-            'limit' => $this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT),
+            'limit' => $this->optionUserService->getValueByKey(OptionUser::OU_NB_ELEMENT->value),
         ]);
     }
 

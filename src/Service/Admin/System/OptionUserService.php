@@ -44,7 +44,7 @@ class OptionUserService extends AppAdminService
 
         $options = [
             OptionSystemEnum::OS_DEFAULT_LANGUAGE->value => OptionUserEnum::OU_DEFAULT_LANGUAGE->value,
-            OptionSystemEnum::OS_NB_ELEMENT->value => OptionUserKey::OU_NB_ELEMENT,
+            OptionSystemEnum::OS_NB_ELEMENT->value => OptionUserEnum::OU_NB_ELEMENT->value,
         ];
 
         foreach ($options as $optionSystemKey => $optionUserKey) {

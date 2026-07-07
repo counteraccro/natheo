@@ -11,6 +11,7 @@ namespace App\Controller\Admin\System;
 
 use App\Controller\Admin\AppAdminController;
 use App\Enum\Admin\Global\Breadcrumb;
+use App\Enum\Admin\System\Options\OptionUser;
 use App\Service\LoggerService;
 use App\Utils\System\Options\OptionUserKey;
 use App\Utils\Translate\System\LogTranslate;
@@ -40,7 +41,7 @@ class LogController extends AppAdminController
 
         return $this->render('admin/system/log/index.html.twig', [
             'breadcrumb' => $breadcrumb,
-            'limit' => $this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT),
+            'limit' => $this->optionUserService->getValueByKey(OptionUser::OU_NB_ELEMENT->value),
         ]);
     }
 

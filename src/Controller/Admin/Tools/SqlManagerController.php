@@ -12,6 +12,7 @@ namespace App\Controller\Admin\Tools;
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\Tools\SqlManager;
 use App\Enum\Admin\Global\Breadcrumb;
+use App\Enum\Admin\System\Options\OptionUser;
 use App\Service\Admin\Tools\SqlManagerService;
 use App\Utils\Global\Database\DataBase;
 use App\Utils\System\Options\OptionUserKey;
@@ -50,7 +51,7 @@ class SqlManagerController extends AppAdminController
         return $this->render('admin/tools/sql_manager/index.html.twig', [
             'breadcrumb' => $breadcrumb,
             'page' => 1,
-            'limit' => $this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT),
+            'limit' => $this->optionUserService->getValueByKey(OptionUser::OU_NB_ELEMENT->value),
         ]);
     }
 

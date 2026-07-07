@@ -15,6 +15,7 @@ use App\Entity\Admin\Content\Menu\MenuElement;
 use App\Enum\Admin\Content\Menu\MenuLinkTarget;
 use App\Enum\Admin\Global\Breadcrumb;
 use App\Enum\Admin\System\Options\OptionSystem;
+use App\Enum\Admin\System\Options\OptionUser;
 use App\Service\Admin\Content\Menu\MenuService;
 use App\Service\Admin\Content\Page\PageService;
 use App\Service\Admin\System\OptionSystemService;
@@ -59,7 +60,7 @@ class MenuController extends AppAdminController
         return $this->render('admin/content/menu/index.html.twig', [
             'breadcrumb' => $breadcrumb,
             'page' => 1,
-            'limit' => $this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT),
+            'limit' => $this->optionUserService->getValueByKey(OptionUser::OU_NB_ELEMENT->value),
             'errorDefault' => $errorDefault,
         ]);
     }

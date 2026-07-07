@@ -8,6 +8,7 @@ declare(strict_types=1);
  */
 namespace App\Tests\Controller\Admin\System;
 
+use App\Enum\Admin\System\Options\OptionUser as OptionUserEnum;
 use App\Entity\Admin\Notification;
 use App\Entity\Admin\System\Mail;
 use App\Entity\Admin\System\OptionUser;
@@ -76,7 +77,7 @@ class UserControllerTest extends AppWebTestCase
         $this->client->loginUser($user, 'admin');
 
         $parameters = [
-            'key' => OptionUserKey::OU_NB_ELEMENT,
+            'key' => OptionUserEnum::OU_NB_ELEMENT->value,
             'value' => 50,
         ];
         $this->client->request(
@@ -90,7 +91,7 @@ class UserControllerTest extends AppWebTestCase
 
         /** @var OptionUserRepository $repo */
         $repo = $this->em->getRepository(OptionUser::class);
-        $optionUser = $repo->findBy(['key' => OptionUserKey::OU_NB_ELEMENT, 'user' => $user->getId()]);
+        $optionUser = $repo->findBy(['key' => OptionUserEnum::OU_NB_ELEMENT->value, 'user' => $user->getId()]);
         $this->assertEquals(50, $optionUser[0]->getValue());
     }
 

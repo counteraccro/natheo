@@ -11,12 +11,6 @@ namespace App\Utils\System\Options;
 class OptionUserKey
 {
     /**
-     * Clé option nb éléments pour les users
-     * @var string
-     */
-    const OU_NB_ELEMENT = 'OU_NB_ELEMENT';
-
-    /**
      * Clé option pour l'affichage des données personnelles
      * @var string
      */

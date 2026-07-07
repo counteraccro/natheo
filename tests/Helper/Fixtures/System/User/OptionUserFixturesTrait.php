@@ -64,7 +64,7 @@ trait OptionUserFixturesTrait
         $this->createOptionUser($user, $data);
 
         $data = [
-            'key' => OptionUserKey::OU_NB_ELEMENT,
+            'key' => OptionUserEnum::OU_NB_ELEMENT->value,
             'value' => '20',
         ];
         $this->createOptionUser($user, $data);
