@@ -15,9 +15,7 @@ use App\Repository\Admin\Content\Media\MediaRepository;
 use App\Utils\Content\Media\MediaConst;
 use App\Utils\Content\Media\MediaFolderConst;
 use App\Utils\Content\Media\Thumbnail;
-use App\Utils\System\User\PersonalData;
 use App\Utils\Utils;
-use Deprecated;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -29,6 +27,7 @@ class MediaService extends MediaFolderService
      * Pour les fixtures, déplace un média du dossier fixture vers le dossier média
      * @param string $file
      * @param Media $media
+     * @param string|null $copyFileName
      * @return void
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
