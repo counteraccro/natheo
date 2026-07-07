@@ -11,18 +11,6 @@ namespace App\Utils\System\Options;
 class OptionSystemKey
 {
     /**
-     * Clé option front, url réseau social GITHUB
-     * @var string
-     */
-    const string OS_FRONT_FOOTER_SOCIAL_GITHUB_URL = 'OS_FRONT_FOOTER_SOCIAL_GITHUB_URL';
-
-    /**
-     * Clé option front, url réseau social Linkedin
-     * @var string
-     */
-    const string OS_FRONT_FOOTER_SOCIAL_LINKEDIN_URL = 'OS_FRONT_FOOTER_SOCIAL_LINKEDIN_URL';
-
-    /**
      * Clé option front, url réseau social Youtube
      * @var string
      */

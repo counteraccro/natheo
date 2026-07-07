@@ -182,6 +182,18 @@ enum OptionSystem: string
      */
     case OS_FRONT_FOOTER_TEXTE = 'OS_FRONT_FOOTER_TEXTE';
 
+    /**
+     * Clé option front, url réseau social GITHUB
+     * @var string
+     */
+    case OS_FRONT_FOOTER_SOCIAL_GITHUB_URL = 'OS_FRONT_FOOTER_SOCIAL_GITHUB_URL';
+
+    /**
+     * Clé option front, url réseau social Linkedin
+     * @var string
+     */
+    case OS_FRONT_FOOTER_SOCIAL_LINKEDIN_URL = 'OS_FRONT_FOOTER_SOCIAL_LINKEDIN_URL';
+
     const CONFIG = [
         self::OS_SITE_NAME->value => ['default' => 'Nathéo CMS'],
         self::OS_OPEN_SITE->value => ['default' => '0'],
