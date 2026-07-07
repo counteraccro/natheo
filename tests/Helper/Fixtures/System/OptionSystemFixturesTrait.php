@@ -164,7 +164,7 @@ trait OptionSystemFixturesTrait
         $this->createOptionSystem($data);
 
         $data = [
-            'key' => OptionSystemKey::OS_MEDIA_CREATE_PHYSICAL_FOLDER,
+            'key' => OptionSystemEnum::OS_MEDIA_CREATE_PHYSICAL_FOLDER->value,
             'value' => '1',
         ];
         $this->createOptionSystem($data);

@@ -11,6 +11,7 @@ namespace App\Service\Admin\Content\Media;
 
 use App\Entity\Admin\Content\Media\Media;
 use App\Entity\Admin\Content\Media\MediaFolder;
+use App\Enum\Admin\System\Options\OptionSystem;
 use App\Repository\Admin\Content\Media\MediaFolderRepository;
 use App\Repository\Admin\Content\Media\MediaRepository;
 use App\Service\Admin\AppAdminService;
@@ -135,7 +136,7 @@ class MediaFolderService extends AppAdminService
         $this->webPathThumbnail = $rootWebPath . MediaFolderConst::PATH_WEB_THUMBNAILS;
 
         $optCanCreatePhysicalFolder = $optionSystemService->getValueByKey(
-            OptionSystemKey::OS_MEDIA_CREATE_PHYSICAL_FOLDER,
+            OptionSystem::OS_MEDIA_CREATE_PHYSICAL_FOLDER->value,
         );
 
         if ($optCanCreatePhysicalFolder !== null && $optCanCreatePhysicalFolder !== '') {

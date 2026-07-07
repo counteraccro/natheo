@@ -134,6 +134,12 @@ enum OptionSystem: string
      */
     case OS_MAIL_RESET_PASSWORD_TIME = 'OS_MAIL_RESET_PASSWORD_TIME';
 
+    /**
+     * Défini si on créé des dossiers physiques ou non pour la médiathèque
+     * @var string
+     */
+    case OS_MEDIA_CREATE_PHYSICAL_FOLDER = 'OS_MEDIA_CREATE_PHYSICAL_FOLDER';
+
     const CONFIG = [
         self::OS_SITE_NAME->value => ['default' => 'Nathéo CMS'],
         self::OS_OPEN_SITE->value => ['default' => '0'],

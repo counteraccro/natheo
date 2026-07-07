@@ -11,12 +11,6 @@ namespace App\Utils\System\Options;
 class OptionSystemKey
 {
     /**
-     * Défini si on créé des dossiers physiques ou non pour la médiathèque
-     * @var string
-     */
-    const string OS_MEDIA_CREATE_PHYSICAL_FOLDER = 'OS_MEDIA_CREATE_PHYSICAL_FOLDER';
-
-    /**
      * Path du dossier média
      * @var string
      */
