@@ -30,7 +30,7 @@ class ApiOptionSystemService extends AppApiService
             OptionSystem::OS_FRONT_SCRIPT_END_BODY->value,
             OptionSystem::OS_OPEN_COMMENT->value,
             OptionSystem::OS_ADRESSE_SITE->value,
-            OptionSystemKey::OS_THEME_FRONT_SITE,
+            OptionSystem::OS_THEME_FRONT_SITE->value,
             OptionSystemKey::OS_FRONT_FOOTER_TEXTE,
             OptionSystemKey::OS_FRONT_FOOTER_SOCIAL_FACEBOOK_URL,
             OptionSystemKey::OS_FRONT_FOOTER_SOCIAL_INSTAGRAM_URL,

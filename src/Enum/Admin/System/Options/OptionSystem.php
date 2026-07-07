@@ -170,6 +170,12 @@ enum OptionSystem: string
      */
     case OS_NEW_COMMENT_WAIT_VALIDATION = 'OS_NEW_COMMENT_WAIT_VALIDATION';
 
+    /**
+     * Clé option theme du front site
+     * @var string
+     */
+    case OS_THEME_FRONT_SITE = 'OS_THEME_FRONT_SITE';
+
     const CONFIG = [
         self::OS_SITE_NAME->value => ['default' => 'Nathéo CMS'],
         self::OS_OPEN_SITE->value => ['default' => '0'],

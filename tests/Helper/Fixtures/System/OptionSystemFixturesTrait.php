@@ -205,7 +205,7 @@ trait OptionSystemFixturesTrait
         $this->createOptionSystem($data);
 
         $data = [
-            'key' => OptionSystemKey::OS_THEME_FRONT_SITE,
+            'key' => OptionSystemEnum::OS_THEME_FRONT_SITE->value,
             'value' => 'natheo_horizon',
         ];
         $this->createOptionSystem($data);

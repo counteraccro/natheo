@@ -11,12 +11,6 @@ namespace App\Utils\System\Options;
 class OptionSystemKey
 {
     /**
-     * Clé option theme du front site
-     * @var string
-     */
-    const string OS_THEME_FRONT_SITE = 'OS_THEME_FRONT_SITE';
-
-    /**
      * Clé option front, texte en bas du footer
      * @var string
      */
