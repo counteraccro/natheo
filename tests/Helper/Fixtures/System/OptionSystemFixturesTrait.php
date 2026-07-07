@@ -188,7 +188,7 @@ trait OptionSystemFixturesTrait
         $this->createOptionSystem($data);
 
         $data = [
-            'key' => OptionSystemKey::OS_OPEN_COMMENT,
+            'key' => OptionSystemEnum::OS_OPEN_COMMENT->value,
             'value' => '1',
         ];
         $this->createOptionSystem($data);

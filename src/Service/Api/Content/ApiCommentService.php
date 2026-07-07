@@ -17,6 +17,7 @@ use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\System\User;
 use App\Enum\Admin\Comment\Status;
 use App\Enum\Admin\Global\Notification\Notification;
+use App\Enum\Admin\System\Options\OptionSystem;
 use App\Repository\Admin\Content\Comment\CommentRepository;
 use App\Repository\Admin\Content\Page\PageRepository;
 use App\Service\Api\AppApiService;
@@ -114,7 +115,7 @@ class ApiCommentService extends AppApiService
             );
         }
 
-        $isOpen = boolval($this->getOptionSystemService()->getValueByKey(OptionSystemKey::OS_OPEN_COMMENT));
+        $isOpen = boolval($this->getOptionSystemService()->getValueByKey(OptionSystem::OS_OPEN_COMMENT->value));
 
         if (!$page->isOpenComment() || !$isOpen) {
             throw new HttpException(

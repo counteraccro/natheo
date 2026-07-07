@@ -11,12 +11,6 @@ namespace App\Utils\System\Options;
 class OptionSystemKey
 {
     /**
-     * Ouverture des commentaires
-     * @var string
-     */
-    const string OS_OPEN_COMMENT = 'OS_OPEN_COMMENT';
-
-    /**
      * Mettre le status des nouveaux commentaires en attente de validation
      * @var string
      */

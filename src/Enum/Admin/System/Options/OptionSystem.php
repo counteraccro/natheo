@@ -158,6 +158,12 @@ enum OptionSystem: string
      */
     case OS_API_TIME_VALIDATE_USER_TOKEN = 'OS_API_TIME_VALIDATE_USER_TOKEN';
 
+    /**
+     * Ouverture des commentaires
+     * @var string
+     */
+    case OS_OPEN_COMMENT = 'OS_OPEN_COMMENT';
+
     const CONFIG = [
         self::OS_SITE_NAME->value => ['default' => 'Nathéo CMS'],
         self::OS_OPEN_SITE->value => ['default' => '0'],

@@ -14,6 +14,7 @@ use App\Entity\Admin\Content\Comment\Comment;
 use App\Entity\Admin\Content\Page\Page;
 use App\Enum\Admin\Comment\Status;
 use App\Enum\Admin\Global\Breadcrumb;
+use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Admin\Content\Comment\CommentService;
 use App\Service\Admin\Content\Page\PageService;
 use App\Service\Admin\System\OptionSystemService;
@@ -59,7 +60,7 @@ class CommentController extends AppAdminController
             'breadcrumb' => $breadcrumb,
             'page' => 1,
             'limit' => $this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT),
-            'isOpenComment' => $optionSystemService->getValueByKey(OptionSystemKey::OS_OPEN_COMMENT),
+            'isOpenComment' => $optionSystemService->getValueByKey(OptionSystem::OS_OPEN_COMMENT->value),
             'isModerate' => $optionSystemService->getValueByKey(OptionSystemKey::OS_NEW_COMMENT_WAIT_VALIDATION),
             'nbCommentWaitValidation' => $commentService->getNbCommentByStatus(Status::WAIT_VALIDATION->value),
         ]);
