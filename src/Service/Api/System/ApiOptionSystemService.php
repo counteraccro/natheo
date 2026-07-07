@@ -33,13 +33,13 @@ class ApiOptionSystemService extends AppApiService
             OptionSystem::OS_THEME_FRONT_SITE->value,
             OptionSystem::OS_FRONT_FOOTER_TEXTE->value,
             OptionSystem::OS_FRONT_FOOTER_SOCIAL_FACEBOOK_URL->value,
-            OptionSystemKey::OS_FRONT_FOOTER_SOCIAL_INSTAGRAM_URL,
+            OptionSystem::OS_FRONT_FOOTER_SOCIAL_INSTAGRAM_URL->value,
             OptionSystem::OS_FRONT_FOOTER_SOCIAL_GITHUB_URL->value,
-            OptionSystemKey::OS_FRONT_FOOTER_SOCIAL_TIKTOK_URL,
+            OptionSystem::OS_FRONT_FOOTER_SOCIAL_TIKTOK_URL->value,
             OptionSystem::OS_FRONT_FOOTER_SOCIAL_LINKEDIN_URL->value,
             OptionSystem::OS_FRONT_FOOTER_SOCIAL_YOUTUBE_URL->value,
             OptionSystem::OS_FRONT_FOOTER_SOCIAL_X_URL->value,
-            OptionSystemKey::OS_FRONT_ROBOT_NO_INDEX,
+            OptionSystem::OS_FRONT_ROBOT_NO_INDEX->value,
             OptionSystemKey::OS_FRONT_ROBOT_NO_FOLLOW,
         ];
     }

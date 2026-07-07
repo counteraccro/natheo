@@ -212,6 +212,23 @@ enum OptionSystem: string
      */
     case OS_FRONT_FOOTER_SOCIAL_FACEBOOK_URL = 'OS_FRONT_FOOTER_SOCIAL_FACEBOOK_URL';
 
+    /**
+     * Clé option front, url réseau social instagram
+     * @var string
+     */
+    case OS_FRONT_FOOTER_SOCIAL_INSTAGRAM_URL = 'OS_FRONT_FOOTER_SOCIAL_INSTAGRAM_URL';
+
+    /**
+     * Clé option front, url réseau social tiktok
+     * @var string
+     */
+    case OS_FRONT_FOOTER_SOCIAL_TIKTOK_URL = 'OS_FRONT_FOOTER_SOCIAL_TIKTOK_URL';
+
+    /**
+     * Clé option front, pas d'indexation pour les robots
+     */
+    case OS_FRONT_ROBOT_NO_INDEX = 'OS_FRONT_ROBOT_NO_INDEX';
+
     const CONFIG = [
         self::OS_SITE_NAME->value => ['default' => 'Nathéo CMS'],
         self::OS_OPEN_SITE->value => ['default' => '0'],

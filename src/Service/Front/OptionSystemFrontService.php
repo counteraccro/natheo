@@ -42,7 +42,7 @@ class OptionSystemFrontService extends AppFrontService
     {
         $optionSystemService = $this->getOptionSystemService();
         $robotNoFollow = $optionSystemService->getValueByKey(OptionSystemKey::OS_FRONT_ROBOT_NO_FOLLOW);
-        $robotNoIndex = $optionSystemService->getValueByKey(OptionSystemKey::OS_FRONT_ROBOT_NO_INDEX);
+        $robotNoIndex = $optionSystemService->getValueByKey(OptionSystem::OS_FRONT_ROBOT_NO_INDEX->value);
 
         if ($format) {
             $return = [];
@@ -57,7 +57,7 @@ class OptionSystemFrontService extends AppFrontService
 
         return [
             OptionSystemKey::OS_FRONT_ROBOT_NO_FOLLOW => $robotNoFollow,
-            OptionSystemKey::OS_FRONT_ROBOT_NO_INDEX => $robotNoIndex,
+            OptionSystem::OS_FRONT_ROBOT_NO_INDEX->value => $robotNoIndex,
         ];
     }
 }
