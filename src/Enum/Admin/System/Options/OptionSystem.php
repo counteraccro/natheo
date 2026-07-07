@@ -164,6 +164,12 @@ enum OptionSystem: string
      */
     case OS_OPEN_COMMENT = 'OS_OPEN_COMMENT';
 
+    /**
+     * Mettre le status des nouveaux commentaires en attente de validation
+     * @var string
+     */
+    case OS_NEW_COMMENT_WAIT_VALIDATION = 'OS_NEW_COMMENT_WAIT_VALIDATION';
+
     const CONFIG = [
         self::OS_SITE_NAME->value => ['default' => 'Nathéo CMS'],
         self::OS_OPEN_SITE->value => ['default' => '0'],

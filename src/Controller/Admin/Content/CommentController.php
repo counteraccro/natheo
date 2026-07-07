@@ -61,7 +61,7 @@ class CommentController extends AppAdminController
             'page' => 1,
             'limit' => $this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT),
             'isOpenComment' => $optionSystemService->getValueByKey(OptionSystem::OS_OPEN_COMMENT->value),
-            'isModerate' => $optionSystemService->getValueByKey(OptionSystemKey::OS_NEW_COMMENT_WAIT_VALIDATION),
+            'isModerate' => $optionSystemService->getValueByKey(OptionSystem::OS_NEW_COMMENT_WAIT_VALIDATION->value),
             'nbCommentWaitValidation' => $commentService->getNbCommentByStatus(Status::WAIT_VALIDATION->value),
         ]);
     }

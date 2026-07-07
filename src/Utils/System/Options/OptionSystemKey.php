@@ -11,12 +11,6 @@ namespace App\Utils\System\Options;
 class OptionSystemKey
 {
     /**
-     * Mettre le status des nouveaux commentaires en attente de validation
-     * @var string
-     */
-    const string OS_NEW_COMMENT_WAIT_VALIDATION = 'OS_NEW_COMMENT_WAIT_VALIDATION';
-
-    /**
      * Clé option theme du front site
      * @var string
      */

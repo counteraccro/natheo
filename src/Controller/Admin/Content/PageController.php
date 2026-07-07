@@ -238,7 +238,7 @@ class PageController extends AppAdminController
                 'options_commentaire' => [
                     'open' => $optionSystemService->getValueByKey(OptionSystem::OS_OPEN_COMMENT->value),
                     'new_comment' => $optionSystemService->getValueByKey(
-                        OptionSystemKey::OS_NEW_COMMENT_WAIT_VALIDATION,
+                        OptionSystem::OS_NEW_COMMENT_WAIT_VALIDATION->value,
                     ),
                 ],
             ],

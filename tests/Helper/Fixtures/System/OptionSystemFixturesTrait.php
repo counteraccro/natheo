@@ -194,7 +194,7 @@ trait OptionSystemFixturesTrait
         $this->createOptionSystem($data);
 
         $data = [
-            'key' => OptionSystemKey::OS_NEW_COMMENT_WAIT_VALIDATION,
+            'key' => OptionSystemEnum::OS_NEW_COMMENT_WAIT_VALIDATION->value,
             'value' => '1',
         ];
 
