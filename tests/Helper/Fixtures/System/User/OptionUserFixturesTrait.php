@@ -52,7 +52,7 @@ trait OptionUserFixturesTrait
     public function generateDefaultOptionUser(User $user): void
     {
         $data = [
-            'key' => OptionUserKey::OU_THEME_SITE,
+            'key' => OptionUserEnum::OU_THEME_SITE->value,
             'value' => 'purple',
         ];
         $this->createOptionUser($user, $data);

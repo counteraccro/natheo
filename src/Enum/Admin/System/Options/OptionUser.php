@@ -17,6 +17,12 @@ enum OptionUser: string
      */
     case OU_DEFAULT_LANGUAGE = 'OU_DEFAULT_LANGUAGE';
 
+    /**
+     * Clé option theme du site pour le user
+     * @var string
+     */
+    case OU_THEME_SITE = 'OU_THEME_SITE';
+
     const CONFIG = [];
 
     /**

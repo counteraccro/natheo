@@ -7,7 +7,7 @@
     {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
     {% block stylesheets %}
 
-        {%set theme = get_option_user_value_by_key(constant('App\\Utils\\System\\Options\\OptionUserKey::OU_THEME_SITE')) %}
+        {%set theme = get_option_user_value_by_key(ou_theme_site) %}
         {{ vite_entry_link_tags('admin_css') }}
     {% endblock %}
 

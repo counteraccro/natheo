@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\EventListener;
 
 use App\Enum\Admin\System\Options\OptionSystem;
+use App\Enum\Admin\System\Options\OptionUser;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Twig\Environment;
 
@@ -18,5 +19,6 @@ class TwigGlobalListener
         $this->twig->addGlobal('os_confirm_leave_form', OptionSystem::OS_CONFIRM_LEAVE_FORM->value);
         $this->twig->addGlobal('os_adresse_site', OptionSystem::OS_ADRESSE_SITE->value);
         $this->twig->addGlobal('os_notification', OptionSystem::OS_NOTIFICATION->value);
+        $this->twig->addGlobal('ou_theme_site', OptionUser::OU_THEME_SITE->value);
     }
 }

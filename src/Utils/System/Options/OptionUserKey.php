@@ -11,12 +11,6 @@ namespace App\Utils\System\Options;
 class OptionUserKey
 {
     /**
-     * Clé option theme du site pour le user
-     * @var string
-     */
-    const OU_THEME_SITE = 'OU_THEME_SITE';
-
-    /**
      * Clé option nb éléments pour les users
      * @var string
      */
