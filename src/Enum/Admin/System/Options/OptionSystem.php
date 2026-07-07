@@ -146,6 +146,12 @@ enum OptionSystem: string
      */
     case OS_MEDIA_PATH = 'OS_MEDIA_PATH';
 
+    /**
+     * URL public d'accès au média
+     * @var string
+     */
+    case OS_MEDIA_URL = 'OS_MEDIA_URL';
+
     const CONFIG = [
         self::OS_SITE_NAME->value => ['default' => 'Nathéo CMS'],
         self::OS_OPEN_SITE->value => ['default' => '0'],

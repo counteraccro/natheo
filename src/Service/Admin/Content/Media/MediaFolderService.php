@@ -113,7 +113,7 @@ class MediaFolderService extends AppAdminService
 
         $this->rootPath = $containerBag->get('kernel.project_dir');
         $mediaFolder = $optionSystemService->getValueByKey(OptionSystem::OS_MEDIA_PATH->value);
-        $rootWebPath = $optionSystemService->getValueByKey(OptionSystemKey::OS_MEDIA_URL);
+        $rootWebPath = $optionSystemService->getValueByKey(OptionSystem::OS_MEDIA_URL->value);
 
         if ($mediaFolder === null || $mediaFolder === '') {
             $mediaFolder = MediaFolderConst::NAME_DEFAULT_FOLDER_MEDIATHEQUE;

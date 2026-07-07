@@ -11,12 +11,6 @@ namespace App\Utils\System\Options;
 class OptionSystemKey
 {
     /**
-     * URL public d'accès au média
-     * @var string
-     */
-    const string OS_MEDIA_URL = 'OS_MEDIA_URL';
-
-    /**
      * Temps de validité du token user
      * @var string
      */
