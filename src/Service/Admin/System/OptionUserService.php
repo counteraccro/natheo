@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace App\Service\Admin\System;
 
+use App\Enum\Admin\System\Options\OptionUser as OptionUserEnum;
 use App\Enum\Admin\System\Options\OptionSystem as OptionSystemEnum;
 use App\Entity\Admin\System\OptionSystem;
 use App\Entity\Admin\System\OptionUser;
@@ -42,7 +43,7 @@ class OptionUserService extends AppAdminService
         $optionSystemService = $this->getOptionSystemService();
 
         $options = [
-            OptionSystemEnum::OS_DEFAULT_LANGUAGE->value => OptionUserKey::OU_DEFAULT_LANGUAGE,
+            OptionSystemEnum::OS_DEFAULT_LANGUAGE->value => OptionUserEnum::OU_DEFAULT_LANGUAGE->value,
             OptionSystemEnum::OS_NB_ELEMENT->value => OptionUserKey::OU_NB_ELEMENT,
         ];
 

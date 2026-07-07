@@ -11,12 +11,6 @@ namespace App\Utils\System\Options;
 class OptionUserKey
 {
     /**
-     * Clé option langue pour le user
-     * @var string
-     */
-    const OU_DEFAULT_LANGUAGE = 'OU_DEFAULT_LANGUAGE';
-
-    /**
      * Clé option theme du site pour le user
      * @var string
      */

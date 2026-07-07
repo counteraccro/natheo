@@ -8,6 +8,7 @@ declare(strict_types=1);
  */
 namespace App\Tests\Helper\Fixtures\System\User;
 
+use App\Enum\Admin\System\Options\OptionUser as OptionUserEnum;
 use App\Entity\Admin\System\OptionUser;
 use App\Entity\Admin\System\User;
 use App\Tests\Helper\FakerTrait;
@@ -57,7 +58,7 @@ trait OptionUserFixturesTrait
         $this->createOptionUser($user, $data);
 
         $data = [
-            'key' => OptionUserKey::OU_DEFAULT_LANGUAGE,
+            'key' => OptionUserEnum::OU_DEFAULT_LANGUAGE->value,
             'value' => 'fr',
         ];
         $this->createOptionUser($user, $data);

@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace App\EventSubscriber;
 
 use App\Enum\Admin\System\Options\OptionSystem;
+use App\Enum\Admin\System\Options\OptionUser;
 use App\Service\Admin\System\OptionSystemService;
 use App\Service\Admin\System\OptionUserService;
 use App\Utils\Global\Database\DataBase;
@@ -87,7 +88,7 @@ class LocaleSubscriber implements EventSubscriberInterface
         }
 
         if ($this->security->isGranted('ROLE_USER')) {
-            $locales = $this->optionUserService->getValueByKey(OptionUserKey::OU_DEFAULT_LANGUAGE);
+            $locales = $this->optionUserService->getValueByKey(OptionUser::OU_DEFAULT_LANGUAGE->value);
         } else {
             $locales = $this->optionSystemService->getValueByKey(OptionSystem::OS_DEFAULT_LANGUAGE->value);
         }
