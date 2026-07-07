@@ -176,6 +176,12 @@ enum OptionSystem: string
      */
     case OS_THEME_FRONT_SITE = 'OS_THEME_FRONT_SITE';
 
+    /**
+     * Clé option front, texte en bas du footer
+     * @var string
+     */
+    case OS_FRONT_FOOTER_TEXTE = 'OS_FRONT_FOOTER_TEXTE';
+
     const CONFIG = [
         self::OS_SITE_NAME->value => ['default' => 'Nathéo CMS'],
         self::OS_OPEN_SITE->value => ['default' => '0'],

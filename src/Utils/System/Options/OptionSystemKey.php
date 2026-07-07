@@ -11,12 +11,6 @@ namespace App\Utils\System\Options;
 class OptionSystemKey
 {
     /**
-     * Clé option front, texte en bas du footer
-     * @var string
-     */
-    const string OS_FRONT_FOOTER_TEXTE = 'OS_FRONT_FOOTER_TEXTE';
-
-    /**
      * Clé option front, url réseau social GITHUB
      * @var string
      */
