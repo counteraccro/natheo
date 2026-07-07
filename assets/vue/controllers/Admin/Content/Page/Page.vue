@@ -11,10 +11,13 @@ import PageContent from '@/vue/Components/Page/PageContent.vue';
 import { initFlowbite } from 'flowbite';
 import MediathequeModale from '@/vue/Components/Global/MarkdownEditor/Mediatheque.vue';
 import PageHistory from '@/vue/Components/Page/PageHistory.vue';
+import Toast from '@/vue/Components/Global/Toast.vue';
+import { Toasts } from '@/ts/Toast/type';
 
 export default defineComponent({
   name: 'Page',
   components: {
+    Toast,
     PageHistory,
     MediathequeModale,
     PageContent,
@@ -59,6 +62,16 @@ export default defineComponent({
       autoSaveStatus: 'idle' as 'idle' | 'saving' | 'saved' | 'error',
       autoSaveTime: '' as string,
       activeTab: 'content' as string,
+      toasts: {
+        success: {
+          show: false,
+          msg: '',
+        },
+        error: {
+          show: false,
+          msg: '',
+        },
+      } as Toasts,
     };
   },
 
@@ -242,8 +255,13 @@ export default defineComponent({
      * Restautation de la page
      * @param page
      */
-    handleRestoreHistory(page: Page) {
+    handleRestoreHistory(page: Page, msg: string) {
       this.page = page;
+      this.toasts.success.show = true;
+      this.toasts.success.msg = msg;
+      setTimeout(() => {
+        this.toasts.success.show = false;
+      }, 3000);
     },
   },
 });
@@ -487,8 +505,6 @@ export default defineComponent({
   ---
   <SkeletonPageTag />
   ---
-  <SkeletonPageHistory />
-  ---
   <SkeletonPageSave />
 
   <div
@@ -582,6 +598,20 @@ export default defineComponent({
   </div>
 
   <MediathequeModale :url-media="urls.load_media" :translate="translate.page_content_form.mediatheque" />
+
+  <div class="toast-container position-fixed top-0 end-0 p-2">
+    <toast :id="'toastSuccess'" :type="'success'" :show="toasts.success.show" @close-toast="closeToast('success')">
+      <template #body>
+        <div v-html="toasts.success.msg"></div>
+      </template>
+    </toast>
+
+    <toast :id="'toastError'" :type="'danger'" :show="toasts.error.show" @close-toast="closeToast('error')">
+      <template #body>
+        <div v-html="toasts.error.msg"></div>
+      </template>
+    </toast>
+  </div>
 </template>
 
 <style scoped></style>
