@@ -261,6 +261,7 @@ class PageTranslate extends AppTranslate
             'user' => $this->translator->trans('page.page_history.user', domain: 'page'),
             'action' => $this->translator->trans('page.page_history.action', domain: 'page'),
             'reload' => $this->translator->trans('page.page_history.reload', domain: 'page'),
+            'load_more' => $this->translator->trans('page.page_history.load_more', domain: 'page'),
         ];
     }
 
