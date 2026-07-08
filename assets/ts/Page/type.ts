@@ -32,6 +32,7 @@ export interface PageHistoryTranslate {
   user: string;
   action: string;
   reload: string;
+  load_more: string;
 }
 
 export interface PageSaveTranslate {
