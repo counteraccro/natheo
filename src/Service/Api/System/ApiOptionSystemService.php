@@ -9,8 +9,8 @@ declare(strict_types=1);
 
 namespace App\Service\Api\System;
 
+use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Api\AppApiService;
-use App\Utils\System\Options\OptionSystemKey;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
@@ -23,23 +23,23 @@ class ApiOptionSystemService extends AppApiService
     public function getWhiteListeOptionSystem(): array
     {
         return [
-            OptionSystemKey::OS_SITE_NAME,
-            OptionSystemKey::OS_FRONT_SCRIPT_TOP,
-            OptionSystemKey::OS_FRONT_SCRIPT_START_BODY,
-            OptionSystemKey::OS_FRONT_SCRIPT_END_BODY,
-            OptionSystemKey::OS_OPEN_COMMENT,
-            OptionSystemKey::OS_ADRESSE_SITE,
-            OptionSystemKey::OS_THEME_FRONT_SITE,
-            OptionSystemKey::OS_FRONT_FOOTER_TEXTE,
-            OptionSystemKey::OS_FRONT_FOOTER_SOCIAL_FACEBOOK_URL,
-            OptionSystemKey::OS_FRONT_FOOTER_SOCIAL_INSTAGRAM_URL,
-            OptionSystemKey::OS_FRONT_FOOTER_SOCIAL_GITHUB_URL,
-            OptionSystemKey::OS_FRONT_FOOTER_SOCIAL_TIKTOK_URL,
-            OptionSystemKey::OS_FRONT_FOOTER_SOCIAL_LINKEDIN_URL,
-            OptionSystemKey::OS_FRONT_FOOTER_SOCIAL_YOUTUBE_URL,
-            OptionSystemKey::OS_FRONT_FOOTER_SOCIAL_X_URL,
-            OptionSystemKey::OS_FRONT_ROBOT_NO_INDEX,
-            OptionSystemKey::OS_FRONT_ROBOT_NO_FOLLOW,
+            OptionSystem::OS_SITE_NAME->value,
+            OptionSystem::OS_FRONT_SCRIPT_TOP->value,
+            OptionSystem::OS_FRONT_SCRIPT_START_BODY->value,
+            OptionSystem::OS_FRONT_SCRIPT_END_BODY->value,
+            OptionSystem::OS_OPEN_COMMENT->value,
+            OptionSystem::OS_ADRESSE_SITE->value,
+            OptionSystem::OS_THEME_FRONT_SITE->value,
+            OptionSystem::OS_FRONT_FOOTER_TEXTE->value,
+            OptionSystem::OS_FRONT_FOOTER_SOCIAL_FACEBOOK_URL->value,
+            OptionSystem::OS_FRONT_FOOTER_SOCIAL_INSTAGRAM_URL->value,
+            OptionSystem::OS_FRONT_FOOTER_SOCIAL_GITHUB_URL->value,
+            OptionSystem::OS_FRONT_FOOTER_SOCIAL_TIKTOK_URL->value,
+            OptionSystem::OS_FRONT_FOOTER_SOCIAL_LINKEDIN_URL->value,
+            OptionSystem::OS_FRONT_FOOTER_SOCIAL_YOUTUBE_URL->value,
+            OptionSystem::OS_FRONT_FOOTER_SOCIAL_X_URL->value,
+            OptionSystem::OS_FRONT_ROBOT_NO_INDEX->value,
+            OptionSystem::OS_FRONT_ROBOT_NO_FOLLOW->value,
         ];
     }
 

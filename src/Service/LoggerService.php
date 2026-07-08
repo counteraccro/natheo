@@ -11,11 +11,11 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\System\Options\OptionSystem;
+use App\Enum\Admin\System\Options\OptionUser;
 use App\Service\Admin\GridService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Service\Admin\System\OptionUserService;
-use App\Utils\System\Options\OptionSystemKey;
-use App\Utils\System\Options\OptionUserKey;
 use App\Utils\Utils;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -408,8 +408,8 @@ class LoggerService extends AppService
     private function switchDefaultLocale(string $typeOption = 'user'): void
     {
         $locale = match ($typeOption) {
-            'user' => $this->optionUserService->getValueByKey(OptionUserKey::OU_DEFAULT_LANGUAGE, false),
-            default => $this->optionSystemService->getValueByKey(OptionSystemKey::OS_DEFAULT_LANGUAGE),
+            'user' => $this->optionUserService->getValueByKey(OptionUser::OU_DEFAULT_LANGUAGE->value, false),
+            default => $this->optionSystemService->getValueByKey(OptionSystem::OS_DEFAULT_LANGUAGE->value),
         };
         $this->localeAware->setLocale($locale);
     }

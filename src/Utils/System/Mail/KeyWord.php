@@ -10,8 +10,8 @@ declare(strict_types=1);
 namespace App\Utils\System\Mail;
 
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Admin\System\OptionSystemService;
-use App\Utils\System\Options\OptionSystemKey;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -162,8 +162,8 @@ class KeyWord
      */
     private function getGlobalKeyWord(User $user, OptionSystemService $optionSystemService): array
     {
-        $url = $optionSystemService->getValueByKey(OptionSystemKey::OS_ADRESSE_SITE);
-        $siteName = $optionSystemService->getValueByKey(OptionSystemKey::OS_SITE_NAME);
+        $url = $optionSystemService->getValueByKey(OptionSystem::OS_ADRESSE_SITE->value);
+        $siteName = $optionSystemService->getValueByKey(OptionSystem::OS_SITE_NAME->value);
 
         return [
             '[[' . self::USER_LOGIN . ']]' => $user->getLogin(),
@@ -215,7 +215,7 @@ class KeyWord
         string $urlChangePassword,
         OptionSystemService $optionSystemService,
     ): array {
-        $url = $optionSystemService->getValueByKey(OptionSystemKey::OS_ADRESSE_SITE);
+        $url = $optionSystemService->getValueByKey(OptionSystem::OS_ADRESSE_SITE->value);
 
         $tab = $this->getGlobalKeyWord($user, $optionSystemService);
         $tab2 = [
@@ -331,8 +331,8 @@ class KeyWord
         string $urlPath,
         OptionSystemService $optionSystemService,
     ): array {
-        $url = $optionSystemService->getValueByKey(OptionSystemKey::OS_ADRESSE_SITE);
-        $minutes = $optionSystemService->getValueByKey(OptionSystemKey::OS_MAIL_RESET_PASSWORD_TIME);
+        $url = $optionSystemService->getValueByKey(OptionSystem::OS_ADRESSE_SITE->value);
+        $minutes = $optionSystemService->getValueByKey(OptionSystem::OS_MAIL_RESET_PASSWORD_TIME->value);
 
         $tab = $this->getGlobalKeyWord($user, $optionSystemService);
         $tab2 = [

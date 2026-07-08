@@ -17,6 +17,8 @@ use App\Enum\Admin\Content\Page\PageMeta;
 use App\Enum\Admin\Content\Page\PageRender;
 use App\Enum\Admin\Content\Page\PageStatus;
 use App\Enum\Admin\Global\Breadcrumb;
+use App\Enum\Admin\System\Options\OptionSystem;
+use App\Enum\Admin\System\Options\OptionUser;
 use App\Service\Admin\Content\Comment\CommentService;
 use App\Service\Admin\Content\Menu\MenuService;
 use App\Service\Admin\Content\Page\PageService;
@@ -27,8 +29,6 @@ use App\Utils\Content\Page\PageConst;
 use App\Utils\Content\Page\PageFactory;
 use App\Utils\Content\Page\PageHistory;
 use App\Utils\Content\Page\PagePopulate;
-use App\Utils\System\Options\OptionSystemKey;
-use App\Utils\System\Options\OptionUserKey;
 use App\Utils\System\User\PersonalData;
 use App\Utils\Translate\Content\PageTranslate;
 use App\Utils\Translate\MarkdownEditorTranslate;
@@ -66,7 +66,7 @@ class PageController extends AppAdminController
         return $this->render('admin/content/page/index.html.twig', [
             'breadcrumb' => $breadcrumb,
             'page' => 1,
-            'limit' => $this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT),
+            'limit' => $this->optionUserService->getValueByKey(OptionUser::OU_NB_ELEMENT->value),
         ]);
     }
 
@@ -243,11 +243,11 @@ class PageController extends AppAdminController
                 'list_content' => $pageService->getAllContent(),
                 'list_categories' => $pageService->getAllCategories(),
                 'list_comments_status' => $commentService->getAllStatus(),
-                'url_front' => $optionSystemService->getValueByKey(OptionSystemKey::OS_ADRESSE_SITE),
+                'url_front' => $optionSystemService->getValueByKey(OptionSystem::OS_ADRESSE_SITE->value),
                 'options_commentaire' => [
-                    'open' => $optionSystemService->getValueByKey(OptionSystemKey::OS_OPEN_COMMENT),
+                    'open' => $optionSystemService->getValueByKey(OptionSystem::OS_OPEN_COMMENT->value),
                     'new_comment' => $optionSystemService->getValueByKey(
-                        OptionSystemKey::OS_NEW_COMMENT_WAIT_VALIDATION,
+                        OptionSystem::OS_NEW_COMMENT_WAIT_VALIDATION->value,
                     ),
                 ],
             ],
@@ -304,12 +304,12 @@ class PageController extends AppAdminController
                 if ($meta->getName() === PageMeta::AUTHOR->value) {
                     $personalData = new PersonalData(
                         $this->getUser(),
-                        $this->optionUserService->getValueByKey(OptionUserKey::OU_DEFAULT_PERSONAL_DATA_RENDER),
+                        $this->optionUserService->getValueByKey(OptionUser::OU_DEFAULT_PERSONAL_DATA_RENDER->value),
                     );
                     $value = $personalData->getPersonalData();
                 }
                 if ($meta->getName() === PageMeta::COPYRIGHT->value) {
-                    $value = $optionSystemService->getValueByKey(OptionSystemKey::OS_SITE_NAME) . ' ' . date('Y');
+                    $value = $optionSystemService->getValueByKey(OptionSystem::OS_SITE_NAME->value) . ' ' . date('Y');
                 }
 
                 if ($value !== null) {
@@ -634,9 +634,9 @@ class PageController extends AppAdminController
             }
         }
 
-        $siteName = $optionSystemService->getValueByKey(OptionSystemKey::OS_SITE_NAME);
-        $url = $optionSystemService->getValueByKey(OptionSystemKey::OS_ADRESSE_SITE);
-        $logo = $optionSystemService->getValueByKey(OptionSystemKey::OS_LOGO_SITE);
+        $siteName = $optionSystemService->getValueByKey(OptionSystem::OS_SITE_NAME->value);
+        $url = $optionSystemService->getValueByKey(OptionSystem::OS_ADRESSE_SITE->value);
+        $logo = $optionSystemService->getValueByKey(OptionSystem::OS_LOGO_SITE->value);
 
         return $this->render('admin/content/page/preview.html.twig', [
             'datas' => [

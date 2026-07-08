@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace App\Utils\Content\Page;
 
 use App\Entity\Admin\System\User;
-use App\Utils\System\Options\OptionUserKey;
+use App\Enum\Admin\System\Options\OptionUser;
 use App\Utils\System\User\PersonalData;
 use App\Utils\Utils;
 use PhpCsFixer\Finder;
@@ -122,7 +122,7 @@ class PageHistory
 
         $personalData = new PersonalData(
             $this->user,
-            $this->user->getOptionUserByKey(OptionUserKey::OU_DEFAULT_PERSONAL_DATA_RENDER)->getValue(),
+            $this->user->getOptionUserByKey(OptionUser::OU_DEFAULT_PERSONAL_DATA_RENDER->value)->getValue(),
         );
 
         $data = ['time' => time(), 'user' => $personalData->getPersonalData(), 'pageH' => $page];

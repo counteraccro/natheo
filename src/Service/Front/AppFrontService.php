@@ -9,8 +9,8 @@ declare(strict_types=1);
 
 namespace App\Service\Front;
 
+use App\Enum\Admin\System\Options\OptionSystem;
 use App\Enum\Front\Template;
-use App\Utils\System\Options\OptionSystemKey;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,7 +28,7 @@ class AppFrontService extends AppFrontHandlerService
     {
         $translator = $this->getTranslator();
         $optionSystemService = $this->getOptionSystemService();
-        $template = $optionSystemService->getValueByKey(OptionSystemKey::OS_THEME_FRONT_SITE);
+        $template = $optionSystemService->getValueByKey(OptionSystem::OS_THEME_FRONT_SITE->value);
 
         if (!in_array($template, Template::toArray())) {
             throw new HttpException(
@@ -49,7 +49,7 @@ class AppFrontService extends AppFrontHandlerService
     {
         $translator = $this->getTranslator();
         $optionSystemService = $this->getOptionSystemService();
-        $template = $optionSystemService->getValueByKey(OptionSystemKey::OS_THEME_FRONT_SITE);
+        $template = $optionSystemService->getValueByKey(OptionSystem::OS_THEME_FRONT_SITE->value);
 
         if (!in_array($template, Template::toArray())) {
             throw new HttpException(

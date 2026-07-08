@@ -9,9 +9,9 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller\Api\v1\System;
 
+use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Admin\System\OptionSystemService;
 use App\Tests\Controller\Api\AppApiTestCase;
-use App\Utils\System\Options\OptionSystemKey;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ApiAuthenticationControllerTest extends AppApiTestCase
@@ -160,7 +160,7 @@ class ApiAuthenticationControllerTest extends AppApiTestCase
     {
         $translator = $this->container->get(TranslatorInterface::class);
         $optionSystemService = $this->container->get(OptionSystemService::class);
-        $optionSystemService->saveValueByKee(OptionSystemKey::OS_OPEN_SITE, '0');
+        $optionSystemService->saveValueByKee(OptionSystem::OS_OPEN_SITE->value, '0');
 
         $this->client->request(
             'GET',

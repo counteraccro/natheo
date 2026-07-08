@@ -12,6 +12,7 @@ namespace App\Service\Admin\Content\Faq;
 use App\Entity\Admin\Content\Faq\Faq;
 use App\Entity\Admin\Content\Faq\FaqCategory;
 use App\Entity\Admin\Content\Faq\FaqQuestion;
+use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
 use App\Service\Admin\System\OptionSystemService;
@@ -19,7 +20,6 @@ use App\Utils\Content\Faq\FaqConst;
 use App\Utils\Content\Faq\FaqFactory;
 use App\Utils\Content\Faq\FaqStatistiqueKey;
 use App\Utils\Global\OrderEntity;
-use App\Utils\System\Options\OptionSystemKey;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Exception;
 use Psr\Container\ContainerExceptionInterface;
@@ -62,7 +62,7 @@ class FaqService extends AppAdminService
 
             $optionSystemService = $this->getOptionSystemService();
 
-            $locale = $optionSystemService->getValueByKey(OptionSystemKey::OS_DEFAULT_LANGUAGE);
+            $locale = $optionSystemService->getValueByKey(OptionSystem::OS_DEFAULT_LANGUAGE->value);
             if ($requestStack->getCurrentRequest() !== null) {
                 $locale = $requestStack->getCurrentRequest()->getLocale();
             }
@@ -126,7 +126,7 @@ class FaqService extends AppAdminService
         $translator = $this->getTranslator();
         $optionSystemService = $this->getOptionSystemService();
 
-        $locale = $optionSystemService->getValueByKey(OptionSystemKey::OS_DEFAULT_LANGUAGE);
+        $locale = $optionSystemService->getValueByKey(OptionSystem::OS_DEFAULT_LANGUAGE->value);
         if ($requestStack->getCurrentRequest() !== null) {
             $locale = $requestStack->getCurrentRequest()->getLocale();
         }

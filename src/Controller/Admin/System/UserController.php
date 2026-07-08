@@ -14,6 +14,8 @@ use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\System\User;
 use App\Enum\Admin\Global\Breadcrumb;
 use App\Enum\Admin\Global\Notification\Notification;
+use App\Enum\Admin\System\Options\OptionSystem;
+use App\Enum\Admin\System\Options\OptionUser;
 use App\Form\Admin\User\MyAccountType;
 use App\Form\Admin\User\UserAddType;
 use App\Form\Admin\User\UserType;
@@ -27,8 +29,6 @@ use App\Service\LoggerService;
 use App\Utils\Flash\FlashKey;
 use App\Utils\System\Mail\KeyWord;
 use App\Utils\System\Mail\MailKey;
-use App\Utils\System\Options\OptionSystemKey;
-use App\Utils\System\Options\OptionUserKey;
 use App\Utils\System\User\Role;
 use App\Utils\System\User\UserDataKey;
 use App\Utils\Translate\System\UserTranslate;
@@ -76,7 +76,7 @@ class UserController extends AppAdminController
         return $this->render('admin/system/user/index.html.twig', [
             'breadcrumb' => $breadcrumb,
             'page' => 1,
-            'limit' => $this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT),
+            'limit' => $this->optionUserService->getValueByKey(OptionUser::OU_NB_ELEMENT->value),
         ]);
     }
 
@@ -196,8 +196,8 @@ class UserController extends AppAdminController
             ]);
         }
 
-        $canDelete = $optionSystemService->getValueByKey(OptionSystemKey::OS_ALLOW_DELETE_DATA);
-        $canReplace = $optionSystemService->getValueByKey(OptionSystemKey::OS_REPLACE_DELETE_USER);
+        $canDelete = $optionSystemService->getValueByKey(OptionSystem::OS_ALLOW_DELETE_DATA->value);
+        $canReplace = $optionSystemService->getValueByKey(OptionSystem::OS_REPLACE_DELETE_USER->value);
 
         $msg = $msg_error = null;
         if ($canDelete === '1') {
@@ -356,8 +356,8 @@ class UserController extends AppAdminController
             );
         }
 
-        $canDelete = $optionSystemService->getValueByKey(OptionSystemKey::OS_ALLOW_DELETE_DATA);
-        $canReplace = $optionSystemService->getValueByKey(OptionSystemKey::OS_REPLACE_DELETE_USER);
+        $canDelete = $optionSystemService->getValueByKey(OptionSystem::OS_ALLOW_DELETE_DATA->value);
+        $canReplace = $optionSystemService->getValueByKey(OptionSystem::OS_REPLACE_DELETE_USER->value);
 
         return $this->render('admin/system/user/my_account.html.twig', [
             'breadcrumb' => $breadcrumb,
@@ -761,7 +761,7 @@ class UserController extends AppAdminController
     public function updateUserdata(Request $request, UserDataService $userDataService): Response
     {
         $data = json_decode($request->getContent(), true);
-        $userDataService->update($data['key'], $data['value'], $this->getUser());
+        $userDataService->update($data['key'], strval($data['value']), $this->getUser());
         return $this->json($userDataService->getResponseAjax());
     }
 }

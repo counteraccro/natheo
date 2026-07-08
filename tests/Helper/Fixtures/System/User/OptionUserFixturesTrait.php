@@ -8,10 +8,10 @@ declare(strict_types=1);
  */
 namespace App\Tests\Helper\Fixtures\System\User;
 
+use App\Enum\Admin\System\Options\OptionUser as OptionUserEnum;
 use App\Entity\Admin\System\OptionUser;
 use App\Entity\Admin\System\User;
 use App\Tests\Helper\FakerTrait;
-use App\Utils\System\Options\OptionUserKey;
 
 trait OptionUserFixturesTrait
 {
@@ -51,25 +51,25 @@ trait OptionUserFixturesTrait
     public function generateDefaultOptionUser(User $user): void
     {
         $data = [
-            'key' => OptionUserKey::OU_THEME_SITE,
+            'key' => OptionUserEnum::OU_THEME_SITE->value,
             'value' => 'purple',
         ];
         $this->createOptionUser($user, $data);
 
         $data = [
-            'key' => OptionUserKey::OU_DEFAULT_LANGUAGE,
+            'key' => OptionUserEnum::OU_DEFAULT_LANGUAGE->value,
             'value' => 'fr',
         ];
         $this->createOptionUser($user, $data);
 
         $data = [
-            'key' => OptionUserKey::OU_NB_ELEMENT,
+            'key' => OptionUserEnum::OU_NB_ELEMENT->value,
             'value' => '20',
         ];
         $this->createOptionUser($user, $data);
 
         $data = [
-            'key' => OptionUserKey::OU_DEFAULT_PERSONAL_DATA_RENDER,
+            'key' => OptionUserEnum::OU_DEFAULT_PERSONAL_DATA_RENDER->value,
             'value' => 'email',
         ];
         $this->createOptionUser($user, $data);

@@ -10,8 +10,8 @@ namespace App\Controller\Admin\Global;
 
 use App\Controller\Admin\AppAdminController;
 use App\Enum\Admin\Global\Breadcrumb;
+use App\Enum\Admin\System\Options\OptionUser;
 use App\Service\Admin\GlobalSearchService;
-use App\Utils\System\Options\OptionUserKey;
 use App\Utils\Translate\GlobalSearchTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -51,7 +51,7 @@ class GlobalSearchController extends AppAdminController
                 'listingPage' => $this->generateUrl('admin_page_index'),
                 'searchPage' => $this->generateUrl('admin_search_global'),
             ],
-            'limit' => intval($this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT)),
+            'limit' => intval($this->optionUserService->getValueByKey(OptionUser::OU_NB_ELEMENT->value)),
             'page' => 1,
         ]);
     }

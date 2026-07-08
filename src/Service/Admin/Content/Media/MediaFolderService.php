@@ -11,6 +11,7 @@ namespace App\Service\Admin\Content\Media;
 
 use App\Entity\Admin\Content\Media\Media;
 use App\Entity\Admin\Content\Media\MediaFolder;
+use App\Enum\Admin\System\Options\OptionSystem;
 use App\Repository\Admin\Content\Media\MediaFolderRepository;
 use App\Repository\Admin\Content\Media\MediaRepository;
 use App\Service\Admin\AppAdminService;
@@ -18,7 +19,6 @@ use App\Service\Admin\GridService;
 use App\Service\Admin\MarkdownEditorService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Utils\Content\Media\MediaFolderConst;
-use App\Utils\System\Options\OptionSystemKey;
 use App\Utils\Utils;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
@@ -111,8 +111,8 @@ class MediaFolderService extends AppAdminService
         $containerBag = $this->getContainerBag();
 
         $this->rootPath = $containerBag->get('kernel.project_dir');
-        $mediaFolder = $optionSystemService->getValueByKey(OptionSystemKey::OS_MEDIA_PATH);
-        $rootWebPath = $optionSystemService->getValueByKey(OptionSystemKey::OS_MEDIA_URL);
+        $mediaFolder = $optionSystemService->getValueByKey(OptionSystem::OS_MEDIA_PATH->value);
+        $rootWebPath = $optionSystemService->getValueByKey(OptionSystem::OS_MEDIA_URL->value);
 
         if ($mediaFolder === null || $mediaFolder === '') {
             $mediaFolder = MediaFolderConst::NAME_DEFAULT_FOLDER_MEDIATHEQUE;
@@ -135,7 +135,7 @@ class MediaFolderService extends AppAdminService
         $this->webPathThumbnail = $rootWebPath . MediaFolderConst::PATH_WEB_THUMBNAILS;
 
         $optCanCreatePhysicalFolder = $optionSystemService->getValueByKey(
-            OptionSystemKey::OS_MEDIA_CREATE_PHYSICAL_FOLDER,
+            OptionSystem::OS_MEDIA_CREATE_PHYSICAL_FOLDER->value,
         );
 
         if ($optCanCreatePhysicalFolder !== null && $optCanCreatePhysicalFolder !== '') {

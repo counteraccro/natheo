@@ -10,12 +10,12 @@ declare(strict_types=1);
 
 namespace App\Service\Admin\System;
 
+use App\Enum\Admin\System\Options\OptionUser as OptionUserEnum;
+use App\Enum\Admin\System\Options\OptionSystem as OptionSystemEnum;
 use App\Entity\Admin\System\OptionSystem;
 use App\Entity\Admin\System\OptionUser;
 use App\Entity\Admin\System\User;
 use App\Service\Admin\AppAdminService;
-use App\Utils\System\Options\OptionSystemKey;
-use App\Utils\System\Options\OptionUserKey;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\Yaml\Yaml;
@@ -41,8 +41,8 @@ class OptionUserService extends AppAdminService
         $optionSystemService = $this->getOptionSystemService();
 
         $options = [
-            OptionSystemKey::OS_DEFAULT_LANGUAGE => OptionUserKey::OU_DEFAULT_LANGUAGE,
-            OptionSystemKey::OS_NB_ELEMENT => OptionUserKey::OU_NB_ELEMENT,
+            OptionSystemEnum::OS_DEFAULT_LANGUAGE->value => OptionUserEnum::OU_DEFAULT_LANGUAGE->value,
+            OptionSystemEnum::OS_NB_ELEMENT->value => OptionUserEnum::OU_NB_ELEMENT->value,
         ];
 
         foreach ($options as $optionSystemKey => $optionUserKey) {
@@ -54,7 +54,7 @@ class OptionUserService extends AppAdminService
         }
 
         $options = [
-            OptionUserKey::OU_DEFAULT_PERSONAL_DATA_RENDER => 'email',
+            OptionUserEnum::OU_DEFAULT_PERSONAL_DATA_RENDER->value => 'email',
         ];
         foreach ($options as $key => $value) {
             $optionUser = new OptionUser();

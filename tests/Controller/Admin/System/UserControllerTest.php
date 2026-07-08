@@ -8,10 +8,12 @@ declare(strict_types=1);
  */
 namespace App\Tests\Controller\Admin\System;
 
+use App\Enum\Admin\System\Options\OptionUser as OptionUserEnum;
 use App\Entity\Admin\Notification;
 use App\Entity\Admin\System\Mail;
 use App\Entity\Admin\System\OptionUser;
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\System\Options\OptionSystem;
 use App\Repository\Admin\NotificationRepository;
 use App\Repository\Admin\System\OptionUserRepository;
 use App\Repository\Admin\System\UserRepository;
@@ -20,8 +22,6 @@ use App\Service\Admin\System\OptionSystemService;
 use App\Service\Admin\System\User\UserDataService;
 use App\Tests\AppWebTestCase;
 use App\Utils\System\Mail\MailKey;
-use App\Utils\System\Options\OptionSystemKey;
-use App\Utils\System\Options\OptionUserKey;
 use App\Utils\System\User\Anonymous;
 use App\Utils\System\User\UserDataKey;
 use Doctrine\ORM\NonUniqueResultException;
@@ -75,7 +75,7 @@ class UserControllerTest extends AppWebTestCase
         $this->client->loginUser($user, 'admin');
 
         $parameters = [
-            'key' => OptionUserKey::OU_NB_ELEMENT,
+            'key' => OptionUserEnum::OU_NB_ELEMENT->value,
             'value' => 50,
         ];
         $this->client->request(
@@ -89,7 +89,7 @@ class UserControllerTest extends AppWebTestCase
 
         /** @var OptionUserRepository $repo */
         $repo = $this->em->getRepository(OptionUser::class);
-        $optionUser = $repo->findBy(['key' => OptionUserKey::OU_NB_ELEMENT, 'user' => $user->getId()]);
+        $optionUser = $repo->findBy(['key' => OptionUserEnum::OU_NB_ELEMENT->value, 'user' => $user->getId()]);
         $this->assertEquals(50, $optionUser[0]->getValue());
     }
 
@@ -190,7 +190,7 @@ class UserControllerTest extends AppWebTestCase
         // Tentative delete mais sans autorisation
         /** @var OptionSystemService $optionSystemService */
         $optionSystemService = $this->container->get(OptionSystemService::class);
-        $optionSystemService->saveValueByKee(OptionSystemKey::OS_ALLOW_DELETE_DATA, '0');
+        $optionSystemService->saveValueByKee(OptionSystem::OS_ALLOW_DELETE_DATA->value, '0');
 
         $this->client->request(
             'DELETE',
@@ -203,8 +203,8 @@ class UserControllerTest extends AppWebTestCase
         $this->assertEquals(false, $content['success']);
 
         // Anonymisation du user
-        $optionSystemService->saveValueByKee(OptionSystemKey::OS_ALLOW_DELETE_DATA, '1');
-        $optionSystemService->saveValueByKee(OptionSystemKey::OS_REPLACE_DELETE_USER, '1');
+        $optionSystemService->saveValueByKee(OptionSystem::OS_ALLOW_DELETE_DATA->value, '1');
+        $optionSystemService->saveValueByKee(OptionSystem::OS_REPLACE_DELETE_USER->value, '1');
         $this->client->request(
             'DELETE',
             $this->router->generate('admin_user_delete', ['id' => $userToDelete->getId()]),
@@ -222,8 +222,8 @@ class UserControllerTest extends AppWebTestCase
         $this->assertEquals(Anonymous::LOGIN, $userToCheck->getLogin());
 
         // Supprimer un utilisateur
-        $optionSystemService->saveValueByKee(OptionSystemKey::OS_ALLOW_DELETE_DATA, '1');
-        $optionSystemService->saveValueByKee(OptionSystemKey::OS_REPLACE_DELETE_USER, '0');
+        $optionSystemService->saveValueByKee(OptionSystem::OS_ALLOW_DELETE_DATA->value, '1');
+        $optionSystemService->saveValueByKee(OptionSystem::OS_REPLACE_DELETE_USER->value, '0');
         $this->client->request(
             'DELETE',
             $this->router->generate('admin_user_delete', ['id' => $userToDelete->getId()]),
@@ -309,8 +309,8 @@ class UserControllerTest extends AppWebTestCase
         // Désactivation user
         /** @var OptionSystemService $optionSystemService */
         $optionSystemService = $this->container->get(OptionSystemService::class);
-        $optionSystemService->saveValueByKee(OptionSystemKey::OS_MAIL_NOTIFICATION, '1');
-        $optionSystemService->saveValueByKee(OptionSystemKey::OS_NOTIFICATION, '1');
+        $optionSystemService->saveValueByKee(OptionSystem::OS_MAIL_NOTIFICATION->value, '1');
+        $optionSystemService->saveValueByKee(OptionSystem::OS_NOTIFICATION->value, '1');
         $this->client->loginUser($userToDisable, 'admin');
         $this->client->request('POST', $this->router->generate('admin_user_self_disabled'));
         $this->assertResponseIsSuccessful();
@@ -364,10 +364,10 @@ class UserControllerTest extends AppWebTestCase
         //delete user - Anonymisation
         /** @var OptionSystemService $optionSystemService */
         $optionSystemService = $this->container->get(OptionSystemService::class);
-        $optionSystemService->saveValueByKee(OptionSystemKey::OS_MAIL_NOTIFICATION, '1');
-        $optionSystemService->saveValueByKee(OptionSystemKey::OS_NOTIFICATION, '1');
-        $optionSystemService->saveValueByKee(OptionSystemKey::OS_ALLOW_DELETE_DATA, '1');
-        $optionSystemService->saveValueByKee(OptionSystemKey::OS_REPLACE_DELETE_USER, '1');
+        $optionSystemService->saveValueByKee(OptionSystem::OS_MAIL_NOTIFICATION->value, '1');
+        $optionSystemService->saveValueByKee(OptionSystem::OS_NOTIFICATION->value, '1');
+        $optionSystemService->saveValueByKee(OptionSystem::OS_ALLOW_DELETE_DATA->value, '1');
+        $optionSystemService->saveValueByKee(OptionSystem::OS_REPLACE_DELETE_USER->value, '1');
         $this->client->loginUser($userToDelete, 'admin');
         $this->client->request('POST', $this->router->generate('admin_user_self_delete'));
         $this->assertResponseIsSuccessful();
@@ -400,10 +400,10 @@ class UserControllerTest extends AppWebTestCase
         //Delete user - delete
         $userToDelete = $this->createUser();
         $optionSystemService = $this->container->get(OptionSystemService::class);
-        $optionSystemService->saveValueByKee(OptionSystemKey::OS_MAIL_NOTIFICATION, '1');
-        $optionSystemService->saveValueByKee(OptionSystemKey::OS_NOTIFICATION, '1');
-        $optionSystemService->saveValueByKee(OptionSystemKey::OS_ALLOW_DELETE_DATA, '1');
-        $optionSystemService->saveValueByKee(OptionSystemKey::OS_REPLACE_DELETE_USER, '0');
+        $optionSystemService->saveValueByKee(OptionSystem::OS_MAIL_NOTIFICATION->value, '1');
+        $optionSystemService->saveValueByKee(OptionSystem::OS_NOTIFICATION->value, '1');
+        $optionSystemService->saveValueByKee(OptionSystem::OS_ALLOW_DELETE_DATA->value, '1');
+        $optionSystemService->saveValueByKee(OptionSystem::OS_REPLACE_DELETE_USER->value, '0');
         $this->client->loginUser($userToDelete, 'admin');
         $this->client->request('POST', $this->router->generate('admin_user_self_delete'));
         $this->assertResponseIsSuccessful();

@@ -9,8 +9,8 @@ declare(strict_types=1);
 namespace App\Tests\Helper\Fixtures\System;
 
 use App\Entity\Admin\System\OptionSystem;
+use App\Enum\Admin\System\Options\OptionSystem as OptionSystemEnum;
 use App\Tests\Helper\FakerTrait;
-use App\Utils\System\Options\OptionSystemKey;
 
 trait OptionSystemFixturesTrait
 {
@@ -43,168 +43,168 @@ trait OptionSystemFixturesTrait
     public function generateDefaultOptionSystem(): void
     {
         $data = [
-            'key' => OptionSystemKey::OS_SITE_NAME,
+            'key' => OptionSystemEnum::OS_SITE_NAME->value,
             'value' => 'Nathéo CMS',
         ];
         $this->createOptionSystem($data);
 
         $data = [
-            'key' => OptionSystemKey::OS_OPEN_SITE,
+            'key' => OptionSystemEnum::OS_OPEN_SITE->value,
             'value' => '1',
         ];
         $this->createOptionSystem($data);
 
         $data = [
-            'key' => OptionSystemKey::OS_FRONT_SCRIPT_TOP,
+            'key' => OptionSystemEnum::OS_FRONT_SCRIPT_TOP->value,
             'value' => '',
         ];
         $this->createOptionSystem($data);
 
         $data = [
-            'key' => OptionSystemKey::OS_FRONT_SCRIPT_START_BODY,
+            'key' => OptionSystemEnum::OS_FRONT_SCRIPT_START_BODY->value,
             'value' => '',
         ];
         $this->createOptionSystem($data);
 
         $data = [
-            'key' => OptionSystemKey::OS_FRONT_SCRIPT_END_BODY,
+            'key' => OptionSystemEnum::OS_FRONT_SCRIPT_END_BODY->value,
             'value' => '',
         ];
         $this->createOptionSystem($data);
 
         $data = [
-            'key' => OptionSystemKey::OS_REPLACE_DELETE_USER,
+            'key' => OptionSystemEnum::OS_REPLACE_DELETE_USER->value,
             'value' => '1',
         ];
         $this->createOptionSystem($data);
 
         $data = [
-            'key' => OptionSystemKey::OS_CONFIRM_LEAVE_FORM,
+            'key' => OptionSystemEnum::OS_CONFIRM_LEAVE_FORM->value,
             'value' => '1',
         ];
         $this->createOptionSystem($data);
 
         $data = [
-            'key' => OptionSystemKey::OS_ALLOW_DELETE_DATA,
+            'key' => OptionSystemEnum::OS_ALLOW_DELETE_DATA->value,
             'value' => '1',
         ];
         $this->createOptionSystem($data);
 
         $data = [
-            'key' => OptionSystemKey::OS_DEFAULT_LANGUAGE,
+            'key' => OptionSystemEnum::OS_DEFAULT_LANGUAGE->value,
             'value' => 'fr',
         ];
         $this->createOptionSystem($data);
 
         $data = [
-            'key' => OptionSystemKey::OS_LOGO_SITE,
+            'key' => OptionSystemEnum::OS_LOGO_SITE->value,
             'value' => 'bi-yin-yang',
         ];
         $this->createOptionSystem($data);
 
         $data = [
-            'key' => OptionSystemKey::OS_THEME_SITE,
+            'key' => OptionSystemEnum::OS_THEME_SITE->value,
             'value' => 'purple',
         ];
         $this->createOptionSystem($data);
 
         $data = [
-            'key' => OptionSystemKey::OS_NB_ELEMENT,
+            'key' => OptionSystemEnum::OS_NB_ELEMENT->value,
             'value' => '20',
         ];
         $this->createOptionSystem($data);
 
         $data = [
-            'key' => OptionSystemKey::OS_LOG_DOCTRINE,
+            'key' => OptionSystemEnum::OS_LOG_DOCTRINE->value,
             'value' => '1',
         ];
         $this->createOptionSystem($data);
 
         $data = [
-            'key' => OptionSystemKey::OS_MAIL_FROM,
+            'key' => OptionSystemEnum::OS_MAIL_FROM->value,
             'value' => 'support@natheo.fr',
         ];
         $this->createOptionSystem($data);
 
         $data = [
-            'key' => OptionSystemKey::OS_MAIL_REPLY_TO,
+            'key' => OptionSystemEnum::OS_MAIL_REPLY_TO->value,
             'value' => 'support@natheo.fr',
         ];
         $this->createOptionSystem($data);
 
         $data = [
-            'key' => OptionSystemKey::OS_ADRESSE_SITE,
+            'key' => OptionSystemEnum::OS_ADRESSE_SITE->value,
             'value' => 'http://www.value-must-be-change.com',
         ];
         $this->createOptionSystem($data);
 
         $data = [
-            'key' => OptionSystemKey::OS_MAIL_SIGNATURE,
+            'key' => OptionSystemEnum::OS_MAIL_SIGNATURE->value,
             'value' => "<hr />Cordialement, <br />L'équipe de Natheo CMS",
         ];
         $this->createOptionSystem($data);
 
         $data = [
-            'key' => OptionSystemKey::OS_MAIL_NOTIFICATION,
+            'key' => OptionSystemEnum::OS_MAIL_NOTIFICATION->value,
             'value' => '1',
         ];
         $this->createOptionSystem($data);
 
         $data = [
-            'key' => OptionSystemKey::OS_PURGE_NOTIFICATION,
+            'key' => OptionSystemEnum::OS_PURGE_NOTIFICATION->value,
             'value' => '30',
         ];
         $this->createOptionSystem($data);
 
         $data = [
-            'key' => OptionSystemKey::OS_MAIL_RESET_PASSWORD_TIME,
+            'key' => OptionSystemEnum::OS_MAIL_RESET_PASSWORD_TIME->value,
             'value' => '20',
         ];
         $this->createOptionSystem($data);
 
         $data = [
-            'key' => OptionSystemKey::OS_MEDIA_CREATE_PHYSICAL_FOLDER,
+            'key' => OptionSystemEnum::OS_MEDIA_CREATE_PHYSICAL_FOLDER->value,
             'value' => '1',
         ];
         $this->createOptionSystem($data);
 
         $data = [
-            'key' => OptionSystemKey::OS_MEDIA_PATH,
+            'key' => OptionSystemEnum::OS_MEDIA_PATH->value,
             'value' => 'natheotheque',
         ];
         $this->createOptionSystem($data);
 
         $data = [
-            'key' => OptionSystemKey::OS_MEDIA_URL,
+            'key' => OptionSystemEnum::OS_MEDIA_URL->value,
             'value' => 'http://dev.natheo',
         ];
         $this->createOptionSystem($data);
 
         $data = [
-            'key' => OptionSystemKey::OS_API_TIME_VALIDATE_USER_TOKEN,
+            'key' => OptionSystemEnum::OS_API_TIME_VALIDATE_USER_TOKEN->value,
             'value' => '60',
         ];
         $this->createOptionSystem($data);
 
         $data = [
-            'key' => OptionSystemKey::OS_OPEN_COMMENT,
+            'key' => OptionSystemEnum::OS_OPEN_COMMENT->value,
             'value' => '1',
         ];
         $this->createOptionSystem($data);
 
         $data = [
-            'key' => OptionSystemKey::OS_NEW_COMMENT_WAIT_VALIDATION,
+            'key' => OptionSystemEnum::OS_NEW_COMMENT_WAIT_VALIDATION->value,
             'value' => '1',
         ];
 
         $data = [
-            'key' => OptionSystemKey::OS_NOTIFICATION,
+            'key' => OptionSystemEnum::OS_NOTIFICATION->value,
             'value' => '1',
         ];
         $this->createOptionSystem($data);
 
         $data = [
-            'key' => OptionSystemKey::OS_THEME_FRONT_SITE,
+            'key' => OptionSystemEnum::OS_THEME_FRONT_SITE->value,
             'value' => 'natheo_horizon',
         ];
         $this->createOptionSystem($data);
