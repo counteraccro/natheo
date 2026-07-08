@@ -8,11 +8,11 @@ declare(strict_types=1);
  */
 namespace App\Tests\Service\Admin;
 
+use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Admin\DashboardService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Tests\AppWebTestCase;
 use App\Utils\System\ApiToken\ApiTokenConst;
-use App\Utils\System\Options\OptionSystemKey;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
@@ -48,7 +48,7 @@ class DashboardServiceTest extends AppWebTestCase
     {
         $apiToken = $this->createApiToken(['token' => ApiTokenConst::API_TOKEN_READ]);
 
-        $this->optionSystemService->saveValueByKee(OptionSystemKey::OS_OPEN_SITE, '0');
+        $this->optionSystemService->saveValueByKee(OptionSystem::OS_OPEN_SITE->value, '0');
 
         $result = $this->dashboardService->getBlockHelpConfig();
         $this->assertIsArray($result);
@@ -60,14 +60,14 @@ class DashboardServiceTest extends AppWebTestCase
         $body = $result['body'];
         $this->assertIsArray($body);
 
-        $this->checkValidFormatErrorReturnBlockHelpConfig(OptionSystemKey::OS_SITE_NAME, $body);
-        $this->checkValidFormatErrorReturnBlockHelpConfig(OptionSystemKey::OS_ADRESSE_SITE, $body);
-        $this->checkValidFormatErrorReturnBlockHelpConfig(OptionSystemKey::OS_OPEN_SITE, $body);
+        $this->checkValidFormatErrorReturnBlockHelpConfig(OptionSystem::OS_SITE_NAME->value, $body);
+        $this->checkValidFormatErrorReturnBlockHelpConfig(OptionSystem::OS_ADRESSE_SITE->value, $body);
+        $this->checkValidFormatErrorReturnBlockHelpConfig(OptionSystem::OS_OPEN_SITE->value, $body);
         $this->checkValidFormatErrorReturnBlockHelpConfig('API_TOKEN_STATUS', $body);
 
-        $this->optionSystemService->saveValueByKee(OptionSystemKey::OS_SITE_NAME, 'unit-test');
-        $this->optionSystemService->saveValueByKee(OptionSystemKey::OS_ADRESSE_SITE, 'www.unit-test.com');
-        $this->optionSystemService->saveValueByKee(OptionSystemKey::OS_OPEN_SITE, '1');
+        $this->optionSystemService->saveValueByKee(OptionSystem::OS_SITE_NAME->value, 'unit-test');
+        $this->optionSystemService->saveValueByKee(OptionSystem::OS_ADRESSE_SITE->value, 'www.unit-test.com');
+        $this->optionSystemService->saveValueByKee(OptionSystem::OS_OPEN_SITE->value, '1');
 
         $apiToken->setToken('token-unit-test');
         $this->dashboardService->save($apiToken);
@@ -82,9 +82,9 @@ class DashboardServiceTest extends AppWebTestCase
         $body = $result['body'];
         $this->assertIsArray($body);
 
-        $this->checkValidFormatSuccessReturnBlockHelpConfig(OptionSystemKey::OS_SITE_NAME, $body);
-        $this->checkValidFormatSuccessReturnBlockHelpConfig(OptionSystemKey::OS_ADRESSE_SITE, $body);
-        $this->checkValidFormatSuccessReturnBlockHelpConfig(OptionSystemKey::OS_OPEN_SITE, $body);
+        $this->checkValidFormatSuccessReturnBlockHelpConfig(OptionSystem::OS_SITE_NAME->value, $body);
+        $this->checkValidFormatSuccessReturnBlockHelpConfig(OptionSystem::OS_ADRESSE_SITE->value, $body);
+        $this->checkValidFormatSuccessReturnBlockHelpConfig(OptionSystem::OS_OPEN_SITE->value, $body);
         $this->checkValidFormatSuccessReturnBlockHelpConfig('API_TOKEN_STATUS', $body);
     }
 

@@ -9,10 +9,10 @@ declare(strict_types=1);
 
 namespace Controller\Api\v1\System;
 
+use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Admin\System\OptionSystemService;
 use App\Service\Api\System\ApiOptionSystemService;
 use App\Tests\Controller\Api\AppApiTestCase;
-use App\Utils\System\Options\OptionSystemKey;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -58,13 +58,13 @@ class ApiOptionSystemControllerTest extends AppApiTestCase
         $optionSystemService = $this->container->get(OptionSystemService::class);
         $translator = $this->container->get(TranslatorInterface::class);
 
-        $optionSystemService->saveValueByKee(OptionSystemKey::OS_SITE_NAME, 'unit-test_site');
+        $optionSystemService->saveValueByKee(OptionSystem::OS_SITE_NAME->value, 'unit-test_site');
 
         $this->client->request(
             'GET',
             $this->router->generate('api_options_systems_get_by_key', [
                 'api_version' => self::API_VERSION,
-                'key' => OptionSystemKey::OS_SITE_NAME,
+                'key' => OptionSystem::OS_SITE_NAME->value,
             ]),
             server: $this->getCustomHeaders(),
         );
@@ -76,7 +76,7 @@ class ApiOptionSystemControllerTest extends AppApiTestCase
         $this->assertArrayHasKey('data', $content);
         $this->assertIsArray($content['data']);
         $this->assertArrayHasKey('key', $content['data']);
-        $this->assertEquals(OptionSystemKey::OS_SITE_NAME, $content['data']['key']);
+        $this->assertEquals(OptionSystem::OS_SITE_NAME->value, $content['data']['key']);
         $this->assertArrayHasKey('value', $content['data']);
         $this->assertEquals('unit-test_site', $content['data']['value']);
 
@@ -85,7 +85,7 @@ class ApiOptionSystemControllerTest extends AppApiTestCase
             'GET',
             $this->router->generate('api_options_systems_get_by_key', [
                 'api_version' => self::API_VERSION,
-                'key' => OptionSystemKey::OS_NOTIFICATION,
+                'key' => OptionSystem::OS_NOTIFICATION->value,
             ]),
             server: $this->getCustomHeaders(),
         );

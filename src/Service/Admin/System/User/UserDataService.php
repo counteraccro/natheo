@@ -11,9 +11,9 @@ namespace App\Service\Admin\System\User;
 
 use App\Entity\Admin\System\User;
 use App\Entity\Admin\System\UserData;
+use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Admin\AppAdminService;
 use App\Utils\Api\ApiConst;
-use App\Utils\System\Options\OptionSystemKey;
 use App\Utils\System\User\UserDataKey;
 use DateTime;
 use Psr\Container\ContainerExceptionInterface;
@@ -124,7 +124,7 @@ class UserDataService extends AppAdminService
         $this->update(UserDataKey::KEY_TOKEN_CONNEXION, $token, $user);
 
         $optionSystem = $this->getOptionSystemService();
-        $timeToAdd = $optionSystem->getValueByKey(OptionSystemKey::OS_API_TIME_VALIDATE_USER_TOKEN);
+        $timeToAdd = $optionSystem->getValueByKey(OptionSystem::OS_API_TIME_VALIDATE_USER_TOKEN->value);
 
         if (intval($timeToAdd) === -1) {
             $dateTimeStr = 'now +10 years';

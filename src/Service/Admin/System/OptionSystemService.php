@@ -10,9 +10,9 @@ declare(strict_types=1);
 
 namespace App\Service\Admin\System;
 
+use App\Enum\Admin\System\Options\OptionSystem as OptionSystemEnum;
 use App\Entity\Admin\System\OptionSystem;
 use App\Service\Admin\AppAdminService;
-use App\Utils\System\Options\OptionSystemKey;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\Yaml\Yaml;
@@ -109,6 +109,9 @@ class OptionSystemService extends AppAdminService
     {
         /* @var OptionSystem $optionSystem */
         $optionSystem = $this->getByKey($key);
+        if ($optionSystem === null) {
+            return;
+        }
         $optionSystem->setValue($value);
         $this->save($optionSystem);
     }
@@ -121,7 +124,7 @@ class OptionSystemService extends AppAdminService
      */
     public function canSendMailNotification(): bool
     {
-        if ($this->getValueByKey(OptionSystemKey::OS_MAIL_NOTIFICATION) == 1) {
+        if ($this->getValueByKey(OptionSystemEnum::OS_MAIL_NOTIFICATION->value) == 1) {
             return true;
         }
         return false;
@@ -135,7 +138,7 @@ class OptionSystemService extends AppAdminService
      */
     public function canDelete(): bool
     {
-        if ($this->getValueByKey(OptionSystemKey::OS_ALLOW_DELETE_DATA) == 1) {
+        if ($this->getValueByKey(OptionSystemEnum::OS_ALLOW_DELETE_DATA->value) == 1) {
             return true;
         }
         return false;
@@ -149,7 +152,7 @@ class OptionSystemService extends AppAdminService
      */
     public function canReplace(): bool
     {
-        if ($this->getValueByKey(OptionSystemKey::OS_REPLACE_DELETE_USER) == 1) {
+        if ($this->getValueByKey(OptionSystemEnum::OS_REPLACE_DELETE_USER->value) == 1) {
             return true;
         }
         return false;
@@ -163,7 +166,7 @@ class OptionSystemService extends AppAdminService
      */
     public function canNotification(): bool
     {
-        if ($this->getValueByKey(OptionSystemKey::OS_NOTIFICATION) == 1) {
+        if ($this->getValueByKey(OptionSystemEnum::OS_NOTIFICATION->value) == 1) {
             return true;
         }
         return false;

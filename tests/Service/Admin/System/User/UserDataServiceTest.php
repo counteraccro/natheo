@@ -13,7 +13,6 @@ use App\Entity\Admin\System\User;
 use App\Service\Admin\System\OptionSystemService;
 use App\Service\Admin\System\User\UserDataService;
 use App\Tests\AppWebTestCase;
-use App\Utils\System\Options\OptionSystemKey;
 use App\Utils\System\User\UserDataKey;
 use DateMalformedStringException;
 use Psr\Container\ContainerExceptionInterface;

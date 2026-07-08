@@ -18,7 +18,8 @@ global.en: __Anglais
 global.es: __Espagnol
 global.purple: __Violet
 global.red: __Rouge
-global.orange: __Orange
+global.blue: __Bleu
+global.green: __Vert
 global.loading_save: '__Sauvegarde en cours'
 option_system.site_name: '__Nom de votre site'
 options_system.site_name_help: "__Uniquement des lettres, sans caractères spéciaux. Le nom du site apparaitra dans le footer, les mails, et dans l'administration"

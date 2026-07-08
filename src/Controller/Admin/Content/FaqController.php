@@ -12,12 +12,12 @@ namespace App\Controller\Admin\Content;
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\Content\Faq\Faq;
 use App\Enum\Admin\Global\Breadcrumb;
+use App\Enum\Admin\System\Options\OptionUser;
 use App\Service\Admin\Content\Faq\FaqService;
 use App\Utils\Content\Faq\FaqConst;
 use App\Utils\Content\Faq\FaqFactory;
 use App\Utils\Content\Faq\FaqPopulate;
 use App\Utils\Content\Faq\FaqStatistiqueKey;
-use App\Utils\System\Options\OptionUserKey;
 use App\Utils\Translate\Content\FaqTranslate;
 use App\Utils\Translate\MarkdownEditorTranslate;
 use Exception;
@@ -55,7 +55,7 @@ class FaqController extends AppAdminController
         return $this->render('admin/content/faq/index.html.twig', [
             'breadcrumb' => $breadcrumb,
             'page' => 1,
-            'limit' => $this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT),
+            'limit' => $this->optionUserService->getValueByKey(OptionUser::OU_NB_ELEMENT->value),
         ]);
     }
 

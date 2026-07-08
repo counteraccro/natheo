@@ -15,11 +15,11 @@ use App\Entity\Admin\Content\Faq\FaqCategory;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\Content\Page\PageContent;
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\System\Options\OptionUser;
 use App\Repository\Admin\Content\Page\PageRepository;
 use App\Service\Api\AppApiService;
 use App\Utils\Content\Page\PageConst;
 use App\Utils\Markdown;
-use App\Utils\System\Options\OptionUserKey;
 use App\Utils\System\User\PersonalData;
 use League\CommonMark\Exception\CommonMarkException;
 use Psr\Container\ContainerExceptionInterface;
@@ -133,7 +133,10 @@ class ApiPageContentService extends AppApiService
 
         foreach ($listePages as $page) {
             /** @var Page $page */
-            $render = $page->getUser()->getOptionUserByKey(OptionUserKey::OU_DEFAULT_PERSONAL_DATA_RENDER)->getValue();
+            $render = $page
+                ->getUser()
+                ->getOptionUserByKey(OptionUser::OU_DEFAULT_PERSONAL_DATA_RENDER->value)
+                ->getValue();
             $personalData = new PersonalData($page->getUser(), $render);
 
             if ($page->getPageTranslations()->count() === 0) {

@@ -13,6 +13,7 @@ use App\Entity\Admin\Content\Faq\Faq;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\Content\Page\PageTranslation;
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\System\Options\OptionSystem;
 use App\Repository\Admin\Content\Page\PageTranslationRepository;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
@@ -20,7 +21,6 @@ use App\Utils\Content\Page\PageConst;
 use App\Utils\Content\Page\PageHistory;
 use App\Utils\Content\Page\PageStatistiqueKey;
 use App\Utils\Content\Tag\TagRender;
-use App\Utils\System\Options\OptionSystemKey;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -564,7 +564,7 @@ class PageService extends AppAdminService
     public function getFrontUrl(Page $page): string
     {
         $locale = $this->getLocales()['current'];
-        $url = $this->getOptionSystemService()->getByKey(OptionSystemKey::OS_ADRESSE_SITE)->getValue();
+        $url = $this->getOptionSystemService()->getByKey(OptionSystem::OS_ADRESSE_SITE->value)->getValue();
         $tabCategories = $this->getPageService()->getAllCategories();
 
         $pageTrans = $page->getPageTranslationByLocale($locale);

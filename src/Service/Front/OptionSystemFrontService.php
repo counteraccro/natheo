@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace App\Service\Front;
 
-use App\Utils\System\Options\OptionSystemKey;
+use App\Enum\Admin\System\Options\OptionSystem;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
@@ -24,7 +24,7 @@ class OptionSystemFrontService extends AppFrontService
     public function isOpenSite(): bool
     {
         $optionSystemService = $this->getOptionSystemService();
-        $result = $optionSystemService->getValueByKey(OptionSystemKey::OS_OPEN_SITE);
+        $result = $optionSystemService->getValueByKey(OptionSystem::OS_OPEN_SITE->value);
         if ($result === '1') {
             return true;
         }
@@ -40,8 +40,8 @@ class OptionSystemFrontService extends AppFrontService
     public function getMetaRobots($format = false): array
     {
         $optionSystemService = $this->getOptionSystemService();
-        $robotNoFollow = $optionSystemService->getValueByKey(OptionSystemKey::OS_FRONT_ROBOT_NO_FOLLOW);
-        $robotNoIndex = $optionSystemService->getValueByKey(OptionSystemKey::OS_FRONT_ROBOT_NO_INDEX);
+        $robotNoFollow = $optionSystemService->getValueByKey(OptionSystem::OS_FRONT_ROBOT_NO_FOLLOW->value);
+        $robotNoIndex = $optionSystemService->getValueByKey(OptionSystem::OS_FRONT_ROBOT_NO_INDEX->value);
 
         if ($format) {
             $return = [];
@@ -55,8 +55,8 @@ class OptionSystemFrontService extends AppFrontService
         }
 
         return [
-            OptionSystemKey::OS_FRONT_ROBOT_NO_FOLLOW => $robotNoFollow,
-            OptionSystemKey::OS_FRONT_ROBOT_NO_INDEX => $robotNoIndex,
+            OptionSystem::OS_FRONT_ROBOT_NO_FOLLOW->value => $robotNoFollow,
+            OptionSystem::OS_FRONT_ROBOT_NO_INDEX->value => $robotNoIndex,
         ];
     }
 }

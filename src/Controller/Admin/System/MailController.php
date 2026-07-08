@@ -13,12 +13,12 @@ use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\System\Mail;
 use App\Entity\Admin\System\User;
 use App\Enum\Admin\Global\Breadcrumb;
+use App\Enum\Admin\System\Options\OptionUser;
 use App\Service\Admin\System\MailService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Service\Admin\System\TranslateService;
 use App\Utils\System\Mail\KeyWord;
 use App\Utils\System\Mail\MailKey;
-use App\Utils\System\Options\OptionUserKey;
 use App\Utils\Translate\MarkdownEditorTranslate;
 use App\Utils\Translate\System\MailTranslate;
 use League\CommonMark\Exception\CommonMarkException;
@@ -56,7 +56,7 @@ class MailController extends AppAdminController
         return $this->render('admin/system/mail/index.html.twig', [
             'breadcrumb' => $breadcrumb,
             'page' => 1,
-            'limit' => $this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT),
+            'limit' => $this->optionUserService->getValueByKey(OptionUser::OU_NB_ELEMENT->value),
         ]);
     }
 

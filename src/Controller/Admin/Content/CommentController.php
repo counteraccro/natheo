@@ -14,12 +14,12 @@ use App\Entity\Admin\Content\Comment\Comment;
 use App\Entity\Admin\Content\Page\Page;
 use App\Enum\Admin\Comment\Status;
 use App\Enum\Admin\Global\Breadcrumb;
+use App\Enum\Admin\System\Options\OptionSystem;
+use App\Enum\Admin\System\Options\OptionUser;
 use App\Service\Admin\Content\Comment\CommentService;
 use App\Service\Admin\Content\Page\PageService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Utils\Content\Comment\CommentPopulate;
-use App\Utils\System\Options\OptionSystemKey;
-use App\Utils\System\Options\OptionUserKey;
 use App\Utils\Translate\Content\CommentTranslate;
 use App\Utils\Translate\MarkdownEditorTranslate;
 use League\CommonMark\Exception\CommonMarkException;
@@ -58,9 +58,9 @@ class CommentController extends AppAdminController
         return $this->render('admin/content/comment/index.html.twig', [
             'breadcrumb' => $breadcrumb,
             'page' => 1,
-            'limit' => $this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT),
-            'isOpenComment' => $optionSystemService->getValueByKey(OptionSystemKey::OS_OPEN_COMMENT),
-            'isModerate' => $optionSystemService->getValueByKey(OptionSystemKey::OS_NEW_COMMENT_WAIT_VALIDATION),
+            'limit' => $this->optionUserService->getValueByKey(OptionUser::OU_NB_ELEMENT->value),
+            'isOpenComment' => $optionSystemService->getValueByKey(OptionSystem::OS_OPEN_COMMENT->value),
+            'isModerate' => $optionSystemService->getValueByKey(OptionSystem::OS_NEW_COMMENT_WAIT_VALIDATION->value),
             'nbCommentWaitValidation' => $commentService->getNbCommentByStatus(Status::WAIT_VALIDATION->value),
         ]);
     }
@@ -136,7 +136,7 @@ class CommentController extends AppAdminController
                 'pages' => $pageService->getListeTitlePageByLocale($commentService->getLocales()['current']),
                 'defaultStatus' => Status::WAIT_VALIDATION->value,
                 'page' => 1,
-                'limit' => $this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT),
+                'limit' => $this->optionUserService->getValueByKey(OptionUser::OU_NB_ELEMENT->value),
             ],
         ]);
     }

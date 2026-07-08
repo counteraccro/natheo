@@ -13,9 +13,9 @@ use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\Content\Tag\Tag;
 use App\Entity\Admin\Content\Tag\TagTranslation;
 use App\Enum\Admin\Global\Breadcrumb;
+use App\Enum\Admin\System\Options\OptionUser;
 use App\Service\Admin\Content\Tag\TagService;
 use App\Utils\Flash\FlashKey;
-use App\Utils\System\Options\OptionUserKey;
 use App\Utils\Translate\Content\TagTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -51,7 +51,7 @@ class TagController extends AppAdminController
         return $this->render('admin/content/tag/index.html.twig', [
             'breadcrumb' => $breadcrumb,
             'page' => 1,
-            'limit' => $this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT),
+            'limit' => $this->optionUserService->getValueByKey(OptionUser::OU_NB_ELEMENT->value),
         ]);
     }
 

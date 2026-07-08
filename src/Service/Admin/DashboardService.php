@@ -10,9 +10,9 @@ namespace App\Service\Admin;
 
 use App\Entity\Admin\Content\Comment\Comment;
 use App\Entity\Admin\System\ApiToken;
+use App\Enum\Admin\System\Options\OptionSystem;
 use App\Repository\Admin\Content\Comment\CommentRepository;
 use App\Utils\System\ApiToken\ApiTokenConst;
-use App\Utils\System\Options\OptionSystemKey;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
@@ -28,9 +28,9 @@ class DashboardService extends AppAdminService
     {
         $translator = $this->getTranslator();
         $optionSystem = $this->getOptionSystemService();
-        $siteName = $optionSystem->getValueByKey(OptionSystemKey::OS_SITE_NAME);
-        $adresseSite = $optionSystem->getValueByKey(OptionSystemKey::OS_ADRESSE_SITE);
-        $openSite = $optionSystem->getValueByKey(OptionSystemKey::OS_OPEN_SITE);
+        $siteName = $optionSystem->getValueByKey(OptionSystem::OS_SITE_NAME->value);
+        $adresseSite = $optionSystem->getValueByKey(OptionSystem::OS_ADRESSE_SITE->value);
+        $openSite = $optionSystem->getValueByKey(OptionSystem::OS_OPEN_SITE->value);
         $apiTokensDefault = $this->findBy(ApiToken::class, [
             'token' => [ApiTokenConst::API_TOKEN_READ, ApiTokenConst::API_TOKEN_WRITE, ApiTokenConst::API_TOKEN_ADMIN],
         ]);
@@ -38,21 +38,21 @@ class DashboardService extends AppAdminService
 
         $configComplete = true;
         $body = [
-            OptionSystemKey::OS_SITE_NAME => [
+            OptionSystem::OS_SITE_NAME->value => [
                 'success' => true,
                 'msg' => $translator->trans(
                     'dashboard.block.help.first.connexion.site.name.success',
                     domain: 'dashboard',
                 ),
             ],
-            OptionSystemKey::OS_ADRESSE_SITE => [
+            OptionSystem::OS_ADRESSE_SITE->value => [
                 'success' => true,
                 'msg' => $translator->trans(
                     'dashboard.block.help.first.connexion.site.adresse.success',
                     domain: 'dashboard',
                 ),
             ],
-            OptionSystemKey::OS_OPEN_SITE => [
+            OptionSystem::OS_OPEN_SITE->value => [
                 'success' => true,
                 'msg' => $translator->trans(
                     'dashboard.block.help.first.connexion.site.open.success',
@@ -67,8 +67,8 @@ class DashboardService extends AppAdminService
                 ),
             ],
         ];
-        if ($siteName === OptionSystemKey::OS_SITE_NAME_DEFAULT_VALUE) {
-            $body[OptionSystemKey::OS_SITE_NAME] = [
+        if ($siteName === OptionSystem::OS_SITE_NAME->getDefault()) {
+            $body[OptionSystem::OS_SITE_NAME->value] = [
                 'success' => false,
                 'msg' => $translator->trans(
                     'dashboard.block.help.first.connexion.site.name.warning',
@@ -78,8 +78,8 @@ class DashboardService extends AppAdminService
             $configComplete = false;
         }
 
-        if ($adresseSite === OptionSystemKey::OS_ADRESSE_SITE_DEFAULT_VALUE) {
-            $body[OptionSystemKey::OS_ADRESSE_SITE] = [
+        if ($adresseSite === OptionSystem::OS_ADRESSE_SITE->getDefault()) {
+            $body[OptionSystem::OS_ADRESSE_SITE->value] = [
                 'success' => false,
                 'msg' => $translator->trans(
                     'dashboard.block.help.first.connexion.site.adresse.warning',
@@ -89,8 +89,8 @@ class DashboardService extends AppAdminService
             $configComplete = false;
         }
 
-        if ($openSite === OptionSystemKey::OS_OPEN_SITE_DEFAULT_VALUE) {
-            $body[OptionSystemKey::OS_OPEN_SITE] = [
+        if ($openSite === OptionSystem::OS_OPEN_SITE->getDefault()) {
+            $body[OptionSystem::OS_OPEN_SITE->value] = [
                 'success' => false,
                 'msg' => $translator->trans(
                     'dashboard.block.help.first.connexion.site.open.warning',

@@ -10,12 +10,12 @@ declare(strict_types=1);
 namespace App\Service\Admin\System;
 
 use App\Entity\Admin\System\Mail;
+use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
 use App\Utils\Markdown;
 use App\Utils\System\Mail\KeyWord;
 use App\Utils\System\Mail\MailTemplate;
-use App\Utils\System\Options\OptionSystemKey;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use League\CommonMark\Exception\CommonMarkException;
 use Psr\Container\ContainerExceptionInterface;
@@ -268,7 +268,7 @@ class MailService extends AppAdminService
         $content = $this->getParamsValue($params, self::CONTENT);
         $title = $this->getParamsValue($params, self::TITLE);
         $body = $this->getParamsValue($params, self::BODY);
-        $signature = $optionSystemService->getValueByKey(OptionSystemKey::OS_MAIL_SIGNATURE);
+        $signature = $optionSystemService->getValueByKey(OptionSystem::OS_MAIL_SIGNATURE->value);
 
         $markdown = new Markdown();
         $content = $markdown->convertMarkdownToHtml($content);
@@ -314,8 +314,8 @@ class MailService extends AppAdminService
         }
 
         return match ($key) {
-            self::FROM => $optionSystemService->getValueByKey(OptionSystemKey::OS_MAIL_FROM),
-            self::REPLY_TO => $optionSystemService->getValueByKey(OptionSystemKey::OS_MAIL_REPLY_TO),
+            self::FROM => $optionSystemService->getValueByKey(OptionSystem::OS_MAIL_FROM->value),
+            self::REPLY_TO => $optionSystemService->getValueByKey(OptionSystem::OS_MAIL_REPLY_TO->value),
             default => null,
         };
     }
@@ -352,7 +352,7 @@ class MailService extends AppAdminService
         $optionSystemService = $this->getOptionSystemService();
 
         $mailTranslate = $mail->geMailTranslationByLocale(
-            $optionSystemService->getValueByKey(OptionSystemKey::OS_DEFAULT_LANGUAGE),
+            $optionSystemService->getValueByKey(OptionSystem::OS_DEFAULT_LANGUAGE->value),
         );
         $content = str_replace(
             $tabKeyWord[KeyWord::KEY_SEARCH],
