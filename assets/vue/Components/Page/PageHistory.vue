@@ -27,7 +27,15 @@ export default defineComponent({
   },
   emits: ['restore-history'],
   data() {
-    return { loading: false, history: [] as PageHistoryEntry[] };
+    return { loading: false, history: [] as PageHistoryEntry[], visibleCount: 10 as number, step: 10 as number };
+  },
+  computed: {
+    visibleHistory(): PageHistoryEntry[] {
+      return this.history.slice(0, this.visibleCount);
+    },
+    hasMore(): boolean {
+      return this.visibleCount < this.history.length;
+    },
   },
   watch: {
     active(value: boolean) {
@@ -78,6 +86,13 @@ export default defineComponent({
           this.loading = false;
         });
     },
+
+    /**
+     * Pagination
+     */
+    loadMore() {
+      this.visibleCount += this.step;
+    },
   },
 });
 </script>
@@ -99,21 +114,17 @@ export default defineComponent({
             </svg>
             {{ translate.title }}
           </div>
-          <p class="card-subtitle">{{ translate.description }}</p>
+          <div class="card-subtitle">{{ translate.description }}</div>
         </div>
       </div>
 
       <div class="p-5">
-        <div v-if="history.length === 0" class="flex flex-col items-center justify-center py-10 text-center">
-          <p class="text-sm" style="color: var(--text-secondary)">{{ translate.empty }}</p>
-        </div>
-
-        <div v-else class="space-y-1">
+        <div class="divide-y" style="border-color: var(--border-color)">
           <div
-            v-for="(entry, index) in history"
+            v-for="(entry, index) in visibleHistory"
             :key="entry.id"
-            class="flex items-center justify-between p-3 rounded-xl border border-transparent transition-all"
-            style="border-color: transparent"
+            class="flex items-center gap-3 py-2 px-2 rounded-lg"
+            style="border: 1px solid transparent"
             @mouseenter="
               ($event.currentTarget as HTMLElement).style.backgroundColor = 'var(--bg-hover)';
               ($event.currentTarget as HTMLElement).style.borderColor = 'var(--border-color)';
@@ -123,73 +134,71 @@ export default defineComponent({
               ($event.currentTarget as HTMLElement).style.borderColor = 'transparent';
             "
           >
-            <div class="flex items-center gap-4">
-              <div
-                class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-                :style="index === 0 ? 'background-color: var(--primary-lighter)' : 'background-color: var(--bg-hover)'"
-              >
-                <span
-                  class="text-xs font-bold"
-                  :style="index === 0 ? 'color: var(--primary)' : 'color: var(--text-secondary)'"
-                >
-                  #{{ entry.id }}
-                </span>
-              </div>
-              <div>
-                <div class="flex items-center gap-2">
-                  <p class="text-sm font-semibold" style="color: var(--text-primary)">
-                    {{ translate.id }} {{ entry.id }}
-                  </p>
-                  <span
-                    v-if="index === 0"
-                    class="text-xs px-2 py-0.5 rounded-full font-semibold"
-                    style="background-color: var(--primary-lighter); color: var(--primary)"
-                  >
-                    {{ translate.action }}
-                  </span>
-                  <span
-                    v-if="entry.id === 0"
-                    class="text-xs px-2 py-0.5 rounded-full font-medium"
-                    style="background-color: var(--bg-hover); color: var(--text-secondary)"
-                  >
-                    {{ translate.user }}
-                  </span>
-                </div>
-                <p class="text-xs mt-0.5" style="color: var(--text-secondary)">
-                  <span style="color: var(--primary)" v-html="entry.time"></span>
-                  &nbsp;·&nbsp;
-                  {{ entry.user }}
-                </p>
-              </div>
-            </div>
+            <span
+              class="text-xs font-semibold shrink-0 px-1.5 py-0.5 rounded"
+              :style="
+                index === 0
+                  ? 'background-color: var(--primary-lighter); color: var(--primary); min-width: 40px; text-align: center;'
+                  : 'background-color: var(--bg-hover); color: var(--text-secondary); border: 1px solid var(--border-color); min-width: 40px; text-align: center;'
+              "
+            >
+              #{{ entry.id }}
+            </span>
 
-            <div class="shrink-0 ml-4">
-              <button
-                type="button"
-                class="btn btn-sm btn-outline-dark"
-                style="border-color: var(--border-color); color: var(--primary)"
-                @mouseenter="
-                  ($event.currentTarget as HTMLElement).style.backgroundColor = 'var(--primary-lighter)';
-                  ($event.currentTarget as HTMLElement).style.borderColor = 'var(--primary-light)';
-                "
-                @mouseleave="
-                  ($event.currentTarget as HTMLElement).style.backgroundColor = '';
-                  ($event.currentTarget as HTMLElement).style.borderColor = 'var(--border-color)';
-                "
-                @click="restore(entry.id)"
-              >
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                  />
-                </svg>
-                {{ translate.reload }}
-              </button>
-            </div>
+            <span
+              class="text-xs flex-1"
+              :style="index === 0 ? 'color: var(--primary)' : 'color: var(--text-secondary)'"
+              v-html="entry.time"
+            ></span>
+
+            <span class="text-xs shrink-0" style="color: var(--text-light)">{{ entry.user }}</span>
+
+            <span
+              v-if="index === 0"
+              class="text-xs font-semibold px-2 py-0.5 rounded-full shrink-0"
+              style="background-color: var(--primary-lighter); color: var(--primary)"
+            >
+              {{ translate.action }}
+            </span>
+
+            <span
+              v-if="entry.id === 0"
+              class="text-xs font-semibold px-2 py-0.5 rounded-full shrink-0"
+              style="
+                background-color: var(--bg-hover);
+                color: var(--text-secondary);
+                border: 1px solid var(--border-color);
+              "
+            >
+              {{ translate.user }}
+            </span>
+
+            <button
+              type="button"
+              class="btn btn-xs shrink-0"
+              :class="index === 0 ? 'btn-outline-primary' : 'btn-outline-dark'"
+              @click="restore(entry.id)"
+            >
+              <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                />
+              </svg>
+              {{ translate.reload }}
+            </button>
           </div>
+        </div>
+
+        <div v-if="hasMore" class="flex justify-center pt-4">
+          <button type="button" class="btn btn-sm btn-outline-dark" @click="loadMore">
+            <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+            {{ translate.load_more }}
+          </button>
         </div>
       </div>
     </div>
