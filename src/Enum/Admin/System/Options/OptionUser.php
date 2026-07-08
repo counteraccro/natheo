@@ -34,18 +34,4 @@ enum OptionUser: string
      * @var string
      */
     case OU_DEFAULT_PERSONAL_DATA_RENDER = 'OU_DEFAULT_PERSONAL_DATA_RENDER';
-
-    const CONFIG = [];
-
-    /**
-     * Récupère la valeur par défaut
-     * @return string|null
-     */
-    public function getDefault(): ?string
-    {
-        if (isset(self::CONFIG[$this->value]['default'])) {
-            return self::CONFIG[$this->value]['default'];
-        }
-        return null;
-    }
 }
