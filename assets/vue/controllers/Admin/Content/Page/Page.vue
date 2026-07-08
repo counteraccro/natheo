@@ -61,7 +61,10 @@ export default defineComponent({
       autoSaveTimeout: null as ReturnType<typeof setTimeout> | null,
       autoSaveStatus: 'idle' as 'idle' | 'saving' | 'saved' | 'error',
       autoSaveTime: '' as string,
+      restoreStatus: 'idle' as 'idle' | 'restored',
+      restoreTime: '' as string,
       activeTab: 'content' as string,
+      pageWatchReady: false as boolean,
       toasts: {
         success: {
           show: false,
@@ -94,6 +97,10 @@ export default defineComponent({
     page: {
       deep: true,
       handler() {
+        if (!this.pageWatchReady) {
+          return;
+        }
+
         if (this.hasAnyError) {
           return;
         }
@@ -181,6 +188,9 @@ export default defineComponent({
         })
         .finally(() => {
           this.loading = false;
+          this.$nextTick(() => {
+            this.pageWatchReady = true;
+          });
         });
     },
 
@@ -256,12 +266,19 @@ export default defineComponent({
      * @param page
      */
     handleRestoreHistory(page: Page, msg: string) {
+      this.pageWatchReady = false;
       this.page = page;
       this.toasts.success.show = true;
       this.toasts.success.msg = msg;
+      this.restoreStatus = 'restored';
+      const now = new Date();
+      this.restoreTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
       setTimeout(() => {
         this.toasts.success.show = false;
       }, 3000);
+      this.$nextTick(() => {
+        this.pageWatchReady = true;
+      });
     },
   },
 });
@@ -545,6 +562,17 @@ export default defineComponent({
           <span class="w-2 h-2 rounded-full inline-block shrink-0" style="background-color: var(--btn-danger)"></span>
           {{ translate.auto_save_error }}
         </p>
+        <p
+          v-else-if="restoreStatus === 'restored'"
+          class="text-xs flex items-center gap-2 shrink-0"
+          style="color: var(--alert-success-text)"
+        >
+          <span
+            class="w-2 h-2 rounded-full inline-block shrink-0"
+            style="background-color: var(--alert-success-text)"
+          ></span>
+          {{ translate.msg_titre_restore_history }} {{ restoreTime }}
+        </p>
         <p v-else class="text-xs flex items-center gap-2 text-gray-500 dark:text-gray-400 shrink-0">
           <span class="w-2 h-2 rounded-full inline-block shrink-0 bg-amber-500"></span>
           Modifications non sauvegardées
@@ -600,13 +628,13 @@ export default defineComponent({
   <MediathequeModale :url-media="urls.load_media" :translate="translate.page_content_form.mediatheque" />
 
   <div class="toast-container position-fixed top-0 end-0 p-2">
-    <toast :id="'toastSuccess'" :type="'success'" :show="toasts.success.show" @close-toast="closeToast('success')">
+    <toast :id="'toastSuccess'" :type="'success'" :show="toasts.success.show">
       <template #body>
         <div v-html="toasts.success.msg"></div>
       </template>
     </toast>
 
-    <toast :id="'toastError'" :type="'danger'" :show="toasts.error.show" @close-toast="closeToast('error')">
+    <toast :id="'toastError'" :type="'danger'" :show="toasts.error.show">
       <template #body>
         <div v-html="toasts.error.msg"></div>
       </template>
