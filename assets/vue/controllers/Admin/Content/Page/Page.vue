@@ -11,6 +11,7 @@ import PageContent from '@/vue/Components/Page/PageContent.vue';
 import { initFlowbite } from 'flowbite';
 import MediathequeModale from '@/vue/Components/Global/MarkdownEditor/Mediatheque.vue';
 import PageHistory from '@/vue/Components/Page/PageHistory.vue';
+import PageStatusBar from '@/vue/Components/Page/PageStatusBar.vue';
 import Toast from '@/vue/Components/Global/Toast.vue';
 import { Toasts } from '@/ts/Toast/type';
 
@@ -18,6 +19,7 @@ export default defineComponent({
   name: 'Page',
   components: {
     Toast,
+    PageStatusBar,
     PageHistory,
     MediathequeModale,
     PageContent,
@@ -54,30 +56,17 @@ export default defineComponent({
       loading: false,
       currentLocale: '',
       page: {} as Page,
+      activeTab: 'content' as string,
       sectionErrors: {} as Record<
         string,
         { hasError: boolean; errorsByLocale: Record<string, Record<string, string>> }
       >,
-      autoSaveTimeout: null as ReturnType<typeof setTimeout> | null,
-      autoSaveStatus: 'idle' as 'idle' | 'saving' | 'saved' | 'error',
-      autoSaveTime: '' as string,
-      restoreStatus: 'idle' as 'idle' | 'restored',
-      restoreTime: '' as string,
-      activeTab: 'content' as string,
-      pageWatchReady: false as boolean,
       toasts: {
-        success: {
-          show: false,
-          msg: '',
-        },
-        error: {
-          show: false,
-          msg: '',
-        },
+        success: { show: false, msg: '' },
+        error: { show: false, msg: '' },
       } as Toasts,
     };
   },
-
   mounted() {
     this.loadPage();
     this.currentLocale = this.locales.current;
@@ -85,89 +74,11 @@ export default defineComponent({
       initFlowbite();
     });
   },
-
-  watch: {
-    showErrorSummaryButton(value: boolean) {
-      if (value) {
-        this.$nextTick(() => {
-          initFlowbite();
-        });
-      }
-    },
-    page: {
-      deep: true,
-      handler() {
-        if (!this.pageWatchReady) {
-          return;
-        }
-
-        if (this.hasAnyError) {
-          return;
-        }
-
-        if (this.autoSaveTimeout) {
-          clearTimeout(this.autoSaveTimeout);
-        }
-
-        this.autoSaveStatus = 'idle';
-
-        this.autoSaveTimeout = setTimeout(() => {
-          this.autoSave();
-        }, 2000);
-      },
-    },
-  },
-
   computed: {
     hasContentError(): boolean {
       return this.sectionErrors.content?.hasError ?? false;
     },
-    hasAnyError(): boolean {
-      return Object.values(this.sectionErrors).some((section) => section.hasError);
-    },
-    sectionLabels(): Record<string, string> {
-      return {
-        content: this.translate.onglet_content,
-        seo: this.translate.onglet_seo,
-      };
-    },
-    sectionTabIds(): Record<string, string> {
-      return {
-        content: 'nav-0-tab',
-        seo: 'nav-1-tab',
-      };
-    },
-    allErrors(): Array<{ section: string; locale: string; message: string }> {
-      const result: Array<{ section: string; locale: string; message: string }> = [];
-
-      for (const section of Object.keys(this.sectionErrors)) {
-        const errorsByLocale = this.sectionErrors[section]?.errorsByLocale ?? {};
-        const sectionLabel = this.sectionLabels[section] ?? section;
-
-        for (const locale of Object.keys(errorsByLocale)) {
-          const fieldErrors = errorsByLocale[locale];
-          for (const field of Object.keys(fieldErrors)) {
-            if (fieldErrors[field] !== '') {
-              result.push({
-                section,
-                locale,
-                message: `${sectionLabel} (${this.locales.localesTranslate[locale]}) : ${fieldErrors[field]}`,
-              });
-            }
-          }
-        }
-      }
-
-      return result;
-    },
-    allErrorMessages(): string[] {
-      return this.allErrors.map((error) => error.message);
-    },
-    showErrorSummaryButton(): boolean {
-      return this.allErrors.length > 1;
-    },
   },
-
   methods: {
     loadPage() {
       let url = this.urls.load_page;
@@ -179,60 +90,17 @@ export default defineComponent({
         .get(url, {})
         .then((response) => {
           this.page = response.data.page;
-          /*
-          this.historyInfo = response.data.history;
-          this.menus = response.data.menus;*/
         })
         .catch((error) => {
           console.error(error);
         })
         .finally(() => {
           this.loading = false;
-          this.$nextTick(() => {
-            this.pageWatchReady = true;
-          });
+          (this.$refs.statusBar as InstanceType<typeof PageStatusBar>)?.notifyPageReady();
         });
     },
-
-    /**
-     * Sauvegarde auto
-     */
-    autoSave() {
-      this.autoSaveStatus = 'saving';
-
-      axios
-        .put(this.urls.auto_save, { page: this.page })
-        .then(() => {
-          this.autoSaveStatus = 'saved';
-          const now = new Date();
-          this.autoSaveTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        })
-        .catch(() => {
-          this.autoSaveStatus = 'error';
-        });
-    },
-
-    /**
-     * Redirect vers l'onglet et la langue ou l'erreur est présente
-     * @param error
-     */
-    goToError(error: { section: string; locale: string }) {
-      this.currentLocale = error.locale;
-
-      const tabId = this.sectionTabIds[error.section];
-      if (tabId) {
-        const tabButton = document.getElementById(tabId);
-        tabButton?.click();
-      }
-    },
-
-    /**
-     * Mise à jour Pour pageTranslation
-     * @param payload
-     */
     handleUpdatePageTranslation(payload: { locale: string; field: 'titre' | 'url'; value: string }) {
       const translation = this.page.pageTranslations.find((t) => t.locale === payload.locale);
-
       if (translation) {
         translation[payload.field] = payload.value;
       } else {
@@ -245,11 +113,9 @@ export default defineComponent({
         });
       }
     },
-
     handleUpdateHeaderImg(url: string | null) {
       this.page.headerImg = url;
     },
-
     handleSectionErrors(payload: {
       section: string;
       hasError: boolean;
@@ -260,36 +126,32 @@ export default defineComponent({
         errorsByLocale: payload.errorsByLocale,
       };
     },
-
-    /**
-     * Restautation de la page
-     * @param page
-     */
     handleRestoreHistory(page: Page, msg: string) {
-      this.pageWatchReady = false;
+      (this.$refs.statusBar as InstanceType<typeof PageStatusBar>).notifyRestore();
       this.page = page;
       this.toasts.success.show = true;
       this.toasts.success.msg = msg;
-      this.restoreStatus = 'restored';
-      const now = new Date();
-      this.restoreTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
       setTimeout(() => {
         this.toasts.success.show = false;
       }, 3000);
-      this.$nextTick(() => {
-        this.pageWatchReady = true;
-      });
+    },
+    handleGoToError(error: { section: string; locale: string }) {
+      this.currentLocale = error.locale;
+      const tabIds: Record<string, string> = {
+        content: 'nav-0-tab',
+        seo: 'nav-1-tab',
+      };
+      const tabButton = document.getElementById(tabIds[error.section]);
+      tabButton?.click();
     },
   },
 });
 </script>
-
 <template>
   <SkeletonPageContent v-if="loading" />
 
   <div v-else-if="Object.keys(page).length === 0">
     <div class="flex flex-col items-center justify-center py-16 px-6 text-center">
-      <!-- Icône -->
       <div
         class="w-16 h-16 rounded-2xl flex items-center justify-center mb-5"
         style="background-color: var(--primary-lighter)"
@@ -303,18 +165,8 @@ export default defineComponent({
           />
         </svg>
       </div>
-
-      <!-- Titre -->
-      <p class="text-lg font-bold mb-2" style="color: var(--text-primary)">
-        {{ translate.page_no_exist_title }}
-      </p>
-
-      <!-- Description -->
-      <p class="text-sm max-w-xs mb-6" style="color: var(--text-secondary)">
-        {{ translate.page_no_exist_text }}
-      </p>
-
-      <!-- Boutons -->
+      <p class="text-lg font-bold mb-2" style="color: var(--text-primary)">{{ translate.page_no_exist_title }}</p>
+      <p class="text-sm max-w-xs mb-6" style="color: var(--text-secondary)">{{ translate.page_no_exist_text }}</p>
       <div class="flex items-center gap-3">
         <a :href="urls.listing" class="btn btn-sm btn-outline-dark flex items-center gap-2">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -336,8 +188,8 @@ export default defineComponent({
     <div class="mb-4 mt-4 border-b border-gray-200 dark:border-gray-700" id="nav-tab-option-system">
       <div class="float-right flex items-center" style="margin-top: -0.5rem">
         <div class="input-addon-group">
-          <span class="input-addon input-addon-left"
-            ><svg
+          <span class="input-addon input-addon-left">
+            <svg
               class="icon-sm"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
@@ -352,12 +204,12 @@ export default defineComponent({
                 stroke-linejoin="round"
                 stroke-width="2"
                 d="m13 19 3.5-9 3.5 9m-6.125-2h5.25M3 7h7m0 0h2m-2 0c0 1.63-.793 3.926-2.239 5.655M7.5 6.818V5m.261 7.655C6.79 13.82 5.521 14.725 4 15m3.761-2.345L5 10m2.761 2.655L10.2 15"
-              ></path></svg></span
-          ><select id="select-language" class="form-input form-input-sm" style="width: 120px" v-model="currentLocale">
+              />
+            </svg>
+          </span>
+          <select id="select-language" class="form-input form-input-sm" style="width: 120px" v-model="currentLocale">
             <option value="" selected>{{ translate.select_locale }}</option>
-            <option v-for="(language, key) in locales.localesTranslate" :value="key">
-              {{ language }}
-            </option>
+            <option v-for="(language, key) in locales.localesTranslate" :value="key">{{ language }}</option>
           </select>
         </div>
       </div>
@@ -387,7 +239,7 @@ export default defineComponent({
                 stroke-linejoin="round"
                 stroke-width="2"
                 d="M4 6h16M4 10h16M4 14h16M4 18h16"
-              ></path>
+              />
             </svg>
             {{ translate.onglet_content }}
             <span
@@ -414,7 +266,7 @@ export default defineComponent({
                 stroke-linejoin="round"
                 stroke-width="2"
                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              ></path>
+              />
             </svg>
             {{ translate.onglet_seo }}
           </button>
@@ -436,7 +288,7 @@ export default defineComponent({
                 stroke-linejoin="round"
                 stroke-width="2"
                 d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
-              ></path>
+              />
             </svg>
             {{ translate.onglet_tags }}
           </button>
@@ -444,7 +296,7 @@ export default defineComponent({
         <li class="me-2" role="presentation">
           <button
             class="inline-flex gap-1.5 items-center ps-4 pt-2 pe-4 pb-2 border-b-2 rounded-t-sm cursor-pointer dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:hover:text-gray-300"
-            id="nav-2-tab"
+            id="nav-3-tab"
             data-tabs-target="#page-history"
             type="button"
             role="tab"
@@ -458,7 +310,7 @@ export default defineComponent({
                 stroke-linejoin="round"
                 stroke-width="2"
                 d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-              ></path>
+              />
             </svg>
             {{ translate.onglet_history }}
           </button>
@@ -466,7 +318,7 @@ export default defineComponent({
         <li class="me-2" role="presentation">
           <button
             class="inline-flex gap-1.5 items-center ps-4 pt-2 pe-4 pb-2 border-b-2 rounded-t-sm cursor-pointer dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:hover:text-gray-300"
-            id="nav-2-tab"
+            id="nav-4-tab"
             data-tabs-target="#page-save"
             type="button"
             role="tab"
@@ -480,7 +332,7 @@ export default defineComponent({
                 stroke-linejoin="round"
                 stroke-width="2"
                 d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"
-              ></path>
+              />
             </svg>
             {{ translate.onglet_save }}
           </button>
@@ -489,7 +341,7 @@ export default defineComponent({
     </div>
 
     <div id="nav-tab-page">
-      <div class="" id="page-content" role="tabpanel" aria-labelledby="profile-tab">
+      <div class="" id="page-content" role="tabpanel" aria-labelledby="nav-0-tab">
         <PageContent
           :translate="translate"
           :page="page"
@@ -502,9 +354,9 @@ export default defineComponent({
           @update-header-img="handleUpdateHeaderImg"
         />
       </div>
-      <div class="hidden" id="page-seo" role="tabpanel" aria-labelledby="profile-tab2">Seo</div>
-      <div class="hidden" id="page-tag" role="tabpanel" aria-labelledby="profile-tab3">Tag</div>
-      <div class="hidden" id="page-history" role="tabpanel" aria-labelledby="profile-tab3">
+      <div class="hidden" id="page-seo" role="tabpanel" aria-labelledby="nav-1-tab">Seo</div>
+      <div class="hidden" id="page-tag" role="tabpanel" aria-labelledby="nav-2-tab">Tag</div>
+      <div class="hidden" id="page-history" role="tabpanel" aria-labelledby="nav-3-tab">
         <PageHistory
           :id="id"
           :urls="urls"
@@ -513,117 +365,23 @@ export default defineComponent({
           @restore-history="handleRestoreHistory"
         />
       </div>
-      <div class="hidden" id="page-save" role="tabpanel" aria-labelledby="profile-tab3">Save</div>
+      <div class="hidden" id="page-save" role="tabpanel" aria-labelledby="nav-4-tab">Save</div>
     </div>
   </div>
 
-  ---
   <SkeletonPageSEO />
-  ---
   <SkeletonPageTag />
-  ---
   <SkeletonPageSave />
 
-  <div
-    class="fixed right-0 bottom-0 left-0 lg:left-64 z-40 shrink-0 px-4 sm:px-6 py-3 flex items-center justify-between bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]"
-  >
-    <div class="flex items-center gap-2 flex-1 min-w-0">
-      <template v-if="!hasAnyError">
-        <p
-          v-if="autoSaveStatus === 'saving'"
-          class="text-xs flex items-center gap-2 text-gray-500 dark:text-gray-400 shrink-0"
-        >
-          <svg class="w-3 h-3 animate-spin shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-            />
-          </svg>
-          {{ translate.loading }}
-        </p>
-        <p
-          v-else-if="autoSaveStatus === 'saved'"
-          class="text-xs flex items-center gap-2 shrink-0"
-          style="color: var(--alert-success-text)"
-        >
-          <span
-            class="w-2 h-2 rounded-full inline-block shrink-0"
-            style="background-color: var(--alert-success-text)"
-          ></span>
-          {{ translate.auto_save_success }} {{ autoSaveTime }}
-        </p>
-        <p
-          v-else-if="autoSaveStatus === 'error'"
-          class="text-xs flex items-center gap-2 shrink-0"
-          style="color: var(--alert-danger-text)"
-        >
-          <span class="w-2 h-2 rounded-full inline-block shrink-0" style="background-color: var(--btn-danger)"></span>
-          {{ translate.auto_save_error }}
-        </p>
-        <p
-          v-else-if="restoreStatus === 'restored'"
-          class="text-xs flex items-center gap-2 shrink-0"
-          style="color: var(--alert-success-text)"
-        >
-          <span
-            class="w-2 h-2 rounded-full inline-block shrink-0"
-            style="background-color: var(--alert-success-text)"
-          ></span>
-          {{ translate.msg_titre_restore_history }} {{ restoreTime }}
-        </p>
-        <p v-else class="text-xs flex items-center gap-2 text-gray-500 dark:text-gray-400 shrink-0">
-          <span class="w-2 h-2 rounded-full inline-block shrink-0 bg-amber-500"></span>
-          Modifications non sauvegardées
-        </p>
-      </template>
-      <div v-else class="text-xs flex items-center gap-2 min-w-0" style="color: var(--alert-danger-text)">
-        <span class="w-2 h-2 rounded-full inline-block shrink-0" style="background-color: var(--btn-danger)"></span>
-        <span class="truncate">{{ allErrorMessages[0] }}</span>
-        <button
-          v-if="showErrorSummaryButton"
-          id="errorSummaryButton"
-          data-dropdown-toggle="errorSummaryDropdown"
-          data-dropdown-placement="top"
-          type="button"
-          class="shrink-0 underline hover:no-underline"
-        >
-          (+{{ allErrorMessages.length - 1 }})
-        </button>
-
-        <div
-          id="errorSummaryDropdown"
-          class="z-50 hidden bg-white dark:bg-gray-800 divide-y divide-gray-100 dark:divide-gray-700 rounded-lg shadow-lg w-72 border border-gray-200 dark:border-gray-700"
-        >
-          <ul class="py-2 text-xs">
-            <li v-for="(error, index) in allErrors" :key="index">
-              <button
-                type="button"
-                class="w-full flex items-start gap-2 px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
-                @click="goToError(error)"
-              >
-                <span
-                  class="w-1.5 h-1.5 rounded-full inline-block shrink-0 mt-1"
-                  style="background-color: var(--btn-danger)"
-                ></span>
-                <span class="text-gray-700 dark:text-gray-300">{{ error.message }}</span>
-              </button>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div class="flex items-center gap-3">
-      <a :href="urls.listing" class="btn btn-outline-dark btn-sm">{{ translate.btn_back }}</a>
-      <button class="btn btn-primary btn-sm" :disabled="hasAnyError">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-        </svg>
-        {{ translate.page_save.btn_save }}
-      </button>
-    </div>
-  </div>
+  <PageStatusBar
+    ref="statusBar"
+    :page="page"
+    :urls="urls"
+    :locales="locales"
+    :translate="translate"
+    :section-errors="sectionErrors"
+    @go-to-error="handleGoToError"
+  />
 
   <MediathequeModale :url-media="urls.load_media" :translate="translate.page_content_form.mediatheque" />
 
@@ -633,7 +391,6 @@ export default defineComponent({
         <div v-html="toasts.success.msg"></div>
       </template>
     </toast>
-
     <toast :id="'toastError'" :type="'danger'" :show="toasts.error.show">
       <template #body>
         <div v-html="toasts.error.msg"></div>
