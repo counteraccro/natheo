@@ -14,10 +14,12 @@ import PageHistory from '@/vue/Components/Page/PageHistory.vue';
 import PageStatusBar from '@/vue/Components/Page/PageStatusBar.vue';
 import Toast from '@/vue/Components/Global/Toast.vue';
 import { Toasts } from '@/ts/Toast/type';
+import PageSeo from '@/vue/Components/Page/PageSeo.vue';
 
 export default defineComponent({
   name: 'Page',
   components: {
+    PageSeo,
     Toast,
     PageStatusBar,
     PageHistory,
@@ -99,6 +101,11 @@ export default defineComponent({
           (this.$refs.statusBar as InstanceType<typeof PageStatusBar>)?.notifyPageReady();
         });
     },
+
+    /**
+     * Mise à jour données page
+     * @param payload
+     */
     handleUpdatePageTranslation(payload: { locale: string; field: 'titre' | 'url'; value: string }) {
       const translation = this.page.pageTranslations.find((t) => t.locale === payload.locale);
       if (translation) {
@@ -113,6 +120,43 @@ export default defineComponent({
         });
       }
     },
+
+    /**
+     * Mise à jour donnée SEO
+     * @param payload
+     */
+    handleUpdatePageMeta(payload: { name: string; locale: string; value: string }) {
+      const meta = this.page.pageMetas.find((m) => m.name === payload.name);
+
+      if (meta) {
+        const translation = meta.pageMetaTranslations.find((t) => t.locale === payload.locale);
+        if (translation) {
+          translation.value = payload.value;
+        } else {
+          meta.pageMetaTranslations.push({
+            id: null,
+            pageMeta: meta.id,
+            locale: payload.locale,
+            value: payload.value,
+          });
+        }
+      } else {
+        this.page.pageMetas.push({
+          id: null,
+          page: this.page.id,
+          name: payload.name,
+          pageMetaTranslations: [
+            {
+              id: null,
+              pageMeta: null,
+              locale: payload.locale,
+              value: payload.value,
+            },
+          ],
+        });
+      }
+    },
+
     handleUpdateHeaderImg(url: string | null) {
       this.page.headerImg = url;
     },
@@ -354,7 +398,16 @@ export default defineComponent({
           @update-header-img="handleUpdateHeaderImg"
         />
       </div>
-      <div class="hidden" id="page-seo" role="tabpanel" aria-labelledby="nav-1-tab">Seo</div>
+      <div class="hidden" id="page-seo" role="tabpanel" aria-labelledby="nav-1-tab">
+        <PageSeo
+          :translate="translate"
+          :page="page"
+          :current-locale="currentLocale"
+          :locales="locales"
+          @update-meta="handleUpdatePageMeta"
+          @update:section-errors="handleSectionErrors"
+        />
+      </div>
       <div class="hidden" id="page-tag" role="tabpanel" aria-labelledby="nav-2-tab">Tag</div>
       <div class="hidden" id="page-history" role="tabpanel" aria-labelledby="nav-3-tab">
         <PageHistory
