@@ -83,6 +83,10 @@ export interface PageSeoTranslate {
   input_meta_author_help: string;
   input_meta_copyright_label: string;
   input_meta_copyright_help: string;
+  input_meta_description_error: string;
+  input_meta_keywords_error: string;
+  input_meta_author_error: string;
+  input_meta_copyright_error: string;
 }
 
 export interface PageTranslations {
