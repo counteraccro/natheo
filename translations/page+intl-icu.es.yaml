@@ -178,3 +178,7 @@ page.preview.no.possible.title: __page.preview.no.possible.title
 page.preview.no.possible: __page.preview.no.possible
 page.preview.warning: __page.preview.warning
 page.page_history.load_more: __page.page_history.load_more
+page.page_seo.input.meta.description.error: __page.page_seo.input.meta.description.error
+page.page_seo.input.meta.keywords.error: __page.page_seo.input.meta.keywords.error
+page.page_seo.input.meta.author.error: __page.page_seo.input.meta.author.error
+page.page_seo.input.meta.copyright.error: __page.page_seo.input.meta.copyright.error

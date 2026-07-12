@@ -93,7 +93,7 @@ page.page_content_block.modale.new.choice_info: 'Le contenu peut être du texte,
 page.content.text: 'Bloc de texte'
 page.page_content_block.loading: chargement...
 page.msg.add_content_success: 'Contenu ajouté avec succès'
-page.msg.titre.restore.history: "Page restaurée avec succès à "
+page.msg.titre.restore.history: 'Page restaurée avec succès à '
 page.msg.btn.restore.history: Restaurer
 page.msg.btn.cancel.restore.history: Masquer
 page.msg.history.reload: 'Des modifications non enregistrées ont été détectées, voulez vous les restaurer ?'
@@ -101,8 +101,8 @@ page.msg.history.new.reload: 'Une nouvelle page à été créée sans être enre
 page.msg.error_url_no_unique: "Cette url est déjà utilisée pour une autre page de l'application"
 page.page_history.id: '#'
 page.page_history.time: Date
-page.page_history.user: 'Origine'
-page.page_history.action: 'Dernière'
+page.page_history.user: Origine
+page.page_history.action: Dernière
 page.page_history.error: 'Une erreur est survenue lors de la restauration des données'
 page.tag.auto_complete.empty.result: 'Aucun résultat pour ce tag, cliquez sur "ajouter" pour le créer'
 page.content.type.faq: Faq
@@ -181,3 +181,7 @@ page.page_content.auto_slug.label: "Générer automatiquement l'url"
 page.msg.auto_save.error: 'Une erreur est survenue lors de la sauvegarde automatique'
 page.msg.auto_save.run: 'En cours de sauvegarde...'
 page.page_history.load_more: 'Charger plus...'
+page.page_seo.input.meta.description.error: 'La description est obligatoire'
+page.page_seo.input.meta.keywords.error: 'Au moins 1 mot clé doit être saisi'
+page.page_seo.input.meta.author.error: "Il faut préciser l'auteur de la page"
+page.page_seo.input.meta.copyright.error: "Il faut saisir un copyright"

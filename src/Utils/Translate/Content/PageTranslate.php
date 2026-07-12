@@ -116,6 +116,22 @@ class PageTranslate extends AppTranslate
                 'page.page_seo.input.meta_copyright.help',
                 domain: 'page',
             ),
+            'input_meta_description_error' => $this->translator->trans(
+                'page.page_seo.input.meta.description.error',
+                domain: 'page',
+            ),
+            'input_meta_keywords_error' => $this->translator->trans(
+                'page.page_seo.input.meta.keywords.error',
+                domain: 'page',
+            ),
+            'input_meta_author_error' => $this->translator->trans(
+                'page.page_seo.input.meta.author.error',
+                domain: 'page',
+            ),
+            'input_meta_copyright_error' => $this->translator->trans(
+                'page.page_seo.input.meta.copyright.error',
+                domain: 'page',
+            ),
         ];
     }
 
