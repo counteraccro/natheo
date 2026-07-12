@@ -15,10 +15,12 @@ import PageStatusBar from '@/vue/Components/Page/PageStatusBar.vue';
 import Toast from '@/vue/Components/Global/Toast.vue';
 import { Toasts } from '@/ts/Toast/type';
 import PageSeo from '@/vue/Components/Page/PageSeo.vue';
+import PageSEO from '@/vue/Components/Page/PageSeo.vue';
 
 export default defineComponent({
   name: 'Page',
   components: {
+    PageSEO,
     PageSeo,
     Toast,
     PageStatusBar,
@@ -79,6 +81,9 @@ export default defineComponent({
   computed: {
     hasContentError(): boolean {
       return this.sectionErrors.content?.hasError ?? false;
+    },
+    hasSeoError(): boolean {
+      return this.sectionErrors.seo?.hasError ?? false;
     },
   },
   methods: {
@@ -313,6 +318,7 @@ export default defineComponent({
               />
             </svg>
             {{ translate.onglet_seo }}
+            <span v-if="hasSeoError" class="w-2 h-2 rounded-full" style="background-color: var(--btn-danger)"></span>
           </button>
         </li>
         <li class="me-2" role="presentation">
@@ -399,7 +405,7 @@ export default defineComponent({
         />
       </div>
       <div class="hidden" id="page-seo" role="tabpanel" aria-labelledby="nav-1-tab">
-        <PageSeo
+        <PageSEO
           :translate="translate"
           :page="page"
           :current-locale="currentLocale"

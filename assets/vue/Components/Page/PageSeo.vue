@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { Locales, Page, PageMeta, PageMetaTranslationItem, PageSeoTranslate, PageTranslations } from '@/ts/Page/type';
+import { Locales, Page, PageSeoTranslate, PageTranslations } from '@/ts/Page/type';
 
 const SEO_FIELDS = ['description', 'keywords', 'author', 'copyright'] as const;
 type SeoField = (typeof SEO_FIELDS)[number];
@@ -45,7 +45,11 @@ export default defineComponent({
   computed: {
     currentMetaDescription: {
       get(): string {
-        return this.getMetaValue('description', this.currentLocale);
+        return (
+          this.page.pageMetas
+            .find((m) => m.name === 'description')
+            ?.pageMetaTranslations.find((t) => t.locale === this.currentLocale)?.value ?? ''
+        );
       },
       set(value: string) {
         this.$emit('update-meta', { name: 'description', locale: this.currentLocale, value });
@@ -53,7 +57,11 @@ export default defineComponent({
     },
     currentMetaKeywords: {
       get(): string {
-        return this.getMetaValue('keywords', this.currentLocale);
+        return (
+          this.page.pageMetas
+            .find((m) => m.name === 'keywords')
+            ?.pageMetaTranslations.find((t) => t.locale === this.currentLocale)?.value ?? ''
+        );
       },
       set(value: string) {
         this.$emit('update-meta', { name: 'keywords', locale: this.currentLocale, value });
@@ -61,7 +69,11 @@ export default defineComponent({
     },
     currentMetaAuthor: {
       get(): string {
-        return this.getMetaValue('author', this.currentLocale);
+        return (
+          this.page.pageMetas
+            .find((m) => m.name === 'author')
+            ?.pageMetaTranslations.find((t) => t.locale === this.currentLocale)?.value ?? ''
+        );
       },
       set(value: string) {
         this.$emit('update-meta', { name: 'author', locale: this.currentLocale, value });
@@ -69,7 +81,11 @@ export default defineComponent({
     },
     currentMetaCopyright: {
       get(): string {
-        return this.getMetaValue('copyright', this.currentLocale);
+        return (
+          this.page.pageMetas
+            .find((m) => m.name === 'copyright')
+            ?.pageMetaTranslations.find((t) => t.locale === this.currentLocale)?.value ?? ''
+        );
       },
       set(value: string) {
         this.$emit('update-meta', { name: 'copyright', locale: this.currentLocale, value });
@@ -87,7 +103,10 @@ export default defineComponent({
         };
 
         for (const field of SEO_FIELDS) {
-          const value = this.getMetaValue(field, locale);
+          const meta = this.page.pageMetas.find((m) => m.name === field);
+          const translation = meta?.pageMetaTranslations.find((t) => t.locale === locale);
+          const value = translation?.value ?? '';
+
           if (value.trim() === '') {
             errors[field] = this.translate.page_seo[SEO_ERROR_KEYS[field]] ?? '';
           }
@@ -125,17 +144,6 @@ export default defineComponent({
           errorsByLocale: value,
         });
       },
-    },
-  },
-  methods: {
-    getMetaByName(name: string): PageMeta | undefined {
-      return this.page.pageMetas.find((m) => m.name === name);
-    },
-    getMetaTranslation(name: string, locale: string): PageMetaTranslationItem | undefined {
-      return this.getMetaByName(name)?.pageMetaTranslations.find((t) => t.locale === locale);
-    },
-    getMetaValue(name: string, locale: string): string {
-      return this.getMetaTranslation(name, locale)?.value ?? '';
     },
   },
 });
