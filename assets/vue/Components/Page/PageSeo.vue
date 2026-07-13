@@ -1,4 +1,10 @@
 <script lang="ts">
+/**
+ * Gestionnaire des Page - Onglet SEO
+ * @author Gourdon Aymeric
+ * @version 2.0
+ */
+
 import { defineComponent, PropType } from 'vue';
 import { Locales, Page, PageSeoTranslate, PageTranslations } from '@/ts/Page/type';
 
@@ -43,6 +49,9 @@ export default defineComponent({
   },
   emits: ['update-meta', 'update:section-errors'],
   computed: {
+    /**
+     * Getter / Setter MediaDescription
+     */
     currentMetaDescription: {
       get(): string {
         return (
@@ -55,6 +64,10 @@ export default defineComponent({
         this.$emit('update-meta', { name: 'description', locale: this.currentLocale, value });
       },
     },
+
+    /**
+     * Getter / Setter Meta Keywords
+     */
     currentMetaKeywords: {
       get(): string {
         return (
@@ -67,6 +80,10 @@ export default defineComponent({
         this.$emit('update-meta', { name: 'keywords', locale: this.currentLocale, value });
       },
     },
+
+    /**
+     * Getter / setter meta Author
+     */
     currentMetaAuthor: {
       get(): string {
         return (
@@ -79,6 +96,10 @@ export default defineComponent({
         this.$emit('update-meta', { name: 'author', locale: this.currentLocale, value });
       },
     },
+
+    /**
+     * Getter / Setter Copyright
+     */
     currentMetaCopyright: {
       get(): string {
         return (
@@ -91,6 +112,10 @@ export default defineComponent({
         this.$emit('update-meta', { name: 'copyright', locale: this.currentLocale, value });
       },
     },
+
+    /**
+     * Retourne un tableau d'erreur en fonction de la locale
+     */
     errorsByLocale(): PageSeoErrorsByLocale {
       const result: PageSeoErrorsByLocale = {};
 
@@ -117,6 +142,10 @@ export default defineComponent({
 
       return result;
     },
+
+    /**
+     * Erreurs
+     */
     fieldErrors(): PageSeoFieldErrors {
       return (
         this.errorsByLocale[this.currentLocale] ?? {
@@ -127,6 +156,10 @@ export default defineComponent({
         }
       );
     },
+
+    /**
+     * true ou false en fonction si une erreur est présente ou non
+     */
     hasError(): boolean {
       return Object.values(this.errorsByLocale).some((localeErrors) =>
         Object.values(localeErrors).some((error) => error !== '')
