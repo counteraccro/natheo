@@ -1,4 +1,10 @@
 <script lang="ts">
+/**
+ * Gestionnaire des Page - Onglet historique
+ * @author Gourdon Aymeric
+ * @version 2.0
+ */
+
 import { defineComponent, PropType } from 'vue';
 import { PageHistoryEntry, PageHistoryTranslate, Urls } from '@/ts/Page/type';
 import axios from 'axios';
@@ -30,9 +36,15 @@ export default defineComponent({
     return { loading: false, history: [] as PageHistoryEntry[], visibleCount: 10 as number, step: 10 as number };
   },
   computed: {
+    /**
+     * Pagination
+     */
     visibleHistory(): PageHistoryEntry[] {
       return this.history.slice(0, this.visibleCount);
     },
+    /**
+     * Affiche ou non le bouton plus en fonction des elements restants
+     */
     hasMore(): boolean {
       return this.visibleCount < this.history.length;
     },
