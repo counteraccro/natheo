@@ -1,4 +1,9 @@
 <script lang="ts">
+/**
+ * Gestionnaire des Pages - Onglet Content
+ * @author Gourdon Aymeric
+ * @version 2.0
+ */
 import { defineComponent, PropType } from 'vue';
 import { Locales, Page, PageData, PageTranslationItem, PageTranslations, Urls } from '@/ts/Page/type';
 import axios from 'axios';
@@ -57,6 +62,9 @@ export default defineComponent({
   },
   emits: ['update-translation', 'update:section-errors', 'update-header-img'],
   computed: {
+    /**
+     * Slug de l'url
+     */
     currentAutoSlugEnabled: {
       get(): boolean {
         return this.autoSlugEnabled[this.currentLocale] ?? false;
@@ -69,9 +77,17 @@ export default defineComponent({
         }
       },
     },
+
+    /**
+     * Retourne la traduction courante
+     */
     currentTranslation(): PageTranslationItem | undefined {
       return this.page.pageTranslations.find((t) => t.locale === this.currentLocale);
     },
+
+    /**
+     * setter / getter titre
+     */
     currentTitre: {
       get(): string {
         return this.currentTranslation?.titre ?? '';
@@ -84,6 +100,10 @@ export default defineComponent({
         });
       },
     },
+
+    /**
+     * Setter / Getter url
+     */
     currentUrl: {
       get(): string {
         return this.currentTranslation?.url ?? '';
@@ -96,9 +116,17 @@ export default defineComponent({
         });
       },
     },
+
+    /**
+     * Vérification si l"url est unique ou non
+     */
     isCheckingUrl(): boolean {
       return this.urlCheckPending[this.currentLocale] ?? false;
     },
+
+    /**
+     * Gère les erreurs en fonction de la locale
+     */
     errorsByLocale(): PageContentErrorsByLocale {
       const result: PageContentErrorsByLocale = {};
 
@@ -122,9 +150,17 @@ export default defineComponent({
 
       return result;
     },
+
+    /**
+     * Liste des erreurs en fonction de la locale
+     */
     fieldErrors(): PageContentFieldErrors {
       return this.errorsByLocale[this.currentLocale] ?? { titre: '', url: '' };
     },
+
+    /**
+     * Une erreur existe ?
+     */
     hasError(): boolean {
       return Object.values(this.errorsByLocale).some((localeErrors) =>
         Object.values(localeErrors).some((error) => error !== '')
@@ -179,6 +215,11 @@ export default defineComponent({
     },
   },
   methods: {
+    /**
+     * Vérifie si yne url est unique ou non
+     * @param url
+     * @param locale
+     */
     checkUrlUniqueness(url: string, locale: string) {
       const translation = this.page.pageTranslations.find((t) => t.locale === locale);
 
@@ -195,6 +236,10 @@ export default defineComponent({
         });
     },
 
+    /**
+     * Génère un slug en fonction d'une string
+     * @param value
+     */
     slugify(value: string): string {
       return value
         .normalize('NFD')
@@ -205,11 +250,18 @@ export default defineComponent({
         .replace(/[\s_-]+/g, '-')
         .replace(/^-+|-+$/g, '');
     },
+
+    /**
+     * Met à jour l"url en fonction du slug
+     */
     applySlugFromTitre() {
       this.isAutoSlugging = true;
       this.currentUrl = this.slugify(this.currentTitre);
     },
 
+    /**
+     * Ouvre le gestionnaire de média
+     */
     openMediaPicker(): void {
       window.dispatchEvent(
         new CustomEvent('natheo:open-media', {
@@ -223,6 +275,9 @@ export default defineComponent({
       );
     },
 
+    /**
+     * Supprime l'image de la page
+     */
     removeHeaderImg(): void {
       this.headerImg = null;
       this.$emit('update-header-img', null);
