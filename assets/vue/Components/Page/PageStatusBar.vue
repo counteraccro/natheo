@@ -1,4 +1,10 @@
 <script lang="ts">
+/**
+ * Gestionnaire des Page - StatusBar
+ * @author Gourdon Aymeric
+ * @version 2.0
+ */
+
 import { defineComponent, PropType } from 'vue';
 import { Locales, Page, PageTranslations, Urls } from '@/ts/Page/type';
 import axios from 'axios';
@@ -74,12 +80,23 @@ export default defineComponent({
     },
   },
   computed: {
+    /**
+     * True ou false si une erreur dans la section content existe
+     */
     hasContentError(): boolean {
       return this.sectionErrors.content?.hasError ?? false;
     },
+
+    /**
+     * True ou false si une erreur existe
+     */
     hasAnyError(): boolean {
       return Object.values(this.sectionErrors).some((section) => section.hasError);
     },
+
+    /**
+     * Retourne la liste des sections
+     */
     sectionLabels(): Record<string, string> {
       return {
         content: this.translate.onglet_content,
@@ -92,6 +109,10 @@ export default defineComponent({
         seo: 'nav-1-tab',
       };
     },
+
+    /**
+     * Affiche l'ensemble des erreurs sous forme d'un tableau
+     */
     allErrors(): Array<{ section: string; locale: string; message: string }> {
       const result: Array<{ section: string; locale: string; message: string }> = [];
 
@@ -115,19 +136,34 @@ export default defineComponent({
 
       return result;
     },
+
+    /**
+     * Retourne l'ensemble des messages d'erreurs
+     */
     allErrorMessages(): string[] {
       return this.allErrors.map((error) => error.message);
     },
+
+    /**
+     * Affiche le bouton +
+     */
     showErrorSummaryButton(): boolean {
       return this.allErrors.length > 1;
     },
   },
   methods: {
+    /**
+     * Détermine si la page est ready
+     */
     notifyPageReady() {
       this.$nextTick(() => {
         this.pageWatchReady = true;
       });
     },
+
+    /**
+     * Affiche la notification de page restauré
+     */
     notifyRestore() {
       this.pageWatchReady = false;
       this.autoSaveStatus = 'idle';
@@ -141,6 +177,10 @@ export default defineComponent({
         this.pageWatchReady = true;
       });
     },
+
+    /**
+     * Affichage message d'autosave
+     */
     triggerAutoSave() {
       this.autoSaveStatus = 'saving';
 
@@ -155,6 +195,11 @@ export default defineComponent({
           this.autoSaveStatus = 'error';
         });
     },
+
+    /**
+     * Ce déplace vers l'erreur
+     * @param error
+     */
     goToError(error: { section: string; locale: string }) {
       this.$emit('go-to-error', error);
     },
