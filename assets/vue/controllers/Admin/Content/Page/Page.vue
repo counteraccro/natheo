@@ -1,4 +1,10 @@
 <script lang="ts">
+/**
+ * Gestionnaire des Page
+ * @author Gourdon Aymeric
+ * @version 2.0
+ */
+
 import { defineComponent, PropType } from 'vue';
 import SkeletonPageContent from '@/vue/Components/Skeleton/Page/PageContent.vue';
 import SkeletonPageTag from '@/vue/Components/Skeleton/Page/PageTag.vue';
@@ -16,10 +22,12 @@ import Toast from '@/vue/Components/Global/Toast.vue';
 import { Toasts } from '@/ts/Toast/type';
 import PageSeo from '@/vue/Components/Page/PageSeo.vue';
 import PageSEO from '@/vue/Components/Page/PageSeo.vue';
+import PageTag from '@/vue/Components/Page/PageTag.vue';
 
 export default defineComponent({
   name: 'Page',
   components: {
+    PageTag,
     PageSEO,
     PageSeo,
     Toast,
@@ -79,14 +87,23 @@ export default defineComponent({
     });
   },
   computed: {
+    /**
+     * Erreur onglet content
+     */
     hasContentError(): boolean {
       return this.sectionErrors.content?.hasError ?? false;
     },
+    /**
+     * Erreur onglet SEO
+     */
     hasSeoError(): boolean {
       return this.sectionErrors.seo?.hasError ?? false;
     },
   },
   methods: {
+    /**
+     * Chargement de la page
+     */
     loadPage() {
       let url = this.urls.load_page;
       if (this.id !== null) {
@@ -162,9 +179,18 @@ export default defineComponent({
       }
     },
 
+    /**
+     * Mise à jour image de la page
+     * @param url
+     */
     handleUpdateHeaderImg(url: string | null) {
       this.page.headerImg = url;
     },
+
+    /**
+     * Gestionnaire des erreurs
+     * @param payload
+     */
     handleSectionErrors(payload: {
       section: string;
       hasError: boolean;
@@ -175,6 +201,12 @@ export default defineComponent({
         errorsByLocale: payload.errorsByLocale,
       };
     },
+
+    /**
+     * Restauration historique
+     * @param page
+     * @param msg
+     */
     handleRestoreHistory(page: Page, msg: string) {
       (this.$refs.statusBar as InstanceType<typeof PageStatusBar>).notifyRestore();
       this.page = page;
@@ -184,6 +216,11 @@ export default defineComponent({
         this.toasts.success.show = false;
       }, 3000);
     },
+
+    /**
+     * Affichage onglet ou est présent l'erreur
+     * @param error
+     */
     handleGoToError(error: { section: string; locale: string }) {
       this.currentLocale = error.locale;
       const tabIds: Record<string, string> = {
@@ -414,7 +451,9 @@ export default defineComponent({
           @update:section-errors="handleSectionErrors"
         />
       </div>
-      <div class="hidden" id="page-tag" role="tabpanel" aria-labelledby="nav-2-tab">Tag</div>
+      <div class="hidden" id="page-tag" role="tabpanel" aria-labelledby="nav-2-tab">
+        <PageTag :translate="translate" />
+      </div>
       <div class="hidden" id="page-history" role="tabpanel" aria-labelledby="nav-3-tab">
         <PageHistory
           :id="id"
