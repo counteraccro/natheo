@@ -224,6 +224,12 @@ export interface Tag {
   tagTranslations: TagTranslationItem[];
 }
 
+export type TagSuggestion = {
+  id: number;
+  color: string;
+  label: string;
+};
+
 export type PageMenuId = number | string;
 
 export interface Page {
