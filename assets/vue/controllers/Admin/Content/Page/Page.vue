@@ -11,7 +11,7 @@ import SkeletonPageTag from '@/vue/Components/Skeleton/Page/PageTag.vue';
 import SkeletonPageHistory from '@/vue/Components/Skeleton/Page/PageHistory.vue';
 import SkeletonPageSave from '@/vue/Components/Skeleton/Page/PageSave.vue';
 import SkeletonPageSEO from '@/vue/Components/Skeleton/Page/PageSEO.vue';
-import { Locales, Page, PageData, PageTranslations, Urls } from '@/ts/Page/type';
+import { Locales, Page, PageData, PageTranslations, Tag, Urls } from '@/ts/Page/type';
 import axios from 'axios';
 import PageContent from '@/vue/Components/Page/PageContent.vue';
 import { initFlowbite } from 'flowbite';
@@ -185,6 +185,14 @@ export default defineComponent({
      */
     handleUpdateHeaderImg(url: string | null) {
       this.page.headerImg = url;
+    },
+
+    /**
+     * Mise à jour des tags
+     * @param tags
+     */
+    handleUpdateTags(tags: Tag[]) {
+      this.page.tags = tags;
     },
 
     /**
@@ -452,7 +460,14 @@ export default defineComponent({
         />
       </div>
       <div class="hidden" id="page-tag" role="tabpanel" aria-labelledby="nav-2-tab">
-        <PageTag :translate="translate" />
+        <PageTag
+          :translate="translate"
+          :page="page"
+          :current-locale="currentLocale"
+          :locales="locales"
+          :urls="urls"
+          @update-tags="handleUpdateTags"
+        />
       </div>
       <div class="hidden" id="page-history" role="tabpanel" aria-labelledby="nav-3-tab">
         <PageHistory
