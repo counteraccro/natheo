@@ -182,3 +182,13 @@ page.page_seo.input.meta.description.error: __page.page_seo.input.meta.descripti
 page.page_seo.input.meta.keywords.error: __page.page_seo.input.meta.keywords.error
 page.page_seo.input.meta.author.error: __page.page_seo.input.meta.author.error
 page.page_seo.input.meta.copyright.error: __page.page_seo.input.meta.copyright.error
+page.onglet.menu: __page.onglet.menu
+page.page_menu.list_menu_label: __page.page_menu.list_menu_label
+page.page_menu.list_menu_help: __page.page_menu.list_menu_help
+page.page_menu.list_menu_empty: __page.page_menu.list_menu_empty
+page.page_menu.list_menu_disabled: __page.page_menu.list_menu_disabled
+page.page_menu.list_menu.header: __page.page_menu.list_menu.header
+page.page_menu.list_menu.footer: __page.page_menu.list_menu.footer
+page.page_menu.list_menu.left: __page.page_menu.list_menu.left
+page.page_menu.list_menu.right: __page.page_menu.list_menu.right
+page.page_menu.list_menu.sub_label: __page.page_menu.list_menu.sub_label

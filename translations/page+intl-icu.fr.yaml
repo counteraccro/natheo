@@ -126,10 +126,10 @@ page.category.news: Nouveauté
 page.category.evolution: Evolution
 page.category.documentation: Documentation
 page.category.faq: FAQ
-page.page_save.list_menu_label: 'Menu disponible'
-page.page_save.list_menu_help: "Vous pouvez associer plusieurs menu à une page (header / footer etc...), si le menu est désactivé, celui ci n'apparaitra pas dans le rendu final. Si vous selectionnez 'Aucun menu', tous les menus associés à la page serons supprimés"
-page.page_save.list_menu_empty: 'Aucun menu'
-page.page_save.list_menu_disabled: Désactivé
+page.page_menu.list_menu_label: 'Menu disponible'
+page.page_menu.list_menu_help: "Vous pouvez associer plusieurs menus à une page (haut / bas etc...), si le menu est désactivé, celui ci n'apparaitra pas dans le rendu final. Dans le cas du choix 'Aucun menu', c'est le menu 'Par défaut' (si il existe) qui sera pris en compte"
+page.page_menu.list_menu_empty: 'Aucun menu'
+page.page_menu.list_menu_disabled: Désactivé
 page.confirm.landing.page.msg: 'Vous êtes sur le point de mettre la page <b>{label}</b> en affichage par défaut sur le front de votre site. <br />Confirmez vous cette action ?'
 page.switch.landing.page.success: 'La page <b>{label}</b> est maintenant la landing-page de votre site'
 page.page_save.list_landing_page_label: "Définir si cette page s'affichera en tant que landing page ou non"
@@ -184,4 +184,10 @@ page.page_history.load_more: 'Charger plus...'
 page.page_seo.input.meta.description.error: 'La description est obligatoire'
 page.page_seo.input.meta.keywords.error: 'Au moins 1 mot clé doit être saisi'
 page.page_seo.input.meta.author.error: "Il faut préciser l'auteur de la page"
-page.page_seo.input.meta.copyright.error: "Il faut saisir un copyright"
+page.page_seo.input.meta.copyright.error: 'Il faut saisir un copyright'
+page.onglet.menu: Menus
+page.page_menu.list_menu.header: 'Menu haut'
+page.page_menu.list_menu.footer: 'Menu bas'
+page.page_menu.list_menu.left: 'Menu Gauche'
+page.page_menu.list_menu.right: 'Menu droite'
+page.page_menu.list_menu.sub_label: 'Associer un ou plusieurs menus à votre page'
