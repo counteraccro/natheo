@@ -412,9 +412,10 @@ class MenuService extends AppAdminService
         $menus = $this->findBy(Menu::class);
         foreach ($menus as $menu) {
             $return[$menu->getId()] = [
+                'id' => $menu->getId(),
                 'name' => $menu->getName(),
                 'disabled' => $menu->isDisabled(),
-                'id' => $menu->getId(),
+                'position' => $menu->getPosition(),
             ];
         }
         return $return;
