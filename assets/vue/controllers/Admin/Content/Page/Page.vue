@@ -11,7 +11,7 @@ import SkeletonPageTag from '@/vue/Components/Skeleton/Page/PageTag.vue';
 import SkeletonPageHistory from '@/vue/Components/Skeleton/Page/PageHistory.vue';
 import SkeletonPageSave from '@/vue/Components/Skeleton/Page/PageSave.vue';
 import SkeletonPageSEO from '@/vue/Components/Skeleton/Page/PageSEO.vue';
-import { Locales, Page, PageData, PageTranslations, Tag, Urls } from '@/ts/Page/type';
+import { Locales, Page, PageData, PageMenus, PageTranslations, Tag, Urls } from '@/ts/Page/type';
 import axios from 'axios';
 import PageContent from '@/vue/Components/Page/PageContent.vue';
 import { initFlowbite } from 'flowbite';
@@ -23,10 +23,12 @@ import { Toasts } from '@/ts/Toast/type';
 import PageSeo from '@/vue/Components/Page/PageSeo.vue';
 import PageSEO from '@/vue/Components/Page/PageSeo.vue';
 import PageTag from '@/vue/Components/Page/PageTag.vue';
+import PageMenu from '@/vue/Components/Page/PageMenu.vue';
 
 export default defineComponent({
   name: 'Page',
   components: {
+    PageMenu,
     PageTag,
     PageSEO,
     PageSeo,
@@ -69,6 +71,7 @@ export default defineComponent({
       currentLocale: '',
       page: {} as Page,
       activeTab: 'content' as string,
+      availableMenus: {} as PageMenus,
       sectionErrors: {} as Record<
         string,
         { hasError: boolean; errorsByLocale: Record<string, Record<string, string>> }
@@ -114,6 +117,7 @@ export default defineComponent({
         .get(url, {})
         .then((response) => {
           this.page = response.data.page;
+          this.availableMenus = response.data.menus;
         })
         .catch((error) => {
           console.error(error);
@@ -193,6 +197,14 @@ export default defineComponent({
      */
     handleUpdateTags(tags: Tag[]) {
       this.page.tags = tags;
+    },
+
+    /**
+     * Mise à jour des menus
+     * @param menus
+     */
+    handleUpdateMenus(menus: number[]) {
+      this.page.menus = menus;
     },
 
     /**
@@ -392,6 +404,28 @@ export default defineComponent({
           <button
             class="inline-flex gap-1.5 items-center ps-4 pt-2 pe-4 pb-2 border-b-2 rounded-t-sm cursor-pointer dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:hover:text-gray-300"
             id="nav-3-tab"
+            data-tabs-target="#page-menu"
+            type="button"
+            role="tab"
+            :aria-controls="translate.onglet_menu"
+            aria-selected="false"
+            @click="activeTab = 'menu'"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 5v14m8-7h-2m0 0h-2m2 0v2m0-2v-2M3 11h6m-6 4h6m11 4H4c-.55228 0-1-.4477-1-1V6c0-.55228.44772-1 1-1h16c.5523 0 1 .44772 1 1v12c0 .5523-.4477 1-1 1Z"
+              />
+            </svg>
+            {{ translate.onglet_menu }}
+          </button>
+        </li>
+        <li class="me-2" role="presentation">
+          <button
+            class="inline-flex gap-1.5 items-center ps-4 pt-2 pe-4 pb-2 border-b-2 rounded-t-sm cursor-pointer dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:hover:text-gray-300"
+            id="nav-3-tab"
             data-tabs-target="#page-history"
             type="button"
             role="tab"
@@ -469,7 +503,15 @@ export default defineComponent({
           @update-tags="handleUpdateTags"
         />
       </div>
-      <div class="hidden" id="page-history" role="tabpanel" aria-labelledby="nav-3-tab">
+      <div class="hidden" id="page-menu" role="tabpanel" aria-labelledby="nav-3-tab">
+        <PageMenu
+          :translate="translate"
+          :page="page"
+          :available-menus="availableMenus"
+          @update-menus="handleUpdateMenus"
+        />
+      </div>
+      <div class="hidden" id="page-history" role="tabpanel" aria-labelledby="nav-4-tab">
         <PageHistory
           :id="id"
           :urls="urls"
@@ -478,7 +520,7 @@ export default defineComponent({
           @restore-history="handleRestoreHistory"
         />
       </div>
-      <div class="hidden" id="page-save" role="tabpanel" aria-labelledby="nav-4-tab">Save</div>
+      <div class="hidden" id="page-save" role="tabpanel" aria-labelledby="nav-5-tab">Save</div>
     </div>
   </div>
 
