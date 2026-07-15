@@ -89,12 +89,25 @@ export interface PageSeoTranslate {
   input_meta_copyright_error: string;
 }
 
+export interface PageMenuTranslate {
+  list_menu_header: string;
+  list_menu_footer: string;
+  list_menu_left: string;
+  list_menu_right: string;
+  list_menu_label: string;
+  list_menu_help: string;
+  list_menu_empty: string;
+  list_menu_disabled: string;
+  list_menu_sub_label: string;
+}
+
 export interface PageTranslations {
   select_locale: string;
   onglet_content: string;
   onglet_seo: string;
   onglet_tags: string;
   onglet_comments: string;
+  onglet_menu: string;
   onglet_history: string;
   onglet_save: string;
   loading: string;
@@ -123,6 +136,7 @@ export interface PageTranslations {
   auto_complete: AutoCompleteTranslate;
   page_comment: PageCommentTranslate;
   page_seo: PageSeoTranslate;
+  page_menu: PageMenuTranslate;
 }
 
 export interface Urls {
@@ -261,6 +275,7 @@ export interface PageMenuItem {
   name: string;
   disabled: boolean;
   id: number;
+  position: number;
 }
 
 export interface PageHistoryEntry {
@@ -268,5 +283,10 @@ export interface PageHistoryEntry {
   time: string;
   user: string;
 }
+
+export const MENU_POSITION_HEADER = 1;
+export const MENU_POSITION_RIGHT = 2;
+export const MENU_POSITION_FOOTER = 3;
+export const MENU_POSITION_LEFT = 4;
 
 export type PageMenus = Record<string, PageMenuItem>;
