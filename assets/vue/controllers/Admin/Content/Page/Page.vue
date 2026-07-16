@@ -24,10 +24,12 @@ import PageSeo from '@/vue/Components/Page/PageSeo.vue';
 import PageSEO from '@/vue/Components/Page/PageSeo.vue';
 import PageTag from '@/vue/Components/Page/PageTag.vue';
 import PageMenu from '@/vue/Components/Page/PageMenu.vue';
+import PageContentBlocks from '@/vue/Components/Page/PageContentBlocks.vue';
 
 export default defineComponent({
   name: 'Page',
   components: {
+    PageContentBlocks,
     PageMenu,
     PageTag,
     PageSEO,
@@ -206,6 +208,11 @@ export default defineComponent({
     handleUpdateMenus(menus: number[]) {
       this.page.menus = menus;
     },
+
+    /**
+     * Mise à jour des contents
+     */
+    handleUpdatePageContents() {},
 
     /**
      * Gestionnaire des erreurs
@@ -481,6 +488,16 @@ export default defineComponent({
           @update-translation="handleUpdatePageTranslation"
           @update:section-errors="handleSectionErrors"
           @update-header-img="handleUpdateHeaderImg"
+        />
+
+        <PageContentBlocks
+          :translate="translate"
+          :page="page"
+          :current-locale="currentLocale"
+          :pageDatas="pageDatas"
+          :locales="locales"
+          :urls="urls"
+          @update-page-contents="handleUpdatePageContents"
         />
       </div>
       <div class="hidden" id="page-seo" role="tabpanel" aria-labelledby="nav-1-tab">
