@@ -413,23 +413,6 @@ export default defineComponent({
       </div>
     </div>
   </div>
-
-  <div class="card mb-4">
-    <div class="card-header">
-      <div class="card-title">
-        <svg class="card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-width="2"
-            d="M5.005 11.19V12l6.998 4.042L19 12v-.81M5 16.15v.81L11.997 21l6.998-4.042v-.81M12.003 3 5.005 7.042l6.998 4.042L19 7.042 12.003 3Z"
-          />
-        </svg>
-        {{ translate.page_content.title }}
-      </div>
-    </div>
-    <div class="p-4">bbb</div>
-  </div>
 </template>
 
 <style scoped></style>
