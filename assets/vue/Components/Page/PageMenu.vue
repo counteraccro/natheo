@@ -93,12 +93,12 @@ export default defineComponent({
     updateMenuForPosition(position: number, selectedId: number) {
       const menusForPosition = this.menusByPosition[position] ?? [];
       const idsForPosition = menusForPosition.map((m) => m.id);
-      const currentMenus = this.page.menus.filter((id) => !idsForPosition.includes(id));
+      const currentMenus = this.page.menus.filter((id) => !idsForPosition.includes(Number(id)));
 
       if (selectedId !== 0) {
-        this.$emit('update-menus', [...currentMenus, selectedId]);
+        this.$emit('update-menus', [...currentMenus.map(Number), selectedId]);
       } else {
-        this.$emit('update-menus', currentMenus);
+        this.$emit('update-menus', currentMenus.map(Number));
       }
     },
   },
