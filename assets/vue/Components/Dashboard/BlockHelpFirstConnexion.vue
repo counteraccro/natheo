@@ -122,14 +122,35 @@ export default {
 </script>
 
 <template>
-  <div class="card rounded-lg overflow-hidden">
-    <div class="px-4 sm:px-6 py-4 border-b flex items-center justify-between" style="border-color: var(--border-color)">
-      <h3 class="text-lg font-semibold">{{ this.translate.title }}</h3>
-
+  <div class="card mb-4">
+    <div class="card-header">
+      <div>
+        <div class="card-title">
+          <svg
+            class="card-icon"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+            style="color: var(--primary)"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="m8.032 12 1.984 1.984 4.96-4.96m4.55 5.272.893-.893a1.984 1.984 0 0 0 0-2.806l-.893-.893a1.984 1.984 0 0 1-.581-1.403V7.04a1.984 1.984 0 0 0-1.984-1.984h-1.262a1.983 1.983 0 0 1-1.403-.581l-.893-.893a1.984 1.984 0 0 0-2.806 0l-.893.893a1.984 1.984 0 0 1-1.403.581H7.04A1.984 1.984 0 0 0 5.055 7.04v1.262c0 .527-.209 1.031-.581 1.403l-.893.893a1.984 1.984 0 0 0 0 2.806l.893.893c.372.372.581.876.581 1.403v1.262a1.984 1.984 0 0 0 1.984 1.984h1.262c.527 0 1.031.209 1.403.581l.893.893a1.984 1.984 0 0 0 2.806 0l.893-.893a1.985 1.985 0 0 1 1.403-.581h1.262a1.984 1.984 0 0 0 1.984-1.984V15.7c0-.527.209-1.031.581-1.403Z"
+            />
+          </svg>
+          {{ this.translate.title }}
+        </div>
+      </div>
       <div class="flex gap-2">
         <a href="#" @click="this.load()" class="text-sm font-medium hover:underline text-[var(--primary)]">
           <svg
-            class="icon"
+            class="card-icon"
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -155,42 +176,30 @@ export default {
         </a>
       </div>
     </div>
+    <div class="p-5">
+      <div v-if="!this.loading">
+        <AlertDanger v-if="this.errorMessage !== null" :text="this.errorMessage" />
 
-    <div class="p-4" v-if="!this.loading">
-      <AlertDanger v-if="this.errorMessage !== null" :text="this.errorMessage" />
+        <AlertSuccess v-if="this.hideMsgSuccess" :text="this.translate.msg_hide_success" />
+        <div v-else>
+          <h4 class="font-semibold mb-2 text-[var(--text-primary)]">{{ this.translate.sub_title }}</h4>
+          <p class="text-sm mb-4 text-[var(--text-secondary)]">{{ this.translate.text_1 }}</p>
 
-      <AlertSuccess v-if="this.hideMsgSuccess" :text="this.translate.msg_hide_success" />
-      <div v-else>
-        <h4 class="font-semibold mb-2 text-[var(--text-primary)]">{{ this.translate.sub_title }}</h4>
-        <p class="text-sm mb-4 text-[var(--text-secondary)]">{{ this.translate.text_1 }}</p>
+          <div class="space-y-1">
+            <div v-for="(item, index) in this.result" :key="index">
+              <div v-if="item.success" class="config-item config-item-success">
+                <svg class="config-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                  ></path>
+                </svg>
+                <span> {{ item.msg }} </span>
+              </div>
 
-        <div class="space-y-1">
-          <div v-for="(item, index) in this.result" :key="index">
-            <div v-if="item.success" class="config-item config-item-success">
-              <svg class="config-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                ></path>
-              </svg>
-              <span> {{ item.msg }} </span>
-            </div>
-
-            <div v-else-if="!Array.isArray(item.msg)" class="config-item config-item-error">
-              <svg class="config-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-                ></path>
-              </svg>
-              <span> {{ item.msg }} </span>
-            </div>
-            <div v-else>
-              <div class="config-item config-item-error">
+              <div v-else-if="!Array.isArray(item.msg)" class="config-item config-item-error">
                 <svg class="config-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     stroke-linecap="round"
@@ -199,65 +208,78 @@ export default {
                     d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
                   ></path>
                 </svg>
-                <span> {{ item.msgTitle }} </span>
+                <span> {{ item.msg }} </span>
               </div>
-
-              <div
-                v-for="(subItem, index) in item.msg"
-                :key="index"
-                class="config-item config-item-error config-item-nested"
-              >
-                <svg class="config-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-                  ></path>
-                </svg>
-                <span>{{ subItem }} </span>
-              </div>
-
-              <div class="flex flex-wrap gap-4 mt-4 pt-4 border-t border-[var(--border-color)]">
-                <a
-                  :href="this.links.link_options.link"
-                  class="text-sm font-medium hover:underline flex items-center gap-1.5"
-                  style="color: var(--primary)"
-                >
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div v-else>
+                <div class="config-item config-item-error">
+                  <svg class="config-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
                       stroke-linecap="round"
                       stroke-linejoin="round"
                       stroke-width="2"
-                      d="M4 5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5Zm16 14a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2ZM4 13a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-6Zm16-2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v6Z"
+                      d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
                     ></path>
                   </svg>
+                  <span> {{ item.msgTitle }} </span>
+                </div>
 
-                  {{ this.links.link_options.label }}
-                </a>
-                <a
-                  :href="this.links.link_tokens.link"
-                  class="text-sm font-medium hover:underline flex items-center gap-1.5"
-                  style="color: var(--primary)"
+                <div
+                  v-for="(subItem, index) in item.msg"
+                  :key="index"
+                  class="config-item config-item-error config-item-nested"
                 >
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg class="config-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
                       stroke-linecap="round"
                       stroke-linejoin="round"
                       stroke-width="2"
-                      d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"
+                      d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
                     ></path>
                   </svg>
-                  {{ this.links.link_tokens.label }}
-                </a>
+                  <span>{{ subItem }} </span>
+                </div>
+
+                <div class="flex flex-wrap gap-4 mt-4 pt-4 border-t border-[var(--border-color)]">
+                  <a
+                    :href="this.links.link_options.link"
+                    class="text-sm font-medium hover:underline flex items-center gap-1.5"
+                    style="color: var(--primary)"
+                  >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M4 5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5Zm16 14a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2ZM4 13a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-6Zm16-2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v6Z"
+                      ></path>
+                    </svg>
+
+                    {{ this.links.link_options.label }}
+                  </a>
+                  <a
+                    :href="this.links.link_tokens.link"
+                    class="text-sm font-medium hover:underline flex items-center gap-1.5"
+                    style="color: var(--primary)"
+                  >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"
+                      ></path>
+                    </svg>
+                    {{ this.links.link_tokens.label }}
+                  </a>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="p-4" v-else>
-      <SkeletonText />
+      <div v-else>
+        <SkeletonText />
+      </div>
     </div>
   </div>
 
