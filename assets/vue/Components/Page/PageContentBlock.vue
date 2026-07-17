@@ -3,6 +3,7 @@ import { defineComponent, PropType } from 'vue';
 import { Page, PageContentItem, PageData, PageTranslations, Urls } from '@/ts/Page/type';
 import axios from 'axios';
 import { initFlowbite, Modal } from 'flowbite';
+import MarkdownEditor from '@/vue/Components/Global/MarkdownEditor/MarkdownEditor.vue';
 
 interface ContentType {
   list: Record<string, string>;
@@ -13,6 +14,7 @@ interface ContentType {
 
 export default defineComponent({
   name: 'PageContentBlock',
+  components: { MarkdownEditor },
   props: {
     translate: {
       type: Object as PropType<PageTranslations>,
@@ -75,6 +77,15 @@ export default defineComponent({
     },
     isEmpty(): boolean {
       return this.blockContent === undefined;
+    },
+    isTypeText(): boolean {
+      return this.blockContent?.type === 1;
+    },
+    isTypeFaq(): boolean {
+      return this.blockContent?.type === 2;
+    },
+    isTypeListing(): boolean {
+      return this.blockContent?.type === 3;
     },
   },
   methods: {
@@ -146,6 +157,23 @@ export default defineComponent({
         console.error(error);
       });
     },
+
+    onTextChange(id: string, value: string) {
+      if (!this.blockContent) return;
+
+      const translation = this.blockContent.pageContentTranslations.find((t) => t.locale === this.currentLocale);
+
+      if (translation) {
+        translation.text = value;
+      } else {
+        this.blockContent.pageContentTranslations.push({
+          id: 0,
+          pageContent: this.blockContent.id,
+          locale: this.currentLocale,
+          text: value,
+        });
+      }
+    },
   },
 });
 </script>
@@ -184,8 +212,58 @@ export default defineComponent({
           {{ translate.page_content.page_content_block.btn_delete_content }}
         </button>
       </div>
+
       <div class="p-4">
-        <p class="text-sm" style="color: var(--text-secondary)">{{ blockText.substring(0, 120) }}...</p>
+        <!-- Type 1 : Texte markdown -->
+        <div v-if="isTypeText">
+          <MarkdownEditor
+            :key="'content-' + renderBlockId + '-' + currentLocale"
+            :me-id="'content-' + renderBlockId + '-' + currentLocale"
+            :me-value="blockText"
+            :me-rows="14"
+            :me-translate="translate.page_content.page_content_block.markdown"
+            :me-key-words="[]"
+            :me-save="false"
+            :me-preview="false"
+            @editor-value-change="onTextChange"
+          />
+        </div>
+
+        <!-- Type 2 : FAQ -->
+        <div v-else-if="isTypeFaq" class="flex items-center gap-3 py-6 justify-center">
+          <svg class="w-8 h-8" style="color: var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <div>
+            <p class="text-sm font-semibold" style="color: var(--text-primary)">FAQ</p>
+            <p class="text-xs" style="color: var(--text-secondary)">
+              {{ translate.page_content.page_content_block.faq_id }} : {{ blockContent!.typeId }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Type 3 : Listing -->
+        <div v-else-if="isTypeListing" class="flex items-center gap-3 py-6 justify-center">
+          <svg class="w-8 h-8" style="color: var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              d="M4 6h16M4 10h16M4 14h16M4 18h16"
+            />
+          </svg>
+          <div>
+            <p class="text-sm font-semibold" style="color: var(--text-primary)">Listing</p>
+            <p class="text-xs" style="color: var(--text-secondary)">
+              {{ translate.page_content.page_content_block.listing_id }} : {{ blockContent!.typeId }}
+            </p>
+          </div>
+        </div>
       </div>
     </div>
 
