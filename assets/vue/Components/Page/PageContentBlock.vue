@@ -1,9 +1,22 @@
 <script lang="ts">
+/**
+ * Gestionnaire des Pages - Onglet Content - Gestion des blocs de content
+ * @author Gourdon Aymeric
+ * @version 2.0
+ */
 import { defineComponent, PropType } from 'vue';
-import { Page, PageContentItem, PageData, PageTranslations, Urls } from '@/ts/Page/type';
+import {
+  Locales,
+  Page,
+  PageContentItem,
+  PageContentTranslationItem,
+  PageData,
+  PageTranslations,
+  Urls,
+} from '@/ts/Page/type';
 import axios from 'axios';
-import { initFlowbite, Modal } from 'flowbite';
 import MarkdownEditor from '@/vue/Components/Global/MarkdownEditor/MarkdownEditor.vue';
+import Modal from '@/vue/Components/Global/Modal.vue';
 
 interface ContentType {
   list: Record<string, string>;
@@ -14,7 +27,7 @@ interface ContentType {
 
 export default defineComponent({
   name: 'PageContentBlock',
-  components: { MarkdownEditor },
+  components: { MarkdownEditor, Modal },
   props: {
     translate: {
       type: Object as PropType<PageTranslations>,
@@ -36,6 +49,10 @@ export default defineComponent({
       type: Object as PropType<PageData>,
       required: true,
     },
+    locales: {
+      type: Object as PropType<Locales>,
+      required: true,
+    },
     renderBlockId: {
       type: Number as PropType<number>,
       required: true,
@@ -44,23 +61,13 @@ export default defineComponent({
   emits: ['update-page-contents'],
   data() {
     return {
-      modalNew: null as InstanceType<typeof Modal> | null,
-      modalRemove: null as InstanceType<typeof Modal> | null,
+      showModalNew: false as boolean,
+      showModalRemove: false as boolean,
       idSelectContent: 0 as number,
       idSelectTypeContent: 0 as number,
       contentType: null as ContentType | null,
       loading: false as boolean,
-      idConfirmRemove: 0 as number,
     };
-  },
-  mounted() {
-    this.$nextTick(() => {
-      initFlowbite();
-      const elNew = document.getElementById(this.modalNewId);
-      const elRemove = document.getElementById(this.modalRemoveId);
-      if (elNew) this.modalNew = new Modal(elNew);
-      if (elRemove) this.modalRemove = new Modal(elRemove);
-    });
   },
   computed: {
     modalNewId(): string {
@@ -91,19 +98,17 @@ export default defineComponent({
   methods: {
     openModalNew() {
       this.resetNewContent();
-      this.modalNew?.show();
+      this.showModalNew = true;
     },
     closeModalNew() {
-      this.modalNew?.hide();
+      this.showModalNew = false;
       this.resetNewContent();
     },
-    openModalRemove(id: number) {
-      this.idConfirmRemove = id;
-      this.modalRemove?.show();
+    openModalRemove() {
+      this.showModalRemove = true;
     },
     closeModalRemove() {
-      this.modalRemove?.hide();
-      this.idConfirmRemove = 0;
+      this.showModalRemove = false;
     },
     resetNewContent() {
       this.idSelectContent = 0;
@@ -141,24 +146,37 @@ export default defineComponent({
         return;
       }
 
-      axios
-        .post(this.urls.new_content, {
-          type: this.idSelectContent,
-          type_id: this.idSelectTypeContent,
-          render_block: this.renderBlockId,
-          page_id: this.page.id,
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+      const newContent: PageContentItem = {
+        id: null,
+        page: this.page.id,
+        renderOrder: 1,
+        type: this.idSelectContent,
+        typeId: this.idSelectContent > 1 ? this.idSelectTypeContent : null,
+        renderBlock: this.renderBlockId,
+        pageContentTranslations:
+          this.idSelectContent === 1
+            ? this.locales.locales.map(
+                (locale): PageContentTranslationItem => ({
+                  id: null,
+                  pageContent: null,
+                  locale,
+                  text: `[${locale}] ${this.translate.page_content.page_content_block.default_text}`,
+                })
+              )
+            : [],
+      };
+
+      this.$emit('update-page-contents', [...this.page.pageContents, newContent]);
+      this.closeModalNew();
     },
     removeContent() {
-      axios.delete(this.urls.new_content + '/' + this.idConfirmRemove).catch((error) => {
-        console.error(error);
-      });
+      this.$emit(
+        'update-page-contents',
+        this.page.pageContents.filter((c) => c.renderBlock !== this.renderBlockId)
+      );
+      this.closeModalRemove();
     },
-
-    onTextChange(id: string, value: string) {
+    onTextChange(_id: string, value: string) {
       if (!this.blockContent) return;
 
       const translation = this.blockContent.pageContentTranslations.find((t) => t.locale === this.currentLocale);
@@ -167,7 +185,7 @@ export default defineComponent({
         translation.text = value;
       } else {
         this.blockContent.pageContentTranslations.push({
-          id: 0,
+          id: null,
           pageContent: this.blockContent.id,
           locale: this.currentLocale,
           text: value,
@@ -205,7 +223,7 @@ export default defineComponent({
         <span class="text-xs font-semibold" style="color: var(--text-secondary)">
           {{ translate.page_content.page_content_block.bloc }} {{ renderBlockId }}
         </span>
-        <button type="button" class="btn btn-xs btn-danger" @click="openModalRemove(blockContent!.id)">
+        <button type="button" class="btn btn-xs btn-danger" @click="openModalRemove">
           <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
           </svg>
@@ -214,7 +232,6 @@ export default defineComponent({
       </div>
 
       <div class="p-4">
-        <!-- Type 1 : Texte markdown -->
         <div v-if="isTypeText">
           <MarkdownEditor
             :key="'content-' + renderBlockId + '-' + currentLocale"
@@ -229,7 +246,6 @@ export default defineComponent({
           />
         </div>
 
-        <!-- Type 2 : FAQ -->
         <div v-else-if="isTypeFaq" class="flex items-center gap-3 py-6 justify-center">
           <svg class="w-8 h-8" style="color: var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
@@ -247,7 +263,6 @@ export default defineComponent({
           </div>
         </div>
 
-        <!-- Type 3 : Listing -->
         <div v-else-if="isTypeListing" class="flex items-center gap-3 py-6 justify-center">
           <svg class="w-8 h-8" style="color: var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
@@ -267,132 +282,86 @@ export default defineComponent({
       </div>
     </div>
 
-    <!-- Modale ajout -->
-    <div
-      :id="modalNewId"
-      tabindex="-1"
-      aria-hidden="true"
-      class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
-    >
-      <div class="relative p-4 w-full max-w-lg max-h-full">
-        <div class="relative rounded-lg shadow" style="background-color: var(--bg-card)">
-          <div
-            class="flex items-center justify-between p-4 border-b rounded-t"
-            style="border-color: var(--border-color)"
+    <Modal :id="modalNewId" :show="showModalNew" @close-modal="closeModalNew">
+      <template #title>{{ translate.page_content.page_content_block.modale_new_title }}</template>
+
+      <template #body>
+        <div class="form-group">
+          <label :for="'list-choice-content-' + renderBlockId" class="form-label">
+            {{ translate.page_content.page_content_block.modale_new_choice_label }}
+          </label>
+          <select
+            :id="'list-choice-content-' + renderBlockId"
+            class="form-input"
+            v-model="idSelectContent"
+            @change="loadContentType"
           >
-            <h3 class="text-base font-semibold" style="color: var(--text-primary)">
-              {{ translate.page_content.page_content_block.modale_new_title }}
-            </h3>
-            <button type="button" class="btn btn-sm btn-outline-dark" @click="closeModalNew">
-              <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-
-          <div class="p-4 flex flex-col gap-4">
-            <div class="form-group">
-              <label :for="'list-choice-content-' + renderBlockId" class="form-label">
-                {{ translate.page_content.page_content_block.modale_new_choice_label }}
-              </label>
-              <select
-                :id="'list-choice-content-' + renderBlockId"
-                class="form-input"
-                v-model="idSelectContent"
-                @change="loadContentType"
-              >
-                <option :value="0">---</option>
-                <option v-for="(value, key) in pageDatas.list_content" :key="key" :value="parseInt(key as string)">
-                  {{ value }}
-                </option>
-              </select>
-              <div class="form-text">{{ translate.page_content.page_content_block.modale_new_choice_info }}</div>
-            </div>
-
-            <div v-if="loading" class="flex justify-center py-4">
-              <svg
-                class="w-6 h-6 animate-spin"
-                style="color: var(--primary)"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                />
-              </svg>
-            </div>
-
-            <div v-else-if="contentType" class="form-group">
-              <label :for="'list-choice-type-content-' + renderBlockId" class="form-label">
-                {{ contentType.label }}
-              </label>
-              <select
-                :id="'list-choice-type-content-' + renderBlockId"
-                class="form-input"
-                v-model="idSelectTypeContent"
-              >
-                <option v-for="(value, key) in contentType.list" :key="key" :value="parseInt(key as string)">
-                  {{ value }}
-                </option>
-              </select>
-              <div class="form-text">{{ contentType.help }}</div>
-            </div>
-          </div>
-
-          <div class="flex justify-end gap-3 p-4 border-t" style="border-color: var(--border-color)">
-            <button type="button" class="btn btn-sm btn-outline-dark" @click="closeModalNew">
-              {{ translate.page_content.page_content_block.modale_new_btn_cancel }}
-            </button>
-            <button type="button" class="btn btn-sm btn-primary" :disabled="idSelectContent <= 0" @click="addContent">
-              {{ translate.page_content.page_content_block.modale_new_btn_new }}
-            </button>
-          </div>
+            <option :value="0">---</option>
+            <option v-for="(value, key) in pageDatas.list_content" :key="key" :value="parseInt(key as string)">
+              {{ value }}
+            </option>
+          </select>
+          <div class="form-text">{{ translate.page_content.page_content_block.modale_new_choice_info }}</div>
         </div>
-      </div>
-    </div>
 
-    <!-- Modale suppression -->
-    <div
-      :id="modalRemoveId"
-      tabindex="-1"
-      aria-hidden="true"
-      class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
-    >
-      <div class="relative p-4 w-full max-w-md max-h-full">
-        <div class="relative rounded-lg shadow" style="background-color: var(--bg-card)">
-          <div
-            class="flex items-center justify-between p-4 border-b rounded-t"
-            style="border-color: var(--border-color)"
+        <div v-if="loading" class="flex justify-center py-4">
+          <svg
+            class="w-6 h-6 animate-spin"
+            style="color: var(--primary)"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
           >
-            <h3 class="text-base font-semibold" style="color: var(--text-primary)">
-              {{ translate.page_content.page_content_block.modale_remove_title }}
-            </h3>
-            <button type="button" class="btn btn-sm btn-outline-dark" @click="closeModalRemove">
-              <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-          <div class="p-4">
-            <p class="text-sm" style="color: var(--text-secondary)">
-              {{ translate.page_content.page_content_block.modale_remove_body }}
-            </p>
-          </div>
-          <div class="flex justify-end gap-3 p-4 border-t" style="border-color: var(--border-color)">
-            <button type="button" class="btn btn-sm btn-outline-dark" @click="closeModalRemove">
-              {{ translate.page_content.page_content_block.modale_remove_btn_cancel }}
-            </button>
-            <button type="button" class="btn btn-sm btn-danger" @click="removeContent">
-              {{ translate.page_content.page_content_block.modale_remove_btn_confirm }}
-            </button>
-          </div>
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+            />
+          </svg>
         </div>
-      </div>
-    </div>
+
+        <div v-else-if="contentType" class="form-group">
+          <label :for="'list-choice-type-content-' + renderBlockId" class="form-label">
+            {{ contentType.label }}
+          </label>
+          <select :id="'list-choice-type-content-' + renderBlockId" class="form-input" v-model="idSelectTypeContent">
+            <option v-for="(value, key) in contentType.list" :key="key" :value="parseInt(key as string)">
+              {{ value }}
+            </option>
+          </select>
+          <div class="form-text">{{ contentType.help }}</div>
+        </div>
+      </template>
+
+      <template #footer>
+        <button type="button" class="btn btn-sm btn-outline-dark me-2" @click="closeModalNew">
+          {{ translate.page_content.page_content_block.modale_new_btn_cancel }}
+        </button>
+        <button type="button" class="btn btn-sm btn-primary" :disabled="idSelectContent <= 0" @click="addContent">
+          {{ translate.page_content.page_content_block.modale_new_btn_new }}
+        </button>
+      </template>
+    </Modal>
+
+    <Modal :id="modalRemoveId" :show="showModalRemove" @close-modal="closeModalRemove">
+      <template #title>{{ translate.page_content.page_content_block.modale_remove_title }}</template>
+
+      <template #body>
+        <p class="text-sm" style="color: var(--text-secondary)">
+          {{ translate.page_content.page_content_block.modale_remove_body }}
+        </p>
+      </template>
+
+      <template #footer>
+        <button type="button" class="btn btn-sm btn-outline-dark me-2" @click="closeModalRemove">
+          {{ translate.page_content.page_content_block.modale_remove_btn_cancel }}
+        </button>
+        <button type="button" class="btn btn-sm btn-danger" @click="removeContent">
+          {{ translate.page_content.page_content_block.modale_remove_btn_confirm }}
+        </button>
+      </template>
+    </Modal>
   </div>
 </template>
 

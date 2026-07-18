@@ -11,7 +11,7 @@ import SkeletonPageTag from '@/vue/Components/Skeleton/Page/PageTag.vue';
 import SkeletonPageHistory from '@/vue/Components/Skeleton/Page/PageHistory.vue';
 import SkeletonPageSave from '@/vue/Components/Skeleton/Page/PageSave.vue';
 import SkeletonPageSEO from '@/vue/Components/Skeleton/Page/PageSEO.vue';
-import { Locales, Page, PageData, PageMenus, PageTranslations, Tag, Urls } from '@/ts/Page/type';
+import { Locales, Page, PageContentItem, PageData, PageMenus, PageTranslations, Tag, Urls } from '@/ts/Page/type';
 import axios from 'axios';
 import PageContent from '@/vue/Components/Page/PageContent.vue';
 import { initFlowbite } from 'flowbite';
@@ -212,7 +212,9 @@ export default defineComponent({
     /**
      * Mise à jour des contents
      */
-    handleUpdatePageContents() {},
+    handleUpdatePageContents(pageContents: PageContentItem[]) {
+      this.page.pageContents = pageContents;
+    },
 
     /**
      * Gestionnaire des erreurs
