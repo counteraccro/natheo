@@ -1,8 +1,8 @@
 <script>
 /**
  * @author Gourdon Aymeric
- * @version 1.0
- * Modale Bootstrap 5.3
+ * @version 2.0
+ * Modale Flowbite
  */
 
 import { watch } from 'vue';
