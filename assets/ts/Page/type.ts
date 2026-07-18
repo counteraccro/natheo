@@ -18,9 +18,28 @@ export interface PageContentFormTranslate {
   mediatheque: Record<string, string>;
 }
 
+export interface PageContentBlockTranslate {
+  btn_new_content: string;
+  btn_delete_content: string;
+  bloc: string;
+  default_text: string;
+  faq_id: string;
+  listing_id: string;
+  modale_new_title: string;
+  modale_new_choice_label: string;
+  modale_new_choice_info: string;
+  modale_new_btn_cancel: string;
+  modale_new_btn_new: string;
+  modale_remove_title: string;
+  modale_remove_body: string;
+  modale_remove_btn_cancel: string;
+  modale_remove_btn_confirm: string;
+  markdown: Record<string, Record<string, string>>;
+}
+
 export interface PageContentTranslate {
   title: string;
-  page_content_block: Record<string, string>;
+  page_content_block: PageContentBlockTranslate;
 }
 
 export interface PageHistoryTranslate {
@@ -208,15 +227,15 @@ export interface PageMeta {
 }
 
 export interface PageContentTranslationItem {
-  id: number;
-  pageContent: number;
+  id: number | null;
+  pageContent: number | null;
   locale: string;
   text: string;
 }
 
 export interface PageContentItem {
-  id: number;
-  page: number;
+  id: number | null;
+  page: number | null;
   renderOrder: number;
   type: number;
   pageContentTranslations: PageContentTranslationItem[];
