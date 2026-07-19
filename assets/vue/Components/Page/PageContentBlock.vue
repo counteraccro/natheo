@@ -96,25 +96,48 @@ export default defineComponent({
     },
   },
   methods: {
+    /**
+     * Ouverture modale pour ajouter un contenu
+     */
     openModalNew() {
       this.resetNewContent();
       this.showModalNew = true;
     },
+
+    /**
+     * Fermeture modale nouveau contenu
+     */
     closeModalNew() {
       this.showModalNew = false;
       this.resetNewContent();
     },
+
+    /**
+     * Confirmation suppression
+     */
     openModalRemove() {
       this.showModalRemove = true;
     },
+
+    /**
+     * Fermeture confirmation suppression
+     */
     closeModalRemove() {
       this.showModalRemove = false;
     },
+
+    /**
+     * Réinitialisation du bloc
+     */
     resetNewContent() {
       this.idSelectContent = 0;
       this.idSelectTypeContent = 0;
       this.contentType = null;
     },
+
+    /**
+     * Charge la liste de type de contenu
+     */
     loadContentType() {
       if (this.idSelectContent <= 1) {
         this.contentType = null;
@@ -141,6 +164,10 @@ export default defineComponent({
           this.loading = false;
         });
     },
+
+    /**
+     * Ajout un nouveau contenu
+     */
     addContent() {
       if (this.idSelectContent <= 0) {
         return;
