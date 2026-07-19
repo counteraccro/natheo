@@ -259,6 +259,7 @@ class PageTranslate extends AppTranslate
                     'page.page_content_block.modale.new.choice_info',
                     domain: 'page',
                 ),
+                'default_text' => $this->translator->trans('page.page_content_block.default_text', domain: 'page'),
                 'loading' => $this->translator->trans('page.page_content_block.loading', domain: 'page'),
             ],
         ];

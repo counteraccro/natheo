@@ -192,3 +192,4 @@ page.page_menu.list_menu.footer: __page.page_menu.list_menu.footer
 page.page_menu.list_menu.left: __page.page_menu.list_menu.left
 page.page_menu.list_menu.right: __page.page_menu.list_menu.right
 page.page_menu.list_menu.sub_label: __page.page_menu.list_menu.sub_label
+page.page_content_block.default_text: __page.page_content_block.default_text
