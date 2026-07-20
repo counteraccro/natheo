@@ -106,7 +106,7 @@ export default defineComponent({
     sectionTabIds(): Record<string, string> {
       return {
         content: 'nav-0-tab',
-        seo: 'nav-1-tab',
+        seo: 'nav-2-tab',
       };
     },
 

@@ -24,12 +24,12 @@ import PageSeo from '@/vue/Components/Page/PageSeo.vue';
 import PageSEO from '@/vue/Components/Page/PageSeo.vue';
 import PageTag from '@/vue/Components/Page/PageTag.vue';
 import PageMenu from '@/vue/Components/Page/PageMenu.vue';
-import PageContentBlocks from '@/vue/Components/Page/PageContentBlocks.vue';
+import PageInformation from '@/vue/Components/Page/PageInformation.vue';
 
 export default defineComponent({
   name: 'Page',
   components: {
-    PageContentBlocks,
+    PageInformation,
     PageMenu,
     PageTag,
     PageSEO,
@@ -74,6 +74,7 @@ export default defineComponent({
       page: {} as Page,
       activeTab: 'content' as string,
       availableMenus: {} as PageMenus,
+      restoreCount: 0 as number,
       sectionErrors: {} as Record<
         string,
         { hasError: boolean; errorsByLocale: Record<string, Record<string, string>> }
@@ -239,6 +240,7 @@ export default defineComponent({
     handleRestoreHistory(page: Page, msg: string) {
       (this.$refs.statusBar as InstanceType<typeof PageStatusBar>).notifyRestore();
       this.page = page;
+      this.restoreCount++;
       this.toasts.success.show = true;
       this.toasts.success.msg = msg;
       setTimeout(() => {
@@ -341,12 +343,12 @@ export default defineComponent({
           <button
             class="inline-flex gap-1.5 items-center ps-4 pt-2 pe-4 pb-2 border-b-2 rounded-t-sm cursor-pointer dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:hover:text-gray-300"
             id="nav-0-tab"
-            data-tabs-target="#page-content"
+            data-tabs-target="#page-information"
             type="button"
             role="tab"
-            :aria-controls="translate.onglet_content"
+            :aria-controls="translate.onglet_information"
             aria-selected="true"
-            @click="activeTab = 'content'"
+            @click="activeTab = 'information'"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
@@ -356,7 +358,7 @@ export default defineComponent({
                 d="M4 6h16M4 10h16M4 14h16M4 18h16"
               />
             </svg>
-            {{ translate.onglet_content }}
+            {{ translate.onglet_information }}
             <span
               v-if="hasContentError"
               class="w-2 h-2 rounded-full"
@@ -368,6 +370,28 @@ export default defineComponent({
           <button
             class="inline-flex gap-1.5 items-center ps-4 pt-2 pe-4 pb-2 border-b-2 rounded-t-sm cursor-pointer dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:hover:text-gray-300"
             id="nav-1-tab"
+            data-tabs-target="#page-content"
+            type="button"
+            role="tab"
+            :aria-controls="translate.onglet_content"
+            aria-selected="false"
+            @click="activeTab = 'content'"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5.005 11.19V12l6.998 4.042L19 12v-.81M5 16.15v.81L11.997 21l6.998-4.042v-.81M12.003 3 5.005 7.042l6.998 4.042L19 7.042 12.003 3Z"
+              />
+            </svg>
+            {{ translate.onglet_content }}
+          </button>
+        </li>
+        <li class="me-2" role="presentation">
+          <button
+            class="inline-flex gap-1.5 items-center ps-4 pt-2 pe-4 pb-2 border-b-2 rounded-t-sm cursor-pointer dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:hover:text-gray-300"
+            id="nav-2-tab"
             data-tabs-target="#page-seo"
             type="button"
             role="tab"
@@ -390,7 +414,7 @@ export default defineComponent({
         <li class="me-2" role="presentation">
           <button
             class="inline-flex gap-1.5 items-center ps-4 pt-2 pe-4 pb-2 border-b-2 rounded-t-sm cursor-pointer dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:hover:text-gray-300"
-            id="nav-2-tab"
+            id="nav-3-tab"
             data-tabs-target="#page-tag"
             type="button"
             role="tab"
@@ -412,7 +436,7 @@ export default defineComponent({
         <li class="me-2" role="presentation">
           <button
             class="inline-flex gap-1.5 items-center ps-4 pt-2 pe-4 pb-2 border-b-2 rounded-t-sm cursor-pointer dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:hover:text-gray-300"
-            id="nav-3-tab"
+            id="nav-4-tab"
             data-tabs-target="#page-menu"
             type="button"
             role="tab"
@@ -434,7 +458,7 @@ export default defineComponent({
         <li class="me-2" role="presentation">
           <button
             class="inline-flex gap-1.5 items-center ps-4 pt-2 pe-4 pb-2 border-b-2 rounded-t-sm cursor-pointer dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:hover:text-gray-300"
-            id="nav-3-tab"
+            id="nav-5-tab"
             data-tabs-target="#page-history"
             type="button"
             role="tab"
@@ -456,7 +480,7 @@ export default defineComponent({
         <li class="me-2" role="presentation">
           <button
             class="inline-flex gap-1.5 items-center ps-4 pt-2 pe-4 pb-2 border-b-2 rounded-t-sm cursor-pointer dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:hover:text-gray-300"
-            id="nav-4-tab"
+            id="nav-6-tab"
             data-tabs-target="#page-save"
             type="button"
             role="tab"
@@ -479,8 +503,8 @@ export default defineComponent({
     </div>
 
     <div id="nav-tab-page">
-      <div class="" id="page-content" role="tabpanel" aria-labelledby="nav-0-tab">
-        <PageContent
+      <div class="" id="page-information" role="tabpanel" aria-labelledby="nav-0-tab">
+        <PageInformation
           :translate="translate"
           :page="page"
           :current-locale="currentLocale"
@@ -491,18 +515,20 @@ export default defineComponent({
           @update:section-errors="handleSectionErrors"
           @update-header-img="handleUpdateHeaderImg"
         />
-
-        <PageContentBlocks
+      </div>
+      <div class="hidden" id="page-content" role="tabpanel" aria-labelledby="nav-1-tab">
+        <PageContent
           :translate="translate"
           :page="page"
           :current-locale="currentLocale"
-          :pageDatas="pageDatas"
           :locales="locales"
+          :page-datas="pageDatas"
+          :restore-count="restoreCount"
           :urls="urls"
           @update-page-contents="handleUpdatePageContents"
         />
       </div>
-      <div class="hidden" id="page-seo" role="tabpanel" aria-labelledby="nav-1-tab">
+      <div class="hidden" id="page-seo" role="tabpanel" aria-labelledby="nav-2-tab">
         <PageSEO
           :translate="translate"
           :page="page"
@@ -512,7 +538,7 @@ export default defineComponent({
           @update:section-errors="handleSectionErrors"
         />
       </div>
-      <div class="hidden" id="page-tag" role="tabpanel" aria-labelledby="nav-2-tab">
+      <div class="hidden" id="page-tag" role="tabpanel" aria-labelledby="nav-3-tab">
         <PageTag
           :translate="translate"
           :page="page"
@@ -522,7 +548,7 @@ export default defineComponent({
           @update-tags="handleUpdateTags"
         />
       </div>
-      <div class="hidden" id="page-menu" role="tabpanel" aria-labelledby="nav-3-tab">
+      <div class="hidden" id="page-menu" role="tabpanel" aria-labelledby="nav-4-tab">
         <PageMenu
           :translate="translate"
           :page="page"
@@ -530,7 +556,7 @@ export default defineComponent({
           @update-menus="handleUpdateMenus"
         />
       </div>
-      <div class="hidden" id="page-history" role="tabpanel" aria-labelledby="nav-4-tab">
+      <div class="hidden" id="page-history" role="tabpanel" aria-labelledby="nav-5-tab">
         <PageHistory
           :id="id"
           :urls="urls"
@@ -539,7 +565,7 @@ export default defineComponent({
           @restore-history="handleRestoreHistory"
         />
       </div>
-      <div class="hidden" id="page-save" role="tabpanel" aria-labelledby="nav-5-tab">Save</div>
+      <div class="hidden" id="page-save" role="tabpanel" aria-labelledby="nav-6-tab">Save</div>
     </div>
   </div>
 

@@ -57,6 +57,10 @@ export default defineComponent({
       type: Number as PropType<number>,
       required: true,
     },
+    restoreCount: {
+      type: Number as PropType<number>,
+      required: true,
+    },
   },
   emits: ['update-page-contents'],
   data() {
@@ -261,7 +265,7 @@ export default defineComponent({
       <div class="p-4">
         <div v-if="isTypeText">
           <MarkdownEditor
-            :key="'content-' + renderBlockId + '-' + currentLocale"
+            :key="'content-' + renderBlockId + '-' + currentLocale + '-' + restoreCount"
             :me-id="'content-' + renderBlockId + '-' + currentLocale"
             :me-value="blockText"
             :me-rows="14"
