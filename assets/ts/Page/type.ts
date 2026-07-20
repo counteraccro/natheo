@@ -129,6 +129,7 @@ export interface PageTranslations {
   onglet_menu: string;
   onglet_history: string;
   onglet_save: string;
+  onglet_information: string;
   loading: string;
   msg_auto_save_success: string;
   msg_add_tag_success: string;
