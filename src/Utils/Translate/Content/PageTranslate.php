@@ -47,6 +47,7 @@ class PageTranslate extends AppTranslate
             'onglet_menu' => $this->translator->trans('page.onglet.menu', domain: 'page'),
             'onglet_history' => $this->translator->trans('page.onglet.history', domain: 'page'),
             'onglet_save' => $this->translator->trans('page.onglet.save', domain: 'page'),
+            'onglet_information' => $this->translator->trans('page.onglet.information', domain: 'page'),
             'loading' => $this->translator->trans('page.loading', domain: 'page'),
             'msg_auto_save_success' => $this->translator->trans('page.msg.auto_save.success', domain: 'page'),
             'tag_title' => $this->translator->trans('page.onglet.tag.title', domain: 'page'),
