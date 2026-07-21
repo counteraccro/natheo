@@ -261,6 +261,7 @@ class PageTranslate extends AppTranslate
                     domain: 'page',
                 ),
                 'default_text' => $this->translator->trans('page.page_content_block.default_text', domain: 'page'),
+                'bloc' => $this->translator->trans('page.page_content_block.bloc', domain: 'page'),
                 'loading' => $this->translator->trans('page.page_content_block.loading', domain: 'page'),
             ],
         ];
