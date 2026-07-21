@@ -403,14 +403,6 @@ export default defineComponent({
         </div>
         <div v-if="fieldErrors.url" class="form-text text-error">✗ {{ fieldErrors.url }}</div>
       </div>
-
-      <div class="form-group">
-        <label for="list-render-page" class="form-label">{{ translate.page_content_form.list_render_label }}</label>
-        <select id="list-render-page" class="form-input" v-model="page.render">
-          <option v-for="(value, key) in pageDatas.list_render" :value="parseInt(key)">{{ value }}</option>
-        </select>
-        <div id="list-status-help" class="form-text">{{ translate.page_content_form.list_render_help }}</div>
-      </div>
     </div>
   </div>
 </template>

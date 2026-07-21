@@ -217,6 +217,32 @@ export default defineComponent({
       this.page.pageContents = pageContents;
     },
 
+    handleSwapBlocks(blockA: number, blockB: number) {
+      const indexA = this.page.pageContents.findIndex((c) => c.renderBlock === blockA);
+      const indexB = this.page.pageContents.findIndex((c) => c.renderBlock === blockB);
+
+      if (indexA === -1 && indexB === -1) return;
+
+      if (indexA !== -1 && indexB === -1) {
+        this.page.pageContents.splice(indexA, 1, { ...this.page.pageContents[indexA], renderBlock: blockB });
+        this.restoreCount++;
+        return;
+      }
+
+      if (indexA === -1 && indexB !== -1) {
+        this.page.pageContents.splice(indexB, 1, { ...this.page.pageContents[indexB], renderBlock: blockA });
+        this.restoreCount++;
+        return;
+      }
+
+      const contentA = { ...this.page.pageContents[indexA] };
+      const contentB = { ...this.page.pageContents[indexB] };
+
+      this.page.pageContents.splice(indexA, 1, { ...contentB, renderBlock: blockA });
+      this.page.pageContents.splice(indexB, 1, { ...contentA, renderBlock: blockB });
+      this.restoreCount++;
+    },
+
     /**
      * Gestionnaire des erreurs
      * @param payload
@@ -526,6 +552,7 @@ export default defineComponent({
           :restore-count="restoreCount"
           :urls="urls"
           @update-page-contents="handleUpdatePageContents"
+          @swap-blocks="handleSwapBlocks"
         />
       </div>
       <div class="hidden" id="page-seo" role="tabpanel" aria-labelledby="nav-2-tab">

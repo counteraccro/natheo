@@ -18,6 +18,13 @@ interface LayoutRow {
   cols: LayoutCol[];
 }
 
+interface BlockNeighbors {
+  left: number | null;
+  right: number | null;
+  up: number | null;
+  down: number | null;
+}
+
 const LAYOUTS: Record<number, LayoutRow[]> = {
   1: [{ row: 1, cols: [{ renderBlockId: 1 }] }],
   2: [{ row: 1, cols: [{ renderBlockId: 1 }, { renderBlockId: 2 }] }],
@@ -78,10 +85,28 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ['update-page-contents'],
+  emits: ['update-page-contents', 'swap-blocks'],
   computed: {
     layout(): LayoutRow[] {
       return LAYOUTS[this.page.render] ?? LAYOUTS[1];
+    },
+    neighbors(): Record<number, BlockNeighbors> {
+      const result: Record<number, BlockNeighbors> = {};
+      for (let rowIdx = 0; rowIdx < this.layout.length; rowIdx++) {
+        const row = this.layout[rowIdx];
+        for (let colIdx = 0; colIdx < row.cols.length; colIdx++) {
+          const blockId = row.cols[colIdx].renderBlockId;
+          const prevRow = rowIdx > 0 ? this.layout[rowIdx - 1] : null;
+          const nextRow = rowIdx < this.layout.length - 1 ? this.layout[rowIdx + 1] : null;
+          result[blockId] = {
+            left: colIdx > 0 ? row.cols[colIdx - 1].renderBlockId : null,
+            right: colIdx < row.cols.length - 1 ? row.cols[colIdx + 1].renderBlockId : null,
+            up: prevRow ? prevRow.cols[Math.min(colIdx, prevRow.cols.length - 1)].renderBlockId : null,
+            down: nextRow ? nextRow.cols[Math.min(colIdx, nextRow.cols.length - 1)].renderBlockId : null,
+          };
+        }
+      }
+      return result;
     },
   },
 });
@@ -103,6 +128,14 @@ export default defineComponent({
       </div>
     </div>
     <div class="p-4 flex flex-col gap-4">
+      <div class="form-group">
+        <label for="list-render-page" class="form-label">{{ translate.page_content_form.list_render_label }}</label>
+        <select id="list-render-page" class="form-input" v-model="page.render">
+          <option v-for="(value, key) in pageDatas.list_render" :value="parseInt(key)">{{ value }}</option>
+        </select>
+        <div id="list-status-help" class="form-text">{{ translate.page_content_form.list_render_help }}</div>
+      </div>
+
       <div
         v-for="row in layout"
         :key="row.row"
@@ -113,6 +146,7 @@ export default defineComponent({
           v-for="col in row.cols"
           :key="col.renderBlockId"
           :render-block-id="col.renderBlockId"
+          :neighbors="neighbors[col.renderBlockId]"
           :page="page"
           :translate="translate"
           :current-locale="currentLocale"
@@ -121,6 +155,7 @@ export default defineComponent({
           :page-datas="pageDatas"
           :restore-count="restoreCount"
           @update-page-contents="$emit('update-page-contents', $event)"
+          @swap-blocks="(blockA, blockB) => $emit('swap-blocks', blockA, blockB)"
         />
       </div>
     </div>

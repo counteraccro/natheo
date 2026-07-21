@@ -1,9 +1,4 @@
 <script lang="ts">
-/**
- * Gestionnaire des Pages - Onglet Content - Gestion des blocs de content
- * @author Gourdon Aymeric
- * @version 2.0
- */
 import { defineComponent, PropType } from 'vue';
 import {
   Locales,
@@ -23,6 +18,13 @@ interface ContentType {
   label: string;
   help: string;
   selected: number;
+}
+
+interface BlockNeighbors {
+  left: number | null;
+  right: number | null;
+  up: number | null;
+  down: number | null;
 }
 
 export default defineComponent({
@@ -61,8 +63,12 @@ export default defineComponent({
       type: Number as PropType<number>,
       required: true,
     },
+    neighbors: {
+      type: Object as PropType<BlockNeighbors>,
+      required: true,
+    },
   },
-  emits: ['update-page-contents'],
+  emits: ['update-page-contents', 'swap-blocks'],
   data() {
     return {
       showModalNew: false as boolean,
@@ -100,55 +106,43 @@ export default defineComponent({
     },
   },
   methods: {
-    /**
-     * Ouverture modale pour ajouter un contenu
-     */
     openModalNew() {
       this.resetNewContent();
       this.showModalNew = true;
     },
-
-    /**
-     * Fermeture modale nouveau contenu
-     */
     closeModalNew() {
       this.showModalNew = false;
       this.resetNewContent();
     },
-
-    /**
-     * Confirmation suppression
-     */
     openModalRemove() {
       this.showModalRemove = true;
     },
-
-    /**
-     * Fermeture confirmation suppression
-     */
     closeModalRemove() {
       this.showModalRemove = false;
     },
-
-    /**
-     * Réinitialisation du bloc
-     */
     resetNewContent() {
       this.idSelectContent = 0;
       this.idSelectTypeContent = 0;
       this.contentType = null;
     },
-
-    /**
-     * Charge la liste de type de contenu
-     */
+    swapUp() {
+      if (this.neighbors.up !== null) this.$emit('swap-blocks', this.renderBlockId, this.neighbors.up);
+    },
+    swapDown() {
+      if (this.neighbors.down !== null) this.$emit('swap-blocks', this.renderBlockId, this.neighbors.down);
+    },
+    swapLeft() {
+      if (this.neighbors.left !== null) this.$emit('swap-blocks', this.renderBlockId, this.neighbors.left);
+    },
+    swapRight() {
+      if (this.neighbors.right !== null) this.$emit('swap-blocks', this.renderBlockId, this.neighbors.right);
+    },
     loadContentType() {
       if (this.idSelectContent <= 1) {
         this.contentType = null;
         this.idSelectTypeContent = 0;
         return;
       }
-
       this.loading = true;
       axios
         .get(this.urls.liste_content_by_id + '/' + this.idSelectContent)
@@ -168,14 +162,8 @@ export default defineComponent({
           this.loading = false;
         });
     },
-
-    /**
-     * Ajout un nouveau contenu
-     */
     addContent() {
-      if (this.idSelectContent <= 0) {
-        return;
-      }
+      if (this.idSelectContent <= 0) return;
 
       const newContent: PageContentItem = {
         id: null,
@@ -209,9 +197,7 @@ export default defineComponent({
     },
     onTextChange(_id: string, value: string) {
       if (!this.blockContent) return;
-
       const translation = this.blockContent.pageContentTranslations.find((t) => t.locale === this.currentLocale);
-
       if (translation) {
         translation.text = value;
       } else {
@@ -228,41 +214,63 @@ export default defineComponent({
 </script>
 
 <template>
-  <div>
-    <div
-      v-if="isEmpty"
-      class="flex flex-col items-center justify-center gap-3 rounded-lg border-2 border-dashed py-10 cursor-pointer transition-all"
-      style="border-color: var(--border-dark); color: var(--text-secondary); min-height: 160px"
-      @mouseenter="
-        ($event.currentTarget as HTMLElement).style.borderColor = 'var(--primary)';
-        ($event.currentTarget as HTMLElement).style.backgroundColor = 'var(--primary-lighter)';
-      "
-      @mouseleave="
-        ($event.currentTarget as HTMLElement).style.borderColor = 'var(--border-dark)';
-        ($event.currentTarget as HTMLElement).style.backgroundColor = '';
-      "
-      @click="openModalNew"
-    >
-      <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4v16m8-8H4" />
-      </svg>
-      <span class="text-sm font-medium">{{ translate.page_content.page_content_block.btn_new_content }}</span>
-    </div>
-
-    <div v-else class="card rounded-lg overflow-visible" style="border-color: var(--border-color)">
-      <div class="px-4 py-3 border-b flex items-center justify-between" style="border-color: var(--border-color)">
-        <span class="text-xs font-semibold" style="color: var(--text-secondary)">
-          {{ translate.page_content.page_content_block.bloc }} {{ renderBlockId }}
-        </span>
-        <button type="button" class="btn btn-xs btn-danger" @click="openModalRemove">
+  <div class="card rounded-lg overflow-visible" style="border-color: var(--border-color)">
+    <div class="px-4 py-3 border-b flex items-center justify-between" style="border-color: var(--border-color)">
+      <span class="text-xs font-semibold" style="color: var(--text-secondary)">
+        {{ translate.page_content.page_content_block.bloc }} {{ renderBlockId }}
+      </span>
+      <div class="flex items-center gap-1">
+        <button v-if="neighbors.up !== null" type="button" class="btn btn-xs btn-outline-dark" @click="swapUp">
+          <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+          </svg>
+        </button>
+        <button v-if="neighbors.left !== null" type="button" class="btn btn-xs btn-outline-dark" @click="swapLeft">
+          <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+        <button v-if="neighbors.right !== null" type="button" class="btn btn-xs btn-outline-dark" @click="swapRight">
+          <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+        <button v-if="neighbors.down !== null" type="button" class="btn btn-xs btn-outline-dark" @click="swapDown">
+          <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+        <button v-if="!isEmpty" type="button" class="btn btn-xs btn-danger" @click="openModalRemove">
           <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
           </svg>
           {{ translate.page_content.page_content_block.btn_delete_content }}
         </button>
       </div>
+    </div>
 
-      <div class="p-4">
+    <div class="p-4">
+      <div
+        v-if="isEmpty"
+        class="flex flex-col items-center justify-center gap-3 rounded-lg border-2 border-dashed py-10 cursor-pointer transition-all"
+        style="border-color: var(--border-dark); color: var(--text-secondary); min-height: 120px"
+        @mouseenter="
+          ($event.currentTarget as HTMLElement).style.borderColor = 'var(--primary)';
+          ($event.currentTarget as HTMLElement).style.backgroundColor = 'var(--primary-lighter)';
+        "
+        @mouseleave="
+          ($event.currentTarget as HTMLElement).style.borderColor = 'var(--border-dark)';
+          ($event.currentTarget as HTMLElement).style.backgroundColor = '';
+        "
+        @click="openModalNew"
+      >
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4v16m8-8H4" />
+        </svg>
+        <span class="text-sm font-medium">{{ translate.page_content.page_content_block.btn_new_content }}</span>
+      </div>
+
+      <div v-else>
         <div v-if="isTypeText">
           <MarkdownEditor
             :key="'content-' + renderBlockId + '-' + currentLocale + '-' + restoreCount"
@@ -315,7 +323,6 @@ export default defineComponent({
 
     <Modal :id="modalNewId" :show="showModalNew" @close-modal="closeModalNew">
       <template #title>{{ translate.page_content.page_content_block.modale_new_title }}</template>
-
       <template #body>
         <div class="form-group">
           <label :for="'list-choice-content-' + renderBlockId" class="form-label">
@@ -364,7 +371,6 @@ export default defineComponent({
           <div class="form-text">{{ contentType.help }}</div>
         </div>
       </template>
-
       <template #footer>
         <button type="button" class="btn btn-sm btn-outline-dark me-2" @click="closeModalNew">
           {{ translate.page_content.page_content_block.modale_new_btn_cancel }}
@@ -377,13 +383,11 @@ export default defineComponent({
 
     <Modal :id="modalRemoveId" :show="showModalRemove" @close-modal="closeModalRemove">
       <template #title>{{ translate.page_content.page_content_block.modale_remove_title }}</template>
-
       <template #body>
         <p class="text-sm" style="color: var(--text-secondary)">
           {{ translate.page_content.page_content_block.modale_remove_body }}
         </p>
       </template>
-
       <template #footer>
         <button type="button" class="btn btn-sm btn-outline-dark me-2" @click="closeModalRemove">
           {{ translate.page_content.page_content_block.modale_remove_btn_cancel }}
