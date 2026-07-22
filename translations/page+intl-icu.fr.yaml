@@ -194,3 +194,4 @@ page.page_menu.list_menu.sub_label: 'Associer un ou plusieurs menus à votre pag
 page.page_content_block.default_text: 'Bloc de texte ajouté'
 page.onglet.information: Informations
 page.page_content_block.bloc: 'Block n°'
+page.status.archived: 'Archivée'

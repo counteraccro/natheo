@@ -195,3 +195,4 @@ page.page_menu.list_menu.sub_label: __page.page_menu.list_menu.sub_label
 page.page_content_block.default_text: __page.page_content_block.default_text
 page.onglet.information: __page.onglet.information
 page.page_content_block.bloc: __page.page_content_block.bloc
+page.status.archived: __page.status.archived
