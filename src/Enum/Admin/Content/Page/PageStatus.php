@@ -18,4 +18,9 @@ enum PageStatus: int
      * Status draft pour une page
      */
     case DRAFT = 2;
+
+    /**
+     * Status archived pour une page
+     */
+    case ARCHIVED = 3;
 }
