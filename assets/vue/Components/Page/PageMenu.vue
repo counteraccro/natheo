@@ -134,7 +134,7 @@ export default defineComponent({
             translate.page_menu.list_menu_header
           }}</span>
         </div>
-        <select class="form-input" v-model.number="selectedHeader">
+        <select id="menu-header" class="form-input" v-model.number="selectedHeader">
           <option :value="0">{{ translate.page_menu.list_menu_empty }}</option>
           <option v-for="menu in menusByPosition[1]" :key="menu.id" :value="menu.id" :disabled="menu.disabled">
             {{ menu.name }}{{ menu.disabled ? ' (' + translate.page_menu.list_menu_disabled + ')' : '' }}
@@ -152,7 +152,7 @@ export default defineComponent({
               translate.page_menu.list_menu_left
             }}</span>
           </div>
-          <select class="form-input" v-model.number="selectedLeft">
+          <select id="menu-left" class="form-input" v-model.number="selectedLeft">
             <option :value="0">{{ translate.page_menu.list_menu_empty }}</option>
             <option v-for="menu in menusByPosition[4]" :key="menu.id" :value="menu.id" :disabled="menu.disabled">
               {{ menu.name }}{{ menu.disabled ? ' (' + translate.page_menu.list_menu_disabled + ')' : '' }}
@@ -169,7 +169,7 @@ export default defineComponent({
               translate.page_menu.list_menu_right
             }}</span>
           </div>
-          <select class="form-input" v-model.number="selectedRight">
+          <select id="menu-right" class="form-input" v-model.number="selectedRight">
             <option :value="0">{{ translate.page_menu.list_menu_empty }}</option>
             <option v-for="menu in menusByPosition[2]" :key="menu.id" :value="menu.id" :disabled="menu.disabled">
               {{ menu.name }}{{ menu.disabled ? ' (' + translate.page_menu.list_menu_disabled + ')' : '' }}
@@ -187,7 +187,7 @@ export default defineComponent({
             translate.page_menu.list_menu_footer
           }}</span>
         </div>
-        <select class="form-input" v-model.number="selectedFooter">
+        <select id="menu-footer" class="form-input" v-model.number="selectedFooter">
           <option :value="0">{{ translate.page_menu.list_menu_empty }}</option>
           <option v-for="menu in menusByPosition[3]" :key="menu.id" :value="menu.id" :disabled="menu.disabled">
             {{ menu.name }}{{ menu.disabled ? ' (' + translate.page_menu.list_menu_disabled + ')' : '' }}

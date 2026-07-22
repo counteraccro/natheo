@@ -299,7 +299,7 @@ export default defineComponent({
 
     <div class="p-5">
       <div class="form-group">
-        <label class="form-label">{{ translate.page_content_form.header_img_title }}</label>
+        <div class="form-label">{{ translate.page_content_form.header_img_title }}</div>
 
         <div v-if="headerImg" class="relative rounded-lg overflow-hidden mb-3" style="height: 160px">
           <img :src="headerImg" class="w-full h-full object-cover" alt="" />
@@ -338,8 +338,10 @@ export default defineComponent({
       </div>
 
       <div class="form-group">
-        <label for="list-render-page" class="form-label">{{ translate.page_content_form.list_categories_label }}</label>
-        <select id="list-render-page" class="form-input" v-model="page.category">
+        <label for="list-category-page" class="form-label">{{
+          translate.page_content_form.list_categories_label
+        }}</label>
+        <select id="list-category-page" class="form-input" v-model="page.category">
           <option v-for="(value, key) in pageDatas.list_categories" :value="parseInt(key)">{{ value }}</option>
         </select>
         <div id="list-status-help" class="form-text">{{ translate.page_content_form.list_categories_help }}</div>
@@ -347,7 +349,7 @@ export default defineComponent({
 
       <div class="form-group">
         <div class="flex items-center justify-between">
-          <label class="form-label">{{ translate.page_content_form.input_titre_label }}</label>
+          <label for="page-title" class="form-label">{{ translate.page_content_form.input_titre_label }}</label>
           <div class="flex items-center gap-1.5 text-xs cursor-pointer" style="color: var(--text-secondary)">
             <div class="form-check">
               <input type="checkbox" id="check-auto-slug" v-model="currentAutoSlugEnabled" class="form-check-input" />
@@ -357,7 +359,13 @@ export default defineComponent({
             </div>
           </div>
         </div>
-        <input type="text" class="form-input" :class="fieldErrors.titre ? 'is-invalid' : ''" v-model="currentTitre" />
+        <input
+          id="page-title"
+          type="text"
+          class="form-input"
+          :class="fieldErrors.titre ? 'is-invalid' : ''"
+          v-model="currentTitre"
+        />
         <div v-if="!fieldErrors.titre" id="list-status-help" class="form-text">
           {{ translate.page_content_form.input_titre_info }}
         </div>
@@ -365,7 +373,7 @@ export default defineComponent({
       </div>
 
       <div class="form-group">
-        <label class="form-label">{{ translate.page_content_form.input_url_label }}</label>
+        <label for="page-url" class="form-label">{{ translate.page_content_form.input_url_label }}</label>
         <div class="relative">
           <div class="input-addon-group">
             <span class="input-addon input-addon-left">
@@ -379,7 +387,13 @@ export default defineComponent({
               </svg>
               {{ pageDatas.list_categories[page.category].toLowerCase() }}/</span
             >
-            <input type="text" class="form-input" :class="fieldErrors.url ? 'is-invalid' : ''" v-model="currentUrl" />
+            <input
+              id="page-url"
+              type="text"
+              class="form-input"
+              :class="fieldErrors.url ? 'is-invalid' : ''"
+              v-model="currentUrl"
+            />
           </div>
 
           <svg
@@ -402,6 +416,23 @@ export default defineComponent({
           {{ translate.page_content_form.input_url_info }}
         </div>
         <div v-if="fieldErrors.url" class="form-text text-error">✗ {{ fieldErrors.url }}</div>
+      </div>
+
+      <div class="form-group">
+        <label for="list-page" class="form-label">{{ translate.page_save.list_landing_page_label }}</label>
+        <select id="list-page" class="form-input" aria-label="Default select example" v-model="page.landingPage">
+          <option :value="true">{{ translate.page_save.select_page_landing_page }}</option>
+          <option :value="false">{{ translate.page_save.select_page_normal_page }}</option>
+        </select>
+        <div id="list-status-help" class="form-text">{{ translate.page_save.list_landing_page_help }}</div>
+      </div>
+
+      <div class="form-group">
+        <label for="list-status-page" class="form-label">{{ translate.page_save.list_status_label }}</label>
+        <select id="list-status-page" class="form-input" v-model="page.status">
+          <option v-for="(value, key) in pageDatas.list_status" :value="parseInt(key)">{{ value }}</option>
+        </select>
+        <div id="list-status-help" class="form-text">{{ translate.page_save.list_status_help }}</div>
       </div>
     </div>
   </div>
