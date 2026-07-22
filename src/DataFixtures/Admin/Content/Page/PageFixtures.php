@@ -42,10 +42,6 @@ class PageFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
     {
         $data = Yaml::parseFile($this->pathDataFixtures . self::PAGE_FIXTURES_DATA_FILE);
 
-        //TODO clear var/pageHistory et pageHistory-test
-        // Voir FileSystem de Symfony. Attention au path, utiliser les paramètres internes
-        // Mettre le code dans src/Utils/Content/Page/PageHistory.php
-
         $pageHistory = new PageHistory($this->container, new User());
         $pageHistory->removePageHistoryFolder();
 

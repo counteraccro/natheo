@@ -65,10 +65,6 @@ class InstallCommand extends Command
             return Command::SUCCESS;
         }
 
-        // TODO A mettre ici appel à DatabaseManagerService
-        // Test si le dossier exist -> si il existe -> delete le dossier -> tu recréer le dossier
-        // Si merde avec git => si le dossier exite -> finder dedans, tu récupère tous les fichier et tu les deletes
-
         // Drop database
         if ($delete) {
             $io->title($this->translator->trans('install.drop.database', domain: 'command'));
