@@ -7,10 +7,6 @@
 
 import { defineComponent, PropType } from 'vue';
 import SkeletonPageContent from '@/vue/Components/Skeleton/Page/PageContent.vue';
-import SkeletonPageTag from '@/vue/Components/Skeleton/Page/PageTag.vue';
-import SkeletonPageHistory from '@/vue/Components/Skeleton/Page/PageHistory.vue';
-import SkeletonPageSave from '@/vue/Components/Skeleton/Page/PageSave.vue';
-import SkeletonPageSEO from '@/vue/Components/Skeleton/Page/PageSEO.vue';
 import { Locales, Page, PageContentItem, PageData, PageMenus, PageTranslations, Tag, Urls } from '@/ts/Page/type';
 import axios from 'axios';
 import PageContent from '@/vue/Components/Page/PageContent.vue';
@@ -25,6 +21,7 @@ import PageSEO from '@/vue/Components/Page/PageSeo.vue';
 import PageTag from '@/vue/Components/Page/PageTag.vue';
 import PageMenu from '@/vue/Components/Page/PageMenu.vue';
 import PageInformation from '@/vue/Components/Page/PageInformation.vue';
+import { emitter } from '@/utils/useEvent';
 
 export default defineComponent({
   name: 'Page',
@@ -39,10 +36,6 @@ export default defineComponent({
     PageHistory,
     MediathequeModale,
     PageContent,
-    SkeletonPageSEO,
-    SkeletonPageSave,
-    SkeletonPageHistory,
-    SkeletonPageTag,
     SkeletonPageContent,
   },
   props: {
@@ -287,6 +280,54 @@ export default defineComponent({
       const tabButton = document.getElementById(tabIds[error.section]);
       tabButton?.click();
     },
+
+    /**
+     * Sauvegarde une page
+     */
+    save() {
+      this.loading = true;
+      axios
+        .post(this.urls.save, {
+          page: this.page,
+        })
+        .then((response) => {
+          if (response.data.success === true) {
+            this.toasts.success.msg = response.data.msg;
+            this.toasts.success.show = true;
+            // Cas première page, on force la redirection pour passer en mode édition
+            if (response.data.redirect === true) {
+              window.location.replace(response.data.url_redirect);
+            }
+          } else {
+            this.toasts.error.msg = response.data.msg;
+            this.toasts.error.show = true;
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          this.loading = false;
+          this.$nextTick(() => {
+            initFlowbite();
+          });
+          setTimeout(() => {
+            this.toasts.success.show = false;
+          }, 3000);
+          emitter.emit('reset-check-confirm');
+        });
+    },
+
+    /**
+     * Ouvre l'aperçu de la page
+     */
+    openPreview() {
+      const translation = this.page.pageTranslations.find((t) => t.locale === this.currentLocale);
+      if (!translation) return;
+      const category = this.pageDatas.list_categories[this.page.category]?.toLowerCase() ?? '';
+      const url = `${this.pageDatas.url_front}/${this.currentLocale}/${category}/${translation.url}`;
+      window.open(url);
+    },
   },
 });
 </script>
@@ -503,28 +544,6 @@ export default defineComponent({
             {{ translate.onglet_history }}
           </button>
         </li>
-        <li class="me-2" role="presentation">
-          <button
-            class="inline-flex gap-1.5 items-center ps-4 pt-2 pe-4 pb-2 border-b-2 rounded-t-sm cursor-pointer dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:hover:text-gray-300"
-            id="nav-6-tab"
-            data-tabs-target="#page-save"
-            type="button"
-            role="tab"
-            :aria-controls="translate.onglet_save"
-            aria-selected="false"
-            @click="activeTab = 'save'"
-          >
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"
-              />
-            </svg>
-            {{ translate.onglet_save }}
-          </button>
-        </li>
       </ul>
     </div>
 
@@ -592,13 +611,8 @@ export default defineComponent({
           @restore-history="handleRestoreHistory"
         />
       </div>
-      <div class="hidden" id="page-save" role="tabpanel" aria-labelledby="nav-6-tab">Save</div>
     </div>
   </div>
-
-  <SkeletonPageSEO />
-  <SkeletonPageTag />
-  <SkeletonPageSave />
 
   <PageStatusBar
     ref="statusBar"
@@ -608,6 +622,8 @@ export default defineComponent({
     :translate="translate"
     :section-errors="sectionErrors"
     @go-to-error="handleGoToError"
+    @save-page="save"
+    @page-preview="openPreview"
   />
 
   <MediathequeModale :url-media="urls.load_media" :translate="translate.page_content_form.mediatheque" />

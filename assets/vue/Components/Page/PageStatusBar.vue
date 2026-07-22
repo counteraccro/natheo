@@ -36,7 +36,7 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ['restore-page', 'go-to-error'],
+  emits: ['restore-page', 'go-to-error', 'save-page', 'page-preview'],
   data() {
     return {
       autoSaveTimeout: null as ReturnType<typeof setTimeout> | null,
@@ -303,7 +303,18 @@ export default defineComponent({
 
     <div class="flex items-center gap-3 shrink-0">
       <a :href="urls.listing" class="btn btn-outline-dark btn-sm">{{ translate.btn_back }}</a>
-      <button class="btn btn-primary btn-sm" :disabled="hasAnyError">
+      <button class="btn btn-success btn-sm" @click="$emit('page-preview')">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M16 12H4m12 0-4 4m4-4-4-4m3-4h2a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3h-2"
+          />
+        </svg>
+        {{ translate.page_save.btn_see_ext }}
+      </button>
+      <button class="btn btn-primary btn-sm" :disabled="hasAnyError" @click="$emit('save-page')">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
         </svg>
