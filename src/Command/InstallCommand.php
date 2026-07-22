@@ -8,6 +8,7 @@ declare(strict_types=1);
  */
 namespace App\Command;
 
+use App\Enum\Admin\Tools\DatabaseManager\DatabaseManagerData;
 use App\Service\Installation\InstallationService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -17,6 +18,8 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[AsCommand(name: 'natheo:install', description: 'Create new database, create tables and run fixtures with dev datas')]
@@ -25,6 +28,7 @@ class InstallCommand extends Command
     public function __construct(
         private readonly TranslatorInterface $translator,
         private readonly InstallationService $installationService,
+        private readonly KernelInterface $kernel,
     ) {
         parent::__construct();
     }
@@ -77,6 +81,7 @@ class InstallCommand extends Command
                 $io->text($this->translator->trans('install.error', domain: 'command'));
                 return Command::FAILURE;
             }
+            $this->deleteDump();
         }
 
         // Create database
@@ -143,5 +148,18 @@ class InstallCommand extends Command
         $io->success($this->translator->trans('install.success', domain: 'command'));
 
         return Command::SUCCESS;
+    }
+
+    /**
+     * Supprime le dossier dump
+     * @return void
+     */
+    private function deleteDump(): void
+    {
+        $fileSystem = new Filesystem();
+
+        if ($fileSystem->exists($this->kernel->getProjectDir() . DatabaseManagerData::getRootPath())) {
+            $fileSystem->remove($this->kernel->getProjectDir() . DatabaseManagerData::getRootPath());
+        }
     }
 }

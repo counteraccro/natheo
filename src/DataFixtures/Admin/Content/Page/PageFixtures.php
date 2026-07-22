@@ -21,9 +21,12 @@ use App\Entity\Admin\Content\Page\PageTranslation;
 use App\Entity\Admin\Content\Tag\Tag;
 use App\Entity\Admin\System\OptionSystem;
 use App\Entity\Admin\System\User;
+use App\Utils\Content\Page\PageHistory;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\Yaml\Yaml;
 
 class PageFixtures extends AppFixtures implements FixtureGroupInterface, OrderedFixtureInterface
@@ -31,9 +34,16 @@ class PageFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
     const PAGE_FIXTURES_DATA_FILE =
         'content' . DIRECTORY_SEPARATOR . 'page' . DIRECTORY_SEPARATOR . 'page_fixtures_data.yaml';
 
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public function load(ObjectManager $manager): void
     {
         $data = Yaml::parseFile($this->pathDataFixtures . self::PAGE_FIXTURES_DATA_FILE);
+
+        $pageHistory = new PageHistory($this->container, new User());
+        $pageHistory->removePageHistoryFolder();
 
         if ($data === null) {
             return;
