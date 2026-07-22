@@ -219,6 +219,21 @@ class PageHistory
     }
 
     /**
+     * Supprime le dossier history et history-test
+     * @return void
+     */
+    public function removePageHistoryFolder(): void
+    {
+        if ($this->filesystem->exists($this->getPathPageHistory())) {
+            $this->filesystem->remove($this->getPathPageHistory());
+        }
+
+        if ($this->filesystem->exists($this->getPathPageHistory() . '-test')) {
+            $this->filesystem->remove($this->getPathPageHistory() . '-test');
+        }
+    }
+
+    /**
      * Retourne le path du dossier history
      * @return string
      */
