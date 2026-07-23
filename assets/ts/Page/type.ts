@@ -39,6 +39,7 @@ export interface PageContentBlockTranslate {
 
 export interface PageContentTranslate {
   title: string;
+  warning_empty_content: string;
   page_content_block: PageContentBlockTranslate;
 }
 
