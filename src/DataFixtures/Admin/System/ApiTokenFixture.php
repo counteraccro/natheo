@@ -43,6 +43,12 @@ class ApiTokenFixture extends AppFixtures implements FixtureGroupInterface, Orde
             }
             $manager->persist($apiToken);
         }
+
+        /** TODO Code à écrire ici  */
+        /**
+         * Générer le token aléatoire en mode lecture
+         * Appeler optionSystemService et appeler saveValueByKee()
+         */
         $manager->flush();
     }
 

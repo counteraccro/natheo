@@ -234,6 +234,11 @@ enum OptionSystem: string
      */
     case OS_FRONT_ROBOT_NO_FOLLOW = 'OS_FRONT_ROBOT_NO_FOLLOW';
 
+    /**
+     * Clé option front, clé API
+     */
+    case OS_FRONT_API_KEY = 'OS_FRONT_API_KEY';
+
     const CONFIG = [
         self::OS_SITE_NAME->value => ['default' => 'Nathéo CMS'],
         self::OS_OPEN_SITE->value => ['default' => '0'],
