@@ -253,6 +253,11 @@ options_system.front_robot_no_index: "__Bloquer l'indexation de votre site pour 
 options_system.front_robot_no_index_help: "__Si cette option est activé, les moteurs de recherches n'indexerons pas les pages de votre site"
 options_system.front_robot_no_follow: '__Bloquer le suivi des liens de votre site pour les moteurs de recherches'
 options_system.front_robot_no_follow_help: '__Si cette option est activé, les moteurs de recherches ne suivrons pas les liens dans les pages de votre site'
+options_system.front_api_key: '__Clé API pour le front'
+options_system.front_api_key_msg_error: "__Vous devez saisir une clé API"
+options_system.front_api_key_help: "__La clé API permet de d'acceder aux données de votre site coter front "
+options_system.front_api_key_placeholder: "__Votre API KEY"
+options_system.front_api_key_msg_success: "__Clé API correctement sauvegarder"
 key_separator: '__séparateur artificiel pour séparer translate generate auto (sous cette ligne) et autre-------------------------------------------------------------------------------'
 pagedemo.page_title_h1: __pagedemo.page_title_h1
 date.diff.start: "__Il y'a"
