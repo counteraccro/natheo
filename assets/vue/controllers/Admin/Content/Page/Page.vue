@@ -40,8 +40,8 @@ export default defineComponent({
   },
   props: {
     id: {
-      type: Number as PropType<number>,
-      required: true,
+      type: (Number as PropType<number>) || null,
+      default: null,
     },
     urls: {
       type: Object as PropType<Urls>,
@@ -97,6 +97,13 @@ export default defineComponent({
      */
     hasSeoError(): boolean {
       return this.sectionErrors.seo?.hasError ?? false;
+    },
+
+    /**
+     * Erreur onglet Content
+     */
+    hasBlocksError(): boolean {
+      return this.sectionErrors.blocks?.hasError ?? false;
     },
   },
   methods: {
@@ -371,6 +378,22 @@ export default defineComponent({
   <div v-else>
     <div class="mb-4 mt-4 border-b border-gray-200 dark:border-gray-700" id="nav-tab-option-system">
       <div class="float-right flex items-center" style="margin-top: -0.5rem">
+        <div
+          class="mt-3 me-2 px-3 py-1 text-xs font-semibold rounded-full"
+          style="color: white"
+          :style="
+            page.status === 2
+              ? 'background-color: var(--btn-danger)'
+              : page.status === 1
+                ? 'background-color: var(--btn-success)'
+                : page.status === 3
+                  ? 'background-color: var(--btn-warning)'
+                  : ''
+          "
+        >
+          {{ pageDatas.list_status[page.status] }}
+        </div>
+
         <div class="input-addon-group">
           <span class="input-addon input-addon-left">
             <svg
@@ -453,6 +476,7 @@ export default defineComponent({
               />
             </svg>
             {{ translate.onglet_content }}
+            <span v-if="hasBlocksError" class="w-2 h-2 rounded-full" style="background-color: var(--btn-danger)"></span>
           </button>
         </li>
         <li class="me-2" role="presentation">
@@ -572,6 +596,7 @@ export default defineComponent({
           :urls="urls"
           @update-page-contents="handleUpdatePageContents"
           @swap-blocks="handleSwapBlocks"
+          @update:section-errors="handleSectionErrors"
         />
       </div>
       <div class="hidden" id="page-seo" role="tabpanel" aria-labelledby="nav-2-tab">

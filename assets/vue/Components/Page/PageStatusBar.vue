@@ -303,7 +303,7 @@ export default defineComponent({
 
     <div class="flex items-center gap-3 shrink-0">
       <a :href="urls.listing" class="btn btn-outline-dark btn-sm">{{ translate.btn_back }}</a>
-      <button class="btn btn-success btn-sm" @click="$emit('page-preview')">
+      <button class="btn btn-success btn-sm" @click="$emit('page-preview')" :disabled="page.id === null">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             stroke-linecap="round"

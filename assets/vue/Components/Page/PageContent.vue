@@ -85,7 +85,22 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ['update-page-contents', 'swap-blocks'],
+  emits: ['update-page-contents', 'swap-blocks', 'update:section-errors'],
+
+  watch: {
+    contentSectionErrors: {
+      immediate: true,
+      deep: true,
+      handler(value: Record<string, Record<string, string>>) {
+        this.$emit('update:section-errors', {
+          section: 'blocks',
+          hasError: !this.hasAtLeastOneContent,
+          errorsByLocale: value,
+        });
+      },
+    },
+  },
+
   computed: {
     layout(): LayoutRow[] {
       return LAYOUTS[this.page.render] ?? LAYOUTS[1];
@@ -105,6 +120,18 @@ export default defineComponent({
             down: nextRow ? nextRow.cols[Math.min(colIdx, nextRow.cols.length - 1)].renderBlockId : null,
           };
         }
+      }
+      return result;
+    },
+    hasAtLeastOneContent(): boolean {
+      return this.page.pageContents.length > 0;
+    },
+    contentSectionErrors(): Record<string, Record<string, string>> {
+      const error = !this.hasAtLeastOneContent ? this.translate.page_content.warning_empty_content : '';
+
+      const result: Record<string, Record<string, string>> = {};
+      for (const locale of this.locales.locales) {
+        result[locale] = { content: error };
       }
       return result;
     },
@@ -128,6 +155,30 @@ export default defineComponent({
       </div>
     </div>
     <div class="p-4 flex flex-col gap-4">
+      <div
+        v-if="!hasAtLeastOneContent"
+        class="flex items-start gap-2 p-3 rounded-lg"
+        style="background-color: var(--alert-danger-bg); border: 1px solid var(--alert-danger-border)"
+      >
+        <svg
+          class="icon-sm shrink-0 mt-0.5"
+          style="color: var(--alert-danger-text)"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+          />
+        </svg>
+        <span class="text-xs" style="color: var(--alert-danger-text)">{{
+          translate.page_content.warning_empty_content
+        }}</span>
+      </div>
+
       <div class="form-group">
         <label for="list-render-page" class="form-label">{{ translate.page_content_form.list_render_label }}</label>
         <select id="list-render-page" class="form-input" v-model="page.render">
