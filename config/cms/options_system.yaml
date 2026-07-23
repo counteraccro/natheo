@@ -18,6 +18,15 @@ options_system:
                 label: 'options_system.open_site'
                 help: 'options_system.open_site_help'
                 default: 1
+            OS_FRONT_API_KEY:
+                default: 'API KEY'
+                label: 'options_system.front_api_key'
+                type: 'text'
+                required: true
+                msg_error: 'options_system.front_api_key_msg_error'
+                help: 'options_system.front_api_key_help'
+                placeholder: 'options_system.front_api_key_placeholder'
+                success: 'options_system.front_api_key_msg_success'
             OS_ADRESSE_SITE:
                 default: 'http://dev.natheo'
                 label: 'options_system.adresse_site'
