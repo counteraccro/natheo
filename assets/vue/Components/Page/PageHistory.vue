@@ -15,8 +15,8 @@ export default defineComponent({
   components: { SkeletonPageHistory },
   props: {
     id: {
-      type: Number as PropType<number>,
-      required: true,
+      type: (Number as PropType<number>) || null,
+      default: null,
     },
     urls: {
       type: Object as PropType<Urls>,
@@ -63,8 +63,14 @@ export default defineComponent({
      */
     loadHistory() {
       this.loading = true;
+
+      let url = this.urls.load_tab_history;
+      if (this.id !== null) {
+        url = url + '/' + this.id;
+      }
+
       axios
-        .get(this.urls.load_tab_history + '/' + this.id)
+        .get(url)
         .then((response) => {
           this.history = response.data.history;
         })
@@ -131,7 +137,11 @@ export default defineComponent({
       </div>
 
       <div class="p-5">
-        <div class="divide-y" style="border-color: var(--border-color)">
+        <div v-if="history.length === 0" class="flex flex-col items-center justify-center py-10 text-center">
+          <p class="text-sm" style="color: var(--text-secondary)">{{ translate.empty }}</p>
+        </div>
+
+        <div v-else class="divide-y" style="border-color: var(--border-color)">
           <div
             v-for="(entry, index) in visibleHistory"
             :key="entry.id"
