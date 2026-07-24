@@ -196,3 +196,4 @@ page.page_content_block.default_text: __page.page_content_block.default_text
 page.onglet.information: __page.onglet.information
 page.page_content_block.bloc: __page.page_content_block.bloc
 page.status.archived: __page.status.archived
+page.page_content.warning.empty_content: __page.page_content.warning.empty_content

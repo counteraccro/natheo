@@ -178,7 +178,7 @@ page.btn.back: Retour
 page.btn.new: 'Nouvelle page'
 page.page_content_form.input.titre.error: 'Le titre de la page ne peut pas être vide'
 page.page_content.auto_slug.label: "Générer automatiquement l'url"
-page.msg.auto_save.error: 'Une erreur est survenue lors de la sauvegarde automatique'
+page.msg.auto_save.error: 'Une erreur est survenue lors de la sauvegarde automatique'    
 page.msg.auto_save.run: 'En cours de sauvegarde...'
 page.page_history.load_more: 'Charger plus...'
 page.page_seo.input.meta.description.error: 'La description est obligatoire'
@@ -186,12 +186,13 @@ page.page_seo.input.meta.keywords.error: 'Au moins 1 mot clé doit être saisi'
 page.page_seo.input.meta.author.error: "Il faut préciser l'auteur de la page"
 page.page_seo.input.meta.copyright.error: 'Il faut saisir un copyright'
 page.onglet.menu: Menus
-page.page_menu.list_menu.header: 'Menu haut'
-page.page_menu.list_menu.footer: 'Menu bas'
+page.page_menu.list_menu.header: 'Haut de page'
+page.page_menu.list_menu.footer: 'Pied de page'
 page.page_menu.list_menu.left: 'Menu Gauche'
 page.page_menu.list_menu.right: 'Menu droite'
 page.page_menu.list_menu.sub_label: 'Associer un ou plusieurs menus à votre page'
 page.page_content_block.default_text: 'Bloc de texte ajouté'
 page.onglet.information: Informations
 page.page_content_block.bloc: 'Block n°'
-page.status.archived: 'Archivée'
+page.status.archived: Archivée
+page.page_content.warning.empty_content: 'Au moins 1 contenu doit être remplit'

@@ -202,6 +202,10 @@ class PageTranslate extends AppTranslate
     {
         return [
             'title' => $this->translator->trans('page.page_content.title', domain: 'page'),
+            'warning_empty_content' => $this->translator->trans(
+                'page.page_content.warning.empty_content',
+                domain: 'page',
+            ),
             'page_content_block' => [
                 'markdown' => $this->markdownEditorTranslate->getTranslate(),
                 'btn_new_content' => $this->translator->trans(
