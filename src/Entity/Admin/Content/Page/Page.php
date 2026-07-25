@@ -82,13 +82,13 @@ class Page
     /**
      * @var Collection<int, MenuElement>
      */
-    #[ORM\OneToMany(targetEntity: MenuElement::class, mappedBy: 'page')]
+    #[ORM\OneToMany(targetEntity: MenuElement::class, mappedBy: 'page', cascade: ['remove'], orphanRemoval: true)]
     private Collection $menuElements;
 
     /**
      * @var Collection<int, Menu>
      */
-    #[ORM\ManyToMany(targetEntity: Menu::class, inversedBy: 'pages', cascade: ['persist', 'remove'])]
+    #[ORM\ManyToMany(targetEntity: Menu::class, inversedBy: 'pages', cascade: ['persist'])]
     #[JoinTable(name: 'page_menu')]
     private Collection $menus;
 
