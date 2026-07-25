@@ -178,7 +178,7 @@ page.btn.back: Retour
 page.btn.new: 'Nouvelle page'
 page.page_content_form.input.titre.error: 'Le titre de la page ne peut pas être vide'
 page.page_content.auto_slug.label: "Générer automatiquement l'url"
-page.msg.auto_save.error: 'Une erreur est survenue lors de la sauvegarde automatique'    
+page.msg.auto_save.error: 'Une erreur est survenue lors de la sauvegarde automatique'
 page.msg.auto_save.run: 'En cours de sauvegarde...'
 page.page_history.load_more: 'Charger plus...'
 page.page_seo.input.meta.description.error: 'La description est obligatoire'
