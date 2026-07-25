@@ -81,9 +81,6 @@ export default defineComponent({
   mounted() {
     this.loadPage();
     this.currentLocale = this.locales.current;
-    this.$nextTick(() => {
-      initFlowbite();
-    });
   },
   computed: {
     /**
@@ -128,6 +125,9 @@ export default defineComponent({
         .finally(() => {
           this.loading = false;
           (this.$refs.statusBar as InstanceType<typeof PageStatusBar>)?.notifyPageReady();
+          this.$nextTick(() => {
+            initFlowbite();
+          });
         });
     },
 
