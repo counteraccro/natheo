@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html class="">
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Welcome!{% endblock %}</title>
     <link rel="icon" type="image/jpg" href="{{ asset('assets/natheo/favico/favicon.ico') }}">
-    
-       {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+
     {% block stylesheets %}
         {{ vite_entry_link_tags('install_css') }}
     {% endblock %}
@@ -15,6 +14,32 @@
     {% endblock %}
 </head>
 <body>
+
+<div class="fixed top-4 right-4 z-50">
+    <div class="relative">
+        <button id="themeButton" data-dropdown-toggle="themeDropdown" data-dropdown-placement="bottom-end" class="p-2 rounded-lg transition card" style="color:var(--text-secondary);" type="button" title="Personnalisation">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"></path></svg>
+        </button>
+        <div id="themeDropdown" class="z-10 rounded-xl shadow-lg w-72 p-4 hidden" style="background-color: var(--bg-card); border: 1px solid var(--border-color); position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate(-16px, 64px);" data-popper-placement="bottom-end">
+            <p class="text-sm font-semibold mb-3" style="color:var(--text-primary);">Thème de couleur</p>
+            <div class="flex gap-3 mb-4">
+                <button class="theme-btn theme-violet active" onclick="setTheme('violet')" title="Violet"></button>
+                <button class="theme-btn theme-blue" onclick="setTheme('blue')" title="Bleu"></button>
+                <button class="theme-btn theme-green" onclick="setTheme('green')" title="Vert"></button>
+                <button class="theme-btn theme-red" onclick="setTheme('red')" title="Rouge"></button>
+            </div>
+            <div class="pt-3 border-t" style="border-color:var(--border-color);">
+                <div class="flex items-center justify-between">
+                    <span class="text-sm font-semibold" style="color:var(--text-primary);">Mode sombre</span>
+                    <div class="dark-mode-toggle" id="darkToggle" onclick="toggleDarkMode()"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% block body %}{% endblock %}
+
+{% include "/installation/includes/scripts.html.twig" %}
 </body>
 </html>
