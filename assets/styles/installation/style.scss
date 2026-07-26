@@ -1,36 +1,89 @@
-code {
-    font-family: MyFancyCustomFont, monospace;
-    font-size: inherit;
+body {
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-pre {
-    background-color: #000000;
-    color: #ffffff;
+/* ============================================
+   THEME SELECTOR STYLES
+   ============================================ */
+.theme-selector {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
 }
 
-pre .error-config-file {
-    font-weight: bold;
-    color: #ef7378;
+.theme-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
 }
 
-fieldset {
-    display: block;
-    margin-inline-start: 2px;
-    margin-inline-end: 2px;
-    padding-block-start: 0.35em;
-    padding-inline-start: 0.75em;
-    padding-inline-end: 0.75em;
-    padding-block-end: 0.625em;
-    min-inline-size: min-content;
-    border-width: 2px;
-    border-style: groove;
-    border-image: initial;
-    border-radius: 5px;
+.theme-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-legend {
-    all: unset;
-    padding-inline-start: 6px;
-    padding-inline-end: 6px;
-    color: #999;
+.theme-btn.active {
+    border-color: var(--text-primary);
+}
+
+.theme-violet {
+    background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);
+}
+
+.theme-blue {
+    background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+}
+
+.theme-green {
+    background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+}
+
+.theme-red {
+    background: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
+}
+
+/* Dark Mode Toggle */
+.dark-mode-toggle {
+    width: 56px;
+    height: 28px;
+    background-color: var(--border-dark);
+    border-radius: 14px;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border: 2px solid var(--border-color);
+}
+
+.dark-mode-toggle::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    border-radius: 50%;
+    top: 2px;
+    left: 2px;
+    transition: transform 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.dark-mode-toggle.active {
+    background-color: var(--primary);
+}
+
+.dark-mode-toggle.active::after {
+    transform: translateX(28px);
+}
+
+.theme-icon {
+    width: 18px;
+    height: 18px;
+    color: var(--text-secondary);
+    transition: color 0.3s ease;
 }

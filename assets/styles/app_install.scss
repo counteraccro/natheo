@@ -9,3 +9,11 @@
 @use "flowbite/src/themes/default";
 
 @use "admin/variables";
+@use "admin/global/button";
+@use "admin/global/form-input";
+@use "admin/global/alerte";
+@use "admin/global/code-block";
+
+@use "installation/style";
+
+@custom-variant dark (&:where(.dark, .dark *));
