@@ -30,6 +30,10 @@ export default defineComponent({
       type: Boolean as PropType<boolean>,
       required: true,
     },
+    restoreTrigger: {
+      type: Number as PropType<number | null>,
+      default: null,
+    },
   },
   emits: ['restore-history'],
   data() {
@@ -53,6 +57,11 @@ export default defineComponent({
     active(value: boolean) {
       if (value) {
         this.loadHistory();
+      }
+    },
+    restoreTrigger(id: number | null): void {
+      if (id !== null) {
+        this.restore(id);
       }
     },
   },

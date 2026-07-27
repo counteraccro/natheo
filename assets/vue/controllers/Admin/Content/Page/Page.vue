@@ -7,7 +7,17 @@
 
 import { defineComponent, PropType } from 'vue';
 import SkeletonPageContent from '@/vue/Components/Skeleton/Page/PageContent.vue';
-import { Locales, Page, PageContentItem, PageData, PageMenus, PageTranslations, Tag, Urls } from '@/ts/Page/type';
+import {
+  Locales,
+  Page,
+  PageContentItem,
+  PageData,
+  PageHistoryState,
+  PageMenus,
+  PageTranslations,
+  Tag,
+  Urls,
+} from '@/ts/Page/type';
 import axios from 'axios';
 import PageContent from '@/vue/Components/Page/PageContent.vue';
 import { initFlowbite } from 'flowbite';
@@ -22,10 +32,19 @@ import PageTag from '@/vue/Components/Page/PageTag.vue';
 import PageMenu from '@/vue/Components/Page/PageMenu.vue';
 import PageInformation from '@/vue/Components/Page/PageInformation.vue';
 import { emitter } from '@/utils/useEvent';
+import AlertSuccess from '@/vue/Components/Alert/Success.vue';
+import AlertWarning from '@/vue/Components/Alert/Warning.vue';
+import AlertInfo from '@/vue/Components/Alert/Info.vue';
+import translate from '@/vue/controllers/Admin/System/Translate.vue';
+import AlertPrimary from '@/vue/Components/Alert/Primary.vue';
 
 export default defineComponent({
   name: 'Page',
   components: {
+    AlertPrimary,
+    AlertInfo,
+    AlertWarning,
+    AlertSuccess,
     PageInformation,
     PageMenu,
     PageTag,
@@ -65,6 +84,8 @@ export default defineComponent({
       loading: false,
       currentLocale: '',
       page: {} as Page,
+      history: {} as PageHistoryState,
+      restoreHistory: null as number | null,
       activeTab: 'content' as string,
       availableMenus: {} as PageMenus,
       restoreCount: 0 as number,
@@ -83,6 +104,9 @@ export default defineComponent({
     this.currentLocale = this.locales.current;
   },
   computed: {
+    translate() {
+      return translate;
+    },
     /**
      * Erreur onglet content
      */
@@ -118,6 +142,7 @@ export default defineComponent({
         .then((response) => {
           this.page = response.data.page;
           this.availableMenus = response.data.menus;
+          this.history = response.data.history;
         })
         .catch((error) => {
           console.error(error);
@@ -129,6 +154,15 @@ export default defineComponent({
             initFlowbite();
           });
         });
+    },
+
+    triggerRestore(): void {
+      this.restoreHistory = this.history.id;
+      this.history.show_msg = false;
+    },
+
+    dismissHistory(): void {
+      this.history.show_msg = false;
     },
 
     /**
@@ -376,6 +410,26 @@ export default defineComponent({
   </div>
 
   <div v-else>
+    <alert-primary
+      class="mt-4"
+      v-if="history.show_msg"
+      :text="history.msg"
+      :buttons="[
+        {
+          id: 'confirm',
+          label: translate.msg_btn_restore_history,
+          css: 'btn btn-success btn-xs',
+          onClick: triggerRestore,
+        },
+        {
+          id: 'cancel',
+          label: translate.msg_btn_cancel_restore_history,
+          css: 'btn btn-outline-dark btn-xs',
+          onClick: dismissHistory,
+        },
+      ]"
+    ></alert-primary>
+
     <div class="mb-4 mt-4 border-b border-gray-200 dark:border-gray-700" id="nav-tab-option-system">
       <div class="float-right flex items-center" style="margin-top: -0.5rem">
         <div
@@ -633,6 +687,7 @@ export default defineComponent({
           :urls="urls"
           :translate="translate.page_history"
           :active="activeTab === 'history'"
+          :restore-trigger="restoreHistory"
           @restore-history="handleRestoreHistory"
         />
       </div>
