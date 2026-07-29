@@ -13,11 +13,14 @@ use App\Entity\Admin\Content\Faq\Faq;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\Content\Page\PageTranslation;
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\Content\Page\PageCategory;
+use App\Enum\Admin\Content\Page\PageContentType;
+use App\Enum\Admin\Content\Page\PageRender;
+use App\Enum\Admin\Content\Page\PageStatus;
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Repository\Admin\Content\Page\PageTranslationRepository;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
-use App\Utils\Content\Page\PageConst;
 use App\Utils\Content\Page\PageHistory;
 use App\Utils\Content\Page\PageStatistiqueKey;
 use App\Utils\Content\Tag\TagRender;
@@ -33,29 +36,29 @@ class PageService extends AppAdminService
      * Retourne une liste de page paginé
      * @param int $page
      * @param int $limit
-     * @param string|null $search
-     * @param null $userId
+     * @param array $queryParams
+     * @param int|null $userId
      * @return Paginator
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getAllPaginate(int $page, int $limit, ?string $search = null, ?int $userId = null): Paginator
+    public function getAllPaginate(int $page, int $limit, array $queryParams, ?int $userId = null): Paginator
     {
         $repo = $this->getRepository(Page::class);
-        return $repo->getAllPaginate($page, $limit, $search, $userId);
+        return $repo->getAllPaginate($page, $limit, $queryParams, $userId);
     }
 
     /**
      * Construit le tableau de donnée à envoyé au tableau GRID
      * @param int $page
      * @param int $limit
-     * @param string|null $search
+     * @param array $queryParams
      * @param int|null $userId
      * @return array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getAllFormatToGrid(int $page, int $limit, ?string $search = null, ?int $userId = null): array
+    public function getAllFormatToGrid(int $page, int $limit, array $queryParams, ?int $userId = null): array
     {
         $translator = $this->getTranslator();
         $requestStack = $this->getRequestStack();
@@ -73,7 +76,7 @@ class PageService extends AppAdminService
             GridService::KEY_ACTION,
         ];
 
-        $dataPaginate = $this->getAllPaginate($page, $limit, $search, $userId);
+        $dataPaginate = $this->getAllPaginate($page, $limit, $queryParams, $userId);
 
         $nb = $dataPaginate->count();
         $data = [];
@@ -84,12 +87,13 @@ class PageService extends AppAdminService
 
             $isDisabled = '';
             $isLandingPage = '';
-            if ($element->isDisabled()) {
-                $isDisabled = '<i class="bi bi-eye-slash"></i>';
-            }
 
             if ($element->isLandingPage()) {
-                $isLandingPage = '<i class="bi bi-pin-angle-fill"></i>';
+                $isLandingPage = '<svg class="float-start w-5 h-5 text-(--success)" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                         viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-width="2"
+                              d="M5 9a7 7 0 1 1 8 6.93V21a1 1 0 1 1-2 0v-5.07A7.001 7.001 0 0 1 5 9Zm5.94-1.06A1.5 1.5 0 0 1 12 7.5a1 1 0 1 0 0-2A3.5 3.5 0 0 0 8.5 9a1 1 0 0 0 2 0c0-.398.158-.78.44-1.06Z"></path>
+                    </svg>';
             }
 
             $locale = $requestStack->getCurrentRequest()->getLocale();
@@ -110,6 +114,7 @@ class PageService extends AppAdminService
                     ->format('d/m/y H:i'),
                 $translator->trans('page.grid.author', domain: 'page') => $element->getUser()->getLogin(),
                 GridService::KEY_ACTION => $action,
+                'isDisabled' => $element->isDisabled(),
             ];
         }
 
@@ -118,6 +123,12 @@ class PageService extends AppAdminService
             GridService::KEY_DATA => $data,
             GridService::KEY_COLUMN => $column,
             GridService::KEY_RAW_SQL => $gridService->getFormatedSQLQuery($dataPaginate),
+            GridService::KEY_LIST_ORDER_FIELD => [
+                'id' => $translator->trans('page.grid.id', domain: 'page'),
+                'page_translation.titre' => $translator->trans('page.grid.title', domain: 'page'),
+                'status' => $translator->trans('page.grid.status', domain: 'page'),
+                'updatedAd' => $translator->trans('page.grid.update_at', domain: 'page'),
+            ],
         ];
         return $gridService->addAllDataRequiredGrid($tabReturn);
     }
@@ -139,7 +150,10 @@ class PageService extends AppAdminService
         $label = $page->getPageTranslationByLocale($requestStack->getCurrentRequest()->getLocale())->getTitre();
 
         $actionDisabled = [
-            'label' => '<i class="bi bi-eye-slash-fill"></i>',
+            'label' => [
+                'M3.933 13.909A4.357 4.357 0 0 1 3 12c0-1 4-6 9-6m7.6 3.8A5.068 5.068 0 0 1 21 12c0 1-3 6-9 6-.314 0-.62-.014-.918-.04M5 19 19 5m-4 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z',
+            ],
+            'color' => 'primary',
             'url' => $router->generate('admin_page_update_disabled', ['id' => $page->getId()]),
             'type' => 'put',
             'ajax' => true,
@@ -148,7 +162,11 @@ class PageService extends AppAdminService
         ];
         if ($page->isDisabled()) {
             $actionDisabled = [
-                'label' => '<i class="bi bi-eye-fill"></i>',
+                'label' => [
+                    'M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z',
+                    'M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z',
+                ],
+                'color' => 'primary',
                 'type' => 'put',
                 'url' => $router->generate('admin_page_update_disabled', ['id' => $page->getId()]),
                 'ajax' => true,
@@ -158,7 +176,10 @@ class PageService extends AppAdminService
         $actionDelete = '';
         if ($optionSystemService->canDelete()) {
             $actionDelete = [
-                'label' => '<i class="bi bi-trash"></i>',
+                'label' => [
+                    'M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z',
+                ],
+                'color' => 'danger',
                 'type' => 'delete',
                 'url' => $router->generate('admin_page_delete', ['id' => $page->getId()]),
                 'ajax' => true,
@@ -175,7 +196,10 @@ class PageService extends AppAdminService
 
         // Bouton edit
         $actions[] = [
-            'label' => '<i class="bi bi-pencil-fill"></i>',
+            'label' => [
+                'M10.779 17.779 4.36 19.918 6.5 13.5m4.279 4.279 8.364-8.643a3.027 3.027 0 0 0-2.14-5.165 3.03 3.03 0 0 0-2.14.886L6.5 13.5m4.279 4.279L6.499 13.5m2.14 2.14 6.213-6.504M12.75 7.04 17 11.28',
+            ],
+            'color' => 'primary',
             'id' => $page->getId(),
             'url' => $router->generate('admin_page_update', ['id' => $page->getId()]),
             'ajax' => false,
@@ -183,7 +207,10 @@ class PageService extends AppAdminService
 
         if (!$page->isLandingPage()) {
             $actions[] = [
-                'label' => '<i class="bi bi-pin-angle-fill"></i>',
+                'label' => [
+                    'M5 9a7 7 0 1 1 8 6.93V21a1 1 0 1 1-2 0v-5.07A7.001 7.001 0 0 1 5 9Zm5.94-1.06A1.5 1.5 0 0 1 12 7.5a1 1 0 1 0 0-2A3.5 3.5 0 0 0 8.5 9a1 1 0 0 0 2 0c0-.398.158-.78.44-1.06Z',
+                ],
+                'color' => 'success',
                 'url' => $router->generate('admin_page_switch_Landing_page', ['id' => $page->getId()]),
                 'type' => 'put',
                 'ajax' => true,
@@ -207,8 +234,8 @@ class PageService extends AppAdminService
         $translator = $this->getTranslator();
 
         return match ($status) {
-            PageConst::STATUS_DRAFT => $translator->trans('page.status.draft', domain: 'page'),
-            PageConst::STATUS_PUBLISH => $translator->trans('page.status.publish', domain: 'page'),
+            PageStatus::DRAFT->value => $translator->trans('page.status.draft', domain: 'page'),
+            PageStatus::PUBLISH->value => $translator->trans('page.status.publish', domain: 'page'),
             default => $translator->trans('page.status.inconnu', domain: 'page'),
         };
     }
@@ -224,8 +251,9 @@ class PageService extends AppAdminService
         $translator = $this->getTranslator();
 
         return [
-            PageConst::STATUS_DRAFT => $translator->trans('page.status.draft', domain: 'page'),
-            PageConst::STATUS_PUBLISH => $translator->trans('page.status.publish', domain: 'page'),
+            PageStatus::DRAFT->value => $translator->trans('page.status.draft', domain: 'page'),
+            PageStatus::PUBLISH->value => $translator->trans('page.status.publish', domain: 'page'),
+            PageStatus::ARCHIVED->value => $translator->trans('page.status.archived', domain: 'page'),
         ];
     }
 
@@ -240,14 +268,14 @@ class PageService extends AppAdminService
         $translator = $this->getTranslator();
 
         return [
-            PageConst::RENDER_1_BLOCK => $translator->trans('page.render.1.block', domain: 'page'),
-            PageConst::RENDER_2_BLOCK => $translator->trans('page.render.2.block', domain: 'page'),
-            PageConst::RENDER_3_BLOCK => $translator->trans('page.render.3.block', domain: 'page'),
-            PageConst::RENDER_2_BLOCK_BOTTOM => $translator->trans('page.render.2.block.bottom', domain: 'page'),
-            PageConst::RENDER_3_BLOCK_BOTTOM => $translator->trans('page.render.3.block.bottom', domain: 'page'),
-            PageConst::RENDER_1_2_BLOCK => $translator->trans('page.render.1.2.block', domain: 'page'),
-            PageConst::RENDER_2_1_BLOCK => $translator->trans('page.render.2.1.block', domain: 'page'),
-            PageConst::RENDER_2_2_BLOCK => $translator->trans('page.render.2.2.block', domain: 'page'),
+            PageRender::ONE_BLOCK->value => $translator->trans('page.render.1.block', domain: 'page'),
+            PageRender::TWO_BLOCK->value => $translator->trans('page.render.2.block', domain: 'page'),
+            PageRender::THREE_BLOCK->value => $translator->trans('page.render.3.block', domain: 'page'),
+            PageRender::TWO_BLOCK_BOTTOM->value => $translator->trans('page.render.2.block.bottom', domain: 'page'),
+            PageRender::THREE_BLOCK_BOTTOM->value => $translator->trans('page.render.3.block.bottom', domain: 'page'),
+            PageRender::ONE_TWO_BLOCK->value => $translator->trans('page.render.1.2.block', domain: 'page'),
+            PageRender::TWO_ONE_BLOCK->value => $translator->trans('page.render.2.1.block', domain: 'page'),
+            PageRender::TWO_TWO_BLOCK->value => $translator->trans('page.render.2.2.block', domain: 'page'),
         ];
     }
 
@@ -262,9 +290,9 @@ class PageService extends AppAdminService
         $translator = $this->getTranslator();
 
         return [
-            PageConst::CONTENT_TYPE_TEXT => $translator->trans('page.content.text', domain: 'page'),
-            PageConst::CONTENT_TYPE_FAQ => $translator->trans('page.content.type.faq', domain: 'page'),
-            PageConst::CONTENT_TYPE_LISTING => $translator->trans('page.content.type.listing', domain: 'page'),
+            PageContentType::TEXT->value => $translator->trans('page.content.text', domain: 'page'),
+            PageContentType::FAQ->value => $translator->trans('page.content.type.faq', domain: 'page'),
+            PageContentType::LISTING->value => $translator->trans('page.content.type.listing', domain: 'page'),
         ];
     }
 
@@ -278,15 +306,15 @@ class PageService extends AppAdminService
     {
         $translator = $this->getTranslator();
         return [
-            PageConst::PAGE_CATEGORY_PAGE => $translator->trans('page.category.page', domain: 'page'),
-            PageConst::PAGE_CATEGORY_PROJET => $translator->trans('page.category.projet', domain: 'page'),
-            PageConst::PAGE_CATEGORY_ARTICLE => $translator->trans('page.category.article', domain: 'page'),
-            PageConst::PAGE_CATEGORY_BLOG => $translator->trans('page.category.blog', domain: 'page'),
-            PageConst::PAGE_CATEGORY_EVENEMEMT => $translator->trans('page.category.evenement', domain: 'page'),
-            PageConst::PAGE_CATEGORY_NEWS => $translator->trans('page.category.news', domain: 'page'),
-            PageConst::PAGE_CATEGORY_EVOLUTION => $translator->trans('page.category.evolution', domain: 'page'),
-            PageConst::PAGE_CATEGORY_DOCUMENTATION => $translator->trans('page.category.documentation', domain: 'page'),
-            PageConst::PAGE_CATEGORY_FAQ => $translator->trans('page.category.faq', domain: 'page'),
+            PageCategory::PAGE->value => $translator->trans('page.category.page', domain: 'page'),
+            PageCategory::PROJET->value => $translator->trans('page.category.projet', domain: 'page'),
+            PageCategory::ARTICLE->value => $translator->trans('page.category.article', domain: 'page'),
+            PageCategory::BLOG->value => $translator->trans('page.category.blog', domain: 'page'),
+            PageCategory::EVENEMENT->value => $translator->trans('page.category.evenement', domain: 'page'),
+            PageCategory::NEWS->value => $translator->trans('page.category.news', domain: 'page'),
+            PageCategory::EVOLUTION->value => $translator->trans('page.category.evolution', domain: 'page'),
+            PageCategory::DOCUMENTATION->value => $translator->trans('page.category.documentation', domain: 'page'),
+            PageCategory::FAQ->value => $translator->trans('page.category.faq', domain: 'page'),
         ];
     }
 
@@ -384,7 +412,7 @@ class PageService extends AppAdminService
         try {
             return $pageTransRepo->isUniqueUrl($url, $id);
         } catch (NonUniqueResultException $e) {
-            die($e->getMessage());
+            return false;
         }
     }
 
@@ -405,14 +433,14 @@ class PageService extends AppAdminService
         $label = $help = '';
 
         switch ($type) {
-            case PageConst::CONTENT_TYPE_FAQ:
+            case PageContentType::FAQ->value:
                 $repo = $this->getRepository(Faq::class);
                 $list = $repo->getListeFaq($locale);
                 $selected = array_key_first($list);
                 $label = $translator->trans('page.content.faq.list', domain: 'page');
                 $help = $translator->trans('page.content.faq.list.help', domain: 'page');
                 break;
-            case PageConst::CONTENT_TYPE_LISTING:
+            case PageContentType::LISTING->value:
                 $list = $this->getAllCategories();
                 $selected = array_key_first($list);
                 $label = $translator->trans('page.content.listing.list', domain: 'page');
@@ -445,13 +473,13 @@ class PageService extends AppAdminService
         $typeStr = $translator->trans('page.content.type', domain: 'page') . ' : ';
 
         switch ($type) {
-            case PageConst::CONTENT_TYPE_FAQ:
+            case PageContentType::FAQ->value:
                 /** @var Faq $faq */
                 $faq = $this->findOneById(Faq::class, $typeId);
                 $typeStr .= $translator->trans('page.content.type.faq', domain: 'page');
                 $info = $faq->getFaqTranslationByLocale($this->getLocales()['current'])->getTitle();
                 break;
-            case PageConst::CONTENT_TYPE_LISTING:
+            case PageContentType::LISTING->value:
                 $typeStr .= $translator->trans('page.content.type.listing', domain: 'page');
                 $info = $translator->trans(
                     'page.content.type.listing.info',
@@ -478,7 +506,12 @@ class PageService extends AppAdminService
     public function getAllTitleAndUrlPage(): array
     {
         $return = [];
-        $tab = $this->getAllPaginate(1, 100000);
+        $tab = $this->getAllPaginate(1, 100000, [
+            'search' => '',
+            'orderField' => 'id',
+            'order' => 'DESC',
+            'locale' => 'fr',
+        ]);
 
         foreach ($tab as $page) {
             /** @var Page $page */
@@ -521,7 +554,7 @@ class PageService extends AppAdminService
      */
     public function getFormatedListePageForInternalLink(string $locale): array
     {
-        $listePages = $this->findBy(Page::class, ['disabled' => false, 'status' => PageConst::STATUS_PUBLISH]);
+        $listePages = $this->findBy(Page::class, ['disabled' => false, 'status' => PageStatus::PUBLISH->value]);
 
         $return = [];
         foreach ($listePages as $page) {

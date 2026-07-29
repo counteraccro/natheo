@@ -10,10 +10,10 @@ declare(strict_types=1);
 namespace Service\Api\Content\Page;
 
 use App\Dto\Api\Content\Page\ApiFindPageContentDto;
-use App\Entity\Admin\Content\Page\PageContent;
+use App\Enum\Admin\Content\Page\PageCategory;
+use App\Enum\Admin\Content\Page\PageContentType;
 use App\Service\Api\Content\Page\ApiPageContentService;
 use App\Tests\AppWebTestCase;
-use App\Utils\Content\Page\PageConst;
 use League\CommonMark\Exception\CommonMarkException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -83,7 +83,7 @@ class ApiPageContentServiceTest extends AppWebTestCase
         $this->createPageAllDataDefault();
 
         $pageContent = $this->createPageContent(
-            customData: ['type' => PageConst::CONTENT_TYPE_LISTING, 'typeId' => PageConst::PAGE_CATEGORY_PAGE],
+            customData: ['type' => PageContentType::LISTING->value, 'typeId' => PageCategory::PAGE->value],
         );
         $dto = new ApiFindPageContentDto($pageContent->getId(), 'fr', 1, 20, '');
         $result = $this->apiPageContentService->getFormatContent($pageContent, $dto);

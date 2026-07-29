@@ -1,18 +1,24 @@
-<script>
+<script lang="ts">
 /**
  * @author Gourdon Aymeric
- * @version 1.0
- * Modale Bootstrap 5.3
+ * @version 2.0
+ * Modale Flowbite
  */
 
-import { watch } from 'vue';
+import { defineComponent, watch } from 'vue';
 import { Modal } from 'flowbite';
 
-export default {
+export default defineComponent({
   name: 'Modal',
   props: {
-    id: String,
-    show: Boolean,
+    id: {
+      type: String,
+      required: true,
+    },
+    show: {
+      type: Boolean,
+      required: true,
+    },
     optionShowCloseBtn: {
       type: Boolean,
       default: true,
@@ -29,19 +35,20 @@ export default {
   emits: ['close-modal'],
   data() {
     return {
-      modal: {},
+      modal: null as InstanceType<typeof Modal> | null,
     };
   },
   mounted() {
     const modalElement = document.getElementById(this.id);
-    // instance options object
+    if (!modalElement) return;
+
     const instanceOptions = {
       id: this.id,
       override: true,
     };
 
     const options = {
-      backdrop: this.optionModalBackdrop || 'static',
+      backdrop: (this.optionModalBackdrop || 'static') as 'dynamic' | 'static',
       closable: this.optionShowCloseBtn,
     };
 
@@ -52,9 +59,10 @@ export default {
       (newValue, oldValue) => {
         if (newValue !== oldValue) {
           if (newValue) {
-            this.modal.show();
+            this.cleanBackdrops();
+            this.modal?.show();
           } else {
-            this.modal.hide();
+            this.modal?.hide();
           }
         }
       },
@@ -62,18 +70,22 @@ export default {
     );
   },
   methods: {
+    cleanBackdrops() {
+      document
+        .querySelectorAll('div.bg-gray-900\\/50.dark\\:bg-gray-900\\/80.fixed.inset-0.z-40')
+        .forEach((el) => el.remove());
+    },
     close() {
-      //this.modal.hide();
       this.$emit('close-modal', this.id);
     },
   },
-};
+});
 </script>
 
 <template>
   <div
-    :id="this.id"
-    :data-modal-backdrop="this.optionModalBackdrop"
+    :id="id"
+    :data-modal-backdrop="optionModalBackdrop"
     tabindex="-1"
     aria-hidden="true"
     class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
@@ -85,16 +97,15 @@ export default {
           style="background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%)"
         >
           <slot name="icon"></slot>
-
           <h3 class="text-xl font-semibold">
             <slot name="title"></slot>
           </h3>
           <button
-            v-if="this.optionShowCloseBtn"
+            v-if="optionShowCloseBtn"
             type="button"
             class="text-gray-800 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"
-            @click="this.close()"
-            :data-modal-hide="this.id"
+            @click="close"
+            :data-modal-hide="id"
           >
             <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
               <path
@@ -108,11 +119,9 @@ export default {
             <span class="sr-only">Close modal</span>
           </button>
         </div>
-        <!-- Modal body -->
         <div class="p-4 md:p-5 space-y-4">
           <slot name="body"></slot>
         </div>
-        <!-- Modal footer -->
         <div class="flex items-end justify-end p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
           <slot name="footer"></slot>
         </div>

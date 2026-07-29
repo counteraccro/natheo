@@ -22,7 +22,10 @@ use Doctrine\ORM\Mapping\JoinTable;
 #[ORM\HasLifecycleCallbacks]
 class Page
 {
-    public const DEFAULT_ALIAS = 'page';
+    public const string DEFAULT_ALIAS = 'page';
+
+    public const array ALLOWED_ORDER_FIELDS = ['id', 'page_translation.titre', 'status', 'updatedAt'];
+
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: InstallationConst::STRATEGY)]
     #[ORM\Column]
@@ -79,13 +82,13 @@ class Page
     /**
      * @var Collection<int, MenuElement>
      */
-    #[ORM\OneToMany(targetEntity: MenuElement::class, mappedBy: 'page')]
+    #[ORM\OneToMany(targetEntity: MenuElement::class, mappedBy: 'page', cascade: ['remove'], orphanRemoval: true)]
     private Collection $menuElements;
 
     /**
      * @var Collection<int, Menu>
      */
-    #[ORM\ManyToMany(targetEntity: Menu::class, inversedBy: 'pages', cascade: ['persist', 'remove'])]
+    #[ORM\ManyToMany(targetEntity: Menu::class, inversedBy: 'pages', cascade: ['persist'])]
     #[JoinTable(name: 'page_menu')]
     private Collection $menus;
 

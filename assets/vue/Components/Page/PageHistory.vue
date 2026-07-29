@@ -1,56 +1,239 @@
-<script>
+<script lang="ts">
 /**
- * Contenu de l'onglet historique
+ * Gestionnaire des Page - Onglet historique
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 2.0
  */
 
-export default {
+import { defineComponent, PropType } from 'vue';
+import { PageHistoryEntry, PageHistoryTranslate, Urls } from '@/ts/Page/type';
+import axios from 'axios';
+import SkeletonPageHistory from '@/vue/Components/Skeleton/Page/PageHistory.vue';
+
+export default defineComponent({
   name: 'PageHistory',
+  components: { SkeletonPageHistory },
   props: {
-    history: Object,
-    translate: Object,
+    id: {
+      type: (Number as PropType<number>) || null,
+      default: null,
+    },
+    urls: {
+      type: Object as PropType<Urls>,
+      required: true,
+    },
+    translate: {
+      type: Object as PropType<PageHistoryTranslate>,
+      required: true,
+    },
+    active: {
+      type: Boolean as PropType<boolean>,
+      required: true,
+    },
+    restoreTrigger: {
+      type: Number as PropType<number | null>,
+      default: null,
+    },
   },
-  emits: ['reload-page-history'],
+  emits: ['restore-history'],
   data() {
-    return {};
+    return { loading: false, history: [] as PageHistoryEntry[], visibleCount: 10 as number, step: 10 as number };
   },
-  mounted() {},
-  computed: {},
-  methods: {},
-};
+  computed: {
+    /**
+     * Pagination
+     */
+    visibleHistory(): PageHistoryEntry[] {
+      return this.history.slice(0, this.visibleCount);
+    },
+    /**
+     * Affiche ou non le bouton plus en fonction des elements restants
+     */
+    hasMore(): boolean {
+      return this.visibleCount < this.history.length;
+    },
+  },
+  watch: {
+    active(value: boolean) {
+      if (value) {
+        this.loadHistory();
+      }
+    },
+    restoreTrigger(id: number | null): void {
+      if (id !== null) {
+        this.restore(id);
+      }
+    },
+  },
+
+  methods: {
+    /**
+     * Charge l'historique
+     */
+    loadHistory() {
+      this.loading = true;
+
+      let url = this.urls.load_tab_history;
+      if (this.id !== null) {
+        url = url + '/' + this.id;
+      }
+
+      axios
+        .get(url)
+        .then((response) => {
+          this.history = response.data.history;
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
+
+    /**
+     * Restaure une page
+     * @param id
+     */
+    restore(id: number) {
+      this.loading = true;
+
+      axios
+        .post(this.urls.reload_page_history, {
+          row_id: id,
+          id: this.id,
+        })
+        .then((response) => {
+          this.$emit('restore-history', response.data.page, response.data.msg);
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
+
+    /**
+     * Pagination
+     */
+    loadMore() {
+      this.visibleCount += this.step;
+    },
+  },
+});
 </script>
 
 <template>
-  <div id="content-history" class="overflow-auto" style="height: 600px">
-    <h5>{{ this.translate.title }}</h5>
-    <div>{{ this.translate.description }}</div>
-    <hr />
+  <SkeletonPageHistory v-if="loading" />
+  <div v-else>
+    <div class="card mb-4">
+      <div class="card-header">
+        <div>
+          <div class="card-title">
+            <svg class="card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-width="2"
+                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            {{ translate.title }}
+          </div>
+          <div class="card-subtitle">{{ translate.description }}</div>
+        </div>
+      </div>
 
-    <table class="table table-striped table-hover">
-      <thead>
-        <tr>
-          <th>{{ this.translate.id }}</th>
-          <th>{{ this.translate.time }}</th>
-          <th>{{ this.translate.user }}</th>
-          <th>{{ this.translate.action }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-if="this.history.length > 0" v-for="history in this.history">
-          <td>#{{ history.id + 1 }}</td>
-          <td v-html="history.time"></td>
-          <td>{{ history.user }}</td>
-          <td>
-            <div class="btn btn-secondary btn-sm" @click="$emit('reload-page-history', history.id)">
-              <i class="bi bi-arrow-clockwise"></i> {{ this.translate.reload }}
-            </div>
-          </td>
-        </tr>
-        <tr v-else>
-          <td colspan="4" class="text-center text-bg-secondary">{{ this.translate.empty }}</td>
-        </tr>
-      </tbody>
-    </table>
+      <div class="p-5">
+        <div v-if="history.length === 0" class="flex flex-col items-center justify-center py-10 text-center">
+          <p class="text-sm" style="color: var(--text-secondary)">{{ translate.empty }}</p>
+        </div>
+
+        <div v-else class="divide-y" style="border-color: var(--border-color)">
+          <div
+            v-for="(entry, index) in visibleHistory"
+            :key="entry.id"
+            class="flex items-center gap-3 py-2 px-2 rounded-lg"
+            style="border: 1px solid transparent"
+            @mouseenter="
+              ($event.currentTarget as HTMLElement).style.backgroundColor = 'var(--bg-hover)';
+              ($event.currentTarget as HTMLElement).style.borderColor = 'var(--border-color)';
+            "
+            @mouseleave="
+              ($event.currentTarget as HTMLElement).style.backgroundColor = '';
+              ($event.currentTarget as HTMLElement).style.borderColor = 'transparent';
+            "
+          >
+            <span
+              class="text-xs font-semibold shrink-0 px-1.5 py-0.5 rounded"
+              :style="
+                index === 0
+                  ? 'background-color: var(--primary-lighter); color: var(--primary); min-width: 40px; text-align: center;'
+                  : 'background-color: var(--bg-hover); color: var(--text-secondary); border: 1px solid var(--border-color); min-width: 40px; text-align: center;'
+              "
+            >
+              #{{ entry.id }}
+            </span>
+
+            <span
+              class="text-xs flex-1"
+              :style="index === 0 ? 'color: var(--primary)' : 'color: var(--text-secondary)'"
+              v-html="entry.time"
+            ></span>
+
+            <span class="text-xs shrink-0" style="color: var(--text-light)">{{ entry.user }}</span>
+
+            <span
+              v-if="index === 0"
+              class="text-xs font-semibold px-2 py-0.5 rounded-full shrink-0"
+              style="background-color: var(--primary-lighter); color: var(--primary)"
+            >
+              {{ translate.action }}
+            </span>
+
+            <span
+              v-if="entry.id === 0"
+              class="text-xs font-semibold px-2 py-0.5 rounded-full shrink-0"
+              style="
+                background-color: var(--bg-hover);
+                color: var(--text-secondary);
+                border: 1px solid var(--border-color);
+              "
+            >
+              {{ translate.user }}
+            </span>
+
+            <button
+              type="button"
+              class="btn btn-xs shrink-0"
+              :class="index === 0 ? 'btn-outline-primary' : 'btn-outline-dark'"
+              @click="restore(entry.id)"
+            >
+              <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                />
+              </svg>
+              {{ translate.reload }}
+            </button>
+          </div>
+        </div>
+
+        <div v-if="hasMore" class="flex justify-center pt-4">
+          <button type="button" class="btn btn-sm btn-outline-dark" @click="loadMore">
+            <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+            {{ translate.load_more }}
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
+
+<style scoped></style>
