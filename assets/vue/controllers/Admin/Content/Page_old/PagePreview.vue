@@ -5,11 +5,11 @@
  * @version 1.0
  */
 import axios from 'axios';
-import PreviewContent from '../../../../Components/Page/Preview/PreviewContent.vue';
+import PreviewContent from '@/vue/Components/Page_old/Preview/PreviewContent.vue';
 import Mail from '../../System/Mail.vue';
-import PreviewFooter from '../../../../Components/Page/Preview/Menu/PreviewFooter.vue';
-import PreviewMenuLeftRight from '../../../../Components/Page/Preview/Menu/PreviewMenuLeftRight.vue';
-import PreviewHeader from '../../../../Components/Page/Preview/Menu/PreviewHeader.vue';
+import PreviewFooter from '@/vue/Components/Page_old/Preview/Menu/PreviewFooter.vue';
+import PreviewMenuLeftRight from '@/vue/Components/Page_old/Preview/Menu/PreviewMenuLeftRight.vue';
+import PreviewHeader from '@/vue/Components/Page_old/Preview/Menu/PreviewHeader.vue';
 
 export default {
   name: 'PagePreview',

@@ -17,13 +17,13 @@ use App\Entity\Admin\Content\Menu\MenuElement;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\System\User;
 use App\Enum\Admin\Content\Menu\MenuPosition;
+use App\Enum\Admin\Content\Page\PageStatus;
 use App\Enum\Admin\System\Options\OptionUser;
 use App\Repository\Admin\Content\Menu\MenuRepository;
 use App\Repository\Admin\Content\Page\PageRepository;
 use App\Service\Api\AppApiService;
 use App\Service\Api\Content\ApiMenuService;
 use App\Utils\Api\Content\ApiPageFormater;
-use App\Utils\Content\Page\PageConst;
 use App\Utils\Content\Page\PageStatistiqueKey;
 use App\Utils\System\User\PersonalData;
 use Doctrine\ORM\NonUniqueResultException;
@@ -235,9 +235,9 @@ class ApiPageService extends AppApiService
         $repository = $this->getRepository(Page::class);
         $security = $this->getSecurity();
 
-        $status = [PageConst::STATUS_PUBLISH];
+        $status = [PageStatus::PUBLISH->value];
         if ($user !== null && $security->isGrantedForUser($user, 'ROLE_CONTRIBUTEUR')) {
-            $status = [PageConst::STATUS_PUBLISH, PageConst::STATUS_DRAFT];
+            $status = [PageStatus::PUBLISH->value, PageStatus::DRAFT->value];
         }
 
         return $repository->getBySlug($slug, $status);

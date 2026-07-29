@@ -193,14 +193,9 @@ class TagService extends AppAdminService
         $return = [];
         foreach ($result as $row) {
             $return[$row['id']] = [
-                'label' =>
-                    '<span class="me-1 badge rounded-pill badge-nat no-control" 
-            style="background-color: ' .
-                    $row['color'] .
-                    ';">' .
-                    $row['label'] .
-                    '</span>',
-                'data' => $row['label'],
+                'id' => $row['id'],
+                'color' => $row['color'],
+                'label' => $row['label'],
             ];
         }
         return $return;

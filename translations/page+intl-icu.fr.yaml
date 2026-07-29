@@ -37,7 +37,7 @@ page.page_content_form.input.url.info: "Url d'accès à votre page"
 page.page_content_form.input.titre.label: 'Titre de la page'
 page.page_content_form.input.titre.info: "Texte qui va permettre d'identifier la page"
 page.onglet.history: Historique
-page.msg.auto_save.success: 'Sauvegarde auto réalisée avec succès'
+page.msg.auto_save.success: 'Sauvegarde auto réalisée avec succès à'
 page.page_history.title: 'Historique des modifications'
 page.page_history.description: "Liste de l'ensemble des modifications faite sur cette page "
 page.page_history.empty: 'Aucun historique pour le moment'
@@ -63,7 +63,7 @@ page.page_save.list_status_help: 'Permet de définir l`état de la page'
 page.page_save.btn.save: Sauvegarder
 page.page_save.btn.see_ext: 'Voir le rendu'
 page.save.success: 'Sauvegarde de la page fait avec succès'
-page.page_content_form.title: 'Contenu de la page'
+page.page_content_form.title: 'Information de la page'
 page.render.1.block: '1 bloc'
 page.render.2.block: '2 blocs côte à côte'
 page.render.3.block: '3 blocs côte à côte'
@@ -93,7 +93,7 @@ page.page_content_block.modale.new.choice_info: 'Le contenu peut être du texte,
 page.content.text: 'Bloc de texte'
 page.page_content_block.loading: chargement...
 page.msg.add_content_success: 'Contenu ajouté avec succès'
-page.msg.titre.restore.history: "Information sur l'historique"
+page.msg.titre.restore.history: 'Page restaurée avec succès à '
 page.msg.btn.restore.history: Restaurer
 page.msg.btn.cancel.restore.history: Masquer
 page.msg.history.reload: 'Des modifications non enregistrées ont été détectées, voulez vous les restaurer ?'
@@ -101,13 +101,9 @@ page.msg.history.new.reload: 'Une nouvelle page à été créée sans être enre
 page.msg.error_url_no_unique: "Cette url est déjà utilisée pour une autre page de l'application"
 page.page_history.id: '#'
 page.page_history.time: Date
-page.page_history.user: Utilisateur
-page.page_history.action: Action
+page.page_history.user: Origine
+page.page_history.action: Dernière
 page.page_history.error: 'Une erreur est survenue lors de la restauration des données'
-page.toast.title.success: 'Succès !'
-page.toast.title.error: 'Erreur !'
-page.toast.time: "A l'instant"
-page.toast.title.auto_save: 'Sauvegarde auto'
 page.tag.auto_complete.empty.result: 'Aucun résultat pour ce tag, cliquez sur "ajouter" pour le créer'
 page.content.type.faq: Faq
 page.content.faq.list: 'Choisir une FAQ parmi la liste'
@@ -130,10 +126,10 @@ page.category.news: Nouveauté
 page.category.evolution: Evolution
 page.category.documentation: Documentation
 page.category.faq: FAQ
-page.page_save.list_menu_label: 'Menu disponible'
-page.page_save.list_menu_help: "Vous pouvez associer plusieurs menu à une page (header / footer etc...), si le menu est désactivé, celui ci n'apparaitra pas dans le rendu final. Si vous selectionnez 'Aucun menu', tous les menus associés à la page serons supprimés"
-page.page_save.list_menu_empty: 'Aucun menu'
-page.page_save.list_menu_disabled: Désactivé
+page.page_menu.list_menu_label: 'Menu disponible'
+page.page_menu.list_menu_help: "Vous pouvez associer plusieurs menus à une page (haut / bas etc...), si le menu est désactivé, celui ci n'apparaitra pas dans le rendu final. Dans le cas du choix 'Aucun menu', c'est le menu 'Par défaut' (si il existe) qui sera pris en compte"
+page.page_menu.list_menu_empty: 'Menu par défaut (si défini)'
+page.page_menu.list_menu_disabled: Désactivé
 page.confirm.landing.page.msg: 'Vous êtes sur le point de mettre la page <b>{label}</b> en affichage par défaut sur le front de votre site. <br />Confirmez vous cette action ?'
 page.switch.landing.page.success: 'La page <b>{label}</b> est maintenant la landing-page de votre site'
 page.page_save.list_landing_page_label: "Définir si cette page s'affichera en tant que landing page ou non"
@@ -176,3 +172,27 @@ page.page_content.header_img.no.img: 'Aucune image sélectionnée'
 page.page_content.header_img.remove: Supprimer
 page.page_content.header_img.change: Changer
 page.content.listing.title: 'Liste des pages pour la catégorie "{category}"'
+page.page.no.exist.title: 'Aucune page trouvée'
+page.page.no.exist.text: "Cette page n'existe pas ou à été supprimée. Vous pouvez retourner à la liste ou en créer une nouvelle"
+page.btn.back: Retour
+page.btn.new: 'Nouvelle page'
+page.page_content_form.input.titre.error: 'Le titre de la page ne peut pas être vide'
+page.page_content.auto_slug.label: "Générer automatiquement l'url"
+page.msg.auto_save.error: 'Une erreur est survenue lors de la sauvegarde automatique'
+page.msg.auto_save.run: 'En cours de sauvegarde...'
+page.page_history.load_more: 'Charger plus...'
+page.page_seo.input.meta.description.error: 'La description est obligatoire'
+page.page_seo.input.meta.keywords.error: 'Au moins 1 mot clé doit être saisi'
+page.page_seo.input.meta.author.error: "Il faut préciser l'auteur de la page"
+page.page_seo.input.meta.copyright.error: 'Il faut saisir un copyright'
+page.onglet.menu: Menus
+page.page_menu.list_menu.header: 'Haut de page'
+page.page_menu.list_menu.footer: 'Pied de page'
+page.page_menu.list_menu.left: 'Menu Gauche'
+page.page_menu.list_menu.right: 'Menu droite'
+page.page_menu.list_menu.sub_label: 'Associer un ou plusieurs menus à votre page'
+page.page_content_block.default_text: 'Bloc de texte ajouté'
+page.onglet.information: Informations
+page.page_content_block.bloc: 'Block n°'
+page.status.archived: Archivée
+page.page_content.warning.empty_content: 'Au moins 1 contenu doit être remplit'

@@ -5,10 +5,14 @@ declare(strict_types=1);
 namespace App\Repository\Admin\Content\Page;
 
 use App\Entity\Admin\Content\Page\Page;
-use App\Utils\Content\Page\PageConst;
+use App\Entity\Admin\Content\Page\PageTranslation;
+use App\Entity\Admin\Content\Tag\Tag;
+use App\Entity\Admin\Content\Tag\TagTranslation;
+use App\Enum\Admin\Content\Page\PageContentType;
+use App\Enum\Admin\Content\Page\PageStatus;
+use App\Repository\Trait\OrderedQueryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Query\Parameter;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
@@ -23,6 +27,8 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class PageRepository extends ServiceEntityRepository
 {
+    use OrderedQueryTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Page::class);
@@ -50,25 +56,31 @@ class PageRepository extends ServiceEntityRepository
      * Retourne une liste de page Paginé
      * @param int $page
      * @param int $limit
-     * @param string|null $search
+     * @param array $queryParams
      * @param int|null $userId
      * @return Paginator
      */
-    public function getAllPaginate(int $page, int $limit, ?string $search = null, ?int $userId = null): Paginator
+    public function getAllPaginate(int $page, int $limit, array $queryParams, ?int $userId = null): Paginator
     {
-        $query = $this->createQueryBuilder('p')->orderBy('p.id', 'ASC');
-        if ($search !== null) {
+        $query = $this->createQueryBuilder(Page::DEFAULT_ALIAS);
+        $this->applyOrdering($query, Page::class, $queryParams);
+
+        $query
+            ->join(Page::DEFAULT_ALIAS . '.pageTranslations', PageTranslation::DEFAULT_ALIAS)
+            ->where(PageTranslation::DEFAULT_ALIAS . '.locale = :locale')
+            ->setParameter('locale', $queryParams['locale']);
+
+        if (isset($queryParams['search']) && $queryParams['search'] !== '') {
             $query
-                ->join('p.pageTranslations', 'ppt')
-                ->join('p.tags', 't')
-                ->join('t.tagTranslations', 'tt')
-                ->where('tt.label like :search')
-                ->orWhere('ppt.titre like :search')
-                ->setParameter('search', '%' . $search . '%');
+                ->join(Page::DEFAULT_ALIAS . '.tags', Tag::DEFAULT_ALIAS)
+                ->join(Tag::DEFAULT_ALIAS . '.tagTranslations', TagTranslation::DEFAULT_ALIAS)
+                ->where(TagTranslation::DEFAULT_ALIAS . '.label like :search')
+                ->orWhere(PageTranslation::DEFAULT_ALIAS . '.titre like :search')
+                ->setParameter('search', '%' . $queryParams['search'] . '%');
         }
 
         if ($userId !== null) {
-            $query->andWhere('p.user = :userId');
+            $query->andWhere(Page::DEFAULT_ALIAS . '.user = :userId');
             $query->setParameter('userId', $userId);
         }
 
@@ -94,7 +106,7 @@ class PageRepository extends ServiceEntityRepository
             ->where('p.disabled = :disabled')
             ->setParameter('disabled', false)
             ->andWhere('p.status = :status')
-            ->setParameter('status', PageConst::STATUS_PUBLISH)
+            ->setParameter('status', PageStatus::PUBLISH->value)
             ->orderBy('p.updateAt', 'DESC');
 
         if ($categoryId !== 0) {
@@ -126,7 +138,7 @@ class PageRepository extends ServiceEntityRepository
             ->andWhere('p.disabled = :disabled')
             ->setParameter('disabled', false)
             ->andWhere('p.status = :status')
-            ->setParameter('status', PageConst::STATUS_PUBLISH)
+            ->setParameter('status', PageStatus::PUBLISH->value)
             ->orderBy('p.updateAt', 'DESC');
 
         $paginator = new Paginator($query->getQuery(), true);
@@ -159,7 +171,7 @@ class PageRepository extends ServiceEntityRepository
      * @param array $status
      * @return Page|null
      */
-    public function getBySlug(string $slug, array $status = [PageConst::STATUS_PUBLISH]): ?Page
+    public function getBySlug(string $slug, array $status = [PageStatus::PUBLISH->value]): ?Page
     {
         $query = $this->createQueryBuilder('p');
 
@@ -200,7 +212,7 @@ class PageRepository extends ServiceEntityRepository
             ->orWhere('pc.type = :type AND pct.text like :search AND pct.locale = :locale')
             ->orWhere('u.login like :search')
             ->setParameter('search', '%' . $search . '%')
-            ->setParameter('type', PageConst::CONTENT_TYPE_TEXT)
+            ->setParameter('type', PageContentType::TEXT->value)
             ->setParameter('locale', $locale);
 
         $paginator = new Paginator($query->getQuery(), true);

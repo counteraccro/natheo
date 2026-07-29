@@ -39,8 +39,8 @@ class PageTranslationRepository extends ServiceEntityRepository
         $result = $query->getQuery()->getOneOrNullResult();
 
         if ($result === null) {
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 }

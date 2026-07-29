@@ -16,6 +16,7 @@ use App\Entity\Admin\Content\Comment\Comment;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\System\User;
 use App\Enum\Admin\Comment\Status;
+use App\Enum\Admin\Content\Page\PageStatus;
 use App\Enum\Admin\Global\Notification\Notification;
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Repository\Admin\Content\Comment\CommentRepository;
@@ -102,7 +103,7 @@ class ApiCommentService extends AppApiService
         } else {
             $page = $pageRepository->findOneBy([
                 'id' => $dto->getIdPage(),
-                'status' => PageConst::STATUS_PUBLISH,
+                'status' => PageStatus::PUBLISH->value,
                 'disabled' => false,
             ]);
         }

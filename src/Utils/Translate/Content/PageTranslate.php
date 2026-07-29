@@ -44,8 +44,10 @@ class PageTranslate extends AppTranslate
             'onglet_seo' => $this->translator->trans('page.onglet.seo', domain: 'page'),
             'onglet_tags' => $this->translator->trans('page.onglet.tag', domain: 'page'),
             'onglet_comments' => $this->translator->trans('page.onglet.comments', domain: 'page'),
+            'onglet_menu' => $this->translator->trans('page.onglet.menu', domain: 'page'),
             'onglet_history' => $this->translator->trans('page.onglet.history', domain: 'page'),
             'onglet_save' => $this->translator->trans('page.onglet.save', domain: 'page'),
+            'onglet_information' => $this->translator->trans('page.onglet.information', domain: 'page'),
             'loading' => $this->translator->trans('page.loading', domain: 'page'),
             'msg_auto_save_success' => $this->translator->trans('page.msg.auto_save.success', domain: 'page'),
             'tag_title' => $this->translator->trans('page.onglet.tag.title', domain: 'page'),
@@ -61,10 +63,13 @@ class PageTranslate extends AppTranslate
                 domain: 'page',
             ),
             'msg_error_url_no_unique' => $this->translator->trans('page.msg.error_url_no_unique', domain: 'page'),
-            'toast_title_success' => $this->translator->trans('page.toast.title.success', domain: 'page'),
-            'toast_title_error' => $this->translator->trans('page.toast.title.error', domain: 'page'),
-            'toast_title_auto_save' => $this->translator->trans('page.toast.title.auto_save', domain: 'page'),
-            'toast_time' => $this->translator->trans('page.toast.time', domain: 'page'),
+            'page_no_exist_title' => $this->translator->trans('page.page.no.exist.title', domain: 'page'),
+            'page_no_exist_text' => $this->translator->trans('page.page.no.exist.text', domain: 'page'),
+            'btn_back' => $this->translator->trans('page.btn.back', domain: 'page'),
+            'btn_new' => $this->translator->trans('page.btn.new', domain: 'page'),
+            'auto_save_success' => $this->translator->trans('page.msg.auto_save.success', domain: 'page'),
+            'auto_save_error' => $this->translator->trans('page.msg.auto_save.error', domain: 'page'),
+            'auto_save_run' => $this->translator->trans('page.msg.auto_save.run', domain: 'page'),
             'page_content_form' => $this->getTranslatePageContentForm(),
             'page_content' => $this->getTranslatePageContent(),
             'page_history' => $this->getTranslatePageHistory(),
@@ -72,6 +77,7 @@ class PageTranslate extends AppTranslate
             'auto_complete' => $this->getTranslateAutoComplete(),
             'page_comment' => $this->getTranslatePageComment(),
             'page_seo' => $this->getTranslatePageSeo(),
+            'page_menu' => $this->getTranslatePageMenu(),
         ];
     }
 
@@ -113,6 +119,22 @@ class PageTranslate extends AppTranslate
                 'page.page_seo.input.meta_copyright.help',
                 domain: 'page',
             ),
+            'input_meta_description_error' => $this->translator->trans(
+                'page.page_seo.input.meta.description.error',
+                domain: 'page',
+            ),
+            'input_meta_keywords_error' => $this->translator->trans(
+                'page.page_seo.input.meta.keywords.error',
+                domain: 'page',
+            ),
+            'input_meta_author_error' => $this->translator->trans(
+                'page.page_seo.input.meta.author.error',
+                domain: 'page',
+            ),
+            'input_meta_copyright_error' => $this->translator->trans(
+                'page.page_seo.input.meta.copyright.error',
+                domain: 'page',
+            ),
         ];
     }
 
@@ -152,6 +174,7 @@ class PageTranslate extends AppTranslate
             'input_url_info' => $this->translator->trans('page.page_content_form.input.url.info', domain: 'page'),
             'input_titre_label' => $this->translator->trans('page.page_content_form.input.titre.label', domain: 'page'),
             'input_titre_info' => $this->translator->trans('page.page_content_form.input.titre.info', domain: 'page'),
+            'input_titre_error' => $this->translator->trans('page.page_content_form.input.titre.error', domain: 'page'),
             'list_render_label' => $this->translator->trans('page.page_save.list_render_label', domain: 'page'),
             'list_render_help' => $this->translator->trans('page.page_save.list_render_help', domain: 'page'),
             'list_categories_label' => $this->translator->trans(
@@ -167,6 +190,7 @@ class PageTranslate extends AppTranslate
             'header_img_no_img' => $this->translator->trans('page.page_content.header_img.no.img', domain: 'page'),
             'header_img_remove' => $this->translator->trans('page.page_content.header_img.remove', domain: 'page'),
             'header_img_change' => $this->translator->trans('page.page_content.header_img.change', domain: 'page'),
+            'auto_slug_label' => $this->translator->trans('page.page_content.auto_slug.label', domain: 'page'),
         ];
     }
 
@@ -178,6 +202,10 @@ class PageTranslate extends AppTranslate
     {
         return [
             'title' => $this->translator->trans('page.page_content.title', domain: 'page'),
+            'warning_empty_content' => $this->translator->trans(
+                'page.page_content.warning.empty_content',
+                domain: 'page',
+            ),
             'page_content_block' => [
                 'markdown' => $this->markdownEditorTranslate->getTranslate(),
                 'btn_new_content' => $this->translator->trans(
@@ -236,6 +264,8 @@ class PageTranslate extends AppTranslate
                     'page.page_content_block.modale.new.choice_info',
                     domain: 'page',
                 ),
+                'default_text' => $this->translator->trans('page.page_content_block.default_text', domain: 'page'),
+                'bloc' => $this->translator->trans('page.page_content_block.bloc', domain: 'page'),
                 'loading' => $this->translator->trans('page.page_content_block.loading', domain: 'page'),
             ],
         ];
@@ -256,6 +286,7 @@ class PageTranslate extends AppTranslate
             'user' => $this->translator->trans('page.page_history.user', domain: 'page'),
             'action' => $this->translator->trans('page.page_history.action', domain: 'page'),
             'reload' => $this->translator->trans('page.page_history.reload', domain: 'page'),
+            'load_more' => $this->translator->trans('page.page_history.load_more', domain: 'page'),
         ];
     }
 
@@ -269,10 +300,6 @@ class PageTranslate extends AppTranslate
             'title' => $this->translator->trans('page.page_save.title', domain: 'page'),
             'list_status_label' => $this->translator->trans('page.page_save.list_status_label', domain: 'page'),
             'list_status_help' => $this->translator->trans('page.page_save.list_status_help', domain: 'page'),
-            'list_menu_label' => $this->translator->trans('page.page_save.list_menu_label', domain: 'page'),
-            'list_menu_help' => $this->translator->trans('page.page_save.list_menu_help', domain: 'page'),
-            'list_menu_empty' => $this->translator->trans('page.page_save.list_menu_empty', domain: 'page'),
-            'list_menu_disabled' => $this->translator->trans('page.page_save.list_menu_disabled', domain: 'page'),
             'list_landing_page_label' => $this->translator->trans(
                 'page.page_save.list_landing_page_label',
                 domain: 'page',
@@ -291,6 +318,21 @@ class PageTranslate extends AppTranslate
             ),
             'btn_save' => $this->translator->trans('page.page_save.btn.save', domain: 'page'),
             'btn_see_ext' => $this->translator->trans('page.page_save.btn.see_ext', domain: 'page'),
+        ];
+    }
+
+    private function getTranslatePageMenu(): array
+    {
+        return [
+            'list_menu_label' => $this->translator->trans('page.page_menu.list_menu_label', domain: 'page'),
+            'list_menu_help' => $this->translator->trans('page.page_menu.list_menu_help', domain: 'page'),
+            'list_menu_empty' => $this->translator->trans('page.page_menu.list_menu_empty', domain: 'page'),
+            'list_menu_disabled' => $this->translator->trans('page.page_menu.list_menu_disabled', domain: 'page'),
+            'list_menu_header' => $this->translator->trans('page.page_menu.list_menu.header', domain: 'page'),
+            'list_menu_footer' => $this->translator->trans('page.page_menu.list_menu.footer', domain: 'page'),
+            'list_menu_left' => $this->translator->trans('page.page_menu.list_menu.left', domain: 'page'),
+            'list_menu_right' => $this->translator->trans('page.page_menu.list_menu.right', domain: 'page'),
+            'list_menu_sub_label' => $this->translator->trans('page.page_menu.list_menu.sub_label', domain: 'page'),
         ];
     }
 

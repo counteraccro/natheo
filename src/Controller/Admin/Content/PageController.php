@@ -12,7 +12,10 @@ namespace App\Controller\Admin\Content;
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\Content\Page\PageCategory;
 use App\Enum\Admin\Content\Page\PageMeta;
+use App\Enum\Admin\Content\Page\PageRender;
+use App\Enum\Admin\Content\Page\PageStatus;
 use App\Enum\Admin\Global\Breadcrumb;
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Enum\Admin\System\Options\OptionUser;
@@ -84,14 +87,20 @@ class PageController extends AppAdminController
         int $page = 1,
         int $limit = 20,
     ): JsonResponse {
-        $search = $request->query->get('search');
+        $queryParams = [
+            'search' => $request->query->get('search'),
+            'orderField' => $request->query->get('orderField'),
+            'order' => $request->query->get('order'),
+            'locale' => $request->getLocale(),
+        ];
+
         $filter = $request->query->get('filter');
 
         $userId = null;
         if ($filter === self::FILTER_ME) {
             $userId = $this->getUser()->getId();
         }
-        $grid = $pageService->getAllFormatToGrid($page, $limit, $search, $userId);
+        $grid = $pageService->getAllFormatToGrid($page, $limit, $queryParams, $userId);
         return $this->json($grid);
     }
 
@@ -188,6 +197,7 @@ class PageController extends AppAdminController
      * Création / édition d'une page
      * @param PageService $pageService
      * @param PageTranslate $pageTranslate
+     * @param MarkdownEditorTranslate $markdownEditorTranslate
      * @param CommentService $commentService
      * @param OptionSystemService $optionSystemService
      * @param int|null $id
@@ -242,7 +252,7 @@ class PageController extends AppAdminController
                 ],
             ],
             'urls' => [
-                'load_tab_content' => $this->generateUrl('admin_page_load_tab_content'),
+                'load_page' => $this->generateUrl('admin_page_load_page'),
                 'load_tab_history' => $this->generateUrl('admin_page_load_tab_history'),
                 'auto_save' => $this->generateUrl('admin_page_auto_save'),
                 'reload_page_history' => $this->generateUrl('admin_page_reload_page_history'),
@@ -255,6 +265,8 @@ class PageController extends AppAdminController
                 'info_render_block' => $this->generateUrl('admin_page_info_render_block'),
                 'page_preview' => $this->generateUrl('admin_page_preview'),
                 'load_media' => $this->generateUrl('admin_media_load_medias'),
+                'listing' => $this->generateUrl('admin_page_index'),
+                'new_page' => $this->generateUrl('admin_page_add'),
             ],
         ]);
     }
@@ -270,7 +282,7 @@ class PageController extends AppAdminController
      * @throws ExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/ajax/load-tab-content/{id}', name: 'load_tab_content', methods: ['GET'])]
+    #[Route('/ajax/load-page/{id}', name: 'load_page', methods: ['GET'])]
     public function loadTabContent(
         PageService $pageService,
         MenuService $menuService,
@@ -281,9 +293,9 @@ class PageController extends AppAdminController
         if ($id === null) {
             $pageFactory = new PageFactory($locales['locales']);
             $page = $pageFactory->create()->getPage();
-            $page->setRender(PageConst::RENDER_1_BLOCK);
-            $page->setStatus(PageConst::STATUS_DRAFT);
-            $page->setCategory(PageConst::PAGE_CATEGORY_PAGE);
+            $page->setRender(PageRender::ONE_BLOCK->value);
+            $page->setStatus(PageStatus::DRAFT->value);
+            $page->setCategory(PageCategory::PAGE->value);
             $page->setLandingPage(PageConst::DEFAULT_LANDING_PAGE);
             $page->getPageContents()->clear();
 
@@ -308,6 +320,9 @@ class PageController extends AppAdminController
             }
         } else {
             $page = $pageService->findOneById(Page::class, $id);
+            if (!$page) {
+                return $this->json(['page' => []]);
+            }
         }
         $pageArray = $pageService->convertEntityToArray($page, [
             'createdAt',
@@ -325,7 +340,7 @@ class PageController extends AppAdminController
                 $pageArray['menus'][] = $menu->getId();
             }
         } else {
-            $pageArray['menus'][] = '-1';
+            $pageArray['menus'] = [];
         }
 
         if (!$page->getTags()->isEmpty()) {
@@ -348,7 +363,7 @@ class PageController extends AppAdminController
                 $i++;
             }
         } else {
-            $pageArray['tags'][] = '-1';
+            $pageArray['tags'] = [];
         }
 
         return $this->json([

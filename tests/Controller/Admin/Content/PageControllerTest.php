@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace App\Tests\Controller\Admin\Content;
 
 use App\Entity\Admin\Content\Page\Page;
+use App\Enum\Admin\Content\Page\PageContentType;
 use App\Tests\AppWebTestCase;
 use App\Utils\Content\Page\PageConst;
 use App\Utils\Content\Page\PageHistory;
@@ -177,12 +178,12 @@ class PageControllerTest extends AppWebTestCase
      */
     public function testLoadTabContent(): void
     {
-        $this->checkNoAccess('admin_page_load_tab_content');
+        $this->checkNoAccess('admin_page_load_page');
 
         $user = $this->createUserContributeur();
 
         $this->client->loginUser($user, 'admin');
-        $this->client->request('GET', $this->router->generate('admin_page_load_tab_content'));
+        $this->client->request('GET', $this->router->generate('admin_page_load_page'));
 
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
@@ -193,7 +194,7 @@ class PageControllerTest extends AppWebTestCase
         $this->assertNull($content['page']['id']);
 
         $page = $this->createPageAllDataDefault();
-        $this->client->request('GET', $this->router->generate('admin_page_load_tab_content', ['id' => $page->getId()]));
+        $this->client->request('GET', $this->router->generate('admin_page_load_page', ['id' => $page->getId()]));
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -391,7 +392,7 @@ class PageControllerTest extends AppWebTestCase
         $this->checkNoAccess('admin_page_new_content', methode: 'POST');
 
         $data = [
-            'type' => PageConst::CONTENT_TYPE_TEXT,
+            'type' => PageContentType::TEXT->value,
             'type_id' => 0,
             'renderBlock' => 1,
         ];
@@ -414,13 +415,13 @@ class PageControllerTest extends AppWebTestCase
      */
     public function testListeContentByIdContent(): void
     {
-        $this->checkNoAccess('admin_page_liste_content_by_id', ['type' => PageConst::CONTENT_TYPE_TEXT]);
+        $this->checkNoAccess('admin_page_liste_content_by_id', ['type' => PageContentType::TEXT->value]);
         $user = $this->createUserContributeur();
 
         $this->client->loginUser($user, 'admin');
         $this->client->request(
             'GET',
-            $this->router->generate('admin_page_liste_content_by_id', ['type' => PageConst::CONTENT_TYPE_TEXT]),
+            $this->router->generate('admin_page_liste_content_by_id', ['type' => PageContentType::TEXT->value]),
         );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
@@ -435,7 +436,7 @@ class PageControllerTest extends AppWebTestCase
         $faq = $this->createFaqAllDataDefault();
         $this->client->request(
             'GET',
-            $this->router->generate('admin_page_liste_content_by_id', ['type' => PageConst::CONTENT_TYPE_FAQ]),
+            $this->router->generate('admin_page_liste_content_by_id', ['type' => PageContentType::FAQ->value]),
         );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
@@ -475,7 +476,7 @@ class PageControllerTest extends AppWebTestCase
         $content = json_decode($response->getContent(), true);
         $this->assertIsArray($content);
         $this->assertArrayHasKey('is_unique', $content);
-        $this->assertTrue($content['is_unique']);
+        $this->assertFalse($content['is_unique']);
 
         $data = [
             'url' => 'toto-url',
@@ -493,7 +494,7 @@ class PageControllerTest extends AppWebTestCase
         $content = json_decode($response->getContent(), true);
         $this->assertIsArray($content);
         $this->assertArrayHasKey('is_unique', $content);
-        $this->assertFalse($content['is_unique']);
+        $this->assertTrue($content['is_unique']);
     }
 
     /**
@@ -511,7 +512,7 @@ class PageControllerTest extends AppWebTestCase
         $this->client->request(
             'GET',
             $this->router->generate('admin_page_info_render_block', [
-                'type' => PageConst::CONTENT_TYPE_FAQ,
+                'type' => PageContentType::FAQ->value,
                 'typeId' => $faq->getId(),
             ]),
         );

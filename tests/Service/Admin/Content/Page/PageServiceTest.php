@@ -10,10 +10,11 @@ declare(strict_types=1);
 namespace App\Tests\Service\Admin\Content\Page;
 
 use App\Entity\Admin\Content\Page\Page;
+use App\Enum\Admin\Content\Page\PageCategory;
+use App\Enum\Admin\Content\Page\PageContentType;
+use App\Enum\Admin\Content\Page\PageStatus;
 use App\Service\Admin\Content\Page\PageService;
-use App\Service\Admin\System\TranslateService;
 use App\Tests\AppWebTestCase;
-use App\Utils\Content\Page\PageConst;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -50,14 +51,27 @@ class PageServiceTest extends AppWebTestCase
         foreach ($this->locales as $locale) {
             $this->createPageTranslation($page, ['locale' => $locale]);
         }
-        $this->createPage($user);
-        $this->createPage($user2);
+        $page2 = $this->createPage($user);
+        foreach ($this->locales as $locale) {
+            $this->createPageTranslation($page2, ['locale' => $locale]);
+        }
+        $page3 = $this->createPage($user2);
+        foreach ($this->locales as $locale) {
+            $this->createPageTranslation($page3, ['locale' => $locale]);
+        }
 
-        $result = $this->pageService->getAllPaginate(1, 20);
+        $queryParams = [
+            'search' => '',
+            'orderField' => 'id',
+            'order' => 'DESC',
+            'locale' => 'fr',
+        ];
+
+        $result = $this->pageService->getAllPaginate(1, 20, $queryParams);
         $this->assertInstanceOf(Paginator::class, $result);
         $this->assertEquals(3, $result->count());
 
-        $result = $this->pageService->getAllPaginate(1, 20, userId: $user->getId());
+        $result = $this->pageService->getAllPaginate(1, 20, $queryParams, userId: $user->getId());
         $this->assertInstanceOf(Paginator::class, $result);
         $this->assertEquals(2, $result->count());
     }
@@ -72,11 +86,11 @@ class PageServiceTest extends AppWebTestCase
     {
         $translator = $this->container->get(TranslatorInterface::class);
 
-        $result = $this->pageService->getStatusStr(PageConst::STATUS_DRAFT);
+        $result = $this->pageService->getStatusStr(PageStatus::DRAFT->value);
         $this->assertIsString($result);
         $this->assertEquals($translator->trans('page.status.draft', domain: 'page'), $result);
 
-        $result = $this->pageService->getStatusStr(PageConst::STATUS_PUBLISH);
+        $result = $this->pageService->getStatusStr(PageStatus::PUBLISH->value);
         $this->assertIsString($result);
         $this->assertEquals($translator->trans('page.status.publish', domain: 'page'), $result);
 
@@ -142,11 +156,11 @@ class PageServiceTest extends AppWebTestCase
     public function testGetCategoryById(): void
     {
         $translator = $this->container->get(TranslatorInterface::class);
-        $result = $this->pageService->getCategoryById(PageConst::PAGE_CATEGORY_PAGE);
+        $result = $this->pageService->getCategoryById(PageCategory::PAGE->value);
         $this->assertIsString($result);
         $this->assertEquals($translator->trans('page.category.page', domain: 'page'), $result);
 
-        $result = $this->pageService->getCategoryById(PageConst::PAGE_CATEGORY_FAQ);
+        $result = $this->pageService->getCategoryById(PageCategory::FAQ->value);
         $this->assertIsString($result);
         $this->assertEquals($translator->trans('page.category.faq', domain: 'page'), $result);
     }
@@ -182,7 +196,7 @@ class PageServiceTest extends AppWebTestCase
     {
         $page = $this->createPageAllDataDefault();
         $result = $this->pageService->isUniqueUrl('url-demo', $page->getId());
-        $this->assertFalse($result);
+        $this->assertTrue($result);
     }
 
     /**
@@ -202,7 +216,7 @@ class PageServiceTest extends AppWebTestCase
             $this->createFaqTranslation($faq, $data);
         }
 
-        $result = $this->pageService->getListeContentByType(PageConst::CONTENT_TYPE_FAQ);
+        $result = $this->pageService->getListeContentByType(PageContentType::FAQ->value);
         $this->assertIsArray($result);
         $this->assertArrayHasKey('list', $result);
         $this->assertCount(2, $result['list']);
@@ -210,7 +224,7 @@ class PageServiceTest extends AppWebTestCase
         $this->assertArrayHasKey('label', $result);
         $this->assertArrayHasKey('help', $result);
 
-        $result = $this->pageService->getListeContentByType(PageConst::CONTENT_TYPE_LISTING);
+        $result = $this->pageService->getListeContentByType(PageContentType::LISTING->value);
         $this->assertIsArray($result);
         $this->assertArrayHasKey('list', $result);
         $this->assertArrayHasKey('selected', $result);
@@ -229,7 +243,7 @@ class PageServiceTest extends AppWebTestCase
         $page = $this->createPageAllDataDefault();
 
         foreach ($page->getPageContents() as $content) {
-            if ($content->getType() === PageConst::CONTENT_TYPE_FAQ) {
+            if ($content->getType() === PageContentType::FAQ->value) {
                 $result = $this->pageService->getInfoContentByTypeAndTypeId($content->getType(), $content->getTypeId());
                 $this->assertIsArray($result);
                 $this->assertArrayHasKey('type', $result);

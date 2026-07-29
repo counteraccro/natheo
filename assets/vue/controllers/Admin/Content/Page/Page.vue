@@ -1,174 +1,147 @@
-<script>
+<script lang="ts">
 /**
- * Permet d'ajouter ou éditer une page
+ * Gestionnaire des Page
  * @author Gourdon Aymeric
- * @version 1.2
+ * @version 2.0
  */
-import axios from 'axios';
-import PageContentForm from '../../../../Components/Page/PageContentForm.vue';
-import PageHistory from '../../../../Components/Page/PageHistory.vue';
-import { Tab } from 'bootstrap';
-import AutoComplete from '../../../../Components/Global/AutoComplete.vue';
-import { emitter } from '../../../../../utils/useEvent';
-import PageContent from '../../../../Components/Page/PageContent.vue';
-import { toInteger } from 'lodash-es';
-import Toast from '../../../../Components/Global/Toast.vue';
-import Modal from '../../../../Components/Global/Modal.vue';
 
-export default {
+import { defineComponent, PropType } from 'vue';
+import SkeletonPageContent from '@/vue/Components/Skeleton/Page/PageContent.vue';
+import {
+  Locales,
+  Page,
+  PageContentItem,
+  PageData,
+  PageHistoryState,
+  PageMenus,
+  PageTranslations,
+  Tag,
+  Urls,
+} from '@/ts/Page/type';
+import axios from 'axios';
+import PageContent from '@/vue/Components/Page/PageContent.vue';
+import { initFlowbite } from 'flowbite';
+import MediathequeModale from '@/vue/Components/Global/MarkdownEditor/Mediatheque.vue';
+import PageHistory from '@/vue/Components/Page/PageHistory.vue';
+import PageStatusBar from '@/vue/Components/Page/PageStatusBar.vue';
+import Toast from '@/vue/Components/Global/Toast.vue';
+import { Toasts } from '@/ts/Toast/type';
+import PageSeo from '@/vue/Components/Page/PageSeo.vue';
+import PageSEO from '@/vue/Components/Page/PageSeo.vue';
+import PageTag from '@/vue/Components/Page/PageTag.vue';
+import PageMenu from '@/vue/Components/Page/PageMenu.vue';
+import PageInformation from '@/vue/Components/Page/PageInformation.vue';
+import { emitter } from '@/utils/useEvent';
+import AlertSuccess from '@/vue/Components/Alert/Success.vue';
+import AlertWarning from '@/vue/Components/Alert/Warning.vue';
+import AlertInfo from '@/vue/Components/Alert/Info.vue';
+import translate from '@/vue/controllers/Admin/System/Translate.vue';
+import AlertPrimary from '@/vue/Components/Alert/Primary.vue';
+
+export default defineComponent({
   name: 'Page',
   components: {
-    PageContent,
-    AutoComplete,
-    PageContentForm,
-    PageHistory,
+    AlertPrimary,
+    AlertInfo,
+    AlertWarning,
+    AlertSuccess,
+    PageInformation,
+    PageMenu,
+    PageTag,
+    PageSEO,
+    PageSeo,
     Toast,
-    Modal,
+    PageStatusBar,
+    PageHistory,
+    MediathequeModale,
+    PageContent,
+    SkeletonPageContent,
   },
   props: {
-    urls: Object,
-    translate: Object,
-    locales: Object,
-    page_datas: Object,
-    id: Number,
+    id: {
+      type: (Number as PropType<number>) || null,
+      default: null,
+    },
+    urls: {
+      type: Object as PropType<Urls>,
+      required: true,
+    },
+    locales: {
+      type: Object as PropType<Locales>,
+      required: true,
+    },
+    translate: {
+      type: Object as PropType<PageTranslations>,
+      required: true,
+    },
+    pageDatas: {
+      type: Object as PropType<PageData>,
+      required: true,
+    },
   },
-  emits: [],
   data() {
     return {
-      componentKey: 1,
       loading: false,
-      page: [],
-      menus: [],
       currentLocale: '',
-      currentTab: 'content',
+      page: {} as Page,
+      history: {} as PageHistoryState,
+      restoreHistory: null as number | null,
+      activeTab: 'content' as string,
+      availableMenus: {} as PageMenus,
+      restoreCount: 0 as number,
+      sectionErrors: {} as Record<
+        string,
+        { hasError: boolean; errorsByLocale: Record<string, Record<string, string>> }
+      >,
       toasts: {
-        toastSuccess: {
-          show: false,
-          msg: '',
-        },
-        toastError: {
-          show: false,
-          msg: '',
-        },
-        toastAutoSave: {
-          show: false,
-          msg: '',
-        },
-      },
-      history: [],
-      historyInfo: [],
-      tabErrorTemplate: {
-        locale: '',
-        error: false,
-      },
-      tabError: {
-        contentForm: {
-          url: {
-            locales: {
-              fr: false,
-              en: false,
-              es: false,
-            },
-            msg: this.translate.msg_error_url_no_unique,
-          },
-        },
-        globale: {
-          content: false,
-        },
-      },
-      list_status: this.page_datas.list_status,
+        success: { show: false, msg: '' },
+        error: { show: false, msg: '' },
+      } as Toasts,
     };
   },
   mounted() {
+    this.loadPage();
     this.currentLocale = this.locales.current;
-    this.loadTabContent();
   },
-  computed: {},
+  computed: {
+    translate() {
+      return translate;
+    },
+    /**
+     * Erreur onglet content
+     */
+    hasContentError(): boolean {
+      return this.sectionErrors.content?.hasError ?? false;
+    },
+    /**
+     * Erreur onglet SEO
+     */
+    hasSeoError(): boolean {
+      return this.sectionErrors.seo?.hasError ?? false;
+    },
+
+    /**
+     * Erreur onglet Content
+     */
+    hasBlocksError(): boolean {
+      return this.sectionErrors.blocks?.hasError ?? false;
+    },
+  },
   methods: {
     /**
-     * Change la clé du component pour forcer le rafraichissement
+     * Chargement de la page
      */
-    updateComponentKey() {
-      this.componentKey++;
-    },
-    /**
-     * Permet de changer la locale pour la création/édition d'une page
-     * @param event
-     */
-    switchLocale(event) {
-      this.currentLocale = event.target.value;
-      this.loadTab();
-    },
-
-    /**
-     * Permet de changer d'onglet
-     * @param tab
-     */
-    switchTab(tab) {
-      this.currentTab = tab;
-      this.loadTab();
-    },
-
-    /**
-     * Charge le contenu de l'onglet courant
-     */
-    loadTab() {
-      switch (this.currentTab) {
-        case 'content':
-          //this.loadTabContent();
-          break;
-        case 'seo':
-          break;
-        case 'tags':
-          break;
-        case 'history':
-          this.loadTabHistory();
-          break;
-        default:
-          console.log('Erreur tab');
-      }
-    },
-
-    /**
-     * Charge le contenu de l'onglet content
-     */
-    loadTabContent() {
-      let url = this.urls.load_tab_content + '/' + this.id;
-      if (this.id === null) {
-        url = this.urls.load_tab_content;
+    loadPage() {
+      let url = this.urls.load_page;
+      if (this.id !== null) {
+        url = this.urls.load_page + '/' + this.id;
       }
       this.loading = true;
       axios
         .get(url, {})
         .then((response) => {
           this.page = response.data.page;
-          if (this.page.tags[0] === '-1') {
-            this.page.tags = [];
-          }
-          this.historyInfo = response.data.history;
-          this.menus = response.data.menus;
-        })
-        .catch((error) => {
-          console.error(error);
-        })
-        .finally(() => {
-          this.loading = false;
-        });
-    },
-
-    /**
-     * Charge l'historique des modifications de la page
-     */
-    loadTabHistory() {
-      let url = this.urls.load_tab_history + '/' + this.id;
-      if (this.id === null) {
-        url = this.urls.load_tab_history;
-      }
-
-      this.loading = true;
-      axios
-        .get(url, {})
-        .then((response) => {
+          this.availableMenus = response.data.menus;
           this.history = response.data.history;
         })
         .catch((error) => {
@@ -176,179 +149,177 @@ export default {
         })
         .finally(() => {
           this.loading = false;
-        });
-    },
-
-    /**
-     * Affichage d'un warning si erreur
-     * @param tab
-     * @returns {string}
-     */
-    showTabError(tab) {
-      let str = '';
-      if (this.tabError.globale[tab]) {
-        str = '<span class="text-warning">';
-
-        switch (tab) {
-          case 'content':
-            str += '<i class="bi bi-exclamation-triangle"></i> ';
-            break;
-          case 'seo':
-            break;
-          case 'tags':
-            break;
-          case 'history':
-            break;
-          default:
-            str = '';
-        }
-        str += '</span> ';
-      }
-      return str;
-    },
-
-    /**
-     * Permet une sauvegarde automatique
-     * @param page
-     */
-    autoSave(page) {
-      axios
-        .put(this.urls.auto_save, {
-          page: page,
-        })
-        .then((response) => {
-          if (response.data.success === true) {
-            this.toasts.toastSuccess.msg = this.translate.msg_auto_save_success;
-            this.toasts.toastSuccess.show = true;
-          } else {
-            this.toasts.toastError.msg = response.data.msg;
-            this.toasts.toastError.show = true;
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-        })
-        .finally(() => {
-          // On lance le rechargement du render
-          emitter.emit('load-render');
-        });
-    },
-
-    /**
-     * Supprime un page content en fonction de son id
-     * @param id
-     */
-    removeContent(id) {
-      this.page.pageContents = this.page.pageContents.filter((content) => content.renderBlock !== id);
-      this.toasts.toastSuccess.msg = this.translate.msg_remove_content_success;
-      this.toasts.toastSuccess.show = true;
-      this.autoSave(this.page);
-    },
-
-    /**
-     * Met à jour un contenu de type texte
-     */
-    updateContentText(id, value) {
-      // TODO provoque par moment un warning Maximum recursive updates, peut être lié à l'affichage (pageContentBlock)
-      // On utilise renderBlock + langue pour identifiant le bon pageContentTranslation
-      let tmpId = id.split('-');
-
-      // Passage par un tableau temporaire pour éviter les warnings de récursivités vueJS
-      // Problème de référence
-      let tmp = JSON.parse(JSON.stringify(this.page.pageContents));
-      tmp.forEach((pC) => {
-        if (pC.typeId === null) {
-          pC.pageContentTranslations.forEach((pCT) => {
-            if (pC.renderBlock === toInteger(tmpId[0]) && pCT.locale === tmpId[1]) {
-              pCT.text = value;
-            }
+          (this.$refs.statusBar as InstanceType<typeof PageStatusBar>)?.notifyPageReady();
+          this.$nextTick(() => {
+            initFlowbite();
           });
-        }
-      });
-      this.page.pageContents = tmp;
-      this.autoSave(this.page);
+        });
+    },
+
+    triggerRestore(): void {
+      this.restoreHistory = this.history.id;
+      this.history.show_msg = false;
+    },
+
+    dismissHistory(): void {
+      this.history.show_msg = false;
     },
 
     /**
-     * Change le renderBlock en plus ou moins
+     * Mise à jour données page
+     * @param payload
      */
-    moveContent(signe, renderBlockId) {
-      // TODO provoque par moment un warning Maximum recursive updates, peut être lié à l'affichage (pageContentBlock)
-
-      let renderBlockIdReplace = 0;
-      if (signe === '+') {
-        renderBlockIdReplace = renderBlockId + 1;
-      } else if (signe === '-') {
-        renderBlockIdReplace = renderBlockId - 1;
+    handleUpdatePageTranslation(payload: { locale: string; field: 'titre' | 'url'; value: string }) {
+      const translation = this.page.pageTranslations.find((t) => t.locale === payload.locale);
+      if (translation) {
+        translation[payload.field] = payload.value;
       } else {
-        return false;
+        this.page.pageTranslations.push({
+          id: null,
+          page: this.page.id,
+          locale: payload.locale,
+          titre: payload.field === 'titre' ? payload.value : '',
+          url: payload.field === 'url' ? payload.value : '',
+        });
       }
-
-      let pCMove = null;
-      let pCForceMove = null;
-
-      // Passage par un tableau temporaire pour éviter les warnings de récursivités vueJS
-      // Problème de référence
-      let tmp = JSON.parse(JSON.stringify(this.page.pageContents));
-      let tmp2 = [...tmp];
-      tmp.forEach((pC) => {
-        if (pC.renderBlock === renderBlockId) {
-          pCMove = pC;
-          tmp2 = tmp2.filter((item) => item.renderBlock !== renderBlockId);
-        }
-
-        if (pC.renderBlock === renderBlockIdReplace) {
-          pCForceMove = pC;
-          tmp2 = tmp2.filter((item) => item.renderBlock !== renderBlockIdReplace);
-        }
-      });
-
-      pCMove.renderBlock = renderBlockIdReplace;
-      tmp2.push(pCMove);
-      if (pCForceMove !== null) {
-        pCForceMove.renderBlock = renderBlockId;
-        tmp2.push(pCForceMove);
-      }
-      tmp2.sort((a, b) => (a.renderBlock > b.renderBlock ? 1 : -1));
-      this.page.pageContents = tmp2;
-      this.autoSave(this.page);
     },
 
     /**
-     * Ajoute un nouveau contenu
-     * @param type
-     * @param type_id
-     * @param renderBlockId
+     * Mise à jour donnée SEO
+     * @param payload
      */
-    newContent(type, type_id, renderBlockId) {
-      // TODO provoque par moment un warning Maximum recursive updates, peut être lié à l'affichage (pageContentBlock)
+    handleUpdatePageMeta(payload: { name: string; locale: string; value: string }) {
+      const meta = this.page.pageMetas.find((m) => m.name === payload.name);
 
-      axios
-        .post(this.urls.new_content, {
-          type: type,
-          type_id: type_id,
-          renderBlock: renderBlockId,
-        })
-        .then((response) => {
-          // Manipulation manuelle pour éviter les warning récursif
-          let pCtmp = this.page.pageContents;
-          let newPcTmp = [];
-          pCtmp.forEach(function (value) {
-            newPcTmp.push({ ...value });
+      if (meta) {
+        const translation = meta.pageMetaTranslations.find((t) => t.locale === payload.locale);
+        if (translation) {
+          translation.value = payload.value;
+        } else {
+          meta.pageMetaTranslations.push({
+            id: null,
+            pageMeta: meta.id,
+            locale: payload.locale,
+            value: payload.value,
           });
+        }
+      } else {
+        this.page.pageMetas.push({
+          id: null,
+          page: this.page.id,
+          name: payload.name,
+          pageMetaTranslations: [
+            {
+              id: null,
+              pageMeta: null,
+              locale: payload.locale,
+              value: payload.value,
+            },
+          ],
+        });
+      }
+    },
 
-          newPcTmp.push(response.data.pageContent);
-          newPcTmp.sort((a, b) => (a.renderBlock > b.renderBlock ? 1 : -1));
-          this.page.pageContents = newPcTmp;
+    /**
+     * Mise à jour image de la page
+     * @param url
+     */
+    handleUpdateHeaderImg(url: string | null) {
+      this.page.headerImg = url;
+    },
 
-          this.toasts.toastSuccess.msg = this.translate.msg_add_content_success;
-          this.toasts.toastSuccess.show = true;
-          this.autoSave(this.page);
-        })
-        .catch((error) => {
-          console.error(error);
-        })
-        .finally(() => {});
+    /**
+     * Mise à jour des tags
+     * @param tags
+     */
+    handleUpdateTags(tags: Tag[]) {
+      this.page.tags = tags;
+    },
+
+    /**
+     * Mise à jour des menus
+     * @param menus
+     */
+    handleUpdateMenus(menus: number[]) {
+      this.page.menus = menus;
+    },
+
+    /**
+     * Mise à jour des contents
+     */
+    handleUpdatePageContents(pageContents: PageContentItem[]) {
+      this.page.pageContents = pageContents;
+    },
+
+    handleSwapBlocks(blockA: number, blockB: number) {
+      const indexA = this.page.pageContents.findIndex((c) => c.renderBlock === blockA);
+      const indexB = this.page.pageContents.findIndex((c) => c.renderBlock === blockB);
+
+      if (indexA === -1 && indexB === -1) return;
+
+      if (indexA !== -1 && indexB === -1) {
+        this.page.pageContents.splice(indexA, 1, { ...this.page.pageContents[indexA], renderBlock: blockB });
+        this.restoreCount++;
+        return;
+      }
+
+      if (indexA === -1 && indexB !== -1) {
+        this.page.pageContents.splice(indexB, 1, { ...this.page.pageContents[indexB], renderBlock: blockA });
+        this.restoreCount++;
+        return;
+      }
+
+      const contentA = { ...this.page.pageContents[indexA] };
+      const contentB = { ...this.page.pageContents[indexB] };
+
+      this.page.pageContents.splice(indexA, 1, { ...contentB, renderBlock: blockA });
+      this.page.pageContents.splice(indexB, 1, { ...contentA, renderBlock: blockB });
+      this.restoreCount++;
+    },
+
+    /**
+     * Gestionnaire des erreurs
+     * @param payload
+     */
+    handleSectionErrors(payload: {
+      section: string;
+      hasError: boolean;
+      errorsByLocale: Record<string, Record<string, string>>;
+    }) {
+      this.sectionErrors[payload.section] = {
+        hasError: payload.hasError,
+        errorsByLocale: payload.errorsByLocale,
+      };
+    },
+
+    /**
+     * Restauration historique
+     * @param page
+     * @param msg
+     */
+    handleRestoreHistory(page: Page, msg: string) {
+      (this.$refs.statusBar as InstanceType<typeof PageStatusBar>).notifyRestore();
+      this.page = page;
+      this.restoreCount++;
+      this.toasts.success.show = true;
+      this.toasts.success.msg = msg;
+      setTimeout(() => {
+        this.toasts.success.show = false;
+      }, 3000);
+    },
+
+    /**
+     * Affichage onglet ou est présent l'erreur
+     * @param error
+     */
+    handleGoToError(error: { section: string; locale: string }) {
+      this.currentLocale = error.locale;
+      const tabIds: Record<string, string> = {
+        content: 'nav-0-tab',
+        seo: 'nav-1-tab',
+      };
+      const tabButton = document.getElementById(tabIds[error.section]);
+      tabButton?.click();
     },
 
     /**
@@ -362,15 +333,15 @@ export default {
         })
         .then((response) => {
           if (response.data.success === true) {
-            this.toasts.toastSuccess.msg = response.data.msg;
-            this.toasts.toastSuccess.show = true;
+            this.toasts.success.msg = response.data.msg;
+            this.toasts.success.show = true;
             // Cas première page, on force la redirection pour passer en mode édition
             if (response.data.redirect === true) {
               window.location.replace(response.data.url_redirect);
             }
           } else {
-            this.toasts.toastError.msg = response.data.msg;
-            this.toasts.toastError.show = true;
+            this.toasts.error.msg = response.data.msg;
+            this.toasts.error.show = true;
           }
         })
         .catch((error) => {
@@ -378,582 +349,377 @@ export default {
         })
         .finally(() => {
           this.loading = false;
+          this.$nextTick(() => {
+            initFlowbite();
+          });
+          setTimeout(() => {
+            this.toasts.success.show = false;
+          }, 3000);
           emitter.emit('reset-check-confirm');
         });
     },
 
     /**
-     * Recharge l'historique de la page en fonction de son id
-     * @param rowId
-     */
-    reloadPageHistory(rowId) {
-      this.loading = true;
-      axios
-        .post(this.urls.reload_page_history, {
-          row_id: rowId,
-          id: this.id,
-        })
-        .then((response) => {
-          if (response.data.success === true) {
-            this.toasts.toastSuccess.msg = response.data.msg;
-            this.toasts.toastSuccess.show = true;
-
-            let tabContent = document.querySelector('#nav-tab-page button[data-bs-target="#nav-content"]');
-            Tab.getInstance(tabContent).show();
-            this.page = response.data.page;
-          } else {
-            this.toasts.toastError.msg = response.data.msg;
-            this.toasts.toastError.show = true;
-            this.loading = false;
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-        })
-        .finally(() => {
-          this.loading = false;
-          this.updateComponentKey();
-        });
-    },
-
-    /**
-     * Vérifie si l'url est unique ou non
-     * @param url
-     * @param id
-     * @param locale
-     */
-    isUniqueUrl(url, id, locale) {
-      axios
-        .post(this.urls.is_unique_url_page, {
-          id: id,
-          url: url,
-        })
-        .then((response) => {
-          if (response.data.is_unique) {
-            this.tabError.contentForm.url.locales[locale] = true;
-            this.tabError.globale.content = true;
-          } else {
-            let tab = {};
-            let isError = false;
-            // Avant d'être sur qu'il n'y à pas de doublons on check ce qu'a saisi l'utilisateur
-            this.page.pageTranslations.forEach(function (data) {
-              if (data.url === url && data.locale !== locale) {
-                isError = true;
-              }
-            });
-
-            if (isError) {
-              this.tabError.contentForm.url.locales[locale] = true;
-              this.tabError.globale.content = true;
-            }
-
-            // Pas d'erreur
-            if (!isError) {
-              this.tabError.contentForm.url.locales[locale] = false;
-              let check = this.tabError.contentForm.url.locales;
-              if (!check.fr && !check.en && !check.es) {
-                this.tabError.globale.content = false;
-              }
-              this.autoSave(this.page);
-            }
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-        })
-        .finally(() => {});
-    },
-
-    /*** Bloc Tag ***/
-
-    /**
-     * Ajoute un tag à la page
-     * @param tag
-     */
-    addTag(tag) {
-      axios
-        .get(this.urls.tag_by_name + '/' + tag + '/' + this.currentLocale, {})
-        .then((response) => {
-          if (response.data.success) {
-            this.page.tags.push(response.data.tag);
-            this.toasts.toastSuccess.msg = this.translate.msg_add_tag_success;
-            this.toasts.toastSuccess.show = true;
-            this.autoSave(this.page);
-          } else {
-            this.toasts.toastError.msg = response.data.msg;
-            this.toasts.toastError.show = true;
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-        })
-        .finally(() => {});
-    },
-
-    /**
-     * Génère le label en fonction de la local
-     * @param tag
-     */
-    getTagLabel(tag) {
-      let label = 'NaN';
-      let locale = this.currentLocale;
-      tag.tagTranslations.forEach(function (translate) {
-        if (translate.locale === locale) {
-          label = translate.label;
-          return false;
-        }
-      });
-      return label;
-    },
-
-    /**
-     * Supprime un tag
-     * @param tag
-     */
-    removeTag(tag) {
-      for (let i = 0; i < this.page.tags.length; i++) {
-        if (this.page.tags[i].id === tag.id) {
-          let spliced = this.page.tags.splice(i, 1);
-        }
-      }
-      this.toasts.toastSuccess.msg = this.translate.msg_del_tag_success;
-      this.toasts.toastSuccess.show = true;
-
-      this.autoSave(this.page);
-    },
-
-    /*** Fin bloc tag ***/
-
-    /**
-     * Ferme le toast défini par nameToast
-     * @param nameToast
-     */
-    closeToast(nameToast) {
-      this.toasts[nameToast].show = false;
-    },
-
-    /**
-     * Ouvre la préview dans un nouvel onglet
+     * Ouvre l'aperçu de la page
      */
     openPreview() {
-      let category = this.page_datas.list_categories[this.page.category].toLowerCase();
-      let slug = '';
-      let locale = this.currentLocale;
-
-      this.page.pageTranslations.forEach(function (translate) {
-        if (translate.locale === locale) {
-          slug = translate.url;
-          return false;
-        }
-      });
-
-      window.open(this.page_datas.url_front + '/' + locale + '/' + category + '/' + slug);
-      //window.open(this.urls.page_preview + '/' + this.page.id + '/' + this.currentLocale, '_blank');
+      const translation = this.page.pageTranslations.find((t) => t.locale === this.currentLocale);
+      if (!translation) return;
+      const category = this.pageDatas.list_categories[this.page.category]?.toLowerCase() ?? '';
+      const url = `${this.pageDatas.url_front}/${this.currentLocale}/${category}/${translation.url}`;
+      window.open(url);
     },
   },
-};
+});
 </script>
-
 <template>
-  <div id="global-page-form">
-    <div v-if="historyInfo.show_msg" class="alert alert-primary alert-dismissible">
-      <h5 class="alert-heading"><i class="bi bi-info-circle"></i> {{ this.translate.msg_titre_restore_history }}</h5>
-      <p class="text-black">{{ historyInfo.msg }}</p>
+  <SkeletonPageContent v-if="loading" />
 
-      <div class="btn btn-sm btn-secondary" data-bs-dismiss="alert" @click="this.reloadPageHistory(historyInfo.id)">
-        <i class="bi bi-arrow-clockwise"></i>
-        {{ this.translate.msg_btn_restore_history }}
-      </div>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-
-    <nav>
-      <select id="select-language" class="form-select float-end w-25" @change="this.switchLocale($event)">
-        <option value="" selected>{{ this.translate.select_locale }}</option>
-        <option
-          v-for="(language, key) in this.locales.localesTranslate"
-          :value="key"
-          :selected="key === this.currentLocale"
-        >
-          {{ language }}
-        </option>
-      </select>
-      <div v-if="this.page.id !== null" class="btn btn-secondary float-end me-2" @click="this.openPreview()">
-        <i class="bi bi-box-arrow-up-right"></i> {{ this.translate.page_save.btn_see_ext }}
-      </div>
-      <div class="nav nav-pills mb-3" id="nav-tab-page" role="tablist">
-        <button
-          class="nav-link active"
-          @click="this.switchTab('content')"
-          id="content-tab"
-          data-bs-toggle="tab"
-          data-bs-target="#nav-content"
-          type="button"
-          role="tab"
-          aria-selected="true"
-        >
-          <span v-html="this.showTabError('content')"></span>
-          <i class="bi bi-file-text"></i> {{ this.translate.onglet_content }}
-        </button>
-        <button
-          class="nav-link"
-          @click="this.switchTab('seo')"
-          id="seo-tab"
-          data-bs-toggle="tab"
-          data-bs-target="#nav-seo"
-          type="button"
-          role="tab"
-          aria-selected="false"
-          tabindex="-1"
-        >
-          <i class="bi bi-tools"></i> {{ this.translate.onglet_seo }}
-        </button>
-        <button
-          class="nav-link"
-          @click="this.switchTab('tags')"
-          id="tags-tab"
-          data-bs-toggle="tab"
-          data-bs-target="#nav-tags"
-          type="button"
-          role="tab"
-          aria-selected="false"
-          tabindex="-1"
-        >
-          <i class="bi bi-tags"></i> {{ this.translate.onglet_tags }}
-        </button>
-        <button
-          class="nav-link"
-          @click="this.switchTab('comments')"
-          id="comments-tab"
-          data-bs-toggle="tab"
-          data-bs-target="#nav-comments"
-          type="button"
-          role="tab"
-          aria-selected="false"
-          tabindex="-1"
-        >
-          <i class="bi bi-chat-text"></i> {{ this.translate.onglet_comments }}
-        </button>
-        <button
-          class="nav-link"
-          @click="this.switchTab('history')"
-          id="history-tab"
-          data-bs-toggle="tab"
-          data-bs-target="#nav-history"
-          type="button"
-          role="tab"
-          aria-selected="false"
-          tabindex="-1"
-        >
-          <i class="bi bi-clock-history"></i> {{ this.translate.onglet_history }}
-        </button>
-        <button
-          class="nav-link"
-          @click="this.switchTab('save')"
-          id="save-tab"
-          data-bs-toggle="tab"
-          data-bs-target="#nav-save"
-          type="button"
-          role="tab"
-          aria-selected="false"
-          tabindex="-1"
-        >
-          <i class="bi bi-floppy"></i> {{ this.translate.onglet_save }}
-        </button>
-      </div>
-    </nav>
-    <div class="tab-content" id="page-tab" :class="this.loading === true ? 'block-grid' : ''">
-      <!-- Formulaire page -->
+  <div v-else-if="Object.keys(page).length === 0">
+    <div class="flex flex-col items-center justify-center py-16 px-6 text-center">
       <div
-        class="tab-pane fade show active"
-        id="nav-content"
-        role="tabpanel"
-        aria-labelledby="content-tab"
-        tabindex="0"
+        class="w-16 h-16 rounded-2xl flex items-center justify-center mb-5"
+        style="background-color: var(--primary-lighter)"
       >
-        <div v-if="this.loading" class="overlay">
-          <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000">
-            <div class="spinner-border text-primary" role="status"></div>
-            <span class="txt-overlay">{{ this.translate.loading }}</span>
-          </div>
-        </div>
-        <page-content-form
-          :key="12 + '-' + this.componentKey"
-          :locale="this.currentLocale"
-          :urls="this.urls"
-          :page="this.page"
-          :translate="this.translate.page_content_form"
-          :list-render="this.page_datas.list_render"
-          :list-categories="this.page_datas.list_categories"
-          :tab-error="this.tabError.contentForm"
-          @auto-save="this.autoSave"
-          @is-unique-url="this.isUniqueUrl"
-        />
-
-        <div id="page-content">
-          <page-content
-            :key="13 + '-' + this.componentKey"
-            :locale="this.currentLocale"
-            :url="this.urls.liste_content_by_id"
-            :url-info="this.urls.info_render_block"
-            :list-content="this.page_datas.list_content"
-            :translate="this.translate.page_content"
-            :page="this.page"
-            @update-content-text="this.updateContentText"
-            @remove-content="this.removeContent"
-            @new-content="this.newContent"
-            @move-content="this.moveContent"
+        <svg class="w-8 h-8" style="color: var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.5"
+            d="M10 3v4a1 1 0 0 1-1 1H5m14-4v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1ZM8 18h8l-2-4-1.5 2-2-4L8 18Zm7-8.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0Z"
           />
-        </div>
+        </svg>
       </div>
-      <!-- Fin Formulaire page -->
-      <!-- Bloc SEO -->
-      <div class="tab-pane fade" id="nav-seo" role="tabpanel" aria-labelledby="seo-tab" tabindex="0">
-        <h5>{{ this.translate.page_seo.title }}</h5>
-
-        <fieldset class="mb-3">
-          <legend>
-            {{ this.translate.page_seo.help_legend }}
-          </legend>
-          {{ this.translate.page_seo.help_description }}
-        </fieldset>
-
-        <div v-for="meta in this.page.pageMetas">
-          <div class="mb-3">
-            <div v-for="pageMetaTranslation in meta.pageMetaTranslations">
-              <div v-if="pageMetaTranslation.locale === this.currentLocale">
-                <label for="page-sdsd" class="form-label">{{
-                  this.translate.page_seo['input_meta_' + meta.name + '_label']
-                }}</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="page-sdsd"
-                  v-model="pageMetaTranslation.value"
-                  @change="this.autoSave(this.page)"
-                />
-                <div id="page-sdsdHelp" class="form-text">
-                  {{ this.translate.page_seo['input_meta_' + meta.name + '_help'] }}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      <p class="text-lg font-bold mb-2" style="color: var(--text-primary)">{{ translate.page_no_exist_title }}</p>
+      <p class="text-sm max-w-xs mb-6" style="color: var(--text-secondary)">{{ translate.page_no_exist_text }}</p>
+      <div class="flex items-center gap-3">
+        <a :href="urls.listing" class="btn btn-sm btn-outline-dark flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          {{ translate.btn_back }}
+        </a>
+        <a :href="urls.new_page" class="btn btn-sm btn-primary flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+          {{ translate.btn_new }}
+        </a>
       </div>
-      <!-- Fin bloc SEO -->
-      <!-- Bloc tag -->
-      <div class="tab-pane fade" id="nav-tags" role="tabpanel" aria-labelledby="tags-tab" tabindex="0">
-        <h5>{{ this.translate.tag_title }}</h5>
-
-        <auto-complete
-          :locale="this.currentLocale"
-          :url="this.urls.auto_complete_tag"
-          :translate="this.translate.auto_complete"
-          @select-value="this.addTag"
-        />
-
-        <h6>{{ this.translate.tag_sub_title }}</h6>
-        <div id="block-tag">
-          <span
-            v-for="tag in this.page.tags"
-            class="me-1 badge rounded-pill badge-nat"
-            :style="'background-color:' + tag.color"
-          >
-            {{ this.getTagLabel(tag) }}
-            <i class="bi bi-x-circle" style="cursor: pointer" @click="this.removeTag(tag)"></i>
-          </span>
-        </div>
-      </div>
-      <!-- fin bloc tag -->
-
-      <!-- Bloc comment -->
-      <div class="tab-pane fade" id="nav-comments" role="tabpanel" aria-labelledby="seo-tab" tabindex="0">
-        <h5>{{ this.translate.page_comment.title }}</h5>
-
-        <fieldset class="mb-3">
-          <legend>{{ this.translate.page_comment.info }}</legend>
-          <div v-if="this.page_datas.options_commentaire.open === '1'">
-            {{ this.translate.page_comment.comment_open }}
-            <span v-if="this.page_datas.options_commentaire.new_comment === '1'">{{
-              this.translate.page_comment.comment_moderate
-            }}</span>
-          </div>
-          <div v-else>{{ this.translate.page_comment.comment_close }}</div>
-        </fieldset>
-
-        <div class="form-check form-switch mb-3">
-          <input
-            class="form-check-input"
-            type="checkbox"
-            role="switch"
-            id="openComment"
-            v-model="this.page.openComment"
-            @change="this.autoSave(this.page)"
-          />
-          <label class="form-check-label" for="openComment">{{ this.translate.page_comment.input_open_comment }}</label>
-        </div>
-
-        <div class="mb-3">
-          <label for="list-status-page" class="form-label">{{
-            this.translate.page_comment.input_status_comment_label
-          }}</label>
-          <select
-            id="list-status-page"
-            class="form-select"
-            aria-label="Default select example"
-            v-model="this.page.ruleComment"
-            @change="this.autoSave(this.page)"
-          >
-            <option v-for="(value, key) in this.page_datas.list_comments_status" :value="parseInt(key)">
-              {{ value }}
-            </option>
-          </select>
-          <div id="list-status-help" class="form-text">{{ this.translate.page_comment.input_status_comment_help }}</div>
-        </div>
-      </div>
-      <!-- Fin bloc comment -->
-
-      <!-- Bloc history -->
-      <div class="tab-pane fade" id="nav-history" role="tabpanel" aria-labelledby="history-tab" tabindex="0">
-        <div v-if="this.loading" class="overlay">
-          <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000">
-            <div class="spinner-border text-primary" role="status"></div>
-            <span class="txt-overlay">{{ this.translate.loading }}</span>
-          </div>
-        </div>
-        <page-history
-          :translate="this.translate.page_history"
-          :history="this.history"
-          @reload-page-history="this.reloadPageHistory"
-        />
-      </div>
-      <!-- fin bloc history -->
-      <!-- Bloc save -->
-      <div class="tab-pane fade" id="nav-save" role="tabpanel" aria-labelledby="seo-tab" tabindex="0">
-        <div v-if="this.loading" class="overlay">
-          <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000">
-            <div class="spinner-border text-primary" role="status"></div>
-            <span class="txt-overlay">{{ this.translate.loading }}</span>
-          </div>
-        </div>
-
-        <h5>{{ this.translate.page_save.title }}</h5>
-
-        <div class="mb-3">
-          <label for="list-menu-page" class="form-label">{{ this.translate.page_save.list_menu_label }}</label>
-          <select
-            id="list-menu-page"
-            class="form-select"
-            aria-label="Default select example"
-            v-model="this.page.menus"
-            multiple
-            @change="this.autoSave(this.page)"
-          >
-            <option value="-1">{{ this.translate.page_save.list_menu_empty }}</option>
-            <option
-              v-for="menu in this.menus"
-              :value="parseInt(menu.id)"
-              v-html="menu.disabled ? menu.name + ' (' + this.translate.page_save.list_menu_disabled + ')' : menu.name"
-            ></option>
-          </select>
-
-          <div class="alert alert-light mt-2">
-            {{ this.translate.page_save.list_menu_help }}
-          </div>
-        </div>
-
-        <div class="mb-3">
-          <label for="list-status-page" class="form-label">{{
-            this.translate.page_save.list_landing_page_label
-          }}</label>
-          <select
-            id="list-status-page"
-            class="form-select"
-            aria-label="Default select example"
-            v-model="this.page.landingPage"
-          >
-            <option :value="true">{{ this.translate.page_save.select_page_landing_page }}</option>
-            <option :value="false">{{ this.translate.page_save.select_page_normal_page }}</option>
-          </select>
-          <div id="list-status-help" class="form-text">{{ this.translate.page_save.list_landing_page_help }}</div>
-        </div>
-
-        <div class="mb-3">
-          <label for="list-status-page" class="form-label">{{ this.translate.page_save.list_status_label }}</label>
-          <select
-            id="list-status-page"
-            class="form-select"
-            aria-label="Default select example"
-            v-model="this.page.status"
-          >
-            <option v-for="(value, key) in this.list_status" :value="parseInt(key)">{{ value }}</option>
-          </select>
-          <div id="list-status-help" class="form-text">{{ this.translate.page_save.list_status_help }}</div>
-        </div>
-
-        <div class="mt-3">
-          <button class="btn btn-secondary me-1" :disabled="this.tabError.globale.content" @click="this.save">
-            <i class="bi bi-floppy"></i> {{ this.translate.page_save.btn_save }}
-          </button>
-          <div v-if="this.page.id !== null" class="btn btn-secondary" @click="this.openPreview()">
-            <i class="bi bi-box-arrow-up-right"></i> {{ this.translate.page_save.btn_see_ext }}
-          </div>
-        </div>
-      </div>
-      <!-- fin bloc save -->
     </div>
   </div>
 
-  <!-- toast -->
+  <div v-else>
+    <alert-primary
+      class="mt-4"
+      v-if="history.show_msg"
+      :text="history.msg"
+      :buttons="[
+        {
+          id: 'confirm',
+          label: translate.msg_btn_restore_history,
+          css: 'btn btn-success btn-xs',
+          onClick: triggerRestore,
+        },
+        {
+          id: 'cancel',
+          label: translate.msg_btn_cancel_restore_history,
+          css: 'btn btn-outline-dark btn-xs',
+          onClick: dismissHistory,
+        },
+      ]"
+    ></alert-primary>
+
+    <div class="mb-4 mt-4 border-b border-gray-200 dark:border-gray-700" id="nav-tab-option-system">
+      <div class="float-right flex items-center" style="margin-top: -0.5rem">
+        <div
+          class="mt-3 me-2 px-3 py-1 text-xs font-semibold rounded-full"
+          style="color: white"
+          :style="
+            page.status === 2
+              ? 'background-color: var(--btn-danger)'
+              : page.status === 1
+                ? 'background-color: var(--btn-success)'
+                : page.status === 3
+                  ? 'background-color: var(--btn-warning)'
+                  : ''
+          "
+        >
+          {{ pageDatas.list_status[page.status] }}
+        </div>
+
+        <div class="input-addon-group">
+          <span class="input-addon input-addon-left">
+            <svg
+              class="icon-sm"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="m13 19 3.5-9 3.5 9m-6.125-2h5.25M3 7h7m0 0h2m-2 0c0 1.63-.793 3.926-2.239 5.655M7.5 6.818V5m.261 7.655C6.79 13.82 5.521 14.725 4 15m3.761-2.345L5 10m2.761 2.655L10.2 15"
+              />
+            </svg>
+          </span>
+          <select id="select-language" class="form-input form-input-sm" style="width: 120px" v-model="currentLocale">
+            <option value="" selected>{{ translate.select_locale }}</option>
+            <option v-for="(language, key) in locales.localesTranslate" :value="key">{{ language }}</option>
+          </select>
+        </div>
+      </div>
+
+      <ul
+        class="flex items-center flex-wrap mb-px text-sm font-medium text-center"
+        id="default-styled-tab"
+        data-tabs-toggle="#nav-tab-page"
+        data-tabs-active-classes="text-[var(--primary)] hover:text-[var(--primary-hover)] border-[var(--primary)] bg-[var(--primary-lighter)]"
+        data-tabs-inactive-classes="dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300"
+        role="tablist"
+      >
+        <li class="me-2" role="presentation">
+          <button
+            class="inline-flex gap-1.5 items-center ps-4 pt-2 pe-4 pb-2 border-b-2 rounded-t-sm cursor-pointer dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:hover:text-gray-300"
+            id="nav-0-tab"
+            data-tabs-target="#page-information"
+            type="button"
+            role="tab"
+            :aria-controls="translate.onglet_information"
+            aria-selected="true"
+            @click="activeTab = 'information'"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h16M4 10h16M4 14h16M4 18h16"
+              />
+            </svg>
+            {{ translate.onglet_information }}
+            <span
+              v-if="hasContentError"
+              class="w-2 h-2 rounded-full"
+              style="background-color: var(--btn-danger)"
+            ></span>
+          </button>
+        </li>
+        <li class="me-2" role="presentation">
+          <button
+            class="inline-flex gap-1.5 items-center ps-4 pt-2 pe-4 pb-2 border-b-2 rounded-t-sm cursor-pointer dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:hover:text-gray-300"
+            id="nav-1-tab"
+            data-tabs-target="#page-content"
+            type="button"
+            role="tab"
+            :aria-controls="translate.onglet_content"
+            aria-selected="false"
+            @click="activeTab = 'content'"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5.005 11.19V12l6.998 4.042L19 12v-.81M5 16.15v.81L11.997 21l6.998-4.042v-.81M12.003 3 5.005 7.042l6.998 4.042L19 7.042 12.003 3Z"
+              />
+            </svg>
+            {{ translate.onglet_content }}
+            <span v-if="hasBlocksError" class="w-2 h-2 rounded-full" style="background-color: var(--btn-danger)"></span>
+          </button>
+        </li>
+        <li class="me-2" role="presentation">
+          <button
+            class="inline-flex gap-1.5 items-center ps-4 pt-2 pe-4 pb-2 border-b-2 rounded-t-sm cursor-pointer dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:hover:text-gray-300"
+            id="nav-2-tab"
+            data-tabs-target="#page-seo"
+            type="button"
+            role="tab"
+            :aria-controls="translate.onglet_seo"
+            aria-selected="false"
+            @click="activeTab = 'seo'"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+            {{ translate.onglet_seo }}
+            <span v-if="hasSeoError" class="w-2 h-2 rounded-full" style="background-color: var(--btn-danger)"></span>
+          </button>
+        </li>
+        <li class="me-2" role="presentation">
+          <button
+            class="inline-flex gap-1.5 items-center ps-4 pt-2 pe-4 pb-2 border-b-2 rounded-t-sm cursor-pointer dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:hover:text-gray-300"
+            id="nav-3-tab"
+            data-tabs-target="#page-tag"
+            type="button"
+            role="tab"
+            :aria-controls="translate.onglet_tags"
+            aria-selected="false"
+            @click="activeTab = 'tag'"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
+              />
+            </svg>
+            {{ translate.onglet_tags }}
+          </button>
+        </li>
+        <li class="me-2" role="presentation">
+          <button
+            class="inline-flex gap-1.5 items-center ps-4 pt-2 pe-4 pb-2 border-b-2 rounded-t-sm cursor-pointer dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:hover:text-gray-300"
+            id="nav-4-tab"
+            data-tabs-target="#page-menu"
+            type="button"
+            role="tab"
+            :aria-controls="translate.onglet_menu"
+            aria-selected="false"
+            @click="activeTab = 'menu'"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 5v14m8-7h-2m0 0h-2m2 0v2m0-2v-2M3 11h6m-6 4h6m11 4H4c-.55228 0-1-.4477-1-1V6c0-.55228.44772-1 1-1h16c.5523 0 1 .44772 1 1v12c0 .5523-.4477 1-1 1Z"
+              />
+            </svg>
+            {{ translate.onglet_menu }}
+          </button>
+        </li>
+        <li class="me-2" role="presentation">
+          <button
+            class="inline-flex gap-1.5 items-center ps-4 pt-2 pe-4 pb-2 border-b-2 rounded-t-sm cursor-pointer dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:hover:text-gray-300"
+            id="nav-5-tab"
+            data-tabs-target="#page-history"
+            type="button"
+            role="tab"
+            :aria-controls="translate.onglet_history"
+            aria-selected="false"
+            @click="activeTab = 'history'"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            {{ translate.onglet_history }}
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    <div id="nav-tab-page">
+      <div class="" id="page-information" role="tabpanel" aria-labelledby="nav-0-tab">
+        <PageInformation
+          :translate="translate"
+          :page="page"
+          :current-locale="currentLocale"
+          :locales="locales"
+          :page-datas="pageDatas"
+          :urls="urls"
+          @update-translation="handleUpdatePageTranslation"
+          @update:section-errors="handleSectionErrors"
+          @update-header-img="handleUpdateHeaderImg"
+        />
+      </div>
+      <div class="hidden" id="page-content" role="tabpanel" aria-labelledby="nav-1-tab">
+        <PageContent
+          :translate="translate"
+          :page="page"
+          :current-locale="currentLocale"
+          :locales="locales"
+          :page-datas="pageDatas"
+          :restore-count="restoreCount"
+          :urls="urls"
+          @update-page-contents="handleUpdatePageContents"
+          @swap-blocks="handleSwapBlocks"
+          @update:section-errors="handleSectionErrors"
+        />
+      </div>
+      <div class="hidden" id="page-seo" role="tabpanel" aria-labelledby="nav-2-tab">
+        <PageSEO
+          :translate="translate"
+          :page="page"
+          :current-locale="currentLocale"
+          :locales="locales"
+          @update-meta="handleUpdatePageMeta"
+          @update:section-errors="handleSectionErrors"
+        />
+      </div>
+      <div class="hidden" id="page-tag" role="tabpanel" aria-labelledby="nav-3-tab">
+        <PageTag
+          :translate="translate"
+          :page="page"
+          :current-locale="currentLocale"
+          :locales="locales"
+          :urls="urls"
+          @update-tags="handleUpdateTags"
+        />
+      </div>
+      <div class="hidden" id="page-menu" role="tabpanel" aria-labelledby="nav-4-tab">
+        <PageMenu
+          :translate="translate"
+          :page="page"
+          :available-menus="availableMenus"
+          @update-menus="handleUpdateMenus"
+        />
+      </div>
+      <div class="hidden" id="page-history" role="tabpanel" aria-labelledby="nav-5-tab">
+        <PageHistory
+          :id="id"
+          :urls="urls"
+          :translate="translate.page_history"
+          :active="activeTab === 'history'"
+          :restore-trigger="restoreHistory"
+          @restore-history="handleRestoreHistory"
+        />
+      </div>
+    </div>
+  </div>
+
+  <PageStatusBar
+    ref="statusBar"
+    :page="page"
+    :urls="urls"
+    :locales="locales"
+    :translate="translate"
+    :section-errors="sectionErrors"
+    @go-to-error="handleGoToError"
+    @save-page="save"
+    @page-preview="openPreview"
+  />
+
+  <MediathequeModale :url-media="urls.load_media" :translate="translate.page_content_form.mediatheque" />
+
   <div class="toast-container position-fixed top-0 end-0 p-2">
-    <toast
-      :id="'toastSuccess'"
-      :option-class-header="'text-success'"
-      :show="this.toasts.toastSuccess.show"
-      @close-toast="this.closeToast"
-    >
-      <template #header>
-        <i class="bi bi-check-circle-fill"></i> &nbsp;
-        <strong class="me-auto"> {{ this.translate.toast_title_success }}</strong>
-        <small class="text-black-50">{{ this.translate.toast_time }}</small>
-      </template>
+    <toast :id="'toastSuccess'" :type="'success'" :show="toasts.success.show">
       <template #body>
-        <div v-html="this.toasts.toastSuccess.msg"></div>
+        <div v-html="toasts.success.msg"></div>
       </template>
     </toast>
-
-    <toast
-      :id="'toastError'"
-      :option-class-header="'text-danger'"
-      :show="this.toasts.toastError.show"
-      @close-toast="this.closeToast"
-    >
-      <template #header>
-        <i class="bi bi-exclamation-triangle-fill"></i> &nbsp;
-        <strong class="me-auto"> {{ this.translate.toast_title_error }}</strong>
-        <small class="text-black-50">{{ this.translate.toast_time }}</small>
-      </template>
+    <toast :id="'toastError'" :type="'danger'" :show="toasts.error.show">
       <template #body>
-        <div v-html="this.toasts.toastError.msg"></div>
-      </template>
-    </toast>
-
-    <toast
-      :id="'toastAutoSave'"
-      :option-class-header="'text-success'"
-      :show="this.toasts.toastAutoSave.show"
-      @close-toast="this.closeToast"
-    >
-      <template #header>
-        <i class="bi bi-save-fill"></i> &nbsp;
-        <strong class="me-auto"> {{ this.translate.toast_title_auto_save }}</strong>
-        <small class="text-black-50">{{ this.translate.toast_time }}</small>
-      </template>
-      <template #body>
-        <div v-html="this.toasts.toastAutoSave.msg"></div>
+        <div v-html="toasts.error.msg"></div>
       </template>
     </toast>
   </div>
-
-  <!-- fin toast -->
 </template>
+
+<style scoped></style>
