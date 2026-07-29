@@ -36,4 +36,4 @@ install.test.create_schema.success: 'Schéma de la base de données créé avec 
 install.test.success: "Installation de l'environnement de test terminée avec succès"
 install.test.help.phpunit: 'Vous pouvez maintenant exécuter les tests avec la commande suivante :'
 install.test.environment.restart: "Cette commande nécessite l'environnement de test. Relancement de la commande en environnement de test..."
-install.test.warning.change.env: "Cette commande doit être executé en environnement de test, lancement de la commande en test"
+install.test.warning.change.env: 'Cette commande doit être executé en environnement de test, lancement de la commande en test'

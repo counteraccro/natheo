@@ -87,3 +87,10 @@ installation.step.2.finish.loading.msg.installation.data.ko: "Une erreur est sur
 installation.step.2.finish.loading.msg.cache: 'Nettoyage du cache en cours'
 installation.step.2.finish.loading.msg.cache.success: 'Cache nettoyé avec succès'
 installation.step.2.finish.loading.msg.cache.ko: 'Une erreur est survenue lors du nettoyage du cache'
+installation.step.0.step-label: 'Bienvenue'
+installation.step.1.step-label: __installation.step.1.step-label
+installation.step.2.step-label: __installation.step.2.step-label
+installation.step.3.step-label: __installation.step.3.step-label
+installation.step.4.step-label: __installation.step.4.step-label
+installation.step.0.titre: 'Bienvenue'
+installation.titre: 'Installation guidée'

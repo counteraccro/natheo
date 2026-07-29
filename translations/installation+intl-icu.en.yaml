@@ -87,3 +87,10 @@ installation.step.2.finish.loading.msg.installation.data.ko: __installation.step
 installation.step.2.finish.loading.msg.cache: __installation.step.2.finish.loading.msg.cache
 installation.step.2.finish.loading.msg.cache.success: __installation.step.2.finish.loading.msg.cache.success
 installation.step.2.finish.loading.msg.cache.ko: __installation.step.2.finish.loading.msg.cache.ko
+installation.step.0.step-label: __installation.step.0.step-label
+installation.step.1.step-label: __installation.step.1.step-label
+installation.step.2.step-label: __installation.step.2.step-label
+installation.step.3.step-label: __installation.step.3.step-label
+installation.step.4.step-label: __installation.step.4.step-label
+installation.step.0.titre: __installation.step.0.titre
+installation.titre: __installation.titre
