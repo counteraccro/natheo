@@ -164,6 +164,25 @@ class InstallationService extends AppAdminService
     }
 
     /**
+     * Retourne la liste des étapes
+     * @return array[]
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getAllSteps(): array
+    {
+        $translator = $this->getTranslator();
+
+        return [
+            ['id' => 'step-0', 'label' => $translator->trans('installation.step.0.step-label', domain: 'installation')],
+            ['id' => 'step-1', 'label' => $translator->trans('installation.step.1.step-label', domain: 'installation')],
+            ['id' => 'step-2', 'label' => $translator->trans('installation.step.2.step-label', domain: 'installation')],
+            ['id' => 'step-3', 'label' => $translator->trans('installation.step.3.step-label', domain: 'installation')],
+            ['id' => 'step-4', 'label' => $translator->trans('installation.step.4.step-label', domain: 'installation')],
+        ];
+    }
+
+    /**
      * Créer une notification pour le fondateur
      * @return void
      * @throws ContainerExceptionInterface
