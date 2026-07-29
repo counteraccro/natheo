@@ -32,7 +32,23 @@ class InstallationController extends AbstractController
     #[Route('/', name: 'index', methods: ['GET'])]
     public function index(): Response
     {
-        return $this->redirectToRoute('installation_step_1');
+        return $this->redirectToRoute('installation_step_0');
+    }
+
+    /**
+     * Étape zero de l'installation
+     * @param Request $request
+     * @param InstallationService $installationService
+     * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/step-0', name: 'step_0', methods: ['GET'])]
+    public function stepZero(Request $request, InstallationService $installationService): Response
+    {
+        return $this->render('installation/installation/step_zero.html.twig', [
+            'allSteps' => $installationService->getAllSteps(),
+        ]);
     }
 
     /**
