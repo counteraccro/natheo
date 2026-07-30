@@ -87,10 +87,14 @@ installation.step.2.finish.loading.msg.installation.data.ko: "Une erreur est sur
 installation.step.2.finish.loading.msg.cache: 'Nettoyage du cache en cours'
 installation.step.2.finish.loading.msg.cache.success: 'Cache nettoyé avec succès'
 installation.step.2.finish.loading.msg.cache.ko: 'Une erreur est survenue lors du nettoyage du cache'
-installation.step.0.step-label: 'Bienvenue'
+installation.step.0.step-label: Bienvenue
 installation.step.1.step-label: __installation.step.1.step-label
 installation.step.2.step-label: __installation.step.2.step-label
 installation.step.3.step-label: __installation.step.3.step-label
 installation.step.4.step-label: __installation.step.4.step-label
-installation.step.0.titre: 'Bienvenue'
+installation.step.0.titre: Bienvenue
 installation.titre: 'Installation guidée'
+installation.step.0.h2.title: 'Bienvenue sur Nathéo CMS !'
+installation.step.0.h2.sub.title: "Merci d'avoir choisi Nathéo CMS. Vous allez maintenant pouvoir installer et configurer le CMS au travers de quelques étapes rapides. Cela ne vous prendra que quelques minutes."
+installation.step.0.card.title: 'Vérification des prérequis'
+installation.step.0.php.version: 'Version de PHP'
