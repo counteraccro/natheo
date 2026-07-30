@@ -13,7 +13,11 @@
 @use "admin/global/form-input";
 @use "admin/global/alerte";
 @use "admin/global/code-block";
+@use "admin/components/card";
 
 @use "installation/style";
+
+@plugin "flowbite/plugin";
+@source "../../node_modules/flowbite";
 
 @custom-variant dark (&:where(.dark, .dark *));
