@@ -183,6 +183,39 @@ class InstallationService extends AppAdminService
     }
 
     /**
+     * Retourne les infos requises pour l'installation
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getInfoRequired(): array
+    {
+        $kernelInterface = $this->getKernel();
+
+        $composerJsonPath = $kernelInterface->getProjectDir() . '/composer.json';
+        $requiredPhpConstraint = null;
+        $requiredVersionNumber = null;
+
+        if (file_exists($composerJsonPath)) {
+            $composerData = json_decode(file_get_contents($composerJsonPath), true);
+            $requiredPhpConstraint = $composerData['require']['php'] ?? null; // ex: "^8.1"
+
+            if ($requiredPhpConstraint) {
+                preg_match('/(\d+\.\d+(\.\d+)?)/', $requiredPhpConstraint, $matches);
+                $requiredVersionNumber = $matches[1] ?? null;
+            }
+        }
+        $isCompatible = $requiredVersionNumber ? version_compare(PHP_VERSION, $requiredVersionNumber, '>=') : false;
+
+        return [
+            'php_current_version' => PHP_VERSION,
+            'php_required_constraint' => $requiredPhpConstraint,
+            'php_required_version' => $requiredVersionNumber,
+            'is_compatible' => $isCompatible,
+        ];
+    }
+
+    /**
      * Créer une notification pour le fondateur
      * @return void
      * @throws ContainerExceptionInterface

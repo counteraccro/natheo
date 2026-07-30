@@ -48,6 +48,7 @@ class InstallationController extends AbstractController
     {
         return $this->render('installation/installation/step_zero.html.twig', [
             'allSteps' => $installationService->getAllSteps(),
+            'requirement' => $installationService->getInfoRequired(),
         ]);
     }
 
