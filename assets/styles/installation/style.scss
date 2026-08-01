@@ -165,7 +165,7 @@ body {
 
 /* ============================================
            CHECKLIST DE PRÉREQUIS
-           ============================================ */
+============================================ */
 .check-item {
     display: flex;
     align-items: center;
@@ -195,4 +195,76 @@ body {
 .check-badge.danger {
     background-color: var(--alert-danger-bg);
     color: var(--alert-danger-text);
+}
+
+.check-section-title {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-light);
+    margin-bottom: 0.75rem;
+}
+
+/* ============================================
+   GRILLE DES PERMISSIONS DE DOSSIERS
+   ============================================ */
+.folder-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+}
+
+@media (min-width: 640px) {
+    .folder-grid { grid-template-columns: 1fr 1fr; }
+}
+
+.folder-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.625rem 0.875rem;
+    border-radius: 0.5rem;
+    background-color: var(--bg-hover);
+    border: 1px solid var(--border-color);
+}
+
+.folder-item.error {
+    background-color: var(--alert-danger-bg);
+    border-color: var(--alert-danger-border);
+}
+
+.folder-item.error .folder-path {
+    color: var(--alert-danger-text);
+}
+
+.folder-path {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.75rem;
+    color: var(--text-primary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.folder-summary {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding: 0.625rem 0.875rem;
+    border-radius: 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    background-color: var(--alert-success-bg);
+    border: 1px solid var(--alert-success-border);
+    color: var(--alert-success-text);
+}
+
+.folder-summary.error {
+    background-color: var(--alert-danger-bg);
+    border-color: var(--alert-danger-border);
+    color: var(--alert-danger-text);
+    font-weight: 500;
 }
