@@ -109,3 +109,5 @@ installation.step.0.folders_summary_error_single: __installation.step.0.folders_
 installation.step.0.folders_summary_error_multiple: __installation.step.0.folders_summary_error_multiple
 installation.step.0.folders_button_disabled_title: __installation.step.0.folders_button_disabled_title
 installation.step.0.btn.start: __installation.step.0.btn.start
+installation.step.1.h2.title: __installation.step.1.h2.title
+installation.step.1.h2.sub.title: __installation.step.1.h2.sub.title
