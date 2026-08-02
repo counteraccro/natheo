@@ -162,7 +162,7 @@
             </div>
             {% endif %}
 
-            <button class="btn btn-primary btn-sm ml-auto" {{ not requirement.next ? 'disabled title="' ~ ('installation.step.0.folders_button_disabled_title'|trans({}, 'installation')) ~ '"' : '' }}>
+            <button class="btn btn-primary btn-sm ml-auto" onclick="window.location.href='{{ path('installation_step_1') }}'" {{ not requirement.next ? 'disabled title="' ~ ('installation.step.0.folders_button_disabled_title'|trans({}, 'installation')) ~ '"' : '' }}>
                 {{ 'installation.step.0.btn.start' | trans({}, 'installation') }}
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
