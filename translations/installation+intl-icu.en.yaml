@@ -98,3 +98,14 @@ installation.step.0.h2.title: __installation.step.0.h2.title
 installation.step.0.h2.sub.title: __installation.step.0.h2.sub.title
 installation.step.0.card.title: __installation.step.0.card.title
 installation.step.0.php.version: __installation.step.0.php.version
+installation.step.0.pdo_mysql: __installation.step.0.pdo_mysql
+installation.ok: __installation.ok
+installation.ko: __installation.ko
+installation.step.0.gd: __installation.step.0.gd
+installation.step.0.intl: __installation.step.0.intl
+installation.step.0.folder.permission: __installation.step.0.folder.permission
+installation.step.0.folders_summary_ok: __installation.step.0.folders_summary_ok
+installation.step.0.folders_summary_error_single: __installation.step.0.folders_summary_error_single
+installation.step.0.folders_summary_error_multiple: __installation.step.0.folders_summary_error_multiple
+installation.step.0.folders_button_disabled_title: __installation.step.0.folders_button_disabled_title
+installation.step.0.btn.start: __installation.step.0.btn.start

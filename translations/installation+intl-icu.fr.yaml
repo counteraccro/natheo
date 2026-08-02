@@ -98,3 +98,14 @@ installation.step.0.h2.title: 'Bienvenue sur Nathéo CMS !'
 installation.step.0.h2.sub.title: "Merci d'avoir choisi Nathéo CMS. Vous allez maintenant pouvoir installer et configurer le CMS au travers de quelques étapes rapides. Cela ne vous prendra que quelques minutes."
 installation.step.0.card.title: 'Vérification des prérequis'
 installation.step.0.php.version: 'Version de PHP'
+installation.step.0.gd: 'Extension GD'
+installation.ok: OK
+installation.ko: KO
+installation.step.0.pdo_mysql: 'Extension PDO (Mysql)'
+installation.step.0.intl: 'Extension Intl'
+installation.step.0.folder.permission: 'Permissions des dossiers'
+installation.step.0.folders_summary_ok: "{count, plural,\n    =0 {Aucun dossier à vérifier}\n    one {# dossier sur # est accessible en écriture}\n    other {# dossiers sur # sont accessibles en écriture}\n}"
+installation.step.0.folders_summary_error_single: '<code class="folder-path" style="color: inherit;">{path}</code> n''est pas accessible en écriture — vérifiez les permissions (chmod 775) avant de continuer.'
+installation.step.0.folders_summary_error_multiple: '{count} dossiers ne sont pas accessibles en écriture : <code class="folder-path" style="color: inherit;">{paths}</code> — vérifiez les permissions (chmod 775) avant de continuer.'
+installation.step.0.folders_button_disabled_title: '1 ou plusieurs erreurs empêche de continuer'
+installation.step.0.btn.start: "Commencer l'installation"
