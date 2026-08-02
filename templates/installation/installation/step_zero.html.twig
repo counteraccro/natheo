@@ -47,6 +47,127 @@
                 </span>
                 {% endif %}
             </div>
+
+            <div class="check-item">
+                <span class="text-sm font-medium"> {{ 'installation.step.0.pdo_mysql' | trans({}, 'installation') }}</span>
+
+                {% if requirement.extensions.pdo_mysql %}
+                    <span class="check-badge success">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                    {{ 'installation.ok' | trans({}, 'installation') }}
+                </span>
+                {% else %}
+                    <span class="check-badge danger">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18 17.94 6M18 18 6.06 6"></path></svg>
+                    {{ 'installation.ko' | trans({}, 'installation') }}
+                </span>
+                {% endif %}
+            </div>
+
+            <div class="check-item">
+                <span class="text-sm font-medium"> {{ 'installation.step.0.gd' | trans({}, 'installation') }}</span>
+
+                {% if requirement.extensions.gd %}
+                    <span class="check-badge success">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                    {{ 'installation.ok' | trans({}, 'installation') }}
+                </span>
+                {% else %}
+                    <span class="check-badge danger">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18 17.94 6M18 18 6.06 6"></path></svg>
+                    {{ 'installation.ko' | trans({}, 'installation') }}
+                </span>
+                {% endif %}
+            </div>
+
+            <div class="check-item">
+                <span class="text-sm font-medium"> {{ 'installation.step.0.intl' | trans({}, 'installation') }}</span>
+
+                {% if requirement.extensions.intl %}
+                    <span class="check-badge success">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                    {{ 'installation.ok' | trans({}, 'installation') }}
+                </span>
+                {% else %}
+                    <span class="check-badge danger">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18 17.94 6M18 18 6.06 6"></path></svg>
+                    {{ 'installation.ko' | trans({}, 'installation') }}
+                </span>
+                {% endif %}
+            </div>
+
+            <p class="check-section-title mt-6"> {{ 'installation.step.0.folder.permission' | trans({}, 'installation') }}</p>
+
+            {% set writableFolders = requirement.folders|filter(w => w) %}
+            {% set errorFolders = requirement.folders|filter(w => not w)|keys %}
+
+            <div class="folder-grid">
+                {% for path, writable in requirement.folders %}
+                    <div class="folder-item{{ writable ? '' : ' error' }}">
+                        <div class="flex items-center gap-2 min-w-0">
+                            <svg class="w-4 h-4 shrink-0" style="color: {{ writable ? 'var(--text-light)' : 'var(--btn-danger)' }};" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
+                            </svg>
+                            <code class="folder-path">{{ path }}</code>
+                        </div>
+
+                        {% if writable %}
+                            <svg class="w-4 h-4 shrink-0" style="color: var(--btn-success);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        {% else %}
+                            <svg class="w-4 h-4 shrink-0" style="color: var(--btn-danger);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+
+
+            {% if errorFolders is empty %}
+                <div class="alert alert-success-solid alert-sm mt-3">
+                    <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <div class="alert-message">{{ 'installation.step.0.folders_summary_ok'|trans({'count': requirement.folders|length}, 'installation') }}</div>
+                </div>
+            {% else %}
+                <div class="alert alert-danger-solid alert-sm mt-3">
+                    <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"></path>
+                    </svg>
+                    <div class="alert-message">
+            {% if errorFolders|length == 1 %}
+                {{ 'installation.step.0.folders_summary_error_single'|trans({'path': errorFolders[0]}, 'installation')|raw }}
+            {% else %}
+                {{ 'installation.step.0.folders_summary_error_multiple'|trans({'count': errorFolders|length, 'paths': errorFolders|join(', ')}, 'installation')|raw }}
+            {% endif %}
+        </div>
+                </div>
+            {% endif %}
+
+        </div>
+
+        <div class="px-5 sm:px-6 py-4 flex items-center gap-2 justify-end border-t" style="border-color: var(--border-color); background-color: var(--bg-hover);">
+
+            {% if not requirement.next %}
+            <div class="alert alert-danger-solid alert-sm">
+                <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"></path>
+                </svg>
+                <div class="alert-message">
+                    {{ 'installation.step.0.folders_button_disabled_title'|trans({}, 'installation') }}
+                </div>
+            </div>
+            {% endif %}
+
+            <button class="btn btn-primary btn-sm ml-auto" {{ not requirement.next ? 'disabled title="' ~ ('installation.step.0.folders_button_disabled_title'|trans({}, 'installation')) ~ '"' : '' }}>
+                {{ 'installation.step.0.btn.start' | trans({}, 'installation') }}
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                </svg>
+            </button>
         </div>
     </div>
 

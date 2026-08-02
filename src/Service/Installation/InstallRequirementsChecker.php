@@ -12,7 +12,6 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
-use Symfony\Component\HttpKernel\KernelInterface;
 
 class InstallRequirementsChecker extends AppAdminService
 {

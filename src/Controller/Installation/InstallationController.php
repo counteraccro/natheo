@@ -12,6 +12,7 @@ namespace App\Controller\Installation;
 use App\Entity\Admin\System\User;
 use App\Service\Admin\CommandService;
 use App\Service\Installation\InstallationService;
+use App\Service\Installation\InstallRequirementsChecker;
 use App\Utils\Global\Database\DataBase;
 use App\Utils\Global\EnvFile;
 use App\Utils\Installation\InstallationConst;
@@ -44,11 +45,13 @@ class InstallationController extends AbstractController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/step-0', name: 'step_0', methods: ['GET'])]
-    public function stepZero(Request $request, InstallationService $installationService): Response
-    {
+    public function stepZero(
+        InstallationService $installationService,
+        InstallRequirementsChecker $installRequirementsChecker,
+    ): Response {
         return $this->render('installation/installation/step_zero.html.twig', [
             'allSteps' => $installationService->getAllSteps(),
-            'requirement' => $installationService->getInfoRequired(),
+            'requirement' => $installRequirementsChecker->getInfoRequired(),
         ]);
     }
 
