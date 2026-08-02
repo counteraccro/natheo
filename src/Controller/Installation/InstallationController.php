@@ -79,6 +79,7 @@ class InstallationController extends AbstractController
         }
 
         return $this->render('installation/installation/step_one.html.twig', [
+            'allSteps' => $installationService->getAllSteps(),
             'urls' => [
                 'check_database' => $this->generateUrl('installation_check_database'),
                 'update_env' => $this->generateUrl('installation_update_env'),
