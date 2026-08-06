@@ -155,10 +155,18 @@ class EnvFile
      */
     public function getValueByKey(string $key): string
     {
-        $pattern = '/^\s*#?\s*(' . $key . '=.*)$/m';
+        $key = preg_quote($key, '/');
         $contents = $this->getContentEnvFile();
-        preg_match_all($pattern, $contents, $matches, PREG_SET_ORDER, 0);
-        return trim($matches[0][0]);
+
+        if (preg_match('/^' . $key . '=.*$/m', $contents, $matches)) {
+            return trim($matches[0]);
+        }
+
+        if (preg_match('/^#\s*' . $key . '=.*$/m', $contents, $matches)) {
+            return trim($matches[0]);
+        }
+
+        return '';
     }
 
     /**
