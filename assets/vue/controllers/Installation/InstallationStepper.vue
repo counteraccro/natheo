@@ -1,4 +1,9 @@
 <script lang="ts">
+/**
+ * @author Gourdon Aymeric
+ * @version 1.0
+ * Installation CMS - Affichage des étapes
+ */
 import { defineComponent } from 'vue';
 import type { PropType } from 'vue';
 import type { InstallationStep, StepStatus } from '@/ts/Installation/InstallationStepper';
