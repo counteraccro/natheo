@@ -60,9 +60,9 @@ class InstallationController extends AbstractController
      * @param InstallationTranslate $installationTranslate
      * @param InstallationService $installationService
      * @param ParameterBagInterface $parameterBag
+     * @param InstallRequirementsChecker $installRequirementsChecker
      * @return Response
      * @throws ContainerExceptionInterface
-     * @throws Exception
      * @throws NotFoundExceptionInterface
      */
     #[Route('/step-1', name: 'step_1', methods: ['GET'])]
@@ -70,7 +70,12 @@ class InstallationController extends AbstractController
         InstallationTranslate $installationTranslate,
         InstallationService $installationService,
         ParameterBagInterface $parameterBag,
+        InstallRequirementsChecker $installRequirementsChecker,
     ): Response {
+        if (!$installRequirementsChecker->isAllRequirements()) {
+            return $this->redirectToRoute('installation_step_0');
+        }
+
         if ($installationService->checkSchema()) {
             if ($installationService->checkDataExiste(User::class)) {
                 return $this->redirectToRoute('auth_user_login');

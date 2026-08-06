@@ -44,6 +44,17 @@ class InstallRequirementsChecker extends AppAdminService
     }
 
     /**
+     * Renvoi true si tous les requirements sont valide
+     * @return bool
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function isAllRequirements(): bool
+    {
+        return $this->getInfoRequired()['next'];
+    }
+
+    /**
      * Vérification si la version de PHP est bonne ou non
      * @return array
      * @throws ContainerExceptionInterface
