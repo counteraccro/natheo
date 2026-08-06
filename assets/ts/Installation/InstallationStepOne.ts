@@ -60,8 +60,40 @@ export interface InstallationStepOneLocales {
   [key: string]: string;
 }
 
+export interface CheckDatabaseResponse {
+  connexion: boolean;
+}
+
+export interface BddConfig {
+  type: string;
+  login: string;
+  password: string;
+  ip: string;
+  port: string;
+  bdd_name: string;
+  version: string;
+  charset: string;
+}
+
+export interface ConfigKey {
+  database_url: string;
+}
+
+export interface OptionConnexion {
+  test_connexion: string;
+  create_database: string;
+}
+
+export interface BddParams {
+  database_schema: string;
+  database_prefix: string;
+}
+
 export interface InstallationStepOneDatas {
-  [key: string]: unknown;
+  bdd_config: BddConfig;
+  config_key: ConfigKey;
+  option_connexion: OptionConnexion;
+  bdd_params: BddParams;
 }
 
 export interface CheckDatabaseResponse {
