@@ -111,3 +111,5 @@ installation.step.0.folders_button_disabled_title: __installation.step.0.folders
 installation.step.0.btn.start: __installation.step.0.btn.start
 installation.step.1.h2.title: __installation.step.1.h2.title
 installation.step.1.h2.sub.title: __installation.step.1.h2.sub.title
+installation.step.1.field.required: __installation.step.1.field.required
+installation.step.1.btn.return: __installation.step.1.btn.return

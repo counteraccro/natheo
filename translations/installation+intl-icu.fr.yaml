@@ -12,7 +12,7 @@ installation.step.1.config.bdd.input.login.label: Login
 installation.step.1.config.bdd.input.password.label: 'Mot de passe'
 installation.step.1.config.bdd.input.ip.label: 'IP du serveur'
 installation.step.1.config.bdd.input.port.label: Port
-installation.step.1.config.bdd.btn.test.config: Vérifier
+installation.step.1.config.bdd.btn.test.config: 'Tester la connexion'
 installation.step.1.config.bdd.btn.test.config.loading: 'Tentative de connexion'
 installation.step.1.titre.thx.h1: 'Bienvenue sur Natheo CMS !'
 installation.step.1.description.thx.1: "Merci d'avoir choisi Natheo CMS, Vous allez maintenant pouvoir installer et configurer, au travers de quelques étapes rapides, le CMS. Cela ne vous prendra que quelques minutes."
@@ -111,3 +111,5 @@ installation.step.0.folders_button_disabled_title: '1 ou plusieurs erreurs empê
 installation.step.0.btn.start: "Commencer l'installation"
 installation.step.1.h2.title: 'Connexion à la base de données'
 installation.step.1.h2.sub.title: 'Afin de pouvoir installer les données nécessaire au bon fonctionnement du CMS, nous allons configurer la connexion à la base de données'
+installation.step.1.field.required: 'Ce champ est obligatoire'
+installation.step.1.btn.return: 'Retour'
