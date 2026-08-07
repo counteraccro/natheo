@@ -183,6 +183,8 @@ class InstallationTranslate extends AppTranslate
                 'installation.step.1.create.bdd.msg.success',
                 domain: 'installation',
             ),
+            'field_required' => $this->translator->trans('installation.step.1.field.required', domain: 'installation'),
+            'btn_return' => $this->translator->trans('installation.step.1.btn.return', domain: 'installation'),
         ];
     }
 

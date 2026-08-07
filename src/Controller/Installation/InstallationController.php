@@ -92,6 +92,7 @@ class InstallationController extends AbstractController
                 'create_schema' => $this->generateUrl('installation_create_schema'),
                 'update_app_secret' => $this->generateUrl('installation_update_app_secret'),
                 'step_2' => $this->generateUrl('installation_step_2'),
+                'step_0' => $this->generateUrl('installation_step_0'),
             ],
             'translate' => $installationTranslate->getTranslateStepOne(),
             'locales' => $installationService->getLocales(),

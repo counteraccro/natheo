@@ -5,6 +5,7 @@ export interface InstallationStepOneUrls {
   create_bdd: string;
   create_schema: string;
   step_2: string;
+  step_0: string;
 }
 
 export interface InstallationStepOneTranslate {
@@ -54,6 +55,8 @@ export interface InstallationStepOneTranslate {
   create_bdd_loading_msg_create_table_success: string;
   create_bdd_loading_msg_create_table_ko: string;
   create_bdd_loading_msg_success: string;
+  field_required: string;
+  btn_return: string;
 }
 
 export interface InstallationStepOneLocales {
@@ -99,3 +102,7 @@ export interface InstallationStepOneDatas {
 export interface CheckDatabaseResponse {
   connexion: boolean;
 }
+
+export type ValidableField = 'login' | 'password' | 'ip' | 'port';
+
+export type DataBaseConfigErrors = Record<ValidableField, string>;
