@@ -151,7 +151,7 @@ class InstallationController extends AbstractController
             }
 
             return $this->json(['success' => true]);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return $this->json(['success' => false, 'error' => $e->getMessage()]);
         }
     }

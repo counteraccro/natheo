@@ -15,11 +15,16 @@ import {
   BddConfig,
   DataBaseConfigErrors,
   ValidableField,
+  UpdateEnvPayload,
+  UpdateEnvResponse,
 } from '@/ts/Installation/InstallationStepOne';
 import axios, { AxiosError } from 'axios';
+import AlertDanger from '@/vue/Components/Alert/Danger.vue';
+import AlertBase from '@/vue/Components/Alert/AlertBase.vue';
 
 export default defineComponent({
   name: 'InstallationStepOne',
+  components: { AlertBase, AlertDanger },
   props: {
     urls: {
       type: Object as PropType<InstallationStepOneUrls>,
@@ -83,6 +88,33 @@ export default defineComponent({
     },
 
     /**
+     * Mise à jour du fichier .env
+     * @param type
+     */
+    updateConfigBddEnv(type: string): void {
+      this.loading = true;
+
+      const payload: UpdateEnvPayload = {
+        config_key: this.datas.config_key.database_url,
+        config: this.dataBaseConfig,
+        type,
+      };
+
+      axios
+        .post<UpdateEnvResponse>(this.urls.update_env, payload)
+        .then((response) => {
+          if (response.data.success) {
+          }
+        })
+        .catch((error: AxiosError) => {
+          console.error(error);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
+
+    /**
      * Vérification d'un champ
      * @param field
      */
@@ -119,10 +151,10 @@ export default defineComponent({
       </div>
     </div>
     <div class="p-5">
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-5">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-2">
         <div class="form-group">
           <label class="form-label" for="bdd-type">{{ translate.config_bdd_input_type_label }}</label>
-          <input id="bdd-type" type="text" class="form-input" v-model="dataBaseConfig.type" disabled />
+          <input id="bdd-type" type="text" class="form-input form-input-sm" v-model="dataBaseConfig.type" disabled />
         </div>
 
         <div class="form-group">
@@ -130,7 +162,7 @@ export default defineComponent({
           <input
             id="bdd-login"
             type="text"
-            class="form-input"
+            class="form-input form-input-sm"
             :class="errors.login ? 'is-invalid' : ''"
             @blur="validateField('login')"
             v-model="dataBaseConfig.login"
@@ -143,7 +175,7 @@ export default defineComponent({
           <input
             id="bdd-password"
             type="text"
-            class="form-input"
+            class="form-input form-input-sm"
             v-model="dataBaseConfig.password"
             :class="errors.password ? 'is-invalid' : ''"
             @blur="validateField('password')"
@@ -157,7 +189,7 @@ export default defineComponent({
           <input
             id="bdd-type"
             type="text"
-            class="form-input"
+            class="form-input form-input-sm"
             v-model="dataBaseConfig.ip"
             :class="errors.ip ? 'is-invalid' : ''"
             @blur="validateField('ip')"
@@ -170,7 +202,7 @@ export default defineComponent({
           <input
             id="bdd-type"
             type="text"
-            class="form-input"
+            class="form-input form-input-sm"
             v-model="dataBaseConfig.port"
             :class="errors.port ? 'is-invalid' : ''"
             @blur="validateField('port')"
@@ -178,6 +210,8 @@ export default defineComponent({
           <span v-if="errors.port" class="form-text text-error">✗ {{ errors.port }}</span>
         </div>
       </div>
+
+      <alert-base type="alert-danger-light" text="toto" />
     </div>
     <div
       class="px-5 sm:px-6 py-4 flex items-center justify-between border-t"
@@ -203,23 +237,43 @@ export default defineComponent({
         </svg>
         {{ translate.btn_return }}
       </a>
-      <button class="btn btn-primary btn-sm">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-          ></path>
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-          ></path>
-        </svg>
-        {{ translate.config_bdd_btn_test_config }}
-      </button>
+
+      <div class="flex gap-1.5">
+        <button type="button" class="btn btn-primary btn-sm" :disabled="!isValid" @click="checkDataBaseConnexion">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+            ></path>
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+            ></path>
+          </svg>
+          {{ translate.config_bdd_btn_test_config }}
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-primary btn-sm"
+          :disabled="!isValid"
+          @click="updateConfigBddEnv(datas.option_connexion.test_connexion)"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M11 16h2m6.707-9.293-2.414-2.414A1 1 0 0 0 16.586 4H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V7.414a1 1 0 0 0-.293-.707ZM16 20v-6a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v6h8ZM9 4h6v3a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1V4Z"
+            ></path>
+          </svg>
+          {{ translate.config_bdd_btn_save_config }}
+        </button>
+      </div>
     </div>
   </div>
 </template>
