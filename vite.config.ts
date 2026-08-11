@@ -14,6 +14,7 @@ export default defineConfig(({ command }) => ({
 
   root: '.',
   base: command === 'serve' ? '/' : '/build/',
+  envDir: './vite-env',
 
   build: {
     manifest: true,
