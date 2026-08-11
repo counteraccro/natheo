@@ -53,6 +53,10 @@ class InstallationTranslate extends AppTranslate
                 'installation.step.1.config.bdd.btn.test.config',
                 domain: 'installation',
             ),
+            'config_bdd_btn_save_config' => $this->translator->trans(
+                'installation.step.1.config.bdd.btn.save.config',
+                domain: 'installation',
+            ),
             'config_bdd_btn_test_config_loading' => $this->translator->trans(
                 'installation.step.1.config.bdd.btn.test.config.loading',
                 domain: 'installation',

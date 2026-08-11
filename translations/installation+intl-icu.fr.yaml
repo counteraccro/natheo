@@ -112,4 +112,5 @@ installation.step.0.btn.start: "Commencer l'installation"
 installation.step.1.h2.title: 'Connexion à la base de données'
 installation.step.1.h2.sub.title: 'Afin de pouvoir installer les données nécessaire au bon fonctionnement du CMS, nous allons configurer la connexion à la base de données'
 installation.step.1.field.required: 'Ce champ est obligatoire'
-installation.step.1.btn.return: 'Retour'
+installation.step.1.btn.return: Retour
+installation.step.1.config.bdd.btn.save.config: 'Sauvegarder'
