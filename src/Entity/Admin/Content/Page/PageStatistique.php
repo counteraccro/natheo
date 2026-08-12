@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Entity\Admin\Content\Page;
 
+use App\Enum\Installation\DoctrineStrategy;
 use App\Repository\Admin\Content\Page\PageStatistiqueRepository;
-use App\Utils\Installation\InstallationConst;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PageStatistiqueRepository::class)]
@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class PageStatistique
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: InstallationConst::STRATEGY)]
+    #[ORM\GeneratedValue(strategy: DoctrineStrategy::CURRENT)]
     #[ORM\Column]
     private ?int $id = null;
 
