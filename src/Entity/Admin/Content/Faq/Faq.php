@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Entity\Admin\Content\Faq;
 
 use App\Entity\Admin\System\User;
+use App\Enum\Installation\DoctrineStrategy;
 use App\Repository\Admin\Content\Faq\FaqRepository;
-use App\Utils\Installation\InstallationConst;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
@@ -23,7 +23,7 @@ class Faq
 
     public const array ALLOWED_ORDER_FIELDS = ['color', 'createdAt', 'updateAt'];
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: InstallationConst::STRATEGY)]
+    #[ORM\GeneratedValue(strategy: DoctrineStrategy::CURRENT)]
     #[ORM\Column]
     private ?int $id = null;
 
