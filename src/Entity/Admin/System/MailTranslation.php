@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Entity\Admin\System;
 
+use App\Enum\Installation\DoctrineStrategy;
 use App\Repository\Admin\System\MailTranslationRepository;
-use App\Utils\Installation\InstallationConst;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -16,7 +16,7 @@ class MailTranslation
     public const string DEFAULT_ALIAS = 'mail_translation';
 
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: InstallationConst::STRATEGY)]
+    #[ORM\GeneratedValue(strategy: DoctrineStrategy::CURRENT)]
     #[ORM\Column]
     private ?int $id = null;
 

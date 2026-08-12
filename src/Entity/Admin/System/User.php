@@ -15,8 +15,8 @@ use App\Entity\Admin\Content\Menu\Menu;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\Notification;
 use App\Entity\Admin\Tools\SqlManager;
+use App\Enum\Installation\DoctrineStrategy;
 use App\Repository\Admin\System\UserRepository;
-use App\Utils\Installation\InstallationConst;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -24,7 +24,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Serializer\Attribute\MaxDepth;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity('email')]
@@ -37,7 +36,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public const array ALLOWED_ORDER_FIELDS = ['id', 'login', 'email', 'createdAt', 'updateAt', 'firstname'];
 
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: InstallationConst::STRATEGY)]
+    #[ORM\GeneratedValue(strategy: DoctrineStrategy::CURRENT)]
     #[ORM\Column]
     private ?int $id = null;
 
