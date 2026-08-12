@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace App\Utils\Global;
 
+use App\Enum\Installation\Env;
+use App\Enum\Installation\KeyEnv;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -30,42 +32,6 @@ class EnvFile
      * @var string
      */
     public const NAME_FILE_ENV_LOCAL = '.env.local';
-
-    /**
-     * Dev mode
-     * @var string
-     */
-    public const ENV_DEV = 'dev';
-
-    /**
-     * Prod mode
-     * @var string
-     */
-    public const ENV_PROD = 'prod';
-
-    /**
-     * Clé DATABASE_URL
-     * @var string
-     */
-    public const KEY_DATABASE_URL = 'DATABASE_URL';
-
-    /**
-     * Clé APP_SECRET
-     * @var string
-     */
-    public const KEY_APP_SECRET = 'APP_SECRET';
-
-    /**
-     * Clé KEY_APP_ENV
-     * @var string
-     */
-    public const KEY_APP_ENV = 'APP_ENV';
-
-    /**
-     * Clé NATHEO_SCHEMA
-     * @var string
-     */
-    public const KEY_NATHEO_SCHEMA = 'NATHEO_SCHEMA';
 
     /**
      * @param ContainerInterface $handlers
@@ -138,12 +104,12 @@ class EnvFile
         $parameterBag = $this->handlers->get('parameterBag');
         $env = $parameterBag->get('kernel.environment');
 
-        if ($env === self::ENV_DEV) {
-            $value = self::KEY_APP_ENV . '=' . self::ENV_PROD;
+        if ($env === Env::DEV->value) {
+            $value = KeyEnv::APP_ENV->value . '=' . Env::PROD->value;
         } else {
-            $value = self::KEY_APP_ENV . '=' . self::ENV_DEV;
+            $value = KeyEnv::APP_ENV->value . '=' . Env::DEV->value;
         }
-        $this->updateValueByKey(self::KEY_APP_ENV, $value);
+        $this->updateValueByKey(KeyEnv::APP_ENV->value, $value);
     }
 
     /**

@@ -11,6 +11,8 @@ namespace App\Service\Installation;
 
 use App\Entity\Admin\System\User;
 use App\Enum\Admin\Global\Notification\Notification;
+use App\Enum\Installation\KeyEnv;
+use App\Enum\Installation\OptionInstallation;
 use App\Repository\Admin\System\UserRepository;
 use App\Service\Admin\AppAdminService;
 use App\Utils\Global\EnvFile;
@@ -63,7 +65,7 @@ class InstallationService extends AppAdminService
         for ($i = 0; $i < 32; $i++) {
             $secret .= $a[rand(0, strlen($a) - 1)];
         }
-        return EnvFile::KEY_APP_SECRET . '=' . $secret;
+        return KeyEnv::APP_SECRET->value . '=' . $secret;
     }
 
     /**
@@ -74,11 +76,11 @@ class InstallationService extends AppAdminService
      */
     public function formatDatabaseUrlForEnvFile(array $data, string $option): string
     {
-        $return = EnvFile::KEY_DATABASE_URL . '="';
+        $return = KeyEnv::DATABASE_URL->value . '="';
         $return .=
             $data['type'] . '://' . $data['login'] . ':' . $data['password'] . '@' . $data['ip'] . ':' . $data['port'];
 
-        if ($option === InstallationConst::OPTION_DATABASE_URL_CREATE_DATABASE) {
+        if ($option === OptionInstallation::DATABASE_URL_CREATE_DATABASE->value) {
             $return .= '/' . $data['bdd_name'] . '?serverVersion=' . $data['version'] . '&charset=' . $data['charset'];
         }
         $return .= '"';
@@ -93,7 +95,7 @@ class InstallationService extends AppAdminService
      */
     public function getDatabaseUrl(): array
     {
-        $databaseUrl = $this->getValueByKeyInEnvFile(EnvFile::KEY_DATABASE_URL);
+        $databaseUrl = $this->getValueByKeyInEnvFile(KeyEnv::DATABASE_URL->value);
         $pattern = '/DATABASE_URL="(.*):\/\/(.*):(.*)@(.*):(.*)\/(.*)\?serverVersion=(.*)\&charset=(.*)"/';
         preg_match_all($pattern, $databaseUrl, $matches, PREG_SET_ORDER, 0);
 

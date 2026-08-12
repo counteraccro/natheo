@@ -10,6 +10,9 @@ declare(strict_types=1);
 namespace App\Controller\Installation;
 
 use App\Entity\Admin\System\User;
+use App\Enum\Installation\Env;
+use App\Enum\Installation\KeyEnv;
+use App\Enum\Installation\OptionInstallation;
 use App\Service\Admin\CommandService;
 use App\Service\Installation\InstallationService;
 use App\Service\Installation\InstallRequirementsChecker;
@@ -99,11 +102,11 @@ class InstallationController extends AbstractController
             'datas' => [
                 'bdd_config' => $installationService->getDatabaseUrl(),
                 'config_key' => [
-                    'database_url' => EnvFile::KEY_DATABASE_URL,
+                    'database_url' => KeyEnv::DATABASE_URL->value,
                 ],
                 'option_connexion' => [
-                    'test_connexion' => InstallationConst::OPTION_DATABASE_URL_TEST,
-                    'create_database' => InstallationConst::OPTION_DATABASE_URL_CREATE_DATABASE,
+                    'test_connexion' => OptionInstallation::DATABASE_URL_TEST->value,
+                    'create_database' => OptionInstallation::DATABASE_URL_CREATE_DATABASE->value,
                 ],
                 'bdd_params' => [
                     'database_schema' => $parameterBag->get('app.default_database_schema'),
@@ -141,12 +144,12 @@ class InstallationController extends AbstractController
         $newValue = $installationService->formatDatabaseUrlForEnvFile($data['config'], $data['type']);
 
         try {
-            $installationService->updateValueByKeyInEnvFile(EnvFile::KEY_DATABASE_URL, $newValue);
+            $installationService->updateValueByKeyInEnvFile(KeyEnv::DATABASE_URL->value, $newValue);
 
-            if ($data['type'] === InstallationConst::OPTION_DATABASE_URL_CREATE_DATABASE) {
+            if ($data['type'] === OptionInstallation::DATABASE_URL_CREATE_DATABASE->value) {
                 $installationService->updateValueByKeyInEnvFile(
-                    EnvFile::KEY_NATHEO_SCHEMA,
-                    EnvFile::KEY_NATHEO_SCHEMA . '="' . $data['config']['bdd_name'] . '"',
+                    KeyEnv::NATHEO_SCHEMA->value,
+                    KeyEnv::NATHEO_SCHEMA->value . '="' . $data['config']['bdd_name'] . '"',
                 );
             }
 
@@ -168,7 +171,7 @@ class InstallationController extends AbstractController
     {
         try {
             $installationService->updateValueByKeyInEnvFile(
-                EnvFile::KEY_APP_SECRET,
+                KeyEnv::APP_SECRET->value,
                 $installationService->generateSecret(),
             );
             return $this->json(['success' => true]);
@@ -279,8 +282,8 @@ class InstallationController extends AbstractController
     public function changeEnv(InstallationService $installationService): JsonResponse
     {
         try {
-            $value = EnvFile::KEY_APP_ENV . '=' . EnvFile::ENV_DEV;
-            $installationService->updateValueByKeyInEnvFile(EnvFile::KEY_APP_ENV, $value);
+            $value = KeyEnv::APP_ENV->value . '=' . Env::DEV->value;
+            $installationService->updateValueByKeyInEnvFile(KeyEnv::APP_ENV->value, $value);
             return $this->json(['success' => true]);
         } catch (\Exception $e) {
             return $this->json(['success' => false, 'error' => $e->getMessage()]);
@@ -323,8 +326,8 @@ class InstallationController extends AbstractController
     public function clearCache(CommandService $commandService, InstallationService $installationService): JsonResponse
     {
         try {
-            $value = EnvFile::KEY_APP_ENV . '=' . EnvFile::ENV_PROD;
-            $installationService->updateValueByKeyInEnvFile(EnvFile::KEY_APP_ENV, $value);
+            $value = KeyEnv::APP_ENV->value . '=' . Env::PROD->value;
+            $installationService->updateValueByKeyInEnvFile(KeyEnv::APP_ENV->value, $value);
             $commandService->reloadCache();
             return $this->json(['success' => true]);
         } catch (NotFoundExceptionInterface | ContainerExceptionInterface $e) {
