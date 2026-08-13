@@ -59,11 +59,20 @@ class DataBase
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function isConnected(): bool
+    public function isDatabaseExist(): bool
     {
         /** @var RawQueryManager $rawQueryManager */
         $rawQueryManager = $this->handlers->get('rawQueryManager');
         $query = $rawQueryManager->getQueryAllDatabase();
+        $this->executeRawQuery($query);
+        return $this->entityManager->getConnection()->isConnected();
+    }
+
+    public function isConnected(): bool
+    {
+        /** @var RawQueryManager $rawQueryManager */
+        $rawQueryManager = $this->handlers->get('rawQueryManager');
+        $query = $rawQueryManager->getQueryCheckConnexion();
         $this->executeRawQuery($query);
         return $this->entityManager->getConnection()->isConnected();
     }
