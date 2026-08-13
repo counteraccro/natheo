@@ -21,10 +21,11 @@ import {
 import axios, { AxiosError } from 'axios';
 import AlertDanger from '@/vue/Components/Alert/Danger.vue';
 import AlertBase from '@/vue/Components/Alert/AlertBase.vue';
+import SkeletonInstallationStepOne from '@/vue/Components/Skeleton/Installation/InstallationStepOne.vue';
 
 export default defineComponent({
   name: 'InstallationStepOne',
-  components: { AlertBase, AlertDanger },
+  components: { SkeletonInstallationStepOne, AlertBase, AlertDanger },
   props: {
     urls: {
       type: Object as PropType<InstallationStepOneUrls>,
@@ -53,12 +54,16 @@ export default defineComponent({
         password: '',
         ip: '',
         port: '',
+        charset: '',
+        version: '',
       } as DataBaseConfigErrors,
     };
   },
   mounted(): any {
     this.dataBaseConfig = this.datas.bdd_config;
-    this.checkDataBaseConnexion();
+    this.updateConfigBddEnv(this.datas.option_connexion.test_connexion, () => {
+      this.checkDataBaseConnexion();
+    });
   },
 
   computed: {
@@ -90,8 +95,9 @@ export default defineComponent({
     /**
      * Mise à jour du fichier .env
      * @param type
+     * @param onComplete
      */
-    updateConfigBddEnv(type: string): void {
+    updateConfigBddEnv(type: string, onComplete: () => void): void {
       this.loading = true;
 
       const payload: UpdateEnvPayload = {
@@ -104,6 +110,7 @@ export default defineComponent({
         .post<UpdateEnvResponse>(this.urls.update_env, payload)
         .then((response) => {
           if (response.data.success) {
+            onComplete();
           }
         })
         .catch((error: AxiosError) => {
@@ -136,143 +143,174 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="card mb-4">
-    <div class="card-header" style="background-color: var(--primary)">
-      <div class="card-title" style="color: #ffffff">
-        <svg class="card-icon" style="color: #ffffff" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-width="2"
-            d="M4 7v10c0 1.657 3.582 3 8 3s8-1.343 8-3V7M4 7c0 1.657 3.582 3 8 3s8-1.343 8-3M4 7c0-1.657 3.582-3 8-3s8 1.343 8 3m0 5c0 1.657-3.582 3-8 3s-8-1.343-8-3"
-          />
-        </svg>
-        {{ translate.config_bdd_title }}
-      </div>
-    </div>
-    <div class="p-5">
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-2">
-        <div class="form-group">
-          <label class="form-label" for="bdd-type">{{ translate.config_bdd_input_type_label }}</label>
-          <input id="bdd-type" type="text" class="form-input form-input-sm" v-model="dataBaseConfig.type" disabled />
-        </div>
+  <skeleton-installation-step-one v-if="loading" />
 
-        <div class="form-group">
-          <label class="form-label" for="bdd-login">{{ translate.config_bdd_input_login_label }}</label>
-          <input
-            id="bdd-login"
-            type="text"
-            class="form-input form-input-sm"
-            :class="errors.login ? 'is-invalid' : ''"
-            @blur="validateField('login')"
-            v-model="dataBaseConfig.login"
-          />
-          <span v-if="errors.login" class="form-text text-error">✗ {{ errors.login }}</span>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label" for="bdd-password">{{ translate.config_bdd_input_password_label }}</label>
-          <input
-            id="bdd-password"
-            type="text"
-            class="form-input form-input-sm"
-            v-model="dataBaseConfig.password"
-            :class="errors.password ? 'is-invalid' : ''"
-            @blur="validateField('password')"
-          />
-          <span v-if="errors.password" class="form-text text-error">✗ {{ errors.password }}</span>
-        </div>
-      </div>
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
-        <div class="form-group">
-          <label class="form-label" for="bdd-type">{{ translate.config_bdd_input_ip_label }}</label>
-          <input
-            id="bdd-type"
-            type="text"
-            class="form-input form-input-sm"
-            v-model="dataBaseConfig.ip"
-            :class="errors.ip ? 'is-invalid' : ''"
-            @blur="validateField('ip')"
-          />
-          <span v-if="errors.ip" class="form-text text-error">✗ {{ errors.ip }}</span>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label" for="bdd-type">{{ translate.config_bdd_input_port_label }}</label>
-          <input
-            id="bdd-type"
-            type="text"
-            class="form-input form-input-sm"
-            v-model="dataBaseConfig.port"
-            :class="errors.port ? 'is-invalid' : ''"
-            @blur="validateField('port')"
-          />
-          <span v-if="errors.port" class="form-text text-error">✗ {{ errors.port }}</span>
-        </div>
-      </div>
-
-      <alert-base type="alert-danger-light" text="toto" />
-    </div>
-    <div
-      class="px-5 sm:px-6 py-4 flex items-center justify-between border-t"
-      style="border-color: var(--border-color); background-color: var(--bg-hover)"
-    >
-      <a :href="urls.step_0" class="btn btn-outline-dark btn-sm">
-        <svg
-          class="w-4 h-4"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          fill="none"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M5 12h14M5 12l4-4m-4 4 4 4"
-          />
-        </svg>
-        {{ translate.btn_return }}
-      </a>
-
-      <div class="flex gap-1.5">
-        <button type="button" class="btn btn-primary btn-sm" :disabled="!isValid" @click="checkDataBaseConnexion">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <div v-else>
+    <div class="card mb-4">
+      <div class="card-header" style="background-color: var(--primary)">
+        <div class="card-title" style="color: #ffffff">
+          <svg class="card-icon" style="color: #ffffff" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
+              stroke="currentColor"
               stroke-linecap="round"
-              stroke-linejoin="round"
               stroke-width="2"
-              d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-            ></path>
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-            ></path>
+              d="M4 7v10c0 1.657 3.582 3 8 3s8-1.343 8-3V7M4 7c0 1.657 3.582 3 8 3s8-1.343 8-3M4 7c0-1.657 3.582-3 8-3s8 1.343 8 3m0 5c0 1.657-3.582 3-8 3s-8-1.343-8-3"
+            />
           </svg>
-          {{ translate.config_bdd_btn_test_config }}
-        </button>
+          {{ translate.config_bdd_title }}
+        </div>
+      </div>
+      <div class="p-5">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-2">
+          <div class="form-group">
+            <label class="form-label" for="bdd-type">{{ translate.config_bdd_input_type_label }}</label>
+            <input id="bdd-type" type="text" class="form-input form-input-sm" v-model="dataBaseConfig.type" disabled />
+          </div>
 
-        <button
-          type="button"
-          class="btn btn-primary btn-sm"
-          :disabled="!isValid"
-          @click="updateConfigBddEnv(datas.option_connexion.test_connexion)"
-        >
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div class="form-group">
+            <label class="form-label" for="bdd-login">{{ translate.config_bdd_input_login_label }}</label>
+            <input
+              id="bdd-login"
+              type="text"
+              class="form-input form-input-sm"
+              :class="errors.login ? 'is-invalid' : ''"
+              @blur="validateField('login')"
+              v-model="dataBaseConfig.login"
+            />
+            <span v-if="errors.login" class="form-text text-error">✗ {{ errors.login }}</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="bdd-password">{{ translate.config_bdd_input_password_label }}</label>
+            <input
+              id="bdd-password"
+              type="text"
+              class="form-input form-input-sm"
+              v-model="dataBaseConfig.password"
+              :class="errors.password ? 'is-invalid' : ''"
+              @blur="validateField('password')"
+            />
+            <span v-if="errors.password" class="form-text text-error">✗ {{ errors.password }}</span>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+          <div class="form-group">
+            <label class="form-label" for="bdd-type">{{ translate.config_bdd_input_ip_label }}</label>
+            <input
+              id="bdd-type"
+              type="text"
+              class="form-input form-input-sm"
+              v-model="dataBaseConfig.ip"
+              :class="errors.ip ? 'is-invalid' : ''"
+              @blur="validateField('ip')"
+            />
+            <span v-if="errors.ip" class="form-text text-error">✗ {{ errors.ip }}</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="bdd-type">{{ translate.config_bdd_input_port_label }}</label>
+            <input
+              id="bdd-type"
+              type="text"
+              class="form-input form-input-sm"
+              v-model="dataBaseConfig.port"
+              :class="errors.port ? 'is-invalid' : ''"
+              @blur="validateField('port')"
+            />
+            <span v-if="errors.port" class="form-text text-error">✗ {{ errors.port }}</span>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+          <div class="form-group">
+            <label class="form-label" for="bdd-type">{{ translate.create_bdd_input_charset_label }}</label>
+            <input
+              id="bdd-type"
+              type="text"
+              class="form-input form-input-sm"
+              v-model="dataBaseConfig.charset"
+              :class="errors.charset ? 'is-invalid' : ''"
+              @blur="validateField('charset')"
+            />
+            <span v-if="errors.charset" class="form-text text-error">✗ {{ errors.charset }}</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="bdd-type">{{ translate.create_bdd_input_version_label }}</label>
+            <input
+              id="bdd-type"
+              type="text"
+              class="form-input form-input-sm"
+              v-model="dataBaseConfig.version"
+              :class="errors.version ? 'is-invalid' : ''"
+              @blur="validateField('version')"
+            />
+            <span v-if="errors.version" class="form-text text-error">✗ {{ errors.version }}</span>
+          </div>
+        </div>
+
+        <alert-base type="alert-danger-light" text="toto" />
+      </div>
+      <div
+        class="px-5 sm:px-6 py-4 flex items-center justify-between border-t"
+        style="border-color: var(--border-color); background-color: var(--bg-hover)"
+      >
+        <a :href="urls.step_0" class="btn btn-outline-dark btn-sm">
+          <svg
+            class="w-4 h-4"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
             <path
+              stroke="currentColor"
               stroke-linecap="round"
               stroke-linejoin="round"
               stroke-width="2"
-              d="M11 16h2m6.707-9.293-2.414-2.414A1 1 0 0 0 16.586 4H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V7.414a1 1 0 0 0-.293-.707ZM16 20v-6a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v6h8ZM9 4h6v3a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1V4Z"
-            ></path>
+              d="M5 12h14M5 12l4-4m-4 4 4 4"
+            />
           </svg>
-          {{ translate.config_bdd_btn_save_config }}
-        </button>
+          {{ translate.btn_return }}
+        </a>
+
+        <div class="flex gap-1.5">
+          <button type="button" class="btn btn-primary btn-sm" :disabled="!isValid" @click="checkDataBaseConnexion">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+              ></path>
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+              ></path>
+            </svg>
+            {{ translate.config_bdd_btn_test_config }}
+          </button>
+
+          <button
+            type="button"
+            class="btn btn-primary btn-sm"
+            :disabled="!isValid"
+            @click="updateConfigBddEnv(datas.option_connexion.create_database, () => {})"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M11 16h2m6.707-9.293-2.414-2.414A1 1 0 0 0 16.586 4H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V7.414a1 1 0 0 0-.293-.707ZM16 20v-6a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v6h8ZM9 4h6v3a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1V4Z"
+              ></path>
+            </svg>
+            {{ translate.config_bdd_btn_save_config }}
+          </button>
+        </div>
       </div>
     </div>
   </div>

@@ -130,6 +130,12 @@ class InstallationService extends AppAdminService
                 $return['version'] = $matches[0][7];
                 $return['charset'] = $matches[0][8];
             }
+
+            $parameterBag = $this->getParameterBag();
+
+            if (empty($return['bdd_name'])) {
+                $return['bdd_name'] = $parameterBag->get('app.default_database_schema');
+            }
         }
         return $return;
     }

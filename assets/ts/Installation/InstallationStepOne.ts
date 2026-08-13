@@ -22,6 +22,8 @@ export interface InstallationStepOneTranslate {
   config_bdd_input_password_label: string;
   config_bdd_input_ip_label: string;
   config_bdd_input_port_label: string;
+  config_bdd_input_charset_label: string;
+  config_bdd_input_version_label: string;
   config_bdd_btn_test_config: string;
   config_bdd_btn_save_config: string;
   config_bdd_btn_test_config_loading: string;
@@ -104,7 +106,7 @@ export interface CheckDatabaseResponse {
   connexion: boolean;
 }
 
-export type ValidableField = 'login' | 'password' | 'ip' | 'port';
+export type ValidableField = 'login' | 'password' | 'ip' | 'port' | 'charset' | 'version';
 
 export type DataBaseConfigErrors = Record<ValidableField, string>;
 
