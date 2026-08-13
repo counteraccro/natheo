@@ -77,4 +77,13 @@ class RawQueryManager
     {
         return $this->rawClass::getQueryPurgeNotification();
     }
+
+    /**
+     * Test la connexion au SGBD
+     * @return string
+     */
+    public function getQueryCheckConnexion(): string
+    {
+        return $this->rawClass::getQueryCheckConnexion();
+    }
 }
