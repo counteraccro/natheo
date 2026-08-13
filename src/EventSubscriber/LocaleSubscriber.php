@@ -80,7 +80,7 @@ class LocaleSubscriber implements EventSubscriberInterface
     public function onKernelController(ControllerEvent $event): void
     {
         // Lors de l'installation si pas de bdd pour éviter les crashs
-        if (!$this->dataBase->isConnected() || !$this->dataBase->isTableExiste()) {
+        if (!$this->dataBase->isDatabaseExist() || !$this->dataBase->isTableExiste()) {
             $this->localeSwitcher->setLocale('fr');
             return;
         }
