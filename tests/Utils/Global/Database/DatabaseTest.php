@@ -35,7 +35,7 @@ class DatabaseTest extends AppWebTestCase
      */
     public function testIsConnected(): void
     {
-        $result = $this->database->isConnected();
+        $result = $this->database->isDatabaseExist();
         $this->assertTrue($result);
     }
 
