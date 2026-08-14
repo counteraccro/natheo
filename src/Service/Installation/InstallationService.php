@@ -80,7 +80,7 @@ class InstallationService extends AppAdminService
         $return .=
             $data['type'] . '://' . $data['login'] . ':' . $data['password'] . '@' . $data['ip'] . ':' . $data['port'];
 
-        if ($option === OptionInstallation::DATABASE_URL_CREATE_DATABASE->value) {
+        if ($option === OptionInstallation::DATABASE_EXIST->value) {
             $return .= '/' . $data['bdd_name'] . '?serverVersion=' . $data['version'] . '&charset=' . $data['charset'];
         }
         $return .= '"';

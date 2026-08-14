@@ -61,9 +61,7 @@ export default defineComponent({
   },
   mounted(): any {
     this.dataBaseConfig = this.datas.bdd_config;
-    this.updateConfigBddEnv(this.datas.option_connexion.test_connexion, () => {
-      this.checkDataBaseConnexion();
-    });
+    this.checkActionBdd(this.datas.option_check.connexion);
   },
 
   computed: {
@@ -76,10 +74,13 @@ export default defineComponent({
     /**
      * Test si la connexion est valide ou non
      */
-    checkDataBaseConnexion(): void {
+    checkActionBdd(action: string): void {
       this.loading = true;
       axios
-        .get<CheckDatabaseResponse>(this.urls.check_database)
+        .post<CheckDatabaseResponse>(this.urls.check_action_bdd, {
+          config: this.dataBaseConfig,
+          action,
+        })
         .then((response) => {
           this.isDataBaseConnected = response.data.connexion;
         })
@@ -276,7 +277,12 @@ export default defineComponent({
         </a>
 
         <div class="flex gap-1.5">
-          <button type="button" class="btn btn-primary btn-sm" :disabled="!isValid" @click="checkDataBaseConnexion">
+          <button
+            type="button"
+            class="btn btn-primary btn-sm"
+            :disabled="!isValid"
+            @click="checkActionBdd(datas.option_check.connexion)"
+          >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 stroke-linecap="round"
@@ -298,7 +304,7 @@ export default defineComponent({
             type="button"
             class="btn btn-primary btn-sm"
             :disabled="!isValid"
-            @click="updateConfigBddEnv(datas.option_connexion.create_database, () => {})"
+            @click="updateConfigBddEnv(datas.option_check.database_exist, () => {})"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path

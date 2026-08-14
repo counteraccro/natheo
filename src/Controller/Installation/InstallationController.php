@@ -89,7 +89,7 @@ class InstallationController extends AbstractController
         return $this->render('installation/installation/step_one.html.twig', [
             'allSteps' => $installationService->getAllSteps(),
             'urls' => [
-                'check_database' => $this->generateUrl('installation_check_database'),
+                'check_action_bdd' => $this->generateUrl('installation_check_action_bdd'),
                 'update_env' => $this->generateUrl('installation_update_env'),
                 'create_bdd' => $this->generateUrl('installation_create_bdd'),
                 'create_schema' => $this->generateUrl('installation_create_schema'),
@@ -104,9 +104,9 @@ class InstallationController extends AbstractController
                 'config_key' => [
                     'database_url' => KeyEnv::DATABASE_URL->value,
                 ],
-                'option_connexion' => [
-                    'test_connexion' => OptionInstallation::DATABASE_URL_TEST->value,
-                    'create_database' => OptionInstallation::DATABASE_URL_CREATE_DATABASE->value,
+                'option_check' => [
+                    'connexion' => OptionInstallation::CONNEXION->value,
+                    'database_exist' => OptionInstallation::DATABASE_EXIST->value,
                 ],
                 'bdd_params' => [
                     'database_schema' => $parameterBag->get('app.default_database_schema'),
@@ -117,16 +117,16 @@ class InstallationController extends AbstractController
     }
 
     /**
-     * Test la connexion de la base de données
+     * Permet de tester la bdd en fonction d'une action
+     * @param Request $request
      * @param DataBase $dataBase
      * @return JsonResponse
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
-    #[Route('/check-database', name: 'check_database', methods: ['GET'])]
-    public function testConnexionDatabase(DataBase $dataBase): JsonResponse
+    #[Route('/check-action-bdd', name: 'check_action_bdd', methods: ['POST'])]
+    public function CheckActionBdd(Request $request, DataBase $dataBase): JsonResponse
     {
-        return $this->json(['connexion' => $dataBase->isConnected()]);
+        $data = json_decode($request->getContent(), true);
+        return $this->json(['connexion' => $dataBase->check($data['action'], $data['config'])]);
     }
 
     /**
@@ -146,7 +146,7 @@ class InstallationController extends AbstractController
         try {
             $installationService->updateValueByKeyInEnvFile(KeyEnv::DATABASE_URL->value, $newValue);
 
-            if ($data['type'] === OptionInstallation::DATABASE_URL_CREATE_DATABASE->value) {
+            if ($data['type'] === OptionInstallation::DATABASE_EXIST->value) {
                 $installationService->updateValueByKeyInEnvFile(
                     KeyEnv::NATHEO_SCHEMA->value,
                     KeyEnv::NATHEO_SCHEMA->value . '="' . $data['config']['bdd_name'] . '"',
