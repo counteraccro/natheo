@@ -12,16 +12,14 @@ namespace App\Enum\Installation;
 enum OptionInstallation: string
 {
     /**
-     * Option pour construire le DATABASE_URL <br />
-     * donne type://login:!password![a]ip:port
+     * Option pour tester la connexion
      * @var string
      */
-    case DATABASE_URL_TEST = 'test_connexion';
+    case CONNEXION = 'connexion';
 
     /**
-     * Option pour construire le DATABASE_URL <br />
-     * donne type://login:!password![a]ip:port/database?serverVersion=version&charset=charset
+     * Test si la base de données existe
      * @var string
      */
-    case DATABASE_URL_CREATE_DATABASE = 'create_database';
+    case DATABASE_EXIST = 'database_exist';
 }
