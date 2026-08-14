@@ -1,6 +1,6 @@
 export interface InstallationStepOneUrls {
   update_env: string;
-  check_database: string;
+  check_action_bdd: string;
   update_app_secret: string;
   create_bdd: string;
   create_schema: string;
@@ -85,9 +85,9 @@ export interface ConfigKey {
   database_url: string;
 }
 
-export interface OptionConnexion {
-  test_connexion: string;
-  create_database: string;
+export interface OptionCheck {
+  connexion: string;
+  database_exist: string;
 }
 
 export interface BddParams {
@@ -98,7 +98,7 @@ export interface BddParams {
 export interface InstallationStepOneDatas {
   bdd_config: BddConfig;
   config_key: ConfigKey;
-  option_connexion: OptionConnexion;
+  option_check: OptionCheck;
   bdd_params: BddParams;
 }
 
