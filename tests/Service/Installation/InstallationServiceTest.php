@@ -114,7 +114,7 @@ class InstallationServiceTest extends AppWebTestCase
 
         $result = $this->installationService->formatDatabaseUrlForEnvFile(
             $data,
-            OptionInstallation::DATABASE_URL_CREATE_DATABASE->value,
+            OptionInstallation::DATABASE_EXIST->value,
         );
         $this->assertNotEmpty($result);
         $this->assertIsString($result);
