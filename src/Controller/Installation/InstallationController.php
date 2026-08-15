@@ -121,12 +121,19 @@ class InstallationController extends AbstractController
      * @param Request $request
      * @param DataBase $dataBase
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/check-action-bdd', name: 'check_action_bdd', methods: ['POST'])]
     public function CheckActionBdd(Request $request, DataBase $dataBase): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
-        return $this->json(['connexion' => $dataBase->check($data['action'], $data['config'])]);
+
+        if (empty($data['action'])) {
+            return $this->json(['error' => 'Action bdd is required.'], Response::HTTP_BAD_REQUEST);
+        }
+
+        return $this->json([$data['action'] => $dataBase->check($data['action'], $data['config'])]);
     }
 
     /**

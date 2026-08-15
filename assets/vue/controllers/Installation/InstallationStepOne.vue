@@ -6,26 +6,26 @@
  */
 import { defineComponent } from 'vue';
 import type { PropType } from 'vue';
-import {
+import type {
   InstallationStepOneUrls,
   InstallationStepOneTranslate,
   InstallationStepOneLocales,
   InstallationStepOneDatas,
-  CheckDatabaseResponse,
   BddConfig,
   DataBaseConfigErrors,
   ValidableField,
   UpdateEnvPayload,
   UpdateEnvResponse,
+  Check,
+  CheckAction,
+  CheckActionBddResponse,
 } from '@/ts/Installation/InstallationStepOne';
 import axios, { AxiosError } from 'axios';
-import AlertDanger from '@/vue/Components/Alert/Danger.vue';
-import AlertBase from '@/vue/Components/Alert/AlertBase.vue';
 import SkeletonInstallationStepOne from '@/vue/Components/Skeleton/Installation/InstallationStepOne.vue';
 
 export default defineComponent({
   name: 'InstallationStepOne',
-  components: { SkeletonInstallationStepOne, AlertBase, AlertDanger },
+  components: { SkeletonInstallationStepOne },
   props: {
     urls: {
       type: Object as PropType<InstallationStepOneUrls>,
@@ -46,8 +46,17 @@ export default defineComponent({
   },
   data() {
     return {
+      initialLoading: true as boolean,
       loading: false as boolean,
-      isDataBaseConnected: null as boolean | null,
+      currentCheck: null as CheckAction | null,
+      tested: {
+        connexion: false,
+        database_exist: false,
+      } as Record<CheckAction, boolean>,
+      check: {
+        connexion: { success: false, message: '' },
+        database_exist: { success: false, message: '' },
+      } as Check,
       dataBaseConfig: {} as BddConfig,
       errors: {
         login: '',
@@ -59,46 +68,78 @@ export default defineComponent({
       } as DataBaseConfigErrors,
     };
   },
-  mounted(): any {
-    this.dataBaseConfig = this.datas.bdd_config;
-    this.checkActionBdd(this.datas.option_check.connexion);
-  },
-
   computed: {
     isValid(): boolean {
       return Object.values(this.errors).every((error) => error === '');
     },
-  },
 
+    // Pilote la couleur du header de card : neutre tant que rien n'est testé,
+    // vert si la connexion est OK, rouge si elle échoue.
+    headerAccentColor(): string {
+      if (!this.tested.connexion) {
+        return 'var(--primary)';
+      }
+      return this.check.connexion.success ? 'var(--btn-success)' : 'var(--btn-danger)';
+    },
+  },
+  mounted() {
+    this.dataBaseConfig = this.datas.bdd_config;
+    this.runChecks().finally(() => {
+      this.initialLoading = false;
+    });
+  },
   methods: {
     /**
-     * Test si la connexion est valide ou non
+     * Exécute un seul check et stocke son résultat.
+     * Ne gère pas `loading` elle-même : c'est l'orchestrateur (runChecks) qui le pilote,
+     * pour éviter de dupliquer la logique de chargement à chaque étape.
      */
-    checkActionBdd(action: string): void {
-      this.loading = true;
-      axios
-        .post<CheckDatabaseResponse>(this.urls.check_action_bdd, {
+    checkAction(action: CheckAction): Promise<void> {
+      return axios
+        .post<CheckActionBddResponse>(this.urls.check_action_bdd, {
           config: this.dataBaseConfig,
           action,
         })
         .then((response) => {
-          this.isDataBaseConnected = response.data.connexion;
+          const result = response.data[action];
+          if (result) {
+            this.check[action] = result;
+          }
         })
         .catch((error: AxiosError) => {
           console.error(error);
-          this.isDataBaseConnected = false;
+          this.check[action] = { success: false, message: error.message };
         })
         .finally(() => {
-          this.loading = false;
+          this.tested[action] = true;
         });
+    },
+
+    /**
+     * Enchaîne les tests : connexion, puis existence de la base si la connexion a réussi.
+     * Le bouton "Tester la connexion" lit `currentCheck` pour afficher l'étape en cours.
+     */
+    async runChecks(): Promise<void> {
+      this.loading = true;
+      this.currentCheck = this.datas.option_check.connexion;
+      await this.checkAction(this.datas.option_check.connexion);
+
+      if (this.check.connexion.success) {
+        this.currentCheck = this.datas.option_check.database_exist;
+        await this.checkAction(this.datas.option_check.database_exist);
+      } else {
+        this.tested[this.datas.option_check.database_exist] = false;
+      }
+
+      this.currentCheck = null;
+      this.loading = false;
     },
 
     /**
      * Mise à jour du fichier .env
      * @param type
-     * @param onComplete
      */
-    updateConfigBddEnv(type: string, onComplete: () => void): void {
+    updateConfigBddEnv(type: string): void {
       this.loading = true;
 
       const payload: UpdateEnvPayload = {
@@ -111,7 +152,6 @@ export default defineComponent({
         .post<UpdateEnvResponse>(this.urls.update_env, payload)
         .then((response) => {
           if (response.data.success) {
-            onComplete();
           }
         })
         .catch((error: AxiosError) => {
@@ -144,13 +184,16 @@ export default defineComponent({
 </script>
 
 <template>
-  <skeleton-installation-step-one v-if="loading" />
+  <skeleton-installation-step-one v-if="initialLoading" />
 
   <div v-else>
-    <div class="card mb-4">
-      <div class="card-header" style="background-color: var(--primary)">
-        <div class="card-title" style="color: #ffffff">
-          <svg class="card-icon" style="color: #ffffff" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div class="card rounded-xl overflow-hidden mb-4">
+      <div
+        class="card-header flex items-center justify-between gap-2 transition-colors"
+        :style="{ backgroundColor: headerAccentColor }"
+      >
+        <div class="flex items-center gap-2">
+          <svg class="w-5 h-5" style="color: #ffffff" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke="currentColor"
               stroke-linecap="round"
@@ -158,11 +201,37 @@ export default defineComponent({
               d="M4 7v10c0 1.657 3.582 3 8 3s8-1.343 8-3V7M4 7c0 1.657 3.582 3 8 3s8-1.343 8-3M4 7c0-1.657 3.582-3 8-3s8 1.343 8 3m0 5c0 1.657-3.582 3-8 3s-8-1.343-8-3"
             />
           </svg>
-          {{ translate.config_bdd_title }}
+          <span class="text-sm font-semibold" style="color: #ffffff">{{ translate.config_bdd_title }}</span>
         </div>
+
+        <svg
+          v-if="check.connexion.success"
+          class="w-4 h-4"
+          style="color: #ffffff"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+        </svg>
+        <svg
+          v-else-if="check.connexion.message"
+          class="w-4 h-4"
+          style="color: #ffffff"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
       </div>
-      <div class="p-5">
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-2">
+
+      <div class="p-5 sm:p-6">
+        <!-- Section : identifiants -->
+        <p class="text-xs font-semibold uppercase tracking-wide mb-3" style="color: var(--text-light)">
+          {{ translate.create_bdd_sub_title_identifiant }}
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-6 pb-6 border-b" style="border-color: var(--border-color)">
           <div class="form-group">
             <label class="form-label" for="bdd-type">{{ translate.config_bdd_input_type_label }}</label>
             <input id="bdd-type" type="text" class="form-input form-input-sm" v-model="dataBaseConfig.type" disabled />
@@ -194,11 +263,16 @@ export default defineComponent({
             <span v-if="errors.password" class="form-text text-error">✗ {{ errors.password }}</span>
           </div>
         </div>
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+
+        <!-- Section : serveur -->
+        <p class="text-xs font-semibold uppercase tracking-wide mb-3" style="color: var(--text-light)">
+          {{ translate.create_bdd_sub_title_server }}
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-6 pb-6 border-b" style="border-color: var(--border-color)">
           <div class="form-group">
-            <label class="form-label" for="bdd-type">{{ translate.config_bdd_input_ip_label }}</label>
+            <label class="form-label" for="bdd-ip">{{ translate.config_bdd_input_ip_label }}</label>
             <input
-              id="bdd-type"
+              id="bdd-ip"
               type="text"
               class="form-input form-input-sm"
               v-model="dataBaseConfig.ip"
@@ -209,9 +283,9 @@ export default defineComponent({
           </div>
 
           <div class="form-group">
-            <label class="form-label" for="bdd-type">{{ translate.config_bdd_input_port_label }}</label>
+            <label class="form-label" for="bdd-port">{{ translate.config_bdd_input_port_label }}</label>
             <input
-              id="bdd-type"
+              id="bdd-port"
               type="text"
               class="form-input form-input-sm"
               v-model="dataBaseConfig.port"
@@ -221,11 +295,16 @@ export default defineComponent({
             <span v-if="errors.port" class="form-text text-error">✗ {{ errors.port }}</span>
           </div>
         </div>
+
+        <!-- Section : options avancées -->
+        <p class="text-xs font-semibold uppercase tracking-wide mb-3" style="color: var(--text-light)">
+          {{ translate.create_bdd_sub_title_options }}
+        </p>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
           <div class="form-group">
-            <label class="form-label" for="bdd-type">{{ translate.create_bdd_input_charset_label }}</label>
+            <label class="form-label" for="bdd-charset">{{ translate.create_bdd_input_charset_label }}</label>
             <input
-              id="bdd-type"
+              id="bdd-charset"
               type="text"
               class="form-input form-input-sm"
               v-model="dataBaseConfig.charset"
@@ -236,9 +315,9 @@ export default defineComponent({
           </div>
 
           <div class="form-group">
-            <label class="form-label" for="bdd-type">{{ translate.create_bdd_input_version_label }}</label>
+            <label class="form-label" for="bdd-version">{{ translate.create_bdd_input_version_label }}</label>
             <input
-              id="bdd-type"
+              id="bdd-version"
               type="text"
               class="form-input form-input-sm"
               v-model="dataBaseConfig.version"
@@ -249,41 +328,80 @@ export default defineComponent({
           </div>
         </div>
 
-        <alert-base type="alert-danger-light" text="toto" />
+        <!-- Résultats : ligne compacte verte si connexion OK, alerte complète uniquement en cas d'erreur -->
+        <div v-if="tested.connexion" class="mt-6 flex flex-col gap-2">
+          <div
+            v-if="check.connexion.success"
+            class="flex items-center gap-1.5 text-sm font-medium"
+            style="color: var(--btn-success)"
+          >
+            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+            </svg>
+            <span>{{ check.connexion.message || translate.config_bdd_loading_msg_test_connexion_success }}</span>
+          </div>
+
+          <div
+            v-else
+            class="px-4 py-3 rounded-lg flex items-start gap-2 text-sm"
+            style="
+              background-color: var(--alert-danger-bg);
+              border: 1px solid var(--alert-danger-border);
+              color: var(--alert-danger-text);
+            "
+          >
+            <svg class="w-4 h-4 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+            <span>{{ check.connexion.message || translate.config_bdd_loading_msg_test_connexion_ko }}</span>
+          </div>
+
+          <div
+            v-if="tested.database_exist && !check.database_exist.success"
+            class="px-4 py-3 rounded-lg flex items-start gap-2 text-sm"
+            style="
+              background-color: var(--alert-danger-bg);
+              border: 1px solid var(--alert-danger-border);
+              color: var(--alert-danger-text);
+            "
+          >
+            <svg class="w-4 h-4 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+            <span>{{ check.database_exist.message || "La base de données spécifiée n'existe pas." }}</span>
+          </div>
+
+          <div
+            v-else-if="tested.database_exist && check.database_exist.success"
+            class="flex items-center gap-1.5 text-sm font-medium"
+            style="color: var(--btn-success)"
+          >
+            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+            </svg>
+            <span>{{ check.database_exist.message || 'La base de données existe.' }}</span>
+          </div>
+        </div>
       </div>
+
       <div
         class="px-5 sm:px-6 py-4 flex items-center justify-between border-t"
         style="border-color: var(--border-color); background-color: var(--bg-hover)"
       >
         <a :href="urls.step_0" class="btn btn-outline-dark btn-sm">
-          <svg
-            class="w-4 h-4"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M5 12h14M5 12l4-4m-4 4 4 4"
-            />
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l4-4m-4 4 4 4" />
           </svg>
           {{ translate.btn_return }}
         </a>
 
         <div class="flex gap-1.5">
-          <button
-            type="button"
-            class="btn btn-primary btn-sm"
-            :disabled="!isValid"
-            @click="checkActionBdd(datas.option_check.connexion)"
-          >
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <button type="button" class="btn btn-primary btn-sm" :disabled="!isValid || loading" @click="runChecks()">
+            <svg v-if="currentCheck" class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+            </svg>
+            <svg v-else class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 stroke-linecap="round"
                 stroke-linejoin="round"
@@ -297,14 +415,21 @@ export default defineComponent({
                 d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
               ></path>
             </svg>
-            {{ translate.config_bdd_btn_test_config }}
+
+            <template v-if="currentCheck === 'connexion'"
+              >{{ translate.config_bdd_loading_msg_test_connexion }} aa</template
+            >
+            <template v-else-if="currentCheck === 'database_exist'"
+              >{{ translate.config_bdd_loading_msg_check_database }} bb</template
+            >
+            <template v-else>{{ translate.config_bdd_btn_test_config }}</template>
           </button>
 
           <button
             type="button"
             class="btn btn-primary btn-sm"
-            :disabled="!isValid"
-            @click="updateConfigBddEnv(datas.option_check.database_exist, () => {})"
+            :disabled="!isValid || loading"
+            @click="updateConfigBddEnv(datas.option_check.database_exist)"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
