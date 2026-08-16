@@ -189,6 +189,18 @@ class InstallationTranslate extends AppTranslate
             ),
             'field_required' => $this->translator->trans('installation.step.1.field.required', domain: 'installation'),
             'btn_return' => $this->translator->trans('installation.step.1.btn.return', domain: 'installation'),
+            'create_bdd_sub_title_identifiant' => $this->translator->trans(
+                'installation.step.1.sub-title.identifiant',
+                domain: 'installation',
+            ),
+            'create_bdd_sub_title_server' => $this->translator->trans(
+                'installation.step.1.sub-title.server',
+                domain: 'installation',
+            ),
+            'create_bdd_sub_title_options' => $this->translator->trans(
+                'installation.step.1.sub-title.options',
+                domain: 'installation',
+            ),
         ];
     }
 

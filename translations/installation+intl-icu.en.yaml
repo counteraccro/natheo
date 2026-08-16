@@ -114,3 +114,6 @@ installation.step.1.h2.sub.title: __installation.step.1.h2.sub.title
 installation.step.1.field.required: __installation.step.1.field.required
 installation.step.1.btn.return: __installation.step.1.btn.return
 installation.step.1.config.bdd.btn.save.config: __installation.step.1.config.bdd.btn.save.config
+installation.step.1.sub-title.identifiant: __installation.step.1.sub-title.identifiant
+installation.step.1.sub-title.server: __installation.step.1.sub-title.server
+installation.step.1.sub-title.options: __installation.step.1.sub-title.options
