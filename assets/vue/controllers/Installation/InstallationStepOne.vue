@@ -104,15 +104,14 @@ export default defineComponent({
           const result = response.data[action];
           if (result) {
             this.check[action] = result;
+            this.tested[action] = result.success;
           }
         })
         .catch((error: AxiosError) => {
           console.error(error);
           this.check[action] = { success: false, message: error.message };
         })
-        .finally(() => {
-          this.tested[action] = true;
-        });
+        .finally(() => {});
     },
 
     /**
@@ -123,12 +122,11 @@ export default defineComponent({
       this.loading = true;
       this.currentCheck = this.datas.option_check.connexion;
       await this.checkAction(this.datas.option_check.connexion);
+      this.check.database_exist = { success: false, message: '' };
 
       if (this.check.connexion.success) {
         this.currentCheck = this.datas.option_check.database_exist;
         await this.checkAction(this.datas.option_check.database_exist);
-      } else {
-        this.tested[this.datas.option_check.database_exist] = false;
       }
 
       this.currentCheck = null;
@@ -329,7 +327,7 @@ export default defineComponent({
         </div>
 
         <!-- Résultats : ligne compacte verte si connexion OK, alerte complète uniquement en cas d'erreur -->
-        <div v-if="tested.connexion" class="mt-6 flex flex-col gap-2">
+        <div class="mt-6 flex flex-col gap-2">
           <div
             v-if="check.connexion.success"
             class="flex items-center gap-1.5 text-sm font-medium"
@@ -338,7 +336,7 @@ export default defineComponent({
             <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
             </svg>
-            <span>{{ check.connexion.message || translate.config_bdd_loading_msg_test_connexion_success }}</span>
+            <span>{{ translate.config_bdd_loading_msg_test_connexion_success }}</span>
           </div>
 
           <div
@@ -357,7 +355,18 @@ export default defineComponent({
           </div>
 
           <div
-            v-if="tested.database_exist && !check.database_exist.success"
+            v-if="check.database_exist.success"
+            class="flex items-center gap-1.5 text-sm font-medium"
+            style="color: var(--btn-success)"
+          >
+            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+            </svg>
+            <span>{{ 'La base de données existe. - A traduire' }}</span>
+          </div>
+
+          <div
+            v-else-if="check.database_exist.message !== ''"
             class="px-4 py-3 rounded-lg flex items-start gap-2 text-sm"
             style="
               background-color: var(--alert-danger-bg);
@@ -368,18 +377,7 @@ export default defineComponent({
             <svg class="w-4 h-4 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
-            <span>{{ check.database_exist.message || "La base de données spécifiée n'existe pas." }}</span>
-          </div>
-
-          <div
-            v-else-if="tested.database_exist && check.database_exist.success"
-            class="flex items-center gap-1.5 text-sm font-medium"
-            style="color: var(--btn-success)"
-          >
-            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
-            </svg>
-            <span>{{ check.database_exist.message || 'La base de données existe.' }}</span>
+            <span>{{ check.database_exist.message }}</span>
           </div>
         </div>
       </div>
@@ -416,12 +414,12 @@ export default defineComponent({
               ></path>
             </svg>
 
-            <template v-if="currentCheck === 'connexion'"
-              >{{ translate.config_bdd_loading_msg_test_connexion }} aa</template
-            >
-            <template v-else-if="currentCheck === 'database_exist'"
-              >{{ translate.config_bdd_loading_msg_check_database }} bb</template
-            >
+            <template v-if="currentCheck === 'connexion'">{{
+              translate.config_bdd_loading_msg_test_connexion
+            }}</template>
+            <template v-else-if="currentCheck === 'database_exist'">{{
+              translate.config_bdd_loading_msg_check_database
+            }}</template>
             <template v-else>{{ translate.config_bdd_btn_test_config }}</template>
           </button>
 
