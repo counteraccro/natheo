@@ -28,10 +28,12 @@ export interface InstallationStepOneTranslate {
   config_bdd_btn_save_config: string;
   config_bdd_btn_test_config_loading: string;
   config_bdd_loading_msg_test_connexion: string;
-  config_bdd_loading_msg_check_database: string;
   config_bdd_loading_msg_test_connexion_success: string;
   config_bdd_loading_msg_test_connexion_ko: string;
   config_bdd_loading_msg_update_file: string;
+  create_bdd_sub_title_identifiant: string;
+  create_bdd_sub_title_server: string;
+  create_bdd_sub_title_options: string;
   create_bdd_h1: string;
   create_bdd_description_1: string;
   create_bdd_description_2: string;
@@ -61,10 +63,9 @@ export interface InstallationStepOneTranslate {
   create_bdd_loading_msg_success: string;
   field_required: string;
   btn_return: string;
-  create_bdd_sub_title_identifiant: string;
-  create_bdd_sub_title_server: string;
-  create_bdd_sub_title_options: string;
+  btn_step_two: string;
 }
+
 export interface InstallationStepOneLocales {
   [key: string]: string;
 }
@@ -80,25 +81,14 @@ export interface BddConfig {
   charset: string;
 }
 
-export interface CheckActionResult {
-  success: boolean;
-  message: string;
-}
-
-export interface Check {
-  connexion: CheckActionResult;
-  database_exist: CheckActionResult;
-}
-
-export type CheckAction = keyof Check;
-
-export type CheckActionBddResponse = Partial<Record<CheckAction, CheckActionResult>>;
-
 export interface ConfigKey {
   database_url: string;
 }
 
-export type OptionCheck = Record<CheckAction, CheckAction>;
+export interface OptionCheck {
+  connexion: string;
+  database_exist: string;
+}
 
 export interface BddParams {
   database_schema: string;
@@ -125,4 +115,13 @@ export interface UpdateEnvPayload {
 export interface UpdateEnvResponse {
   success: boolean;
   error?: string;
+}
+
+export interface CheckActionResult {
+  success: boolean;
+  message: string;
+}
+
+export interface CheckActionBddResponse {
+  connexion: CheckActionResult;
 }
