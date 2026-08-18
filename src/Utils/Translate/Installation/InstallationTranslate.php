@@ -201,6 +201,7 @@ class InstallationTranslate extends AppTranslate
                 'installation.step.1.sub-title.options',
                 domain: 'installation',
             ),
+            'btn_step_two' => $this->translator->trans('installation.step.1.btn.step.2', domain: 'installation'),
         ];
     }
 

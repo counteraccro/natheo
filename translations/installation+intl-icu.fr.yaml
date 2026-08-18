@@ -6,7 +6,7 @@ installation.step.1.titre.h1: 'Connexion de la base de données'
 installation.loading: Chargement
 installation.step.1.description_1: 'Nous allons procéder à la connexion à la base de données.'
 installation.step.1.description_2: "Rassurez vous, cela est très simple, il vous suffi de remplir les champs suivants et Natheo CMS s'occupera du reste"
-installation.step.1.config.bdd.title: 'Configuration base de données'
+installation.step.1.config.bdd.title: 'Configuration / Connexion SGBD'
 installation.step.1.config.bdd.input.type.label: Type
 installation.step.1.config.bdd.input.login.label: Login
 installation.step.1.config.bdd.input.password.label: 'Mot de passe'
@@ -88,8 +88,8 @@ installation.step.2.finish.loading.msg.cache: 'Nettoyage du cache en cours'
 installation.step.2.finish.loading.msg.cache.success: 'Cache nettoyé avec succès'
 installation.step.2.finish.loading.msg.cache.ko: 'Une erreur est survenue lors du nettoyage du cache'
 installation.step.0.step-label: Bienvenue
-installation.step.1.step-label: 'Base de données'
-installation.step.2.step-label: __installation.step.2.step-label
+installation.step.1.step-label: 'Connexion SGBD'
+installation.step.2.step-label: 'Base de donnée'
 installation.step.3.step-label: __installation.step.3.step-label
 installation.step.4.step-label: __installation.step.4.step-label
 installation.step.0.titre: Bienvenue
@@ -109,11 +109,12 @@ installation.step.0.folders_summary_error_single: '<code class="folder-path" sty
 installation.step.0.folders_summary_error_multiple: '{count} dossiers ne sont pas accessibles en écriture : <code class="folder-path" style="color: inherit;">{paths}</code> — vérifiez les permissions (chmod 775) avant de continuer.'
 installation.step.0.folders_button_disabled_title: '1 ou plusieurs erreurs empêche de continuer'
 installation.step.0.btn.start: "Commencer l'installation"
-installation.step.1.h2.title: 'Connexion à la base de données'
-installation.step.1.h2.sub.title: 'Afin de pouvoir installer les données nécessaire au bon fonctionnement du CMS, nous allons configurer la connexion à la base de données'
+installation.step.1.h2.title: 'Connexion SGBD'
+installation.step.1.h2.sub.title: 'Afin de pouvoir installer les données nécessaire au bon fonctionnement du CMS, nous allons configurer la connexion au SGBD'
 installation.step.1.field.required: 'Ce champ est obligatoire'
 installation.step.1.btn.return: Retour
 installation.step.1.config.bdd.btn.save.config: Sauvegarder
 installation.step.1.sub-title.identifiant: Identifiant
 installation.step.1.sub-title.server: Serveur
-installation.step.1.sub-title.options: Options avancées
+installation.step.1.sub-title.options: 'Options avancées'
+installation.step.1.btn.step.2: 'Créer la base de données'
