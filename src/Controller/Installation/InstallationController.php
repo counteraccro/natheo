@@ -83,7 +83,7 @@ class InstallationController extends AbstractController
             if ($installationService->checkDataExiste(User::class)) {
                 return $this->redirectToRoute('auth_user_login');
             }
-            return $this->redirectToRoute('installation_step_2');
+            return $this->redirectToRoute('installation_step_3');
         }
 
         return $this->render('installation/installation/step_one.html.twig', [
@@ -91,9 +91,6 @@ class InstallationController extends AbstractController
             'urls' => [
                 'check_action_bdd' => $this->generateUrl('installation_check_action_bdd'),
                 'update_env' => $this->generateUrl('installation_update_env'),
-                'create_bdd' => $this->generateUrl('installation_create_bdd'),
-                'create_schema' => $this->generateUrl('installation_create_schema'),
-                'update_app_secret' => $this->generateUrl('installation_update_app_secret'),
                 'step_2' => $this->generateUrl('installation_step_2'),
                 'step_0' => $this->generateUrl('installation_step_0'),
             ],
@@ -107,10 +104,6 @@ class InstallationController extends AbstractController
                 'option_check' => [
                     'connexion' => OptionInstallation::CONNEXION->value,
                     'database_exist' => OptionInstallation::DATABASE_EXIST->value,
-                ],
-                'bdd_params' => [
-                    'database_schema' => $parameterBag->get('app.default_database_schema'),
-                    'database_prefix' => $parameterBag->get('app.default_database_prefix'),
                 ],
             ],
         ]);
@@ -228,12 +221,69 @@ class InstallationController extends AbstractController
      * @param InstallationTranslate $installationTranslate
      * @param InstallationService $installationService
      * @param ParameterBagInterface $parameterBag
-     * @return Response
+     * @param InstallRequirementsChecker $installRequirementsChecker
+     * @return JsonResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
     #[Route('/step-2', name: 'step_2', methods: ['GET'])]
     public function stepTwo(
+        InstallationTranslate $installationTranslate,
+        InstallationService $installationService,
+        ParameterBagInterface $parameterBag,
+        InstallRequirementsChecker $installRequirementsChecker,
+    ): Response {
+        if (!$installRequirementsChecker->isAllRequirements()) {
+            return $this->redirectToRoute('installation_step_0');
+        }
+
+        if ($installationService->checkSchema()) {
+            if ($installationService->checkDataExiste(User::class)) {
+                return $this->redirectToRoute('auth_user_login');
+            }
+            return $this->redirectToRoute('installation_step_3');
+        }
+
+        return $this->render('installation/installation/step_two.html.twig', [
+            'allSteps' => $installationService->getAllSteps(),
+            'urls' => [
+                'check_action_bdd' => $this->generateUrl('installation_check_action_bdd'),
+                'create_bdd' => $this->generateUrl('installation_create_bdd'),
+                'create_schema' => $this->generateUrl('installation_create_schema'),
+                'update_app_secret' => $this->generateUrl('installation_update_app_secret'),
+                'step_3' => $this->generateUrl('installation_step_3'),
+                'step_1' => $this->generateUrl('installation_step_1'),
+                'update_env' => $this->generateUrl('installation_update_env'),
+            ],
+            'translate' => $installationTranslate->getTranslateStepOne(),
+            'locales' => $installationService->getLocales(),
+            'datas' => [
+                'bdd_config' => $installationService->getDatabaseUrl(),
+                'config_key' => [
+                    'database_url' => KeyEnv::DATABASE_URL->value,
+                ],
+                'option_check' => [
+                    'database_exist' => OptionInstallation::DATABASE_EXIST->value,
+                ],
+                'bdd_params' => [
+                    'database_schema' => $parameterBag->get('app.default_database_schema'),
+                    'database_prefix' => $parameterBag->get('app.default_database_prefix'),
+                ],
+            ],
+        ]);
+    }
+
+    /**
+     * Installation étape 3
+     * @param InstallationTranslate $installationTranslate
+     * @param InstallationService $installationService
+     * @param ParameterBagInterface $parameterBag
+     * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/step-3', name: 'step_3', methods: ['GET'])]
+    public function stepThree(
         InstallationTranslate $installationTranslate,
         InstallationService $installationService,
         ParameterBagInterface $parameterBag,
