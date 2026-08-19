@@ -5,7 +5,12 @@
 
 {% block body %}
 
-<div {{ vue_component('Installation/installationStepTwo', {
+    <div {{ vue_component('Installation/InstallationStepper', {
+        'currentStep' : 'step-2',
+        'steps' : allSteps
+    }) }}></div>
+
+<div {{ vue_component('Installation/InstallationStepTwo', {
     'urls' : urls,
     'translate' : translate,
     'locales' : locales,

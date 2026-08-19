@@ -16,16 +16,17 @@ import type {
   ValidableField,
   UpdateEnvPayload,
   UpdateEnvResponse,
-  Check,
-  CheckAction,
+  CheckActionResult,
   CheckActionBddResponse,
 } from '@/ts/Installation/InstallationStepOne';
 import axios, { AxiosError } from 'axios';
 import SkeletonInstallationStepOne from '@/vue/Components/Skeleton/Installation/InstallationStepOne.vue';
+import Toast from '@/vue/Components/Global/Toast.vue';
+import { Toasts } from '@/ts/Toast/type';
 
 export default defineComponent({
   name: 'InstallationStepOne',
-  components: { SkeletonInstallationStepOne },
+  components: { Toast, SkeletonInstallationStepOne },
   props: {
     urls: {
       type: Object as PropType<InstallationStepOneUrls>,
@@ -48,15 +49,9 @@ export default defineComponent({
     return {
       initialLoading: true as boolean,
       loading: false as boolean,
-      currentCheck: null as CheckAction | null,
-      tested: {
-        connexion: false,
-        database_exist: false,
-      } as Record<CheckAction, boolean>,
-      check: {
-        connexion: { success: false, message: '' },
-        database_exist: { success: false, message: '' },
-      } as Check,
+      checking: false as boolean,
+      tested: false as boolean,
+      check: { success: false, message: '' } as CheckActionResult,
       dataBaseConfig: {} as BddConfig,
       errors: {
         login: '',
@@ -66,6 +61,16 @@ export default defineComponent({
         charset: '',
         version: '',
       } as DataBaseConfigErrors,
+      toasts: {
+        success: {
+          show: false,
+          msg: '',
+        },
+        error: {
+          show: false,
+          msg: '',
+        },
+      } as Toasts,
     };
   },
   computed: {
@@ -73,64 +78,44 @@ export default defineComponent({
       return Object.values(this.errors).every((error) => error === '');
     },
 
-    // Pilote la couleur du header de card : neutre tant que rien n'est testé,
-    // vert si la connexion est OK, rouge si elle échoue.
     headerAccentColor(): string {
-      if (!this.tested.connexion) {
+      if (!this.tested) {
         return 'var(--primary)';
       }
-      return this.check.connexion.success ? 'var(--btn-success)' : 'var(--btn-danger)';
+      return this.check.success ? 'var(--btn-success)' : 'var(--btn-danger)';
     },
   },
   mounted() {
     this.dataBaseConfig = this.datas.bdd_config;
-    this.runChecks().finally(() => {
+    this.checkConnexion().finally(() => {
       this.initialLoading = false;
     });
   },
   methods: {
     /**
-     * Exécute un seul check et stocke son résultat.
-     * Ne gère pas `loading` elle-même : c'est l'orchestrateur (runChecks) qui le pilote,
-     * pour éviter de dupliquer la logique de chargement à chaque étape.
+     * Teste la connexion à la bdd et stocke le résultat.
      */
-    checkAction(action: CheckAction): Promise<void> {
+    checkConnexion(): Promise<void> {
+      this.loading = true;
+      this.checking = true;
+
       return axios
         .post<CheckActionBddResponse>(this.urls.check_action_bdd, {
           config: this.dataBaseConfig,
-          action,
+          action: this.datas.option_check.connexion,
         })
         .then((response) => {
-          const result = response.data[action];
-          if (result) {
-            this.check[action] = result;
-            this.tested[action] = result.success;
-          }
+          this.check = response.data.connexion;
         })
         .catch((error: AxiosError) => {
           console.error(error);
-          this.check[action] = { success: false, message: error.message };
+          this.check = { success: false, message: error.message };
         })
-        .finally(() => {});
-    },
-
-    /**
-     * Enchaîne les tests : connexion, puis existence de la base si la connexion a réussi.
-     * Le bouton "Tester la connexion" lit `currentCheck` pour afficher l'étape en cours.
-     */
-    async runChecks(): Promise<void> {
-      this.loading = true;
-      this.currentCheck = this.datas.option_check.connexion;
-      await this.checkAction(this.datas.option_check.connexion);
-      this.check.database_exist = { success: false, message: '' };
-
-      if (this.check.connexion.success) {
-        this.currentCheck = this.datas.option_check.database_exist;
-        await this.checkAction(this.datas.option_check.database_exist);
-      }
-
-      this.currentCheck = null;
-      this.loading = false;
+        .finally(() => {
+          this.tested = true;
+          this.checking = false;
+          this.loading = false;
+        });
     },
 
     /**
@@ -150,6 +135,9 @@ export default defineComponent({
         .post<UpdateEnvResponse>(this.urls.update_env, payload)
         .then((response) => {
           if (response.data.success) {
+            this.toasts.success.msg = this.translate.config_bdd_loading_msg_update_file;
+            this.toasts.success.show = true;
+            this.checkConnexion();
           }
         })
         .catch((error: AxiosError) => {
@@ -177,6 +165,14 @@ export default defineComponent({
 
       return this.isValid;
     },
+
+    /**
+     * Ferme le toast défini par nameToast
+     * @param nameToast
+     */
+    closeToast(nameToast: string): void {
+      this.toasts[nameToast].show = false;
+    },
   },
 });
 </script>
@@ -203,7 +199,7 @@ export default defineComponent({
         </div>
 
         <svg
-          v-if="check.connexion.success"
+          v-if="check.success"
           class="w-4 h-4"
           style="color: #ffffff"
           fill="none"
@@ -213,7 +209,7 @@ export default defineComponent({
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
         </svg>
         <svg
-          v-else-if="check.connexion.message"
+          v-else-if="tested"
           class="w-4 h-4"
           style="color: #ffffff"
           fill="none"
@@ -326,10 +322,10 @@ export default defineComponent({
           </div>
         </div>
 
-        <!-- Résultats : ligne compacte verte si connexion OK, alerte complète uniquement en cas d'erreur -->
-        <div class="mt-6 flex flex-col gap-2">
+        <!-- Résultat : ligne compacte verte si connexion OK, alerte complète en cas d'erreur -->
+        <div v-if="tested" class="mt-6 flex flex-col gap-2">
           <div
-            v-if="check.connexion.success"
+            v-if="check.success"
             class="flex items-center gap-1.5 text-sm font-medium"
             style="color: var(--btn-success)"
           >
@@ -351,33 +347,7 @@ export default defineComponent({
             <svg class="w-4 h-4 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
-            <span>{{ check.connexion.message || translate.config_bdd_loading_msg_test_connexion_ko }}</span>
-          </div>
-
-          <div
-            v-if="check.database_exist.success"
-            class="flex items-center gap-1.5 text-sm font-medium"
-            style="color: var(--btn-success)"
-          >
-            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
-            </svg>
-            <span>{{ 'La base de données existe. - A traduire' }}</span>
-          </div>
-
-          <div
-            v-else-if="check.database_exist.message !== ''"
-            class="px-4 py-3 rounded-lg flex items-start gap-2 text-sm"
-            style="
-              background-color: var(--alert-danger-bg);
-              border: 1px solid var(--alert-danger-border);
-              color: var(--alert-danger-text);
-            "
-          >
-            <svg class="w-4 h-4 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"></path>
-            </svg>
-            <span>{{ check.database_exist.message }}</span>
+            <span>{{ check.message }}</span>
           </div>
         </div>
       </div>
@@ -394,8 +364,39 @@ export default defineComponent({
         </a>
 
         <div class="flex gap-1.5">
-          <button type="button" class="btn btn-primary btn-sm" :disabled="!isValid || loading" @click="runChecks()">
-            <svg v-if="currentCheck" class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+          <button
+            type="button"
+            class="btn btn-primary btn-sm"
+            :disabled="!isValid || loading"
+            @click="updateConfigBddEnv(datas.option_check.database_exist)"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M11 16h2m6.707-9.293-2.414-2.414A1 1 0 0 0 16.586 4H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V7.414a1 1 0 0 0-.293-.707ZM16 20v-6a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v6h8ZM9 4h6v3a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1V4Z"
+              ></path>
+            </svg>
+            {{ translate.config_bdd_btn_save_config }}
+          </button>
+
+          <!-- Une fois la connexion validée, ce bouton devient le passage à l'étape suivante -->
+          <a v-if="tested && check.success" :href="urls.step_2" class="btn btn-primary btn-sm">
+            {{ translate.btn_step_two }}
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+            </svg>
+          </a>
+
+          <button
+            v-else
+            type="button"
+            class="btn btn-primary btn-sm"
+            :disabled="!isValid || loading"
+            @click="checkConnexion()"
+          >
+            <svg v-if="checking" class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
               <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
             </svg>
@@ -414,33 +415,25 @@ export default defineComponent({
               ></path>
             </svg>
 
-            <template v-if="currentCheck === 'connexion'">{{
-              translate.config_bdd_loading_msg_test_connexion
-            }}</template>
-            <template v-else-if="currentCheck === 'database_exist'">{{
-              translate.config_bdd_loading_msg_check_database
-            }}</template>
+            <template v-if="checking">{{ translate.config_bdd_btn_test_config_loading }}</template>
             <template v-else>{{ translate.config_bdd_btn_test_config }}</template>
-          </button>
-
-          <button
-            type="button"
-            class="btn btn-primary btn-sm"
-            :disabled="!isValid || loading"
-            @click="updateConfigBddEnv(datas.option_check.database_exist)"
-          >
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M11 16h2m6.707-9.293-2.414-2.414A1 1 0 0 0 16.586 4H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V7.414a1 1 0 0 0-.293-.707ZM16 20v-6a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v6h8ZM9 4h6v3a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1V4Z"
-              ></path>
-            </svg>
-            {{ translate.config_bdd_btn_save_config }}
           </button>
         </div>
       </div>
     </div>
+  </div>
+
+  <div class="toast-container position-fixed top-0 end-0 p-2">
+    <toast :id="'toastSuccess'" :type="'success'" :show="toasts.success.show" @close-toast="closeToast('success')">
+      <template #body>
+        <div v-html="toasts.success.msg"></div>
+      </template>
+    </toast>
+
+    <toast :id="'toastError'" :type="'danger'" :show="toasts.error.show" @close-toast="closeToast('error')">
+      <template #body>
+        <div v-html="toasts.error.msg"></div>
+      </template>
+    </toast>
   </div>
 </template>
