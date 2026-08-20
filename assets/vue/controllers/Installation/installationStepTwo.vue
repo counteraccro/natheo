@@ -11,7 +11,6 @@ import type {
   InstallationStepTwoTranslate,
   InstallationStepTwoLocales,
   InstallationStepTwoDatas,
-  BddConfig,
   ValidableField,
   DataBaseFieldErrors,
   CheckActionBddResponse,
@@ -23,6 +22,7 @@ import type {
 } from '@/ts/Installation/InstallationStepTwo';
 import axios, { AxiosError } from 'axios';
 import SkeletonInstallationStepTwo from '@/vue/Components/Skeleton/Installation/InstallationStepTwo.vue';
+import { BddConfig } from '@/ts/Installation/InstallationStepOne';
 
 export default defineComponent({
   name: 'InstallationStepTwo',
@@ -250,7 +250,7 @@ export default defineComponent({
 
       setTimeout(() => {
         window.location.href = this.urls.step_3;
-      }, 1200);
+      }, 2500);
     },
   },
 });
