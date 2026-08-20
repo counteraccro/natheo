@@ -43,7 +43,7 @@ installation.step.1.create.bdd.msg.create.bdd.ko: 'Une erreur est survenue lors 
 installation.step.1.create.bdd.msg.create.table: 'Création des tables...'
 installation.step.1.create.bdd.msg.create.table.success: 'Tables créées avec succès'
 installation.step.1.create.bdd.msg.create.table.ko: 'Une erreur est survenue lors de la création des tables'
-installation.step.1.create.bdd.msg.success: "Félicitation l'étape 1 est terminée, redirection vers l'étape 2..."
+installation.step.1.create.bdd.msg.success: "Félicitation l'étape 2 est terminée, redirection vers l'étape 3..."
 installation.step.1.create.bdd.msg.update.secret: 'Mise à jour de APP_SECRET'
 installation.step.1.create.bdd.msg.update.secret_success: 'APP_SECRET mit à jour avec succès'
 installation.step.1.create.bdd.msg.update.secret_ko: 'Une erreur est survenue lors de la mise à jour de APP_SECRET'
@@ -90,8 +90,8 @@ installation.step.2.finish.loading.msg.cache.ko: 'Une erreur est survenue lors d
 installation.step.0.step-label: Bienvenue
 installation.step.1.step-label: 'Connexion SGBD'
 installation.step.2.step-label: 'Base de donnée'
-installation.step.3.step-label: __installation.step.3.step-label
-installation.step.4.step-label: __installation.step.4.step-label
+installation.step.3.step-label: 'Installation des données'
+installation.step.4.step-label: 'Résumé'
 installation.step.0.titre: Bienvenue
 installation.titre: 'Installation guidée'
 installation.step.0.h2.title: 'Bienvenue sur Nathéo CMS !'
@@ -118,3 +118,5 @@ installation.step.1.sub-title.identifiant: Identifiant
 installation.step.1.sub-title.server: Serveur
 installation.step.1.sub-title.options: 'Options avancées'
 installation.step.1.btn.step.2: 'Créer la base de données'
+installation.step.3.titre: 'Installation des données'
+installation.step.4.titre: 'Finalisation'
