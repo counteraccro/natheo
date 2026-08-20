@@ -1,0 +1,20 @@
+{% extends 'installation/installation_base.html.twig' %}
+{% block title %}
+    {{ 'installation.step.4.titre' | trans({}, 'installation') }}
+{% endblock %}
+
+{% block body %}
+
+    <div {{ vue_component('Installation/InstallationStepper', {
+        'currentStep' : 'step-4',
+        'steps' : allSteps
+    }) }}></div>
+
+
+<div {{ vue_component('Installation/InstallationStepFour', {
+    'urls' : urls,
+    'translate' : translate,
+    'locales' : locales,
+    'datas' : datas,
+}) }}></div>
+{% endblock %}

@@ -17,10 +17,7 @@ use App\Service\Admin\CommandService;
 use App\Service\Installation\InstallationService;
 use App\Service\Installation\InstallRequirementsChecker;
 use App\Utils\Global\Database\DataBase;
-use App\Utils\Global\EnvFile;
-use App\Utils\Installation\InstallationConst;
 use App\Utils\Translate\Installation\InstallationTranslate;
-use Doctrine\DBAL\Exception;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -295,19 +292,34 @@ class InstallationController extends AbstractController
             return $this->redirectToRoute('auth_user_login');
         }
 
-        return $this->render('installation/installation/step_two.html.twig', [
+        return $this->render('installation/installation/step_three.html.twig', [
+            'allSteps' => $installationService->getAllSteps(),
             'urls' => [
                 'create_user' => $this->generateUrl('installation_create_user'),
                 'change_env' => $this->generateUrl('installation_change_env'),
                 'load_fixtures' => $this->generateUrl('installation_load_fixtures'),
                 'clear_cache' => $this->generateUrl('installation_clear_cache'),
-                'auth' => $this->generateUrl('auth_user_login'),
+                'step_4' => $this->generateUrl('installation_step_3'),
             ],
             'translate' => $installationTranslate->getTranslateStepTwo(),
             'locales' => $installationService->getLocales(),
             'datas' => [
                 'debug_mode' => $parameterBag->get('app.debug_mode'),
             ],
+        ]);
+    }
+
+    #[Route('/step-4', name: 'step_4', methods: ['GET'])]
+    public function stepFour(InstallationTranslate $installationTranslate, InstallationService $installationService)
+    {
+        return $this->render('installation/installation/step_four.html.twig', [
+            'allSteps' => $installationService->getAllSteps(),
+            'urls' => [
+                'auth' => $this->generateUrl('auth_user_login'),
+            ],
+            'translate' => $installationTranslate->getTranslateStepTwo(),
+            'locales' => $installationService->getLocales(),
+            'datas' => [],
         ]);
     }
 
