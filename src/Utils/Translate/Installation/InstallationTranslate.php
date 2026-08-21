@@ -348,4 +348,20 @@ class InstallationTranslate extends AppTranslate
             ),
         ];
     }
+
+    public function getTranslateStepFour(): array
+    {
+        return [
+            'title_h1' => $this->translator->trans('installation.step.4.title', domain: 'installation'),
+            'description' => $this->translator->trans('installation.step.4.description', domain: 'installation'),
+            'summary_database' => $this->translator->trans(
+                'installation.step.4.summary.database',
+                domain: 'installation',
+            ),
+            'summary_user' => $this->translator->trans('installation.step.4.summary.user', domain: 'installation'),
+            'summary_data' => $this->translator->trans('installation.step.4.summary.data', domain: 'installation'),
+            'summary_cache' => $this->translator->trans('installation.step.4.summary.cache', domain: 'installation'),
+            'btn_login' => $this->translator->trans('installation.step.4.btn.login', domain: 'installation'),
+        ];
+    }
 }

@@ -118,3 +118,12 @@ installation.step.1.sub-title.identifiant: __installation.step.1.sub-title.ident
 installation.step.1.sub-title.server: __installation.step.1.sub-title.server
 installation.step.1.sub-title.options: __installation.step.1.sub-title.options
 installation.step.1.btn.step.2: __installation.step.1.btn.step.2
+installation.step.4.title: __installation.step.4.title
+installation.step.4.description: __installation.step.4.description
+installation.step.4.summary.database: __installation.step.4.summary.database
+installation.step.4.summary.user: __installation.step.4.summary.user
+installation.step.4.summary.data: __installation.step.4.summary.data
+installation.step.4.summary.cache: __installation.step.4.summary.cache
+installation.step.4.btn.login: __installation.step.4.btn.login
+installation.step.3.titre: __installation.step.3.titre
+installation.step.4.titre: __installation.step.4.titre

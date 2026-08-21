@@ -50,7 +50,7 @@ installation.step.1.create.bdd.msg.update.secret_ko: 'Une erreur est survenue lo
 installation.step.2.titre: 'Etape 2 - Configuration de NatheoCMS'
 installation.step.2.titre.h1: 'Création du compte fondateur'
 installation.step.2.fondateur.description: 'Nous allons maintenant créer le compte fondateur, ce compte vous permettra de vous connecter au back-office de Natheo'
-installation.step.2.fondateur.titre.card: 'Nouvel utilisateur'
+installation.step.2.fondateur.titre.card: 'Compte fondateur'
 installation.step.2.fondateur.login.label: Login
 installation.step.2.fondateur.login.placeholder: Login
 installation.step.2.fondateur.email.label: 'Adresse email'
@@ -70,14 +70,14 @@ installation.step.2.debug.titre: 'Débug mode activé'
 installation.step.2.debug.texte.1: 'Attention, le mode débug du CMS est activé, cela va avoir un impact sur les données installées !'
 installation.step.2.debug.texte.2: 'Les comptes de démonstrations vont être installés à la place du compte que vous allez créer. Vous ne devez pas utiliser ce mode pour une utilisation en production'
 installation.step.2.debug.texte.3: 'Pour modifier cette valeur :'
-installation.step.2.debug.texte.4: 'Ouvrez le fichier <b>config/services.yaml</b>'
-installation.step.2.debug.texte.5: 'Modifier la valeur de <b><i>app.debug_mode</i></b> à <b>false</b>'
+installation.step.2.debug.texte.4: 'Ouvrez le fichier <b>.env</b>'
+installation.step.2.debug.texte.5: 'Modifier la valeur de <b><i>NATHEO_DEBUG</i></b> à <b>false</b>'
 installation.step.2.debug.texte.6: 'Faite F5 pour rafraichir la page'
 installation.step.2.finish.titre: 'Création du jeu de données'
 installation.step.2.finish.texte.1: "Dernière étape de l'installation de Natheo CMS, nous allons maintenant ajouter un jeu de données pour vous aider dans la prise en main du CMS"
 installation.step.2.finish.btn: "Finaliser l'installation"
 installation.step.2.finish.texte.2: "Une fois l'installation des données terminés, vous serez redirigé vers l'authentification du panel admin. Vous pourrez vous connecter avec votre compte fondateur fraîchement créé"
-installation.step.2.finish.loading.msg.success: "Installation terminée avec succès, redirection vers l'authentification"
+installation.step.2.finish.loading.msg.success: "Installation terminée avec succès, redirection vers l'étape finale"
 installation.step.2.finish.loading.msg.config: 'Chargement de la configuration...'
 installation.step.2.finish.loading.msg.config.success: 'Configuration chargée avec succès'
 installation.step.2.finish.loading.msg.config.ko: 'Une erreur est survenue lors du chargement de la configuration'
@@ -91,7 +91,7 @@ installation.step.0.step-label: Bienvenue
 installation.step.1.step-label: 'Connexion SGBD'
 installation.step.2.step-label: 'Base de donnée'
 installation.step.3.step-label: 'Installation des données'
-installation.step.4.step-label: 'Résumé'
+installation.step.4.step-label: Résumé
 installation.step.0.titre: Bienvenue
 installation.titre: 'Installation guidée'
 installation.step.0.h2.title: 'Bienvenue sur Nathéo CMS !'
@@ -119,4 +119,11 @@ installation.step.1.sub-title.server: Serveur
 installation.step.1.sub-title.options: 'Options avancées'
 installation.step.1.btn.step.2: 'Créer la base de données'
 installation.step.3.titre: 'Installation des données'
-installation.step.4.titre: 'Finalisation'
+installation.step.4.titre: Finalisation
+installation.step.4.title: 'Installation réussi avec succès'
+installation.step.4.description: 'Félicitation Natheo CMS à été installé avec succès'
+installation.step.4.summary.database: 'Base de données créé'
+installation.step.4.summary.data: 'Données installées'
+installation.step.4.summary.cache: 'Cache nettoyé'
+installation.step.4.btn.login: 'Me connecter avec mon compte fondateur'
+installation.step.4.summary.user: "Compte Fondateur créé"
