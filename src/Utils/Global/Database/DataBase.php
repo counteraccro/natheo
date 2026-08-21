@@ -17,6 +17,7 @@ use App\Utils\Utils;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\Schema\Name\UnqualifiedName;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Psr\Container\ContainerExceptionInterface;
@@ -203,7 +204,13 @@ class DataBase
 
         try {
             $schemaManager = $this->connection->createSchemaManager();
-            if ($schema !== '' && !in_array($schema, $schemaManager->listDatabases())) {
+
+            $databaseNames = array_map(
+                static fn(UnqualifiedName $name): string => $name->getIdentifier()->getValue(),
+                $schemaManager->introspectDatabaseNames(),
+            );
+
+            if ($schema !== '' && !in_array($schema, $databaseNames, true)) {
                 return false;
             }
         } catch (Exception) {
