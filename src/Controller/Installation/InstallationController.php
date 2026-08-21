@@ -299,7 +299,7 @@ class InstallationController extends AbstractController
                 'change_env' => $this->generateUrl('installation_change_env'),
                 'load_fixtures' => $this->generateUrl('installation_load_fixtures'),
                 'clear_cache' => $this->generateUrl('installation_clear_cache'),
-                'step_4' => $this->generateUrl('installation_step_3'),
+                'step_4' => $this->generateUrl('installation_step_4'),
             ],
             'translate' => $installationTranslate->getTranslateStepTwo(),
             'locales' => $installationService->getLocales(),
@@ -317,7 +317,7 @@ class InstallationController extends AbstractController
             'urls' => [
                 'auth' => $this->generateUrl('auth_user_login'),
             ],
-            'translate' => $installationTranslate->getTranslateStepTwo(),
+            'translate' => $installationTranslate->getTranslateStepFour(),
             'locales' => $installationService->getLocales(),
             'datas' => [],
         ]);
