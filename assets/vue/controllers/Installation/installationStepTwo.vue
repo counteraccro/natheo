@@ -143,8 +143,6 @@ export default defineComponent({
         type: this.datas.option_check.database_exist,
       };
 
-      console.log(this.urls.update_env);
-
       return axios
         .post<UpdateEnvResponse>(this.urls.update_env, payload)
         .then((response) => {
