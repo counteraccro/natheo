@@ -285,7 +285,6 @@ class InstallationController extends AbstractController
         ParameterBagInterface $parameterBag,
     ): Response {
         if (!$installationService->checkSchema()) {
-            dd('ici');
             return $this->redirectToRoute('installation_step_1');
         }
         if ($installationService->checkDataExiste(User::class)) {
