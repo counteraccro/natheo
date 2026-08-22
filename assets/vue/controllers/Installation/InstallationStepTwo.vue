@@ -285,10 +285,7 @@ export default defineComponent({
       </p>
       <p class="mb-2">{{ translate.create_bdd_alert_text_1 }}</p>
       <ul class="list-disc list-inside space-y-1 mb-2">
-        <li>
-          {{ translate.create_bdd_alert_text_2 }} : <strong>{{ datas.bdd_params.database_schema }}</strong>
-        </li>
-        <li>
+        <li class="mb-2">
           {{ translate.create_bdd_alert_text_3 }} :
           <strong
             v-html="
