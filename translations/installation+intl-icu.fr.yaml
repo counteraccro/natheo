@@ -28,7 +28,7 @@ installation.step.1.create.bdd.alert.text.1: 'La base de données sera créée a
 installation.step.1.create.bdd.alert.text.2: 'Le schema par défaut de la base de données est '
 installation.step.1.create.bdd.alert.text.3: 'Les tables seront préfixé avec la valeur '
 installation.step.1.create.bdd.alert.text.4: 'aucun prefix défini'
-installation.step.1.create.bdd.alert.text.5: 'Si vous souhaitez modifier ces options, modifier les valeurs <b>app.default_database_prefix</b> et <b>app.default_database_schema</b> dans <b>config/services.yaml</b>'
+installation.step.1.create.bdd.alert.text.5: 'Si vous souhaitez modifier ces options, modifier la valeur de  <b>app.default_database_prefix</b> dans <b>config/services.yaml</b>'
 installation.step.1.create.bdd.title: 'Installation de la base de données'
 installation.step.1.create.bdd.input.bdd.name.label: 'Nom de la base de données'
 installation.step.1.create.bdd.input.version.label: Version
