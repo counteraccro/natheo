@@ -263,7 +263,6 @@ class InstallationController extends AbstractController
                     'database_exist' => OptionInstallation::DATABASE_EXIST->value,
                 ],
                 'bdd_params' => [
-                    'database_schema' => $parameterBag->get('app.default_database_schema'),
                     'database_prefix' => $parameterBag->get('app.default_database_prefix'),
                 ],
             ],
@@ -286,6 +285,7 @@ class InstallationController extends AbstractController
         ParameterBagInterface $parameterBag,
     ): Response {
         if (!$installationService->checkSchema()) {
+            dd('ici');
             return $this->redirectToRoute('installation_step_1');
         }
         if ($installationService->checkDataExiste(User::class)) {

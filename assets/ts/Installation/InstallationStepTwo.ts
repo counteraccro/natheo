@@ -30,7 +30,6 @@ export interface InstallationStepTwoConfigKey {
 }
 
 export interface InstallationStepTwoBddParams {
-  database_schema: string;
   database_prefix: string;
 }
 
