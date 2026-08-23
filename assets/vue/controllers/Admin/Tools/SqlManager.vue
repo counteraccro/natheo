@@ -1,10 +1,11 @@
-<script>
+<script lang="ts">
 /**
  * @author Gourdon Aymeric
  * @version 2.0
  * Gestionnaire de requete SQL
  */
 
+import { defineComponent, PropType } from 'vue';
 import axios from 'axios';
 import Toast from '../../../Components/Global/Toast.vue';
 import { emitter } from '@/utils/useEvent';
@@ -13,84 +14,93 @@ import SkeletonTabs from '@/vue/Components/Skeleton/Tabs.vue';
 import SkeletonSearchResult from '@/vue/Components/Skeleton/SearchResult.vue';
 import AlertPrimary from '@/vue/Components/Alert/Primary.vue';
 import AlertDanger from '@/vue/Components/Alert/Danger.vue';
+import type {
+  SqlManagerQuery,
+  DatabaseTable,
+  SqlManagerUrls,
+  SqlManagerTranslations,
+  ToastState,
+  LoadSqlManagerResponse,
+  LoadDataDatabaseResponse,
+  ExecuteSqlResponse,
+  SaveResponse,
+} from '@/ts/SqlManager/type';
 
-export default {
+export default defineComponent({
   name: 'SqlManager',
   components: { AlertDanger, AlertPrimary, SkeletonSearchResult, SkeletonTabs, SkeletonText, Toast },
   props: {
-    urls: Object,
-    translate: Object,
-    id: Number,
-    isExecute: Boolean,
-    schema: String,
+    urls: {
+      type: Object as PropType<SqlManagerUrls>,
+      required: true,
+    },
+    translate: {
+      type: Object as PropType<SqlManagerTranslations>,
+      required: true,
+    },
+    id: {
+      type: Number,
+      required: false,
+    },
+    isExecute: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    schema: {
+      type: String,
+      required: true,
+    },
   },
   data() {
     return {
       loading: false,
-      sqlManager: Object,
-      dataBaseData: Object,
-      selectTable: '',
+      sqlManager: { id: null, name: null, query: null } as SqlManagerQuery,
+      dataBaseData: [] as DatabaseTable[],
+      selectTable: [] as string[],
       selectLabelTable: '',
-      selectField: '',
-      selectColumns: [],
+      selectField: [] as string[],
+      selectColumns: [] as string[],
       searchTable: '',
       searchField: '',
-      result: Object,
-      resultHeader: Object,
+      result: [] as Record<string, string | number | null>[],
+      resultHeader: [] as string[],
       error: '',
       isErrorValidateName: false,
       isErrorValidateQuery: false,
       showQueryBuilder: true,
       toasts: {
-        toastSuccess: {
-          show: false,
-          msg: '',
-        },
-        toastError: {
-          show: false,
-          msg: '',
-        },
+        toastSuccess: { show: false, msg: '' } as ToastState,
+        toastError: { show: false, msg: '' } as ToastState,
       },
     };
-  },
-  mounted() {
-    this.loadSqlManager();
-    this.loadDataDatabase();
   },
   computed: {
     /**
      * Filtre sur tables
-     * @returns {ObjectConstructor}
      */
-    filteredTable() {
-      const searchTable = this.searchTable && this.searchTable.toLowerCase();
-      let data = this.dataBaseData;
-      if (searchTable) {
-        data = data.filter((row) => {
-          return Object.keys(row).some((key) => {
-            return String(row.name).toLowerCase().indexOf(searchTable) > -1;
-          });
-        });
+    filteredTable(): DatabaseTable[] {
+      const search = this.searchTable.toLowerCase();
+      if (!search) {
+        return this.dataBaseData;
       }
-      return data;
+      return this.dataBaseData.filter((table) => table.name.toLowerCase().includes(search));
     },
 
     /**
      * Filtre sur champs d'une table
-     * @returns {ObjectConstructor}
      */
-    filteredFieldName() {
-      const searchTable = this.searchField && this.searchField.toLowerCase();
-      let data = this.selectColumns;
-      if (searchTable) {
-        data = data.filter((row) => {
-          return Object.keys(row).some((key) => {
-            return String(row).toLowerCase().indexOf(searchTable) > -1;
-          });
-        });
+    filteredFieldName(): string[] {
+      const search = this.searchField.toLowerCase();
+      if (!search) {
+        return this.selectColumns;
       }
-      return data;
+      return this.selectColumns.filter((column) => column.toLowerCase().includes(search));
     },
+  },
+  mounted() {
+    this.loadSqlManager();
+    this.loadDataDatabase();
   },
   methods: {
     /**
@@ -99,7 +109,7 @@ export default {
     loadSqlManager() {
       this.loading = true;
       axios
-        .get(this.urls.load_sql_manager)
+        .get<LoadSqlManagerResponse>(this.urls.load_sql_manager)
         .then((response) => {
           this.sqlManager = response.data.sqlManager;
         })
@@ -110,7 +120,6 @@ export default {
           this.loading = false;
 
           if (this.isExecute) {
-            //this.isExecute = false;
             this.execute();
           }
         });
@@ -122,7 +131,7 @@ export default {
     loadDataDatabase() {
       this.loading = true;
       axios
-        .get(this.urls.load_data_database)
+        .get<LoadDataDatabaseResponse>(this.urls.load_data_database)
         .then((response) => {
           this.dataBaseData = response.data.dataInfo;
           this.selectLabelTable = this.translate.label_list_field;
@@ -140,12 +149,12 @@ export default {
      */
     execute() {
       if (!this.isValidate()) {
-        return false;
+        return;
       }
 
       this.loading = true;
       axios
-        .post(this.urls.execute_sql, {
+        .post<ExecuteSqlResponse>(this.urls.execute_sql, {
           query: this.sqlManager.query,
         })
         .then((response) => {
@@ -174,22 +183,22 @@ export default {
      */
     save() {
       if (!this.isValidate()) {
-        return false;
+        return;
       }
 
       this.loading = true;
       axios
-        .post(this.urls.save, {
+        .post<SaveResponse>(this.urls.save, {
           query: this.sqlManager.query,
           name: this.sqlManager.name,
           id: this.sqlManager.id,
         })
         .then((response) => {
-          if (response.data.success === true) {
+          if (response.data.success) {
             this.toasts.toastSuccess.msg = response.data.msg;
             this.toasts.toastSuccess.show = true;
             // Cas première query, on force la redirection pour passer en mode édition
-            if (response.data.redirect === true) {
+            if (response.data.redirect && response.data.url_redirect) {
               window.location.replace(response.data.url_redirect);
             }
           } else {
@@ -207,24 +216,34 @@ export default {
     },
 
     /**
-     * Retourne la liste des colonnes en fonction d'une table
-     * @param selectTable
+     * Appelé au changement de sélection dans la liste des tables,
+     * charge les colonnes de la dernière table sélectionnée
      */
-    loadColumn(selectTable) {
-      this.selectLabelTable = this.translate.label_list_field_2 + ' ' + selectTable;
-      this.dataBaseData.forEach((table) => {
-        if (table.name === selectTable) {
-          this.selectColumns = table.columns;
-          return false;
-        }
-      });
+    onTableChange() {
+      const lastSelected = this.selectTable[this.selectTable.length - 1];
+      if (!lastSelected) {
+        this.selectColumns = [];
+        this.selectLabelTable = this.translate.label_list_field;
+        return;
+      }
+      this.loadColumn(lastSelected);
+    },
+
+    /**
+     * Retourne la liste des colonnes en fonction d'une table
+     * @param tableName
+     */
+    loadColumn(tableName: string) {
+      this.selectLabelTable = this.translate.label_list_field_2 + ' ' + tableName;
+      const table = this.dataBaseData.find((t) => t.name === tableName);
+      this.selectColumns = table ? table.columns : [];
     },
 
     /**
      * Ferme un toast en fonction de son id
      * @param nameToast
      */
-    closeToast(nameToast) {
+    closeToast(nameToast: 'toastSuccess' | 'toastError') {
       this.toasts[nameToast].show = false;
     },
 
@@ -237,57 +256,73 @@ export default {
 
     /**
      * Renvoi true si tout est ok, false sinon
-     * @returns {boolean}
      */
-    isValidate() {
-      this.isErrorValidateQuery = this.sqlManager.query === null || this.sqlManager.query === '';
-      this.isErrorValidateName = this.sqlManager.name === null || this.sqlManager.name === '';
+    isValidate(): boolean {
+      this.isErrorValidateQuery = !this.sqlManager.query;
+      this.isErrorValidateName = !this.sqlManager.name;
 
       return !(this.isErrorValidateName || this.isErrorValidateQuery);
     },
 
     /**
      * Ajoute un élément dans l'input
-     * @param balise
+     * @param text
      * @param separate
-     * @returns {boolean}
      */
-    addElement(balise, separate) {
-      let input = document.getElementById('sql-textarea');
-      let start = input.selectionStart;
-      let end = input.selectionEnd;
-      let value = this.sqlManager.query;
+    addElement(text: string, separate: boolean) {
+      const input = document.getElementById('sql-textarea') as HTMLTextAreaElement | null;
+      if (!input) {
+        return;
+      }
 
-      let select = window.getSelection().toString();
+      const start = input.selectionStart ?? 0;
+      const end = input.selectionEnd ?? 0;
+      const value = this.sqlManager.query ?? '';
+      const selection = window.getSelection()?.toString() ?? '';
 
-      if (select === '') {
-        this.sqlManager.query = value.slice(0, start) + balise + value.slice(end);
-        input.value = this.sqlManager.query;
-        let caretPos = start + balise.length;
-        input.focus();
-        //input.setSelectionRange(caretPos - position, caretPos - position);
+      if (selection === '') {
+        this.sqlManager.query = value.slice(0, start) + text + value.slice(end);
       } else {
-        let before = value.slice(0, start);
-        let after = value.slice(end);
-        let replace = '';
+        const before = value.slice(0, start);
+        const after = value.slice(end);
+        let replace: string;
 
         if (separate) {
-          let b = balise.slice(balise.length / 2);
-          replace = b + select.toString() + b;
+          const half = text.slice(text.length / 2);
+          replace = half + selection + half;
         } else {
-          replace = balise + select.toString();
+          replace = text + selection;
         }
 
         this.sqlManager.query = before + replace + after;
-        input.value = this.sqlManager.query;
-
-        let caretPos = start + replace.length;
-        input.focus();
       }
-      return false;
+
+      input.value = this.sqlManager.query;
+      input.focus();
+    },
+
+    /**
+     * Ajoute les tables sélectionnées dans la query
+     */
+    addTable() {
+      if (this.selectTable.length === 0) {
+        return;
+      }
+      const tables = this.selectTable.map((table) => `${this.schema}.${table}`).join(', ');
+      this.addElement(tables, false);
+    },
+
+    /**
+     * Ajoute les champs sélectionnés dans la query
+     */
+    addField() {
+      if (this.selectField.length === 0) {
+        return;
+      }
+      this.addElement(this.selectField.join(', '), false);
     },
   },
-};
+});
 </script>
 
 <template>
@@ -305,7 +340,6 @@ export default {
 
   <div v-else-if="Object.keys(sqlManager).length === 0">
     <div class="flex flex-col items-center justify-center py-16 px-6 text-center">
-      <!-- Icône -->
       <div
         class="w-16 h-16 rounded-2xl flex items-center justify-center mb-5"
         style="background-color: var(--primary-lighter)"
@@ -320,17 +354,14 @@ export default {
         </svg>
       </div>
 
-      <!-- Titre -->
       <p class="text-lg font-bold mb-2" style="color: var(--text-primary)">
         {{ translate.no_query_manager_title }}
       </p>
 
-      <!-- Description -->
       <p class="text-sm max-w-xs mb-6" style="color: var(--text-secondary)">
         {{ translate.no_query_manager_text }}
       </p>
 
-      <!-- Boutons -->
       <div class="flex items-center gap-3">
         <a :href="urls.index" class="btn btn-sm btn-outline-dark flex items-center gap-2">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -380,7 +411,7 @@ export default {
         </div>
 
         <div class="card-actions">
-          <div class="btn btn-success btn-sm me-2" @click="this.execute()">
+          <div class="btn btn-success btn-sm me-2" @click="execute">
             <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 stroke-linecap="round"
@@ -392,7 +423,7 @@ export default {
             {{ translate.btn_execute_query }}
           </div>
 
-          <div class="btn btn-primary btn-sm me-2" @click="this.save">
+          <div class="btn btn-primary btn-sm me-2" @click="save">
             <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 stroke-linecap="round"
@@ -466,7 +497,7 @@ export default {
         </div>
 
         <div class="card-actions">
-          <div class="btn btn-success btn-sm me-2" @click="execute()">
+          <div class="btn btn-success btn-sm me-2" @click="execute">
             <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 stroke-linecap="round"
@@ -499,14 +530,14 @@ export default {
             <input type="text" class="form-input" v-model="searchTable" :placeholder="translate.placeholder_table" />
           </div>
           <div class="form-control mb-3">
-            <select class="form-input" multiple id="sql-table" size="8" v-model="selectTable">
-              <option v-for="table in filteredTable" @click="loadColumn(table.name)">
+            <select class="form-input" multiple id="sql-table" size="8" v-model="selectTable" @change="onTableChange">
+              <option v-for="table in filteredTable" :key="table.name" :value="table.name">
                 {{ table.name }}
               </option>
             </select>
           </div>
           <div class="mb-3">
-            <div class="btn btn-secondary btn-sm w-full" @click="addElement(schema + '.' + selectTable, false)">
+            <div class="btn btn-secondary btn-sm w-full" @click="addTable">
               <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
               </svg>
@@ -536,17 +567,13 @@ export default {
               v-model="selectField"
               :disabled="selectColumns.length === 0"
             >
-              <option v-for="column in filteredFieldName">
+              <option v-for="column in filteredFieldName" :key="column" :value="column">
                 {{ column }}
               </option>
             </select>
           </div>
           <div class="form-control mb-3">
-            <button
-              :disabled="selectColumns.length === 0"
-              class="btn btn-secondary btn-sm w-full"
-              @click="addElement(selectField, false)"
-            >
+            <button :disabled="selectColumns.length === 0" class="btn btn-secondary btn-sm w-full" @click="addField">
               <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
               </svg>
@@ -577,7 +604,7 @@ export default {
         </div>
       </div>
 
-      <div v-if="!Object.keys(result).length" class="text-center py-12 text-[var(--text-secondary)]">
+      <div v-if="!result.length" class="text-center py-12 text-[var(--text-secondary)]">
         <svg
           class="w-16 h-16 mx-auto mb-4 text-[var(--text-light)]"
           fill="none"
@@ -595,12 +622,13 @@ export default {
         <p class="text-xs mt-1">{{ translate.no_result_query_help }}</p>
       </div>
 
-      <div class="overflow-x-auto">
+      <div v-else class="overflow-x-auto">
         <table class="w-full" aria-describedby="table">
           <thead class="bg-[var(--bg-main)]">
             <tr>
               <th
                 v-for="header in resultHeader"
+                :key="header"
                 class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-[var(--text-secondary)]"
               >
                 {{ header }}
@@ -608,8 +636,12 @@ export default {
             </tr>
           </thead>
           <tbody class="divide-y divide-[var(--border-color)]">
-            <tr v-for="row in result" class="bg-[var(--bg-card)] hover:bg-[var(--bg-hover)]">
-              <td v-for="header in resultHeader" class="px-3 py-1 text-sm text-[var(--text-secondary)] text-left">
+            <tr v-for="(row, index) in result" :key="index" class="bg-[var(--bg-card)] hover:bg-[var(--bg-hover)]">
+              <td
+                v-for="header in resultHeader"
+                :key="header"
+                class="px-3 py-1 text-sm text-[var(--text-secondary)] text-left"
+              >
                 {{ row[header] }}
               </td>
             </tr>
