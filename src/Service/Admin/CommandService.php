@@ -47,13 +47,33 @@ class CommandService extends AppAdminService
     public function createSchema(): void
     {
         $application = $this->getApplication();
+        $application->setAutoExit(false);
 
-        $input = new ArrayInput([
-            'command' => 'doctrine:schema:create',
+        // 1. S'assurer que la table de suivi des migrations existe
+        $syncInput = new ArrayInput([
+            'command' => 'doctrine:migrations:sync-metadata-storage',
         ]);
+        $syncOutput = new BufferedOutput();
+        $syncExitCode = $application->run($syncInput, $syncOutput);
 
-        $output = new NullOutput();
-        $application->run($input, $output);
+        if (0 !== $syncExitCode) {
+            throw new \RuntimeException(
+                'Échec de la synchronisation des métadonnées de migration : ' . $syncOutput->fetch(),
+            );
+        }
+
+        // 2. Jouer les migrations
+        $migrateInput = new ArrayInput([
+            'command' => 'doctrine:migrations:migrate',
+            '--no-interaction' => true,
+            '--allow-no-migration' => true,
+        ]);
+        $migrateOutput = new BufferedOutput();
+        $migrateExitCode = $application->run($migrateInput, $migrateOutput);
+
+        if (0 !== $migrateExitCode) {
+            throw new \RuntimeException('Échec de l\'exécution des migrations : ' . $migrateOutput->fetch());
+        }
     }
 
     /**
