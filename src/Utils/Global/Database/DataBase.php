@@ -147,7 +147,7 @@ class DataBase
         /** @var ParameterBagInterface $parameterBag */
         $parameterBag = $this->handlers->get('parameterBag');
         $prefix = $parameterBag->get('app.default_database_prefix');
-        $schema = $parameterBag->get('app.default_database_schema');
+        $schema = $parameterBag->get('app.default_database_name');
 
         if ($tableName === null) {
             if ($prefix !== '') {
@@ -192,7 +192,7 @@ class DataBase
     {
         /** @var ParameterBagInterface $parameterBag */
         $parameterBag = $this->handlers->get('parameterBag');
-        $schema = $parameterBag->get('app.default_database_schema');
+        $schema = $parameterBag->get('app.default_database_name');
 
         if (empty($schema)) {
             return true;

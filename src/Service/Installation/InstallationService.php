@@ -134,7 +134,7 @@ class InstallationService extends AppAdminService
             $parameterBag = $this->getParameterBag();
 
             if (empty($return['bdd_name'])) {
-                $return['bdd_name'] = $parameterBag->get('app.default_database_schema');
+                $return['bdd_name'] = $parameterBag->get('app.default_database_name');
             }
         }
         return $return;

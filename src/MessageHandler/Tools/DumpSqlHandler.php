@@ -100,7 +100,7 @@ class DumpSqlHandler
      */
     private function getListeTable(array $options): array
     {
-        $schemaParam = $this->parameterBag->get('app.default_database_schema');
+        $schemaParam = $this->parameterBag->get('app.default_database_name');
         $schema = $this->entityManager->getConnection()->createSchemaManager();
         $tablesTmp = $schema->introspectSchema()->getTables();
 
