@@ -10,7 +10,7 @@ parameters:
     app.ip_api_authorize: [127.0.0.1, ::1]
     app.default_locale: 'fr'
     app.default_database_prefix: '' # un "_" est ajouté par défaut, laissez vide si pas de prefix
-    app.default_database_schema: '%env(NATHEO_DBNAME)%' # schéma de la base de donnée
+    app.default_database_name: '%env(NATHEO_DBNAME)%' # nom de la base de données par défaut
     app.version: '2.0.0'
     app.natheo_horizon.version: 'Natheo-Horizon v1.0.0'
     app.current_branche: 'master'
