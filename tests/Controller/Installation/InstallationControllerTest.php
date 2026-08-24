@@ -21,7 +21,7 @@ class InstallationControllerTest extends AppWebTestCase
     public function testStepOne(): void
     {
         $this->client->request('GET', $this->router->generate('installation_step_1'));
-        $this->assertResponseRedirects($this->router->generate('installation_step_2'));
+        $this->assertResponseRedirects($this->router->generate('installation_step_3'));
 
         $this->createUser();
         $this->client->request('GET', $this->router->generate('installation_step_1'));
@@ -52,12 +52,12 @@ class InstallationControllerTest extends AppWebTestCase
     }
 
     /**
-     * Test méthode stepTwo()
+     * Test méthode stepThree()
      * @return void
      */
-    public function testStepTwo(): void
+    public function testStepThree(): void
     {
-        $this->client->request('GET', $this->router->generate('installation_step_2'));
+        $this->client->request('GET', $this->router->generate('installation_step_3'));
         $this->assertResponseIsSuccessful();
 
         $this->createUser();
