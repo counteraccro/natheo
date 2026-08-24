@@ -140,6 +140,8 @@ Error: Erreur
 'This value does not conform to the expected XSD schema.': "Cette valeur n'est pas conforme au schéma XSD attendu."
 'This XML payload is too large ({{ size }} bytes): it exceeds the limit of {{ limit }} bytes.': 'Cette charge utile XML est trop volumineuse ({{ size }} octets) : elle dépasse la limite de {{ limit }} octets.'
 'This value is not a valid cron expression.': "Cette valeur n'est pas une expression cron valide."
+'The referenced entity does not exist.': "L'entité référencée n'existe pas."
+'This is not a valid ULID.': "Cette valeur n'est pas un ULID valide."
 'This form should not contain extra fields.': 'Ce formulaire ne doit pas contenir de champs supplémentaires.'
 'The uploaded file was too large. Please try to upload a smaller file.': "Le fichier téléchargé est trop volumineux. Merci d'essayer d'envoyer un fichier plus petit."
 'The CSRF token is invalid. Please try to resubmit the form.': 'Le jeton CSRF est invalide. Veuillez renvoyer le formulaire.'
