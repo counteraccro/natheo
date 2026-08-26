@@ -37,3 +37,8 @@ dashboard.block.last.pages.title: __dashboard.block.last.pages.title
 dashboard.block.last.pages.loading: __dashboard.block.last.pages.loading
 dashboard.block.help.first.connexion.link.options: __dashboard.block.help.first.connexion.link.options
 dashboard.block.help.first.connexion.link.tokens: __dashboard.block.help.first.connexion.link.tokens
+dashboard.statistics.total.article: __dashboard.statistics.total.article
+dashboard.statistics.total.comments: __dashboard.statistics.total.comments
+dashboard.statistics.total.comments.waiting: __dashboard.statistics.total.comments.waiting
+dashboard.statistics.total.users: __dashboard.statistics.total.users
+dashboard.statistics.total.views: __dashboard.statistics.total.views
