@@ -4,9 +4,12 @@
 
 {% block body %}
 
-<div {{ vue_component('Admin/Dashboard/DashboardStatistiques', {
+    <div {{ vue_component('Admin/Dashboard/DashboardStatistics', {
+        'translate' : translateStat,
+        'urls' : urlStat
+    }) }}>
 
-}) }}></div>
+    </div>
 
     <div {{ vue_component('Admin/Dashboard/Dashboard', {
         'urls' : urls,

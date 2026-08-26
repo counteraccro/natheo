@@ -72,6 +72,10 @@ class DashboardController extends AppAdminController
                 'isAdmin' => $this->isGranted('ROLE_ADMIN'),
                 'isSuperAdmin' => $this->isGranted('ROLE_SUPER_ADMIN'),
             ],
+            'translateStat' => $dashboardTranslate->getDashboardStatisticsTranslate(),
+            'urlStat' => [
+                'stats' => $this->generateUrl('admin_dashboard_load_dashboard_stat'),
+            ],
         ]);
     }
 
@@ -100,6 +104,16 @@ class DashboardController extends AppAdminController
             ],
         };
         return $this->json($return);
+    }
+
+    /**
+     * Charge les statistiques pour le dashboard
+     * @return JsonResponse
+     */
+    #[Route('/ajax/load-dashboard-stat', name: 'load_dashboard_stat', methods: ['GET'])]
+    public function loadStatistics(): JsonResponse
+    {
+        return $this->json(['oki']);
     }
 
     /**
