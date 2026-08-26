@@ -1,10 +1,28 @@
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
 import SkeletonDashboardStatistiques from '@/vue/Components/Skeleton/Dashboard/DashboardStatistiques.vue';
+import { DashboardStatisticsTranslate, Urls } from '@/ts/Dashboard/dashboardStatistics.type';
 
 export default defineComponent({
   name: 'DashboardStatistiques',
   components: { SkeletonDashboardStatistiques },
+  props: {
+    translate: {
+      type: Object as PropType<DashboardStatisticsTranslate>,
+      required: true,
+    },
+    urls: {
+      type: Object as PropType<Urls>,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      loading: false,
+    };
+  },
+  mounted() {},
+  methods: {},
 });
 </script>
 
@@ -14,9 +32,9 @@ export default defineComponent({
     <div class="card rounded-lg p-6">
       <div class="flex items-center justify-between">
         <div>
-          <p class="text-sm font-medium" style="color: var(--text-secondary)">Total Articles</p>
+          <p class="text-sm font-medium" style="color: var(--text-secondary)">{{ translate.total_article }}</p>
           <p class="text-3xl font-bold mt-2">156</p>
-          <p class="text-xs mt-1" style="color: var(--text-light)">+12% ce mois</p>
+          <p class="text-xs mt-1" style="color: var(--text-light)"></p>
         </div>
         <div class="p-3 rounded-lg" style="background-color: var(--primary); opacity: 0.1">
           <svg class="w-8 h-8" style="color: var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -34,9 +52,9 @@ export default defineComponent({
     <div class="card rounded-lg p-6">
       <div class="flex items-center justify-between">
         <div>
-          <p class="text-sm font-medium" style="color: var(--text-secondary)">Commentaires</p>
+          <p class="text-sm font-medium" style="color: var(--text-secondary)">{{ translate.comments }}</p>
           <p class="text-3xl font-bold mt-2">342</p>
-          <p class="text-xs mt-1" style="color: var(--text-light)">3 en attente</p>
+          <p class="text-xs mt-1" style="color: var(--text-light)">3 {{ translate.comments_waiting }}</p>
         </div>
         <div class="p-3 rounded-lg" style="background-color: var(--status-validated); opacity: 0.1">
           <svg
@@ -60,9 +78,9 @@ export default defineComponent({
     <div class="card rounded-lg p-6">
       <div class="flex items-center justify-between">
         <div>
-          <p class="text-sm font-medium" style="color: var(--text-secondary)">Utilisateurs</p>
+          <p class="text-sm font-medium" style="color: var(--text-secondary)">{{ translate.users }}</p>
           <p class="text-3xl font-bold mt-2">89</p>
-          <p class="text-xs mt-1" style="color: var(--text-light)">+5 cette semaine</p>
+          <p class="text-xs mt-1" style="color: var(--text-light)"></p>
         </div>
         <div class="p-3 rounded-lg" style="background-color: var(--secondary); opacity: 0.1">
           <svg class="w-8 h-8" style="color: var(--secondary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -80,9 +98,9 @@ export default defineComponent({
     <div class="card rounded-lg p-6">
       <div class="flex items-center justify-between">
         <div>
-          <p class="text-sm font-medium" style="color: var(--text-secondary)">Vues totales</p>
+          <p class="text-sm font-medium" style="color: var(--text-secondary)">{{ translate.views }}</p>
           <p class="text-3xl font-bold mt-2">12.5k</p>
-          <p class="text-xs mt-1" style="color: var(--text-light)">+8% ce mois</p>
+          <p class="text-xs mt-1" style="color: var(--text-light)"></p>
         </div>
         <div class="p-3 rounded-lg" style="background-color: var(--status-pending); opacity: 0.1">
           <svg
