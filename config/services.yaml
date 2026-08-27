@@ -17,7 +17,7 @@ parameters:
     # Permet d'activer le mode débug du CMS
     # En débug mode, créer un type d'utilisateur par droit dans les fixtures
     # En débug mode, créer un token par droits dans les fixtures
-    app.debug_mode: '%env(NATHEO_DEBUG)%'
+    app.debug_mode: '%env(bool:NATHEO_DEBUG)%'
 
     app.folder.upload.avatar: '%kernel.project_dir%/public/uploads/avatars'
     app.path.avatar: 'uploads/avatars/'
