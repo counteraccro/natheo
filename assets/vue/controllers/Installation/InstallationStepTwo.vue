@@ -2,7 +2,7 @@
 /**
  * @author Gourdon Aymeric
  * @version 1.0
- * Installation CMS - Etape 2 créations de la base de données
+ * Installation CMS - Etape 2 création de la base de données
  */
 import { defineComponent } from 'vue';
 import type { PropType } from 'vue';
@@ -21,12 +21,12 @@ import type {
   UpdateEnvResponse,
 } from '@/ts/Installation/InstallationStepTwo';
 import axios, { AxiosError } from 'axios';
-import SkeletonInstallationStepTwo from '@/vue/Components/Skeleton/Installation/InstallationStepTwo.vue';
+import InstallationStepTwoSkeleton from '@/vue/Components/Skeleton/Installation/InstallationStepTwo.vue';
 import { BddConfig } from '@/ts/Installation/InstallationStepOne';
 
 export default defineComponent({
   name: 'InstallationStepTwo',
-  components: { SkeletonInstallationStepTwo },
+  components: { InstallationStepTwoSkeleton },
   props: {
     urls: {
       type: Object as PropType<InstallationStepTwoUrls>,
@@ -107,17 +107,9 @@ export default defineComponent({
     },
 
     /**
-     * Exécute une étape (requête sans body, GET) et stocke son résultat.
-     * loadingMessage sert à la fois de libellé "en cours" et "succès" quand
-     * aucune clé de traduction dédiée au succès n'existe.
+     * Exécute une étape (requête GET sans body) et stocke son résultat.
      */
-    runGetStep(
-      key: CreateStepKey,
-      url: string,
-      _loadingMessage: string,
-      successMessage: string,
-      koMessage: string
-    ): Promise<void> {
+    runGetStep(key: CreateStepKey, url: string, successMessage: string, koMessage: string): Promise<void> {
       return axios
         .get<ApiActionResponse>(url)
         .then((response) => {
@@ -160,9 +152,8 @@ export default defineComponent({
     },
 
     /**
-     * Vérifie si la base existe déjà, persiste la config, puis :
-     * - si elle existait déjà : termine directement
-     * - sinon : régénère APP_SECRET, crée la base, crée les tables
+     * Persiste la config, régénère APP_SECRET, crée la base si elle n'existe pas
+     * encore, puis crée les tables dans tous les cas.
      */
     async createDatabase(): Promise<void> {
       if (!this.validate()) {
@@ -185,56 +176,61 @@ export default defineComponent({
 
       await this.updateEnv();
       if (!this.createStep.updateEnv.success) {
-        this.running = false;
-        this.loading = false;
-        return;
-      }
-
-      if (alreadyExists) {
-        this.finishSuccess();
+        this.stopRunning();
         return;
       }
 
       await this.runGetStep(
         'updateSecret',
         this.urls.update_app_secret,
-        this.translate.create_bdd_loading_msg_update_secret,
         this.translate.create_bdd_loading_msg_update_secret_success,
         this.translate.create_bdd_loading_msg_update_secret_ko
       );
       if (!this.createStep.updateSecret.success) {
-        this.running = false;
-        this.loading = false;
+        this.stopRunning();
         return;
       }
 
-      await this.runGetStep(
-        'createBdd',
-        this.urls.create_bdd,
-        this.translate.create_bdd_loading_msg_create_bdd,
-        this.translate.create_bdd_loading_msg_create_bdd_success,
-        this.translate.create_bdd_loading_msg_create_bdd_ko
-      );
-      if (!this.createStep.createBdd.success) {
-        this.running = false;
-        this.loading = false;
-        return;
+      // La base n'est créée que si elle n'existe pas déjà ;
+      // les tables, elles, sont toujours (re)créées.
+      if (alreadyExists) {
+        this.createStep.createBdd = {
+          success: true,
+          message: this.translate.create_bdd_msg_already_exist,
+        };
+      } else {
+        await this.runGetStep(
+          'createBdd',
+          this.urls.create_bdd,
+          this.translate.create_bdd_loading_msg_create_bdd_success,
+          this.translate.create_bdd_loading_msg_create_bdd_ko
+        );
+        if (!this.createStep.createBdd.success) {
+          this.stopRunning();
+          return;
+        }
       }
 
       await this.runGetStep(
         'createTable',
         this.urls.create_schema,
-        this.translate.create_bdd_loading_msg_create_table,
         this.translate.create_bdd_loading_msg_create_table_success,
         this.translate.create_bdd_loading_msg_create_table_ko
       );
       if (!this.createStep.createTable.success) {
-        this.running = false;
-        this.loading = false;
+        this.stopRunning();
         return;
       }
 
       this.finishSuccess();
+    },
+
+    /**
+     * Arrête la progression suite à une erreur.
+     */
+    stopRunning(): void {
+      this.running = false;
+      this.loading = false;
     },
 
     /**
@@ -248,14 +244,14 @@ export default defineComponent({
 
       setTimeout(() => {
         window.location.href = this.urls.step_3;
-      }, 2500);
+      }, 1200);
     },
   },
 });
 </script>
 
 <template>
-  <SkeletonInstallationStepTwo v-if="initialLoading" />
+  <installation-step-two-skeleton v-if="initialLoading" />
 
   <div v-else>
     <h2 class="text-2xl font-bold mb-2">{{ translate.create_bdd_h1 }}</h2>
@@ -285,7 +281,10 @@ export default defineComponent({
       </p>
       <p class="mb-2">{{ translate.create_bdd_alert_text_1 }}</p>
       <ul class="list-disc list-inside space-y-1 mb-2">
-        <li class="mb-2">
+        <li>
+          {{ translate.create_bdd_alert_text_2 }} : <strong>{{ datas.bdd_params.database_schema }}</strong>
+        </li>
+        <li>
           {{ translate.create_bdd_alert_text_3 }} :
           <strong
             v-html="

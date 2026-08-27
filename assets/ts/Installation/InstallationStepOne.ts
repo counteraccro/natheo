@@ -64,6 +64,7 @@ export interface InstallationStepOneTranslate {
   field_required: string;
   btn_return: string;
   btn_step_two: string;
+  create_bdd_msg_already_exist: string;
 }
 
 export interface InstallationStepOneLocales {
