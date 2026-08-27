@@ -202,6 +202,10 @@ class InstallationTranslate extends AppTranslate
                 domain: 'installation',
             ),
             'btn_step_two' => $this->translator->trans('installation.step.1.btn.step.2', domain: 'installation'),
+            'create_bdd_msg_already_exist' => $this->translator->trans(
+                'installation.step.1.msg.bdd.already_exist',
+                domain: 'installation',
+            ),
         ];
     }
 

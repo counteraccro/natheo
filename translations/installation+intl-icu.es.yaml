@@ -127,3 +127,4 @@ installation.step.4.summary.cache: __installation.step.4.summary.cache
 installation.step.4.btn.login: __installation.step.4.btn.login
 installation.step.3.titre: __installation.step.3.titre
 installation.step.4.titre: __installation.step.4.titre
+installation.step.1.msg.bdd.already_exist: __installation.step.1.msg.bdd.already_exist

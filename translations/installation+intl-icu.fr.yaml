@@ -126,4 +126,5 @@ installation.step.4.summary.database: 'Base de données créé'
 installation.step.4.summary.data: 'Données installées'
 installation.step.4.summary.cache: 'Cache nettoyé'
 installation.step.4.btn.login: 'Me connecter avec mon compte fondateur'
-installation.step.4.summary.user: "Compte Fondateur créé"
+installation.step.4.summary.user: 'Compte Fondateur créé'
+installation.step.1.msg.bdd.already_exist: 'la base de données existe déjà'
