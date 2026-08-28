@@ -9,9 +9,9 @@ use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Twig\Environment;
 
 #[AsEventListener(event: 'kernel.request', priority: 0)]
-class TwigGlobalListener
+readonly class TwigGlobalListener
 {
-    public function __construct(private readonly Environment $twig) {}
+    public function __construct(private Environment $twig) {}
 
     public function __invoke(): void
     {

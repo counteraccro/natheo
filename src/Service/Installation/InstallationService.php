@@ -11,6 +11,8 @@ namespace App\Service\Installation;
 
 use App\Entity\Admin\System\User;
 use App\Enum\Admin\Global\Notification\Notification;
+use App\Enum\Installation\KeyEnv;
+use App\Enum\Installation\OptionInstallation;
 use App\Repository\Admin\System\UserRepository;
 use App\Service\Admin\AppAdminService;
 use App\Utils\Global\EnvFile;
@@ -63,7 +65,7 @@ class InstallationService extends AppAdminService
         for ($i = 0; $i < 32; $i++) {
             $secret .= $a[rand(0, strlen($a) - 1)];
         }
-        return EnvFile::KEY_APP_SECRET . '=' . $secret;
+        return KeyEnv::APP_SECRET->value . '=' . $secret;
     }
 
     /**
@@ -74,11 +76,11 @@ class InstallationService extends AppAdminService
      */
     public function formatDatabaseUrlForEnvFile(array $data, string $option): string
     {
-        $return = EnvFile::KEY_DATABASE_URL . '="';
+        $return = KeyEnv::DATABASE_URL->value . '="';
         $return .=
             $data['type'] . '://' . $data['login'] . ':' . $data['password'] . '@' . $data['ip'] . ':' . $data['port'];
 
-        if ($option === InstallationConst::OPTION_DATABASE_URL_CREATE_DATABASE) {
+        if ($option === OptionInstallation::DATABASE_EXIST->value) {
             $return .= '/' . $data['bdd_name'] . '?serverVersion=' . $data['version'] . '&charset=' . $data['charset'];
         }
         $return .= '"';
@@ -93,7 +95,7 @@ class InstallationService extends AppAdminService
      */
     public function getDatabaseUrl(): array
     {
-        $databaseUrl = $this->getValueByKeyInEnvFile(EnvFile::KEY_DATABASE_URL);
+        $databaseUrl = $this->getValueByKeyInEnvFile(KeyEnv::DATABASE_URL->value);
         $pattern = '/DATABASE_URL="(.*):\/\/(.*):(.*)@(.*):(.*)\/(.*)\?serverVersion=(.*)\&charset=(.*)"/';
         preg_match_all($pattern, $databaseUrl, $matches, PREG_SET_ORDER, 0);
 
@@ -128,6 +130,12 @@ class InstallationService extends AppAdminService
                 $return['version'] = $matches[0][7];
                 $return['charset'] = $matches[0][8];
             }
+
+            $parameterBag = $this->getParameterBag();
+
+            if (empty($return['bdd_name'])) {
+                $return['bdd_name'] = $parameterBag->get('app.default_database_name');
+            }
         }
         return $return;
     }
@@ -161,6 +169,25 @@ class InstallationService extends AppAdminService
             return true;
         }
         return false;
+    }
+
+    /**
+     * Retourne la liste des étapes
+     * @return array[]
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getAllSteps(): array
+    {
+        $translator = $this->getTranslator();
+
+        return [
+            ['id' => 'step-0', 'label' => $translator->trans('installation.step.0.step-label', domain: 'installation')],
+            ['id' => 'step-1', 'label' => $translator->trans('installation.step.1.step-label', domain: 'installation')],
+            ['id' => 'step-2', 'label' => $translator->trans('installation.step.2.step-label', domain: 'installation')],
+            ['id' => 'step-3', 'label' => $translator->trans('installation.step.3.step-label', domain: 'installation')],
+            ['id' => 'step-4', 'label' => $translator->trans('installation.step.4.step-label', domain: 'installation')],
+        ];
     }
 
     /**

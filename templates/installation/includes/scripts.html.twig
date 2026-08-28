@@ -1,0 +1,78 @@
+<script>
+
+
+    // ============================================
+    // GESTION DES THÈMES DE COULEURS
+    // ============================================
+    function setTheme(theme) {
+        const root = document.documentElement;
+
+        // Supprimer l'ancien thème
+        root.removeAttribute('data-theme');
+
+        // Ajouter le nouveau thème si ce n'est pas violet (par défaut)
+        if (theme !== 'violet') {
+            root.setAttribute('data-theme', theme);
+        }
+
+        // Mettre à jour les boutons actifs
+        document.querySelectorAll('.theme-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        document.querySelector(`.theme-${theme}`).classList.add('active');
+
+        // Sauvegarder dans localStorage
+        localStorage.setItem('theme', theme);
+    }
+
+    // ============================================
+    // GESTION DU MODE SOMBRE
+    // ============================================
+    function toggleDarkMode() {
+        const root = document.documentElement;
+        const toggle = document.getElementById('darkToggle');
+
+        const isDark = root.getAttribute('data-theme-mode') === 'dark';
+
+        if (isDark) {
+            root.removeAttribute('data-theme-mode');
+            root.classList.remove('dark');
+            toggle.classList.remove('active');
+            localStorage.setItem('darkMode', 'light');
+        } else {
+            root.setAttribute('data-theme-mode', 'dark');
+            root.classList.add('dark');
+            toggle.classList.add('active');
+            localStorage.setItem('darkMode', 'dark');
+        }
+    }
+
+    // ============================================
+    // RESTAURER LES PRÉFÉRENCES AU CHARGEMENT
+    // ============================================
+    window.addEventListener('DOMContentLoaded', () => {
+        const savedTheme = localStorage.getItem('theme') || 'violet';
+        const savedDarkMode = localStorage.getItem('darkMode') || 'light';
+
+        // Restaurer le thème de couleur
+        if (savedTheme !== 'violet') {
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        }
+
+        // Mettre à jour le bouton de thème actif
+        document.querySelectorAll('.theme-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        const activeThemeBtn = document.querySelector(`.theme-${savedTheme}`);
+        if (activeThemeBtn) {
+            activeThemeBtn.classList.add('active');
+        }
+
+        // Restaurer le mode sombre
+        if (savedDarkMode === 'dark') {
+            document.documentElement.setAttribute('data-theme-mode', 'dark');
+            document.documentElement.classList.add('dark');
+            document.getElementById('darkToggle').classList.add('active');
+        }
+    });
+</script>

@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace App\Tests\Utils\Global\Database;
 
 use App\Entity\Admin\System\User;
+use App\Enum\Installation\OptionInstallation;
 use App\Tests\AppWebTestCase;
 use App\Utils\Global\Database\DataBase;
 use Psr\Container\ContainerExceptionInterface;
@@ -35,8 +36,8 @@ class DatabaseTest extends AppWebTestCase
      */
     public function testIsConnected(): void
     {
-        $result = $this->database->isConnected();
-        $this->assertTrue($result);
+        $result = $this->database->check(OptionInstallation::CONNEXION->value);
+        $this->assertTrue($result['success']);
     }
 
     /**

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Entity\Admin\Content\Faq;
 
+use App\Enum\Installation\DoctrineStrategy;
 use App\Repository\Admin\Content\Faq\FaqCategoryRepository;
-use App\Utils\Installation\InstallationConst;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
@@ -18,7 +18,7 @@ class FaqCategory
 {
     public const string DEFAULT_ALIAS = 'faq_category';
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: InstallationConst::STRATEGY)]
+    #[ORM\GeneratedValue(strategy: DoctrineStrategy::CURRENT)]
     #[ORM\Column]
     private ?int $id = null;
 

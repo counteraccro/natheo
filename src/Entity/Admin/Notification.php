@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Entity\Admin;
 
 use App\Entity\Admin\System\User;
+use App\Enum\Installation\DoctrineStrategy;
 use App\Repository\Admin\NotificationRepository;
-use App\Utils\Installation\InstallationConst;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -18,7 +18,7 @@ class Notification
     public const string DEFAULT_ALIAS = 'notification';
 
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: InstallationConst::STRATEGY)]
+    #[ORM\GeneratedValue(strategy: DoctrineStrategy::CURRENT)]
     #[ORM\Column]
     private ?int $id = null;
 

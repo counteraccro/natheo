@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace App\Twig\Extension\Admin;
 
 use App\Entity\Admin\System\User;
+use App\Enum\Installation\DoctrineStrategy;
 use App\Service\Admin\Dev\GitService;
 use App\Service\Admin\GridService;
 use App\Utils\Installation\InstallationConst;
@@ -72,9 +73,9 @@ class DevExtension extends AppAdminExtension
         $version = $this->parameterBag->get('app.version');
         $env = $this->parameterBag->get('kernel.environment');
         $infoGit = $this->gitService->getInfoGit();
-        $database = match (InstallationConst::STRATEGY) {
-            InstallationConst::STRATEGY_MYSQL => 'Mysql',
-            InstallationConst::STRATEGY_POSTGRESQL => 'PostgreSQL',
+        $database = match (DoctrineStrategy::current()) {
+            DoctrineStrategy::MYSQL->value => 'Mysql',
+            DoctrineStrategy::POSTGRESQL->value => 'PostgreSQL',
         };
 
         return [

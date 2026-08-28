@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Entity\Admin\Content\Tag;
 
 use App\Entity\Admin\Content\Page\Page;
+use App\Enum\Installation\DoctrineStrategy;
 use App\Repository\Admin\Content\Tag\TagRepository;
-use App\Utils\Installation\InstallationConst;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -22,7 +22,7 @@ class Tag
     public const array ALLOWED_ORDER_FIELDS = ['id', 'color', 'createdAt', 'updateAt'];
 
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: InstallationConst::STRATEGY)]
+    #[ORM\GeneratedValue(strategy: DoctrineStrategy::CURRENT)]
     #[ORM\Column]
     private ?int $id = null;
 

@@ -93,7 +93,7 @@ class IndexController extends AppFrontController
         ?string $slug = null,
     ): Response {
         if (!$this->installationService->checkSchema()) {
-            return $this->redirectToRoute('installation_step_1');
+            return $this->redirectToRoute('installation_step_0');
         }
 
         if (!$this->installationService->checkDataExiste(User::class)) {
