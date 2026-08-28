@@ -1,0 +1,128 @@
+export interface InstallationStepOneUrls {
+  update_env: string;
+  check_action_bdd: string;
+  update_app_secret: string;
+  create_bdd: string;
+  create_schema: string;
+  step_2: string;
+  step_0: string;
+}
+
+export interface InstallationStepOneTranslate {
+  loading: string;
+  title: string;
+  title_thx_h1: string;
+  description_thx_1: string;
+  title_h1: string;
+  description_1: string;
+  description_2: string;
+  config_bdd_title: string;
+  config_bdd_input_type_label: string;
+  config_bdd_input_login_label: string;
+  config_bdd_input_password_label: string;
+  config_bdd_input_ip_label: string;
+  config_bdd_input_port_label: string;
+  config_bdd_input_charset_label: string;
+  config_bdd_input_version_label: string;
+  config_bdd_btn_test_config: string;
+  config_bdd_btn_save_config: string;
+  config_bdd_btn_test_config_loading: string;
+  config_bdd_loading_msg_test_connexion: string;
+  config_bdd_loading_msg_test_connexion_success: string;
+  config_bdd_loading_msg_test_connexion_ko: string;
+  config_bdd_loading_msg_update_file: string;
+  create_bdd_sub_title_identifiant: string;
+  create_bdd_sub_title_server: string;
+  create_bdd_sub_title_options: string;
+  create_bdd_h1: string;
+  create_bdd_description_1: string;
+  create_bdd_description_2: string;
+  create_bdd_alert_title: string;
+  create_bdd_alert_text_1: string;
+  create_bdd_alert_text_2: string;
+  create_bdd_alert_text_3: string;
+  create_bdd_alert_text_4: string;
+  create_bdd_alert_text_5: string;
+  create_bdd_title: string;
+  create_bdd_input_bdd_name_label: string;
+  create_bdd_input_bdd_name_error: string;
+  create_bdd_input_version_label: string;
+  create_bdd_input_version_error: string;
+  create_bdd_input_charset_label: string;
+  create_bdd_btn_create: string;
+  create_bdd_loading_msg_update_file: string;
+  create_bdd_loading_msg_update_secret: string;
+  create_bdd_loading_msg_update_secret_success: string;
+  create_bdd_loading_msg_update_secret_ko: string;
+  create_bdd_loading_msg_create_bdd: string;
+  create_bdd_loading_msg_create_bdd_success: string;
+  create_bdd_loading_msg_create_bdd_ko: string;
+  create_bdd_loading_msg_create_table: string;
+  create_bdd_loading_msg_create_table_success: string;
+  create_bdd_loading_msg_create_table_ko: string;
+  create_bdd_loading_msg_success: string;
+  field_required: string;
+  btn_return: string;
+  btn_step_two: string;
+  create_bdd_msg_already_exist: string;
+}
+
+export interface InstallationStepOneLocales {
+  [key: string]: string;
+}
+
+export interface BddConfig {
+  type: string;
+  login: string;
+  password: string;
+  ip: string;
+  port: string;
+  bdd_name: string;
+  version: string;
+  charset: string;
+}
+
+export interface ConfigKey {
+  database_url: string;
+}
+
+export interface OptionCheck {
+  connexion: string;
+  database_exist: string;
+}
+
+export interface BddParams {
+  database_schema: string;
+  database_prefix: string;
+}
+
+export interface InstallationStepOneDatas {
+  bdd_config: BddConfig;
+  config_key: ConfigKey;
+  option_check: OptionCheck;
+  bdd_params: BddParams;
+}
+
+export type ValidableField = 'login' | 'password' | 'ip' | 'port' | 'charset' | 'version';
+
+export type DataBaseConfigErrors = Record<ValidableField, string>;
+
+export interface UpdateEnvPayload {
+  config_key: string;
+  config: BddConfig;
+  type: string;
+}
+
+export interface UpdateEnvResponse {
+  success: boolean;
+  error?: string;
+}
+
+export interface CheckActionResult {
+  success: boolean;
+  message: string;
+}
+
+export interface CheckActionBddResponse {
+  connexion: CheckActionResult;
+}

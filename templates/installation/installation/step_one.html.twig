@@ -5,7 +5,20 @@
 
 {% block body %}
 
-<div {{ vue_component('Installation/installationStepOne', {
+    <div {{ vue_component('Installation/InstallationStepper', {
+        'currentStep' : 'step-1',
+        'steps' : allSteps
+    }) }}></div>
+
+    <h2 class="text-2xl font-bold mb-2">
+        {{ 'installation.step.1.h2.title' | trans({}, 'installation') }}
+    </h2>
+    <p class="text-sm mb-6" style="color: var(--text-secondary);">
+        {{ 'installation.step.1.h2.sub.title' | trans({}, 'installation') }}
+    </p>
+
+
+    <div {{ vue_component('Installation/InstallationStepOne', {
     'urls' : urls,
     'translate' : translate,
     'locales' : locales,

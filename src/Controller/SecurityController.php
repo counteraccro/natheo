@@ -56,7 +56,7 @@ class SecurityController extends AbstractController
     public function login(AuthenticationUtils $authenticationUtils, InstallationService $installationService): Response
     {
         if (!$installationService->checkSchema()) {
-            return $this->redirectToRoute('installation_step_1');
+            return $this->redirectToRoute('installation_step_0');
         }
 
         if (!$installationService->checkDataExiste(User::class)) {

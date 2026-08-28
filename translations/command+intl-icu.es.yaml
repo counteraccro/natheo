@@ -36,3 +36,4 @@ install.test.step.create_schema: __install.test.step.create_schema
 install.test.create_schema.success: __install.test.create_schema.success
 install.test.success: __install.test.success
 install.test.help.phpunit: __install.test.help.phpunit
+install.env.prod: __install.env.prod

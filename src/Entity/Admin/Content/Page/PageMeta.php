@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Admin\Content\Page;
 
+use App\Enum\Installation\DoctrineStrategy;
 use App\Repository\Admin\Content\Page\PageMetaRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -13,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 class PageMeta
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
+    #[ORM\GeneratedValue(strategy: DoctrineStrategy::CURRENT)]
     #[ORM\Column]
     private ?int $id = null;
 

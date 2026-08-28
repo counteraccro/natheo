@@ -68,6 +68,14 @@ class RawMysqlQuery implements RawQueryInterface
     }
 
     /**
+     * @inheritDoc
+     */
+    public static function getQueryCheckConnexion(): string
+    {
+        return 'SELECT 1;';
+    }
+
+    /**
      * @return string
      */
     public static function getQueryPurgeNotification(): string

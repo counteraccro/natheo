@@ -8,8 +8,8 @@ declare(strict_types=1);
  */
 namespace App\Entity\Admin\System;
 
+use App\Enum\Installation\DoctrineStrategy;
 use App\Repository\Admin\System\OptionSystemRepository;
-use App\Utils\Installation\InstallationConst;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -19,7 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
 class OptionSystem
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: InstallationConst::STRATEGY)]
+    #[ORM\GeneratedValue(strategy: DoctrineStrategy::CURRENT)]
     #[ORM\Column]
     private ?int $id = null;
 

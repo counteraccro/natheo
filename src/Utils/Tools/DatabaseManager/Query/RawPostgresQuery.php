@@ -128,4 +128,9 @@ class RawPostgresQuery implements RawQueryInterface
             AND n.read = true
             AND EXTRACT(day from ((CURRENT_DATE - n.created_at))) > :nb_day';
     }
+
+    public static function getQueryCheckConnexion(): string
+    {
+        return 'SELECT 1';
+    }
 }

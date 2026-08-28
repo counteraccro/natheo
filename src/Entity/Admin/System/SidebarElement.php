@@ -9,8 +9,8 @@ declare(strict_types=1);
 
 namespace App\Entity\Admin\System;
 
+use App\Enum\Installation\DoctrineStrategy;
 use App\Repository\Admin\System\SidebarElementRepository;
-use App\Utils\Installation\InstallationConst;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -26,7 +26,7 @@ class SidebarElement
     public const array ALLOWED_ORDER_FIELDS = ['id', 'label', 'createdAt', 'updateAt'];
 
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: InstallationConst::STRATEGY)]
+    #[ORM\GeneratedValue(strategy: DoctrineStrategy::CURRENT)]
     #[ORM\Column]
     private ?int $id = null;
 

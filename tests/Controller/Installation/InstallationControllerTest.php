@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller\Installation;
 
+use App\Enum\Installation\OptionInstallation;
 use App\Tests\AppWebTestCase;
 
 class InstallationControllerTest extends AppWebTestCase
@@ -20,7 +21,7 @@ class InstallationControllerTest extends AppWebTestCase
     public function testStepOne(): void
     {
         $this->client->request('GET', $this->router->generate('installation_step_1'));
-        $this->assertResponseRedirects($this->router->generate('installation_step_2'));
+        $this->assertResponseRedirects($this->router->generate('installation_step_3'));
 
         $this->createUser();
         $this->client->request('GET', $this->router->generate('installation_step_1'));
@@ -33,23 +34,30 @@ class InstallationControllerTest extends AppWebTestCase
      */
     public function testTestConnexionDatabase(): void
     {
-        $this->client->request('GET', $this->router->generate('installation_check_database'));
+        $this->client->request(
+            'POST',
+            uri: $this->router->generate('installation_check_action_bdd'),
+            content: json_encode([
+                'action' => OptionInstallation::CONNEXION->value,
+                'config' => [],
+            ]),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);
         $this->assertIsArray($content);
         $this->assertArrayHasKey('connexion', $content);
-        $this->assertTrue($content['connexion']);
+        $this->assertTrue($content['connexion']['success']);
     }
 
     /**
-     * Test méthode stepTwo()
+     * Test méthode stepThree()
      * @return void
      */
-    public function testStepTwo(): void
+    public function testStepThree(): void
     {
-        $this->client->request('GET', $this->router->generate('installation_step_2'));
+        $this->client->request('GET', $this->router->generate('installation_step_3'));
         $this->assertResponseIsSuccessful();
 
         $this->createUser();

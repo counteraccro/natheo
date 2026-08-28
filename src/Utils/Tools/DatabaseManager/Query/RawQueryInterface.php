@@ -44,4 +44,10 @@ interface RawQueryInterface
      * @return string
      */
     public static function getQueryPurgeNotification(): string;
+
+    /**
+     * Check si la connexion est bonne ou non
+     * @return string
+     */
+    public static function getQueryCheckConnexion(): string;
 }

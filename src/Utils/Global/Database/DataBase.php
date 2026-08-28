@@ -9,10 +9,15 @@ declare(strict_types=1);
 
 namespace App\Utils\Global\Database;
 
+use App\Enum\Installation\DoctrineStrategy;
+use App\Enum\Installation\OptionInstallation;
+use App\Service\Installation\InstallationService;
 use App\Utils\Tools\DatabaseManager\Query\RawPostgresQuery;
 use App\Utils\Utils;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\Schema\Name\UnqualifiedName;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Psr\Container\ContainerExceptionInterface;
@@ -45,6 +50,7 @@ class DataBase
                 'parameterBag' => ParameterBagInterface::class,
                 'rawQueryManager' => RawQueryManager::class,
                 'rawResultQueryManager' => RawResultQueryManager::class,
+                'installationService' => InstallationService::class,
             ]),
         ]
         private readonly ContainerInterface $handlers,
@@ -59,13 +65,74 @@ class DataBase
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function isConnected(): bool
+    public function isDatabaseExist(array $parameters = []): array
     {
         /** @var RawQueryManager $rawQueryManager */
         $rawQueryManager = $this->handlers->get('rawQueryManager');
-        $query = $rawQueryManager->getQueryAllDatabase();
-        $this->executeRawQuery($query);
-        return $this->entityManager->getConnection()->isConnected();
+
+        try {
+            $connection = DriverManager::getConnection($parameters);
+            $connection->executeQuery($rawQueryManager->getQueryAllDatabase());
+            $connection->close();
+
+            return ['success' => true];
+        } catch (Exception $e) {
+            return ['success' => false, 'message' => $e->getMessage()];
+        }
+    }
+
+    /**
+     * @return bool
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function isConnected(array $parameters = []): array
+    {
+        unset($parameters['dbname']);
+        /** @var RawQueryManager $rawQueryManager */
+        $rawQueryManager = $this->handlers->get('rawQueryManager');
+
+        try {
+            $connection = DriverManager::getConnection($parameters);
+            $connection->executeQuery($rawQueryManager->getQueryCheckConnexion());
+            $connection->close();
+
+            return ['success' => true];
+        } catch (Exception $e) {
+            return ['success' => false, 'message' => $e->getMessage()];
+        }
+    }
+
+    /**
+     * Permet de tester une connexion en fonction d'une action
+     * @param string $action
+     * @param array $parameters
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function check(string $action, array $parameters = []): array
+    {
+        /** @var InstallationService $installationService */
+        $installationService = $this->handlers->get('installationService');
+
+        $params = [];
+        if (empty($parameters)) {
+            $parameters = $installationService->getDatabaseUrl();
+        }
+        $params = [
+            'host' => $parameters['ip'],
+            'port' => $parameters['port'],
+            'user' => $parameters['login'],
+            'password' => $parameters['password'],
+            'driver' => DoctrineStrategy::getDriver(DoctrineStrategy::current()),
+            'dbname' => $parameters['bdd_name'],
+        ];
+
+        return match ($action) {
+            OptionInstallation::CONNEXION->value => $this->isConnected($params),
+            OptionInstallation::DATABASE_EXIST->value => $this->isDatabaseExist($params),
+        };
     }
 
     /**
@@ -80,7 +147,7 @@ class DataBase
         /** @var ParameterBagInterface $parameterBag */
         $parameterBag = $this->handlers->get('parameterBag');
         $prefix = $parameterBag->get('app.default_database_prefix');
-        $schema = $parameterBag->get('app.default_database_schema');
+        $schema = $parameterBag->get('app.default_database_name');
 
         if ($tableName === null) {
             if ($prefix !== '') {
@@ -125,7 +192,7 @@ class DataBase
     {
         /** @var ParameterBagInterface $parameterBag */
         $parameterBag = $this->handlers->get('parameterBag');
-        $schema = $parameterBag->get('app.default_database_schema');
+        $schema = $parameterBag->get('app.default_database_name');
 
         if (empty($schema)) {
             return true;
@@ -137,7 +204,13 @@ class DataBase
 
         try {
             $schemaManager = $this->connection->createSchemaManager();
-            if ($schema !== '' && !in_array($schema, $schemaManager->listDatabases())) {
+
+            $databaseNames = array_map(
+                static fn(UnqualifiedName $name): string => $name->getIdentifier()->getValue(),
+                $schemaManager->introspectDatabaseNames(),
+            );
+
+            if ($schema !== '' && !in_array($schema, $databaseNames, true)) {
                 return false;
             }
         } catch (Exception) {

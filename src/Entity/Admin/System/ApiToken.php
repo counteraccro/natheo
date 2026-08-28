@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Entity\Admin\System;
 
+use App\Enum\Installation\DoctrineStrategy;
 use App\Repository\Admin\System\ApiTokenRepository;
-use App\Utils\Installation\InstallationConst;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -19,7 +19,7 @@ class ApiToken
     public const array ALLOWED_ORDER_FIELDS = ['id', 'name', 'createdAt', 'updateAt'];
 
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: InstallationConst::STRATEGY)]
+    #[ORM\GeneratedValue(strategy: DoctrineStrategy::CURRENT)]
     #[ORM\Column]
     private ?int $id = null;
 
