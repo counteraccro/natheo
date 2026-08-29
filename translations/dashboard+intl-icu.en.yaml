@@ -44,3 +44,4 @@ dashboard.statistics.total.users: __dashboard.statistics.total.users
 dashboard.statistics.total.views: __dashboard.statistics.total.views
 dashboard.statistics.link.pages: __dashboard.statistics.link.pages
 dashboard.statistics.link.users: __dashboard.statistics.link.users
+dashboard.statistics.info.cache: __dashboard.statistics.info.cache
