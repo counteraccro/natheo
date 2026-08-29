@@ -13,6 +13,7 @@ namespace App\Controller\Admin;
 use App\Enum\Admin\DashboardBlock;
 use App\Enum\Admin\Global\Breadcrumb;
 use App\Service\Admin\DashboardService;
+use App\Service\Admin\StatisticsService;
 use App\Service\Admin\System\User\UserDataService;
 use App\Utils\System\User\UserDataKey;
 use App\Utils\Translate\Dashboard\DashboardTranslate;
@@ -115,9 +116,9 @@ class DashboardController extends AppAdminController
      * @return JsonResponse
      */
     #[Route('/ajax/load-dashboard-stat', name: 'load_dashboard_stat', methods: ['GET'])]
-    public function loadStatistics(DashboardService $dashboardService): JsonResponse
+    public function loadStatistics(StatisticsService $statisticsService): JsonResponse
     {
-        return $this->json($dashboardService->getStatistics());
+        return $this->json($statisticsService->getDashboardStatistics());
     }
 
     /**
