@@ -75,6 +75,9 @@ class DashboardController extends AppAdminController
             'translateStat' => $dashboardTranslate->getDashboardStatisticsTranslate(),
             'urlStat' => [
                 'stats' => $this->generateUrl('admin_dashboard_load_dashboard_stat'),
+                'page' => $this->generateUrl('admin_page_index'),
+                'comment' => $this->generateUrl('admin_comment_index'),
+                'user' => $this->generateUrl('admin_user_index'),
             ],
         ]);
     }
@@ -108,12 +111,13 @@ class DashboardController extends AppAdminController
 
     /**
      * Charge les statistiques pour le dashboard
+     * @param DashboardService $dashboardService
      * @return JsonResponse
      */
     #[Route('/ajax/load-dashboard-stat', name: 'load_dashboard_stat', methods: ['GET'])]
-    public function loadStatistics(): JsonResponse
+    public function loadStatistics(DashboardService $dashboardService): JsonResponse
     {
-        return $this->json(['oki']);
+        return $this->json($dashboardService->getStatistics());
     }
 
     /**

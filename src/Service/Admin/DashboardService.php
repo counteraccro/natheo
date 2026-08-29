@@ -15,6 +15,7 @@ use App\Repository\Admin\Content\Comment\CommentRepository;
 use App\Utils\System\ApiToken\ApiTokenConst;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class DashboardService extends AppAdminService
 {
@@ -172,5 +173,16 @@ class DashboardService extends AppAdminService
         }
 
         return ['success' => true, 'body' => $body];
+    }
+
+    public function getStatistics(): array
+    {
+        return [
+            'nbPage' => 12,
+            'nbComments' => 20,
+            'nbWaitComments' => 10,
+            'nbUsers' => 7,
+            'nbViews' => '7.5K',
+        ];
     }
 }
