@@ -174,15 +174,4 @@ class DashboardService extends AppAdminService
 
         return ['success' => true, 'body' => $body];
     }
-
-    public function getStatistics(): array
-    {
-        return [
-            'nbPage' => 12,
-            'nbComments' => 20,
-            'nbWaitComments' => 10,
-            'nbUsers' => 7,
-            'nbViews' => '7.5K',
-        ];
-    }
 }
