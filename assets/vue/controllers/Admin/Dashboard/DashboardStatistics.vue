@@ -150,7 +150,7 @@ export default defineComponent({
         <div>
           <p class="text-sm font-medium" style="color: var(--text-secondary)">{{ translate.views }}</p>
           <p class="text-3xl font-bold mt-2">{{ stats.nbViews }}</p>
-          <p class="text-xs mt-1" style="color: var(--text-light)"></p>
+          <p class="text-xs mt-1" style="color: var(--text-light)">{{ translate.info_cache }}</p>
         </div>
         <div
           class="p-3 rounded-lg"

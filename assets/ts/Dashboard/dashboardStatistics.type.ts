@@ -6,6 +6,7 @@ export interface DashboardStatisticsTranslate {
   views: string;
   link_pages: string;
   link_users: string;
+  info_cache: string;
 }
 
 export interface Urls {
