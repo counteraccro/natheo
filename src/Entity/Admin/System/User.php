@@ -183,7 +183,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see PasswordAuthenticatedUserInterface
      */
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
     }
@@ -350,8 +350,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $format = 'l d F Y H:i:s';
         return match ($dateName) {
-            'update' => $this->getUpdateAt()->format($format),
-            'create' => $this->getCreatedAt()->format($format),
+            'update' => $this->getUpdateAt()?->format($format),
+            'create' => $this->getCreatedAt()?->format($format),
             default => '',
         };
     }
