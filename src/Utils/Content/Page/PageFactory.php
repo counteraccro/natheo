@@ -19,6 +19,7 @@ use App\Entity\Admin\Content\Page\PageTranslation;
 use App\Enum\Admin\Comment\Status;
 use App\Enum\Admin\Content\Page\PageContentType;
 use App\Enum\Admin\Content\Page\PageMeta as PageMetaEnum;
+use App\Enum\Admin\Content\Page\PageStatistics;
 
 class PageFactory
 {
@@ -133,9 +134,9 @@ class PageFactory
      */
     private function createPageStatistique(): void
     {
-        foreach (PageStatistiqueKey::getConstants() as $constant) {
+        foreach (PageStatistics::cases() as $case) {
             $pageStatistique = new PageStatistique();
-            $pageStatistique->setKey($constant);
+            $pageStatistique->setKey($case->value);
             $pageStatistique->setValue('0');
             $pageStatistique->setPage($this->page);
             $this->page->addPageStatistique($pageStatistique);

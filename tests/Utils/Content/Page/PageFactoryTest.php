@@ -11,9 +11,9 @@ namespace App\Tests\Utils\Content\Page;
 
 use App\Entity\Admin\Content\Page\Page;
 use App\Enum\Admin\Content\Page\PageContentType;
+use App\Enum\Admin\Content\Page\PageStatistics;
 use App\Tests\AppWebTestCase;
 use App\Utils\Content\Page\PageFactory;
-use App\Utils\Content\Page\PageStatistiqueKey;
 
 class PageFactoryTest extends AppWebTestCase
 {
@@ -45,9 +45,9 @@ class PageFactoryTest extends AppWebTestCase
             $this->assertNotNull($pageTranslation);
         }
 
-        $this->assertCount(count(PageStatistiqueKey::getConstants()), $page->getPageStatistiques());
-        foreach (PageStatistiqueKey::getConstants() as $key) {
-            $pageStatistique = $page->getPageStatistiqueByKey($key);
+        $this->assertCount(count(PageStatistics::cases()), $page->getPageStatistiques());
+        foreach (PageStatistics::cases() as $key) {
+            $pageStatistique = $page->getPageStatistiqueByKey($key->value);
             $this->assertNotNull($pageStatistique);
         }
     }

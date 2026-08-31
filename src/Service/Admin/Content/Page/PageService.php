@@ -16,13 +16,13 @@ use App\Entity\Admin\System\User;
 use App\Enum\Admin\Content\Page\PageCategory;
 use App\Enum\Admin\Content\Page\PageContentType;
 use App\Enum\Admin\Content\Page\PageRender;
+use App\Enum\Admin\Content\Page\PageStatistics;
 use App\Enum\Admin\Content\Page\PageStatus;
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Repository\Admin\Content\Page\PageTranslationRepository;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
 use App\Utils\Content\Page\PageHistory;
-use App\Utils\Content\Page\PageStatistiqueKey;
 use App\Utils\Content\Tag\TagRender;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\NonUniqueResultException;
@@ -107,7 +107,7 @@ class PageService extends AppAdminService
                 $translator->trans('page.grid.tag', domain: 'page') => $this->getTags($element->getTags()),
                 $translator->trans('page.grid.comment', domain: 'page') => $element->getNbComment(),
                 $translator->trans('page.grid.nb_see', domain: 'page') => $element
-                    ->getPageStatistiqueByKey(PageStatistiqueKey::KEY_PAGE_NB_READ)
+                    ->getPageStatistiqueByKey(PageStatistics::NB_READ->value)
                     ->getValue(),
                 $translator->trans('page.grid.update_at', domain: 'page') => $element
                     ->getUpdateAt()

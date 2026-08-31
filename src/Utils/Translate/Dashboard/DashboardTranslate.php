@@ -133,6 +133,7 @@ class DashboardTranslate extends AppTranslate
             'views' => $this->translator->trans('dashboard.statistics.total.views', domain: 'dashboard'),
             'link_pages' => $this->translator->trans('dashboard.statistics.link.pages', domain: 'dashboard'),
             'link_users' => $this->translator->trans('dashboard.statistics.link.users', domain: 'dashboard'),
+            'info_cache' => $this->translator->trans('dashboard.statistics.info.cache', domain: 'dashboard'),
         ];
     }
 }

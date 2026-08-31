@@ -10,10 +10,8 @@ use App\Entity\Admin\Content\Page\PageContent;
 use App\Entity\Admin\Content\Page\PageMeta;
 use App\Entity\Admin\Content\Tag\Tag;
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\Content\Page\PageStatistics;
 use App\Enum\Admin\System\Options\OptionUser;
-use App\Utils\Content\Page\PageConst;
-use App\Utils\Content\Page\PageStatistiqueKey;
-use App\Utils\Markdown;
 use App\Utils\System\User\PersonalData;
 use Doctrine\Common\Collections\Collection;
 
@@ -136,8 +134,8 @@ class ApiPageFormater
     private function getStatistiques(): array
     {
         return [
-            PageStatistiqueKey::KEY_PAGE_NB_READ => $this->page
-                ->getPageStatistiqueByKey(PageStatistiqueKey::KEY_PAGE_NB_READ)
+            PageStatistics::NB_READ->value => $this->page
+                ->getPageStatistiqueByKey(PageStatistics::NB_READ->value)
                 ->getValue(),
         ];
     }
