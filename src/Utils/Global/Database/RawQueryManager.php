@@ -86,4 +86,13 @@ class RawQueryManager
     {
         return $this->rawClass::getQueryCheckConnexion();
     }
+
+    /**
+     * Calcul un nombre de valeur en fonction d'une clée
+     * @return string
+     */
+    public function getQueryTotalStatByKey(): string
+    {
+        return $this->rawClass::getQueryTotalStatByKey();
+    }
 }

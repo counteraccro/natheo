@@ -133,4 +133,17 @@ class RawPostgresQuery implements RawQueryInterface
     {
         return 'SELECT 1';
     }
+
+    /**
+     * Calcul un nombre de valeur en fonction d'une clée
+     * @return string
+     */
+    public static function getQueryTotalStatByKey(): string
+    {
+        return 'SELECT SUM(CAST(ps.value AS INTEGER)) AS nb
+                FROM page_statistique ps
+                JOIN page p ON p.id = ps.page_id
+                WHERE ps.key = :key
+                AND p.status = :status';
+    }
 }
