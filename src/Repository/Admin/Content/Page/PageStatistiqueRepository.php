@@ -7,6 +7,7 @@ namespace App\Repository\Admin\Content\Page;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\Content\Page\PageStatistique;
 use App\Enum\Admin\Content\Page\PageStatus;
+use App\Utils\Global\Database\RawQueryManager;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -39,16 +40,17 @@ class PageStatistiqueRepository extends ServiceEntityRepository
      * @param string $key
      * @return int
      */
-    public function getTotalStatByKey(string $key): int
+    public function getTotalStatByKey(string $key, RawQueryManager $rawQueryManager): int
     {
-        return (int) $this->createQueryBuilder(PageStatistique::DEFAULT_ALIAS)
-            ->select('SUM(' . PageStatistique::DEFAULT_ALIAS . '.value) AS nb')
-            ->join(PageStatistique::DEFAULT_ALIAS . '.page', Page::DEFAULT_ALIAS)
-            ->where(PageStatistique::DEFAULT_ALIAS . '.key = :key')
-            ->andWhere(Page::DEFAULT_ALIAS . '.status = :status')
-            ->setParameter('key', $key)
-            ->setParameter('status', PageStatus::PUBLISH)
-            ->getQuery()
-            ->getSingleScalarResult();
+        $rsm = new \Doctrine\ORM\Query\ResultSetMapping();
+        $rsm->addScalarResult('nb', 'nb', 'integer');
+
+        $query = $rawQueryManager->getQueryTotalStatByKey();
+
+        $query = $this->getEntityManager()->createNativeQuery($query, $rsm);
+        $query->setParameter('key', $key);
+        $query->setParameter('status', PageStatus::PUBLISH->value);
+
+        return (int) $query->getSingleScalarResult();
     }
 }
