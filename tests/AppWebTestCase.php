@@ -7,7 +7,9 @@ use App\Tests\Helper\Fixtures\FixturesTrait;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Routing\Router;
+use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AppWebTestCase extends WebTestCase
@@ -77,5 +79,16 @@ class AppWebTestCase extends WebTestCase
         $this->client->request($methode, $this->router->generate($route, $params));
 
         $this->assertResponseStatusCodeSame(403);
+    }
+
+    /**
+     * Supprime me cache en fonction d'une clée
+     * @param string $key
+     * @return void
+     */
+    public function clearCacheByKey(string $key): void
+    {
+        $cache = $this->getContainer()->get(CacheInterface::class);
+        $cache->delete($key);
     }
 }
