@@ -9,9 +9,8 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller\Api\v1\Content;
 
+use App\Enum\Admin\Content\Page\PageStatistics;
 use App\Tests\Controller\Api\AppApiTestCase;
-use App\Utils\Content\Page\PageConst;
-use App\Utils\Content\Page\PageStatistiqueKey;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ApiPageControllerTest extends AppApiTestCase
@@ -50,10 +49,10 @@ class ApiPageControllerTest extends AppApiTestCase
         $this->assertArrayHasKey('tags', $content['data']['page']);
         $this->assertCount($page->getTags()->count(), $content['data']['page']['tags']);
         $this->assertArrayHasKey('statistiques', $content['data']['page']);
-        $statistique = $page->getPageStatistiqueByKey(PageStatistiqueKey::KEY_PAGE_NB_READ);
+        $statistique = $page->getPageStatistiqueByKey(PageStatistics::NB_READ->value);
         $this->assertEquals(
             $statistique->getValue() + 1,
-            $content['data']['page']['statistiques'][PageStatistiqueKey::KEY_PAGE_NB_READ],
+            $content['data']['page']['statistiques'][PageStatistics::NB_READ->value],
         );
         $this->assertArrayHasKey('contents', $content['data']['page']);
         $this->assertArrayHasKey('menus', $content['data']['page']);

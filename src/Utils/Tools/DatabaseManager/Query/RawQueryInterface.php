@@ -50,4 +50,10 @@ interface RawQueryInterface
      * @return string
      */
     public static function getQueryCheckConnexion(): string;
+
+    /**
+     * Calcul une somme de value en fonction d'une Key
+     * @return string
+     */
+    public static function getQueryTotalStatByKey(): string;
 }

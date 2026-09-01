@@ -13,9 +13,11 @@ namespace App\Controller\Admin;
 use App\Enum\Admin\DashboardBlock;
 use App\Enum\Admin\Global\Breadcrumb;
 use App\Service\Admin\DashboardService;
+use App\Service\Admin\StatisticsService;
 use App\Service\Admin\System\User\UserDataService;
 use App\Utils\System\User\UserDataKey;
 use App\Utils\Translate\Dashboard\DashboardTranslate;
+use Psr\Cache\InvalidArgumentException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -72,6 +74,13 @@ class DashboardController extends AppAdminController
                 'isAdmin' => $this->isGranted('ROLE_ADMIN'),
                 'isSuperAdmin' => $this->isGranted('ROLE_SUPER_ADMIN'),
             ],
+            'translateStat' => $dashboardTranslate->getDashboardStatisticsTranslate(),
+            'urlStat' => [
+                'stats' => $this->generateUrl('admin_dashboard_load_dashboard_stat'),
+                'page' => $this->generateUrl('admin_page_index'),
+                'comment' => $this->generateUrl('admin_comment_index'),
+                'user' => $this->generateUrl('admin_user_index'),
+            ],
         ]);
     }
 
@@ -100,6 +109,18 @@ class DashboardController extends AppAdminController
             ],
         };
         return $this->json($return);
+    }
+
+    /**
+     * Charge les statistiques pour le dashboard
+     * @param StatisticsService $statisticsService
+     * @return JsonResponse
+     * @throws InvalidArgumentException
+     */
+    #[Route('/ajax/load-dashboard-stat', name: 'load_dashboard_stat', methods: ['GET'])]
+    public function loadStatistics(StatisticsService $statisticsService): JsonResponse
+    {
+        return $this->json($statisticsService->getDashboardStatistics());
     }
 
     /**

@@ -69,4 +69,29 @@ class DashboardControllerTest extends AppWebTestCase
         $this->assertEmpty($content['body']);
         $this->assertNotEmpty($content['error']);
     }
+
+    public function testLoadStatistics(): void
+    {
+        $this->clearCacheByKey('dashboard_statistics');
+        $user = $this->createUser();
+        $this->client->loginUser($user, 'admin');
+        $this->client->request('GET', $this->router->generate('admin_dashboard_load_dashboard_stat'));
+        $this->assertResponseIsSuccessful();
+        $response = $this->client->getResponse();
+        $this->assertJson($response->getContent());
+        $content = json_decode($response->getContent(), true);
+        $this->assertIsArray($content);
+
+        $this->assertArrayHasKey('nbPage', $content);
+        $this->assertArrayHasKey('nbComments', $content);
+        $this->assertArrayHasKey('nbWaitComments', $content);
+        $this->assertArrayHasKey('nbUsers', $content);
+        $this->assertArrayHasKey('nbViews', $content);
+
+        $this->assertEquals(0, $content['nbPage']);
+        $this->assertEquals(0, $content['nbComments']);
+        $this->assertEquals(0, $content['nbWaitComments']);
+        $this->assertEquals(1, $content['nbUsers']);
+        $this->assertEquals(0, $content['nbViews']);
+    }
 }

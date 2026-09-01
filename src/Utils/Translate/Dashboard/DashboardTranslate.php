@@ -119,4 +119,21 @@ class DashboardTranslate extends AppTranslate
             'loading' => $this->translator->trans('dashboard.block.last.pages.loading', domain: 'dashboard'),
         ];
     }
+
+    public function getDashboardStatisticsTranslate(): array
+    {
+        return [
+            'total_article' => $this->translator->trans('dashboard.statistics.total.article', domain: 'dashboard'),
+            'comments' => $this->translator->trans('dashboard.statistics.total.comments', domain: 'dashboard'),
+            'comments_waiting' => $this->translator->trans(
+                'dashboard.statistics.total.comments.waiting',
+                domain: 'dashboard',
+            ),
+            'users' => $this->translator->trans('dashboard.statistics.total.users', domain: 'dashboard'),
+            'views' => $this->translator->trans('dashboard.statistics.total.views', domain: 'dashboard'),
+            'link_pages' => $this->translator->trans('dashboard.statistics.link.pages', domain: 'dashboard'),
+            'link_users' => $this->translator->trans('dashboard.statistics.link.users', domain: 'dashboard'),
+            'info_cache' => $this->translator->trans('dashboard.statistics.info.cache', domain: 'dashboard'),
+        ];
+    }
 }

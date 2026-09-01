@@ -12,6 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'page_statistique')]
 class PageStatistique
 {
+    public const string DEFAULT_ALIAS = 'page_statistique';
+
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: DoctrineStrategy::CURRENT)]
     #[ORM\Column]

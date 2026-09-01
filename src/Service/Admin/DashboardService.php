@@ -15,6 +15,7 @@ use App\Repository\Admin\Content\Comment\CommentRepository;
 use App\Utils\System\ApiToken\ApiTokenConst;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class DashboardService extends AppAdminService
 {

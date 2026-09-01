@@ -37,3 +37,11 @@ dashboard.block.last.pages.title: 'Dernière page'
 dashboard.block.last.pages.loading: 'Chargement des dernières pages...'
 dashboard.block.help.first.connexion.link.options: 'Options systèmes'
 dashboard.block.help.first.connexion.link.tokens: 'Gérer les tokens'
+dashboard.statistics.total.article: 'Pages publiées'
+dashboard.statistics.total.comments: 'Commentaires validés'
+dashboard.statistics.total.comments.waiting: 'en attente(s)'
+dashboard.statistics.total.users: Utilisateurs
+dashboard.statistics.total.views: Publications
+dashboard.statistics.link.pages: Gérer
+dashboard.statistics.link.users: Gérer
+dashboard.statistics.info.cache: Données en cache (5 minutes)
