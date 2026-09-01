@@ -17,6 +17,7 @@ use App\Service\Admin\StatisticsService;
 use App\Service\Admin\System\User\UserDataService;
 use App\Utils\System\User\UserDataKey;
 use App\Utils\Translate\Dashboard\DashboardTranslate;
+use Psr\Cache\InvalidArgumentException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -112,8 +113,9 @@ class DashboardController extends AppAdminController
 
     /**
      * Charge les statistiques pour le dashboard
-     * @param DashboardService $dashboardService
+     * @param StatisticsService $statisticsService
      * @return JsonResponse
+     * @throws InvalidArgumentException
      */
     #[Route('/ajax/load-dashboard-stat', name: 'load_dashboard_stat', methods: ['GET'])]
     public function loadStatistics(StatisticsService $statisticsService): JsonResponse
