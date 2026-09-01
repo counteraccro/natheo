@@ -9,8 +9,6 @@ declare(strict_types=1);
 
 namespace App\Service\Admin;
 
-use App\Entity\Admin\Content\Page\Page;
-use App\Entity\Admin\Content\Page\PageStatistique;
 use App\Enum\Admin\Comment\Status;
 use App\Enum\Admin\Content\Page\PageStatistics;
 use App\Enum\Admin\Content\Page\PageStatus;
@@ -60,7 +58,10 @@ class StatisticsService extends AppAdminService
                 'nbWaitComments' => $byStatus[Status::WAIT_VALIDATION->value] ?? 0,
                 'nbUsers' => $this->userRepository->count(),
                 'nbViews' => $this->formatCompactNumber(
-                    $this->pageStatistiqueRepository->getTotalStatByKey(PageStatistics::NB_READ->value),
+                    $this->pageStatistiqueRepository->getTotalStatByKey(
+                        PageStatistics::NB_READ->value,
+                        $this->getRawQueryManager(),
+                    ),
                 ),
             ];
         });
