@@ -8,7 +8,7 @@ import {
   PageData,
   PageTranslations,
   Urls,
-} from '@/ts/Page/type';
+} from '@/ts/Page/Page.type';
 import axios from 'axios';
 import MarkdownEditor from '@/vue/Components/Global/MarkdownEditor/MarkdownEditor.vue';
 import Modal from '@/vue/Components/Global/Modal.vue';
