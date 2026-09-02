@@ -24,7 +24,7 @@ import type {
   LoadDataDatabaseResponse,
   ExecuteSqlResponse,
   SaveResponse,
-} from '@/ts/SqlManager/type';
+} from '@/ts/SqlManager/SqlManager.type';
 
 export default defineComponent({
   name: 'SqlManager',
