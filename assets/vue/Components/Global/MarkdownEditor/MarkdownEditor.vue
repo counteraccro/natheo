@@ -11,7 +11,7 @@ import type {
   EditorModule,
   MarkdownToolbar,
   MarkdownToolbarButtonName,
-} from '@/ts/MarkdownEditor/MarkdownEditor.types';
+} from '@/ts/MarkdownEditor/MarkdownEditor.type';
 import axios from 'axios';
 import InternalLink from '@/vue/Components/Global/MarkdownEditor/InternalLink.vue';
 import { Dropdown, initDropdowns } from 'flowbite';
