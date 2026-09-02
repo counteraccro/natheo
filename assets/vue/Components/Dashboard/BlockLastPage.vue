@@ -1,26 +1,37 @@
-<script>
+<script lang="ts">
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 2.0
  * Composant card derniers commentaires
  */
+import { defineComponent, type PropType } from 'vue';
 import axios from 'axios';
 import SkeletonTable from '@/vue/Components/Skeleton/Table.vue';
 import AlertDanger from '@/vue/Components/Alert/Danger.vue';
+import type {
+  BlockLastPageUrls,
+  BlockLastPageTranslate,
+  LoadBlockDashboardResponse,
+} from '@/ts/Dashboard/BlockLastPage.type';
 
-export default {
+export default defineComponent({
   name: 'BlockLastPage',
   components: { AlertDanger, SkeletonTable },
-  emit: [],
   props: {
-    urls: Object,
-    translate: Object,
+    urls: {
+      type: Object as PropType<BlockLastPageUrls>,
+      required: true,
+    },
+    translate: {
+      type: Object as PropType<BlockLastPageTranslate>,
+      required: true,
+    },
   },
   emits: ['reload-grid'],
   data() {
     return {
-      loading: false,
-      errorMessage: null,
+      loading: false as boolean,
+      errorMessage: null as string | null,
     };
   },
   mounted() {
@@ -30,14 +41,13 @@ export default {
     /**
      * Chargement du module
      */
-    load() {
+    load(): void {
       this.loading = true;
       axios
-        .get(this.urls.load_block_dashboard)
+        .get<LoadBlockDashboardResponse>(this.urls.load_block_dashboard)
         .then((response) => {
-          if (response.data.success === false) {
+          if (!response.data.success) {
             this.errorMessage = response.data.error;
-          } else {
           }
         })
         .catch((error) => {
@@ -49,11 +59,11 @@ export default {
         });
     },
 
-    reload() {
+    reload(): void {
       this.$emit('reload-grid');
     },
   },
-};
+});
 </script>
 
 <template>
@@ -67,22 +77,21 @@ export default {
               d="M10 3v4a1 1 0 0 1-1 1H5m14-4v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1ZM8 18h8l-2-4-1.5 2-2-4L8 18Zm7-8.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0Z"
             />
           </svg>
-          {{ 'Dernières pages' }}
+          {{ translate.title }}
         </div>
       </div>
       <a
-        :href="this.urls.url_comments"
-        class="text-sm font-medium hover:underline flex items-center gap-1"
-        style="color: var(--primary)"
+        :href="urls.url_pages"
+        class="text-sm font-medium hover:underline flex items-center gap-1 text-[color:var(--primary)]"
       >
-        {{ 'Voir tout' }}
+        {{ translate.link_page }}
         <svg class="card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-width="2" d="M17 8l4 4m0 0-4 4m4-4H3" />
         </svg>
       </a>
     </div>
-    <div class="overflow-x-auto m-4" v-if="!this.loading">
-      <AlertDanger v-if="this.errorMessage !== null" :text="this.errorMessage" />
+    <div class="overflow-x-auto m-4" v-if="!loading">
+      <AlertDanger v-if="errorMessage !== null" :text="errorMessage" />
     </div>
     <div v-else>
       <SkeletonTable :rows="5" :columns="3" />
