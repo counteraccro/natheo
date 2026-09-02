@@ -17,7 +17,7 @@ import {
   PageTranslations,
   Tag,
   Urls,
-} from '@/ts/Page/type';
+} from '@/ts/Page/Page.type';
 import axios from 'axios';
 import PageContent from '@/vue/Components/Page/PageContent.vue';
 import { initFlowbite } from 'flowbite';
@@ -25,7 +25,7 @@ import MediathequeModale from '@/vue/Components/Global/MarkdownEditor/Mediathequ
 import PageHistory from '@/vue/Components/Page/PageHistory.vue';
 import PageStatusBar from '@/vue/Components/Page/PageStatusBar.vue';
 import Toast from '@/vue/Components/Global/Toast.vue';
-import { Toasts } from '@/ts/Toast/type';
+import { Toasts } from '@/ts/Toast/Toast.type';
 import PageSeo from '@/vue/Components/Page/PageSeo.vue';
 import PageSEO from '@/vue/Components/Page/PageSeo.vue';
 import PageTag from '@/vue/Components/Page/PageTag.vue';
