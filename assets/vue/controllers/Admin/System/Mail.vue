@@ -13,7 +13,7 @@ import Toast from '@/vue/Components/Global/Toast.vue';
 import SkeletonForm from '@/vue/Components/Skeleton/Form.vue';
 import SkeletonText from '@/vue/Components/Skeleton/Text.vue';
 import { InternalLinkModule } from '@/ts/MarkdownEditor/modules/internalLink';
-import { EditorModule } from '@/ts/MarkdownEditor/MarkdownEditor.types';
+import { EditorModule } from '@/ts/MarkdownEditor/MarkdownEditor.type';
 import InternalLink from '@/vue/Components/Global/MarkdownEditor/InternalLink.vue';
 import MediathequeModale from '@/vue/Components/Global/MarkdownEditor/Mediatheque.vue';
 import { MediaModule } from '@/ts/MarkdownEditor/modules/Mediatheque';
