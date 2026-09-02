@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { Menu, LoadMenuData } from '@/ts/Menu/type';
+import { Menu, LoadMenuData } from '@/ts/Menu/Menu.type';
 import MenuLeftRightItem from './MenuLeftRightItem.vue';
 
 export default defineComponent({

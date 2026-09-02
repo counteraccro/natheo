@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { Menu, LoadMenuData } from '@/ts/Menu/type';
+import { Menu, LoadMenuData } from '@/ts/Menu/Menu.type';
 import MenuHeaderNavbar from './MenuHeaderNavbar.vue';
 import MenuHeaderDropdown from './MenuHeaderDropdown.vue';
 import MenuHeaderMega from './MenuHeaderMega.vue';
