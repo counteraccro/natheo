@@ -11,7 +11,7 @@ import type {
   InstallationStepFourTranslate,
   InstallationStepFourLocales,
   InstallationStepFourDatas,
-} from '@/ts/Installation/InstallationStepFour';
+} from '@/ts/Installation/InstallationStepFour.type';
 
 export default defineComponent({
   name: 'InstallationStepFour',

@@ -19,10 +19,10 @@ import type {
   CreateStepStatus,
   UpdateEnvPayload,
   UpdateEnvResponse,
-} from '@/ts/Installation/InstallationStepTwo';
+} from '@/ts/Installation/InstallationStepTwo.type';
 import axios, { AxiosError } from 'axios';
 import InstallationStepTwoSkeleton from '@/vue/Components/Skeleton/Installation/InstallationStepTwo.vue';
-import { BddConfig } from '@/ts/Installation/InstallationStepOne';
+import { BddConfig } from '@/ts/Installation/InstallationStepOne.type';
 
 export default defineComponent({
   name: 'InstallationStepTwo',
