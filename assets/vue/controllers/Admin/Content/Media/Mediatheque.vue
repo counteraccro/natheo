@@ -12,11 +12,11 @@ import MediasBreadcrumb from '@/vue/Components/Mediatheque/MediasBreadcrumb.vue'
 import MediasGrid from '@/vue/Components/Mediatheque/MediasGrid.vue';
 import { initFlowbite } from 'flowbite';
 import MediaInfo from '@/vue/Components/Mediatheque/MediaInfo.vue';
-import { MediaItem, TranslateRecord } from '@/ts/Mediatheque/type';
+import { MediaItem, TranslateRecord } from '@/ts/Mediatheque/Mediatheque.type';
 import MediaEdit from '@/vue/Components/Mediatheque/MediaEdit.vue';
 import MediaMove from '@/vue/Components/Mediatheque/MediaMove.vue';
 import Toast from '@/vue/Components/Global/Toast.vue';
-import { Toasts } from '@/ts/Toast/type';
+import { Toasts } from '@/ts/Toast/Toast.type';
 import MediaNew from '@/vue/Components/Mediatheque/MediaNew.vue';
 import MediasTrash from '@/vue/Components/Mediatheque/MediasTrash.vue';
 
