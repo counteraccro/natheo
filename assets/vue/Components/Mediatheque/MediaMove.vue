@@ -5,10 +5,10 @@
  * Permet de déplacer un média ou une image
  */
 import { defineComponent, type PropType } from 'vue';
-import { MediaItem, TranslateRecord } from '@/ts/Mediatheque/type';
+import { MediaItem, TranslateRecord } from '@/ts/Mediatheque/Mediatheque.type';
 import SkeletonMediathequeMove from '@/vue/Components/Skeleton/MediathequeMove.vue';
 import axios from 'axios';
-import { Toasts } from '@/ts/Toast/type';
+import { Toasts } from '@/ts/Toast/Toast.type';
 import Toast from '@/vue/Components/Global/Toast.vue';
 
 export default defineComponent({

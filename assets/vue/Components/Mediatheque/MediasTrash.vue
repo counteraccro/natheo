@@ -1,7 +1,7 @@
 <script lang="ts">
 import { initFlowbite } from 'flowbite';
 import type { PropType } from 'vue';
-import { MediaItem, TranslateRecord } from '@/ts/Mediatheque/type';
+import { MediaItem, TranslateRecord } from '@/ts/Mediatheque/Mediatheque.type';
 
 /**
  * @author Gourdon Aymeric

@@ -5,9 +5,9 @@
  * Edition d'un média ou dossier
  */
 import { defineComponent, type PropType } from 'vue';
-import { MediaItem } from '@/ts/Mediatheque/type';
+import { MediaItem } from '@/ts/Mediatheque/Mediatheque.type';
 import AlertWarning from '@/vue/Components/Alert/Warning.vue';
-import { Toasts } from '@/ts/Toast/type';
+import { Toasts } from '@/ts/Toast/Toast.type';
 import Toast from '@/vue/Components/Global/Toast.vue';
 import axios from 'axios';
 import translate from '@/vue/controllers/Admin/System/Translate.vue';

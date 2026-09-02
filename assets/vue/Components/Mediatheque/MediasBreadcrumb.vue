@@ -5,7 +5,7 @@
  * Affichage de la navBar des médias
  */
 import { defineComponent, PropType } from 'vue';
-import { Paths } from '@/ts/Mediatheque/type';
+import { Paths } from '@/ts/Mediatheque/Mediatheque.type';
 
 export default defineComponent({
   name: 'MediasBreadcrum',

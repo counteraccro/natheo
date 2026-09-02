@@ -6,10 +6,10 @@
  */
 
 import { defineComponent, type PropType } from 'vue';
-import { FileData, TranslateRecord } from '@/ts/Mediatheque/type';
+import { FileData, TranslateRecord } from '@/ts/Mediatheque/Mediatheque.type';
 import FileUpload from '@/vue/Components/Global/FileUpload.vue';
 import axios from 'axios';
-import { Toasts } from '@/ts/Toast/type';
+import { Toasts } from '@/ts/Toast/Toast.type';
 import Toast from '@/vue/Components/Global/Toast.vue';
 import SkeletonMediathequeUpload from '@/vue/Components/Skeleton/MediathequeUpload.vue';
 
