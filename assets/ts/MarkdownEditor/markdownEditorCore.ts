@@ -7,7 +7,7 @@
 import { ref, computed, type ComputedRef } from 'vue';
 import { marked } from 'marked';
 import DOMPurify from 'dompurify';
-import type { UseEditorReturn, EditorSelection } from '@/ts/MarkdownEditor/MarkdownEditor.types';
+import type { UseEditorReturn, EditorSelection } from '@/ts/MarkdownEditor/MarkdownEditor.type';
 
 // ─── Renderer Nathéo ────────────────────────────────────────────────────────
 
