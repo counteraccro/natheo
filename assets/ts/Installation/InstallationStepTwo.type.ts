@@ -3,7 +3,7 @@ import type {
   BddConfig,
   UpdateEnvPayload,
   UpdateEnvResponse,
-} from '@/ts/Installation/InstallationStepOne';
+} from '@/ts/Installation/InstallationStepOne.type';
 
 export type InstallationStepTwoTranslate = InstallationStepOneTranslate;
 
