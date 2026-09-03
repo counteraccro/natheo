@@ -68,6 +68,14 @@ class RawMysqlQuery implements RawQueryInterface
     }
 
     /**
+     * @inheritDoc
+     */
+    public static function getQueryCheckConnexion(): string
+    {
+        return 'SELECT 1;';
+    }
+
+    /**
      * @return string
      */
     public static function getQueryPurgeNotification(): string
@@ -77,5 +85,18 @@ class RawMysqlQuery implements RawQueryInterface
                 WHERE n.user_id = :user_id
                     AND n.`read` = 1
                     AND DATEDIFF(CURRENT_DATE(), n.created_at) > :nb_day";
+    }
+
+    /**
+     * Calcul un nombre de valeur en fonction d'une clée
+     * @return string
+     */
+    public static function getQueryTotalStatByKey(): string
+    {
+        return 'SELECT SUM(CAST(ps.value AS SIGNED)) AS nb
+        FROM page_statistique ps
+        JOIN page p ON p.id = ps.page_id
+        WHERE ps.key = :key
+        AND p.status = :status';
     }
 }

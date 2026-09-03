@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace App\Utils\Global\Database;
 
+use App\Enum\Installation\DoctrineStrategy;
 use App\Utils\Installation\InstallationConst;
 use App\Utils\Tools\DatabaseManager\Query\RawMysqlQuery;
 use App\Utils\Tools\DatabaseManager\Query\RawPostgresQuery;
@@ -22,9 +23,9 @@ class RawQueryManager
 
     public function __construct()
     {
-        $this->rawClass = match (InstallationConst::STRATEGY) {
-            InstallationConst::STRATEGY_MYSQL => RawMysqlQuery::class,
-            InstallationConst::STRATEGY_POSTGRESQL => RawPostgresQuery::class,
+        $this->rawClass = match (DoctrineStrategy::current()) {
+            DoctrineStrategy::MYSQL->value => RawMysqlQuery::class,
+            DoctrineStrategy::POSTGRESQL->value => RawPostgresQuery::class,
         };
     }
 
@@ -75,5 +76,23 @@ class RawQueryManager
     public function getQueryPurgeNotification(): string
     {
         return $this->rawClass::getQueryPurgeNotification();
+    }
+
+    /**
+     * Test la connexion au SGBD
+     * @return string
+     */
+    public function getQueryCheckConnexion(): string
+    {
+        return $this->rawClass::getQueryCheckConnexion();
+    }
+
+    /**
+     * Calcul un nombre de valeur en fonction d'une clée
+     * @return string
+     */
+    public function getQueryTotalStatByKey(): string
+    {
+        return $this->rawClass::getQueryTotalStatByKey();
     }
 }

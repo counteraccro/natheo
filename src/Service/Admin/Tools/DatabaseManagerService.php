@@ -38,7 +38,7 @@ class DatabaseManagerService extends AppAdminService
         $parameterBag = $this->getParameterBag();
 
         $query = $rawQuery->getQueryAllInformationSchema(
-            str_replace('.', '', $parameterBag->get('app.default_database_schema')),
+            str_replace('.', '', $parameterBag->get('app.default_database_name')),
         );
         $result = $database->executeRawQuery($query);
 

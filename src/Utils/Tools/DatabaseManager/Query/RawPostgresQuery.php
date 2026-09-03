@@ -128,4 +128,22 @@ class RawPostgresQuery implements RawQueryInterface
             AND n.read = true
             AND EXTRACT(day from ((CURRENT_DATE - n.created_at))) > :nb_day';
     }
+
+    public static function getQueryCheckConnexion(): string
+    {
+        return 'SELECT 1';
+    }
+
+    /**
+     * Calcul un nombre de valeur en fonction d'une clée
+     * @return string
+     */
+    public static function getQueryTotalStatByKey(): string
+    {
+        return 'SELECT SUM(CAST(ps.value AS INTEGER)) AS nb
+                FROM page_statistique ps
+                JOIN page p ON p.id = ps.page_id
+                WHERE ps.key = :key
+                AND p.status = :status';
+    }
 }

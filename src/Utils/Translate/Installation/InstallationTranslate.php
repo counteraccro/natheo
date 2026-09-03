@@ -53,6 +53,10 @@ class InstallationTranslate extends AppTranslate
                 'installation.step.1.config.bdd.btn.test.config',
                 domain: 'installation',
             ),
+            'config_bdd_btn_save_config' => $this->translator->trans(
+                'installation.step.1.config.bdd.btn.save.config',
+                domain: 'installation',
+            ),
             'config_bdd_btn_test_config_loading' => $this->translator->trans(
                 'installation.step.1.config.bdd.btn.test.config.loading',
                 domain: 'installation',
@@ -181,6 +185,25 @@ class InstallationTranslate extends AppTranslate
             ),
             'create_bdd_loading_msg_success' => $this->translator->trans(
                 'installation.step.1.create.bdd.msg.success',
+                domain: 'installation',
+            ),
+            'field_required' => $this->translator->trans('installation.step.1.field.required', domain: 'installation'),
+            'btn_return' => $this->translator->trans('installation.step.1.btn.return', domain: 'installation'),
+            'create_bdd_sub_title_identifiant' => $this->translator->trans(
+                'installation.step.1.sub-title.identifiant',
+                domain: 'installation',
+            ),
+            'create_bdd_sub_title_server' => $this->translator->trans(
+                'installation.step.1.sub-title.server',
+                domain: 'installation',
+            ),
+            'create_bdd_sub_title_options' => $this->translator->trans(
+                'installation.step.1.sub-title.options',
+                domain: 'installation',
+            ),
+            'btn_step_two' => $this->translator->trans('installation.step.1.btn.step.2', domain: 'installation'),
+            'create_bdd_msg_already_exist' => $this->translator->trans(
+                'installation.step.1.msg.bdd.already_exist',
                 domain: 'installation',
             ),
         ];
@@ -327,6 +350,22 @@ class InstallationTranslate extends AppTranslate
                 'installation.step.2.finish.loading.msg.cache.ko',
                 domain: 'installation',
             ),
+        ];
+    }
+
+    public function getTranslateStepFour(): array
+    {
+        return [
+            'title_h1' => $this->translator->trans('installation.step.4.title', domain: 'installation'),
+            'description' => $this->translator->trans('installation.step.4.description', domain: 'installation'),
+            'summary_database' => $this->translator->trans(
+                'installation.step.4.summary.database',
+                domain: 'installation',
+            ),
+            'summary_user' => $this->translator->trans('installation.step.4.summary.user', domain: 'installation'),
+            'summary_data' => $this->translator->trans('installation.step.4.summary.data', domain: 'installation'),
+            'summary_cache' => $this->translator->trans('installation.step.4.summary.cache', domain: 'installation'),
+            'btn_login' => $this->translator->trans('installation.step.4.btn.login', domain: 'installation'),
         ];
     }
 }

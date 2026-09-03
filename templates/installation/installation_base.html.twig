@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html class="">
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Welcome!{% endblock %}</title>
     <link rel="icon" type="image/jpg" href="{{ asset('assets/natheo/favico/favicon.ico') }}">
-    
-       {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+
     {% block stylesheets %}
         {{ vite_entry_link_tags('install_css') }}
     {% endblock %}
@@ -15,6 +14,47 @@
     {% endblock %}
 </head>
 <body>
+
+<div class="fixed top-4 right-4 z-50">
+    <div class="relative">
+        <button id="themeButton" data-dropdown-toggle="themeDropdown" data-dropdown-placement="bottom-end" class="p-2 rounded-lg transition card" style="color:var(--text-secondary);" type="button" title="Personnalisation">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"></path></svg>
+        </button>
+        <div id="themeDropdown" class="z-10 rounded-xl shadow-lg w-72 p-4 hidden" style="background-color: var(--bg-card); border: 1px solid var(--border-color); position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate(-16px, 64px);" data-popper-placement="bottom-end">
+            <p class="text-sm font-semibold mb-3" style="color:var(--text-primary);">{{ 'global.header.theme' | trans({}, 'global') }}</p>
+            <div class="flex gap-3 mb-4">
+                <button class="theme-btn theme-violet active" onclick="setTheme('violet')" title="Violet"></button>
+                <button class="theme-btn theme-blue" onclick="setTheme('blue')" title="Bleu"></button>
+                <button class="theme-btn theme-green" onclick="setTheme('green')" title="Vert"></button>
+                <button class="theme-btn theme-red" onclick="setTheme('red')" title="Rouge"></button>
+            </div>
+            <div class="pt-3 border-t" style="border-color:var(--border-color);">
+                <div class="flex items-center justify-between">
+                    <span class="text-sm font-semibold" style="color:var(--text-primary);">{{ 'global.header.dark.mode' | trans({}, 'global') }}</span>
+                    <div class="dark-mode-toggle" id="darkToggle" onclick="toggleDarkMode()"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="max-w-3xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
+
+    <div class="flex items-center gap-3 mb-2">
+        <div class="p-2 rounded-lg" style="background-color: var(--primary-lighter);">
+            <svg class="w-6 h-6" style="color: var(--primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375C2.754 3.75 2.25 4.254 2.25 4.875v1.5c0 .621.504 1.125 1.125 1.125z"></path>
+            </svg>
+        </div>
+        <div>
+            <p class="text-xs font-semibold uppercase tracking-wide" style="color: var(--text-light);"> {{ 'installation.titre' | trans({}, 'installation') }}</p>
+            <h1 class="text-lg font-bold">Nathéo CMS {{ app_version }}</h1>
+        </div>
+    </div>
+
 {% block body %}{% endblock %}
+</div>
+
+{% include "/installation/includes/scripts.html.twig" %}
 </body>
 </html>

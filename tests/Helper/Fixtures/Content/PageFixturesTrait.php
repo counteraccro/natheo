@@ -23,10 +23,9 @@ use App\Enum\Admin\Comment\Status;
 use App\Enum\Admin\Content\Page\PageCategory;
 use App\Enum\Admin\Content\Page\PageContentType;
 use App\Enum\Admin\Content\Page\PageRender;
+use App\Enum\Admin\Content\Page\PageStatistics;
 use App\Enum\Admin\Content\Page\PageStatus;
 use App\Tests\Helper\FakerTrait;
-use App\Utils\Content\Page\PageConst;
-use App\Utils\Content\Page\PageStatistiqueKey;
 
 trait PageFixturesTrait
 {
@@ -347,11 +346,11 @@ trait PageFixturesTrait
         $this->createPageTag($page);
 
         $this->createPageStatistique($page, [
-            'key' => PageStatistiqueKey::KEY_PAGE_NB_READ,
+            'key' => PageStatistics::NB_READ->value,
             'value' => strval(self::getFaker()->randomNumber(3)),
         ]);
         $this->createPageStatistique($page, [
-            'key' => PageStatistiqueKey::KEY_PAGE_NB_VISITEUR,
+            'key' => PageStatistics::NB_VISITEUR->value,
             'value' => strval(self::getFaker()->randomNumber(3)),
         ]);
         return $page;

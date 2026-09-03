@@ -6,6 +6,7 @@ namespace App\Entity\Admin\Content\Comment;
 
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\System\User;
+use App\Enum\Installation\DoctrineStrategy;
 use App\Repository\Admin\Content\Comment\CommentRepository;
 use App\Utils\Installation\InstallationConst;
 use Doctrine\DBAL\Types\Types;
@@ -21,7 +22,7 @@ class Comment
     public const array ALLOWED_ORDER_FIELDS = ['author', 'page', 'status', 'createdAt'];
 
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: InstallationConst::STRATEGY)]
+    #[ORM\GeneratedValue(strategy: DoctrineStrategy::CURRENT)]
     #[ORM\Column]
     private ?int $id = null;
 

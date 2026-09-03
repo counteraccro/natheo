@@ -77,7 +77,7 @@ export default {
       >
         {{ 'Voir tout' }}
         <svg class="card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-width="2" d="M13 5h6m0 0v6m0-6L10 14m-4 5h8a2 2 0 0 0 2-2v-3" />
+          <path stroke-width="2" d="M17 8l4 4m0 0-4 4m4-4H3" />
         </svg>
       </a>
     </div>

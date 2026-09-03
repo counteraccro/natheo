@@ -16,20 +16,14 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo as ClassMetadataInfo;
 class DatabaseTablePrefixListener
 {
     protected string $prefix = '';
-    protected string $schema = '';
 
     /**
      * @param string $prefix
      * @param string $schema
      */
-    public function __construct(string $prefix, string $schema)
+    public function __construct(string $prefix)
     {
         $this->prefix = $prefix;
-        $this->schema = $schema;
-
-        if ($this->schema !== '') {
-            $this->schema .= '.';
-        }
 
         if ($this->prefix !== '') {
             $this->prefix .= '_';
@@ -49,7 +43,7 @@ class DatabaseTablePrefixListener
             $classMetadata->getName() === $classMetadata->rootEntityName
         ) {
             $classMetadata->setPrimaryTable([
-                'name' => $this->schema . $this->prefix . $classMetadata->getTableName(),
+                'name' => $this->prefix . $classMetadata->getTableName(),
             ]);
         }
 
@@ -58,8 +52,7 @@ class DatabaseTablePrefixListener
 
             if ($mapping['type'] === 8 && $mapping['isOwningSide']) {
                 $mappedTableName = $mapping['joinTable']['name'];
-                $classMetadata->associationMappings[$fieldName]['joinTable']['name'] =
-                    $this->schema . $this->prefix . $mappedTableName;
+                $classMetadata->associationMappings[$fieldName]['joinTable']['name'] = $this->prefix . $mappedTableName;
             }
         }
     }

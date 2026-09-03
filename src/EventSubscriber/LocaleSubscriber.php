@@ -10,6 +10,7 @@ namespace App\EventSubscriber;
 
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Enum\Admin\System\Options\OptionUser;
+use App\Enum\Installation\OptionInstallation;
 use App\Service\Admin\System\OptionSystemService;
 use App\Service\Admin\System\OptionUserService;
 use App\Utils\Global\Database\DataBase;
@@ -80,7 +81,10 @@ class LocaleSubscriber implements EventSubscriberInterface
     public function onKernelController(ControllerEvent $event): void
     {
         // Lors de l'installation si pas de bdd pour éviter les crashs
-        if (!$this->dataBase->isConnected() || !$this->dataBase->isTableExiste()) {
+        if (
+            !$this->dataBase->check(OptionInstallation::DATABASE_EXIST->value)['success'] ||
+            !$this->dataBase->isTableExiste()
+        ) {
             $this->localeSwitcher->setLocale('fr');
             return;
         }

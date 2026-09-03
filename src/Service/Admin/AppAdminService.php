@@ -31,6 +31,16 @@ use Symfony\Component\Serializer\Serializer;
 class AppAdminService extends AppAdminHandlerService
 {
     /**
+     * @var ObjectNormalizer|null
+     */
+    private ?ObjectNormalizer $entityNormalizer = null;
+
+    /**
+     * @var PropertyInfoExtractor|null
+     */
+    private ?PropertyInfoExtractor $propertyInfoExtractor = null;
+
+    /**
      * Structure de la réponse d'un appel AJAX
      * @var array|
      */
@@ -61,11 +71,14 @@ class AppAdminService extends AppAdminHandlerService
      */
     public function save(mixed $entity, bool $flush = true): void
     {
+        $this->ajaxResponse = ['success' => false, 'msg' => ''];
         try {
-            $repo = $this->getRepository($entity::class);
-            $repo->save($entity, $flush);
+            $this->getEntityManager()->persist($entity);
+            if ($flush) {
+                $this->getEntityManager()->flush();
+            }
             $this->ajaxResponse['success'] = true;
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             $this->getLogger()->error($exception->getMessage());
             $this->ajaxResponse['success'] = false;
         }
@@ -111,11 +124,14 @@ class AppAdminService extends AppAdminHandlerService
      */
     public function remove(mixed $entity, bool $flush = true): void
     {
+        $this->ajaxResponse = ['success' => false, 'msg' => ''];
         try {
-            $repo = $this->getRepository($entity::class);
-            $repo->remove($entity, $flush);
+            $this->getEntityManager()->remove($entity);
+            if ($flush) {
+                $this->getEntityManager()->flush();
+            }
             $this->ajaxResponse['success'] = true;
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             $this->getLogger()->error($exception->getMessage());
             $this->ajaxResponse['success'] = false;
         }
@@ -197,16 +213,10 @@ class AppAdminService extends AppAdminHandlerService
      */
     public function convertEntityToArray(object $object, array $ignoredAttributes = []): array
     {
-        $defaultContext = [
-            AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object, $format, $context) {
-                return $object->getId();
-            },
+        $serializer = new Serializer([$this->getEntityNormalizer()], []);
+        return $serializer->normalize($object, null, [
             AbstractNormalizer::IGNORED_ATTRIBUTES => $ignoredAttributes,
-        ];
-        $normalizer = new ObjectNormalizer(null, null, null, null, null, null, $defaultContext);
-        $serializer = new Serializer([$normalizer], []);
-
-        return $serializer->normalize($object, null);
+        ]);
     }
 
     /**
@@ -214,19 +224,14 @@ class AppAdminService extends AppAdminHandlerService
      * @param $objects
      * @param array $ignoredAttributes
      * @return string
+     * @throws ExceptionInterface
      */
     public function convertObjectsToJson($objects, array $ignoredAttributes = []): string
     {
-        $defaultContext = [
-            AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object, $format, $context) {
-                return $object->getId();
-            },
+        $serializer = new Serializer([$this->getEntityNormalizer()], [new JsonEncoder()]);
+        return $serializer->serialize($objects, 'json', [
             AbstractNormalizer::IGNORED_ATTRIBUTES => $ignoredAttributes,
-        ];
-        $normalizer = new ObjectNormalizer(null, null, null, null, null, null, $defaultContext);
-        $serializer = new Serializer([$normalizer], [new JsonEncoder()]);
-
-        return $serializer->serialize($objects, 'json', $defaultContext);
+        ]);
     }
 
     /**
@@ -238,8 +243,7 @@ class AppAdminService extends AppAdminHandlerService
      */
     public function convertArrayToEntity(array $array, string $objectClass, object $object): object
     {
-        $extractor = new PropertyInfoExtractor([], [new PhpDocExtractor(), new ReflectionExtractor()]);
-        $normalizer = new ObjectNormalizer(null, null, null, $extractor);
+        $normalizer = new ObjectNormalizer(null, null, null, $this->getPropertyInfoExtractor());
         $serializer = new Serializer([$normalizer, new ArrayDenormalizer()]);
 
         return $serializer->denormalize($array, $objectClass, null, [
@@ -279,5 +283,26 @@ class AppAdminService extends AppAdminHandlerService
             'localesTranslate' => $localesTranslate,
             'current' => $current,
         ];
+    }
+
+    /**
+     * @return ObjectNormalizer
+     */
+    private function getEntityNormalizer(): ObjectNormalizer
+    {
+        return $this->entityNormalizer ??= new ObjectNormalizer(null, null, null, null, null, null, [
+            AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => fn($object) => $object->getId(),
+        ]);
+    }
+
+    /**
+     * @return PropertyInfoExtractor
+     */
+    private function getPropertyInfoExtractor(): PropertyInfoExtractor
+    {
+        return $this->propertyInfoExtractor ??= new PropertyInfoExtractor(
+            [],
+            [new PhpDocExtractor(), new ReflectionExtractor()],
+        );
     }
 }

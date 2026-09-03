@@ -9,8 +9,8 @@ declare(strict_types=1);
 namespace App\Entity\Admin\Tools;
 
 use App\Entity\Admin\System\User;
+use App\Enum\Installation\DoctrineStrategy;
 use App\Repository\Admin\Utils\SqlManagerRepository;
-use App\Utils\Installation\InstallationConst;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -24,7 +24,7 @@ class SqlManager
     public const array ALLOWED_ORDER_FIELDS = ['id', 'name', 'createdAt', 'updateAt'];
 
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: InstallationConst::STRATEGY)]
+    #[ORM\GeneratedValue(strategy: DoctrineStrategy::CURRENT)]
     #[ORM\Column]
     private ?int $id = null;
 

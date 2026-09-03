@@ -10,6 +10,8 @@ declare(strict_types=1);
 namespace App\Tests\Service\Installation;
 
 use App\Entity\Admin\System\User;
+use App\Enum\Installation\KeyEnv;
+use App\Enum\Installation\OptionInstallation;
 use App\Service\Installation\InstallationService;
 use App\Tests\AppWebTestCase;
 use App\Utils\Global\EnvFile;
@@ -39,10 +41,10 @@ class InstallationServiceTest extends AppWebTestCase
      */
     public function testGetValueByKeyInEnvFile(): void
     {
-        $result = $this->installationService->getValueByKeyInEnvFile(EnvFile::KEY_APP_ENV);
+        $result = $this->installationService->getValueByKeyInEnvFile(KeyEnv::APP_ENV->value);
         $this->assertNotEmpty($result);
         $this->assertIsString($result);
-        $this->assertStringContainsString(EnvFile::KEY_APP_ENV, $result);
+        $this->assertStringContainsString(KeyEnv::APP_ENV->value, $result);
     }
 
     /**
@@ -72,7 +74,7 @@ class InstallationServiceTest extends AppWebTestCase
         $result = $this->installationService->generateSecret();
         $this->assertNotEmpty($result);
         $this->assertIsString($result);
-        $this->assertStringContainsString(EnvFile::KEY_APP_SECRET, $result);
+        $this->assertStringContainsString(KeyEnv::APP_SECRET->value, $result);
     }
 
     /**
@@ -112,7 +114,7 @@ class InstallationServiceTest extends AppWebTestCase
 
         $result = $this->installationService->formatDatabaseUrlForEnvFile(
             $data,
-            InstallationConst::OPTION_DATABASE_URL_CREATE_DATABASE,
+            OptionInstallation::DATABASE_EXIST->value,
         );
         $this->assertNotEmpty($result);
         $this->assertIsString($result);

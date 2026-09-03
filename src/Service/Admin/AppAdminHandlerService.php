@@ -37,36 +37,36 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AppAdminHandlerService
 {
-    public function __construct(
-        #[
-            AutowireLocator([
-                'logger' => LoggerInterface::class,
-                'entityManager' => EntityManagerInterface::class,
-                'containerBag' => ContainerBagInterface::class,
-                'translator' => TranslatorInterface::class,
-                'router' => UrlGeneratorInterface::class,
-                'security' => Security::class,
-                'requestStack' => RequestStack::class,
-                'parameterBag' => ParameterBagInterface::class,
-                'optionSystemService' => OptionSystemService::class,
-                'gridService' => GridService::class,
-                'markdownEditorService' => MarkdownEditorService::class,
-                'userPasswordHasher' => UserPasswordHasherInterface::class,
-                'mailer' => MailerInterface::class,
-                'kernel' => KernelInterface::class,
-                'gridTranslate' => GridTranslate::class,
-                'database' => Database::class,
-                'envFile' => EnvFile::class,
-                'userData' => UserDataService::class,
-                'rawQueryManager' => RawQueryManager::class,
-                'rawResultQueryManager' => RawResultQueryManager::class,
-                'pageService' => PageService::class,
-                'commentService' => CommentService::class,
-                'accessDecisionManager' => AccessDecisionManagerInterface::class,
-            ]),
-        ]
-        protected ContainerInterface $handlers,
-    ) {}
+    /**
+     * Handler
+     */
+    public const array HANDLERS = [
+        'logger' => LoggerInterface::class,
+        'entityManager' => EntityManagerInterface::class,
+        'containerBag' => ContainerBagInterface::class,
+        'translator' => TranslatorInterface::class,
+        'router' => UrlGeneratorInterface::class,
+        'security' => Security::class,
+        'requestStack' => RequestStack::class,
+        'parameterBag' => ParameterBagInterface::class,
+        'optionSystemService' => OptionSystemService::class,
+        'gridService' => GridService::class,
+        'markdownEditorService' => MarkdownEditorService::class,
+        'userPasswordHasher' => UserPasswordHasherInterface::class,
+        'mailer' => MailerInterface::class,
+        'kernel' => KernelInterface::class,
+        'gridTranslate' => GridTranslate::class,
+        'database' => Database::class,
+        'envFile' => EnvFile::class,
+        'userData' => UserDataService::class,
+        'rawQueryManager' => RawQueryManager::class,
+        'rawResultQueryManager' => RawResultQueryManager::class,
+        'pageService' => PageService::class,
+        'commentService' => CommentService::class,
+        'accessDecisionManager' => AccessDecisionManagerInterface::class,
+    ];
+
+    public function __construct(#[AutowireLocator(self::HANDLERS)] protected ContainerInterface $handlers) {}
 
     /**
      * Retourne l'interface LoggerInterface
