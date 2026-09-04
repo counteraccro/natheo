@@ -9,16 +9,32 @@ declare(strict_types=1);
 namespace App\Service\Admin;
 
 use App\Entity\Admin\Content\Comment\Comment;
+use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\System\ApiToken;
+use App\Enum\Admin\Comment\Status;
+use App\Enum\Admin\Content\Page\PageStatus;
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Repository\Admin\Content\Comment\CommentRepository;
+use App\Repository\Admin\Content\Page\PageRepository;
+use App\Repository\Admin\System\ApiTokenRepository;
 use App\Utils\System\ApiToken\ApiTokenConst;
 use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class DashboardService extends AppAdminService
 {
+    public function __construct(
+        #[AutowireLocator(self::HANDLERS)] ContainerInterface $handlers,
+        private readonly ApiTokenRepository $apiTokenRepo,
+        private readonly CommentRepository $commentRepo,
+        private readonly PageRepository $pageRepo,
+    ) {
+        parent::__construct($handlers);
+    }
+
     /**
      * Retourne les informations du block Help config
      * @return array
@@ -35,7 +51,7 @@ class DashboardService extends AppAdminService
         $apiTokensDefault = $this->findBy(ApiToken::class, [
             'token' => [ApiTokenConst::API_TOKEN_READ, ApiTokenConst::API_TOKEN_WRITE, ApiTokenConst::API_TOKEN_ADMIN],
         ]);
-        $nbApiToken = $this->getRepository(ApiToken::class)->count([]);
+        $nbApiToken = $this->apiTokenRepo->count([]);
 
         $configComplete = true;
         $body = [
@@ -153,13 +169,11 @@ class DashboardService extends AppAdminService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getBlockLastComment()
+    public function getBlockLastComment(): array
     {
-        /** @var CommentRepository $repository */
-        $repository = $this->getRepository(Comment::class);
         $commentService = $this->getCommentService();
 
-        $result = $repository->findBy([], ['id' => 'DESC'], 10);
+        $result = $this->commentRepo->findBy([], ['id' => 'DESC'], 10);
 
         $body = [];
         foreach ($result as $comment) {
@@ -173,5 +187,60 @@ class DashboardService extends AppAdminService
         }
 
         return ['success' => true, 'body' => $body];
+    }
+
+    /**
+     * Retourne le bloc des dernières pages
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getBlockLastPageCreate(): array
+    {
+        $result = $this->pageRepo->findBy([], ['id' => 'DESC'], 10);
+        $currentLocale = $this->getLocales()['current'];
+
+        $body = [];
+        foreach ($result as $page) {
+            $body[] = [
+                'id' => $page->getId(),
+                'title' => $page->getPageTranslationByLocale($currentLocale)->getTitre(),
+                'status' => $this->getStatusFormatedByCode($page->getStatus()),
+                'date' => $page->getCreatedAt()->format('Y-m-d H:i:s'),
+            ];
+        }
+
+        return ['success' => true, 'body' => $body];
+    }
+
+    /**
+     * Retourne un status formaté HTML en fonction de son code
+     * @param int $status
+     * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getStatusFormatedByCode(int $status): string
+    {
+        $pageService = $this->getPageService();
+        $string = $pageService->getStatusStr($status);
+
+        return match ($status) {
+            PageStatus::PUBLISH->value => '<span class="badge ' .
+                PageStatus::PUBLISH->getClassCss() .
+                '">' .
+                $string .
+                '</span>',
+            PageStatus::ARCHIVED->value => '<span class="badge ' .
+                PageStatus::ARCHIVED->getClassCss() .
+                '">' .
+                $string .
+                '</span>',
+            PageStatus::DRAFT->value => '<span class="badge ' .
+                PageStatus::DRAFT->getClassCss() .
+                '">' .
+                $string .
+                '</span>',
+        };
     }
 }
