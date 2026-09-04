@@ -14,4 +14,6 @@ enum DashboardBlock: string
     case HELP_FIRST_CONNEXION = 'help_first_connexion';
 
     case LAST_COMMENT = 'last_comment';
+
+    case LAST_PAGE_CREATE = 'last_page';
 }
