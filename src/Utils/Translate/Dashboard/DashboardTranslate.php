@@ -117,6 +117,11 @@ class DashboardTranslate extends AppTranslate
         return [
             'title' => $this->translator->trans('dashboard.block.last.pages.title', domain: 'dashboard'),
             'loading' => $this->translator->trans('dashboard.block.last.pages.loading', domain: 'dashboard'),
+            'link_page' => $this->translator->trans('dashboard.block.last.pages.link.page', domain: 'dashboard'),
+            'table_id' => $this->translator->trans('dashboard.block.last.pages.table.id', domain: 'dashboard'),
+            'table_title' => $this->translator->trans('dashboard.block.last.pages.table.title', domain: 'dashboard'),
+            'table_status' => $this->translator->trans('dashboard.block.last.pages.table.status', domain: 'dashboard'),
+            'table_date' => $this->translator->trans('dashboard.block.last.pages.table.date', domain: 'dashboard'),
         ];
     }
 

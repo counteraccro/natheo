@@ -33,7 +33,7 @@ dashboard.block.last.comments.table.status: Status
 dashboard.block.last.comments.table.date: Date
 dashboard.last.page: 'Dernière page'
 dashboard.block.last.comments.link.comment: 'Gestion des commentaires'
-dashboard.block.last.pages.title: 'Dernière page'
+dashboard.block.last.pages.title: 'Dernières pages'
 dashboard.block.last.pages.loading: 'Chargement des dernières pages...'
 dashboard.block.help.first.connexion.link.options: 'Options systèmes'
 dashboard.block.help.first.connexion.link.tokens: 'Gérer les tokens'
@@ -44,4 +44,9 @@ dashboard.statistics.total.users: Utilisateurs
 dashboard.statistics.total.views: Publications
 dashboard.statistics.link.pages: Gérer
 dashboard.statistics.link.users: Gérer
-dashboard.statistics.info.cache: Données en cache (5 minutes)
+dashboard.statistics.info.cache: 'Données en cache (5 minutes)'
+dashboard.block.last.pages.link.page: 'Gestion des pages'
+dashboard.block.last.pages.table.id: '#'
+dashboard.block.last.pages.table.status: Status
+dashboard.block.last.pages.table.title: 'Titre'
+dashboard.block.last.pages.table.date: 'Date'

@@ -45,3 +45,8 @@ dashboard.statistics.total.views: __dashboard.statistics.total.views
 dashboard.statistics.link.pages: __dashboard.statistics.link.pages
 dashboard.statistics.link.users: __dashboard.statistics.link.users
 dashboard.statistics.info.cache: __dashboard.statistics.info.cache
+dashboard.block.last.pages.link.page: __dashboard.block.last.pages.link.page
+dashboard.block.last.pages.table.id: __dashboard.block.last.pages.table.id
+dashboard.block.last.pages.table.status: __dashboard.block.last.pages.table.status
+dashboard.block.last.pages.table.title: __dashboard.block.last.pages.table.title
+dashboard.block.last.pages.table.date: __dashboard.block.last.pages.table.date

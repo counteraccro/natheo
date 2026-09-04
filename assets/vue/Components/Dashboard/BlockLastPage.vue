@@ -12,6 +12,7 @@ import type {
   BlockLastPageUrls,
   BlockLastPageTranslate,
   LoadBlockDashboardResponse,
+  Page,
 } from '@/ts/Dashboard/BlockLastPage.type';
 
 export default defineComponent({
@@ -32,6 +33,7 @@ export default defineComponent({
     return {
       loading: false as boolean,
       errorMessage: null as string | null,
+      result: [] as Page[] | null,
     };
   },
   mounted() {
@@ -48,6 +50,8 @@ export default defineComponent({
         .then((response) => {
           if (!response.data.success) {
             this.errorMessage = response.data.error;
+          } else {
+            this.result = response.data.body;
           }
         })
         .catch((error) => {
@@ -80,10 +84,7 @@ export default defineComponent({
           {{ translate.title }}
         </div>
       </div>
-      <a
-        :href="urls.url_pages"
-        class="text-sm font-medium hover:underline flex items-center gap-1 text-[color:var(--primary)]"
-      >
+      <a :href="urls.url_pages" class="text-sm font-medium hover:underline flex items-center gap-1 text-(--primary)">
         {{ translate.link_page }}
         <svg class="card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-width="2" d="M17 8l4 4m0 0-4 4m4-4H3" />
@@ -92,6 +93,40 @@ export default defineComponent({
     </div>
     <div class="overflow-x-auto m-4" v-if="!loading">
       <AlertDanger v-if="errorMessage !== null" :text="errorMessage" />
+      <table class="w-full" v-if="result !== null">
+        <thead class="bg-(--bg-main)">
+          <tr>
+            <th
+              class="px-4 sm:px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-(--text-secondary)"
+            >
+              {{ translate.table_id }}
+            </th>
+            <th
+              class="px-4 sm:px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-(--text-secondary)"
+            >
+              {{ translate.table_title }}
+            </th>
+            <th
+              class="px-4 sm:px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-(--text-secondary)"
+            >
+              {{ translate.table_status }}
+            </th>
+            <th
+              class="px-4 sm:px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-(--text-secondary)"
+            >
+              {{ translate.table_date }}
+            </th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-(--border-color)">
+          <tr v-for="page in result" :key="page.id" class="hover:bg-gray-50 transition bg-(--bg-card)">
+            <td class="px-4 sm:px-6 py-4 text-sm font-medium">#{{ page.id }}</td>
+            <td class="px-4 sm:px-6 py-4 text-sm">{{ page.title }}</td>
+            <td class="px-4 sm:px-6 py-4 whitespace-nowrap"><span class="badge" v-html="page.status"></span></td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-(--text-secondary)">{{ page.date }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
     <div v-else>
       <SkeletonTable :rows="5" :columns="3" />

@@ -12,10 +12,21 @@ export interface BlockLastPageUrls {
 export interface BlockLastPageTranslate {
   link_page: string;
   title: string;
+  table_id: string;
+  table_title: string;
+  table_status: string;
+  table_date: string;
 }
 
 export interface LoadBlockDashboardResponse {
   success: boolean;
-  body: string | null;
+  body: Page[] | null;
   error: string | null;
+}
+
+export interface Page {
+  id: number;
+  title: string;
+  status: string;
+  date: string;
 }
