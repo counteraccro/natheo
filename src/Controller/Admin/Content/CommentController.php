@@ -12,7 +12,7 @@ namespace App\Controller\Admin\Content;
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\Content\Comment\Comment;
 use App\Entity\Admin\Content\Page\Page;
-use App\Enum\Admin\Comment\Status;
+use App\Enum\Admin\Comment\CommentStatus;
 use App\Enum\Admin\Global\Breadcrumb;
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Enum\Admin\System\Options\OptionUser;
@@ -61,7 +61,7 @@ class CommentController extends AppAdminController
             'limit' => $this->optionUserService->getValueByKey(OptionUser::OU_NB_ELEMENT->value),
             'isOpenComment' => $optionSystemService->getValueByKey(OptionSystem::OS_OPEN_COMMENT->value),
             'isModerate' => $optionSystemService->getValueByKey(OptionSystem::OS_NEW_COMMENT_WAIT_VALIDATION->value),
-            'nbCommentWaitValidation' => $commentService->getNbCommentByStatus(Status::WAIT_VALIDATION->value),
+            'nbCommentWaitValidation' => $commentService->getNbCommentByStatus(CommentStatus::WAIT_VALIDATION->value),
         ]);
     }
 
@@ -134,7 +134,7 @@ class CommentController extends AppAdminController
             'datas' => [
                 'status' => $commentService->getAllStatus(),
                 'pages' => $pageService->getListeTitlePageByLocale($commentService->getLocales()['current']),
-                'defaultStatus' => Status::WAIT_VALIDATION->value,
+                'defaultStatus' => CommentStatus::WAIT_VALIDATION->value,
                 'page' => 1,
                 'limit' => $this->optionUserService->getValueByKey(OptionUser::OU_NB_ELEMENT->value),
             ],
@@ -161,7 +161,7 @@ class CommentController extends AppAdminController
     ]
     public function filterCommentsModeration(
         CommentService $commentService,
-        int $status = Status::WAIT_VALIDATION->value,
+        int $status = CommentStatus::WAIT_VALIDATION->value,
         int $idPage = 0,
         int $page = 1,
         int $limit = 20,
@@ -211,7 +211,7 @@ class CommentController extends AppAdminController
             'datas' => [
                 'id' => $id,
                 'status' => $commentService->getAllStatus(),
-                'statusModerate' => Status::MODERATE->value,
+                'statusModerate' => CommentStatus::MODERATE->value,
             ],
         ]);
     }
@@ -288,7 +288,7 @@ class CommentController extends AppAdminController
         $commentPopulate = new CommentPopulate($comment, $data['comment']);
         $comment = $commentPopulate->populate()->getComment();
 
-        if ($comment->getStatus() === Status::MODERATE) {
+        if ($comment->getStatus() === CommentStatus::MODERATE) {
             $comment->setUserModeration($this->getUser());
         } else {
             $comment->setUserModeration(null);

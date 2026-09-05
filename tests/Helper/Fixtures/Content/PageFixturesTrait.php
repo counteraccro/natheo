@@ -19,7 +19,7 @@ use App\Entity\Admin\Content\Page\PageStatistique;
 use App\Entity\Admin\Content\Page\PageTranslation;
 use App\Entity\Admin\Content\Tag\Tag;
 use App\Entity\Admin\System\User;
-use App\Enum\Admin\Comment\Status;
+use App\Enum\Admin\Comment\CommentStatus;
 use App\Enum\Admin\Content\Page\PageCategory;
 use App\Enum\Admin\Content\Page\PageContentType;
 use App\Enum\Admin\Content\Page\PageRender;
@@ -53,7 +53,7 @@ trait PageFixturesTrait
             'landingPage' => false,
             'isOpenComment' => self::getFaker()->boolean(),
             'nbComment' => self::getFaker()->randomNumber(2),
-            'ruleComment' => Status::WAIT_VALIDATION->value,
+            'ruleComment' => CommentStatus::WAIT_VALIDATION->value,
             'headerImg' => self::getFaker()->filePath(),
         ];
 
