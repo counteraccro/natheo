@@ -53,74 +53,74 @@ enum Notification: string
 
     private const CONFIG = [
         self::WELCOME->value => [
-            KeyConfig::CATEGORY->value => Category::ADMIN->value,
-            KeyConfig::LEVEL->value => Level::INFO->value,
-            KeyConfig::PARAMETERS->value => [
+            NotificationKeyConfig::CATEGORY->value => NotificationCategory::ADMIN->value,
+            NotificationKeyConfig::LEVEL->value => NotificationLevel::INFO->value,
+            NotificationKeyConfig::PARAMETERS->value => [
                 'login' => '',
                 'role' => '',
                 'url_aide' => '',
             ],
-            KeyConfig::TITLE->value => 'notification.msg.welcome.title',
-            KeyConfig::CONTENT->value => 'notification.msg.welcome.content',
+            NotificationKeyConfig::TITLE->value => 'notification.msg.welcome.title',
+            NotificationKeyConfig::CONTENT->value => 'notification.msg.welcome.content',
         ],
         self::SELF_DISABLED->value => [
-            KeyConfig::CATEGORY->value => Category::ADMIN->value,
-            KeyConfig::LEVEL->value => Level::WARNING->value,
-            KeyConfig::PARAMETERS->value => [
+            NotificationKeyConfig::CATEGORY->value => NotificationCategory::ADMIN->value,
+            NotificationKeyConfig::LEVEL->value => NotificationLevel::WARNING->value,
+            NotificationKeyConfig::PARAMETERS->value => [
                 'login' => '',
             ],
-            KeyConfig::TITLE->value => 'notification.msg.self_disabled.title',
-            KeyConfig::CONTENT->value => 'notification.msg.self_disabled.content',
+            NotificationKeyConfig::TITLE->value => 'notification.msg.self_disabled.title',
+            NotificationKeyConfig::CONTENT->value => 'notification.msg.self_disabled.content',
         ],
         self::SELF_DELETE->value => [
-            KeyConfig::CATEGORY->value => Category::ADMIN->value,
-            KeyConfig::LEVEL->value => Level::WARNING->value,
-            KeyConfig::PARAMETERS->value => [
+            NotificationKeyConfig::CATEGORY->value => NotificationCategory::ADMIN->value,
+            NotificationKeyConfig::LEVEL->value => NotificationLevel::WARNING->value,
+            NotificationKeyConfig::PARAMETERS->value => [
                 'login' => '',
             ],
-            KeyConfig::TITLE->value => 'notification.msg.self_delete.title',
-            KeyConfig::CONTENT->value => 'notification.msg.self_delete.content',
+            NotificationKeyConfig::TITLE->value => 'notification.msg.self_delete.title',
+            NotificationKeyConfig::CONTENT->value => 'notification.msg.self_delete.content',
         ],
         self::SELF_ANONYMOUS->value => [
-            KeyConfig::CATEGORY->value => Category::ADMIN->value,
-            KeyConfig::LEVEL->value => Level::WARNING->value,
-            KeyConfig::PARAMETERS->value => [
+            NotificationKeyConfig::CATEGORY->value => NotificationCategory::ADMIN->value,
+            NotificationKeyConfig::LEVEL->value => NotificationLevel::WARNING->value,
+            NotificationKeyConfig::PARAMETERS->value => [
                 'login' => '',
             ],
-            KeyConfig::TITLE->value => 'notification.msg.self_anonymous.title',
-            KeyConfig::CONTENT->value => 'notification.msg.self_anonymous.content',
+            NotificationKeyConfig::TITLE->value => 'notification.msg.self_anonymous.title',
+            NotificationKeyConfig::CONTENT->value => 'notification.msg.self_anonymous.content',
         ],
         self::DUMP_SQL->value => [
-            KeyConfig::CATEGORY->value => Category::SQL->value,
-            KeyConfig::LEVEL->value => Level::INFO->value,
-            KeyConfig::PARAMETERS->value => [
+            NotificationKeyConfig::CATEGORY->value => NotificationCategory::SQL->value,
+            NotificationKeyConfig::LEVEL->value => NotificationLevel::INFO->value,
+            NotificationKeyConfig::PARAMETERS->value => [
                 'file' => '',
                 'url' => '',
             ],
-            KeyConfig::TITLE->value => 'notification.msg.dump_sql.title',
-            KeyConfig::CONTENT->value => 'notification.msg.dump_sql.content',
+            NotificationKeyConfig::TITLE->value => 'notification.msg.dump_sql.title',
+            NotificationKeyConfig::CONTENT->value => 'notification.msg.dump_sql.content',
         ],
         self::NEW_FONDATEUR->value => [
-            KeyConfig::CATEGORY->value => Category::ADMIN->value,
-            KeyConfig::LEVEL->value => Level::INFO->value,
-            KeyConfig::PARAMETERS->value => [
+            NotificationKeyConfig::CATEGORY->value => NotificationCategory::ADMIN->value,
+            NotificationKeyConfig::LEVEL->value => NotificationLevel::INFO->value,
+            NotificationKeyConfig::PARAMETERS->value => [
                 'login' => '',
                 'url_aide' => '',
             ],
-            KeyConfig::TITLE->value => 'notification.msg.new_fondateur.title',
-            KeyConfig::CONTENT->value => 'notification.msg.new_fondateur.content',
+            NotificationKeyConfig::TITLE->value => 'notification.msg.new_fondateur.title',
+            NotificationKeyConfig::CONTENT->value => 'notification.msg.new_fondateur.content',
         ],
         self::NEW_COMMENT->value => [
-            KeyConfig::CATEGORY->value => Category::COMMENT->value,
-            KeyConfig::LEVEL->value => Level::INFO->value,
-            KeyConfig::PARAMETERS->value => [
+            NotificationKeyConfig::CATEGORY->value => NotificationCategory::COMMENT->value,
+            NotificationKeyConfig::LEVEL->value => NotificationLevel::INFO->value,
+            NotificationKeyConfig::PARAMETERS->value => [
                 'author' => '',
                 'status' => '',
                 'page' => '',
                 'id' => '',
             ],
-            KeyConfig::TITLE->value => 'notification.msg.new_comment.title',
-            KeyConfig::CONTENT->value => 'notification.msg.new_comment.content',
+            NotificationKeyConfig::TITLE->value => 'notification.msg.new_comment.title',
+            NotificationKeyConfig::CONTENT->value => 'notification.msg.new_comment.content',
         ],
     ];
 
