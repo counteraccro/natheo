@@ -48,5 +48,11 @@ dashboard.statistics.info.cache: 'Données en cache (5 minutes)'
 dashboard.block.last.pages.link.page: 'Gestion des pages'
 dashboard.block.last.pages.table.id: '#'
 dashboard.block.last.pages.table.status: Status
-dashboard.block.last.pages.table.title: 'Titre'
-dashboard.block.last.pages.table.date: 'Date'
+dashboard.block.last.pages.table.title: Titre
+dashboard.block.last.pages.table.date: Date
+dashboard.block.pages.most.viewed.title: 'Pages les plus vues'
+dashboard.block.pages.most.viewed.link.page: 'Gestion des pages'
+dashboard.block.pages.most.viewed.table.id: '#'
+dashboard.block.pages.most.viewed.table.title: Titre
+dashboard.block.pages.most.viewed.table.view: Vues
+dashboard.block.pages.most.viewed.table.date: Date
