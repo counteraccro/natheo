@@ -12,9 +12,7 @@ namespace App\Utils\Tools\DatabaseManager\Query;
 class RawPostgresQuery implements RawQueryInterface
 {
     /**
-     * Requête SQL pour obtenir l'ensemble des tables de la base de données
-     * @param String $schema
-     * @return string
+     * @inheritDoc
      */
     public static function getQueryAllInformationSchema(string $schema): string
     {
@@ -69,9 +67,7 @@ class RawPostgresQuery implements RawQueryInterface
     }
 
     /**
-     * Retourne la structure d'une table
-     * @param string $table
-     * @return string
+     * @inheritDoc
      */
     public static function getQueryStructureTable(string $table): string
     {
@@ -90,10 +86,7 @@ class RawPostgresQuery implements RawQueryInterface
     }
 
     /**
-     * Vérifie si une table existe dans la base de données
-     * @param string $schema
-     * @param string $table
-     * @return string
+     * @inheritDoc
      */
     public static function getQueryExistTable(string $schema, string $table): string
     {
@@ -108,8 +101,7 @@ class RawPostgresQuery implements RawQueryInterface
     }
 
     /**
-     * Permet d'obtenir la liste des bases de données
-     * @return string
+     * @inheritDoc
      */
     public static function getQueryAllDatabase(): string
     {
@@ -117,8 +109,7 @@ class RawPostgresQuery implements RawQueryInterface
     }
 
     /**
-     * Permet de purger les notifications
-     * @return string
+     * @inheritDoc
      */
     public static function getQueryPurgeNotification(): string
     {
@@ -135,8 +126,7 @@ class RawPostgresQuery implements RawQueryInterface
     }
 
     /**
-     * Calcul un nombre de valeur en fonction d'une clée
-     * @return string
+     * @inheritDoc
      */
     public static function getQueryTotalStatByKey(): string
     {
@@ -145,5 +135,17 @@ class RawPostgresQuery implements RawQueryInterface
                 JOIN page p ON p.id = ps.page_id
                 WHERE ps.key = :key
                 AND p.status = :status';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function getQueryPageMostViewedByKey(int $limit): string
+    {
+        return 'SELECT ps.page_id AS page_id, CAST(ps.value AS INTEGER) AS nb
+                FROM page_statistique ps
+                WHERE ps.key = :key
+                ORDER BY nb DESC
+                LIMIT ' . $limit;
     }
 }

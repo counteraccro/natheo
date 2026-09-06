@@ -8,8 +8,6 @@ declare(strict_types=1);
  */
 namespace App\Utils\Tools\DatabaseManager\Query;
 
-use App\Utils\Tools\DatabaseManager\Query\RawQueryInterface;
-
 class RawMysqlQuery implements RawQueryInterface
 {
     /**
@@ -76,7 +74,7 @@ class RawMysqlQuery implements RawQueryInterface
     }
 
     /**
-     * @return string
+     * @inheritDoc
      */
     public static function getQueryPurgeNotification(): string
     {
@@ -88,8 +86,7 @@ class RawMysqlQuery implements RawQueryInterface
     }
 
     /**
-     * Calcul un nombre de valeur en fonction d'une clée
-     * @return string
+     * @inheritDoc
      */
     public static function getQueryTotalStatByKey(): string
     {
@@ -98,5 +95,17 @@ class RawMysqlQuery implements RawQueryInterface
         JOIN page p ON p.id = ps.page_id
         WHERE ps.key = :key
         AND p.status = :status';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function getQueryPageMostViewedByKey(int $limit): string
+    {
+        return 'SELECT ps.page_id AS page_id, CAST(ps.value AS SIGNED) AS nb
+        FROM page_statistique ps
+        WHERE ps.key = :key
+        ORDER BY nb DESC
+        LIMIT ' . $limit;
     }
 }

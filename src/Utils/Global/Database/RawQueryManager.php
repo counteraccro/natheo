@@ -95,4 +95,14 @@ class RawQueryManager
     {
         return $this->rawClass::getQueryTotalStatByKey();
     }
+
+    /**
+     * Retourne les ids de page triés par la valeur (numérique) d'une statistique, du plus grand au plus petit
+     * @param int $limit
+     * @return string
+     */
+    public function getQueryPageMostViewedByKey(int $limit): string
+    {
+        return $this->rawClass::getQueryPageMostViewedByKey($limit);
+    }
 }
