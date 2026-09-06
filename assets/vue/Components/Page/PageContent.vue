@@ -6,7 +6,7 @@
  */
 
 import { defineComponent, PropType } from 'vue';
-import { Locales, Page, PageTranslations, Urls, PageData } from '@/ts/Page/type';
+import { Locales, Page, PageTranslations, Urls, PageData } from '@/ts/Page/Page.type';
 import PageContentBlock from '@/vue/Components/Page/PageContentBlock.vue';
 
 interface LayoutCol {

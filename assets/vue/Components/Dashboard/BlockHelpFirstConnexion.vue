@@ -1,35 +1,53 @@
-<script>
+<script lang="ts">
 /**
  * @author Gourdon Aymeric
  * @version 1.0
  * Composant card help première connexion
  */
+import { defineComponent, type PropType } from 'vue';
 import axios from 'axios';
 import Modal from '../Global/Modal.vue';
 import SkeletonText from '@/vue/Components/Skeleton/Text.vue';
 import AlertSuccess from '@/vue/Components/Alert/Success.vue';
 import AlertDanger from '@/vue/Components/Alert/Danger.vue';
+import type {
+  BlockHelpFirstConnexionUrls,
+  BlockHelpFirstConnexionTranslate,
+  BlockHelpFirstConnexionDatas,
+  ConfigCheckItem,
+  ConfigLinks,
+  LoadBlockDashboardResponse,
+  UpdateUserDataResponse,
+} from '@/ts/Dashboard/BlockHelpFirstConnexion.type';
 
-export default {
+export default defineComponent({
   name: 'BlockHelpFirstConnexion',
   components: { AlertDanger, AlertSuccess, SkeletonText, Modal },
-  emit: [],
   props: {
-    urls: Object,
-    translate: Object,
-    datas: Object,
+    urls: {
+      type: Object as PropType<BlockHelpFirstConnexionUrls>,
+      required: true,
+    },
+    translate: {
+      type: Object as PropType<BlockHelpFirstConnexionTranslate>,
+      required: true,
+    },
+    datas: {
+      type: Object as PropType<BlockHelpFirstConnexionDatas>,
+      required: true,
+    },
   },
   emits: ['reload-grid', 'hide-block'],
   data() {
     return {
-      hide: false,
-      loading: false,
-      result: [],
-      errorMessage: null,
-      hideMsgSuccess: null,
-      complete: false,
-      links: [],
-      showModalConfirm: false,
+      hide: false as boolean,
+      loading: false as boolean,
+      result: [] as ConfigCheckItem[],
+      errorMessage: null as string | null,
+      hideMsgSuccess: null as boolean | null,
+      complete: false as boolean,
+      links: {} as ConfigLinks,
+      showModalConfirm: false as boolean,
     };
   },
   mounted() {
@@ -39,10 +57,10 @@ export default {
     /**
      * Charge les données du block
      */
-    load() {
+    load(): void {
       this.loading = true;
       axios
-        .get(this.urls.load_block_dashboard)
+        .get<LoadBlockDashboardResponse>(this.urls.load_block_dashboard)
         .then((response) => {
           if (response.data.success === false) {
             this.errorMessage = response.data.error;
@@ -64,19 +82,19 @@ export default {
     /**
      * Rechargement du grid
      */
-    reload() {
+    reload(): void {
       this.$emit('reload-grid');
     },
 
     /**
      * Masque le bloc de façon définitive
      */
-    hideConfig() {
+    hideConfig(): void {
       this.loading = true;
       this.hideModal();
 
       axios
-        .post(this.urls.update_user_data, {
+        .post<UpdateUserDataResponse>(this.urls.update_user_data, {
           key: this.datas.user_data_key_first_connexion,
           value: 0,
         })
@@ -87,7 +105,7 @@ export default {
             console.error(response.data.msg);
           }
         })
-        .catch(function (error) {
+        .catch((error) => {
           console.error(error);
         })
         .finally(() => {
@@ -99,7 +117,7 @@ export default {
     /**
      * Masque le block
      */
-    hideBlock() {
+    hideBlock(): void {
       this.$emit('hide-block');
       this.reload();
     },
@@ -107,18 +125,18 @@ export default {
     /**
      * Affichage la modal
      */
-    showModal() {
+    showModal(): void {
       this.showModalConfirm = true;
     },
 
     /**
      * Ferme la modal
      */
-    hideModal() {
+    hideModal(): void {
       this.showModalConfirm = false;
     },
   },
-};
+});
 </script>
 
 <template>
@@ -127,14 +145,13 @@ export default {
       <div>
         <div class="card-title">
           <svg
-            class="card-icon"
+            class="card-icon text-[color:var(--primary)]"
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             width="24"
             height="24"
             fill="none"
             viewBox="0 0 24 24"
-            style="color: var(--primary)"
           >
             <path
               stroke="currentColor"
@@ -144,11 +161,11 @@ export default {
               d="m8.032 12 1.984 1.984 4.96-4.96m4.55 5.272.893-.893a1.984 1.984 0 0 0 0-2.806l-.893-.893a1.984 1.984 0 0 1-.581-1.403V7.04a1.984 1.984 0 0 0-1.984-1.984h-1.262a1.983 1.983 0 0 1-1.403-.581l-.893-.893a1.984 1.984 0 0 0-2.806 0l-.893.893a1.984 1.984 0 0 1-1.403.581H7.04A1.984 1.984 0 0 0 5.055 7.04v1.262c0 .527-.209 1.031-.581 1.403l-.893.893a1.984 1.984 0 0 0 0 2.806l.893.893c.372.372.581.876.581 1.403v1.262a1.984 1.984 0 0 0 1.984 1.984h1.262c.527 0 1.031.209 1.403.581l.893.893a1.984 1.984 0 0 0 2.806 0l.893-.893a1.985 1.985 0 0 1 1.403-.581h1.262a1.984 1.984 0 0 0 1.984-1.984V15.7c0-.527.209-1.031.581-1.403Z"
             />
           </svg>
-          {{ this.translate.title }}
+          {{ translate.title }}
         </div>
       </div>
       <div class="flex gap-2">
-        <a href="#" @click="this.load()" class="text-sm font-medium hover:underline text-[var(--primary)]">
+        <a href="#" @click="load()" class="text-sm font-medium hover:underline text-[var(--primary)]">
           <svg
             class="card-icon"
             aria-hidden="true"
@@ -170,23 +187,23 @@ export default {
         <a
           href="#"
           class="text-sm font-medium hover:underline text-[var(--primary)]"
-          @click="!this.complete ? this.showModal() : this.hideConfig()"
+          @click="!complete ? showModal() : hideConfig()"
         >
-          {{ this.translate.btn_def_hide }}
+          {{ translate.btn_def_hide }}
         </a>
       </div>
     </div>
     <div class="p-5">
-      <div v-if="!this.loading">
-        <AlertDanger v-if="this.errorMessage !== null" :text="this.errorMessage" />
+      <div v-if="!loading">
+        <AlertDanger v-if="errorMessage !== null" :text="errorMessage" />
 
-        <AlertSuccess v-if="this.hideMsgSuccess" :text="this.translate.msg_hide_success" />
+        <AlertSuccess v-if="hideMsgSuccess" :text="translate.msg_hide_success" />
         <div v-else>
-          <h4 class="font-semibold mb-2 text-[var(--text-primary)]">{{ this.translate.sub_title }}</h4>
-          <p class="text-sm mb-4 text-[var(--text-secondary)]">{{ this.translate.text_1 }}</p>
+          <h4 class="font-semibold mb-2 text-[var(--text-primary)]">{{ translate.sub_title }}</h4>
+          <p class="text-sm mb-4 text-[var(--text-secondary)]">{{ translate.text_1 }}</p>
 
           <div class="space-y-1">
-            <div v-for="(item, index) in this.result" :key="index">
+            <div v-for="(item, index) in result" :key="index">
               <div v-if="item.success" class="config-item config-item-success">
                 <svg class="config-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
@@ -224,8 +241,8 @@ export default {
                 </div>
 
                 <div
-                  v-for="(subItem, index) in item.msg"
-                  :key="index"
+                  v-for="(subItem, subIndex) in item.msg"
+                  :key="subIndex"
                   class="config-item config-item-error config-item-nested"
                 >
                   <svg class="config-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -241,9 +258,8 @@ export default {
 
                 <div class="flex flex-wrap gap-4 mt-4 pt-4 border-t border-[var(--border-color)]">
                   <a
-                    :href="this.links.link_options.link"
-                    class="text-sm font-medium hover:underline flex items-center gap-1.5"
-                    style="color: var(--primary)"
+                    :href="links.link_options.link"
+                    class="text-sm font-medium hover:underline flex items-center gap-1.5 text-[color:var(--primary)]"
                   >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
@@ -254,12 +270,11 @@ export default {
                       ></path>
                     </svg>
 
-                    {{ this.links.link_options.label }}
+                    {{ links.link_options.label }}
                   </a>
                   <a
-                    :href="this.links.link_tokens.link"
-                    class="text-sm font-medium hover:underline flex items-center gap-1.5"
-                    style="color: var(--primary)"
+                    :href="links.link_tokens.link"
+                    class="text-sm font-medium hover:underline flex items-center gap-1.5 text-[color:var(--primary)]"
                   >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
@@ -269,7 +284,7 @@ export default {
                         d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"
                       ></path>
                     </svg>
-                    {{ this.links.link_tokens.label }}
+                    {{ links.link_tokens.label }}
                   </a>
                 </div>
               </div>
@@ -283,59 +298,10 @@ export default {
     </div>
   </div>
 
-  <!--<div class="card-body" v-if="this.loading">
-      <div class="spinner-border spinner-border-sm text-secondary" role="status">
-        <span class="visually-hidden">{{ this.translate.loading }}</span>
-      </div>
-      {{ this.translate.loading }}
-    </div>
-
-    <div class="card-body" v-else>
-      <div v-if="this.errorMessage !== null"><i class="bi bi-exclamation-circle"></i> {{ this.errorMessage }}</div>
-      <div v-else-if="this.hideMsgSuccess !== null">
-        <i class="text-success"> <i class="bi bi-check-circle"></i> {{ this.translate.msg_hide_success }}</i>
-      </div>
-      <div v-else>
-        <h5 class="card-title">{{ this.translate.sub_title }}</h5>
-        <p class="card-text">{{ this.translate.text_1 }}</p>
-
-        <ul style="list-style: none">
-          <li v-for="(item, index) in this.result" :key="index">
-            <span v-if="item.success" class="text-success"> <i class="bi bi-check-circle"></i> {{ item.msg }} </span>
-            <span v-else-if="!Array.isArray(item.msg)" class="text-warning">
-              <i class="bi bi-exclamation-circle"></i> {{ item.msg }}
-            </span>
-            <span v-else class="text-warning">
-              <i class="bi bi-exclamation-circle"></i> {{ item.msgTitle }} :
-              <ul style="list-style: none">
-                <li v-for="(subItem, index) in item.msg" :key="index">
-                  <i class="bi bi-arrow-return-right"></i> {{ subItem }}
-                </li>
-              </ul>
-            </span>
-          </li>
-        </ul>
-
-        <p v-if="this.complete" class="card-text">{{ this.translate.text_end_success }}</p>
-        <p v-else class="card-text">{{ this.translate.text_end }}</p>
-
-        <div class="float-end">
-          <div class="btn btn-secondary btn-sm me-2" @click="this.load()"><i class="bi bi-arrow-clockwise"></i></div>
-          <div v-if="!this.complete" class="btn btn-secondary btn-sm" @click="this.showModal()">
-            {{ this.translate.btn_def_hide }}
-          </div>
-          <div v-else class="btn btn-secondary btn-sm" @click="this.hideConfig()">
-            {{ this.translate.btn_def_hide }}
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>-->
-
   <modal
     :id="'modal-config-hide-help-config'"
-    :show="this.showModalConfirm"
-    @close-modal="this.hideModal"
+    :show="showModalConfirm"
+    @close-modal="hideModal"
     :option-show-close-btn="false"
   >
     <template #title> <i class="bi bi-sign-stop"></i> {{ translate.modal_confirm_title }} </template>
@@ -344,7 +310,7 @@ export default {
       <div>{{ translate.modal_confirm_body_2 }}</div>
     </template>
     <template #footer>
-      <button type="button" class="btn btn-primary btn-sm me-2" @click="this.hideConfig()">
+      <button type="button" class="btn btn-primary btn-sm me-2" @click="hideConfig()">
         <svg
           class="icon"
           aria-hidden="true"
@@ -364,7 +330,7 @@ export default {
         </svg>
         {{ translate.modal_confirm_btn_ok }}
       </button>
-      <button type="button" class="btn btn-outline-dark btn-sm" @click="this.hideModal()">
+      <button type="button" class="btn btn-outline-dark btn-sm" @click="hideModal()">
         <svg
           class="icon"
           aria-hidden="true"

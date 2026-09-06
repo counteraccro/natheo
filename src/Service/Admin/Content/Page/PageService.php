@@ -236,6 +236,7 @@ class PageService extends AppAdminService
         return match ($status) {
             PageStatus::DRAFT->value => $translator->trans('page.status.draft', domain: 'page'),
             PageStatus::PUBLISH->value => $translator->trans('page.status.publish', domain: 'page'),
+            PageStatus::ARCHIVED->value => $translator->trans('page.status.archived', domain: 'page'),
             default => $translator->trans('page.status.inconnu', domain: 'page'),
         };
     }

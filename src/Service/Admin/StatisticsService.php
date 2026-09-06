@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace App\Service\Admin;
 
-use App\Enum\Admin\Comment\Status;
+use App\Enum\Admin\Comment\CommentStatus;
 use App\Enum\Admin\Content\Page\PageStatistics;
 use App\Enum\Admin\Content\Page\PageStatus;
 use App\Repository\Admin\Content\Comment\CommentRepository;
@@ -54,8 +54,8 @@ class StatisticsService extends AppAdminService
 
             return [
                 'nbPage' => $this->pageRepository->count(['status' => PageStatus::PUBLISH]),
-                'nbComments' => $byStatus[Status::VALIDATE->value] ?? 0,
-                'nbWaitComments' => $byStatus[Status::WAIT_VALIDATION->value] ?? 0,
+                'nbComments' => $byStatus[CommentStatus::VALIDATE->value] ?? 0,
+                'nbWaitComments' => $byStatus[CommentStatus::WAIT_VALIDATION->value] ?? 0,
                 'nbUsers' => $this->userRepository->count(),
                 'nbViews' => $this->formatCompactNumber(
                     $this->pageStatistiqueRepository->getTotalStatByKey(

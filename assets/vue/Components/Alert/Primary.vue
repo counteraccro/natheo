@@ -6,8 +6,8 @@
  */
 import { defineComponent, type PropType } from 'vue';
 import AlertBase from './AlertBase.vue';
-import type { AlertIcon } from '@/ts/Alert/types';
-import type { ButtonItem } from '@/ts/Types/ButtonList.types';
+import type { AlertIcon } from '@/ts/Alert/Alert.type';
+import type { ButtonItem } from '@/ts/Types/ButtonList.type';
 
 export default defineComponent({
   name: 'AlertPrimary',

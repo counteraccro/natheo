@@ -53,4 +53,25 @@ class PageStatistiqueRepository extends ServiceEntityRepository
 
         return (int) $query->getSingleScalarResult();
     }
+
+    /**
+     * Retourne les ids de page (+ valeur associée) triés par la valeur d'une statistique, du plus grand au plus petit
+     * @param string $key
+     * @param int $limit
+     * @param RawQueryManager $rawQueryManager
+     * @return array<int, array{page_id: int, nb: int}>
+     */
+    public function getMostViewedPageIds(string $key, int $limit, RawQueryManager $rawQueryManager): array
+    {
+        $rsm = new \Doctrine\ORM\Query\ResultSetMapping();
+        $rsm->addScalarResult('page_id', 'page_id', 'integer');
+        $rsm->addScalarResult('nb', 'nb', 'integer');
+
+        $query = $rawQueryManager->getQueryPageMostViewedByKey($limit);
+
+        $query = $this->getEntityManager()->createNativeQuery($query, $rsm);
+        $query->setParameter('key', $key);
+
+        return $query->getResult();
+    }
 }

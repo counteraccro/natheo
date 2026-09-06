@@ -16,7 +16,7 @@ use App\Entity\Admin\Content\Page\PageMeta;
 use App\Entity\Admin\Content\Page\PageMetaTranslation;
 use App\Entity\Admin\Content\Page\PageStatistique;
 use App\Entity\Admin\Content\Page\PageTranslation;
-use App\Enum\Admin\Comment\Status;
+use App\Enum\Admin\Comment\CommentStatus;
 use App\Enum\Admin\Content\Page\PageContentType;
 use App\Enum\Admin\Content\Page\PageMeta as PageMetaEnum;
 use App\Enum\Admin\Content\Page\PageStatistics;
@@ -50,7 +50,7 @@ class PageFactory
         $this->page = new Page();
 
         $this->page->setIsOpenComment(true);
-        $this->page->setRuleComment(Status::WAIT_VALIDATION->value);
+        $this->page->setRuleComment(CommentStatus::WAIT_VALIDATION->value);
 
         $this->createPageTranslation();
         $this->createPageStatistique();

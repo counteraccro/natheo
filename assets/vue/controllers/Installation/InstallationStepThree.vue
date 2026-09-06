@@ -18,7 +18,7 @@ import type {
   FieldValidation,
   FinishStepKey,
   FinishStepStatus,
-} from '@/ts/Installation/InstallationStepThree';
+} from '@/ts/Installation/InstallationStepThree.type';
 import axios, { AxiosError } from 'axios';
 import SkeletonInstallationStepThree from '@/vue/Components/Skeleton/Installation/InstallationStepThree.vue';
 

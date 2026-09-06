@@ -9,7 +9,7 @@ import axios, { AxiosResponse } from 'axios';
 import MarkdownEditor from '../../../../Components/Global/MarkdownEditor/MarkdownEditor.vue';
 import Toast from '../../../../Components/Global/Toast.vue';
 import { emitter } from '@/utils/useEvent';
-import { Translate, Urls, Datas, Toasts, LoadCommentResponse, Comment, SaveCommentResponse } from '@/ts/Comment/type';
+import { Translate, Urls, Datas, Toasts, LoadCommentResponse, Comment, SaveCommentResponse } from '@/ts/Comment/CommentEdit.type';
 import SkeletonCommentEdit from '@/vue/Components/Skeleton/CommentEdit.vue';
 
 export default defineComponent({

@@ -6,7 +6,7 @@
  */
 
 import { defineComponent, PropType } from 'vue';
-import { PageHistoryEntry, PageHistoryTranslate, Urls } from '@/ts/Page/type';
+import { PageHistoryEntry, PageHistoryTranslate, Urls } from '@/ts/Page/Page.type';
 import axios from 'axios';
 import SkeletonPageHistory from '@/vue/Components/Skeleton/Page/PageHistory.vue';
 

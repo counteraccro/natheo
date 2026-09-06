@@ -7,7 +7,7 @@
 
 import { defineComponent, type PropType } from 'vue';
 import * as events from 'node:events';
-import { MediaItem, TranslateRecord } from '@/ts/Mediatheque/type';
+import { MediaItem, TranslateRecord } from '@/ts/Mediatheque/Mediatheque.type';
 import { initFlowbite } from 'flowbite';
 
 export default defineComponent({

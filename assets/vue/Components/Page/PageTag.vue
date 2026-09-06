@@ -6,7 +6,7 @@
  **/
 
 import { defineComponent, PropType } from 'vue';
-import { Locales, Page, Tag, PageTranslations, Urls, TagSuggestion } from '@/ts/Page/type';
+import { Locales, Page, Tag, PageTranslations, Urls, TagSuggestion } from '@/ts/Page/Page.type';
 import axios from 'axios';
 
 export default defineComponent({

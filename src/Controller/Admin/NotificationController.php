@@ -11,7 +11,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Admin\System\User;
 use App\Enum\Admin\Global\Breadcrumb;
-use App\Enum\Admin\Global\Notification\Category;
+use App\Enum\Admin\Global\Notification\NotificationCategory;
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Admin\GridService;
 use App\Service\Admin\NotificationService;
@@ -66,7 +66,7 @@ class NotificationController extends AppAdminController
         $limit = 100; //$this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT);
 
         $catNotifications = [];
-        foreach (Category::cases() as $category) {
+        foreach (NotificationCategory::cases() as $category) {
             $catNotifications[$category->value] = [
                 'id' => $category->value,
                 'name' => $translator->trans('notification.category.' . $category->value, domain: 'notification'),

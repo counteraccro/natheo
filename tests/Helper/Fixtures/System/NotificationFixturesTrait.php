@@ -11,7 +11,7 @@ namespace App\Tests\Helper\Fixtures\System;
 
 use App\Entity\Admin\Notification;
 use App\Entity\Admin\System\User;
-use App\Enum\Admin\Global\Notification\Category;
+use App\Enum\Admin\Global\Notification\NotificationCategory;
 use App\Tests\Helper\FakerTrait;
 
 trait NotificationFixturesTrait
@@ -33,7 +33,7 @@ trait NotificationFixturesTrait
             'content' => self::getFaker()->text(),
             'level' => self::getFaker()->numberBetween(1, 5),
             'read' => self::getFaker()->boolean(),
-            'category' => Category::ADMIN->value,
+            'category' => NotificationCategory::ADMIN->value,
             'parameters' => json_encode([]),
         ];
         $notification = $this->initEntity(Notification::class, array_merge($data, $customData));

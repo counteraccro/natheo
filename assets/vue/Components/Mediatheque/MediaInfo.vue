@@ -6,7 +6,7 @@
  */
 
 import { defineComponent, type PropType } from 'vue';
-import { MediaItem } from '@/ts/Mediatheque/type';
+import { MediaItem } from '@/ts/Mediatheque/Mediatheque.type';
 
 type TranslateRecord = { [key: string]: string | TranslateRecord };
 

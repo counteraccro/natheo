@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace App\Enum\Admin\Global\Notification;
 
-enum Level: int
+enum NotificationLevel: int
 {
     case INFO = 1;
     case WARNING = 2;

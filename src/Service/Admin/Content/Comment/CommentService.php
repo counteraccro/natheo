@@ -11,7 +11,7 @@ namespace App\Service\Admin\Content\Comment;
 
 use App\Entity\Admin\Content\Comment\Comment;
 use App\Entity\Admin\System\User;
-use App\Enum\Admin\Comment\Status;
+use App\Enum\Admin\Comment\CommentStatus;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
 use App\Utils\Markdown;
@@ -157,18 +157,18 @@ class CommentService extends AppAdminService
         $string = $this->getStatusStringByCode($status);
 
         return match ($status) {
-            Status::WAIT_VALIDATION->value => '<span class="badge ' .
-                Status::WAIT_VALIDATION->getClassCss() .
+            CommentStatus::WAIT_VALIDATION->value => '<span class="badge ' .
+                CommentStatus::WAIT_VALIDATION->getClassCss() .
                 '">' .
                 $string .
                 '</span>',
-            Status::VALIDATE->value => '<span class="badge ' .
-                Status::VALIDATE->getClassCss() .
+            CommentStatus::VALIDATE->value => '<span class="badge ' .
+                CommentStatus::VALIDATE->getClassCss() .
                 '">' .
                 $string .
                 '</span>',
-            Status::MODERATE->value => '<span class="badge ' .
-                Status::MODERATE->getClassCss() .
+            CommentStatus::MODERATE->value => '<span class="badge ' .
+                CommentStatus::MODERATE->getClassCss() .
                 '">' .
                 $string .
                 '</span>',
@@ -186,9 +186,9 @@ class CommentService extends AppAdminService
     {
         $translator = $this->getTranslator();
         return match ($status) {
-            Status::WAIT_VALIDATION->value => $translator->trans('comment.status.wait.validation', domain: 'comment'),
-            Status::VALIDATE->value => $translator->trans('comment.status.validate', domain: 'comment'),
-            Status::MODERATE->value => $translator->trans('comment.status.moderate', domain: 'comment'),
+            CommentStatus::WAIT_VALIDATION->value => $translator->trans('comment.status.wait.validation', domain: 'comment'),
+            CommentStatus::VALIDATE->value => $translator->trans('comment.status.validate', domain: 'comment'),
+            CommentStatus::MODERATE->value => $translator->trans('comment.status.moderate', domain: 'comment'),
         };
     }
 
@@ -202,9 +202,9 @@ class CommentService extends AppAdminService
     {
         $translator = $this->getTranslator();
         return [
-            Status::WAIT_VALIDATION->value => $translator->trans('comment.status.wait.validation', domain: 'comment'),
-            Status::VALIDATE->value => $translator->trans('comment.status.validate', domain: 'comment'),
-            Status::MODERATE->value => $translator->trans('comment.status.moderate', domain: 'comment'),
+            CommentStatus::WAIT_VALIDATION->value => $translator->trans('comment.status.wait.validation', domain: 'comment'),
+            CommentStatus::VALIDATE->value => $translator->trans('comment.status.validate', domain: 'comment'),
+            CommentStatus::MODERATE->value => $translator->trans('comment.status.moderate', domain: 'comment'),
         ];
     }
 
@@ -274,7 +274,7 @@ class CommentService extends AppAdminService
 
         if ($status === null) {
             $return = [];
-            foreach (Status::cases() as $status) {
+            foreach (CommentStatus::cases() as $status) {
                 foreach ($result as $row) {
                     if ($row['status'] === $status->value) {
                         $return[$status->value] = $row['nb'];
@@ -312,7 +312,7 @@ class CommentService extends AppAdminService
         foreach ($comments as $comment) {
             /** @var Comment $comment */
             $comment->setStatus($data['status']);
-            if ($comment->getStatus() !== Status::MODERATE->value) {
+            if ($comment->getStatus() !== CommentStatus::MODERATE->value) {
                 $comment->setModerationComment(null);
                 $comment->setUserModeration(null);
             } else {

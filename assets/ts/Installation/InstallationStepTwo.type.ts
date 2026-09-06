@@ -3,7 +3,7 @@ import type {
   BddConfig,
   UpdateEnvPayload,
   UpdateEnvResponse,
-} from '@/ts/Installation/InstallationStepOne';
+} from '@/ts/Installation/InstallationStepOne.type';
 
 export type InstallationStepTwoTranslate = InstallationStepOneTranslate;
 
@@ -31,6 +31,7 @@ export interface InstallationStepTwoConfigKey {
 
 export interface InstallationStepTwoBddParams {
   database_prefix: string;
+  database_schema: string;
 }
 
 export interface InstallationStepTwoDatas {

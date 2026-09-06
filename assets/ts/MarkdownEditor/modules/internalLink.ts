@@ -5,7 +5,7 @@
  * Module "lien interne" pour la toolbar du MarkdownEditor.
  */
 
-import type { EditorModule, EditorApi } from '@/ts/MarkdownEditor/MarkdownEditor.types';
+import type { EditorModule, EditorApi } from '@/ts/MarkdownEditor/MarkdownEditor.type';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 

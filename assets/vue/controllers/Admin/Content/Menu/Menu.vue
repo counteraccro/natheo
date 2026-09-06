@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { Locales, MenuDatas, Translate, Urls, Menu, MenuElement, LoadMenuData } from '@/ts/Menu/type';
+import { Locales, MenuDatas, Translate, Urls, Menu, MenuElement, LoadMenuData } from '@/ts/Menu/Menu.type';
 import axios from 'axios';
 import SkeletonRenderMenu from '@/vue/Components/Skeleton/Menu/MenuRender.vue';
 import SkeletonFormMenu from '@/vue/Components/Skeleton/Menu/MenuForm.vue';
@@ -11,7 +11,7 @@ import Modal from '@/vue/Components/Global/Modal.vue';
 import MenuElementForm from '@/vue/Components/Menu/MenuElementForm.vue';
 import { emitter } from '@/utils/useEvent';
 import Toast from '@/vue/Components/Global/Toast.vue';
-import { Toasts } from '@/ts/Toast/type';
+import { Toasts } from '@/ts/Toast/Toast.type';
 import MenuHeader from '@/vue/Components/Menu/MenuType/MenuHeader.vue';
 import MenuFooter from '@/vue/Components/Menu/MenuType/MenuFooter.vue';
 import MenuLeftRight from '@/vue/Components/Menu/MenuType/MenuLeftRight.vue';

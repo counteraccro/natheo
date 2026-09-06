@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace App\Tests\Service\Admin;
 
 use App\Entity\Admin\Notification;
-use App\Enum\Admin\Global\Notification\KeyConfig;
+use App\Enum\Admin\Global\Notification\NotificationKeyConfig;
 use App\Enum\Admin\Global\Notification\Notification as NotificationEnum;
 use App\Entity\Admin\System\User;
 use App\Enum\Admin\System\Options\OptionSystem;
@@ -66,9 +66,9 @@ class NotificationServiceTest extends AppWebTestCase
         $notification = $user->getNotifications()->first();
 
         $tab = NotificationEnum::getNotification(NotificationEnum::SELF_DELETE->value);
-        $this->assertEquals($tab[KeyConfig::TITLE->value], $notification->getTitle());
-        $this->assertEquals($tab[KeyConfig::CONTENT->value], $notification->getContent());
-        $this->assertEquals($tab[KeyConfig::LEVEL->value], $notification->getLevel());
+        $this->assertEquals($tab[NotificationKeyConfig::TITLE->value], $notification->getTitle());
+        $this->assertEquals($tab[NotificationKeyConfig::CONTENT->value], $notification->getContent());
+        $this->assertEquals($tab[NotificationKeyConfig::LEVEL->value], $notification->getLevel());
     }
 
     /**
@@ -97,9 +97,9 @@ class NotificationServiceTest extends AppWebTestCase
         $notification = $user->getNotifications()->first();
 
         $tab = NotificationEnum::getNotification(NotificationEnum::SELF_DISABLED->value);
-        $this->assertEquals($tab[KeyConfig::TITLE->value], $notification->getTitle());
-        $this->assertEquals($tab[KeyConfig::CONTENT->value], $notification->getContent());
-        $this->assertEquals($tab[KeyConfig::LEVEL->value], $notification->getLevel());
+        $this->assertEquals($tab[NotificationKeyConfig::TITLE->value], $notification->getTitle());
+        $this->assertEquals($tab[NotificationKeyConfig::CONTENT->value], $notification->getContent());
+        $this->assertEquals($tab[NotificationKeyConfig::LEVEL->value], $notification->getLevel());
     }
 
     /**

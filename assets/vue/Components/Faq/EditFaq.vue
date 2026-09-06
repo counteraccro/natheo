@@ -17,13 +17,13 @@ import type {
   FaqQuestion,
   FaqQuestionTranslation,
   FaqTranslation,
-} from '@/ts/Faq/type';
+} from '@/ts/Faq/Faq.type';
 import Sortable from 'sortablejs';
 import MarkdownEditor from '@/vue/Components/Global/MarkdownEditor/MarkdownEditor.vue';
-import { EditorModule } from '@/ts/MarkdownEditor/MarkdownEditor.types';
+import { EditorModule } from '@/ts/MarkdownEditor/MarkdownEditor.type';
 import { InternalLinkModule } from '@/ts/MarkdownEditor/modules/internalLink';
 import Modal from '@/vue/Components/Global/Modal.vue';
-import { Toasts } from '@/ts/Toast/type';
+import { Toasts } from '@/ts/Toast/Toast.type';
 import { MediaModule } from '@/ts/MarkdownEditor/modules/Mediatheque';
 
 type TranslateRecord = { [key: string]: string | TranslateRecord };

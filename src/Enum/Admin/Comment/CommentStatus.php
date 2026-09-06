@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace App\Enum\Admin\Comment;
 
-enum Status: int
+enum CommentStatus: int
 {
     /**
      * En attente de validation

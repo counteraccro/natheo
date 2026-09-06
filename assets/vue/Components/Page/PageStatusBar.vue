@@ -6,7 +6,7 @@
  */
 
 import { defineComponent, PropType } from 'vue';
-import { Locales, Page, PageTranslations, Urls } from '@/ts/Page/type';
+import { Locales, Page, PageTranslations, Urls } from '@/ts/Page/Page.type';
 import axios from 'axios';
 import { initFlowbite } from 'flowbite';
 

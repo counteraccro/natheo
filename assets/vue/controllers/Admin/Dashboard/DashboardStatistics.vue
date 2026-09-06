@@ -5,7 +5,7 @@ import {
   DashboardStatisticsResponse,
   DashboardStatisticsTranslate,
   Urls,
-} from '@/ts/Dashboard/dashboardStatistics.type';
+} from '@/ts/Dashboard/DashboardStatistics.type';
 import axios from 'axios';
 
 export default defineComponent({

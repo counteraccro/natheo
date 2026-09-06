@@ -12,7 +12,7 @@
  * @version 1.0
  */
 
-import type { EditorModule, EditorApi } from '@/ts/MarkdownEditor/MarkdownEditor.types';
+import type { EditorModule, EditorApi } from '@/ts/MarkdownEditor/MarkdownEditor.type';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
