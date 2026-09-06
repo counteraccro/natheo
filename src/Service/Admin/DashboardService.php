@@ -12,10 +12,12 @@ use App\Entity\Admin\Content\Comment\Comment;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\System\ApiToken;
 use App\Enum\Admin\Comment\CommentStatus;
+use App\Enum\Admin\Content\Page\PageStatistics;
 use App\Enum\Admin\Content\Page\PageStatus;
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Repository\Admin\Content\Comment\CommentRepository;
 use App\Repository\Admin\Content\Page\PageRepository;
+use App\Repository\Admin\Content\Page\PageStatistiqueRepository;
 use App\Repository\Admin\System\ApiTokenRepository;
 use App\Utils\System\ApiToken\ApiTokenConst;
 use Psr\Container\ContainerExceptionInterface;
@@ -31,6 +33,7 @@ class DashboardService extends AppAdminService
         private readonly ApiTokenRepository $apiTokenRepo,
         private readonly CommentRepository $commentRepo,
         private readonly PageRepository $pageRepo,
+        private readonly PageStatistiqueRepository $pageStatistiqueRepo,
     ) {
         parent::__construct($handlers);
     }
@@ -206,6 +209,39 @@ class DashboardService extends AppAdminService
                 'id' => $page->getId(),
                 'title' => $page->getPageTranslationByLocale($currentLocale)->getTitre(),
                 'status' => $this->getStatusFormatedByCode($page->getStatus()),
+                'date' => $page->getCreatedAt()->format('Y-m-d H:i:s'),
+            ];
+        }
+
+        return ['success' => true, 'body' => $body];
+    }
+
+    /**
+     * Retourne le bloc des pages les plus vues, triées de la plus grande à la plus petite valeur
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getBlockPageMostViewed(): array
+    {
+        $stats = $this->pageStatistiqueRepo->getMostViewedPageIds(
+            PageStatistics::NB_READ->value,
+            10,
+            $this->getRawQueryManager(),
+        );
+        $currentLocale = $this->getLocales()['current'];
+
+        $body = [];
+        foreach ($stats as $stat) {
+            $page = $this->pageRepo->find($stat['page_id']);
+            if ($page === null) {
+                continue;
+            }
+
+            $body[] = [
+                'id' => $page->getId(),
+                'title' => $page->getPageTranslationByLocale($currentLocale)->getTitre(),
+                'view' => (string) $stat['nb'],
                 'date' => $page->getCreatedAt()->format('Y-m-d H:i:s'),
             ];
         }

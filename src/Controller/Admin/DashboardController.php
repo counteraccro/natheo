@@ -62,6 +62,12 @@ class DashboardController extends AppAdminController
                     ]),
                     'url_pages' => $this->generateUrl('admin_page_index'),
                 ],
+                'dashboard_page_most_viewed' => [
+                    'load_block_dashboard' => $this->generateUrl('admin_dashboard_load_block', [
+                        'id' => DashboardBlock::PAGES_MOST_VIEWED->value,
+                    ]),
+                    'url_pages' => $this->generateUrl('admin_page_index'),
+                ],
             ],
             'datas' => [
                 'dashboard_help_first_connexion' => [
@@ -104,6 +110,7 @@ class DashboardController extends AppAdminController
             DashboardBlock::HELP_FIRST_CONNEXION->value => $dashboardService->getBlockHelpConfig(),
             DashboardBlock::LAST_COMMENT->value => $dashboardService->getBlockLastComment(),
             DashboardBlock::LAST_PAGE_CREATE->value => $dashboardService->getBlockLastPageCreate(),
+            DashboardBlock::PAGES_MOST_VIEWED->value => $dashboardService->getBlockPageMostViewed(),
             default => [
                 'success' => false,
                 'body' => null,
