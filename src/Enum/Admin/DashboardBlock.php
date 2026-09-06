@@ -16,4 +16,6 @@ enum DashboardBlock: string
     case LAST_COMMENT = 'last_comment';
 
     case LAST_PAGE_CREATE = 'last_page';
+
+    case PAGES_MOST_VIEWED = 'pages_most_viewed';
 }
