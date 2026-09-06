@@ -1,26 +1,41 @@
-<script>
+<script lang="ts">
 /**
  * @author Gourdon Aymeric
  * @version 1.0
  * Vue rendu du dashboard
  */
+import { defineComponent, type PropType } from 'vue';
 import BlockHelpFirstConnexion from '../../../Components/Dashboard/BlockHelpFirstConnexion.vue';
 import BlockLastComment from '../../../Components/Dashboard/BlockLastComment.vue';
 import BlockLastPage from '../../../Components/Dashboard/BlockLastPage.vue';
+import BlockPageMostViewed from '@/vue/Components/Dashboard/BlockPageMostViewed.vue';
+import type { DashboardUrls, DashboardTranslate, DashboardDatas, DashboardRoles } from '@/ts/Dashboard/Dashboard.type';
 
-export default {
+export default defineComponent({
   name: 'Dashboard',
-  components: { BlockLastPage, BlockLastComment, BlockHelpFirstConnexion },
-  emit: [],
+  components: { BlockPageMostViewed, BlockLastPage, BlockLastComment, BlockHelpFirstConnexion },
   props: {
-    urls: Object,
-    translate: Object,
-    datas: Object,
-    roles: Object,
+    urls: {
+      type: Object as PropType<DashboardUrls>,
+      required: true,
+    },
+    translate: {
+      type: Object as PropType<DashboardTranslate>,
+      required: true,
+    },
+    datas: {
+      type: Object as PropType<DashboardDatas>,
+      required: true,
+    },
+    roles: {
+      type: Object as PropType<DashboardRoles>,
+      required: true,
+    },
   },
+  emits: [],
   data() {
     return {
-      showBlockHelpFirstConnexion: true,
+      showBlockHelpFirstConnexion: true as boolean,
     };
   },
   mounted() {},
@@ -28,54 +43,54 @@ export default {
     /**
      * Rechargement du grid
      */
-    reloadGrid() {},
+    reloadGrid(): void {},
 
     /**
      * Masque le bloc de première connexion
      */
-    hideBlockFistConnexion() {
+    hideBlockFistConnexion(): void {
       this.showBlockHelpFirstConnexion = false;
     },
   },
-};
+});
 </script>
 
 <template>
   <div id="grid-block-dashboard" class="row">
     <div
       class="grid grid-cols-1 gap-6 mb-6"
-      v-if="this.datas.dashboard_help_first_connexion.help_first_connexion && this.showBlockHelpFirstConnexion"
+      v-if="datas.dashboard_help_first_connexion.help_first_connexion && showBlockHelpFirstConnexion"
     >
       <block-help-first-connexion
-        :translate="this.translate.dashboard_help_first_connexion"
-        :datas="this.datas.dashboard_help_first_connexion"
-        :urls="this.urls.dashboard_help_first_connexion"
-        @reload-grid="this.reloadGrid"
-        @hide-block="this.hideBlockFistConnexion"
+        :translate="translate.dashboard_help_first_connexion"
+        :datas="datas.dashboard_help_first_connexion"
+        :urls="urls.dashboard_help_first_connexion"
+        @reload-grid="reloadGrid"
+        @hide-block="hideBlockFistConnexion"
       />
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
       <block-last-comment
-        v-if="this.roles.isContributeur"
+        v-if="roles.isContributeur"
         :translate="translate.dashboard_last_comments"
         :urls="urls.dashboard_last_comments"
         @reload-grid="reloadGrid"
       />
-      <block-last-page
-        v-if="this.roles.isContributeur"
-        :translate="this.translate.dashboard_last_pages"
-        :urls="this.urls.dashboard_last_pages"
-        @reload-grid="this.reloadGrid"
+      <block-page-most-viewed
+        v-if="roles.isContributeur"
+        :translate="translate.dashboard_page_most_viewed"
+        :urls="urls.dashboard_page_most_viewed"
+        @reload-grid="reloadGrid"
       />
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-      <block-last-comment
-        v-if="this.roles.isContributeur"
-        :translate="this.translate.dashboard_last_comments"
-        :urls="this.urls.dashboard_last_comments"
-        @reload-grid="this.reloadGrid"
+      <block-last-page
+        v-if="roles.isContributeur"
+        :translate="translate.dashboard_last_pages"
+        :urls="urls.dashboard_last_pages"
+        @reload-grid="reloadGrid"
       />
     </div>
   </div>
