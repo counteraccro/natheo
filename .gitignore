@@ -49,4 +49,4 @@ public/assets/thumbnails/*
 /node_modules/
 /public/build/
 ###< pentatrion/vite-bundle ###
-/.ia/
+/.ia/Analyse
