@@ -30,8 +30,8 @@ enum KeyEnv: string
     case APP_ENV = 'APP_ENV';
 
     /**
-     * Clé NATHEO_SCHEMA
+     * Clé NATHEO_DBNAME
      * @var string
      */
-    case NATHEO_SCHEMA = 'NATHEO_SCHEMA';
+    case NATHEO_DBNAME = 'NATHEO_DBNAME';
 }

@@ -145,8 +145,8 @@ class InstallationController extends AbstractController
 
             if ($data['type'] === OptionInstallation::DATABASE_EXIST->value) {
                 $installationService->updateValueByKeyInEnvFile(
-                    KeyEnv::NATHEO_SCHEMA->value,
-                    KeyEnv::NATHEO_SCHEMA->value . '="' . $data['config']['bdd_name'] . '"',
+                    KeyEnv::NATHEO_DBNAME->value,
+                    KeyEnv::NATHEO_DBNAME->value . '="' . $data['config']['bdd_name'] . '"',
                 );
             }
 
