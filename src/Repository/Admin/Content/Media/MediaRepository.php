@@ -6,6 +6,7 @@ namespace App\Repository\Admin\Content\Media;
 
 use App\Entity\Admin\Content\Media\Media;
 use App\Entity\Admin\Content\Media\MediaFolder;
+use App\Repository\Trait\PathPrefixQueryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -19,6 +20,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class MediaRepository extends ServiceEntityRepository
 {
+    use PathPrefixQueryTrait;
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Media::class);
@@ -62,17 +64,15 @@ class MediaRepository extends ServiceEntityRepository
     }
 
     /**
-     * Retourne une liste de Medias contenant dans path la chaine $name
-     * @param string $name
+     * Retourne une liste de médias dont le path est exactement $pathPrefix ou commence
+     * par $pathPrefix suivi d'un séparateur de répertoire (segment de chemin complet, jamais
+     * une simple sous-chaîne : "/Doc" ne matche pas "/Docker")
+     * @param string $pathPrefix
      * @return mixed
      */
-    public function getAllByLikePath(string $name): mixed
+    public function getAllByLikePath(string $pathPrefix): mixed
     {
-        $name = addcslashes($name, '\\%_');
-
-        return $this->createQueryBuilder('m')
-            ->andWhere('m.path LIKE :name')
-            ->setParameter('name', '%' . $name . '%')
+        return $this->applyPathPrefixFilter($this->createQueryBuilder('m'), 'm', $pathPrefix)
             ->orderBy('m.id', 'ASC')
             ->getQuery()
             ->getResult();

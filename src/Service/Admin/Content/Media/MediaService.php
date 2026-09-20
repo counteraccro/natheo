@@ -319,7 +319,8 @@ class MediaService extends MediaFolderService
     }
 
     /**
-     * Ajoute une image physiquement sur le disque et créer l'objet Média
+     * Ajoute un fichier physiquement sur le disque et créer l'objet Média
+     * (extension, taille et MIME réel du contenu sont vérifiés avant écriture)
      * @param int $idFolder
      * @param array $file
      * @return void
@@ -339,27 +340,8 @@ class MediaService extends MediaFolderService
 
         $path = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $path);
 
-        $allowedExtensions = [
-            // Images
-            'jpg',
-            'jpeg',
-            'png',
-            'gif',
-            'webp',
-            // PDF
-            'pdf',
-            // Word
-            'doc',
-            'docx',
-            // Excel
-            'xls',
-            'xlsx',
-            // PowerPoint
-            'ppt',
-            'pptx',
-        ];
         $ext = strtolower($file['fileExtention']);
-        if (!in_array($ext, $allowedExtensions, true)) {
+        if (!isset(MediaConst::UPLOAD_ALLOWED_MIMES_BY_EXTENSION[$ext])) {
             throw new \RuntimeException('File extension not allowed.');
         }
 
@@ -370,29 +352,12 @@ class MediaService extends MediaFolderService
             throw new \RuntimeException('Invalid base64 data.');
         }
 
-        $allowedMimes = [
-            // Images
-            'image/jpeg',
-            'image/png',
-            'image/gif',
-            'image/webp',
-            // PDF
-            'application/pdf',
-            // Word
-            'application/msword',
-            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-            // Excel
-            'application/vnd.ms-excel',
-            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            // PowerPoint
-            'application/vnd.ms-powerpoint',
-            'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-            // Générique pour les formats Office anciens (.docx, .xlsx, .pptx)
-            'application/zip',
-            'application/octet-stream',
-        ];
+        if (strlen($data) > MediaConst::MAX_UPLOAD_SIZE_BYTES) {
+            throw new \RuntimeException('File size exceeds the allowed limit.');
+        }
+
         $mimeType = (new \finfo(FILEINFO_MIME_TYPE))->buffer($data);
-        if (!in_array($mimeType, $allowedMimes, true)) {
+        if (!in_array($mimeType, MediaConst::UPLOAD_ALLOWED_MIMES_BY_EXTENSION[$ext], true)) {
             throw new \RuntimeException('File type not allowed: ' . $mimeType);
         }
 
@@ -414,6 +379,13 @@ class MediaService extends MediaFolderService
         $media->setTitle($file['name']);
         $media->setDescription($file['description']);
         $this->save($media);
+
+        if ($media->getId() === null) {
+            // save() avale ses exceptions (AppAdminService) : sans id, la persistance a
+            // silencieusement échoué. On nettoie le fichier plutôt que de laisser un orphelin.
+            (new Filesystem())->remove($realPath);
+            throw new \RuntimeException('Failed to save the uploaded media.');
+        }
     }
 
     /**
@@ -423,7 +395,7 @@ class MediaService extends MediaFolderService
      */
     public function getThumbnail(Media $media): string
     {
-        if ($media->getType() === MediaConst::MEDIA_TYPE_IMG) {
+        if ($media->getType() === MediaConst::MEDIA_TYPE_IMG && $media->getThumbnail() !== null) {
             return $this->getWebPathThumbnail($media->getThumbnail());
         }
 
@@ -589,13 +561,36 @@ class MediaService extends MediaFolderService
             /** @var MediaFolder $folder */
             $folder = $this->findOneById(MediaFolder::class, $id);
             $folder->setTrash($trash);
+            $this->cascadeTrashToChildren($folder, $trash);
+            // Un seul flush pour tout l'arbre : les descendants sont déjà managés par Doctrine,
+            // leur mutation via setTrash() est prise en compte sans persist() explicite.
             $this->save($folder);
         }
     }
 
     /**
-     * Supprime un média ou un dossier en fonction du type
-     * Si le dossier existe physiquement, le supprime aussi
+     * Propage récursivement le flag trash à tous les descendants (sous-dossiers et médias) :
+     * rien ne doit rester "actif" dans un dossier mis à la corbeille (et inversement au retour).
+     * @param MediaFolder $folder
+     * @param bool $trash
+     * @return void
+     */
+    private function cascadeTrashToChildren(MediaFolder $folder, bool $trash): void
+    {
+        foreach ($folder->getMedias() as $media) {
+            $media->setTrash($trash);
+        }
+        foreach ($folder->getChildren() as $child) {
+            $child->setTrash($trash);
+            $this->cascadeTrashToChildren($child, $trash);
+        }
+    }
+
+    /**
+     * Supprime un média ou un dossier en fonction du type, de façon définitive (DB + fichiers
+     * physiques). Ne peut être appelée que sur un élément déjà passé par la corbeille (trash=true) :
+     * c'est la seule garantie côté serveur que l'utilisateur est bien passé par le workflow de
+     * confirmation, cet endpoint étant sinon appelable directement avec n'importe quel id valide.
      * @param string $type
      * @param int $id
      * @return void
@@ -605,14 +600,24 @@ class MediaService extends MediaFolderService
     public function confirmTrash(string $type, int $id): void
     {
         if ($type === 'media') {
-            /** @var Media $media */
+            /** @var Media|null $entity */
             $entity = $this->findOneById(Media::class, $id);
-            $path = $this->rootPathMedia . $this->getPath($entity);
         } else {
-            /** @var MediaFolder $entity */
+            /** @var MediaFolder|null $entity */
             $entity = $this->findOneById(MediaFolder::class, $id);
-            $path = $this->getPathFolder($entity);
         }
+
+        if ($entity === null) {
+            throw new \RuntimeException(sprintf('%s with id %d not found.', $type, $id));
+        }
+
+        if (!$entity->isTrash()) {
+            throw new \RuntimeException(
+                'Cannot permanently delete an item that has not been moved to trash first.',
+            );
+        }
+
+        $path = $type === 'media' ? $this->rootPathMedia . $this->getPath($entity) : $this->getPathFolder($entity);
 
         if ($this->canCreatePhysicalFolder) {
             $realRoot = realpath($this->rootPathMedia);
@@ -620,6 +625,21 @@ class MediaService extends MediaFolderService
 
             if ($realPath === false || !str_starts_with($realPath, $realRoot . DIRECTORY_SEPARATOR)) {
                 throw new \RuntimeException('Invalid path: attempt to escape the allowed directory.');
+            }
+
+            if ($type !== 'media') {
+                // Depth 0 seulement : simple signal "non vide" pour le log, pas un inventaire
+                // complet — évite un parcours redondant avec celui de Filesystem::remove().
+                $finder = new Finder();
+                if ($finder->in($realPath)->depth('== 0')->count() > 0) {
+                    $this->getLogger()->warning(
+                        sprintf(
+                            'Permanently deleting non-empty media folder "%s" (id=%d).',
+                            $entity->getName(),
+                            $entity->getId(),
+                        ),
+                    );
+                }
             }
 
             $fileSystem = new Filesystem();

@@ -61,3 +61,7 @@ Reusable Stimulus glue lives in `assets/controllers/` (currently just `vue_contr
 
 ### Multilingual content vs. UI locale
 Content entities (Page, Menu, Faq, Comment, ...) store per-locale data via `*Translation` child entities/tables (e.g. `PageTranslation`, `MenuElementTranslation`), while UI/interface strings live in `translations/<domain>+intl-icu.<locale>.yaml` (or `<domain>.<locale>.yaml`), one domain per feature area, loaded via Symfony's translator with an explicit `domain:` on every `trans()` call. Supported UI locales are `fr`, `en`, `es`.
+
+## Code style
+
+Inline (`//`) comments must stay short and concise: 2 lines maximum, and only when they explain the *why*, not narrate the *what* — if a comment only restates what the code already says, remove it. Prefer a clearer name or a shorter comment over a long explanation. Neither rule applies to method-level PHPDoc blocks (`@param`, `@return`, `@throws`), which stay descriptive as elsewhere in the codebase.

@@ -236,6 +236,20 @@ class MediaServiceTest extends AppWebTestCase
     }
 
     /**
+     * Test méthode getThumbnail() : ne plante pas quand le type est MEDIA_TYPE_IMG mais que
+     * le thumbnail est null (donnée incohérente), retombe sur l'icône générique
+     * @return void
+     */
+    public function testGetThumbnailFallsBackWhenThumbnailMissing(): void
+    {
+        $media = $this->createMedia(
+            customData: ['type' => MediaConst::MEDIA_TYPE_IMG, 'thumbnail' => null, 'extension' => 'jpeg'],
+        );
+        $result = $this->mediaService->getThumbnail($media);
+        $this->assertEquals(MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file.svg', $result);
+    }
+
+    /**
      * Test méthode move() ainsi que moveMedia() et moveFolder()
      * @return void
      * @throws ContainerExceptionInterface
@@ -380,6 +394,43 @@ class MediaServiceTest extends AppWebTestCase
     }
 
     /**
+     * Test méthode updateTrash() : mettre un dossier à la corbeille propage récursivement le
+     * flag trash à tous ses descendants (sous-dossiers et médias), et inversement au retour
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testUpdateTrashCascadesToChildren(): void
+    {
+        $root = $this->createMediaFolder(customData: ['trash' => false]);
+        $subFolder = $this->createMediaFolder($root, customData: ['trash' => false]);
+        $media1 = $this->createMedia($root, customData: ['trash' => false]);
+        $media2 = $this->createMedia($subFolder, customData: ['trash' => false]);
+        $this->em->clear();
+
+        $this->mediaService->updateTrash('folder', $root->getId(), true);
+
+        /** @var MediaFolder $subFolderVerif */
+        $subFolderVerif = $this->mediaService->findOneById(MediaFolder::class, $subFolder->getId());
+        $this->assertTrue($subFolderVerif->isTrash());
+
+        /** @var Media $media1Verif */
+        $media1Verif = $this->mediaService->findOneById(Media::class, $media1->getId());
+        $this->assertTrue($media1Verif->isTrash());
+
+        /** @var Media $media2Verif */
+        $media2Verif = $this->mediaService->findOneById(Media::class, $media2->getId());
+        $this->assertTrue($media2Verif->isTrash());
+
+        $this->mediaService->updateTrash('folder', $root->getId(), false);
+        $this->em->clear();
+
+        $this->assertFalse($this->mediaService->findOneById(MediaFolder::class, $subFolder->getId())->isTrash());
+        $this->assertFalse($this->mediaService->findOneById(Media::class, $media1->getId())->isTrash());
+        $this->assertFalse($this->mediaService->findOneById(Media::class, $media2->getId())->isTrash());
+    }
+
+    /**
      * Test méthode confirmTrash()
      * @return void
      * @throws ContainerExceptionInterface
@@ -388,7 +439,7 @@ class MediaServiceTest extends AppWebTestCase
     public function testConfirmTrash(): void
     {
         $this->mediaService->resetAllMedia();
-        $mediaFolder = $this->createMediaFolder(customData: ['trash' => false]);
+        $mediaFolder = $this->createMediaFolder(customData: ['trash' => true]);
         $media = $this->createMedia($mediaFolder, customData: ['name' => self::IMG_UNIT_TEST, 'trash' => true]);
         $this->mediaService->moveMediaFixture(self::IMG_UNIT_TEST, $media);
 
@@ -417,5 +468,74 @@ class MediaServiceTest extends AppWebTestCase
         $verif = $this->mediaService->findOneById(Media::class, $idMedia);
         $this->assertNull($verif);
         $this->assertFalse($this->fileSystem->exists($this->mediaService->getRootPathMedia() . $media->getPath()));
+    }
+
+    /**
+     * Test que confirmTrash() refuse de supprimer définitivement un élément qui n'est pas
+     * passé par la corbeille (trash=false), même en appelant directement le service avec un id valide.
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testConfirmTrashRefusesWhenNotTrashed(): void
+    {
+        $this->mediaService->resetAllMedia();
+
+        $media = $this->createMedia(customData: ['name' => self::IMG_UNIT_TEST, 'trash' => false]);
+        $this->mediaService->moveMediaFixture(self::IMG_UNIT_TEST, $media);
+
+        $this->expectException(\RuntimeException::class);
+        $this->mediaService->confirmTrash('media', $media->getId());
+    }
+
+    /**
+     * Test que confirmTrash() refuse de supprimer définitivement un dossier qui n'est pas
+     * passé par la corbeille (trash=false), même en appelant directement le service avec un id valide.
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testConfirmTrashRefusesFolderWhenNotTrashed(): void
+    {
+        $this->mediaService->resetAllMedia();
+
+        $mediaFolder = $this->createMediaFolder(customData: ['trash' => false]);
+        $this->mediaService->createFolder($mediaFolder);
+
+        $this->expectException(\RuntimeException::class);
+        $this->mediaService->confirmTrash('folder', $mediaFolder->getId());
+    }
+
+    /**
+     * Test méthode uploadMediaFile() : si la persistance échoue (ici : pas d'utilisateur
+     * connecté, contrainte NOT NULL violée), le fichier physique déjà écrit est nettoyé
+     * plutôt que de rester orphelin en disque sans entrée en base
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testUploadMediaFileCleansUpOrphanFileOnSaveFailure(): void
+    {
+        $this->mediaService->resetAllMedia();
+
+        $fixturesPath = dirname($this->mediaService->getRootPathMedia()) . DIRECTORY_SEPARATOR . 'fixtures';
+        $content = file_get_contents($fixturesPath . DIRECTORY_SEPARATOR . self::IMG_UNIT_TEST);
+        $file = [
+            'name' => 'unit-test-upload',
+            'description' => 'unit test upload',
+            'fileExtention' => 'jpg',
+            'url' => 'data:image/jpeg;base64,' . base64_encode($content),
+        ];
+
+        // Aucun utilisateur connecté ici (appel direct au service, hors requête HTTP) :
+        // Security::getUser() retourne null, Media::user (NOT NULL) fait échouer le save().
+        try {
+            $this->mediaService->uploadMediaFile(0, $file);
+            $this->fail('Une RuntimeException était attendue.');
+        } catch (\RuntimeException $exception) {
+            $this->assertEquals('Failed to save the uploaded media.', $exception->getMessage());
+        }
+
+        $this->assertEmpty(glob($this->mediaService->getRootPathMedia() . DIRECTORY_SEPARATOR . '*'));
     }
 }

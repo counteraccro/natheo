@@ -6,7 +6,7 @@
  */
 
 import { defineComponent, type PropType } from 'vue';
-import { FileData, TranslateRecord } from '@/ts/Mediatheque/Mediatheque.type';
+import { FileData, TranslateWithGenericError } from '@/ts/Mediatheque/Mediatheque.type';
 import FileUpload from '@/vue/Components/Global/FileUpload.vue';
 import axios from 'axios';
 import { Toasts } from '@/ts/Toast/Toast.type';
@@ -17,7 +17,7 @@ export default defineComponent({
   name: 'MediaNew',
   components: { SkeletonMediathequeUpload, Toast, FileUpload },
   props: {
-    translate: { type: Object as PropType<TranslateRecord>, required: true },
+    translate: { type: Object as PropType<TranslateWithGenericError>, required: true },
     currentFolder: { type: Number, required: true },
     url: { type: String, required: true },
   },
@@ -54,14 +54,15 @@ export default defineComponent({
         .then(() => {
           this.toasts.success.show = true;
           this.toasts.success.msg = this.translate.loading_msg_success as string;
-        })
-        .catch((error) => {
-          console.error(error);
-        })
-        .finally(() => {
           setTimeout(() => {
             this.$emit('reload', this.currentFolder, false, {});
           }, 2000);
+        })
+        .catch((error) => {
+          console.error(error);
+          this.loading = false;
+          this.toasts.error.show = true;
+          this.toasts.error.msg = this.translate.generic_error;
         });
     },
 
@@ -111,7 +112,13 @@ export default defineComponent({
     </div>
 
     <skeleton-mediatheque-upload v-if="loading" />
-    <file-upload v-else :max-size="20" :translate="translate" @file-uploaded="saveMedia" />
+    <file-upload
+      v-else
+      :max-size="20"
+      accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx"
+      :translate="translate"
+      @file-uploaded="saveMedia"
+    />
   </div>
 
   <div class="toast-container position-fixed top-0 end-0 p-2">

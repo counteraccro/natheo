@@ -13,6 +13,7 @@ export default {
   props: {
     medias: { type: Array as PropType<MediaItem[]>, required: true },
     translate: { type: Object as PropType<TranslateRecord>, required: true },
+    canDelete: { type: Boolean, default: true },
   },
   emits: ['revert-trash', 'delete'],
   data() {
@@ -214,7 +215,7 @@ export default {
                     {{ translate.link_revert }}
                   </a>
                 </li>
-                <li style="border-top: 1px solid var(--border-color)">
+                <li v-if="canDelete" style="border-top: 1px solid var(--border-color)">
                   <a
                     href="#"
                     @click="askDelete(media.id)"

@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Service\Admin\Content\Media;
 
+use App\Entity\Admin\Content\Media\Media;
 use App\Entity\Admin\Content\Media\MediaFolder;
 use App\Service\Admin\Content\Media\MediaFolderService;
 use App\Service\Admin\Content\Media\MediaService;
@@ -82,6 +83,33 @@ class MediaFolderServiceTest extends AppWebTestCase
         $this->assertTrue(
             $this->fileSystem->exists($this->mediaFolderService->getRootPathMedia() . $subSubMediaFolder2->getPath()),
         );
+    }
+
+    /**
+     * Test méthode createFolder() : si les dossiers parents n'existent pas encore physiquement,
+     * createFolder() doit les créer récursivement PUIS créer le dossier initialement demandé
+     * (et pas seulement remonter la chaîne des parents sans jamais revenir créer celui-ci)
+     * @return void
+     */
+    public function testCreateFolderCreatesRequestedFolderAfterMissingParents(): void
+    {
+        $this->mediaFolderService->resetAllMedia();
+
+        // Hiérarchie créée uniquement en base (sans appeler createFolder() aux niveaux
+        // intermédiaires) : aucun dossier physique n'existe encore.
+        $root = $this->createMediaFolder();
+        $mid = $this->createMediaFolder($root);
+        $leaf = $this->createMediaFolder($mid);
+
+        $this->mediaFolderService->createFolder($leaf);
+
+        $leafPath =
+            $this->mediaFolderService->getRootPathMedia() . $leaf->getPath() . DIRECTORY_SEPARATOR . $leaf->getName();
+        $this->assertTrue($this->fileSystem->exists($leafPath));
+
+        $midPath =
+            $this->mediaFolderService->getRootPathMedia() . $mid->getPath() . DIRECTORY_SEPARATOR . $mid->getName();
+        $this->assertTrue($this->fileSystem->exists($midPath));
     }
 
     /**
@@ -272,6 +300,59 @@ class MediaFolderServiceTest extends AppWebTestCase
                 $result->getName(),
         );
         $this->assertTrue($exist);
+    }
+
+    /**
+     * Test méthode updateMediaFolder() : le webPath d'un média ne doit pas être corrompu quand
+     * le nom du dossier renommé coïncide avec un segment du préfixe fixe de webPathMedia
+     * (ex: un dossier nommé "assets", qui apparaît aussi dans MediaFolderConst::PATH_WEB_PATH)
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testUpdateMediaFolderDoesNotCorruptWebPathOnPrefixCollision(): void
+    {
+        $this->mediaFolderService->resetAllMedia();
+
+        $folder = $this->createMediaFolder(customData: ['name' => 'assets']);
+        $this->mediaFolderService->createFolder($folder);
+        $webPathMedia = $this->mediaFolderService->getWebPathMedia();
+        $media = $this->createMedia(
+            $folder,
+            customData: ['path' => '/assets/photo.jpg', 'webPath' => $webPathMedia . '/assets/photo.jpg'],
+        );
+
+        $this->mediaFolderService->updateMediaFolder('images', $folder);
+
+        /** @var Media $verif */
+        $verif = $this->mediaFolderService->findOneById(Media::class, $media->getId());
+        $this->assertEquals($webPathMedia . '/images/photo.jpg', $verif->getWebPath());
+    }
+
+    /**
+     * Test méthode updateMediaFolder() : renommer un dossier avec le même nom (no-op) ne doit
+     * pas planter (le rename() physique cible = origine sinon)
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testUpdateMediaFolderWithSameNameIsNoop(): void
+    {
+        $this->mediaFolderService->resetAllMedia();
+        $mediaFolder = $this->createMediaFolder(customData: ['name' => 'unit-test']);
+        $this->mediaFolderService->createFolder($mediaFolder);
+
+        $this->mediaFolderService->updateMediaFolder('unit-test', $mediaFolder);
+
+        $this->assertEquals('unit-test', $mediaFolder->getName());
+        $this->assertTrue(
+            $this->fileSystem->exists(
+                $this->mediaFolderService->getRootPathMedia() .
+                    $mediaFolder->getPath() .
+                    DIRECTORY_SEPARATOR .
+                    $mediaFolder->getName(),
+            ),
+        );
     }
 
     /**

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Repository\Admin\Content\Media;
 
 use App\Entity\Admin\Content\Media\MediaFolder;
+use App\Repository\Trait\PathPrefixQueryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -18,6 +19,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class MediaFolderRepository extends ServiceEntityRepository
 {
+    use PathPrefixQueryTrait;
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, MediaFolder::class);
@@ -69,15 +71,15 @@ class MediaFolderRepository extends ServiceEntityRepository
     }
 
     /**
-     * Retourne une liste de médiaFolder contenant dans path la chaine $name
-     * @param string $name
+     * Retourne une liste de médiaFolder dont le path est exactement $pathPrefix ou commence
+     * par $pathPrefix suivi d'un séparateur de répertoire (segment de chemin complet, jamais
+     * une simple sous-chaîne : "/Doc" ne matche pas "/Docker")
+     * @param string $pathPrefix
      * @return mixed
      */
-    public function getAllByLikePath(string $name): mixed
+    public function getAllByLikePath(string $pathPrefix): mixed
     {
-        return $this->createQueryBuilder('m')
-            ->andWhere('m.path LIKE :name')
-            ->setParameter('name', '%' . $name . '%')
+        return $this->applyPathPrefixFilter($this->createQueryBuilder('m'), 'm', $pathPrefix)
             ->orderBy('m.id', 'ASC')
             ->getQuery()
             ->getResult();
@@ -101,6 +103,31 @@ class MediaFolderRepository extends ServiceEntityRepository
                 ->setParameter('id', $mediaFolder->getId());
         }
         return $queryBuilder->orderBy('m.id', 'ASC')->getQuery()->getResult();
+    }
+
+    /**
+     * Retourne un dossier de même nom au sein du même parent (siblings), hors $excludeId
+     * (utile pour ignorer le dossier en cours d'édition lors du contrôle d'unicité)
+     * @param string $name
+     * @param MediaFolder|null $parent
+     * @param int|null $excludeId
+     * @return MediaFolder|null
+     */
+    public function findOneByNameAndParent(string $name, ?MediaFolder $parent, ?int $excludeId = null): ?MediaFolder
+    {
+        $query = $this->createQueryBuilder('m')->andWhere('m.name = :name')->setParameter('name', $name);
+
+        if ($parent !== null) {
+            $query->andWhere('m.parent = :parent')->setParameter('parent', $parent);
+        } else {
+            $query->andWhere('m.parent IS NULL');
+        }
+
+        if ($excludeId !== null) {
+            $query->andWhere('m.id != :excludeId')->setParameter('excludeId', $excludeId);
+        }
+
+        return $query->getQuery()->getOneOrNullResult();
     }
 
     /**

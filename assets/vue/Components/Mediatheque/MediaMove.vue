@@ -5,7 +5,7 @@
  * Permet de déplacer un média ou une image
  */
 import { defineComponent, type PropType } from 'vue';
-import { MediaItem, TranslateRecord } from '@/ts/Mediatheque/Mediatheque.type';
+import { MediaItem, TranslateWithGenericError } from '@/ts/Mediatheque/Mediatheque.type';
 import SkeletonMediathequeMove from '@/vue/Components/Skeleton/MediathequeMove.vue';
 import axios from 'axios';
 import { Toasts } from '@/ts/Toast/Toast.type';
@@ -16,7 +16,7 @@ export default defineComponent({
   components: { Toast, SkeletonMediathequeMove },
   props: {
     data: { type: Object as PropType<MediaItem>, required: true },
-    translate: { type: Object as PropType<TranslateRecord>, required: true },
+    translate: { type: Object as PropType<TranslateWithGenericError>, required: true },
     urls: { type: Object, required: true },
   },
   emits: ['close', 'reload'],
@@ -86,6 +86,7 @@ export default defineComponent({
         })
         .catch((error) => {
           console.error(error);
+          this.showGenericError();
         })
         .finally(() => {
           this.loading = false;
@@ -105,17 +106,19 @@ export default defineComponent({
         })
         .then(() => {
           this.loading = false;
+          this.isError = false;
           this.toasts.success.show = true;
           this.toasts.success.msg = this.translate.move_success as string;
           this.move = true;
-        })
-        .catch((error) => {
-          console.error(error);
-        })
-        .finally(() => {
           setTimeout(() => {
             this.$emit('reload', this.selectedId, false, this.data);
           }, 2000);
+        })
+        .catch((error) => {
+          console.error(error);
+          this.loading = false;
+          this.isError = true;
+          this.showGenericError();
         });
     },
 
@@ -133,6 +136,14 @@ export default defineComponent({
      */
     closeToast(nameToast: string): void {
       this.toasts[nameToast].show = false;
+    },
+
+    /**
+     * Affiche le toast d'erreur générique
+     */
+    showGenericError(): void {
+      this.toasts.error.show = true;
+      this.toasts.error.msg = this.translate.generic_error;
     },
   },
 });
@@ -291,6 +302,7 @@ export default defineComponent({
 .folder-tree-item {
   position: relative;
   display: flex;
+  flex-wrap: nowrap;
   align-items: center;
   gap: 0.5rem;
   padding: 0.3rem 0.6rem;
@@ -310,6 +322,20 @@ export default defineComponent({
   background-color: var(--primary-lighter);
   color: var(--primary);
   font-weight: 600;
+}
+
+.folder-tree-item > svg {
+  flex: none;
+  width: 1rem;
+  height: 1rem;
+}
+
+.folder-tree-item > span:not(.tree-line) {
+  flex: 1 1 0%;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* ── Lignes de connexion ── */

@@ -12,7 +12,7 @@ import MediasBreadcrumb from '@/vue/Components/Mediatheque/MediasBreadcrumb.vue'
 import MediasGrid from '@/vue/Components/Mediatheque/MediasGrid.vue';
 import { initFlowbite } from 'flowbite';
 import MediaInfo from '@/vue/Components/Mediatheque/MediaInfo.vue';
-import { MediaItem, TranslateRecord } from '@/ts/Mediatheque/Mediatheque.type';
+import { MediaItem, TranslateRecord, TranslateWithGenericError } from '@/ts/Mediatheque/Mediatheque.type';
 import MediaEdit from '@/vue/Components/Mediatheque/MediaEdit.vue';
 import MediaMove from '@/vue/Components/Mediatheque/MediaMove.vue';
 import Toast from '@/vue/Components/Global/Toast.vue';
@@ -36,7 +36,7 @@ export default defineComponent({
   },
   props: {
     url: String,
-    translate: { type: Object as PropType<TranslateRecord>, required: true },
+    translate: { type: Object as PropType<TranslateWithGenericError>, required: true },
   },
   data() {
     return {
@@ -113,6 +113,7 @@ export default defineComponent({
         })
         .catch((error) => {
           console.error(error);
+          this.showGenericError();
         })
         .finally(() => {
           this.getNbTrash();
@@ -186,6 +187,7 @@ export default defineComponent({
         })
         .catch((error) => {
           console.error(error);
+          this.showGenericError();
         })
         .finally(() => {
           if (trash) {
@@ -284,6 +286,7 @@ export default defineComponent({
         })
         .catch((error) => {
           console.error(error);
+          this.showGenericError();
         })
         .finally(() => {
           this.loading = false;
@@ -308,6 +311,7 @@ export default defineComponent({
         })
         .catch((error) => {
           console.error(error);
+          this.showGenericError();
         })
         .finally(() => {
           this.loadInTrash();
@@ -333,6 +337,14 @@ export default defineComponent({
      */
     closeToast(nameToast: string): void {
       this.toasts[nameToast].show = false;
+    },
+
+    /**
+     * Affiche le toast d'erreur générique
+     */
+    showGenericError(): void {
+      this.toasts.error.show = true;
+      this.toasts.error.msg = this.translate.generic_error;
     },
   },
 });
@@ -670,6 +682,7 @@ export default defineComponent({
           :render="render"
           :medias="medias"
           :translate="translate.media as TranslateRecord"
+          :can-delete="canDelete"
           @load-data-folder="loadDataInFolder"
           @show-info="openBlockDrawer"
           @edit="openBlockDrawer"
@@ -682,6 +695,7 @@ export default defineComponent({
           v-else
           :translate="translate.trash as TranslateRecord"
           :medias="mediasTrash"
+          :can-delete="canDelete"
           @revert-trash="updateTrash"
           @delete="remove"
         >
@@ -709,7 +723,7 @@ export default defineComponent({
         <media-move
           :key="'ME-' + key"
           v-if="selectedAction === 'move'"
-          :translate="translate.move as TranslateRecord"
+          :translate="translate.move as TranslateWithGenericError"
           :data="selectedMedia as unknown as MediaItem"
           :urls="{
             move: urlActions.move,
@@ -722,7 +736,7 @@ export default defineComponent({
         <media-new
           :key="'ME-' + key"
           v-if="selectedAction === 'new-media'"
-          :translate="translate.upload as TranslateRecord"
+          :translate="translate.upload as TranslateWithGenericError"
           :url="urlActions.upload"
           :current-folder="currentFolder.id"
           @reload="reload"

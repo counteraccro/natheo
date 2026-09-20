@@ -130,6 +130,9 @@
     // Fermer le debug panel au clic extérieur
     document.addEventListener('click', function(event) {
         const toolbar = document.getElementById('debugToolbar');
+        if (toolbar === null) {
+            return;
+        }
         const panel = toolbar.querySelector('.debug-toolbar-panel');
         const toggle = toolbar.querySelector('.debug-toolbar-toggle');
 
