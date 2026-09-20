@@ -275,6 +275,32 @@ class MediaFolderServiceTest extends AppWebTestCase
     }
 
     /**
+     * Test méthode updateMediaFolder() : renommer un dossier avec le même nom (no-op) ne doit
+     * pas planter (le rename() physique cible = origine sinon)
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testUpdateMediaFolderWithSameNameIsNoop(): void
+    {
+        $this->mediaFolderService->resetAllMedia();
+        $mediaFolder = $this->createMediaFolder(customData: ['name' => 'unit-test']);
+        $this->mediaFolderService->createFolder($mediaFolder);
+
+        $this->mediaFolderService->updateMediaFolder('unit-test', $mediaFolder);
+
+        $this->assertEquals('unit-test', $mediaFolder->getName());
+        $this->assertTrue(
+            $this->fileSystem->exists(
+                $this->mediaFolderService->getRootPathMedia() .
+                    $mediaFolder->getPath() .
+                    DIRECTORY_SEPARATOR .
+                    $mediaFolder->getName(),
+            ),
+        );
+    }
+
+    /**
      * Test méthode getContentFolder()
      * @return void
      */

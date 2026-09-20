@@ -145,8 +145,8 @@ class MediaController extends AppAdminController
         $editFolder = $mediaFolderService->findOneById(MediaFolder::class, $data['editFolder']);
         $currentFolder = $mediaFolderService->findOneById(MediaFolder::class, $data['currentFolder']);
 
-        $exist = $mediaFolderService->findOneBy(MediaFolder::class, 'name', $data['name']);
-        if ($exist !== null) {
+        $exist = $mediaFolderService->folderNameExistsInParent($data['name'], $currentFolder, $editFolder?->getId());
+        if ($exist) {
             return $this->json([
                 'result' => 'error',
                 'msg' => $translator->trans('media.mediatheque.folder.error.exist_name', domain: 'media'),

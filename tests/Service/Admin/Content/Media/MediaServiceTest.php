@@ -236,6 +236,20 @@ class MediaServiceTest extends AppWebTestCase
     }
 
     /**
+     * Test méthode getThumbnail() : ne plante pas quand le type est MEDIA_TYPE_IMG mais que
+     * le thumbnail est null (donnée incohérente), retombe sur l'icône générique
+     * @return void
+     */
+    public function testGetThumbnailFallsBackWhenThumbnailMissing(): void
+    {
+        $media = $this->createMedia(
+            customData: ['type' => MediaConst::MEDIA_TYPE_IMG, 'thumbnail' => null, 'extension' => 'jpeg'],
+        );
+        $result = $this->mediaService->getThumbnail($media);
+        $this->assertEquals(MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file.svg', $result);
+    }
+
+    /**
      * Test méthode move() ainsi que moveMedia() et moveFolder()
      * @return void
      * @throws ContainerExceptionInterface

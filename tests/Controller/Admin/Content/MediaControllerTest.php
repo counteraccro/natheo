@@ -261,6 +261,51 @@ class MediaControllerTest extends AppWebTestCase
     }
 
     /**
+     * Test méthode updateFolder() : l'unicité du nom est scopée au dossier parent (deux
+     * dossiers de même nom dans deux branches différentes sont autorisés), et le dossier en
+     * cours d'édition est exclu du contrôle (un ré-enregistrement sans changer le nom ne doit
+     * pas être rejeté comme "nom déjà existant")
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testUpdateFolderNameUniquenessScopedToParent(): void
+    {
+        $this->mediaService->resetAllMedia();
+
+        $user = $this->createUserContributeur();
+        $this->client->loginUser($user, 'admin');
+
+        $branchA = $this->createMediaFolder(customData: ['name' => 'branch-a']);
+        $this->mediaService->createFolder($branchA);
+        $branchB = $this->createMediaFolder(customData: ['name' => 'branch-b']);
+        $this->mediaService->createFolder($branchB);
+        $photosInA = $this->createMediaFolder($branchA, customData: ['name' => 'photos']);
+        $this->mediaService->createFolder($photosInA);
+
+        // Même nom "photos", mais sous un parent différent : doit être accepté.
+        $data = ['name' => 'photos', 'currentFolder' => $branchB->getId(), 'editFolder' => 0];
+        $this->client->request('POST', $this->router->generate('admin_media_save_folder'), content: json_encode($data));
+        $this->assertResponseIsSuccessful();
+        $content = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertEquals('success', $content['result']);
+
+        // Ré-enregistrement de "photos" (branchA) sans changer le nom : ne doit pas être rejeté.
+        $data = ['name' => 'photos', 'currentFolder' => $branchA->getId(), 'editFolder' => $photosInA->getId()];
+        $this->client->request('POST', $this->router->generate('admin_media_save_folder'), content: json_encode($data));
+        $this->assertResponseIsSuccessful();
+        $content = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertEquals('success', $content['result']);
+
+        // Même nom, même parent (branchA) : toujours rejeté.
+        $data = ['name' => 'photos', 'currentFolder' => $branchA->getId(), 'editFolder' => 0];
+        $this->client->request('POST', $this->router->generate('admin_media_save_folder'), content: json_encode($data));
+        $this->assertResponseIsSuccessful();
+        $content = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertEquals('error', $content['result']);
+    }
+
+    /**
      * Test méthode loadMedia()
      * @return void
      */
@@ -884,5 +929,38 @@ class MediaControllerTest extends AppWebTestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('File size exceeds the allowed limit.');
         $this->client->request('POST', $this->router->generate('admin_media_upload'), content: json_encode($data));
+    }
+
+    /**
+     * Test méthode upload() : un upload avec l'extension "jpeg" génère bien une miniature
+     * (régression du bug Thumbnail::getGdImage() qui ne gérait pas "jpeg", seulement "jpg")
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testUploadJpegGeneratesThumbnail(): void
+    {
+        $this->mediaService->resetAllMedia();
+
+        $user = $this->createUserContributeur();
+        $this->client->loginUser($user, 'admin');
+
+        $data = ['folder' => 0, 'file' => $this->buildUploadFile('road.jpg', 'image/jpeg', 'jpeg', 'photo')];
+        $this->client->request('POST', $this->router->generate('admin_media_upload'), content: json_encode($data));
+        $this->assertResponseIsSuccessful();
+
+        $medias = $this->mediaService->getMediaByMediaFolder(null);
+        $this->assertCount(1, $medias);
+        $this->assertEquals(MediaConst::MEDIA_TYPE_IMG, $medias[0]->getType());
+        $this->assertNotNull($medias[0]->getThumbnail());
+        $this->assertTrue(
+            $this->fileSystem->exists(
+                $this->mediaService->getRootPathThumbnail() . DIRECTORY_SEPARATOR . $medias[0]->getThumbnail(),
+            ),
+        );
+
+        // getThumbnail() ne doit pas lever de TypeError.
+        $thumbnailUrl = $this->mediaService->getThumbnail($medias[0]);
+        $this->assertStringContainsString($medias[0]->getThumbnail(), $thumbnailUrl);
     }
 }

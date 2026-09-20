@@ -109,6 +109,31 @@ class MediaFolderRepository extends ServiceEntityRepository
     }
 
     /**
+     * Retourne un dossier de même nom au sein du même parent (siblings), hors $excludeId
+     * (utile pour ignorer le dossier en cours d'édition lors du contrôle d'unicité)
+     * @param string $name
+     * @param MediaFolder|null $parent
+     * @param int|null $excludeId
+     * @return MediaFolder|null
+     */
+    public function findOneByNameAndParent(string $name, ?MediaFolder $parent, ?int $excludeId = null): ?MediaFolder
+    {
+        $query = $this->createQueryBuilder('m')->andWhere('m.name = :name')->setParameter('name', $name);
+
+        if ($parent !== null) {
+            $query->andWhere('m.parent = :parent')->setParameter('parent', $parent);
+        } else {
+            $query->andWhere('m.parent IS NULL');
+        }
+
+        if ($excludeId !== null) {
+            $query->andWhere('m.id != :excludeId')->setParameter('excludeId', $excludeId);
+        }
+
+        return $query->getQuery()->getOneOrNullResult();
+    }
+
+    /**
      * Retourne le nombre de médias tagué pour la corbeille
      * @return int
      */

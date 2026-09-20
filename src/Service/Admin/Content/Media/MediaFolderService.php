@@ -314,6 +314,23 @@ class MediaFolderService extends AppAdminService
     }
 
     /**
+     * Vérifie si un dossier de même nom existe déjà au sein du même dossier parent, hors
+     * $excludeId (id du dossier en cours d'édition, à ignorer)
+     * @param string $name
+     * @param MediaFolder|null $parent
+     * @param int|null $excludeId
+     * @return bool
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function folderNameExistsInParent(string $name, ?MediaFolder $parent, ?int $excludeId = null): bool
+    {
+        /** @var MediaFolderRepository $repo */
+        $repo = $this->getRepository(MediaFolder::class);
+        return $repo->findOneByNameAndParent($name, $parent, $excludeId) !== null;
+    }
+
+    /**
      * Permet de créer un nouveau dossier en base de donnée ainsi que physiquement si l'option est activée
      * @param string $name
      * @param MediaFolder|null $parent
@@ -357,6 +374,11 @@ class MediaFolderService extends AppAdminService
     public function updateMediaFolder(string $name, MediaFolder $mediaFolder): void
     {
         $oldName = $mediaFolder->getName();
+        // Rien à faire : renommer à l'identique planterait le rename() physique (cible = origine).
+        if ($oldName === $name) {
+            return;
+        }
+
         $parentPath = $mediaFolder->getPath();
 
         // Chemin d'identité complet du dossier : un nom nu ("Doc") matcherait à tort

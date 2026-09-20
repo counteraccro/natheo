@@ -59,7 +59,7 @@ class Thumbnail
     private function getGdImage(string $path, string $ext)
     {
         return match ($ext) {
-            'jpg' => imagecreatefromjpeg($path),
+            'jpg', 'jpeg' => imagecreatefromjpeg($path),
             'png' => imagecreatefrompng($path),
             'gif' => imagecreatefromgif($path),
             default => null,

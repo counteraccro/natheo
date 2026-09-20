@@ -388,7 +388,7 @@ class MediaService extends MediaFolderService
      */
     public function getThumbnail(Media $media): string
     {
-        if ($media->getType() === MediaConst::MEDIA_TYPE_IMG) {
+        if ($media->getType() === MediaConst::MEDIA_TYPE_IMG && $media->getThumbnail() !== null) {
             return $this->getWebPathThumbnail($media->getThumbnail());
         }
 

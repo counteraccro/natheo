@@ -1,5 +1,11 @@
 export type TranslateRecord = { [key: string]: string | TranslateRecord };
 
+/**
+ * Translate portant la clé de message d'erreur générique (Mediatheque.vue, MediaNew.vue,
+ * MediaMove.vue), affichée dans le toast d'erreur des catch() d'appels Axios
+ */
+export type TranslateWithGenericError = TranslateRecord & { generic_error: string };
+
 export type MediaFolder = {
   type: 'folder';
   id: number;
