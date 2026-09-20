@@ -86,8 +86,7 @@ export default defineComponent({
         })
         .catch((error) => {
           console.error(error);
-          this.toasts.error.show = true;
-          this.toasts.error.msg = this.translate.generic_error;
+          this.showGenericError();
         })
         .finally(() => {
           this.loading = false;
@@ -107,6 +106,7 @@ export default defineComponent({
         })
         .then(() => {
           this.loading = false;
+          this.isError = false;
           this.toasts.success.show = true;
           this.toasts.success.msg = this.translate.move_success as string;
           this.move = true;
@@ -118,8 +118,7 @@ export default defineComponent({
           console.error(error);
           this.loading = false;
           this.isError = true;
-          this.toasts.error.show = true;
-          this.toasts.error.msg = this.translate.generic_error;
+          this.showGenericError();
         });
     },
 
@@ -137,6 +136,14 @@ export default defineComponent({
      */
     closeToast(nameToast: string): void {
       this.toasts[nameToast].show = false;
+    },
+
+    /**
+     * Affiche le toast d'erreur générique
+     */
+    showGenericError(): void {
+      this.toasts.error.show = true;
+      this.toasts.error.msg = this.translate.generic_error;
     },
   },
 });

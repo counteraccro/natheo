@@ -113,8 +113,7 @@ export default defineComponent({
         })
         .catch((error) => {
           console.error(error);
-          this.toasts.error.show = true;
-          this.toasts.error.msg = this.translate.generic_error;
+          this.showGenericError();
         })
         .finally(() => {
           this.getNbTrash();
@@ -188,8 +187,7 @@ export default defineComponent({
         })
         .catch((error) => {
           console.error(error);
-          this.toasts.error.show = true;
-          this.toasts.error.msg = this.translate.generic_error;
+          this.showGenericError();
         })
         .finally(() => {
           if (trash) {
@@ -288,8 +286,7 @@ export default defineComponent({
         })
         .catch((error) => {
           console.error(error);
-          this.toasts.error.show = true;
-          this.toasts.error.msg = this.translate.generic_error;
+          this.showGenericError();
         })
         .finally(() => {
           this.loading = false;
@@ -314,8 +311,7 @@ export default defineComponent({
         })
         .catch((error) => {
           console.error(error);
-          this.toasts.error.show = true;
-          this.toasts.error.msg = this.translate.generic_error;
+          this.showGenericError();
         })
         .finally(() => {
           this.loadInTrash();
@@ -341,6 +337,14 @@ export default defineComponent({
      */
     closeToast(nameToast: string): void {
       this.toasts[nameToast].show = false;
+    },
+
+    /**
+     * Affiche le toast d'erreur générique
+     */
+    showGenericError(): void {
+      this.toasts.error.show = true;
+      this.toasts.error.msg = this.translate.generic_error;
     },
   },
 });

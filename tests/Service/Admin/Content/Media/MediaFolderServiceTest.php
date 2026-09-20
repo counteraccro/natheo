@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Service\Admin\Content\Media;
 
+use App\Entity\Admin\Content\Media\Media;
 use App\Entity\Admin\Content\Media\MediaFolder;
 use App\Service\Admin\Content\Media\MediaFolderService;
 use App\Service\Admin\Content\Media\MediaService;
@@ -299,6 +300,33 @@ class MediaFolderServiceTest extends AppWebTestCase
                 $result->getName(),
         );
         $this->assertTrue($exist);
+    }
+
+    /**
+     * Test méthode updateMediaFolder() : le webPath d'un média ne doit pas être corrompu quand
+     * le nom du dossier renommé coïncide avec un segment du préfixe fixe de webPathMedia
+     * (ex: un dossier nommé "assets", qui apparaît aussi dans MediaFolderConst::PATH_WEB_PATH)
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testUpdateMediaFolderDoesNotCorruptWebPathOnPrefixCollision(): void
+    {
+        $this->mediaFolderService->resetAllMedia();
+
+        $folder = $this->createMediaFolder(customData: ['name' => 'assets']);
+        $this->mediaFolderService->createFolder($folder);
+        $webPathMedia = $this->mediaFolderService->getWebPathMedia();
+        $media = $this->createMedia(
+            $folder,
+            customData: ['path' => '/assets/photo.jpg', 'webPath' => $webPathMedia . '/assets/photo.jpg'],
+        );
+
+        $this->mediaFolderService->updateMediaFolder('images', $folder);
+
+        /** @var Media $verif */
+        $verif = $this->mediaFolderService->findOneById(Media::class, $media->getId());
+        $this->assertEquals($webPathMedia . '/images/photo.jpg', $verif->getWebPath());
     }
 
     /**

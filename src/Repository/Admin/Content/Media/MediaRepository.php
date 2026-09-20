@@ -6,6 +6,7 @@ namespace App\Repository\Admin\Content\Media;
 
 use App\Entity\Admin\Content\Media\Media;
 use App\Entity\Admin\Content\Media\MediaFolder;
+use App\Repository\Trait\PathPrefixQueryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -19,6 +20,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class MediaRepository extends ServiceEntityRepository
 {
+    use PathPrefixQueryTrait;
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Media::class);
@@ -70,12 +72,7 @@ class MediaRepository extends ServiceEntityRepository
      */
     public function getAllByLikePath(string $pathPrefix): mixed
     {
-        $escaped = addcslashes($pathPrefix, '\\%_');
-
-        return $this->createQueryBuilder('m')
-            ->andWhere('m.path = :exact OR m.path LIKE :prefix')
-            ->setParameter('exact', $pathPrefix)
-            ->setParameter('prefix', $escaped . '/%')
+        return $this->applyPathPrefixFilter($this->createQueryBuilder('m'), 'm', $pathPrefix)
             ->orderBy('m.id', 'ASC')
             ->getQuery()
             ->getResult();

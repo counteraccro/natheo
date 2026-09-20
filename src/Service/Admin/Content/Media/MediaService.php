@@ -561,9 +561,10 @@ class MediaService extends MediaFolderService
             /** @var MediaFolder $folder */
             $folder = $this->findOneById(MediaFolder::class, $id);
             $folder->setTrash($trash);
-            $this->save($folder, false);
             $this->cascadeTrashToChildren($folder, $trash);
-            $this->getEntityManager()->flush();
+            // Un seul flush pour tout l'arbre : les descendants sont déjà managés par Doctrine,
+            // leur mutation via setTrash() est prise en compte sans persist() explicite.
+            $this->save($folder);
         }
     }
 
@@ -578,11 +579,9 @@ class MediaService extends MediaFolderService
     {
         foreach ($folder->getMedias() as $media) {
             $media->setTrash($trash);
-            $this->save($media, false);
         }
         foreach ($folder->getChildren() as $child) {
             $child->setTrash($trash);
-            $this->save($child, false);
             $this->cascadeTrashToChildren($child, $trash);
         }
     }
@@ -629,15 +628,15 @@ class MediaService extends MediaFolderService
             }
 
             if ($type !== 'media') {
-                $content = $this->getContentFolder($entity);
-                if ($content['files'] > 0 || $content['directory'] > 0) {
+                // Depth 0 seulement : simple signal "non vide" pour le log, pas un inventaire
+                // complet — évite un parcours redondant avec celui de Filesystem::remove().
+                $finder = new Finder();
+                if ($finder->in($realPath)->depth('== 0')->count() > 0) {
                     $this->getLogger()->warning(
                         sprintf(
-                            'Permanently deleting non-empty media folder "%s" (id=%d): %d file(s) and %d subfolder(s).',
+                            'Permanently deleting non-empty media folder "%s" (id=%d).',
                             $entity->getName(),
                             $entity->getId(),
-                            $content['files'],
-                            $content['directory'],
                         ),
                     );
                 }

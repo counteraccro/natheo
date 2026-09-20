@@ -449,10 +449,9 @@ class MediaFolderService extends AppAdminService
         $oldNormalized = rtrim(preg_replace('#/{2,}#', '/', str_replace('\\', '/', $old)), '/');
         $newNormalized = rtrim(preg_replace('#/{2,}#', '/', str_replace('\\', '/', $new)), '/');
 
-        // Ancré (path via "^", webPath via le "/" de tête) + lookahead (?=/|$) : un segment
-        // de chemin complet, jamais une sous-chaîne ("/Doc" ne doit pas toucher "/Docker").
+        // Ancré en tout début de chaîne + lookahead (?=/|$) : un segment de chemin complet,
+        // jamais une sous-chaîne ("/Doc" ne doit pas toucher "/Docker").
         $patternPath = '#^' . preg_quote($oldNormalized, '#') . '(?=/|$)#';
-        $patternWebPath = '#' . preg_quote($oldNormalized, '#') . '(?=/|$)#';
 
         /** @var MediaFolderRepository $repo */
         $repo = $this->getRepository(MediaFolder::class);
@@ -473,7 +472,16 @@ class MediaFolderService extends AppAdminService
         $nb = count($listeMedia);
         foreach ($listeMedia as $i => $media) {
             $media->setPath(preg_replace($patternPath, $newNormalized, $media->getPath(), 1));
-            $media->setWebPath(preg_replace($patternWebPath, $newNormalized, $media->getWebPath(), 1));
+
+            // webPathMedia (préfixe fixe) peut lui-même contenir "/assets" : on le retire avant
+            // de matcher, pour ne jamais toucher une occurrence qui lui appartiendrait.
+            $webPath = $media->getWebPath();
+            if (str_starts_with($webPath, $this->webPathMedia)) {
+                $rest = substr($webPath, strlen($this->webPathMedia));
+                $webPath = $this->webPathMedia . preg_replace($patternPath, $newNormalized, $rest, 1);
+            }
+            $media->setWebPath($webPath);
+
             $repoM->save($media, $i === $nb - 1);
         }
     }
