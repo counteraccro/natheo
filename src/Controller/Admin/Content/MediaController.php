@@ -25,7 +25,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/admin/{_locale}/media', name: 'admin_media_', requirements: ['_locale' => '%app.supported_locales%'])]
 #[IsGranted('ROLE_CONTRIBUTEUR')]
@@ -128,7 +127,7 @@ class MediaController extends AppAdminController
      * Permet de créer ou modifier un mediaFolder
      * @param Request $request
      * @param MediaFolderService $mediaFolderService
-     * @param TranslatorInterface $translator
+     * @param MediaTranslate $mediaTranslate
      * @return JsonResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -137,7 +136,7 @@ class MediaController extends AppAdminController
     public function updateFolder(
         Request $request,
         MediaFolderService $mediaFolderService,
-        TranslatorInterface $translator,
+        MediaTranslate $mediaTranslate,
     ): JsonResponse {
         $data = json_decode($request->getContent(), true);
 
@@ -149,20 +148,16 @@ class MediaController extends AppAdminController
         if ($exist) {
             return $this->json([
                 'result' => 'error',
-                'msg' => $translator->trans('media.mediatheque.folder.error.exist_name', domain: 'media'),
+                'msg' => $mediaTranslate->getFolderExistNameError(),
             ]);
         }
 
         $result = 'success';
         if ($editFolder === null) {
-            $msg = $translator->trans('media.mediatheque.folder.success', ['name' => $data['name']], domain: 'media');
+            $msg = $mediaTranslate->getFolderCreateSuccessMsg($data['name']);
             $mediaFolderService->createMediaFolder($data['name'], $currentFolder);
         } else {
-            $msg = $translator->trans(
-                'media.mediatheque.folder.edit.success',
-                ['new_name' => $data['name'], 'name' => $editFolder->getName()],
-                domain: 'media',
-            );
+            $msg = $mediaTranslate->getFolderEditSuccessMsg($data['name'], $editFolder->getName());
             $mediaFolderService->updateMediaFolder($data['name'], $editFolder);
         }
 

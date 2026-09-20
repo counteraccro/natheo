@@ -294,4 +294,58 @@ class MediaTranslate extends AppTranslate
             'folder_tag' => $this->translator->trans('media.mediatheque.media.folder.tag', domain: 'media'),
         ];
     }
+
+    /**
+     * Message d'erreur : un dossier de ce nom existe déjà (au sein du même parent)
+     * @return string
+     */
+    public function getFolderExistNameError(): string
+    {
+        return $this->translator->trans('media.mediatheque.folder.error.exist_name', domain: 'media');
+    }
+
+    /**
+     * Message de succès : création d'un dossier
+     * @param string $name
+     * @return string
+     */
+    public function getFolderCreateSuccessMsg(string $name): string
+    {
+        return $this->translator->trans('media.mediatheque.folder.success', ['name' => $name], domain: 'media');
+    }
+
+    /**
+     * Message de succès : renommage d'un dossier
+     * @param string $newName
+     * @param string $oldName
+     * @return string
+     */
+    public function getFolderEditSuccessMsg(string $newName, string $oldName): string
+    {
+        return $this->translator->trans(
+            'media.mediatheque.folder.edit.success',
+            ['new_name' => $newName, 'name' => $oldName],
+            domain: 'media',
+        );
+    }
+
+    /**
+     * Libellé de la modale de déplacement pour un média
+     * @param string $name
+     * @return string
+     */
+    public function getMoveLabelMedia(string $name): string
+    {
+        return $this->translator->trans('media.mediatheque.move.label.media', ['name' => $name], domain: 'media');
+    }
+
+    /**
+     * Libellé de la modale de déplacement pour un dossier
+     * @param string $name
+     * @return string
+     */
+    public function getMoveLabelFolder(string $name): string
+    {
+        return $this->translator->trans('media.mediatheque.move.label.folder', ['name' => $name], domain: 'media');
+    }
 }

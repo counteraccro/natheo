@@ -13,7 +13,7 @@ use Symfony\Component\String\ByteString;
 
 class Thumbnail
 {
-    const EXT_ALLOW_THUMBNAIL = ['jpg', 'jpeg', 'png', 'gif', 'PNG'];
+    const EXT_ALLOW_THUMBNAIL = ['jpg', 'jpeg', 'png', 'gif'];
 
     private string $rootThumbnailPath = '';
 

@@ -678,6 +678,7 @@ export default defineComponent({
           :render="render"
           :medias="medias"
           :translate="translate.media as TranslateRecord"
+          :can-delete="canDelete"
           @load-data-folder="loadDataInFolder"
           @show-info="openBlockDrawer"
           @edit="openBlockDrawer"
@@ -690,6 +691,7 @@ export default defineComponent({
           v-else
           :translate="translate.trash as TranslateRecord"
           :medias="mediasTrash"
+          :can-delete="canDelete"
           @revert-trash="updateTrash"
           @delete="remove"
         >

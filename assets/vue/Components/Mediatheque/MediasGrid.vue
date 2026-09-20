@@ -16,6 +16,7 @@ export default defineComponent({
     medias: { type: Array as PropType<MediaItem[]>, required: true },
     translate: { type: Object as PropType<TranslateRecord>, required: true },
     render: String,
+    canDelete: { type: Boolean, default: true },
   },
   emits: ['load-data-folder', 'edit', 'show-info', 'move', 'trash'],
   data() {
@@ -325,7 +326,7 @@ export default defineComponent({
                     {{ translate.link_move }}
                   </a>
                 </li>
-                <li style="border-top: 1px solid var(--border-color)">
+                <li v-if="canDelete" style="border-top: 1px solid var(--border-color)">
                   <a
                     href="#"
                     @click="askTrash(media.id)"
@@ -488,6 +489,7 @@ export default defineComponent({
             </button>
 
             <button
+              v-if="canDelete"
               @click="$emit('trash', true, media.id, media.type)"
               class="no-control btn btn-ghost-danger btn-icon"
               @mouseover="onMenuHover($event, '#fef2f2')"

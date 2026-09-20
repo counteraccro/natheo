@@ -379,6 +379,13 @@ class MediaService extends MediaFolderService
         $media->setTitle($file['name']);
         $media->setDescription($file['description']);
         $this->save($media);
+
+        if ($media->getId() === null) {
+            // save() avale ses exceptions (AppAdminService) : sans id, la persistance a
+            // silencieusement échoué. On nettoie le fichier plutôt que de laisser un orphelin.
+            (new Filesystem())->remove($realPath);
+            throw new \RuntimeException('Failed to save the uploaded media.');
+        }
     }
 
     /**
@@ -554,7 +561,29 @@ class MediaService extends MediaFolderService
             /** @var MediaFolder $folder */
             $folder = $this->findOneById(MediaFolder::class, $id);
             $folder->setTrash($trash);
-            $this->save($folder);
+            $this->save($folder, false);
+            $this->cascadeTrashToChildren($folder, $trash);
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    /**
+     * Propage récursivement le flag trash à tous les descendants (sous-dossiers et médias) :
+     * rien ne doit rester "actif" dans un dossier mis à la corbeille (et inversement au retour).
+     * @param MediaFolder $folder
+     * @param bool $trash
+     * @return void
+     */
+    private function cascadeTrashToChildren(MediaFolder $folder, bool $trash): void
+    {
+        foreach ($folder->getMedias() as $media) {
+            $media->setTrash($trash);
+            $this->save($media, false);
+        }
+        foreach ($folder->getChildren() as $child) {
+            $child->setTrash($trash);
+            $this->save($child, false);
+            $this->cascadeTrashToChildren($child, $trash);
         }
     }
 

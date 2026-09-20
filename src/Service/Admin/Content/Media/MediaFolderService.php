@@ -19,6 +19,7 @@ use App\Service\Admin\GridService;
 use App\Service\Admin\MarkdownEditorService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Utils\Content\Media\MediaFolderConst;
+use App\Utils\Translate\Content\MediaTranslate;
 use App\Utils\Utils;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
@@ -91,6 +92,7 @@ class MediaFolderService extends AppAdminService
                 'optionSystemService' => OptionSystemService::class,
                 'gridService' => GridService::class,
                 'markdownEditorService' => MarkdownEditorService::class,
+                'mediaTranslate' => MediaTranslate::class,
             ]),
         ]
         protected ContainerInterface $handlers,
@@ -144,6 +146,17 @@ class MediaFolderService extends AppAdminService
     }
 
     /**
+     * Retourne la class MediaTranslate
+     * @return MediaTranslate
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getMediaTranslate(): MediaTranslate
+    {
+        return $this->handlers->get('mediaTranslate');
+    }
+
+    /**
      * Supprime l'ensemble des dossiers / fichiers de la médiathèque
      * Recréer le dossier racine
      * Appeler uniquement pour les fixtures
@@ -185,7 +198,9 @@ class MediaFolderService extends AppAdminService
         $filesystem = new Filesystem();
 
         if ($mediaFolder->getParent() != null && !$filesystem->exists($this->rootPathMedia . $mediaFolder->getPath())) {
-            return $this->createFolder($mediaFolder->getParent());
+            // S'assure que la chaîne des parents existe, puis continue pour créer $mediaFolder
+            // lui-même juste après : un simple "return" ici ne le créait jamais.
+            $this->createFolder($mediaFolder->getParent());
         }
 
         $path = $this->rootPathMedia . $mediaFolder->getPath() . DIRECTORY_SEPARATOR . $mediaFolder->getName();
@@ -491,26 +506,17 @@ class MediaFolderService extends AppAdminService
      */
     public function getAllDataForModalMove(int $id, string $type = 'media'): array
     {
-        $translator = $this->getTranslator();
+        $mediaTranslate = $this->getMediaTranslate();
 
         if ($type === 'media') {
             /** @var Media $entity */
             $entity = $this->findOneById(Media::class, $id);
             $folder = $entity->getMediaFolder();
-
-            $label = $translator->trans(
-                'media.mediatheque.move.label.media',
-                ['name' => $entity->getName()],
-                domain: 'media',
-            );
+            $label = $mediaTranslate->getMoveLabelMedia($entity->getName());
         } else {
             /** @var MediaFolder $folder */
             $folder = $this->findOneById(MediaFolder::class, $id);
-            $label = $translator->trans(
-                'media.mediatheque.move.label.folder',
-                ['name' => $folder->getName()],
-                domain: 'media',
-            );
+            $label = $mediaTranslate->getMoveLabelFolder($folder->getName());
         }
 
         $return = [];
