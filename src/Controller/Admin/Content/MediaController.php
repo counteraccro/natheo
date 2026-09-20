@@ -24,7 +24,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Component\Serializer\Exception\ExceptionInterface;
 
 #[Route('/admin/{_locale}/media', name: 'admin_media_', requirements: ['_locale' => '%app.supported_locales%'])]
 #[IsGranted('ROLE_CONTRIBUTEUR')]
@@ -83,10 +82,8 @@ class MediaController extends AppAdminController
             'currentFolder' => $currentFolder,
             'canDelete' => $optionSystemService->canDelete(),
             'url' => [
-                'loadFolder' => $this->generateUrl('admin_media_load_folder'),
                 'saveFolder' => $this->generateUrl('admin_media_save_folder'),
                 'upload' => $this->generateUrl('admin_media_upload'),
-                'loadMediaEdit' => $this->generateUrl('admin_media_load_media_edit'),
                 'saveMediaEdit' => $this->generateUrl('admin_media_save_media_edit'),
                 'listeMove' => $this->generateUrl('admin_media_liste_move'),
                 'move' => $this->generateUrl('admin_media_move'),
@@ -95,31 +92,6 @@ class MediaController extends AppAdminController
                 'listTrash' => $this->generateUrl('admin_media_list_trash'),
                 'remove' => $this->generateUrl('admin_media_remove'),
             ],
-        ]);
-    }
-
-    /**
-     * Charger un mediaFolder en fonction de son id
-     * @param MediaService $mediaService
-     * @param int $id
-     * @param string $action
-     * @return JsonResponse
-     * @throws ContainerExceptionInterface
-     * @throws ExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    #[Route('/ajax/load-folder/{id}/{action}', name: 'load_folder', methods: ['GET'])]
-    public function loadFolder(MediaService $mediaService, int $id = 0, string $action = 'edit'): JsonResponse
-    {
-        /** @var MediaFolder $mediaFolder */
-        $mediaFolder = $mediaService->findOneById(MediaFolder::class, $id);
-
-        $attributes = [];
-        if ($action === 'edit') {
-            $attributes = ['medias', 'parent', 'children'];
-        }
-        return $this->json([
-            'folder' => $mediaService->convertEntityToArray($mediaFolder, $attributes),
         ]);
     }
 
@@ -182,29 +154,6 @@ class MediaController extends AppAdminController
         $mediaService->uploadMediaFile($data['folder'], $data['file']);
 
         return $this->json([]);
-    }
-
-    /**
-     * Charge le nom et la description d'un média en fonction de son id
-     * @param MediaService $mediaService
-     * @param int $id
-     * @return JsonResponse
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    #[Route('/ajax/load-media/{id}', name: 'load_media_edit', methods: ['GET'])]
-    public function loadMedia(MediaService $mediaService, int $id = 0): JsonResponse
-    {
-        /** @var Media $media */
-        $media = $mediaService->findOneById(Media::class, $id);
-        return $this->json([
-            'media' => [
-                'id' => $media->getId(),
-                'name' => $media->getTitle(),
-                'description' => $media->getDescription(),
-                'thumbnail' => $mediaService->getThumbnail($media),
-            ],
-        ]);
     }
 
     /**

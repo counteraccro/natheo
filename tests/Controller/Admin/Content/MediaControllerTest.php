@@ -108,9 +108,7 @@ class MediaControllerTest extends AppWebTestCase
         $this->assertArrayHasKey('id', $content['currentFolder']);
         $this->assertArrayHasKey('canDelete', $content);
         $this->assertArrayHasKey('url', $content);
-        $this->assertArrayHasKey('loadFolder', $content['url']);
         $this->assertArrayHasKey('upload', $content['url']);
-        $this->assertArrayHasKey('loadMediaEdit', $content['url']);
         $this->assertArrayHasKey('saveMediaEdit', $content['url']);
         $this->assertArrayHasKey('listeMove', $content['url']);
         $this->assertArrayHasKey('move', $content['url']);
@@ -119,51 +117,6 @@ class MediaControllerTest extends AppWebTestCase
         $this->assertArrayHasKey('listTrash', $content['url']);
         $this->assertArrayHasKey('remove', $content['url']);
         $this->assertCount(2, $content['medias']);
-    }
-
-    /**
-     * test méthode loadFolder()
-     * @return void
-     */
-    public function testLoadFolder(): void
-    {
-        $this->checkNoAccess('admin_media_load_folder');
-        $user = $this->createUserContributeur();
-        $this->client->loginUser($user, 'admin');
-
-        $folder = $this->createMediaFolder();
-        $media = $this->createMedia($folder, customData: ['trash' => false]);
-        $media2 = $this->createMedia($folder, customData: ['trash' => false]);
-
-        $this->client->request('GET', $this->router->generate('admin_media_load_folder', ['id' => $folder->getId()]));
-        $this->assertResponseIsSuccessful();
-        $response = $this->client->getResponse();
-        $this->assertJson($response->getContent());
-        $content = json_decode($response->getContent(), true);
-
-        $this->assertArrayHasKey('folder', $content);
-        $this->assertArrayHasKey('id', $content['folder']);
-        $this->assertEquals($folder->getId(), $content['folder']['id']);
-        $this->assertArrayHasKey('name', $content['folder']);
-        $this->assertEquals($folder->getName(), $content['folder']['name']);
-        $this->assertArrayHasKey('disabled', $content['folder']);
-        $this->assertEquals($folder->isDisabled(), $content['folder']['disabled']);
-        $this->assertArrayHasKey('createdAt', $content['folder']);
-        $this->assertArrayHasKey('updateAt', $content['folder']);
-        $this->assertArrayHasKey('trash', $content['folder']);
-        $this->assertEquals($folder->isTrash(), $content['folder']['trash']);
-        $this->assertArrayHasKey('path', $content['folder']);
-        $this->assertEquals($folder->getPath(), $content['folder']['path']);
-
-        $this->client->request(
-            'GET',
-            $this->router->generate('admin_media_load_folder', ['id' => $folder->getId(), 'action' => 'see']),
-        );
-        $this->assertResponseIsSuccessful();
-        $response = $this->client->getResponse();
-        $this->assertJson($response->getContent());
-        $content = json_decode($response->getContent(), true);
-        $this->assertArrayHasKey('medias', $content['folder']);
     }
 
     /**
@@ -306,37 +259,6 @@ class MediaControllerTest extends AppWebTestCase
     }
 
     /**
-     * Test méthode loadMedia()
-     * @return void
-     */
-    public function testLoadMedia(): void
-    {
-        $this->checkNoAccess('admin_media_load_media_edit');
-        $user = $this->createUserContributeur();
-        $this->client->loginUser($user, 'admin');
-
-        $media = $this->createMedia();
-        $this->client->request(
-            'GET',
-            $this->router->generate('admin_media_load_media_edit', ['id' => $media->getId()]),
-        );
-        $this->assertResponseIsSuccessful();
-        $response = $this->client->getResponse();
-        $this->assertJson($response->getContent());
-        $content = json_decode($response->getContent(), true);
-
-        $this->assertIsArray($content);
-        $this->assertArrayHasKey('media', $content);
-        $this->assertArrayHasKey('id', $content['media']);
-        $this->assertArrayHasKey('name', $content['media']);
-        $this->assertArrayHasKey('description', $content['media']);
-        $this->assertArrayHasKey('thumbnail', $content['media']);
-        $this->assertEquals($media->getId(), $content['media']['id']);
-        $this->assertEquals($media->getTitle(), $content['media']['name']);
-        $this->assertEquals($media->getDescription(), $content['media']['description']);
-    }
-
-    /**
      * Test méthode saveMedia()
      * @return void
      */
@@ -347,14 +269,7 @@ class MediaControllerTest extends AppWebTestCase
         $this->client->loginUser($user, 'admin');
 
         $media = $this->createMedia();
-        $this->client->request(
-            'GET',
-            $this->router->generate('admin_media_load_media_edit', ['id' => $media->getId()]),
-        );
-        $this->assertResponseIsSuccessful();
-        $response = $this->client->getResponse();
-        $this->assertJson($response->getContent());
-        $content = json_decode($response->getContent(), true);
+        $content = ['media' => ['id' => $media->getId()]];
 
         $content['media']['name'] = 'title-edit';
         $content['media']['description'] = 'description-edit';
