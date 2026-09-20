@@ -319,7 +319,8 @@ class MediaService extends MediaFolderService
     }
 
     /**
-     * Ajoute une image physiquement sur le disque et créer l'objet Média
+     * Ajoute un fichier physiquement sur le disque et créer l'objet Média
+     * (extension, taille et MIME réel du contenu sont vérifiés avant écriture)
      * @param int $idFolder
      * @param array $file
      * @return void
@@ -339,27 +340,8 @@ class MediaService extends MediaFolderService
 
         $path = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $path);
 
-        $allowedExtensions = [
-            // Images
-            'jpg',
-            'jpeg',
-            'png',
-            'gif',
-            'webp',
-            // PDF
-            'pdf',
-            // Word
-            'doc',
-            'docx',
-            // Excel
-            'xls',
-            'xlsx',
-            // PowerPoint
-            'ppt',
-            'pptx',
-        ];
         $ext = strtolower($file['fileExtention']);
-        if (!in_array($ext, $allowedExtensions, true)) {
+        if (!isset(MediaConst::UPLOAD_ALLOWED_MIMES_BY_EXTENSION[$ext])) {
             throw new \RuntimeException('File extension not allowed.');
         }
 
@@ -370,29 +352,12 @@ class MediaService extends MediaFolderService
             throw new \RuntimeException('Invalid base64 data.');
         }
 
-        $allowedMimes = [
-            // Images
-            'image/jpeg',
-            'image/png',
-            'image/gif',
-            'image/webp',
-            // PDF
-            'application/pdf',
-            // Word
-            'application/msword',
-            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-            // Excel
-            'application/vnd.ms-excel',
-            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            // PowerPoint
-            'application/vnd.ms-powerpoint',
-            'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-            // Générique pour les formats Office anciens (.docx, .xlsx, .pptx)
-            'application/zip',
-            'application/octet-stream',
-        ];
+        if (strlen($data) > MediaConst::MAX_UPLOAD_SIZE_BYTES) {
+            throw new \RuntimeException('File size exceeds the allowed limit.');
+        }
+
         $mimeType = (new \finfo(FILEINFO_MIME_TYPE))->buffer($data);
-        if (!in_array($mimeType, $allowedMimes, true)) {
+        if (!in_array($mimeType, MediaConst::UPLOAD_ALLOWED_MIMES_BY_EXTENSION[$ext], true)) {
             throw new \RuntimeException('File type not allowed: ' . $mimeType);
         }
 

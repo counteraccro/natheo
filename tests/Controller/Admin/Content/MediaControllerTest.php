@@ -13,6 +13,7 @@ use App\Entity\Admin\Content\Media\Media;
 use App\Entity\Admin\Content\Media\MediaFolder;
 use App\Service\Admin\Content\Media\MediaService;
 use App\Tests\AppWebTestCase;
+use App\Utils\Content\Media\MediaConst;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -668,9 +669,18 @@ class MediaControllerTest extends AppWebTestCase
         $this->client->request('POST', $this->router->generate('admin_media_upload'), content: json_encode($data));
         $this->assertResponseIsSuccessful();
 
+        $data = [
+            'folder' => 0,
+            'file' => $this->buildUploadFile('documentation-natheo.docx', 'application/octet-stream', 'docx'),
+        ];
+        $this->client->request('POST', $this->router->generate('admin_media_upload'), content: json_encode($data));
+        $this->assertResponseIsSuccessful();
+
         $medias = $this->mediaService->getMediaByMediaFolder(null);
-        $this->assertCount(1, $medias);
-        $this->assertEquals('pdf', $medias[0]->getExtension());
+        $this->assertCount(2, $medias);
+        $extensions = array_map(fn($media) => $media->getExtension(), $medias);
+        $this->assertContains('pdf', $extensions);
+        $this->assertContains('docx', $extensions);
     }
 
     /**
@@ -782,5 +792,97 @@ class MediaControllerTest extends AppWebTestCase
         $this->assertNotFalse($realMediaPath);
         $this->assertStringStartsWith($realRoot . DIRECTORY_SEPARATOR, $realMediaPath);
         $this->assertStringNotContainsString('..', $medias[0]->getName());
+    }
+
+    /**
+     * Test méthode upload() : rejette un fichier dont le contenu réel correspond à un AUTRE
+     * type autorisé que celui déclaré par l'extension (ex: contenu jpeg réel, extension "pdf")
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testUploadRejectsCrossTypeMismatch(): void
+    {
+        $this->mediaService->resetAllMedia();
+
+        $user = $this->createUserContributeur();
+        $this->client->loginUser($user, 'admin');
+        $this->client->catchExceptions(false);
+
+        // road.jpg est un vrai jpeg, mais déclaré ici avec l'extension "pdf".
+        $file = $this->buildUploadFile('road.jpg', 'image/jpeg', 'pdf');
+
+        $data = ['folder' => 0, 'file' => $file];
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessageMatches('#^File type not allowed#');
+        $this->client->request('POST', $this->router->generate('admin_media_upload'), content: json_encode($data));
+    }
+
+    /**
+     * Test méthode upload() : le fallback "application/zip" n'est accepté que pour les
+     * extensions OOXML (docx/xlsx/pptx), jamais pour une extension sans rapport (ex: jpg)
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testUploadAcceptsGenericZipOnlyForOfficeExtensions(): void
+    {
+        $this->mediaService->resetAllMedia();
+
+        $user = $this->createUserContributeur();
+        $this->client->loginUser($user, 'admin');
+
+        $tmpZip = tempnam(sys_get_temp_dir(), 'media-test-zip');
+        $zip = new \ZipArchive();
+        $zip->open($tmpZip, \ZipArchive::OVERWRITE);
+        $zip->addFromString('dummy.txt', 'hello world');
+        $zip->close();
+        $zipContent = file_get_contents($tmpZip);
+        unlink($tmpZip);
+
+        $file = [
+            'name' => 'archive',
+            'description' => 'unit test upload',
+            'fileExtention' => 'docx',
+            'url' => 'data:application/zip;base64,' . base64_encode($zipContent),
+        ];
+        $data = ['folder' => 0, 'file' => $file];
+        $this->client->request('POST', $this->router->generate('admin_media_upload'), content: json_encode($data));
+        $this->assertResponseIsSuccessful();
+
+        $this->client->catchExceptions(false);
+        $file['fileExtention'] = 'jpg';
+        $data = ['folder' => 0, 'file' => $file];
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessageMatches('#^File type not allowed#');
+        $this->client->request('POST', $this->router->generate('admin_media_upload'), content: json_encode($data));
+    }
+
+    /**
+     * Test méthode upload() : rejette un fichier dépassant la limite de taille serveur
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testUploadRejectsOversizedFile(): void
+    {
+        $this->mediaService->resetAllMedia();
+
+        $user = $this->createUserContributeur();
+        $this->client->loginUser($user, 'admin');
+        $this->client->catchExceptions(false);
+
+        $oversized = str_repeat('A', MediaConst::MAX_UPLOAD_SIZE_BYTES + 1);
+        $file = [
+            'name' => 'too-big',
+            'description' => 'unit test upload',
+            'fileExtention' => 'jpg',
+            'url' => 'data:image/jpeg;base64,' . base64_encode($oversized),
+        ];
+
+        $data = ['folder' => 0, 'file' => $file];
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('File size exceeds the allowed limit.');
+        $this->client->request('POST', $this->router->generate('admin_media_upload'), content: json_encode($data));
     }
 }
