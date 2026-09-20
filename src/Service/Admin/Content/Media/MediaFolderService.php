@@ -357,9 +357,16 @@ class MediaFolderService extends AppAdminService
     public function updateMediaFolder(string $name, MediaFolder $mediaFolder): void
     {
         $oldName = $mediaFolder->getName();
+        $parentPath = $mediaFolder->getPath();
+
+        // Chemin d'identité complet du dossier : un nom nu ("Doc") matcherait à tort
+        // n'importe quel dossier sans rapport dont le nom le contient ("Docker").
+        $oldFullPath = $parentPath . DIRECTORY_SEPARATOR . $oldName;
+        $newFullPath = $parentPath . DIRECTORY_SEPARATOR . $name;
+
         $mediaFolder->setName($name);
 
-        $this->updateAllPathChildren($oldName, $name);
+        $this->updateAllPathChildren($oldFullPath, $newFullPath);
 
         $this->save($mediaFolder);
 
@@ -388,8 +395,12 @@ class MediaFolderService extends AppAdminService
     }
 
     /**
-     * Met à jour tous les paths des dossiers enfants en remplaçant le nom du dossier old par new
+     * Met à jour tous les paths des dossiers enfants en remplaçant le préfixe de chemin old
+     * (le chemin complet, depuis la racine, du dossier renommé/déplacé) par new
      * met à jour tous les paths des médias contenu dans les dossiers enfants
+     * $old/$new doivent être des chemins complets (ex: "/Parent/Doc"), pas de simples noms :
+     * le remplacement n'agit que sur un segment de chemin complet (ancré), jamais sur une
+     * sous-chaîne arbitraire (renommer "/Doc" en "/Documents" ne doit pas toucher "/Docker")
      * @param string $old
      * @param string $new
      * @return void
@@ -398,11 +409,13 @@ class MediaFolderService extends AppAdminService
      */
     private function updateAllPathChildren(string $old, string $new): void
     {
-        $oldNormalized = preg_replace('#/{2,}#', '/', str_replace('\\', '/', $old));
-        $newNormalized = preg_replace('#/{2,}#', '/', str_replace('\\', '/', $new));
+        $oldNormalized = rtrim(preg_replace('#/{2,}#', '/', str_replace('\\', '/', $old)), '/');
+        $newNormalized = rtrim(preg_replace('#/{2,}#', '/', str_replace('\\', '/', $new)), '/');
 
-        $patternPath = '#' . preg_quote($oldNormalized, '#') . '#';
-        $patternWebPath = '#' . preg_quote($oldNormalized, '#') . '#';
+        // Ancré (path via "^", webPath via le "/" de tête) + lookahead (?=/|$) : un segment
+        // de chemin complet, jamais une sous-chaîne ("/Doc" ne doit pas toucher "/Docker").
+        $patternPath = '#^' . preg_quote($oldNormalized, '#') . '(?=/|$)#';
+        $patternWebPath = '#' . preg_quote($oldNormalized, '#') . '(?=/|$)#';
 
         /** @var MediaFolderRepository $repo */
         $repo = $this->getRepository(MediaFolder::class);
@@ -410,7 +423,9 @@ class MediaFolderService extends AppAdminService
 
         $nb = count($listMediaFolder);
         foreach ($listMediaFolder as $i => $mediaFolderChildren) {
-            $mediaFolderChildren->setPath(preg_replace($patternPath, $newNormalized, $mediaFolderChildren->getPath()));
+            $mediaFolderChildren->setPath(
+                preg_replace($patternPath, $newNormalized, $mediaFolderChildren->getPath(), 1),
+            );
             $repo->save($mediaFolderChildren, $i === $nb - 1);
         }
 
@@ -420,8 +435,8 @@ class MediaFolderService extends AppAdminService
 
         $nb = count($listeMedia);
         foreach ($listeMedia as $i => $media) {
-            $media->setPath(preg_replace($patternPath, $newNormalized, $media->getPath()));
-            $media->setWebPath(preg_replace($patternWebPath, $newNormalized, $media->getWebPath()));
+            $media->setPath(preg_replace($patternPath, $newNormalized, $media->getPath(), 1));
+            $media->setWebPath(preg_replace($patternWebPath, $newNormalized, $media->getWebPath(), 1));
             $repoM->save($media, $i === $nb - 1);
         }
     }

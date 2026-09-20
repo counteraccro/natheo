@@ -69,15 +69,20 @@ class MediaFolderRepository extends ServiceEntityRepository
     }
 
     /**
-     * Retourne une liste de médiaFolder contenant dans path la chaine $name
-     * @param string $name
+     * Retourne une liste de médiaFolder dont le path est exactement $pathPrefix ou commence
+     * par $pathPrefix suivi d'un séparateur de répertoire (segment de chemin complet, jamais
+     * une simple sous-chaîne : "/Doc" ne matche pas "/Docker")
+     * @param string $pathPrefix
      * @return mixed
      */
-    public function getAllByLikePath(string $name): mixed
+    public function getAllByLikePath(string $pathPrefix): mixed
     {
+        $escaped = addcslashes($pathPrefix, '\\%_');
+
         return $this->createQueryBuilder('m')
-            ->andWhere('m.path LIKE :name')
-            ->setParameter('name', '%' . $name . '%')
+            ->andWhere('m.path = :exact OR m.path LIKE :prefix')
+            ->setParameter('exact', $pathPrefix)
+            ->setParameter('prefix', $escaped . '/%')
             ->orderBy('m.id', 'ASC')
             ->getQuery()
             ->getResult();

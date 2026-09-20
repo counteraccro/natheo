@@ -594,8 +594,10 @@ class MediaService extends MediaFolderService
     }
 
     /**
-     * Supprime un média ou un dossier en fonction du type
-     * Si le dossier existe physiquement, le supprime aussi
+     * Supprime un média ou un dossier en fonction du type, de façon définitive (DB + fichiers
+     * physiques). Ne peut être appelée que sur un élément déjà passé par la corbeille (trash=true) :
+     * c'est la seule garantie côté serveur que l'utilisateur est bien passé par le workflow de
+     * confirmation, cet endpoint étant sinon appelable directement avec n'importe quel id valide.
      * @param string $type
      * @param int $id
      * @return void
@@ -605,14 +607,24 @@ class MediaService extends MediaFolderService
     public function confirmTrash(string $type, int $id): void
     {
         if ($type === 'media') {
-            /** @var Media $media */
+            /** @var Media|null $entity */
             $entity = $this->findOneById(Media::class, $id);
-            $path = $this->rootPathMedia . $this->getPath($entity);
         } else {
-            /** @var MediaFolder $entity */
+            /** @var MediaFolder|null $entity */
             $entity = $this->findOneById(MediaFolder::class, $id);
-            $path = $this->getPathFolder($entity);
         }
+
+        if ($entity === null) {
+            throw new \RuntimeException(sprintf('%s with id %d not found.', $type, $id));
+        }
+
+        if (!$entity->isTrash()) {
+            throw new \RuntimeException(
+                'Cannot permanently delete an item that has not been moved to trash first.',
+            );
+        }
+
+        $path = $type === 'media' ? $this->rootPathMedia . $this->getPath($entity) : $this->getPathFolder($entity);
 
         if ($this->canCreatePhysicalFolder) {
             $realRoot = realpath($this->rootPathMedia);
@@ -620,6 +632,21 @@ class MediaService extends MediaFolderService
 
             if ($realPath === false || !str_starts_with($realPath, $realRoot . DIRECTORY_SEPARATOR)) {
                 throw new \RuntimeException('Invalid path: attempt to escape the allowed directory.');
+            }
+
+            if ($type !== 'media') {
+                $content = $this->getContentFolder($entity);
+                if ($content['files'] > 0 || $content['directory'] > 0) {
+                    $this->getLogger()->warning(
+                        sprintf(
+                            'Permanently deleting non-empty media folder "%s" (id=%d): %d file(s) and %d subfolder(s).',
+                            $entity->getName(),
+                            $entity->getId(),
+                            $content['files'],
+                            $content['directory'],
+                        ),
+                    );
+                }
             }
 
             $fileSystem = new Filesystem();

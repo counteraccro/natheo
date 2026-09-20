@@ -388,7 +388,7 @@ class MediaServiceTest extends AppWebTestCase
     public function testConfirmTrash(): void
     {
         $this->mediaService->resetAllMedia();
-        $mediaFolder = $this->createMediaFolder(customData: ['trash' => false]);
+        $mediaFolder = $this->createMediaFolder(customData: ['trash' => true]);
         $media = $this->createMedia($mediaFolder, customData: ['name' => self::IMG_UNIT_TEST, 'trash' => true]);
         $this->mediaService->moveMediaFixture(self::IMG_UNIT_TEST, $media);
 
@@ -417,5 +417,41 @@ class MediaServiceTest extends AppWebTestCase
         $verif = $this->mediaService->findOneById(Media::class, $idMedia);
         $this->assertNull($verif);
         $this->assertFalse($this->fileSystem->exists($this->mediaService->getRootPathMedia() . $media->getPath()));
+    }
+
+    /**
+     * Test que confirmTrash() refuse de supprimer définitivement un élément qui n'est pas
+     * passé par la corbeille (trash=false), même en appelant directement le service avec un id valide.
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testConfirmTrashRefusesWhenNotTrashed(): void
+    {
+        $this->mediaService->resetAllMedia();
+
+        $media = $this->createMedia(customData: ['name' => self::IMG_UNIT_TEST, 'trash' => false]);
+        $this->mediaService->moveMediaFixture(self::IMG_UNIT_TEST, $media);
+
+        $this->expectException(\RuntimeException::class);
+        $this->mediaService->confirmTrash('media', $media->getId());
+    }
+
+    /**
+     * Test que confirmTrash() refuse de supprimer définitivement un dossier qui n'est pas
+     * passé par la corbeille (trash=false), même en appelant directement le service avec un id valide.
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testConfirmTrashRefusesFolderWhenNotTrashed(): void
+    {
+        $this->mediaService->resetAllMedia();
+
+        $mediaFolder = $this->createMediaFolder(customData: ['trash' => false]);
+        $this->mediaService->createFolder($mediaFolder);
+
+        $this->expectException(\RuntimeException::class);
+        $this->mediaService->confirmTrash('folder', $mediaFolder->getId());
     }
 }
