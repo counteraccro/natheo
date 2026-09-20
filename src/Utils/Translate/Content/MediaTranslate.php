@@ -21,6 +21,7 @@ class MediaTranslate extends AppTranslate
     {
         return [
             'loading' => $this->translator->trans('media.mediatheque.loading', domain: 'media'),
+            'generic_error' => $this->translator->trans('media.mediatheque.generique.error', domain: 'media'),
             'btn_new_folder' => $this->translator->trans('media.mediatheque.btn.new.folder', domain: 'media'),
             'btn_new_media' => $this->translator->trans('media.mediatheque.btn.new.media', domain: 'media'),
             'header_trash' => $this->translator->trans('media.mediatheque.header.trash', domain: 'media'),
@@ -121,6 +122,7 @@ class MediaTranslate extends AppTranslate
                 domain: 'media',
             ),
             'move_success' => $this->translator->trans('media.mediatheque.move.toast.success', domain: 'media'),
+            'generic_error' => $this->translator->trans('media.mediatheque.generique.error', domain: 'media'),
             'sub_title_media' => $this->translator->trans('media.mediatheque.move.sub.title.media', domain: 'media'),
             'sub_title_folder' => $this->translator->trans('media.mediatheque.move.sub.title.folder', domain: 'media'),
             'sub_title_end' => $this->translator->trans('media.mediatheque.move.sub.title.end', domain: 'media'),
@@ -244,6 +246,7 @@ class MediaTranslate extends AppTranslate
             'preview' => $this->translator->trans('media.mediatheque.upload.preview', domain: 'media'),
             'preview_help' => $this->translator->trans('media.mediatheque.upload.preview.help', domain: 'media'),
             'loading_msg' => $this->translator->trans('media.mediatheque.upload.loading.msg', domain: 'media'),
+            'generic_error' => $this->translator->trans('media.mediatheque.generique.error', domain: 'media'),
             'loading_msg_success' => $this->translator->trans(
                 'media.mediatheque.upload.loading.msg.success',
                 domain: 'media',
