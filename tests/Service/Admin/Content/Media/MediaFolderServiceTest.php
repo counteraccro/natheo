@@ -85,6 +85,33 @@ class MediaFolderServiceTest extends AppWebTestCase
     }
 
     /**
+     * Test méthode createFolder() : si les dossiers parents n'existent pas encore physiquement,
+     * createFolder() doit les créer récursivement PUIS créer le dossier initialement demandé
+     * (et pas seulement remonter la chaîne des parents sans jamais revenir créer celui-ci)
+     * @return void
+     */
+    public function testCreateFolderCreatesRequestedFolderAfterMissingParents(): void
+    {
+        $this->mediaFolderService->resetAllMedia();
+
+        // Hiérarchie créée uniquement en base (sans appeler createFolder() aux niveaux
+        // intermédiaires) : aucun dossier physique n'existe encore.
+        $root = $this->createMediaFolder();
+        $mid = $this->createMediaFolder($root);
+        $leaf = $this->createMediaFolder($mid);
+
+        $this->mediaFolderService->createFolder($leaf);
+
+        $leafPath =
+            $this->mediaFolderService->getRootPathMedia() . $leaf->getPath() . DIRECTORY_SEPARATOR . $leaf->getName();
+        $this->assertTrue($this->fileSystem->exists($leafPath));
+
+        $midPath =
+            $this->mediaFolderService->getRootPathMedia() . $mid->getPath() . DIRECTORY_SEPARATOR . $mid->getName();
+        $this->assertTrue($this->fileSystem->exists($midPath));
+    }
+
+    /**
      * test méthode getPathFolder()
      * @return void
      */
