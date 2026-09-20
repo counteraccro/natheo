@@ -302,6 +302,7 @@ export default defineComponent({
 .folder-tree-item {
   position: relative;
   display: flex;
+  flex-wrap: nowrap;
   align-items: center;
   gap: 0.5rem;
   padding: 0.3rem 0.6rem;
@@ -321,6 +322,20 @@ export default defineComponent({
   background-color: var(--primary-lighter);
   color: var(--primary);
   font-weight: 600;
+}
+
+.folder-tree-item > svg {
+  flex: none;
+  width: 1rem;
+  height: 1rem;
+}
+
+.folder-tree-item > span:not(.tree-line) {
+  flex: 1 1 0%;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* ── Lignes de connexion ── */
