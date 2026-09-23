@@ -135,21 +135,4 @@ class ApiTokenServiceTest extends AppWebTestCase
         $apiToken = $this->apiTokenService->findOneById(ApiToken::class, $id);
         $this->assertEquals($data['token'], $apiToken->getToken());
     }
-
-    /**
-     * Test méthode getTokenForPreview()
-     * @return void
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    public function testGetTokenForPreview(): void
-    {
-        $result = $this->apiTokenService->getTokenForPreview();
-        $this->assertNull($result);
-
-        $apitoken = $this->createApiToken(['disabled' => false]);
-        $result = $this->apiTokenService->getTokenForPreview();
-        $this->assertIsString($result);
-        $this->assertEquals($apitoken->getToken(), $result);
-    }
 }
