@@ -173,7 +173,7 @@ export default defineComponent({
       deep: true,
       handler(value: PageContentErrorsByLocale) {
         this.$emit('update:section-errors', {
-          section: 'content',
+          section: 'information',
           hasError: this.hasError,
           errorsByLocale: value,
         });

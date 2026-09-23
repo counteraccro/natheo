@@ -30,6 +30,7 @@ import PageSeo from '@/vue/Components/Page/PageSeo.vue';
 import PageSEO from '@/vue/Components/Page/PageSeo.vue';
 import PageTag from '@/vue/Components/Page/PageTag.vue';
 import PageMenu from '@/vue/Components/Page/PageMenu.vue';
+import PageComment from '@/vue/Components/Page/PageComment.vue';
 import PageInformation from '@/vue/Components/Page/PageInformation.vue';
 import { emitter } from '@/utils/useEvent';
 import AlertSuccess from '@/vue/Components/Alert/Success.vue';
@@ -47,6 +48,7 @@ export default defineComponent({
     AlertSuccess,
     PageInformation,
     PageMenu,
+    PageComment,
     PageTag,
     PageSEO,
     PageSeo,
@@ -108,10 +110,10 @@ export default defineComponent({
       return translate;
     },
     /**
-     * Erreur onglet content
+     * Erreur onglet Informations
      */
-    hasContentError(): boolean {
-      return this.sectionErrors.content?.hasError ?? false;
+    hasInformationError(): boolean {
+      return this.sectionErrors.information?.hasError ?? false;
     },
     /**
      * Erreur onglet SEO
@@ -121,10 +123,10 @@ export default defineComponent({
     },
 
     /**
-     * Erreur onglet Content
+     * Erreur onglet Contenu
      */
-    hasBlocksError(): boolean {
-      return this.sectionErrors.blocks?.hasError ?? false;
+    hasContentError(): boolean {
+      return this.sectionErrors.content?.hasError ?? false;
     },
   },
   methods: {
@@ -245,6 +247,18 @@ export default defineComponent({
     },
 
     /**
+     * Mise à jour du paramétrage des commentaires
+     * @param payload
+     */
+    handleUpdateComment(payload: { field: 'openComment' | 'ruleComment'; value: boolean | number }) {
+      if (payload.field === 'openComment') {
+        this.page.openComment = payload.value as boolean;
+      } else {
+        this.page.ruleComment = payload.value as number;
+      }
+    },
+
+    /**
      * Mise à jour des contents
      */
     handleUpdatePageContents(pageContents: PageContentItem[]) {
@@ -315,8 +329,9 @@ export default defineComponent({
     handleGoToError(error: { section: string; locale: string }) {
       this.currentLocale = error.locale;
       const tabIds: Record<string, string> = {
-        content: 'nav-0-tab',
-        seo: 'nav-1-tab',
+        information: 'nav-0-tab',
+        content: 'nav-1-tab',
+        seo: 'nav-2-tab',
       };
       const tabButton = document.getElementById(tabIds[error.section]);
       tabButton?.click();
@@ -412,6 +427,7 @@ export default defineComponent({
   <div v-else>
     <alert-primary
       class="mt-4"
+      type="alert-primary-light"
       v-if="history.show_msg"
       :text="history.msg"
       :buttons="[
@@ -424,7 +440,7 @@ export default defineComponent({
         {
           id: 'cancel',
           label: translate.msg_btn_cancel_restore_history,
-          css: 'btn btn-outline-dark btn-xs',
+          css: 'btn btn-dark btn-xs',
           onClick: dismissHistory,
         },
       ]"
@@ -504,7 +520,7 @@ export default defineComponent({
             </svg>
             {{ translate.onglet_information }}
             <span
-              v-if="hasContentError"
+              v-if="hasInformationError"
               class="w-2 h-2 rounded-full"
               style="background-color: var(--btn-danger)"
             ></span>
@@ -530,7 +546,7 @@ export default defineComponent({
               />
             </svg>
             {{ translate.onglet_content }}
-            <span v-if="hasBlocksError" class="w-2 h-2 rounded-full" style="background-color: var(--btn-danger)"></span>
+            <span v-if="hasContentError" class="w-2 h-2 rounded-full" style="background-color: var(--btn-danger)"></span>
           </button>
         </li>
         <li class="me-2" role="presentation">
@@ -604,6 +620,28 @@ export default defineComponent({
           <button
             class="inline-flex gap-1.5 items-center ps-4 pt-2 pe-4 pb-2 border-b-2 rounded-t-sm cursor-pointer dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:hover:text-gray-300"
             id="nav-5-tab"
+            data-tabs-target="#page-comment"
+            type="button"
+            role="tab"
+            :aria-controls="translate.onglet_comments"
+            aria-selected="false"
+            @click="activeTab = 'comment'"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
+              />
+            </svg>
+            {{ translate.onglet_comments }}
+          </button>
+        </li>
+        <li class="me-2" role="presentation">
+          <button
+            class="inline-flex gap-1.5 items-center ps-4 pt-2 pe-4 pb-2 border-b-2 rounded-t-sm cursor-pointer dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:hover:text-gray-300"
+            id="nav-6-tab"
             data-tabs-target="#page-history"
             type="button"
             role="tab"
@@ -681,7 +719,15 @@ export default defineComponent({
           @update-menus="handleUpdateMenus"
         />
       </div>
-      <div class="hidden" id="page-history" role="tabpanel" aria-labelledby="nav-5-tab">
+      <div class="hidden" id="page-comment" role="tabpanel" aria-labelledby="nav-5-tab">
+        <PageComment
+          :translate="translate"
+          :page="page"
+          :page-datas="pageDatas"
+          @update-comment="handleUpdateComment"
+        />
+      </div>
+      <div class="hidden" id="page-history" role="tabpanel" aria-labelledby="nav-6-tab">
         <PageHistory
           :id="id"
           :urls="urls"
