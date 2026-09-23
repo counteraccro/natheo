@@ -81,13 +81,6 @@ export default defineComponent({
   },
   computed: {
     /**
-     * True ou false si une erreur dans la section content existe
-     */
-    hasContentError(): boolean {
-      return this.sectionErrors.content?.hasError ?? false;
-    },
-
-    /**
      * True ou false si une erreur existe
      */
     hasAnyError(): boolean {
@@ -99,14 +92,9 @@ export default defineComponent({
      */
     sectionLabels(): Record<string, string> {
       return {
+        information: this.translate.onglet_information,
         content: this.translate.onglet_content,
         seo: this.translate.onglet_seo,
-      };
-    },
-    sectionTabIds(): Record<string, string> {
-      return {
-        content: 'nav-0-tab',
-        seo: 'nav-2-tab',
       };
     },
 

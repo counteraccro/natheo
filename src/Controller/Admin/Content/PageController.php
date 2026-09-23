@@ -22,7 +22,6 @@ use App\Enum\Admin\System\Options\OptionUser;
 use App\Service\Admin\Content\Comment\CommentService;
 use App\Service\Admin\Content\Menu\MenuService;
 use App\Service\Admin\Content\Page\PageService;
-use App\Service\Admin\System\ApiTokenService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Service\Global\DateService;
 use App\Utils\Content\Page\PageConst;
@@ -263,7 +262,6 @@ class PageController extends AppAdminController
                 'liste_content_by_id' => $this->generateUrl('admin_page_liste_content_by_id'),
                 'is_unique_url_page' => $this->generateUrl('admin_page_is_unique_url_page'),
                 'info_render_block' => $this->generateUrl('admin_page_info_render_block'),
-                'page_preview' => $this->generateUrl('admin_page_preview'),
                 'load_media' => $this->generateUrl('admin_media_load_medias'),
                 'listing' => $this->generateUrl('admin_page_index'),
                 'new_page' => $this->generateUrl('admin_page_add'),
@@ -591,75 +589,5 @@ class PageController extends AppAdminController
     {
         $liste = $pageService->getFormatedListePageForInternalLink($pageService->getLocales()['current']);
         return $this->json(['pages' => $liste]);
-    }
-
-    /**
-     * Affichage de la preview d'une page
-     * @param PageService $pageService
-     * @param ApiTokenService $apiTokenService
-     * @param PageTranslate $pageTranslate
-     * @param OptionSystemService $optionSystemService
-     * @param string|null $locale
-     * @param int|null $id
-     * @return Response
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    #[Route('/preview/{id}/{locale}', name: 'preview', methods: ['GET'])]
-    public function preview(
-        PageService $pageService,
-        ApiTokenService $apiTokenService,
-        PageTranslate $pageTranslate,
-        OptionSystemService $optionSystemService,
-        ?string $locale = null,
-        ?int $id = null,
-    ): Response {
-        if ($locale === null) {
-            $locale = $pageService->getLocales()['current'];
-        }
-        $slug = '';
-        $token = null;
-
-        $tabUrl = [];
-        foreach ($pageService->getLocales()['locales'] as $loc) {
-            $tabUrl[$loc] = $this->generateUrl('admin_page_preview', ['id' => $id, 'locale' => $loc]);
-        }
-
-        if ($id != null) {
-            /** @var Page $page */
-            $page = $pageService->findOneById(Page::class, $id);
-            if ($page !== null) {
-                $slug = $page->getPageTranslationByLocale($locale)->getUrl();
-                $token = $apiTokenService->getTokenForPreview();
-            }
-        }
-
-        $siteName = $optionSystemService->getValueByKey(OptionSystem::OS_SITE_NAME->value);
-        $url = $optionSystemService->getValueByKey(OptionSystem::OS_ADRESSE_SITE->value);
-        $logo = $optionSystemService->getValueByKey(OptionSystem::OS_LOGO_SITE->value);
-
-        return $this->render('admin/content/page/preview.html.twig', [
-            'datas' => [
-                'token' => $token,
-                'locale' => $locale,
-                'site' => [
-                    'name' => $siteName,
-                    'url' => $url,
-                    'logo' => $logo,
-                ],
-            ],
-            'redirects' => $tabUrl,
-            'urls' => [
-                'apiFindPage' => $this->generateUrl('api_page_find', [
-                    'slug' => $slug,
-                    'locale' => $locale,
-                    'api_version' => $this->getParameter('app.api_version'),
-                ]),
-                'apiGetContent' => $this->generateUrl('api_page_content', [
-                    'api_version' => $this->getParameter('app.api_version'),
-                ]),
-            ],
-            'translate' => $pageTranslate->getTranslatePreview(),
-        ]);
     }
 }

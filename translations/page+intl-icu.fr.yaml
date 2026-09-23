@@ -37,7 +37,6 @@ page.page_content_form.input.url.info: "Url d'accès à votre page"
 page.page_content_form.input.titre.label: 'Titre de la page'
 page.page_content_form.input.titre.info: "Texte qui va permettre d'identifier la page"
 page.onglet.history: Historique
-page.msg.auto_save.success: 'Sauvegarde auto réalisée avec succès à'
 page.page_history.title: 'Historique des modifications'
 page.page_history.description: "Liste de l'ensemble des modifications faite sur cette page "
 page.page_history.empty: 'Aucun historique pour le moment'
@@ -50,13 +49,8 @@ page.index.popin.help.edit: Editer
 page.tag.auto_complete.label: 'Rechercher / Ajouter tag'
 page.tag.auto_complete.placeholder: 'Rechercher un tag'
 page.tag.auto_complete.help: "Si le tag n'existe pas, celui-ci sera créé en même temps qu'associé à la page"
-page.tag.auto_complete.btn: '<i class="bi bi-tag"></i> Créer'
-page.tag.auto_complete.btn.loading: '<i class="bi bi-arrow-clockwise"></i> Loading'
 page.onglet.tag.title: 'Les tags'
 page.onglet.tag.sub_title: 'Tags associés à la page'
-page.onglet.tag.msg.add_tag_success: 'Tag associé avec succès'
-page.onglet.tag.msg.del_tag_success: 'Tag retiré avec succès'
-page.onglet.save: Sauvegarde
 page.page_save.title: 'Sauvegarde de la page'
 page.page_save.list_status_label: 'Etat de la page'
 page.page_save.list_status_help: 'Permet de définir l`état de la page'
@@ -77,14 +71,10 @@ page.render.3.block.bottom: "3 blocs l'un en dessous de l'autre"
 page.render.1.2.block: 'Un bloc au dessus + 2 blocs côte à côte en dessous'
 page.page_content_block.btn.new_content: 'Nouveau contenu'
 page.page_content_block.btn.delete_content: Supprimer
-page.page_content_block.btn.change_content: Changer
-page.page_content_block.btn.move_content: Déplacer
 page.page_content_block.modale.remove.title: 'Confirmation suppression du contenu'
 page.page_content_block.modale.remove.body: 'Vous êtes sur le point de supprimer ce contenu, confirmez vous cette action?'
 page.page_content_block.modale.remove.btn.confirm: Supprimer
 page.page_content_block.modale.remove.btn.cancel: Annuler
-page.page_content_block.modale.remove.body.2: "Vous pouvez toujours restaurer ce contenu via l'historique"
-page.msg.remove_content_success: 'Suppression du contenu fait avec succès'
 page.page_content_block.modale.new.title: 'Nouveau contenu'
 page.page_content_block.modale.new.btn.cancel: Annuler
 page.page_content_block.modale.new.btn.new: 'Ajouter le contenu'
@@ -92,7 +82,6 @@ page.page_content_block.modale.new.choice_label: 'Choix du contenu à ajouter'
 page.page_content_block.modale.new.choice_info: 'Le contenu peut être du texte, un cv, une faq etc..'
 page.content.text: 'Bloc de texte'
 page.page_content_block.loading: chargement...
-page.msg.add_content_success: 'Contenu ajouté avec succès'
 page.msg.titre.restore.history: 'Page restaurée avec succès à '
 page.msg.btn.restore.history: Restaurer
 page.msg.btn.cancel.restore.history: Masquer
@@ -104,7 +93,6 @@ page.page_history.time: Date
 page.page_history.user: Origine
 page.page_history.action: Dernière
 page.page_history.error: 'Une erreur est survenue lors de la restauration des données'
-page.tag.auto_complete.empty.result: 'Aucun résultat pour ce tag, cliquez sur "ajouter" pour le créer'
 page.content.type.faq: Faq
 page.content.faq.list: 'Choisir une FAQ parmi la liste'
 page.content.faq.list.help: 'Seule les FAQs non désactivées sont listées'
@@ -137,14 +125,6 @@ page.page_save.select_page_landing_page: 'Landing Page'
 page.page_save.select_page_normal_page: 'Page normal'
 page.page_save.list_landing_page_help: "Si la page est défini comme landing page, elle apparaitra comme page par défaut à l'accueil de votre site. Il ne peux y avoir qu'une seule landing-page"
 page.index.popin.help.pin: 'Epingler (landing page)'
-page.preview.title: Preview
-page.preview.no.possible.title: 'Preview non disponible'
-page.preview.no.possible: "La preview n'est pas disponible pour le moment, assurez vous d'avoir correctement sauvegardée votre page avant de réessayer"
-page.preview.title.head: 'Préview de la page : '
-page.preview.warning: 'Ceci est une préview et ne prend pas en compte le design de votre site'
-page.preview.switch.locale.fr: 'En français'
-page.preview.switch.locale.en: 'En anglais'
-page.preview.switch.locale.es: 'En espagnol'
 page.grid.author: Auteur
 page.onglet.comments: Commentaires
 page.page_comment.title: Commentaires
@@ -164,8 +144,6 @@ page.page_seo.input.meta_author.label: 'Balise méta "author"'
 page.page_seo.input.meta_author.help: "L'auteur de la page"
 page.page_seo.input.meta_copyright.label: 'Balise méta "copyright"'
 page.page_seo.input.meta_copyright.help: 'Le copyright de votre page'
-page.page_seo.help.legend: Information
-page.page_seo.help.description: 'Le SEO vous permet de facilité le référencement de votre page, il est important de prendre le temps de remplir correctement les données'
 page.page_content.header_img.title: 'Image en entête de la page'
 page.page_content.header_img.help: "Cette image apparaîtra en entête de page, elle doit être suffisament grande pour avoir un rendu correcte. Laissez vide pour ne pas mettre d'image sur votre page"
 page.page_content.header_img.no.img: 'Aucune image sélectionnée'
@@ -179,7 +157,6 @@ page.btn.new: 'Nouvelle page'
 page.page_content_form.input.titre.error: 'Le titre de la page ne peut pas être vide'
 page.page_content.auto_slug.label: "Générer automatiquement l'url"
 page.msg.auto_save.error: 'Une erreur est survenue lors de la sauvegarde automatique'
-page.msg.auto_save.run: 'En cours de sauvegarde...'
 page.page_history.load_more: 'Charger plus...'
 page.page_seo.input.meta.description.error: 'La description est obligatoire'
 page.page_seo.input.meta.keywords.error: 'Au moins 1 mot clé doit être saisi'
@@ -196,3 +173,4 @@ page.onglet.information: Informations
 page.page_content_block.bloc: 'Block n°'
 page.status.archived: Archivée
 page.page_content.warning.empty_content: 'Au moins 1 contenu doit être remplit'
+page.msg.auto_save.success: __page.msg.auto_save.success

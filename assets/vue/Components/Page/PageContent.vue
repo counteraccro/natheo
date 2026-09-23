@@ -93,7 +93,7 @@ export default defineComponent({
       deep: true,
       handler(value: Record<string, Record<string, string>>) {
         this.$emit('update:section-errors', {
-          section: 'blocks',
+          section: 'content',
           hasError: !this.hasAtLeastOneContent,
           errorsByLocale: value,
         });

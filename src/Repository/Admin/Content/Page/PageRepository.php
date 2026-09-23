@@ -71,11 +71,23 @@ class PageRepository extends ServiceEntityRepository
             ->setParameter('locale', $queryParams['locale']);
 
         if (isset($queryParams['search']) && $queryParams['search'] !== '') {
+            // leftJoin pour conserver les pages sans tag dont le titre correspond
             $query
-                ->join(Page::DEFAULT_ALIAS . '.tags', Tag::DEFAULT_ALIAS)
-                ->join(Tag::DEFAULT_ALIAS . '.tagTranslations', TagTranslation::DEFAULT_ALIAS)
-                ->where(TagTranslation::DEFAULT_ALIAS . '.label like :search')
-                ->orWhere(PageTranslation::DEFAULT_ALIAS . '.titre like :search')
+                ->leftJoin(Page::DEFAULT_ALIAS . '.tags', Tag::DEFAULT_ALIAS)
+                ->leftJoin(
+                    Tag::DEFAULT_ALIAS . '.tagTranslations',
+                    TagTranslation::DEFAULT_ALIAS,
+                    'WITH',
+                    TagTranslation::DEFAULT_ALIAS . '.locale = :locale',
+                )
+                ->andWhere(
+                    $query
+                        ->expr()
+                        ->orX(
+                            TagTranslation::DEFAULT_ALIAS . '.label like :search',
+                            PageTranslation::DEFAULT_ALIAS . '.titre like :search',
+                        ),
+                )
                 ->setParameter('search', '%' . $queryParams['search'] . '%');
         }
 
