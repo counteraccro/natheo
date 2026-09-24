@@ -43,7 +43,11 @@ class GlobalSearchService extends AppAdminService
 
         $entity = $this->getEntityByString($entity);
         if ($entity === '') {
-            return ['error' => $translate->trans('global_search.error.notFound', domain: 'global_search')];
+            return [
+                'elements' => [],
+                'total' => 0,
+                'error' => $translate->trans('global_search.error.notFound', domain: 'global_search'),
+            ];
         }
 
         $repository = $this->getRepository(ucfirst($entity));
@@ -191,7 +195,7 @@ class GlobalSearchService extends AppAdminService
             $faq->getUser()->getOptionUserByKey(OptionUser::OU_DEFAULT_PERSONAL_DATA_RENDER->value)->getValue(),
         );
 
-        $re = '/(\B||\b)((?-i:\w+[^\w\n]+){0,10}' . $search . '(\B||\b)(?-i:[^\w\n]+\w+){0,10})/mu';
+        $re = '/(\B||\b)((?-i:\w+[^\w\n]+){0,10}' . preg_quote($search, '/') . '(\B||\b)(?-i:[^\w\n]+\w+){0,10})/mu';
         $content = [];
         foreach ($faq->getFaqCategories() as $faqCategory) {
             /** @var FaqCategory $faqCategory */
@@ -249,7 +253,7 @@ class GlobalSearchService extends AppAdminService
         foreach ($menu->getMenuElements() as $element) {
             $elementTranslate = $element->getMenuElementTranslationByLocale($locale);
 
-            $re = '/(\B||\b)((?-i:\w+[^\w\n]+){0,1}' . $search . '(\B||\b)(?-i:[^\w\n]+\w+){0,1})/mu';
+            $re = '/(\B||\b)((?-i:\w+[^\w\n]+){0,1}' . preg_quote($search, '/') . '(\B||\b)(?-i:[^\w\n]+\w+){0,1})/mu';
             preg_match_all($re, $elementTranslate->getTextLink(), $matches, PREG_SET_ORDER, 0);
 
             foreach ($matches as $matche) {
@@ -295,7 +299,7 @@ class GlobalSearchService extends AppAdminService
         foreach ($page->getPageContents() as $pageContent) {
             if ($pageContent->getType() === PageContentType::TEXT->value) {
                 $text = $pageContent->getPageContentTranslationByLocale($locale)->getText();
-                $re = '/(\B||\b)((?-i:\w+[^\w\n]+){0,10}' . $search . '(\B||\b)(?-i:[^\w\n]+\w+){0,10})/mu';
+                $re = '/(\B||\b)((?-i:\w+[^\w\n]+){0,10}' . preg_quote($search, '/') . '(\B||\b)(?-i:[^\w\n]+\w+){0,10})/mu';
                 preg_match_all($re, $text, $matches, PREG_SET_ORDER, 0);
 
                 foreach ($matches as $matche) {
