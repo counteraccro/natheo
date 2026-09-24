@@ -1,50 +1,73 @@
-<script>
+<script lang="ts">
 /**
  * Permet de faire une recherche globale dans le CMS
  * @author Gourdon Aymeric
  * @version 2.0
  */
+import { defineComponent, type PropType } from 'vue';
 import axios from 'axios';
 import TabSearchResult from '../../../Components/Global/Search/TabSearchResult.vue';
 import SkeletonSearchResult from '@/vue/Components/Skeleton/SearchResult.vue';
+import type {
+  GlobalSearchEntity,
+  GlobalSearchUrls,
+  GlobalSearchTranslate,
+  GlobalSearchResult,
+  GlobalSearchPaginate,
+  GlobalSearchResponse,
+} from '@/ts/Global/GlobalSearch.type';
 
-export default {
+export default defineComponent({
   name: 'GlobalSearch',
+
   components: { SkeletonSearchResult, TabSearchResult },
+
   props: {
-    search: String,
-    translate: Object,
-    urls: Object,
-    limit: Number,
-    page: Number,
+    search: {
+      type: String,
+      required: true,
+    },
+    translate: {
+      type: Object as PropType<GlobalSearchTranslate>,
+      required: true,
+    },
+    urls: {
+      type: Object as PropType<GlobalSearchUrls>,
+      required: true,
+    },
+    limit: {
+      type: Number,
+      required: true,
+    },
+    page: {
+      type: Number,
+      required: true,
+    },
   },
+
   emits: [],
+
   data() {
     return {
-      total: 0,
+      total: 0 as number,
       loading: {
         page: false,
         menu: false,
         faq: false,
         tag: false,
         user: false,
-      },
+      } as Record<GlobalSearchEntity, boolean>,
       results: {
         page: null,
         menu: null,
         faq: null,
         tag: null,
         user: null,
-      },
-      paginate: {
-        page: null,
-        menu: null,
-        faq: null,
-        tag: null,
-        user: null,
-      },
+      } as Record<GlobalSearchEntity, GlobalSearchResult | null>,
+      paginate: {} as Partial<Record<GlobalSearchEntity, GlobalSearchPaginate>>,
     };
   },
+
   mounted() {
     this.globalSearch('page', this.search, this.page, this.limit, false);
     this.globalSearch('menu', this.search, this.page, this.limit, false);
@@ -52,16 +75,36 @@ export default {
     this.globalSearch('tag', this.search, this.page, this.limit, false);
     this.globalSearch('user', this.search, this.page, this.limit, false);
   },
+
   methods: {
-    changePage(entity, page, limit) {
+    /**
+     * Changement de page pour une entité
+     * @param entity
+     * @param page
+     * @param limit
+     */
+    changePage(entity: GlobalSearchEntity, page: number, limit: number): void {
       this.globalSearch(entity, this.search, page, limit, true);
     },
 
-    globalSearch(entity, search, page, limit, reload) {
+    /**
+     * Lance la recherche pour une entité
+     * @param entity
+     * @param search
+     * @param page
+     * @param limit
+     * @param reload
+     */
+    globalSearch(entity: GlobalSearchEntity, search: string, page: number, limit: number, reload: boolean): void {
       this.loading[entity] = true;
       axios
-        .get(this.urls.searchPage + '/' + entity + '/' + page + '/' + limit + '/' + search, {})
+        .get<GlobalSearchResponse>(
+          this.urls.searchPage + '/' + entity + '/' + page + '/' + limit + '/' + encodeURIComponent(search)
+        )
         .then((response) => {
+          if (response.data.result.error) {
+            console.error(response.data.result.error);
+          }
           if (response.data.result.total > 0) {
             this.results[entity] = response.data.result;
             this.paginate[entity] = response.data.paginate;
@@ -78,15 +121,15 @@ export default {
         });
     },
   },
-};
+});
 </script>
 
 <template>
-  <div class="float-end mt-2 text-sm text-[var(--text-secondary)]" v-if="this.total !== 0">
-    {{ this.total }} {{ this.translate.totalResult }} <b>{{ this.search }}</b>
+  <div class="float-end mt-2 text-sm text-(--text-secondary)" v-if="total !== 0">
+    {{ total }} {{ translate.totalResult }} <b>{{ search }}</b>
   </div>
   <div class="float-end mt-2" v-else>
-    {{ this.translate.totalNoResult }} <b>{{ this.search }}</b>
+    {{ translate.totalNoResult }} <b>{{ search }}</b>
   </div>
 
   <div class="mb-4 mt-4 border-b border-gray-200 dark:border-gray-700" id="tab-search">
@@ -94,26 +137,26 @@ export default {
       class="flex flex-wrap -mb-px text-sm font-medium text-center"
       id="default-styled-tab"
       data-tabs-toggle="#tab-search-content"
-      data-tabs-active-classes="text-[var(--primary)] hover:text-[var(--primary-hover)] border-[var(--primary)] bg-[var(--primary-lighter)]"
+      data-tabs-active-classes="text-(--primary) hover:text-(--primary-hover) border-(--primary) bg-(--primary-lighter)"
       data-tabs-inactive-classes="dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300"
       role="tablist"
     >
       <li class="me-2" role="presentation">
         <button
-          class="inline-block ps-4 pt-2 pe-4 border-b-2 rounded-t-sm text-[var(--primary)] hover:text-[var(--primary-hover)] border-[var(--primary)] bg-[var(--primary-lighter)] cursor-pointer"
-          :class="this.results.page === null ? 'pb-3' : 'pb-2'"
+          class="inline-block ps-4 pt-2 pe-4 border-b-2 rounded-t-sm text-(--primary) hover:text-(--primary-hover) border-(--primary) bg-(--primary-lighter) cursor-pointer"
+          :class="results.page === null ? 'pb-3' : 'pb-2'"
           id="nav-0-tab"
           data-tabs-target="#tab-page"
           type="button"
           role="tab"
-          :aria-controls="this.translate.ongletPage.onglet"
+          :aria-controls="translate.ongletPage.onglet"
           aria-selected="true"
         >
-          {{ this.translate.ongletPage.onglet }}
+          {{ translate.ongletPage.onglet }}
           <svg
-            v-if="this.loading.page"
+            v-if="loading.page"
             aria-hidden="true"
-            class="w-4 h-4 ml-2 text-neutral-tertiary animate-spin fill-[var(--primary)] inline"
+            class="w-4 h-4 ml-2 text-neutral-tertiary animate-spin fill-(--primary) inline"
             viewBox="0 0 100 101"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -127,30 +170,27 @@ export default {
               fill="currentFill"
             />
           </svg>
-          <span
-            v-if="!this.loading.page && this.results.page !== null"
-            class="ml-2 badge rounded-pill bg-[var(--primary)]"
-          >
-            {{ this.results.page.total }}
+          <span v-if="!loading.page && results.page !== null" class="ml-2 badge rounded-pill bg-(--primary)">
+            {{ results.page.total }}
           </span>
         </button>
       </li>
       <li class="me-2" role="presentation">
         <button
           class="inline-block ps-4 pt-2 pe-4 border-b-2 rounded-t-sm text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300 cursor-pointer"
-          :class="this.results.menu === null ? 'pb-3' : 'pb-2'"
+          :class="results.menu === null ? 'pb-3' : 'pb-2'"
           id="nav-1-tab"
           data-tabs-target="#tab-menu"
           type="button"
           role="tab"
-          :aria-controls="this.translate.ongletMenu.onglet"
+          :aria-controls="translate.ongletMenu.onglet"
           aria-selected="false"
         >
-          {{ this.translate.ongletMenu.onglet }}
+          {{ translate.ongletMenu.onglet }}
           <svg
-            v-if="this.loading.menu"
+            v-if="loading.menu"
             aria-hidden="true"
-            class="w-4 h-4 ml-2 text-neutral-tertiary animate-spin fill-[var(--primary)] inline"
+            class="w-4 h-4 ml-2 text-neutral-tertiary animate-spin fill-(--primary) inline"
             viewBox="0 0 100 101"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -164,30 +204,27 @@ export default {
               fill="currentFill"
             />
           </svg>
-          <span
-            v-if="!this.loading.menu && this.results.menu !== null"
-            class="ml-2 badge rounded-pill bg-[var(--primary)]"
-          >
-            {{ this.results.menu.total }}
+          <span v-if="!loading.menu && results.menu !== null" class="ml-2 badge rounded-pill bg-(--primary)">
+            {{ results.menu.total }}
           </span>
         </button>
       </li>
       <li class="me-2" role="presentation">
         <button
           class="inline-block ps-4 pt-2 pe-4 border-b-2 rounded-t-sm text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300 cursor-pointer"
-          :class="this.results.faq === null ? 'pb-3' : 'pb-2'"
+          :class="results.faq === null ? 'pb-3' : 'pb-2'"
           id="nav-2-tab"
           data-tabs-target="#tab-faq"
           type="button"
           role="tab"
-          :aria-controls="this.translate.ongletFaq.onglet"
+          :aria-controls="translate.ongletFaq.onglet"
           aria-selected="false"
         >
-          {{ this.translate.ongletFaq.onglet }}
+          {{ translate.ongletFaq.onglet }}
           <svg
-            v-if="this.loading.faq"
+            v-if="loading.faq"
             aria-hidden="true"
-            class="w-4 h-4 ml-2 text-neutral-tertiary animate-spin fill-[var(--primary)] inline"
+            class="w-4 h-4 ml-2 text-neutral-tertiary animate-spin fill-(--primary) inline"
             viewBox="0 0 100 101"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -201,30 +238,27 @@ export default {
               fill="currentFill"
             />
           </svg>
-          <span
-            v-if="!this.loading.faq && this.results.faq !== null"
-            class="ml-2 badge rounded-pill bg-[var(--primary)]"
-          >
-            {{ this.results.faq.total }}
+          <span v-if="!loading.faq && results.faq !== null" class="ml-2 badge rounded-pill bg-(--primary)">
+            {{ results.faq.total }}
           </span>
         </button>
       </li>
       <li class="me-2" role="presentation">
         <button
           class="inline-block ps-4 pt-2 pe-4 border-b-2 rounded-t-sm text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300 cursor-pointer"
-          :class="this.results.tag === null ? 'pb-3' : 'pb-2'"
+          :class="results.tag === null ? 'pb-3' : 'pb-2'"
           id="nav-3-tab"
           data-tabs-target="#tab-tag"
           type="button"
           role="tab"
-          :aria-controls="this.translate.ongletTag.onglet"
+          :aria-controls="translate.ongletTag.onglet"
           aria-selected="false"
         >
-          {{ this.translate.ongletTag.onglet }}
+          {{ translate.ongletTag.onglet }}
           <svg
-            v-if="this.loading.tag"
+            v-if="loading.tag"
             aria-hidden="true"
-            class="w-4 h-4 ml-2 text-neutral-tertiary animate-spin fill-[var(--primary)] inline"
+            class="w-4 h-4 ml-2 text-neutral-tertiary animate-spin fill-(--primary) inline"
             viewBox="0 0 100 101"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -238,30 +272,27 @@ export default {
               fill="currentFill"
             />
           </svg>
-          <span
-            v-if="!this.loading.tag && this.results.tag !== null"
-            class="ml-2 badge rounded-pill bg-[var(--primary)]"
-          >
-            {{ this.results.tag.total }}
+          <span v-if="!loading.tag && results.tag !== null" class="ml-2 badge rounded-pill bg-(--primary)">
+            {{ results.tag.total }}
           </span>
         </button>
       </li>
       <li class="me-2" role="presentation">
         <button
           class="inline-block ps-4 pt-2 pe-4 border-b-2 rounded-t-sm text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300 cursor-pointer"
-          :class="this.results.user === null ? 'pb-3' : 'pb-2'"
+          :class="results.user === null ? 'pb-3' : 'pb-2'"
           id="nav-4-tab"
           data-tabs-target="#tab-user"
           type="button"
           role="tab"
-          :aria-controls="this.translate.ongletUser.onglet"
+          :aria-controls="translate.ongletUser.onglet"
           aria-selected="false"
         >
-          {{ this.translate.ongletUser.onglet }}
+          {{ translate.ongletUser.onglet }}
           <svg
-            v-if="this.loading.user"
+            v-if="loading.user"
             aria-hidden="true"
-            class="w-4 h-4 ml-2 text-neutral-tertiary animate-spin fill-[var(--primary)] inline"
+            class="w-4 h-4 ml-2 text-neutral-tertiary animate-spin fill-(--primary) inline"
             viewBox="0 0 100 101"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -275,11 +306,8 @@ export default {
               fill="currentFill"
             />
           </svg>
-          <span
-            v-if="!this.loading.user && this.results.user !== null"
-            class="ml-2 badge rounded-pill bg-[var(--primary)]"
-          >
-            {{ this.results.user.total }}
+          <span v-if="!loading.user && results.user !== null" class="ml-2 badge rounded-pill bg-(--primary)">
+            {{ results.user.total }}
           </span>
         </button>
       </li>
@@ -288,34 +316,32 @@ export default {
 
   <div id="tab-search-content">
     <div class="hidden" id="tab-page" role="tabpanel">
-      <div v-if="this.loading.page">
-        <skeleton-search-result :rows="this.limit" />
+      <div v-if="loading.page">
+        <skeleton-search-result :rows="limit" />
       </div>
       <div v-else>
-        <h2 class="text-xl font-bold">{{ this.translate.ongletPage.description }}</h2>
+        <h2 class="text-xl font-bold">{{ translate.ongletPage.description }}</h2>
 
-        <p class="text-sm text-[var(--text-secondary)]">
-          <span v-if="this.results.page !== null">
-            {{ this.results.page.total }} {{ this.translate.ongletPage.title }}
-          </span>
-          <span v-else>0 {{ this.translate.ongletPage.title }}</span>
+        <p class="text-sm text-(--text-secondary)">
+          <span v-if="results.page !== null"> {{ results.page.total }} {{ translate.ongletPage.title }} </span>
+          <span v-else>0 {{ translate.ongletPage.title }}</span>
         </p>
 
         <div
-          v-if="this.results.page === null && !this.loading.page"
-          class="mt-4 text-center text-sm text-[var(--text-secondary)] italic"
+          v-if="results.page === null && !loading.page"
+          class="mt-4 text-center text-sm text-(--text-secondary) italic"
         >
-          {{ this.translate.ongletPage.noResult }}
+          {{ translate.ongletPage.noResult }}
         </div>
-        <div v-if="this.results.page !== null" class="mt-2">
+        <div v-if="results.page !== null" class="mt-2">
           <tab-search-result
             key="1"
-            :result="this.results.page"
-            :translate="this.translate.ongletPage"
-            :translate-paginate="this.translate.paginate"
-            :paginate="this.paginate.page"
+            :result="results.page"
+            :translate="translate.ongletPage"
+            :translate-paginate="translate.paginate"
+            :paginate="paginate.page"
             :entity="'page'"
-            @change-page-event="this.changePage"
+            @change-page-event="changePage"
           >
           </tab-search-result>
         </div>
@@ -323,33 +349,31 @@ export default {
     </div>
 
     <div class="hidden" id="tab-menu" role="tabpanel">
-      <div v-if="this.loading.menu">
-        <skeleton-search-result :rows="this.limit" />
+      <div v-if="loading.menu">
+        <skeleton-search-result :rows="limit" />
       </div>
       <div v-else>
-        <h2 class="text-xl font-bold">{{ this.translate.ongletMenu.description }}</h2>
-        <p class="text-sm text-[var(--text-secondary)]">
-          <span v-if="this.results.menu !== null">
-            {{ this.results.menu.total }} {{ this.translate.ongletMenu.title }}
-          </span>
-          <span v-else>0 {{ this.translate.ongletMenu.title }}</span>
+        <h2 class="text-xl font-bold">{{ translate.ongletMenu.description }}</h2>
+        <p class="text-sm text-(--text-secondary)">
+          <span v-if="results.menu !== null"> {{ results.menu.total }} {{ translate.ongletMenu.title }} </span>
+          <span v-else>0 {{ translate.ongletMenu.title }}</span>
         </p>
 
         <div
-          v-if="this.results.menu === null && !this.loading.menu"
-          class="mt-4 text-center text-sm text-[var(--text-secondary)] italic"
+          v-if="results.menu === null && !loading.menu"
+          class="mt-4 text-center text-sm text-(--text-secondary) italic"
         >
-          {{ this.translate.ongletMenu.noResult }}
+          {{ translate.ongletMenu.noResult }}
         </div>
-        <div v-if="this.results.menu !== null" class="mt-2">
+        <div v-if="results.menu !== null" class="mt-2">
           <tab-search-result
             key="3"
-            :result="this.results.menu"
-            :translate="this.translate.ongletMenu"
-            :translate-paginate="this.translate.paginate"
-            :paginate="this.paginate.menu"
+            :result="results.menu"
+            :translate="translate.ongletMenu"
+            :translate-paginate="translate.paginate"
+            :paginate="paginate.menu"
             :entity="'menu'"
-            @change-page-event="this.changePage"
+            @change-page-event="changePage"
           >
           </tab-search-result>
         </div>
@@ -357,33 +381,31 @@ export default {
     </div>
 
     <div class="hidden" id="tab-faq" role="tabpanel">
-      <div v-if="this.loading.faq">
-        <skeleton-search-result :rows="this.limit" />
+      <div v-if="loading.faq">
+        <skeleton-search-result :rows="limit" />
       </div>
       <div v-else>
-        <h2 class="text-xl font-bold">{{ this.translate.ongletFaq.description }}</h2>
-        <p class="text-sm text-[var(--text-secondary)]">
-          <span v-if="this.results.faq !== null">
-            {{ this.results.faq.total }} {{ this.translate.ongletFaq.title }}
-          </span>
-          <span v-else>0 {{ this.translate.ongletFaq.title }}</span>
+        <h2 class="text-xl font-bold">{{ translate.ongletFaq.description }}</h2>
+        <p class="text-sm text-(--text-secondary)">
+          <span v-if="results.faq !== null"> {{ results.faq.total }} {{ translate.ongletFaq.title }} </span>
+          <span v-else>0 {{ translate.ongletFaq.title }}</span>
         </p>
 
         <div
-          v-if="this.results.faq === null && !this.loading.faq"
-          class="mt-4 text-center text-sm text-[var(--text-secondary)] italic"
+          v-if="results.faq === null && !loading.faq"
+          class="mt-4 text-center text-sm text-(--text-secondary) italic"
         >
-          {{ this.translate.ongletFaq.noResult }}
+          {{ translate.ongletFaq.noResult }}
         </div>
-        <div v-if="this.results.faq !== null" class="mt-2">
+        <div v-if="results.faq !== null" class="mt-2">
           <tab-search-result
             key="4"
-            :result="this.results.faq"
-            :translate="this.translate.ongletFaq"
-            :translate-paginate="this.translate.paginate"
-            :paginate="this.paginate.faq"
+            :result="results.faq"
+            :translate="translate.ongletFaq"
+            :translate-paginate="translate.paginate"
+            :paginate="paginate.faq"
             :entity="'faq'"
-            @change-page-event="this.changePage"
+            @change-page-event="changePage"
           >
           </tab-search-result>
         </div>
@@ -391,34 +413,32 @@ export default {
     </div>
 
     <div class="hidden" id="tab-tag" role="tabpanel">
-      <div v-if="this.loading.tag">
-        <skeleton-search-result :rows="this.limit" />
+      <div v-if="loading.tag">
+        <skeleton-search-result :rows="limit" />
       </div>
       <div v-else>
-        <h2 class="text-xl font-bold">{{ this.translate.ongletTag.description }}</h2>
-        <p class="text-sm text-[var(--text-secondary)]">
-          <span v-if="this.results.tag !== null">
-            {{ this.results.tag.total }} {{ this.translate.ongletTag.title }}
-          </span>
-          <span v-else>0 {{ this.translate.ongletTag.title }}</span>
+        <h2 class="text-xl font-bold">{{ translate.ongletTag.description }}</h2>
+        <p class="text-sm text-(--text-secondary)">
+          <span v-if="results.tag !== null"> {{ results.tag.total }} {{ translate.ongletTag.title }} </span>
+          <span v-else>0 {{ translate.ongletTag.title }}</span>
         </p>
 
         <div
-          v-if="this.results.tag === null && !this.loading.tag"
-          class="mt-4 text-center text-sm text-[var(--text-secondary)] italic"
+          v-if="results.tag === null && !loading.tag"
+          class="mt-4 text-center text-sm text-(--text-secondary) italic"
         >
-          {{ this.translate.ongletTag.noResult }}
+          {{ translate.ongletTag.noResult }}
         </div>
 
-        <div v-if="this.results.tag !== null" class="mt-2">
+        <div v-if="results.tag !== null" class="mt-2">
           <tab-search-result
             key="5"
-            :result="this.results.tag"
-            :translate="this.translate.ongletTag"
-            :translate-paginate="this.translate.paginate"
-            :paginate="this.paginate.tag"
+            :result="results.tag"
+            :translate="translate.ongletTag"
+            :translate-paginate="translate.paginate"
+            :paginate="paginate.tag"
             :entity="'tag'"
-            @change-page-event="this.changePage"
+            @change-page-event="changePage"
           >
           </tab-search-result>
         </div>
@@ -426,34 +446,32 @@ export default {
     </div>
 
     <div class="hidden" id="tab-user" role="tabpanel">
-      <div v-if="this.loading.user">
-        <skeleton-search-result :rows="this.limit" />
+      <div v-if="loading.user">
+        <skeleton-search-result :rows="limit" />
       </div>
       <div v-else>
-        <h2 class="text-xl font-bold">{{ this.translate.ongletUser.description }}</h2>
-        <p class="text-sm text-[var(--text-secondary)]">
-          <span v-if="this.results.user !== null">
-            {{ this.results.user.total }} {{ this.translate.ongletUser.title }}
-          </span>
-          <span v-else>0 {{ this.translate.ongletUser.title }}</span>
+        <h2 class="text-xl font-bold">{{ translate.ongletUser.description }}</h2>
+        <p class="text-sm text-(--text-secondary)">
+          <span v-if="results.user !== null"> {{ results.user.total }} {{ translate.ongletUser.title }} </span>
+          <span v-else>0 {{ translate.ongletUser.title }}</span>
         </p>
 
         <div
-          v-if="this.results.user === null && !this.loading.tag"
-          class="mt-4 text-center text-sm text-[var(--text-secondary)] italic"
+          v-if="results.user === null && !loading.user"
+          class="mt-4 text-center text-sm text-(--text-secondary) italic"
         >
-          {{ this.translate.ongletUser.noResult }}
+          {{ translate.ongletUser.noResult }}
         </div>
 
-        <div v-if="this.results.user !== null" class="mt-2">
+        <div v-if="results.user !== null" class="mt-2">
           <tab-search-result
             key="6"
-            :result="this.results.user"
-            :translate="this.translate.ongletUser"
-            :translate-paginate="this.translate.paginate"
-            :paginate="this.paginate.user"
+            :result="results.user"
+            :translate="translate.ongletUser"
+            :translate-paginate="translate.paginate"
+            :paginate="paginate.user"
             :entity="'user'"
-            @change-page-event="this.changePage"
+            @change-page-event="changePage"
           >
           </tab-search-result>
         </div>

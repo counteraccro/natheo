@@ -85,7 +85,9 @@ export default {
         </svg>
         <span v-html="content"></span>
       </p>
-      <p v-else class="text-sm text-[var(--text-secondary)]">{{ this.translate.noResultContent }}</p>
+      <p v-else-if="this.translate.noResultContent" class="text-sm text-[var(--text-secondary)]">
+        {{ this.translate.noResultContent }}
+      </p>
 
       <p class="text-[var(--text-light)] flex gap-2.5 mt-4 text-xs">
         <span>{{ this.translate.create }} {{ row.date.create }} </span>
