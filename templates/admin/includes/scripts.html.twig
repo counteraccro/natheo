@@ -151,23 +151,4 @@
         const div = document.getElementById('title-page');
         div.innerHTML = value;
     }
-
-    /**
-     * Script pour la recherche globale
-     */
-    function runGlobalSearch() {
-        const inputField = document.getElementById('global-search-input');
-
-        if(inputField !== null) {
-
-            inputField.addEventListener('keypress', function(event) {
-                if (event.key === 'Enter') {
-                    event.preventDefault(); // Empêche le comportement par défaut
-                    document.getElementById('form-global-search').submit();
-                }
-            });
-        }
-    }
-
-    runGlobalSearch();
 </script>
