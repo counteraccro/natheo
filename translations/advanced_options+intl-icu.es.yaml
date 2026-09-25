@@ -58,3 +58,7 @@ advanced_options.reset.database.msg.info.reset.end: __advanced_options.reset.dat
 advanced_options.sub.title.danger.zone: __advanced_options.sub.title.danger.zone
 advanced_options.error.reset.data.not.allowed: __advanced_options.error.reset.data.not.allowed
 advanced_options.error.reset.database.not.allowed: __advanced_options.error.reset.database.not.allowed
+advanced_options.error.csrf: __advanced_options.error.csrf
+advanced_options.error.switch.env.not.editable: __advanced_options.error.switch.env.not.editable
+advanced_options.error.command: __advanced_options.error.command
+advanced_options.error.generic: __advanced_options.error.generic

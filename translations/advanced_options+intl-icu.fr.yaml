@@ -58,3 +58,7 @@ advanced_options.reset.database.msg.info.reset.end: "Base de données supprimée
 advanced_options.sub.title.danger.zone: 'Attention aux conséquences de vos actions'
 advanced_options.error.reset.data.not.allowed: 'Action disponible uniquement en mode dev.'
 advanced_options.error.reset.database.not.allowed: 'Action disponible uniquement en mode dev.'
+advanced_options.error.csrf: 'Jeton de sécurité invalide, rechargez la page puis réessayez.'
+advanced_options.error.switch.env.not.editable: "APP_ENV est défini en dehors des fichiers .env (variable d'environnement serveur ou .env.local.php), le mode ne peut pas être changé depuis cette page."
+advanced_options.error.command: "L'action a échoué : {error}"
+advanced_options.error.generic: 'Une erreur inattendue est survenue.'

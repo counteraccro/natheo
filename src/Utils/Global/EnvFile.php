@@ -34,6 +34,12 @@ class EnvFile
     public const NAME_FILE_ENV_LOCAL = '.env.local';
 
     /**
+     * Nom fichier .env.local.php généré par composer dump-env
+     * @var string
+     */
+    public const NAME_FILE_ENV_LOCAL_PHP = '.env.local.php';
+
+    /**
      * @param ContainerInterface $handlers
      */
     public function __construct(
@@ -113,6 +119,26 @@ class EnvFile
     }
 
     /**
+     * Indique si APP_ENV peut être modifié via les fichiers .env
+     * Faux si APP_ENV est une vraie variable d'environnement ou si un .env.local.php est présent
+     * @return bool
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function isAppEnvEditable(): bool
+    {
+        $kernel = $this->handlers->get('kernel');
+        $filesystem = new Filesystem();
+        if ($filesystem->exists($kernel->getProjectDir() . DIRECTORY_SEPARATOR . self::NAME_FILE_ENV_LOCAL_PHP)) {
+            return false;
+        }
+
+        // Dotenv liste dans SYMFONY_DOTENV_VARS les variables qu'il a lui-même chargées
+        $dotenvVars = explode(',', $_SERVER['SYMFONY_DOTENV_VARS'] ?? '');
+        return !isset($_SERVER[KeyEnv::APP_ENV->value]) || in_array(KeyEnv::APP_ENV->value, $dotenvVars, true);
+    }
+
+    /**
      * Retourne une valeur en fonction de sa clé
      * @param string $key
      * @return string
@@ -136,6 +162,7 @@ class EnvFile
     }
 
     /**
+     * Met à jour la valeur d'une clé, ou l'ajoute en fin de fichier si elle n'existe pas
      * @param string $key
      * @param string $newValue
      * @return void
@@ -146,7 +173,11 @@ class EnvFile
     {
         $oldValue = $this->getValueByKey($key);
         $content = $this->getContentEnvFile();
-        $content = str_replace($oldValue, $newValue, $content);
+        if ($oldValue === '') {
+            $content = rtrim($content, "\n") . "\n" . $newValue . "\n";
+        } else {
+            $content = str_replace($oldValue, $newValue, $content);
+        }
         $this->dumpEnvFile($content);
     }
 }

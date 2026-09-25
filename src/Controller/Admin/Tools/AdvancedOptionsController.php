@@ -70,6 +70,7 @@ class AdvancedOptionsController extends AbstractController
 
     /**
      * Permet de changer la variable d'environnement
+     * @param Request $request
      * @param TranslatorInterface $translator
      * @param EnvFile $envFile
      * @param CommandService $commandService
@@ -77,24 +78,42 @@ class AdvancedOptionsController extends AbstractController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/ajax/switch-env', name: 'switch_env', methods: ['GET'])]
+    #[Route('/ajax/switch-env', name: 'switch_env', methods: ['POST'])]
     public function switchEnv(
+        Request $request,
         TranslatorInterface $translator,
         EnvFile $envFile,
         CommandService $commandService,
     ): JsonResponse {
-        $envFile->switchAppEnv();
-        $commandService->reloadCache();
-        $return['msg'] = $translator->trans('advanced_options.success.switch.env', domain: 'advanced_options');
-        $return['success'] = true;
+        if (!$this->isCsrfTokenValid('switch_env', $this->getCsrfToken($request))) {
+            return $this->jsonError($translator->trans('advanced_options.error.csrf', domain: 'advanced_options'));
+        }
 
-        return $this->json($return);
+        if (!$envFile->isAppEnvEditable()) {
+            return $this->jsonError(
+                $translator->trans('advanced_options.error.switch.env.not.editable', domain: 'advanced_options'),
+            );
+        }
+
+        try {
+            $envFile->switchAppEnv();
+            $commandService->reloadCache();
+        } catch (\RuntimeException $e) {
+            return $this->jsonCommandError($translator, $e);
+        }
+
+        return $this->json([
+            'msg' => $translator->trans('advanced_options.success.switch.env', domain: 'advanced_options'),
+            'success' => true,
+        ]);
     }
 
     /**
      * Réinstalle les données du site
+     * @param Request $request
      * @param TranslatorInterface $translator
      * @param CommandService $commandService
+     * @param KernelInterface $kernel
      * @return JsonResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -107,31 +126,36 @@ class AdvancedOptionsController extends AbstractController
         KernelInterface $kernel,
     ): JsonResponse {
         if (!$kernel->isDebug()) {
-            throw $this->createAccessDeniedException(
+            return $this->jsonError(
                 $translator->trans('advanced_options.error.reset.data.not.allowed', domain: 'advanced_options'),
             );
         }
 
-        $token = $request->headers->get('X-CSRF-TOKEN') ?? $request->request->get('_token');
-        if (!$this->isCsrfTokenValid('reset_data', $token)) {
-            return $this->json(['success' => false, 'msg' => 'Token CSRF invalide.'], Response::HTTP_FORBIDDEN);
+        if (!$this->isCsrfTokenValid('reset_data', $this->getCsrfToken($request))) {
+            return $this->jsonError($translator->trans('advanced_options.error.csrf', domain: 'advanced_options'));
         }
 
-        $commandService->dropDatabase();
-        $commandService->createDatabase();
-        $commandService->createSchema();
-        $commandService->loadFixtures();
+        try {
+            $commandService->dropDatabase();
+            $commandService->createDatabase();
+            $commandService->createSchema();
+            $commandService->loadFixtures();
+        } catch (\RuntimeException $e) {
+            return $this->jsonCommandError($translator, $e);
+        }
 
-        $return['msg'] = $translator->trans('advanced_options.success.reset.data', domain: 'advanced_options');
-        $return['success'] = true;
-
-        return $this->json($return);
+        return $this->json([
+            'msg' => $translator->trans('advanced_options.success.reset.data', domain: 'advanced_options'),
+            'success' => true,
+        ]);
     }
 
     /**
      * Suppression de la base de données
+     * @param Request $request
      * @param TranslatorInterface $translator
      * @param CommandService $commandService
+     * @param KernelInterface $kernel
      * @return JsonResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -144,22 +168,60 @@ class AdvancedOptionsController extends AbstractController
         KernelInterface $kernel,
     ): JsonResponse {
         if (!$kernel->isDebug()) {
-            throw $this->createAccessDeniedException(
+            return $this->jsonError(
                 $translator->trans('advanced_options.error.reset.database.not.allowed', domain: 'advanced_options'),
             );
         }
 
-        $token = $request->headers->get('X-CSRF-TOKEN') ?? $request->request->get('_token');
-        if (!$this->isCsrfTokenValid('reset_data', $token)) {
-            return $this->json(['success' => false, 'msg' => 'Token CSRF invalide.'], Response::HTTP_FORBIDDEN);
+        if (!$this->isCsrfTokenValid('reset_database', $this->getCsrfToken($request))) {
+            return $this->jsonError($translator->trans('advanced_options.error.csrf', domain: 'advanced_options'));
         }
 
-        $commandService->dropDatabase();
+        try {
+            $commandService->dropDatabase();
+        } catch (\RuntimeException $e) {
+            return $this->jsonCommandError($translator, $e);
+        }
 
-        $return['msg'] = $translator->trans('advanced_options.success.reset.database', domain: 'advanced_options');
-        $return['redirect'] = $this->generateUrl('front_no_local');
-        $return['success'] = true;
+        return $this->json([
+            'msg' => $translator->trans('advanced_options.success.reset.database', domain: 'advanced_options'),
+            'redirect' => $this->generateUrl('front_no_local'),
+            'success' => true,
+        ]);
+    }
 
-        return $this->json($return);
+    /**
+     * Retourne le jeton CSRF envoyé en header ou dans le formulaire
+     * @param Request $request
+     * @return string|null
+     */
+    private function getCsrfToken(Request $request): ?string
+    {
+        return $request->headers->get('X-CSRF-TOKEN') ?? $request->request->get('_token');
+    }
+
+    /**
+     * Retourne une réponse JSON d'erreur
+     * @param string $msg
+     * @param int $status
+     * @return JsonResponse
+     */
+    private function jsonError(string $msg, int $status = Response::HTTP_FORBIDDEN): JsonResponse
+    {
+        return $this->json(['success' => false, 'msg' => $msg], $status);
+    }
+
+    /**
+     * Retourne une réponse JSON d'erreur suite à l'échec d'une commande console
+     * @param TranslatorInterface $translator
+     * @param \RuntimeException $e
+     * @return JsonResponse
+     */
+    private function jsonCommandError(TranslatorInterface $translator, \RuntimeException $e): JsonResponse
+    {
+        return $this->jsonError(
+            $translator->trans('advanced_options.error.command', ['error' => $e->getMessage()], 'advanced_options'),
+            Response::HTTP_INTERNAL_SERVER_ERROR,
+        );
     }
 }
