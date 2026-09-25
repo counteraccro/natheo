@@ -27,14 +27,7 @@ class CommandService extends AppAdminService
      */
     public function reloadCache(): void
     {
-        $application = $this->getApplication();
-
-        $input = new ArrayInput([
-            'command' => 'cache:clear',
-        ]);
-
-        $output = new NullOutput();
-        $application->run($input, $output);
+        $this->runCommand(['command' => 'cache:clear']);
     }
 
     /**
@@ -105,15 +98,11 @@ class CommandService extends AppAdminService
      */
     public function dropDatabase(): void
     {
-        $application = $this->getApplication();
-
-        $input = new ArrayInput([
+        $this->runCommand([
             'command' => 'doctrine:database:drop',
             '--force' => true,
+            '--if-exists' => true,
         ]);
-
-        $output = new NullOutput();
-        $application->run($input, $output);
     }
 
     /**
@@ -125,14 +114,11 @@ class CommandService extends AppAdminService
      */
     public function createDatabase(): void
     {
-        $application = $this->getApplication();
-
-        $input = new ArrayInput([
+        // --if-not-exists : l'installeur peut être lancé sur une base déjà créée
+        $this->runCommand([
             'command' => 'doctrine:database:create',
+            '--if-not-exists' => true,
         ]);
-
-        $output = new NullOutput();
-        $application->run($input, $output);
     }
 
     /**
@@ -142,15 +128,30 @@ class CommandService extends AppAdminService
      */
     public function loadFixtures(): void
     {
-        $application = $this->getApplication();
-
-        $input = new ArrayInput([
+        $this->runCommand([
             'command' => 'doctrine:fixtures:load',
             '--append' => true,
         ]);
+    }
 
+    /**
+     * Exécute une commande console et lève une exception si elle échoue
+     * @param array $parameters
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws Exception
+     */
+    private function runCommand(array $parameters): void
+    {
         $output = new BufferedOutput();
-        $application->doRun($input, $output);
+        $exitCode = $this->getApplication()->run(new ArrayInput($parameters), $output);
+
+        if (0 !== $exitCode) {
+            throw new \RuntimeException(
+                'Échec de la commande ' . $parameters['command'] . ' : ' . trim($output->fetch()),
+            );
+        }
     }
 
     /**

@@ -22,7 +22,11 @@
         'urls' : urls,
         'translate' : translate,
         'data' : data,
-        'csrfToken': csrf_token('reset_data')
+        'csrfTokens': {
+            'switch_env': csrf_token('switch_env'),
+            'reset_data': csrf_token('reset_data'),
+            'reset_database': csrf_token('reset_database')
+        }
     }) }}>
     </div>
 
