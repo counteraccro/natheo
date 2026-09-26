@@ -42,6 +42,12 @@ enum Notification: string
     case DUMP_SQL = 'NOTIFICATION_DUMP_SQL';
 
     /**
+     * Notification lors de l'échec de la création d'un dump SQL
+     * @const
+     */
+    case DUMP_SQL_ERROR = 'NOTIFICATION_DUMP_SQL_ERROR';
+
+    /**
      * Notification lors de la création d'un nouveau fondateur
      */
     case NEW_FONDATEUR = 'NOTIFICATION_NEW_FONDATEUR';
@@ -99,6 +105,15 @@ enum Notification: string
             ],
             NotificationKeyConfig::TITLE->value => 'notification.msg.dump_sql.title',
             NotificationKeyConfig::CONTENT->value => 'notification.msg.dump_sql.content',
+        ],
+        self::DUMP_SQL_ERROR->value => [
+            NotificationKeyConfig::CATEGORY->value => NotificationCategory::SQL->value,
+            NotificationKeyConfig::LEVEL->value => NotificationLevel::ALERTE->value,
+            NotificationKeyConfig::PARAMETERS->value => [
+                'file' => '',
+            ],
+            NotificationKeyConfig::TITLE->value => 'notification.msg.dump_sql_error.title',
+            NotificationKeyConfig::CONTENT->value => 'notification.msg.dump_sql_error.content',
         ],
         self::NEW_FONDATEUR->value => [
             NotificationKeyConfig::CATEGORY->value => NotificationCategory::ADMIN->value,
