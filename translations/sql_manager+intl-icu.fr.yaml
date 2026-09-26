@@ -45,6 +45,7 @@ sql_manager.toast.msg.exec.error: 'Une erreur est survenue dans votre requête S
 sql_manager.toast.msg.exec.success: 'Requête SQL executé avec succès'
 sql_manager.toast.msg.save.error: 'Une erreur est survenue sur la sauvegarde'
 sql_manager.toast.msg.save.success: 'Sauvegarde réalisée avec succès'
+sql_manager.toast.msg.load.error: 'Une erreur est survenue lors du chargement des données'
 sql_manager.error.not.only.select.query: 'La requête SQL doit être uniquement de type SELECT'
 sql_manager.help.title: Aide
 sql_manager.help.text.1: "Seule les requêtes de type SELECT seront exécutées, les mots clés suivants : [UPDATE, DELETE, INSERT, CREATE, ALTER, DROP] sont bloqués afin d'éviter toutes tentatives de malversation sur la base de données"

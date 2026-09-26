@@ -7,7 +7,7 @@
 
 import { defineComponent, PropType } from 'vue';
 import axios from 'axios';
-import Toast from '../../../Components/Global/Toast.vue';
+import Toast from '@/vue/Components/Global/Toast.vue';
 import { emitter } from '@/utils/useEvent';
 import SkeletonText from '@/vue/Components/Skeleton/Text.vue';
 import SkeletonTabs from '@/vue/Components/Skeleton/Tabs.vue';
@@ -38,10 +38,6 @@ export default defineComponent({
       type: Object as PropType<SqlManagerTranslations>,
       required: true,
     },
-    id: {
-      type: Number,
-      required: false,
-    },
     isExecute: {
       type: Boolean,
       required: false,
@@ -55,6 +51,8 @@ export default defineComponent({
   data() {
     return {
       loading: false,
+      executing: false,
+      saving: false,
       sqlManager: { id: null, name: null, query: null } as SqlManagerQuery,
       dataBaseData: [] as DatabaseTable[],
       selectTable: [] as string[],
@@ -99,48 +97,41 @@ export default defineComponent({
     },
   },
   mounted() {
-    this.loadSqlManager();
-    this.loadDataDatabase();
+    this.loading = true;
+    Promise.all([this.loadSqlManager(), this.loadDataDatabase()]).finally(() => {
+      this.loading = false;
+      if (this.isExecute) {
+        this.execute();
+      }
+    });
   },
   methods: {
     /**
      * Chargement des données SQLManager
      */
-    loadSqlManager() {
-      this.loading = true;
-      axios
+    loadSqlManager(): Promise<void> {
+      return axios
         .get<LoadSqlManagerResponse>(this.urls.load_sql_manager)
         .then((response) => {
           this.sqlManager = response.data.sqlManager;
         })
         .catch((error) => {
-          console.error(error);
-        })
-        .finally(() => {
-          this.loading = false;
-
-          if (this.isExecute) {
-            this.execute();
-          }
+          this.showError(this.translate.toast_msg_load_error, error);
         });
     },
 
     /**
      * Charge les informations de la base de données
      */
-    loadDataDatabase() {
-      this.loading = true;
-      axios
+    loadDataDatabase(): Promise<void> {
+      return axios
         .get<LoadDataDatabaseResponse>(this.urls.load_data_database)
         .then((response) => {
           this.dataBaseData = response.data.dataInfo;
           this.selectLabelTable = this.translate.label_list_field;
         })
         .catch((error) => {
-          console.error(error);
-        })
-        .finally(() => {
-          this.loading = false;
+          this.showError(this.translate.toast_msg_load_error, error);
         });
     },
 
@@ -148,11 +139,11 @@ export default defineComponent({
      * Execute une requête SQL
      */
     execute() {
-      if (!this.isValidate()) {
+      if (this.executing || !this.isValidate()) {
         return;
       }
 
-      this.loading = true;
+      this.executing = true;
       axios
         .post<ExecuteSqlResponse>(this.urls.execute_sql, {
           query: this.sqlManager.query,
@@ -171,10 +162,10 @@ export default defineComponent({
           }
         })
         .catch((error) => {
-          console.error(error);
+          this.showError(this.translate.toast_msg_exec_error, error);
         })
         .finally(() => {
-          this.loading = false;
+          this.executing = false;
         });
     },
 
@@ -182,11 +173,11 @@ export default defineComponent({
      * Sauvegarde une query
      */
     save() {
-      if (!this.isValidate()) {
+      if (this.saving || !this.isValidate()) {
         return;
       }
 
-      this.loading = true;
+      this.saving = true;
       axios
         .post<SaveResponse>(this.urls.save, {
           query: this.sqlManager.query,
@@ -207,10 +198,10 @@ export default defineComponent({
           }
         })
         .catch((error) => {
-          console.error(error);
+          this.showError(this.translate.toast_msg_save_error, error);
         })
         .finally(() => {
-          this.loading = false;
+          this.saving = false;
           emitter.emit('reset-check-confirm');
         });
     },
@@ -240,6 +231,17 @@ export default defineComponent({
     },
 
     /**
+     * Affiche le toast d'erreur suite à l'échec d'un appel ajax
+     * @param msg
+     * @param error
+     */
+    showError(msg: string, error: unknown) {
+      console.error(error);
+      this.toasts.toastError.msg = msg;
+      this.toasts.toastError.show = true;
+    },
+
+    /**
      * Ferme un toast en fonction de son id
      * @param nameToast
      */
@@ -265,40 +267,24 @@ export default defineComponent({
     },
 
     /**
-     * Ajoute un élément dans l'input
+     * Insère un texte à la position du curseur, avant la sélection éventuelle
      * @param text
-     * @param separate
      */
-    addElement(text: string, separate: boolean) {
-      const input = document.getElementById('sql-textarea') as HTMLTextAreaElement | null;
+    addElement(text: string) {
+      const input = this.$refs.sqlTextarea as HTMLTextAreaElement | undefined;
       if (!input) {
         return;
       }
 
       const start = input.selectionStart ?? 0;
-      const end = input.selectionEnd ?? 0;
       const value = this.sqlManager.query ?? '';
-      const selection = window.getSelection()?.toString() ?? '';
+      this.sqlManager.query = value.slice(0, start) + text + value.slice(start);
 
-      if (selection === '') {
-        this.sqlManager.query = value.slice(0, start) + text + value.slice(end);
-      } else {
-        const before = value.slice(0, start);
-        const after = value.slice(end);
-        let replace: string;
-
-        if (separate) {
-          const half = text.slice(text.length / 2);
-          replace = half + selection + half;
-        } else {
-          replace = text + selection;
-        }
-
-        this.sqlManager.query = before + replace + after;
-      }
-
-      input.value = this.sqlManager.query;
-      input.focus();
+      this.$nextTick(() => {
+        const cursor = start + text.length;
+        input.focus();
+        input.setSelectionRange(cursor, cursor);
+      });
     },
 
     /**
@@ -309,7 +295,7 @@ export default defineComponent({
         return;
       }
       const tables = this.selectTable.map((table) => `${this.schema}.${table}`).join(', ');
-      this.addElement(tables, false);
+      this.addElement(tables);
     },
 
     /**
@@ -319,7 +305,7 @@ export default defineComponent({
       if (this.selectField.length === 0) {
         return;
       }
-      this.addElement(this.selectField.join(', '), false);
+      this.addElement(this.selectField.join(', '));
     },
   },
 });
@@ -340,11 +326,8 @@ export default defineComponent({
 
   <div v-else-if="Object.keys(sqlManager).length === 0">
     <div class="flex flex-col items-center justify-center py-16 px-6 text-center">
-      <div
-        class="w-16 h-16 rounded-2xl flex items-center justify-center mb-5"
-        style="background-color: var(--primary-lighter)"
-      >
-        <svg class="w-8 h-8" style="color: var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-5 bg-(--primary-lighter)">
+        <svg class="w-8 h-8 text-(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
@@ -354,11 +337,11 @@ export default defineComponent({
         </svg>
       </div>
 
-      <p class="text-lg font-bold mb-2" style="color: var(--text-primary)">
+      <p class="text-lg font-bold mb-2 text-(--text-primary)">
         {{ translate.no_query_manager_title }}
       </p>
 
-      <p class="text-sm max-w-xs mb-6" style="color: var(--text-secondary)">
+      <p class="text-sm max-w-xs mb-6 text-(--text-secondary)">
         {{ translate.no_query_manager_text }}
       </p>
 
@@ -385,14 +368,13 @@ export default defineComponent({
         <div>
           <div class="card-title">
             <svg
-              class="card-icon"
+              class="card-icon text-(--primary)"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               width="24"
               height="24"
               fill="none"
               viewBox="0 0 24 24"
-              style="color: var(--primary)"
             >
               <path
                 stroke="currentColor"
@@ -411,7 +393,7 @@ export default defineComponent({
         </div>
 
         <div class="card-actions">
-          <div class="btn btn-success btn-sm me-2" @click="execute">
+          <button type="button" class="btn btn-success btn-sm me-2" :disabled="executing" @click="execute">
             <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 stroke-linecap="round"
@@ -421,9 +403,9 @@ export default defineComponent({
               ></path>
             </svg>
             {{ translate.btn_execute_query }}
-          </div>
+          </button>
 
-          <div class="btn btn-primary btn-sm me-2" @click="save">
+          <button type="button" class="btn btn-primary btn-sm me-2" :disabled="saving" @click="save">
             <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 stroke-linecap="round"
@@ -433,7 +415,7 @@ export default defineComponent({
               ></path>
             </svg>
             {{ translate.btn_save_query }}
-          </div>
+          </button>
         </div>
       </div>
       <div class="p-5">
@@ -442,7 +424,7 @@ export default defineComponent({
           <input
             type="text"
             class="form-input"
-            :class="isErrorValidateName ? 'is-invalid' : ''"
+            :class="{ 'is-invalid': isErrorValidateName }"
             id="name-query"
             :placeholder="translate.label_name_placeholder"
             v-model="sqlManager.name"
@@ -456,8 +438,9 @@ export default defineComponent({
           <label for="sql-textarea" class="form-label">{{ translate.label_textarea_query }}</label>
           <textarea
             class="form-input code-editor"
-            :class="isErrorValidateQuery ? 'is-invalid' : ''"
+            :class="{ 'is-invalid': isErrorValidateQuery }"
             id="sql-textarea"
+            ref="sqlTextarea"
             rows="10"
             v-model="sqlManager.query"
           ></textarea>
@@ -476,14 +459,13 @@ export default defineComponent({
         <div>
           <div class="card-title">
             <svg
-              class="card-icon"
+              class="card-icon text-(--primary)"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               width="24"
               height="24"
               fill="none"
               viewBox="0 0 24 24"
-              style="color: var(--primary)"
             >
               <path stroke="currentColor" stroke-width="2" d="m21 21-4.35-4.35M11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14Z" />
             </svg>
@@ -497,7 +479,7 @@ export default defineComponent({
         </div>
 
         <div class="card-actions">
-          <div class="btn btn-success btn-sm me-2" @click="execute">
+          <button type="button" class="btn btn-success btn-sm me-2" :disabled="executing" @click="execute">
             <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 stroke-linecap="round"
@@ -507,9 +489,9 @@ export default defineComponent({
               ></path>
             </svg>
             {{ translate.btn_execute_query }}
-          </div>
+          </button>
 
-          <div class="btn btn-primary btn-sm me-2" @click="save">
+          <button type="button" class="btn btn-primary btn-sm me-2" :disabled="saving" @click="save">
             <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 stroke-linecap="round"
@@ -519,13 +501,13 @@ export default defineComponent({
               ></path>
             </svg>
             {{ translate.btn_save_query }}
-          </div>
+          </button>
         </div>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 p-5">
         <div>
-          <h3 class="text-sm font-semibold mb-3 text-[var(--text-primary)]">{{ translate.label_list_table }}</h3>
+          <h3 class="text-sm font-semibold mb-3 text-(--text-primary)">{{ translate.label_list_table }}</h3>
           <div class="form-control mb-3">
             <input type="text" class="form-input" v-model="searchTable" :placeholder="translate.placeholder_table" />
           </div>
@@ -537,18 +519,18 @@ export default defineComponent({
             </select>
           </div>
           <div class="mb-3">
-            <div class="btn btn-secondary btn-sm w-full" @click="addTable">
+            <button type="button" class="btn btn-secondary btn-sm w-full" @click="addTable">
               <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
               </svg>
               {{ translate.btn_add_table }}
-            </div>
+            </button>
           </div>
-          <p class="text-xs text-[var(--text-secondary)]">{{ translate.help_select_table }}</p>
+          <p class="text-xs text-(--text-secondary)">{{ translate.help_select_table }}</p>
         </div>
 
         <div>
-          <h3 class="text-sm font-semibold mb-3 text-[var(--text-primary)]">{{ selectLabelTable }}</h3>
+          <h3 class="text-sm font-semibold mb-3 text-(--text-primary)">{{ selectLabelTable }}</h3>
           <div class="form-control mb-3">
             <input
               type="text"
@@ -573,14 +555,19 @@ export default defineComponent({
             </select>
           </div>
           <div class="form-control mb-3">
-            <button :disabled="selectColumns.length === 0" class="btn btn-secondary btn-sm w-full" @click="addField">
+            <button
+              type="button"
+              :disabled="selectColumns.length === 0"
+              class="btn btn-secondary btn-sm w-full"
+              @click="addField"
+            >
               <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
               </svg>
               {{ translate.btn_add_table }}
             </button>
           </div>
-          <p class="text-xs text-[var(--text-secondary)]">
+          <p class="text-xs text-(--text-secondary)">
             {{ translate.help_select_field }}
           </p>
         </div>
@@ -591,26 +578,21 @@ export default defineComponent({
       <div class="card-header">
         <div>
           <div class="card-title">
-            <svg class="card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: var(--primary)">
+            <svg class="card-icon text-(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke="currentColor" stroke-width="2" d="m21 21-4.35-4.35M11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14Z" />
             </svg>
 
             {{ translate.bloc_result }}
           </div>
 
-          <p class="card-subtitle">
+          <p id="sql-result-description" class="card-subtitle">
             {{ translate.bloc_result_sub_title }}
           </p>
         </div>
       </div>
 
-      <div v-if="!result.length" class="text-center py-12 text-[var(--text-secondary)]">
-        <svg
-          class="w-16 h-16 mx-auto mb-4 text-[var(--text-light)]"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
+      <div v-if="!result.length" class="text-center py-12 text-(--text-secondary)">
+        <svg class="w-16 h-16 mx-auto mb-4 text-(--text-light)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
@@ -623,24 +605,24 @@ export default defineComponent({
       </div>
 
       <div v-else class="overflow-x-auto">
-        <table class="w-full" aria-describedby="table">
-          <thead class="bg-[var(--bg-main)]">
+        <table class="w-full" aria-describedby="sql-result-description">
+          <thead class="bg-(--bg-main)">
             <tr>
               <th
                 v-for="header in resultHeader"
                 :key="header"
-                class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-[var(--text-secondary)]"
+                class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-(--text-secondary)"
               >
                 {{ header }}
               </th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-[var(--border-color)]">
-            <tr v-for="(row, index) in result" :key="index" class="bg-[var(--bg-card)] hover:bg-[var(--bg-hover)]">
+          <tbody class="divide-y divide-(--border-color)">
+            <tr v-for="(row, index) in result" :key="index" class="bg-(--bg-card) hover:bg-(--bg-hover)">
               <td
                 v-for="header in resultHeader"
                 :key="header"
-                class="px-3 py-1 text-sm text-[var(--text-secondary)] text-left"
+                class="px-3 py-1 text-sm text-(--text-secondary) text-left"
               >
                 {{ row[header] }}
               </td>
@@ -653,8 +635,8 @@ export default defineComponent({
 
   <div class="toast-container position-fixed top-0 end-0 p-2">
     <toast
-      :id="'toastSuccess'"
-      :option-class-header="'text-success'"
+      id="toastSuccess"
+      option-class-header="text-success"
       :show="toasts.toastSuccess.show"
       @close-toast="closeToast"
     >
@@ -663,12 +645,7 @@ export default defineComponent({
       </template>
     </toast>
 
-    <toast
-      :id="'toastError'"
-      :option-class-header="'text-danger'"
-      :show="toasts.toastError.show"
-      @close-toast="closeToast"
-    >
+    <toast id="toastError" option-class-header="text-danger" :show="toasts.toastError.show" @close-toast="closeToast">
       <template #body>
         <div v-html="toasts.toastError.msg"></div>
       </template>
@@ -676,7 +653,7 @@ export default defineComponent({
   </div>
 </template>
 
-<style>
+<style scoped>
 .code-editor {
   background-color: #1e293b;
   color: #e2e8f0;
@@ -693,6 +670,6 @@ export default defineComponent({
 .code-editor:focus {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 10%, transparent);
 }
 </style>

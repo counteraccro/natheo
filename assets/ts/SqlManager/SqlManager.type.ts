@@ -23,6 +23,8 @@ export interface SqlManagerTranslations {
   label_list_field_2: string;
   toast_msg_exec_success: string;
   toast_msg_exec_error: string;
+  toast_msg_save_error: string;
+  toast_msg_load_error: string;
   no_query_manager_title: string;
   no_query_manager_text: string;
   btn_back: string;
