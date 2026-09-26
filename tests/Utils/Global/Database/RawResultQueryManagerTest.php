@@ -48,8 +48,8 @@ class RawResultQueryManagerTest extends AppWebTestCase
      */
     public function testGetResultAllInformationSchema(): void
     {
-        $sql = $this->rawQueryManager->getQueryAllInformationSchema('natheo_test');
-        $result = $this->database->executeRawQuery($sql);
+        $sql = $this->rawQueryManager->getQueryAllInformationSchema();
+        $result = $this->database->executeRawQuery($sql, ['schema' => 'natheo_test']);
         $result = $this->rawResultQueryManager->getResultAllInformationSchema($result, $this->translate);
 
         $this->assertIsArray($result);
@@ -110,13 +110,13 @@ class RawResultQueryManagerTest extends AppWebTestCase
      */
     public function testGetResultExistTable(): void
     {
-        $sql = $this->rawQueryManager->getQueryExistTable('natheo_test', 'user');
-        $result = $this->database->executeRawQuery($sql);
+        $sql = $this->rawQueryManager->getQueryExistTable();
+        $result = $this->database->executeRawQuery($sql, ['schema' => 'natheo_test', 'table' => 'user']);
         $result = $this->rawResultQueryManager->getResultExistTable($result);
         $this->assertTrue($result);
 
-        $sql = $this->rawQueryManager->getQueryExistTable('natheo_test', 'test-unit');
-        $result = $this->database->executeRawQuery($sql);
+        $sql = $this->rawQueryManager->getQueryExistTable();
+        $result = $this->database->executeRawQuery($sql, ['schema' => 'natheo_test', 'table' => 'test-unit']);
         $result = $this->rawResultQueryManager->getResultExistTable($result);
         $this->assertFalse($result);
     }
