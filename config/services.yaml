@@ -11,6 +11,7 @@ parameters:
     app.default_locale: 'fr'
     app.default_database_prefix: '' # un "_" est ajouté par défaut, laissez vide si pas de prefix
     app.default_database_name: '%env(NATHEO_DBNAME)%' # nom de la base de données par défaut
+    app.dump_directory: '%kernel.project_dir%/var/dump/' # dossier de stockage des dumps SQL, hors du dossier public
     app.version: '2.0.0-beta.1'
     app.natheo_horizon.version: 'Natheo-Horizon v1.0.0'
     app.current_branche: 'master'
@@ -53,3 +54,8 @@ services:
     App\EventListener\OverwriteListener:
         tags:
             - { name: kernel.event_listener }
+
+when@test:
+    parameters:
+        # Dossier dédié pour ne pas toucher aux dumps de l'environnement de dev
+        app.dump_directory: '%kernel.project_dir%/var/dump_test/'
