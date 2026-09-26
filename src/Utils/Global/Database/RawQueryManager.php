@@ -31,33 +31,34 @@ class RawQueryManager
 
     /**
      * Requête SQL pour obtenir l'ensemble des tables de la base de données
-     * @param string $schema
+     * Paramètre attendu à l'exécution : schema
      * @return string
      */
-    public function getQueryAllInformationSchema(string $schema): string
+    public function getQueryAllInformationSchema(): string
     {
-        return $this->rawClass::getQueryAllInformationSchema($schema);
+        return $this->rawClass::getQueryAllInformationSchema();
     }
 
     /**
      * Retourne la structure d'une table
      * @param string $table
+     * @param string $schema
      * @return string
      */
-    public function getQueryStructureTable(string $table): string
+    public function getQueryStructureTable(string $table, string $schema = ''): string
     {
-        return $this->rawClass::getQueryStructureTable($table);
+        return $this->rawClass::getQueryStructureTable($table, $schema);
     }
 
     /**
      * Vérifie si une table existe dans la base de données
-     * @param string $schema
-     * @param string $table
+     * Paramètres attendus à l'exécution : table, et schema si $withSchema vaut true
+     * @param bool $withSchema
      * @return string
      */
-    public function getQueryExistTable(string $schema, string $table): string
+    public function getQueryExistTable(bool $withSchema = true): string
     {
-        return $this->rawClass::getQueryExistTable($schema, $table);
+        return $this->rawClass::getQueryExistTable($withSchema);
     }
 
     /**
@@ -71,11 +72,12 @@ class RawQueryManager
 
     /**
      * Permet pour purger les notifications
+     * @param string $table nom de la table notification, déjà quoté
      * @return string
      */
-    public function getQueryPurgeNotification(): string
+    public function getQueryPurgeNotification(string $table): string
     {
-        return $this->rawClass::getQueryPurgeNotification();
+        return $this->rawClass::getQueryPurgeNotification($table);
     }
 
     /**

@@ -1,21 +1,34 @@
-<script>
+<script lang="ts">
 /**
  * @author Gourdon Aymeric
- * @version 2.0
+ * @version 2.1
  * Gestionnaire de base de données
  */
+import { defineComponent, PropType } from 'vue';
 import axios from 'axios';
 import Toast from '../../../../Components/Global/Toast.vue';
 import Modal from '../../../../Components/Global/Modal.vue';
-import SchemaDatabase from '../../../../Components/DatabaseManager/SchemaDatabse.vue';
+import SchemaDatabase from '../../../../Components/DatabaseManager/SchemaDatabase.vue';
 import SchemaTable from '../../../../Components/DatabaseManager/SchemaTable.vue';
 import ListDump from '../../../../Components/DatabaseManager/ListDump.vue';
 import SkeletonCardStat from '@/vue/Components/Skeleton/CardStat.vue';
 import SkeletonTabs from '@/vue/Components/Skeleton/Tabs.vue';
 import AlertWarning from '@/vue/Components/Alert/Warning.vue';
 import AlertDanger from '@/vue/Components/Alert/Danger.vue';
+import { Toasts } from '@/ts/Toast/Toast.type';
+import type {
+  DatabaseManagerCsrfTokens,
+  DatabaseManagerDumpOptions,
+  DatabaseManagerResponse,
+  DatabaseManagerTable,
+  DatabaseManagerTranslations,
+  DatabaseManagerUrls,
+} from '@/ts/DatabaseManager/DatabaseManager.type';
+import type { ListDumpItem } from '@/ts/DatabaseManager/ListDump.type';
+import type { SchemaDatabaseData } from '@/ts/DatabaseManager/SchemaDatabase.type';
+import type { SchemaTableData } from '@/ts/DatabaseManager/SchemaTable.type';
 
-export default {
+export default defineComponent({
   name: 'DatabaseManager',
   components: {
     AlertDanger,
@@ -29,29 +42,43 @@ export default {
     Toast,
   },
   props: {
-    urls: Object,
-    translate: Object,
+    urls: {
+      type: Object as PropType<DatabaseManagerUrls>,
+      required: true,
+    },
+    translate: {
+      type: Object as PropType<DatabaseManagerTranslations>,
+      required: true,
+    },
+    csrfTokens: {
+      type: Object as PropType<DatabaseManagerCsrfTokens>,
+      required: true,
+    },
   },
   data() {
     return {
       loading: true,
-      result: {},
-      tables: Object,
-      disabledListeTales: true,
-      schemaTable: {},
+      result: {
+        result: [],
+        header: {},
+        error: '',
+        stat: { nbElement: 0, sizeBite: '', nbTable: 0 },
+      } as SchemaDatabaseData,
+      tables: [] as DatabaseManagerTable[],
+      disabledListTables: true,
+      schemaTable: { result: [], header: {}, table: '' } as SchemaTableData,
       schemaTableName: '',
-      listDump: {},
-      show: '',
+      listDump: [] as ListDumpItem[],
       deleteFileName: '',
       optionData: {
         filename: '',
-        all: 1,
+        all: '1',
         tables: [],
         data: 'table',
-      },
+      } as DatabaseManagerDumpOptions,
       modalTab: {
         modaleConfirmDeleteDump: false,
-      },
+      } as Record<string, boolean>,
       toasts: {
         toastSuccess: {
           show: false,
@@ -61,24 +88,25 @@ export default {
           show: false,
           msg: '',
         },
-      },
+      } as Toasts,
     };
   },
   mounted() {
-    let now = new Date();
+    const now = new Date();
+    const pad = (value: number): string => String(value).padStart(2, '0');
     this.optionData.filename =
       'dump-bdd-' +
-      now.getDate() +
+      pad(now.getDate()) +
       '-' +
-      now.getMonth() +
+      pad(now.getMonth() + 1) +
       '-' +
       now.getFullYear() +
       '-' +
-      now.getHours() +
+      pad(now.getHours()) +
       '-' +
-      now.getMinutes() +
+      pad(now.getMinutes()) +
       '-' +
-      now.getSeconds();
+      pad(now.getSeconds());
 
     this.loading = true;
     Promise.all([this.loadSchemaDataBase(), this.loadListeDump(), this.loadDataDump()]).finally(() => {
@@ -89,12 +117,15 @@ export default {
     /**
      * Chargement du schema de la base de donnée
      */
-    loadSchemaDataBase() {
+    loadSchemaDataBase(): Promise<void> {
       return axios
-        .get(this.urls.load_schema_database)
+        .get<{ query: SchemaDatabaseData }>(this.urls.load_schema_database)
         .then((response) => {
           this.result = response.data.query;
           this.result.header['action'] = this.translate.action;
+          if (this.result.error) {
+            this.showToast('toastError', this.result.error);
+          }
         })
         .catch((error) => {
           console.error(error);
@@ -105,13 +136,17 @@ export default {
      * Charge le schema de la table
      * @param table
      */
-    loadSchemaTable(table) {
-      this.schemaTable = {};
+    loadSchemaTable(table: string): Promise<void> {
+      this.schemaTable = { result: [], header: {}, table: '' };
       this.schemaTableName = '';
       this.loading = true;
       return axios
-        .get(this.urls.load_schema_table + '/' + table)
+        .get<{ result: SchemaTableData }>(this.urls.load_schema_table + '/' + encodeURIComponent(table))
         .then((response) => {
+          if (response.data.result.error) {
+            this.showToast('toastError', response.data.result.error);
+            return;
+          }
           this.schemaTable = response.data.result;
           this.schemaTableName = response.data.result.table;
         })
@@ -126,9 +161,9 @@ export default {
     /**
      * Charge les listes des sauvegardes, faites
      */
-    loadListeDump() {
+    loadListeDump(): Promise<void> {
       return axios
-        .get(this.urls.all_dump_file)
+        .get<{ result: ListDumpItem[] }>(this.urls.all_dump_file)
         .then((response) => {
           this.listDump = response.data.result;
         })
@@ -140,9 +175,9 @@ export default {
     /**
      * Chargement des données pour le dump SQL
      */
-    loadDataDump() {
+    loadDataDump(): Promise<void> {
       return axios
-        .get(this.urls.load_tables_database)
+        .get<{ tables: DatabaseManagerTable[] }>(this.urls.load_tables_database)
         .then((response) => {
           this.tables = response.data.tables;
         })
@@ -154,26 +189,22 @@ export default {
     /**
      * Créer une nouvelle sauvegarde
      */
-    dumpSQL() {
+    dumpSQL(): void {
       this.loading = true;
       axios
-        .post(this.urls.save_database, {
-          options: this.optionData,
-        })
+        .post<DatabaseManagerResponse>(
+          this.urls.save_database,
+          { options: this.optionData },
+          { headers: { 'X-CSRF-TOKEN': this.csrfTokens.save_database } }
+        )
         .then((response) => {
-          if (response.data.success === true) {
-            this.toasts.toastSuccess.msg = response.data.msg;
-            this.toasts.toastSuccess.show = true;
-          } else {
-            this.toasts.toastError.msg = response.data.msg;
-            this.toasts.toastError.show = true;
-          }
+          this.showToast(response.data.success ? 'toastSuccess' : 'toastError', response.data.msg);
         })
         .catch((error) => {
-          console.error(error);
+          this.showRequestError(error);
         })
         .finally(() => {
-          Promise.all([this.loadListeDump()]).finally(() => {
+          this.loadListeDump().finally(() => {
             this.loading = false;
           });
         });
@@ -184,7 +215,7 @@ export default {
      * @param filename
      * @param confirm
      */
-    deleteDumpFile(filename, confirm) {
+    deleteDumpFile(filename: string, confirm: boolean): void {
       if (!confirm) {
         this.deleteFileName = filename;
         this.modalTab.modaleConfirmDeleteDump = true;
@@ -193,33 +224,49 @@ export default {
 
       this.loading = true;
       axios
-        .delete(this.urls.delete_dump_file + '/' + filename, {})
+        .delete<DatabaseManagerResponse>(this.urls.delete_dump_file + '/' + encodeURIComponent(filename), {
+          headers: { 'X-CSRF-TOKEN': this.csrfTokens.delete_dump_file },
+        })
         .then((response) => {
-          if (response.data.success === true) {
-            this.toasts.toastSuccess.msg = response.data.msg;
-            this.toasts.toastSuccess.show = true;
-          } else {
-            this.toasts.toastError.msg = response.data.msg;
-            this.toasts.toastError.show = true;
-          }
+          this.showToast(response.data.success ? 'toastSuccess' : 'toastError', response.data.msg);
         })
         .catch((error) => {
-          console.error(error);
+          this.showRequestError(error);
         })
         .finally(() => {
           this.deleteFileName = '';
           this.closeModal('modaleConfirmDeleteDump');
-          Promise.all([this.loadListeDump()]).finally(() => {
+          this.loadListeDump().finally(() => {
             this.loading = false;
           });
         });
     },
 
     /**
+     * Affiche un toast avec un message
+     * @param nameToast
+     * @param msg
+     */
+    showToast(nameToast: 'toastSuccess' | 'toastError', msg: string): void {
+      this.toasts[nameToast].msg = msg;
+      this.toasts[nameToast].show = true;
+    },
+
+    /**
+     * Affiche le message d'erreur renvoyé par le serveur, ou un message générique
+     * @param error
+     */
+    showRequestError(error: unknown): void {
+      console.error(error);
+      const msg = axios.isAxiosError<DatabaseManagerResponse>(error) ? error.response?.data?.msg : undefined;
+      this.showToast('toastError', msg || this.translate.error_generic);
+    },
+
+    /**
      * Ferme un toast en fonction de son id
      * @param nameToast
      */
-    closeToast(nameToast) {
+    closeToast(nameToast: string): void {
       this.toasts[nameToast].show = false;
     },
 
@@ -228,7 +275,7 @@ export default {
      * @param nameModale
      * @param state true|false
      */
-    updateModale(nameModale, state) {
+    updateModale(nameModale: string, state: boolean): void {
       this.modalTab[nameModale] = state;
     },
 
@@ -236,11 +283,11 @@ export default {
      * Ferme une modale
      * @param nameModale
      */
-    closeModal(nameModale) {
+    closeModal(nameModale: string): void {
       this.updateModale(nameModale, false);
     },
   },
-};
+});
 </script>
 
 <template>
@@ -502,7 +549,7 @@ export default {
                   value="1"
                   id="all-data"
                   v-model="optionData.all"
-                  @click="disabledListeTales = true"
+                  @click="disabledListTables = true"
                 />
                 <label class="form-check-label" for="all-data">
                   {{ translate.dump_option.select_all }}
@@ -516,7 +563,7 @@ export default {
                   value="0"
                   id="select-data"
                   v-model="optionData.all"
-                  @click="disabledListeTales = false"
+                  @click="disabledListTables = false"
                 />
                 <label class="form-check-label" for="select-data">
                   {{ translate.dump_option.select_tables }}
@@ -528,7 +575,7 @@ export default {
                   id="select-multi-table"
                   class="form-input"
                   size="18"
-                  :disabled="disabledListeTales"
+                  :disabled="disabledListTables"
                   multiple
                   v-model="optionData.tables"
                 >
@@ -552,7 +599,7 @@ export default {
           <alert-warning type="alert-primary-solid mt-6" :text="translate.dump_option.help_body" />
           <alert-danger type="alert-danger-solid mt-6" :text="translate.dump_option.warning_body" />
 
-          <button class="btn btn-sm btn-primary w-full mt-6 no-control" @click="this.dumpSQL">
+          <button class="btn btn-sm btn-primary w-full mt-6 no-control" @click="dumpSQL">
             <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 stroke-linecap="round"
@@ -607,9 +654,9 @@ export default {
             d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
           />
         </svg>
-        {{ this.translate.list_dump.btn_go }}
+        {{ translate.list_dump.btn_go }}
       </button>
-      <button type="button" class="btn btn-outline-dark btn-sm" @click="this.closeModal('modaleConfirmDeleteDump')">
+      <button type="button" class="btn btn-outline-dark btn-sm" @click="closeModal('modaleConfirmDeleteDump')">
         <svg
           class="icon"
           aria-hidden="true"
@@ -628,7 +675,7 @@ export default {
           />
         </svg>
 
-        {{ this.translate.list_dump.btn_undo }}
+        {{ translate.list_dump.btn_undo }}
       </button>
     </template>
   </modal>
@@ -638,22 +685,22 @@ export default {
     <toast
       :id="'toastSuccess'"
       :option-class-header="'text-success'"
-      :show="this.toasts.toastSuccess.show"
-      @close-toast="this.closeToast"
+      :show="toasts.toastSuccess.show"
+      @close-toast="closeToast"
     >
       <template #body>
-        <div v-html="this.toasts.toastSuccess.msg"></div>
+        <div>{{ toasts.toastSuccess.msg }}</div>
       </template>
     </toast>
 
     <toast
       :id="'toastError'"
       :option-class-header="'text-danger'"
-      :show="this.toasts.toastError.show"
-      @close-toast="this.closeToast"
+      :show="toasts.toastError.show"
+      @close-toast="closeToast"
     >
       <template #body>
-        <div v-html="this.toasts.toastError.msg"></div>
+        <div>{{ toasts.toastError.msg }}</div>
       </template>
     </toast>
   </div>

@@ -208,6 +208,38 @@ class NotificationServiceTest extends AppWebTestCase
     }
 
     /**
+     * test méthode purge() : seules les notifications lues plus anciennes que le nombre de jours sont supprimées
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testPurgeOnlyOldReadNotifications(): void
+    {
+        $user = $this->createUser();
+        $oldIds = [];
+        for ($i = 0; $i < 3; $i++) {
+            $oldIds[] = $this->createNotification($user, ['read' => true])->getId();
+        }
+        $this->createNotification($user, ['read' => true]);
+        $this->createNotification($user, ['read' => false]);
+
+        $connection = $this->em->getConnection();
+        $connection->executeStatement(
+            'UPDATE notification SET created_at = :date WHERE id IN (' . implode(',', $oldIds) . ')',
+            ['date' => (new \DateTime('-10 days'))->format('Y-m-d H:i:s')],
+        );
+
+        $this->notificationService->purge(5, $user->getId());
+
+        $this->assertEquals(
+            2,
+            $connection->fetchOne('SELECT COUNT(id) FROM notification WHERE user_id = :user', [
+                'user' => $user->getId(),
+            ]),
+        );
+    }
+
+    /**
      * Test méthode testReadAll()
      * @return void
      * @throws ContainerExceptionInterface

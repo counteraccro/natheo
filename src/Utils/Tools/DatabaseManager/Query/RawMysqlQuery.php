@@ -13,48 +13,36 @@ class RawMysqlQuery implements RawQueryInterface
     /**
      * @inheritDoc
      */
-    public static function getQueryAllInformationSchema(string $schema): string
+    public static function getQueryAllInformationSchema(): string
     {
         return "SELECT table_schema as 'schema', table_name AS 'table_name',
                 table_rows as 'row',
                 (data_length + index_length) AS 'size'
                 FROM information_schema.TABLES
-                WHERE table_schema = '" .
-            $schema .
-            "'
+                WHERE table_schema = :schema
                 ORDER BY table_name ASC;";
     }
 
     /**
      * @inheritDoc
      */
-    public static function getQueryStructureTable(string $table): string
+    public static function getQueryStructureTable(string $table, string $schema = ''): string
     {
-        return 'DESCRIBE ' . $table . ';';
+        return 'DESCRIBE `' . str_replace('`', '``', $table) . '`;';
     }
 
     /**
      * @inheritDoc
      */
-    public static function getQueryExistTable(string $schema, string $table): string
+    public static function getQueryExistTable(bool $withSchema = true): string
     {
-        $sqlSchema = '';
-        if ($schema != '') {
-            $sqlSchema =
-                "TABLE_SCHEMA = '" .
-                $schema .
-                "' 
-                AND";
-        }
+        $sqlSchema = $withSchema ? 'TABLE_SCHEMA = :schema AND ' : '';
 
-        return "SELECT TABLE_NAME 
-                FROM INFORMATION_SCHEMA.TABLES 
-                WHERE " .
+        return 'SELECT TABLE_NAME
+                FROM INFORMATION_SCHEMA.TABLES
+                WHERE ' .
             $sqlSchema .
-            " TABLE_NAME = '" .
-            $table .
-            "';
-        ";
+            'TABLE_NAME = :table';
     }
 
     /**
@@ -76,10 +64,12 @@ class RawMysqlQuery implements RawQueryInterface
     /**
      * @inheritDoc
      */
-    public static function getQueryPurgeNotification(): string
+    public static function getQueryPurgeNotification(string $table): string
     {
-        return "DELETE n
-                FROM natheo.notification n
+        return 'DELETE n
+                FROM ' .
+            $table .
+            " n
                 WHERE n.user_id = :user_id
                     AND n.`read` = 1
                     AND DATEDIFF(CURRENT_DATE(), n.created_at) > :nb_day";

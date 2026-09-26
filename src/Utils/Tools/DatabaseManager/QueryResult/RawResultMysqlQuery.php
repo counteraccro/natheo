@@ -38,7 +38,7 @@ class RawResultMysqlQuery implements RawResultQueryInterface
                 $nbElement += intval($row['row']);
             } else {
                 $row['row'] = $translator->trans(
-                    'database_manager.schema.all.bdd.error_row.',
+                    'database_manager.schema.all.bdd.error_row',
                     domain: 'database_manager',
                 );
             }
@@ -85,7 +85,7 @@ class RawResultMysqlQuery implements RawResultQueryInterface
             ),
         ];
 
-        $return = [];
+        $return = ['result' => [], 'error' => $result['error'] ?? ''];
 
         foreach ($result['result'] as $row) {
             $dataType = $row['Type'];

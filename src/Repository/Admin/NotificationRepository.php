@@ -100,8 +100,10 @@ class NotificationRepository extends ServiceEntityRepository
      */
     public function removeAfterDay(int $nbDay, int $userId, RawQueryManager $rawQueryManager): void
     {
-        $sql = $rawQueryManager->getQueryPurgeNotification();
-        $statment = $this->getEntityManager()->getConnection()->prepare($sql);
+        $connection = $this->getEntityManager()->getConnection();
+        $table = $connection->getDatabasePlatform()->quoteSingleIdentifier($this->getClassMetadata()->getTableName());
+        $sql = $rawQueryManager->getQueryPurgeNotification($table);
+        $statment = $connection->prepare($sql);
         $statment->bindValue('nb_day', $nbDay);
         $statment->bindValue('user_id', $userId);
         $statment->executeStatement();

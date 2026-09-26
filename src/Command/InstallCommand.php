@@ -8,7 +8,6 @@ declare(strict_types=1);
  */
 namespace App\Command;
 
-use App\Enum\Admin\Tools\DatabaseManager\DatabaseManagerData;
 use App\Service\Installation\InstallationService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -180,8 +179,9 @@ class InstallCommand extends Command
     {
         $fileSystem = new Filesystem();
 
-        if ($fileSystem->exists($this->kernel->getProjectDir() . DatabaseManagerData::getRootPath())) {
-            $fileSystem->remove($this->kernel->getProjectDir() . DatabaseManagerData::getRootPath());
+        $dumpDirectory = $this->parameterBag->get('app.dump_directory');
+        if ($fileSystem->exists($dumpDirectory)) {
+            $fileSystem->remove($dumpDirectory);
         }
     }
 }

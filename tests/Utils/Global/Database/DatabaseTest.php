@@ -53,6 +53,9 @@ class DatabaseTest extends AppWebTestCase
 
         $result = $this->database->isTableExiste('user');
         $this->assertTrue($result);
+
+        $result = $this->database->isTableExiste("user' OR '1'='1");
+        $this->assertFalse($result);
     }
 
     /**
