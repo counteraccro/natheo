@@ -34,6 +34,7 @@ class DatabaseManagerTranslate extends AppTranslate
             'stat_nb_row' => $this->translator->trans('database_manager.stat.nb.row', domain: 'database_manager'),
             'stat_size' => $this->translator->trans('database_manager.stat.size', domain: 'database_manager'),
             'action' => $this->translator->trans('database_manager.action', domain: 'database_manager'),
+            'error_generic' => $this->translator->trans('database_manager.error.generic', domain: 'database_manager'),
             'dump_option' => $this->getTranslateDumpOption(),
             'list_dump' => $this->getTranslateListDump(),
         ];

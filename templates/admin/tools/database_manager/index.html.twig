@@ -33,6 +33,10 @@
     <div {{ vue_component('Admin/Tools/DatabaseManager/DatabaseManager', {
         'urls' : urls,
         'translate' : translate,
+        'csrfTokens' : {
+            'save_database' : csrf_token('database_manager_save_database'),
+            'delete_dump_file' : csrf_token('database_manager_delete_dump_file'),
+        },
     }) }}>
     </div>
 

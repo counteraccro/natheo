@@ -38,7 +38,7 @@ class RawResultPostgresQuery implements RawResultQueryInterface
                 $nbElement += intval($row['row']);
             } else {
                 $row['row'] = $translator->trans(
-                    'database_manager.schema.all.bdd.error_row.',
+                    'database_manager.schema.all.bdd.error_row',
                     domain: 'database_manager',
                 );
             }

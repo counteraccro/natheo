@@ -13,25 +13,26 @@ interface RawQueryInterface
 {
     /**
      * Requête SQL pour obtenir l'ensemble des tables de la base de données
-     * @param string $schema
+     * Paramètre attendu à l'exécution : schema
      * @return string
      */
-    public static function getQueryAllInformationSchema(string $schema): string;
+    public static function getQueryAllInformationSchema(): string;
 
     /**
      * Retourne la structure d'une table
      * @param string $table
+     * @param string $schema
      * @return string
      */
-    public static function getQueryStructureTable(string $table): string;
+    public static function getQueryStructureTable(string $table, string $schema = ''): string;
 
     /**
      * Vérifie si une table existe dans la base de données
-     * @param string $schema
-     * @param string $table
+     * Paramètres attendus à l'exécution : table, et schema si $withSchema vaut true
+     * @param bool $withSchema
      * @return string
      */
-    public static function getQueryExistTable(string $schema, string $table): string;
+    public static function getQueryExistTable(bool $withSchema = true): string;
 
     /**
      * Permet d'obtenir la liste des bases de données
@@ -41,9 +42,10 @@ interface RawQueryInterface
 
     /**
      * Permet de purger les notifications
+     * @param string $table nom de la table notification, déjà quoté
      * @return string
      */
-    public static function getQueryPurgeNotification(): string;
+    public static function getQueryPurgeNotification(string $table): string;
 
     /**
      * Check si la connexion est bonne ou non

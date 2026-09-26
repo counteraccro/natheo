@@ -14,7 +14,7 @@ class RawPostgresQuery implements RawQueryInterface
     /**
      * @inheritDoc
      */
-    public static function getQueryAllInformationSchema(string $schema): string
+    public static function getQueryAllInformationSchema(): string
     {
         return "WITH RECURSIVE pg_inherit(inhrelid, inhparent) AS
                    (select inhrelid, inhparent
@@ -59,9 +59,7 @@ class RawPostgresQuery implements RawQueryInterface
                                            LEFT JOIN pg_namespace n ON n.oid = c.relnamespace
                               ) a
                          WHERE oid = parent
-                         AND table_schema = '" .
-            $schema .
-            "'
+                         AND table_schema = :schema
                      ) a
                 ORDER BY TABLE_NAME ASC";
     }
@@ -69,8 +67,13 @@ class RawPostgresQuery implements RawQueryInterface
     /**
      * @inheritDoc
      */
-    public static function getQueryStructureTable(string $table): string
+    public static function getQueryStructureTable(string $table, string $schema = ''): string
     {
+        $sqlSchema = '';
+        if ($schema !== '') {
+            $sqlSchema = " AND table_schema = '" . str_replace("'", "''", $schema) . "'";
+        }
+
         return "SELECT
             column_name,
             data_type,
@@ -81,23 +84,25 @@ class RawPostgresQuery implements RawQueryInterface
             information_schema.columns
         WHERE
             table_name = '" .
-            $table .
-            "'";
+            str_replace("'", "''", $table) .
+            "'" .
+            $sqlSchema .
+            ' ORDER BY ordinal_position';
     }
 
     /**
      * @inheritDoc
      */
-    public static function getQueryExistTable(string $schema, string $table): string
+    public static function getQueryExistTable(bool $withSchema = true): string
     {
-        return "SELECT EXISTS (
-            SELECT FROM information_schema.tables WHERE  table_schema = '" .
-            $schema .
-            "'
-            AND table_name   = '" .
-            $table .
-            "'
-            )";
+        $sqlSchema = $withSchema ? ':schema' : 'current_schema()';
+
+        return 'SELECT EXISTS (
+            SELECT FROM information_schema.tables WHERE table_schema = ' .
+            $sqlSchema .
+            '
+            AND table_name = :table
+            )';
     }
 
     /**
@@ -111,10 +116,12 @@ class RawPostgresQuery implements RawQueryInterface
     /**
      * @inheritDoc
      */
-    public static function getQueryPurgeNotification(): string
+    public static function getQueryPurgeNotification(string $table): string
     {
         return 'DELETE
-            FROM natheo.notification n
+            FROM ' .
+            $table .
+            ' n
             WHERE n.user_id = :user_id
             AND n.read = true
             AND EXTRACT(day from ((CURRENT_DATE - n.created_at))) > :nb_day';

@@ -158,9 +158,13 @@ class DataBase
 
         /** @var RawQueryManager $rawQueryManager */
         $rawQueryManager = $this->handlers->get('rawQueryManager');
-        $query = $rawQueryManager->getQueryExistTable($schema, $tableName);
+        $params = ['table' => $tableName];
+        if ($schema !== '') {
+            $params['schema'] = $schema;
+        }
+        $query = $rawQueryManager->getQueryExistTable($schema !== '');
 
-        $result = $this->executeRawQuery($query);
+        $result = $this->executeRawQuery($query, $params);
 
         /** @var RawResultQueryManager $rawResultQueryManager */
         $rawResultQueryManager = $this->handlers->get('rawResultQueryManager');
@@ -304,10 +308,12 @@ class DataBase
     }
 
     /**
+     * Exécute une requête SQL brute
      * @param string $query
+     * @param array $params paramètres nommés de la requête
      * @return array
      */
-    public function executeRawQuery(string $query): array
+    public function executeRawQuery(string $query, array $params = []): array
     {
         try {
             $statement = $this->entityManager->getConnection()->prepare($query);
@@ -320,6 +326,9 @@ class DataBase
         }
 
         try {
+            foreach ($params as $key => $value) {
+                $statement->bindValue($key, $value);
+            }
             $result = $statement->executeQuery()->fetchAllAssociative();
         } catch (Exception $e) {
             return [
