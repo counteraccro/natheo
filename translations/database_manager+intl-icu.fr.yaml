@@ -5,7 +5,7 @@ database_manager.schema.all.bdd.row.schema: Schema
 database_manager.schema.all.bdd.row.table_name: Table
 database_manager.schema.all.bdd.row.row: "Nombre d'éléments"
 database_manager.schema.all.bdd.row.size: Taille
-database_manager.schema.all.bdd.error_row.: 'données indisponible'
+database_manager.schema.all.bdd.error_row: 'données indisponible'
 database_manager.loading: Chargement
 database_manager.dump.title: 'Créer une nouvelle sauvegarde'
 database_manager.dump.sub_title_1: 'Générez une sauvegarde complète de votre base de données'
@@ -50,3 +50,10 @@ database_manager.list.dump.confirm.delete.texte: 'Confirmez vous la suppression 
 database_manager.list.dump.confirm.btn.ok: Oui
 database_manager.list.dump.confirm.btn.ko: Non
 database_manager.success.delete.file.dump: 'Fichier {fichier} supprimé avec succès'
+database_manager.error.table.not.found: "La table {table} n'existe pas"
+database_manager.error.delete.file.dump: 'Impossible de supprimer le fichier {fichier}'
+database_manager.error.dump.options: 'Les options de sauvegarde sont invalides'
+database_manager.error.dump.filename: 'Le nom de la sauvegarde ne doit contenir que des lettres, chiffres, tirets et underscores (100 caractères maximum)'
+database_manager.error.dump.filename.exist: 'Une sauvegarde nommée {fichier} existe déjà'
+database_manager.error.csrf: 'Jeton de sécurité invalide, rechargez la page puis réessayez.'
+database_manager.error.generic: 'Une erreur est survenue, veuillez réessayer.'
