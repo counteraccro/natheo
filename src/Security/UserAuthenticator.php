@@ -7,7 +7,7 @@ namespace App\Security;
 use App\Entity\Admin\System\User;
 use App\Service\Admin\System\User\UserDataService;
 use App\Service\LoggerService;
-use App\Utils\System\User\UserDataKey;
+use App\Enum\Admin\System\User\UserDataKey;
 use Exception;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -70,7 +70,7 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
         $this->loggerService->logAuthAdmin($user->getEmail(), $ip);
 
         $date = new \DateTime();
-        $this->userDataService->update(UserDataKey::KEY_LAST_CONNEXION, strval($date->getTimestamp()), $user);
+        $this->userDataService->update(UserDataKey::LAST_CONNEXION->value, strval($date->getTimestamp()), $user);
 
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);

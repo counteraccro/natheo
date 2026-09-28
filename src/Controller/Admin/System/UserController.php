@@ -25,12 +25,11 @@ use App\Service\Admin\System\OptionSystemService;
 use App\Service\Admin\System\OptionUserService;
 use App\Service\Admin\System\User\UserDataService;
 use App\Service\Admin\System\User\UserService;
-use App\Service\LoggerService;
 use App\Utils\Flash\FlashKey;
 use App\Utils\System\Mail\KeyWord;
 use App\Utils\System\Mail\MailKey;
 use App\Utils\System\User\Role;
-use App\Utils\System\User\UserDataKey;
+use App\Enum\Admin\System\User\UserDataKey;
 use App\Utils\Translate\System\UserTranslate;
 use Exception;
 use League\CommonMark\Exception\CommonMarkException;
@@ -47,15 +46,20 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Component\String\ByteString;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/admin/{_locale}/user', name: 'admin_user_', requirements: ['_locale' => '%app.supported_locales%'])]
 class UserController extends AppAdminController
 {
+    /**
+     * Clés de UserData modifiables par l'utilisateur lui-même
+     */
+    private const USER_DATA_KEYS_EDITABLE = [UserDataKey::HELP_FIRST_CONNEXION->value];
+
     /**
      * point d'entrée
      * @return Response
@@ -112,6 +116,10 @@ class UserController extends AppAdminController
     public function updateMyOption(Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
+        if (!is_array($data) || OptionUser::tryFrom(strval($data['key'] ?? '')) === null || !isset($data['value'])) {
+            return $this->json(['success' => 'false'], Response::HTTP_BAD_REQUEST);
+        }
+
         $this->optionUserService->saveValueByKee($data['key'], strval($data['value']));
         return $this->json(['success' => 'true']);
     }
@@ -161,8 +169,7 @@ class UserController extends AppAdminController
         UserService $userService,
         TranslatorInterface $translator,
     ): JsonResponse {
-        $role = new Role($user);
-        if ($role->isSuperAdmin() && $user->isFounder()) {
+        if (!$userService->canManage($user)) {
             return $this->json([
                 'success' => 'false',
                 'msg' => $translator->trans('user.error_not_disabled', domain: 'user'),
@@ -188,11 +195,10 @@ class UserController extends AppAdminController
         OptionSystemService $optionSystemService,
         #[Autowire('%app.folder.upload.avatar%')] string $avatarDirectory,
     ): JsonResponse {
-        $role = new Role($user);
-        if ($role->isSuperAdmin() && $user->isFounder()) {
+        if (!$userService->canManage($user)) {
             return $this->json([
                 'success' => 'false',
-                'msg' => $translator->trans('user.error_not_disabled', domain: 'user'),
+                'msg' => $translator->trans('user.error_not_allowed', domain: 'user'),
             ]);
         }
 
@@ -251,15 +257,13 @@ class UserController extends AppAdminController
             ],
         ];
 
-        if ($user->isFounder() && $this->getUser()->getId() !== $user->getId()) {
+        $canManage = $userService->canManage($user);
+        if (!$canManage && !$userService->isCurrentUser($user)) {
             return $this->redirectToRoute('admin_user_index');
         }
 
-        $isSuperAdmin = false;
-        $role = new Role($user);
-        if ($role->isSuperAdmin() && $user->isFounder()) {
-            $isSuperAdmin = true;
-        }
+        // Rôle et désactivation non modifiables sur son propre compte
+        $isSuperAdmin = !$canManage;
 
         $form = $this->createForm(UserType::class, $user, ['is_super_adm' => $isSuperAdmin]);
 
@@ -369,29 +373,44 @@ class UserController extends AppAdminController
             'moreOptionsTranslate' => $userTranslate->getTranslateMoreOptions(),
             'moreOptionsDatas' => [
                 'help_first_connexion' => $userDataService->getHelpFirstConnexion($this->getUser()),
-                'user_data_key_first_connexion' => UserDataKey::KEY_HELP_FIRST_CONNEXION,
+                'user_data_key_first_connexion' => UserDataKey::HELP_FIRST_CONNEXION->value,
             ],
             'canDelete' => $canDelete,
             'canReplace' => $canReplace,
         ]);
     }
 
-    #[Route('/delete-avatar', name: 'delete_avatar', methods: ['GET'])]
+    /**
+     * Supprime l'avatar de l'utilisateur courant
+     * @param Request $request
+     * @param UserService $userService
+     * @param TranslatorInterface $translator
+     * @param string $avatarDirectory
+     * @return RedirectResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/delete-avatar', name: 'delete_avatar', methods: ['POST'])]
     #[IsGranted('ROLE_USER')]
     public function deleteAvatar(
+        Request $request,
         UserService $userService,
         TranslatorInterface $translator,
         #[Autowire('%app.folder.upload.avatar%')] string $avatarDirectory,
     ): RedirectResponse {
+        if (!$this->isCsrfTokenValid('delete_avatar', $request->request->getString('_token'))) {
+            $this->addFlash(FlashKey::FLASH_DANGER, $translator->trans('user.error_not_allowed', domain: 'user'));
+            return $this->redirectToRoute('admin_user_my_account');
+        }
+
+        /** @var User $user */
         $user = $this->getUser();
 
-        if ($this->getUser()->getAvatar() !== null) {
+        if ($user->getAvatar() !== null) {
             $fileSystem = new Filesystem();
-
-            echo $avatarDirectory . DIRECTORY_SEPARATOR . $user->getAvatar();
             $fileSystem->remove($avatarDirectory . DIRECTORY_SEPARATOR . $user->getAvatar());
 
-            $this->getUser()->setAvatar(null);
+            $user->setAvatar(null);
             $userService->save($user);
         }
 
@@ -401,10 +420,11 @@ class UserController extends AppAdminController
     }
 
     /**
-     * Changement de mot passe
+     * Changement de mot passe, le mot de passe actuel est demandé
      * @param UserService $userService
      * @param Request $request
      * @param TranslatorInterface $translator
+     * @param UserPasswordHasherInterface $passwordHasher
      * @return JsonResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -415,11 +435,36 @@ class UserController extends AppAdminController
         UserService $userService,
         Request $request,
         TranslatorInterface $translator,
+        UserPasswordHasherInterface $passwordHasher,
     ): JsonResponse {
         $data = json_decode($request->getContent(), true);
-        /* @var User $user */
+        /** @var User $user */
         $user = $this->getUser();
-        $userService->updatePassword($user, $data['data']);
+
+        if (!is_array($data) || !$passwordHasher->isPasswordValid($user, strval($data['current'] ?? ''))) {
+            return $this->json(
+                [
+                    'status' => 'error',
+                    'msg' => $translator->trans('user.change_password.error.current_password', domain: 'user'),
+                    'redirect' => false,
+                ],
+                Response::HTTP_BAD_REQUEST,
+            );
+        }
+
+        $password = strval($data['data'] ?? '');
+        if (!$userService->isValidPassword($password)) {
+            return $this->json(
+                [
+                    'status' => 'error',
+                    'msg' => $translator->trans('user.change_password.error.rule', domain: 'user'),
+                    'redirect' => false,
+                ],
+                Response::HTTP_BAD_REQUEST,
+            );
+        }
+
+        $userService->updatePassword($user, $password);
 
         return $this->json([
             'status' => 'success',
@@ -474,7 +519,7 @@ class UserController extends AppAdminController
                     $mailService->sendMail($params);
                 }
             } catch (CommonMarkException | TransportExceptionInterface $e) {
-                die($e->getMessage());
+                $this->logger->error($e->getMessage());
             }
         }
 
@@ -647,8 +692,7 @@ class UserController extends AppAdminController
 
             $optionUserService->createOptionsUser($user);
 
-            $key = ByteString::fromRandom(48)->toString();
-            $userDataService->update(UserDataKey::KEY_RESET_PASSWORD, $key, $user);
+            $key = $userDataService->generateResetPasswordKey($user);
 
             $mail = $mailService->getByKey(MailKey::MAIL_CREATE_ACCOUNT_ADM);
             $keyWord = new KeyWord($mail->getKey());
@@ -687,18 +731,15 @@ class UserController extends AppAdminController
 
     /**
      * Permet de prendre le contrôle du compte d'un utilisateur
+     * Le contrôle des droits et le log sont faits dans SwitchUserSubscriber
      * @param Request $request
-     * @param LoggerService $loggerService
      * @return RedirectResponse
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
     #[Route('/switch', name: 'switch', methods: ['GET'])]
     #[IsGranted('ROLE_SUPER_ADMIN')]
-    public function switch(Request $request, LoggerService $loggerService): RedirectResponse
+    public function switch(Request $request): RedirectResponse
     {
         $email = $request->query->get('user');
-        $loggerService->logSwitchUser($this->getUser()->getEmail(), $email);
         return $this->redirectToRoute('admin_dashboard_index', ['_switch_user' => $email]);
     }
 
@@ -709,6 +750,7 @@ class UserController extends AppAdminController
      * @param OptionSystemService $optionSystemService
      * @param UserDataService $userDataService
      * @param TranslatorInterface $translator
+     * @param UserService $userService
      * @return RedirectResponse
      * @throws CommonMarkException
      * @throws ContainerExceptionInterface
@@ -723,9 +765,13 @@ class UserController extends AppAdminController
         OptionSystemService $optionSystemService,
         UserDataService $userDataService,
         TranslatorInterface $translator,
+        UserService $userService,
     ): RedirectResponse {
-        $key = ByteString::fromRandom(48)->toString();
-        $userDataService->update(UserDataKey::KEY_RESET_PASSWORD, $key, $user);
+        if (!$userService->canManage($user) && !$userService->isCurrentUser($user)) {
+            return $this->redirectToRoute('admin_user_index');
+        }
+
+        $key = $userDataService->generateResetPasswordKey($user);
 
         $mail = $mailService->getByKey(MailKey::MAIL_RESET_PASSWORD);
         $keyWord = new KeyWord($mail->getKey());
@@ -761,7 +807,11 @@ class UserController extends AppAdminController
     public function updateUserdata(Request $request, UserDataService $userDataService): Response
     {
         $data = json_decode($request->getContent(), true);
-        $userDataService->update($data['key'], strval($data['value']), $this->getUser());
+        if (!is_array($data) || !in_array($data['key'] ?? null, self::USER_DATA_KEYS_EDITABLE, true)) {
+            return $this->json(['success' => false, 'msg' => ''], Response::HTTP_BAD_REQUEST);
+        }
+
+        $userDataService->update($data['key'], strval($data['value'] ?? ''), $this->getUser());
         return $this->json($userDataService->getResponseAjax());
     }
 }
