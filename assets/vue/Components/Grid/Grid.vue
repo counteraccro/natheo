@@ -1,35 +1,47 @@
-<script>
+<script lang="ts">
 /**
  * @author Gourdon Aymeric
  * @version 1.0
  * Génération du tableau GRID
  */
+import { defineComponent, type PropType } from 'vue';
+import type { GridRow, GridSearchMode, GridSortOrders, GridTranslate } from '@/ts/Grid/Grid.type';
 
-export default {
+export default defineComponent({
+  name: 'Grid',
   components: {},
   props: {
-    data: Array,
-    columns: Array,
+    data: {
+      type: Array as PropType<GridRow[]>,
+      required: true,
+    },
+    columns: {
+      type: Array as PropType<string[]>,
+      required: true,
+    },
     filterKey: String,
-    sortOrders: Object,
-    translate: Object,
-    searchMode: String,
+    sortOrders: {
+      type: Object as PropType<GridSortOrders>,
+      required: true,
+    },
+    translate: {
+      type: Object as PropType<GridTranslate>,
+      required: true,
+    },
+    searchMode: String as PropType<GridSearchMode>,
   },
   emits: ['redirect-action', 'sort-action'],
   data() {
     return {
-      sortKey: '',
+      sortKey: '' as string,
     };
   },
   computed: {
     /**
      * Permet de filtrer les données présents dans data
-     * @returns {*[]}
      */
-    filteredData() {
-      const sortKey = this.sortKey;
+    filteredData(): GridRow[] {
       const filterKey = this.filterKey && this.filterKey.toLowerCase();
-      const order = this.sortOrders[sortKey] || 1;
       let data = this.data;
       if (filterKey && this.isCanSearch()) {
         data = data.filter((row) => {
@@ -38,23 +50,14 @@ export default {
           });
         });
       }
-
-      /*if (sortKey) {
-        data = data.slice().sort((a, b) => {
-          a = a[sortKey];
-          b = b[sortKey];
-          return (a === b ? 0 : a > b ? 1 : -1) * order;
-        });
-      }*/
       return data;
     },
   },
   methods: {
     /**
      * Détermine si on peut rechercher ou non
-     * @returns {boolean}
      */
-    isCanSearch() {
+    isCanSearch(): boolean {
       return this.searchMode === 'table';
     },
 
@@ -62,43 +65,47 @@ export default {
      * Permet de trier en fonction d'une clé
      * @param key
      */
-    sortBy(key) {
+    sortBy(key: string): void {
       this.sortKey = key;
       this.sortOrders[key] = this.sortOrders[key] * -1;
       this.$emit('sort-action', this.sortKey, this.sortOrders[key]);
     },
 
-    capitalize(str) {
+    capitalize(str: string): string {
       return str.charAt(0).toUpperCase() + str.slice(1);
     },
 
     /**
      * Converti un json en tableau
      * @param json
-     * @returns {any|boolean}
      */
-    jsonParse(json) {
-      let tab = JSON.parse(json);
+    jsonParse(json: string): unknown[] | false {
+      const tab = JSON.parse(json);
       if (tab[0] === '') {
         return false;
       }
       return tab;
     },
 
-    highlightSearch(text) {
-      if (text === undefined) {
+    /**
+     * Met en évidence la recherche dans le texte (HTML déjà échappé côté serveur)
+     * @param text
+     */
+    highlightSearch(text: unknown): string {
+      if (text === undefined || text === null) {
         return '';
       }
 
       if (!this.filterKey || !this.isCanSearch()) {
-        return text;
+        return String(text);
       }
-      return text.toString().replace(new RegExp(this.filterKey, 'gi'), (match) => {
+      const pattern = this.filterKey.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      return String(text).replace(new RegExp(pattern, 'gi'), (match) => {
         return '<span class="bg-[var(--primary)] text-white p-1 ps-3 pe-3 rounded ">' + match + '</span>';
       });
     },
   },
-};
+});
 </script>
 
 <template>
@@ -116,7 +123,7 @@ export default {
                 {{ capitalize(key) }}
 
                 <svg
-                  v-if="key !== 'action' && this.sortOrders[key]"
+                  v-if="key !== 'action' && sortOrders[key]"
                   class="w-3 h-3 cursor-pointer"
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
@@ -144,12 +151,12 @@ export default {
               v-for="key in columns"
               :class="entry.isDisabled && key !== 'action' ? 'opacity-25' : ''"
             >
-              <span v-if="key !== 'action'" v-html="this.highlightSearch(entry[key])"></span>
+              <span v-if="key !== 'action'" v-html="highlightSearch(entry[key])"></span>
               <div v-else>
                 <button
                   class="btn btn-icon m-1 btn-xs"
                   :class="'btn-ghost-' + data.color"
-                  v-for="data in entry[key]"
+                  v-for="data in entry.action"
                   @click="$emit('redirect-action', data.url, data.ajax, data.confirm, data.msgConfirm, data.type)"
                 >
                   <svg

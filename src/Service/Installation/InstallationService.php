@@ -18,7 +18,7 @@ use App\Service\Admin\AppAdminService;
 use App\Utils\Global\EnvFile;
 use App\Utils\Installation\InstallationConst;
 use App\Utils\Notification\NotificationFactory;
-use App\Utils\System\User\UserDataKey;
+use App\Enum\Admin\System\User\UserDataKey;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
@@ -226,7 +226,7 @@ class InstallationService extends AppAdminService
     private function createDataUser(User $user): void
     {
         $userDataService = $this->getUserData();
-        $userDataService->update(UserDataKey::KEY_HELP_FIRST_CONNEXION, '1', $user);
+        $userDataService->update(UserDataKey::HELP_FIRST_CONNEXION->value, '1', $user);
     }
 
     /**

@@ -13,6 +13,7 @@ use App\Entity\Admin\Notification;
 use App\Entity\Admin\System\Mail;
 use App\Entity\Admin\System\OptionUser;
 use App\Entity\Admin\System\User;
+use App\Entity\Admin\System\UserData;
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Repository\Admin\NotificationRepository;
 use App\Repository\Admin\System\OptionUserRepository;
@@ -23,7 +24,7 @@ use App\Service\Admin\System\User\UserDataService;
 use App\Tests\AppWebTestCase;
 use App\Utils\System\Mail\MailKey;
 use App\Utils\System\User\Anonymous;
-use App\Utils\System\User\UserDataKey;
+use App\Enum\Admin\System\User\UserDataKey;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Psr\Container\ContainerExceptionInterface;
@@ -91,6 +92,13 @@ class UserControllerTest extends AppWebTestCase
         $repo = $this->em->getRepository(OptionUser::class);
         $optionUser = $repo->findBy(['key' => OptionUserEnum::OU_NB_ELEMENT->value, 'user' => $user->getId()]);
         $this->assertEquals(50, $optionUser[0]->getValue());
+
+        $this->client->request(
+            'POST',
+            $this->router->generate('admin_user_ajax_update_my_option'),
+            content: json_encode(['key' => 'UNKNOWN_KEY', 'value' => 50]),
+        );
+        $this->assertResponseStatusCodeSame(400);
     }
 
     /**
@@ -115,6 +123,28 @@ class UserControllerTest extends AppWebTestCase
 
         $this->assertEquals(2, $content['nb']);
         $this->assertCount(2, $content['data']);
+    }
+
+    /**
+     * Les données saisies par les users sont échappées dans le grid
+     * @return void
+     */
+    public function testLoadGridDataEscapeHtml(): void
+    {
+        $xss = '<img src=x onerror=alert(1)>';
+        $this->createUserContributeur(['login' => $xss, 'firstname' => $xss, 'avatar' => null]);
+
+        $userSuperAdm = $this->createUserSuperAdmin();
+        $this->client->loginUser($userSuperAdm, 'admin');
+        $this->client->request(
+            'GET',
+            $this->router->generate('admin_user_load_grid_data', ['page' => 1, 'limit' => 10]),
+        );
+        $this->assertResponseIsSuccessful();
+        $content = json_encode(json_decode($this->client->getResponse()->getContent(), true));
+
+        $this->assertStringNotContainsString($xss, $content);
+        $this->assertStringContainsString(htmlspecialchars($xss), $content);
     }
 
     /**
@@ -159,6 +189,60 @@ class UserControllerTest extends AppWebTestCase
         $userRepository = $this->em->getRepository(User::class);
         $userToCheck = $userRepository->findOneBy(['id' => $userTODisabled->getId()]);
         $this->assertTrue($userToCheck->isDisabled());
+    }
+
+    /**
+     * Un super admin ne peut être désactivé que par le fondateur
+     * @return void
+     */
+    public function testUpdateDisabledSuperAdmin(): void
+    {
+        $userSuperAdmin = $this->createUserSuperAdmin();
+        $otherSuperAdmin = $this->createUserSuperAdmin();
+        $founder = $this->createUserFounder();
+
+        $this->client->loginUser($userSuperAdmin, 'admin');
+        foreach ([$otherSuperAdmin, $userSuperAdmin] as $target) {
+            $this->client->request(
+                'PUT',
+                $this->router->generate('admin_user_update_disabled', ['id' => $target->getId()]),
+            );
+            $content = json_decode($this->client->getResponse()->getContent(), true);
+            $this->assertEquals('false', $content['success']);
+        }
+
+        $this->client->loginUser($founder, 'admin');
+        $this->client->request(
+            'PUT',
+            $this->router->generate('admin_user_update_disabled', ['id' => $otherSuperAdmin->getId()]),
+        );
+        $content = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertEquals('true', $content['success']);
+    }
+
+    /**
+     * Un compte désactivé est déconnecté à la requête suivante
+     * @return void
+     */
+    public function testDisabledUserIsLoggedOut(): void
+    {
+        $user = $this->createUser();
+        $this->client->loginUser($user, 'admin');
+        $this->client->request('GET', $this->router->generate('admin_user_my_account'));
+        $this->assertResponseIsSuccessful();
+
+        /** @var UserRepository $userRepository */
+        $userRepository = $this->em->getRepository(User::class);
+        $userToDisable = $userRepository->find($user->getId());
+        $userToDisable->setDisabled(true);
+        $this->em->flush();
+
+        $this->client->request('GET', $this->router->generate('admin_user_my_account'));
+        $this->assertResponseRedirects();
+        $this->assertStringContainsString(
+            $this->router->generate('auth_user_login'),
+            $this->client->getResponse()->headers->get('Location'),
+        );
     }
 
     /**
@@ -257,12 +341,80 @@ class UserControllerTest extends AppWebTestCase
         );
         $this->assertResponseStatusCodeSame(302);
 
+        $otherSuperAdmin = $this->createUserSuperAdmin();
+        $this->client->request(
+            'GET',
+            $this->router->generate('admin_user_update', ['id' => $otherSuperAdmin->getId()]),
+        );
+        $this->assertResponseStatusCodeSame(302);
+
         $this->client->request('GET', $this->router->generate('admin_user_update', ['id' => $userToUpdate->getId()]));
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains(
             'h1',
             $this->translator->trans('user.page_update_title_h1_2', domain: 'user'),
         );
+    }
+
+    /**
+     * Test changement de son mot de passe
+     * @return void
+     */
+    public function testUpdatePassword(): void
+    {
+        $currentPassword = 'Current-Pass1';
+        $user = $this->createUser(['password' => $currentPassword]);
+        $this->client->loginUser($user, 'admin');
+        $url = $this->router->generate('admin_user_change_my_password');
+
+        // Mot de passe actuel incorrect
+        $this->client->request('POST', $url, content: json_encode(['current' => 'bad', 'data' => 'New-Pass123']));
+        $this->assertResponseStatusCodeSame(400);
+
+        // Nouveau mot de passe trop faible
+        $this->client->request('POST', $url, content: json_encode(['current' => $currentPassword, 'data' => 'weak']));
+        $this->assertResponseStatusCodeSame(400);
+
+        $this->client->request(
+            'POST',
+            $url,
+            content: json_encode(['current' => $currentPassword, 'data' => 'New-Pass123']),
+        );
+        $this->assertResponseIsSuccessful();
+
+        /** @var UserRepository $userRepository */
+        $userRepository = $this->em->getRepository(User::class);
+        $userToCheck = $userRepository->find($user->getId());
+        $this->assertNotEquals($user->getPassword(), $userToCheck->getPassword());
+    }
+
+    /**
+     * Test suppression de son avatar
+     * @return void
+     */
+    public function testDeleteAvatar(): void
+    {
+        $user = $this->createUser(['avatar' => 'avatar-test.png']);
+        $this->client->loginUser($user, 'admin');
+
+        $this->client->request('GET', $this->router->generate('admin_user_delete_avatar'));
+        $this->assertResponseStatusCodeSame(405);
+
+        // Sans token CSRF l'avatar est conservé
+        $this->client->request('POST', $this->router->generate('admin_user_delete_avatar'));
+        $this->assertResponseRedirects($this->router->generate('admin_user_my_account'));
+
+        /** @var UserRepository $userRepository */
+        $userRepository = $this->em->getRepository(User::class);
+        $this->assertEquals('avatar-test.png', $userRepository->find($user->getId())->getAvatar());
+
+        $crawler = $this->client->request('GET', $this->router->generate('admin_user_my_account'));
+        $token = $crawler->filter('#form-delete-avatar input[name="_token"]')->attr('value');
+        $this->client->request('POST', $this->router->generate('admin_user_delete_avatar'), ['_token' => $token]);
+        $this->assertResponseRedirects($this->router->generate('admin_user_my_account'));
+
+        $this->em->clear();
+        $this->assertNull($userRepository->find($user->getId())->getAvatar());
     }
 
     /**
@@ -456,6 +608,23 @@ class UserControllerTest extends AppWebTestCase
             $this->router->generate('admin_user_switch', ['user' => $userToSwitch->getEmail()]),
         );
         $this->assertResponseStatusCodeSame(302);
+
+        // Prise de contrôle directe du fondateur ou d'un autre super admin refusée
+        $founder = $this->createUserFounder();
+        $otherSuperAdmin = $this->createUserSuperAdmin();
+        foreach ([$founder, $otherSuperAdmin] as $target) {
+            $this->client->request(
+                'GET',
+                $this->router->generate('admin_dashboard_index', ['_switch_user' => $target->getEmail()]),
+            );
+            $this->assertResponseStatusCodeSame(403);
+        }
+
+        $this->client->request(
+            'GET',
+            $this->router->generate('admin_dashboard_index', ['_switch_user' => $userToSwitch->getEmail()]),
+        );
+        $this->assertResponseRedirects($this->router->generate('admin_dashboard_index'));
     }
 
     /**
@@ -480,10 +649,22 @@ class UserControllerTest extends AppWebTestCase
         $userRepository = $this->em->getRepository(User::class);
         $userToCheck = $userRepository->findOneBy(['id' => $userResetPassword->getId()]);
         $email = $this->getMailerMessage();
-        $this->assertEmailHtmlBodyContains(
-            $email,
-            $userToCheck->getUserDataByKey(UserDataKey::KEY_RESET_PASSWORD)->getValue(),
+
+        // Seul le hash de la clé envoyée par mail est stocké
+        $this->assertMatchesRegularExpression('#change-password/([A-Za-z0-9]+)#', $email->getHtmlBody());
+        preg_match('#change-password/([A-Za-z0-9]+)#', $email->getHtmlBody(), $matches);
+        $this->assertEquals(
+            UserDataService::hashResetPasswordKey($matches[1]),
+            $userToCheck->getUserDataByKey(UserDataKey::RESET_PASSWORD->value)->getValue(),
         );
+
+        $founder = $this->createUserFounder();
+        $this->client->request(
+            'GET',
+            $this->router->generate('admin_user_reset_password', ['id' => $founder->getId()]),
+        );
+        $this->assertResponseRedirects($this->router->generate('admin_user_index'));
+        $this->assertQueuedEmailCount(0);
     }
 
     /**
@@ -497,50 +678,34 @@ class UserControllerTest extends AppWebTestCase
         $user = $this->createUser();
         $this->client->loginUser($user, 'admin');
 
-        $value = self::getFaker()->text(20);
-
-        // Création
-        $data = [
-            'key' => UserDataKey::KEY_RESET_PASSWORD,
-            'value' => $value,
-        ];
-
+        // Clé non modifiable par l'utilisateur
         $this->client->request(
             'POST',
             $this->router->generate('admin_user_update_user_data'),
-            content: json_encode($data),
+            content: json_encode(['key' => UserDataKey::RESET_PASSWORD->value, 'value' => 'test']),
         );
-        $this->assertResponseIsSuccessful();
-        $response = $this->client->getResponse();
-        $this->assertJson($response->getContent());
-        $content = json_decode($response->getContent(), true);
-        $this->assertTrue($content['success']);
-
-        $userRepository = $this->em->getRepository(User::class);
-        $userToCheck = $userRepository->findOneBy(['id' => $user->getId()]);
-        $this->assertEquals($value, $userToCheck->getUserDataByKey(UserDataKey::KEY_RESET_PASSWORD)->getValue());
-
-        // Update
-        $value2 = self::getFaker()->text(20);
-        $data = [
-            'key' => UserDataKey::KEY_RESET_PASSWORD,
-            'value' => $value2,
-        ];
-
-        $this->client->request(
-            'POST',
-            $this->router->generate('admin_user_update_user_data'),
-            content: json_encode($data),
-        );
-        $this->assertResponseIsSuccessful();
-        $response = $this->client->getResponse();
-        $this->assertJson($response->getContent());
-        $content = json_decode($response->getContent(), true);
-        $this->assertTrue($content['success']);
+        $this->assertResponseStatusCodeSame(400);
 
         /** @var UserDataService $userDataService */
         $userDataService = $this->container->get(UserDataService::class);
-        $userData = $userDataService->findKeyAndUser(UserDataKey::KEY_RESET_PASSWORD, $user);
-        $this->assertEquals($value2, $userData->getValue());
+        $this->assertNull($userDataService->findKeyAndUser(UserDataKey::RESET_PASSWORD->value, $user));
+
+        // Création puis mise à jour
+        foreach (['1', '0'] as $value) {
+            $this->client->request(
+                'POST',
+                $this->router->generate('admin_user_update_user_data'),
+                content: json_encode(['key' => UserDataKey::HELP_FIRST_CONNEXION->value, 'value' => $value]),
+            );
+            $this->assertResponseIsSuccessful();
+            $content = json_decode($this->client->getResponse()->getContent(), true);
+            $this->assertTrue($content['success']);
+
+            $this->em->clear();
+            $userData = $this->em
+                ->getRepository(UserData::class)
+                ->findOneBy(['key' => UserDataKey::HELP_FIRST_CONNEXION->value, 'user' => $user->getId()]);
+            $this->assertEquals($value, $userData->getValue());
+        }
     }
 }

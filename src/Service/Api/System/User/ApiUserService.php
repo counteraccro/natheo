@@ -12,7 +12,7 @@ use App\Entity\Admin\System\User;
 use App\Entity\Admin\System\UserData;
 use App\Repository\Admin\System\UserRepository;
 use App\Service\Api\AppApiService;
-use App\Utils\System\User\UserDataKey;
+use App\Enum\Admin\System\User\UserDataKey;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
@@ -28,13 +28,13 @@ class ApiUserService extends AppApiService
     public function getUserByUserToken(string $userToken): ?User
     {
         $repository = $this->getRepository(UserData::class);
-        $userData = $repository->findByKeyValue(UserDataKey::KEY_TOKEN_CONNEXION, $userToken);
+        $userData = $repository->findByKeyValue(UserDataKey::TOKEN_CONNEXION->value, $userToken);
         if (is_null($userData)) {
             return null;
         }
         /** @var User $user */
         $user = $userData->getUser();
-        $time = intval($user->getUserDataByKey(UserDataKey::TIME_VALIDATE_TOKEN)->getValue());
+        $time = intval($user->getUserDataByKey(UserDataKey::TIME_VALIDATE_TOKEN->value)->getValue());
 
         // Si le token n'est pas périmé
         if ($time > time()) {

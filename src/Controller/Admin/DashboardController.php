@@ -15,7 +15,7 @@ use App\Enum\Admin\Global\Breadcrumb;
 use App\Service\Admin\DashboardService;
 use App\Service\Admin\StatisticsService;
 use App\Service\Admin\System\User\UserDataService;
-use App\Utils\System\User\UserDataKey;
+use App\Enum\Admin\System\User\UserDataKey;
 use App\Utils\Translate\Dashboard\DashboardTranslate;
 use Psr\Cache\InvalidArgumentException;
 use Psr\Container\ContainerExceptionInterface;
@@ -72,7 +72,7 @@ class DashboardController extends AppAdminController
             'datas' => [
                 'dashboard_help_first_connexion' => [
                     'help_first_connexion' => $userDataService->getHelpFirstConnexion($this->getUser()),
-                    'user_data_key_first_connexion' => UserDataKey::KEY_HELP_FIRST_CONNEXION,
+                    'user_data_key_first_connexion' => UserDataKey::HELP_FIRST_CONNEXION->value,
                 ],
             ],
             'roles' => [

@@ -10,9 +10,10 @@ declare(strict_types=1);
 namespace App\Tests\Service;
 
 use App\Entity\Admin\System\User;
+use App\Service\Admin\System\User\UserDataService;
 use App\Service\SecurityService;
 use App\Tests\AppWebTestCase;
-use App\Utils\System\User\UserDataKey;
+use App\Enum\Admin\System\User\UserDataKey;
 use Symfony\Component\DependencyInjection\Container;
 
 class SecurityServiceTest extends AppWebTestCase
@@ -41,11 +42,16 @@ class SecurityServiceTest extends AppWebTestCase
     public function testCanChangePassword(): void
     {
         $user = $this->createUser();
+        $key = self::getFaker()->text();
         $optionUser = $this->createUserData($user, [
-            'key' => UserDataKey::KEY_RESET_PASSWORD,
-            'value' => self::getFaker()->text(),
+            'key' => UserDataKey::RESET_PASSWORD->value,
+            'value' => UserDataService::hashResetPasswordKey($key),
         ]);
-        $result = $this->securityService->canChangePassword($optionUser->getValue());
+
+        // Seule la clé en clair est acceptée, pas son hash stocké en base
+        $this->assertNull($this->securityService->canChangePassword($optionUser->getValue()));
+
+        $result = $this->securityService->canChangePassword($key);
         $this->assertNotNull($result);
         $this->assertInstanceOf(User::class, $result);
         $this->assertEquals($user->getLogin(), $result->getLogin());

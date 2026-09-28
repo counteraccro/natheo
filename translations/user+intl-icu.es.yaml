@@ -221,3 +221,6 @@ user.page_add.profil.description: __user.page_add.profil.description
 user.page_add.information.description: __user.page_add.information.description
 user.page_update.action.description: __user.page_update.action.description
 user.page_update.information.description: __user.page_update.information.description
+user.change_password.input.password_current: 'Contraseña actual'
+user.change_password.error.current_password: 'La contraseña actual es incorrecta'
+user.change_password.error.rule: 'La contraseña no cumple las reglas de seguridad'

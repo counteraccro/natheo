@@ -96,25 +96,22 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
     }
 
     /**
-     * Retourne une liste d'utilisateur en fonction de son role
+     * Retourne la liste des utilisateurs actifs (non désactivés, non anonymisés) ayant le rôle
+     * Le filtre sur le rôle est fait en PHP car le champ JSON roles ne se requête pas de la même façon
+     * sous MySQL et PostgreSQL
      * @param string $role
-     * @return float|int|mixed|string
-     * @deprecated RETOURNE UNIQUEMENT LE FOUNDER POUR LE MOMENT, A refaire car roles est un champ JSON
+     * @return User[]
      */
-    public function findByRole(string $role): mixed
+    public function findByRole(string $role): array
     {
-        // TODO à réécrire attention différent entre Mysql et PostGreSql
-
-        return $this->createQueryBuilder('u')
-            /**
-             * Foncione que sous postgres
-             * ->andWhere('CONTAINS(TO_JSONB(u.roles), :role) = TRUE')
-             * ->setParameter('role', '["'.$role.'"]')
-             */
-            ->where('u.founder = 1')
+        $users = $this->createQueryBuilder('u')
+            ->where('u.disabled = false')
+            ->andWhere('u.anonymous = false')
             ->orderBy('u.id', 'ASC')
             ->getQuery()
             ->getResult();
+
+        return array_values(array_filter($users, fn(User $user) => in_array($role, $user->getRoles(), true)));
     }
 
     /**
