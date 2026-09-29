@@ -172,7 +172,6 @@ export type PageLocales = Record<string, PageTranslation>;
 export interface LoadMenuData {
   all_elements: MenuElement[];
   name: string;
-  logo: string | null;
   url_site: string;
   pages: Record<string, PageLocales>;
   list_target_value: Record<string, string>;
