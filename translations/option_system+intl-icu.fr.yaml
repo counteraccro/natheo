@@ -1,3 +1,4 @@
 option_system.page_title: 'Options systèmes'
 option_system.page_title_h1: 'Les options systèmes'
 option_system.description: 'Gérer la configuration du CMS'
+option_system.error.csrf: 'Jeton de sécurité invalide, rechargez la page puis réessayez.'
