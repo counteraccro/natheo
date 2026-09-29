@@ -29,6 +29,7 @@ use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserControllerTest extends AppWebTestCase
 {
@@ -74,31 +75,96 @@ class UserControllerTest extends AppWebTestCase
     {
         $user = $this->createUser();
         $this->client->loginUser($user, 'admin');
-
-        $parameters = [
-            'key' => OptionUserEnum::OU_NB_ELEMENT->value,
-            'value' => 50,
-        ];
-        $this->client->request(
-            'POST',
-            $this->router->generate('admin_user_ajax_update_my_option'),
-            content: json_encode($parameters),
-        );
-        $this->assertResponseIsSuccessful();
-        $response = $this->client->getResponse();
-        $this->assertJson($response->getContent());
+        $server = ['HTTP_X-CSRF-TOKEN' => $this->getMyOptionCsrfToken()];
 
         /** @var OptionUserRepository $repo */
         $repo = $this->em->getRepository(OptionUser::class);
-        $optionUser = $repo->findBy(['key' => OptionUserEnum::OU_NB_ELEMENT->value, 'user' => $user->getId()]);
-        $this->assertEquals(50, $optionUser[0]->getValue());
+        $getValue = function (string $key) use ($repo, $user): ?string {
+            $this->em->clear();
+            $option = $repo->findOneBy(['key' => $key, 'user' => $user->getId()]);
+            return $option?->getValue();
+        };
 
+        $content = $this->postMyOption(['key' => OptionUserEnum::OU_NB_ELEMENT->value, 'value' => 50], $server);
+        $this->assertResponseIsSuccessful();
+        $this->assertTrue($content['success']);
+        $this->assertEquals('50', $getValue(OptionUserEnum::OU_NB_ELEMENT->value));
+
+        $content = $this->postMyOption(
+            ['key' => OptionUserEnum::OU_NB_ELEMENT->value, 'value' => 10],
+            [
+                'HTTP_X-CSRF-TOKEN' => 'jeton-invalide',
+            ],
+        );
+        $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
+        $this->assertFalse($content['success']);
+        $this->assertEquals('50', $getValue(OptionUserEnum::OU_NB_ELEMENT->value));
+
+        $content = $this->postMyOption(['key' => OptionUserEnum::OU_NB_ELEMENT->value], $server);
+        $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
+        $this->assertFalse($content['success']);
+
+        $invalidData = [
+            ['key' => OptionUserEnum::OU_NB_ELEMENT->value, 'value' => '7'],
+            ['key' => OptionUserEnum::OU_DEFAULT_LANGUAGE->value, 'value' => 'xx'],
+            ['key' => OptionUserEnum::OU_THEME_SITE->value, 'value' => 'green'],
+            ['key' => 'UNKNOWN_KEY', 'value' => '50'],
+        ];
+        foreach ($invalidData as $data) {
+            $before = $getValue($data['key']);
+            $content = $this->postMyOption($data, $server);
+            $this->assertResponseIsSuccessful();
+            $this->assertFalse($content['success'], $data['key']);
+            $this->assertEquals($before, $getValue($data['key']), $data['key']);
+        }
+
+        // Option absente en base pour ce user : elle doit être créée
+        $option = $repo->findOneBy([
+            'key' => OptionUserEnum::OU_DEFAULT_PERSONAL_DATA_RENDER->value,
+            'user' => $user->getId(),
+        ]);
+        $this->em->remove($option);
+        $this->em->flush();
+
+        $content = $this->postMyOption(
+            ['key' => OptionUserEnum::OU_DEFAULT_PERSONAL_DATA_RENDER->value, 'value' => 'login'],
+            $server,
+        );
+        $this->assertTrue($content['success']);
+        $this->assertEquals('login', $getValue(OptionUserEnum::OU_DEFAULT_PERSONAL_DATA_RENDER->value));
+    }
+
+    /**
+     * Envoie une requête de mise à jour d'une option user et retourne la réponse JSON décodée
+     * @param array $data
+     * @param array $server
+     * @return array
+     */
+    private function postMyOption(array $data, array $server): array
+    {
         $this->client->request(
             'POST',
             $this->router->generate('admin_user_ajax_update_my_option'),
-            content: json_encode(['key' => 'UNKNOWN_KEY', 'value' => 50]),
+            server: $server,
+            content: json_encode($data),
         );
-        $this->assertResponseStatusCodeSame(400);
+        $response = $this->client->getResponse();
+        $this->assertJson($response->getContent());
+        return json_decode($response->getContent(), true);
+    }
+
+    /**
+     * Retourne le jeton CSRF passé au composant Vue de la page "mes options"
+     * @return string
+     */
+    private function getMyOptionCsrfToken(): string
+    {
+        $crawler = $this->client->request('GET', $this->router->generate('admin_user_my_option'));
+        $props = $crawler
+            ->filter('[data-symfony--ux-vue--vue-component-value="Admin/System/Option"]')
+            ->attr('data-symfony--ux-vue--vue-props-value');
+
+        return json_decode($props, true)['csrf_token'];
     }
 
     /**

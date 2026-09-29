@@ -5,7 +5,7 @@ options_system:
         icon: 'M9 5v14m-6-8h6m-6 4h6m4.506-1.494L15.012 12m0 0 1.506-1.506M15.012 12l1.506 1.506M15.012 12l-1.506-1.506M20 19H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1Z'
         options:
             OS_SITE_NAME:
-                default: 'Natheo'
+                default: 'Nathéo CMS'
                 label: 'options_system.site_name'
                 type: 'text'
                 required: true
@@ -17,9 +17,9 @@ options_system:
                 type: 'boolean'
                 label: 'options_system.open_site'
                 help: 'options_system.open_site_help'
-                default: 1
+                default: '0'
             OS_ADRESSE_SITE:
-                default: 'http://dev.natheo'
+                default: 'http://www.value-must-be-change.com'
                 label: 'options_system.adresse_site'
                 type: 'text'
                 required: true
@@ -46,6 +46,7 @@ options_system:
                 placeholder: 'options_system.front_footer_texte_placeholder'
                 default: ''
             OS_FRONT_FOOTER_SOCIAL_GITHUB_URL:
+                validation: 'url'
                 default: ''
                 label: 'options_system.front_footer_social_github_url'
                 type: 'text'
@@ -53,6 +54,7 @@ options_system:
                 placeholder: 'options_system.front_footer_social_github_url_placeholder'
                 success: 'options_system.front_footer_social_github_url_msg_success'
             OS_FRONT_FOOTER_SOCIAL_LINKEDIN_URL:
+                validation: 'url'
                 default: ''
                 label: 'options_system.front_footer_social_linkedin_url'
                 type: 'text'
@@ -60,6 +62,7 @@ options_system:
                 placeholder: 'options_system.front_footer_social_linkedin_url_placeholder'
                 success: 'options_system.front_footer_social_linkedin_url_msg_success'
             OS_FRONT_FOOTER_SOCIAL_YOUTUBE_URL:
+                validation: 'url'
                 default: ''
                 label: 'options_system.front_footer_social_youtube_url'
                 type: 'text'
@@ -67,6 +70,7 @@ options_system:
                 placeholder: 'options_system.front_footer_social_youtube_url_placeholder'
                 success: 'options_system.front_footer_social_youtube_url_msg_success'
             OS_FRONT_FOOTER_SOCIAL_X_URL:
+                validation: 'url'
                 default: ''
                 label: 'options_system.front_footer_social_x_url'
                 type: 'text'
@@ -74,6 +78,7 @@ options_system:
                 placeholder: 'options_system.front_footer_social_x_url_placeholder'
                 success: 'options_system.front_footer_social_x_url_msg_success'
             OS_FRONT_FOOTER_SOCIAL_FACEBOOK_URL:
+                validation: 'url'
                 default: ''
                 label: 'options_system.front_footer_social_facebook_url'
                 type: 'text'
@@ -81,6 +86,7 @@ options_system:
                 placeholder: 'options_system.front_footer_social_facebook_url_placeholder'
                 success: 'options_system.front_footer_social_facebook_url_msg_success'
             OS_FRONT_FOOTER_SOCIAL_INSTAGRAM_URL:
+                validation: 'url'
                 default: ''
                 label: 'options_system.front_footer_social_instagram_url'
                 type: 'text'
@@ -88,6 +94,7 @@ options_system:
                 placeholder: 'options_system.front_footer_social_instagram_url_placeholder'
                 success: 'options_system.front_footer_social_instagram_url_msg_success'
             OS_FRONT_FOOTER_SOCIAL_TIKTOK_URL:
+                validation: 'url'
                 default: ''
                 label: 'options_system.front_footer_social_tiktok_url'
                 type: 'text'
@@ -186,7 +193,8 @@ options_system:
                 help: 'options_system.time_reset_password_help'
                 default: '20'
             OS_MAIL_FROM:
-                default: 'aymeric.gourdon@hotmail.fr'
+                validation: 'email'
+                default: 'support@natheo.fr'
                 label: 'options_system.mail_from'
                 type: 'text'
                 required: true
@@ -195,6 +203,7 @@ options_system:
                 placeholder: 'options_system.mail_from_placeholder'
                 success: 'options_system.mail_from_msg_success'
             OS_MAIL_REPLY_TO:
+                validation: 'email'
                 default: 'support@natheo.fr'
                 label: 'options_system.mail_reply_to'
                 type: 'text'

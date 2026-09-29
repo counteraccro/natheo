@@ -224,3 +224,4 @@ user.page_update.information.description: __user.page_update.information.descrip
 user.change_password.input.password_current: 'Contraseña actual'
 user.change_password.error.current_password: 'La contraseña actual es incorrecta'
 user.change_password.error.rule: 'La contraseña no cumple las reglas de seguridad'
+user.error.csrf: __user.error.csrf

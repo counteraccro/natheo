@@ -11,6 +11,7 @@ namespace App\Service\Admin;
 
 use App\Service\Admin\Content\Comment\CommentService;
 use App\Service\Admin\Content\Page\PageService;
+use App\Service\Admin\System\OptionConfigService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Service\Admin\System\User\UserDataService;
 use App\Utils\Global\Database\DataBase;
@@ -50,6 +51,7 @@ class AppAdminHandlerService
         'requestStack' => RequestStack::class,
         'parameterBag' => ParameterBagInterface::class,
         'optionSystemService' => OptionSystemService::class,
+        'optionConfigService' => OptionConfigService::class,
         'gridService' => GridService::class,
         'markdownEditorService' => MarkdownEditorService::class,
         'userPasswordHasher' => UserPasswordHasherInterface::class,
@@ -197,6 +199,17 @@ class AppAdminHandlerService
     protected function getOptionSystemService(): OptionSystemService
     {
         return $this->handlers->get('optionSystemService');
+    }
+
+    /**
+     * Retourne la class OptionConfigService
+     * @return OptionConfigService
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getOptionConfigService(): OptionConfigService
+    {
+        return $this->handlers->get('optionConfigService');
     }
 
     /**
