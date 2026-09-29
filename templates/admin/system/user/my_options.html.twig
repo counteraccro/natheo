@@ -16,6 +16,6 @@
 
     {{ option_user_form() }}
 
-    <div {{ vue_component('Admin/System/Option', {'url_update' : path('admin_user_ajax_update_my_option')}) }}></div>
+    <div {{ vue_component('Admin/System/Option', {'url_update' : path('admin_user_ajax_update_my_option'), 'csrf_token' : csrf_token(csrfTokenId)}) }}></div>
 
 {% endblock %}

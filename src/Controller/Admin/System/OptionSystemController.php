@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[
     Route(
@@ -30,6 +31,8 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_SUPER_ADMIN')]
 class OptionSystemController extends AppAdminController
 {
+    const CSRF_TOKEN_UPDATE = 'option_system_update';
+
     /**
      * Point d'entrée pour les options systèmes
      * @return Response
@@ -46,6 +49,7 @@ class OptionSystemController extends AppAdminController
 
         return $this->render('admin/system/option_system/index.html.twig', [
             'breadcrumb' => $breadcrumb,
+            'csrfTokenId' => self::CSRF_TOKEN_UPDATE,
         ]);
     }
 
@@ -53,15 +57,30 @@ class OptionSystemController extends AppAdminController
      * Met à jour une option
      * @param Request $request
      * @param OptionSystemService $optionSystemService
+     * @param TranslatorInterface $translator
      * @return JsonResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/update', name: 'ajax_update', methods: ['POST'])]
-    public function update(Request $request, OptionSystemService $optionSystemService): JsonResponse
-    {
+    public function update(
+        Request $request,
+        OptionSystemService $optionSystemService,
+        TranslatorInterface $translator,
+    ): JsonResponse {
+        if (!$this->isCsrfTokenValid(self::CSRF_TOKEN_UPDATE, $request->headers->get('X-CSRF-TOKEN'))) {
+            return $this->json(
+                ['success' => false, 'msg' => $translator->trans('option_system.error.csrf', domain: 'option_system')],
+                Response::HTTP_FORBIDDEN,
+            );
+        }
+
         $data = json_decode($request->getContent(), true);
-        $optionSystemService->saveValueByKee($data['key'], strval($data['value']));
+        if (!is_array($data) || !is_string($data['key'] ?? null) || !is_scalar($data['value'] ?? null)) {
+            return $this->json($optionSystemService->getResponseAjax(), Response::HTTP_BAD_REQUEST);
+        }
+
+        $optionSystemService->updateValueFromAdmin($data['key'], strval($data['value']));
         return $this->json($optionSystemService->getResponseAjax());
     }
 }

@@ -85,16 +85,48 @@ class OptionSystemService extends AppAdminService
     /**
      * Retourne le fichier de config des options system sous la forme d'un tableau
      * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getOptionsSystemConfig(): array
     {
-        $return = [];
-        try {
-            $return = Yaml::parseFile($this->getPathConfig());
-        } catch (NotFoundExceptionInterface | ContainerExceptionInterface $e) {
-            die($e->getMessage());
+        return Yaml::parseFile($this->getPathConfig());
+    }
+
+    /**
+     * Retourne la configuration d'une option système en fonction de sa clé, null si elle n'est pas dans la config
+     * @param string $key
+     * @return array|null
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getOptionConfigByKey(string $key): ?array
+    {
+        return $this->getOptionConfigService()->findByKey($this->getOptionsSystemConfig(), $key);
+    }
+
+    /**
+     * Met à jour une option depuis l'interface d'administration.
+     * Refuse les clés absentes de la config, les options désactivées et les valeurs invalides
+     * @param string $key
+     * @param string $value
+     * @return bool
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function updateValueFromAdmin(string $key, string $value): bool
+    {
+        $optionConfigService = $this->getOptionConfigService();
+        $optionConfig = $this->getOptionConfigByKey($key);
+        if (
+            !$optionConfigService->isEditable($optionConfig) ||
+            !$optionConfigService->isValidValue($optionConfig, $value)
+        ) {
+            return false;
         }
-        return $return;
+
+        $this->saveValueByKee($key, $value);
+        return true;
     }
 
     /**

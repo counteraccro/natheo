@@ -55,6 +55,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[Route('/admin/{_locale}/user', name: 'admin_user_', requirements: ['_locale' => '%app.supported_locales%'])]
 class UserController extends AppAdminController
 {
+    const CSRF_TOKEN_UPDATE_MY_OPTION = 'user_update_my_option';
+
     /**
      * Clés de UserData modifiables par l'utilisateur lui-même
      */
@@ -101,27 +103,36 @@ class UserController extends AppAdminController
 
         return $this->render('admin/system/user/my_options.html.twig', [
             'breadcrumb' => $breadcrumb,
+            'csrfTokenId' => self::CSRF_TOKEN_UPDATE_MY_OPTION,
         ]);
     }
 
     /**
      * Met à jour une option
      * @param Request $request
+     * @param TranslatorInterface $translator
      * @return JsonResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/update', name: 'ajax_update_my_option', methods: ['POST'])]
     #[IsGranted('ROLE_USER')]
-    public function updateMyOption(Request $request): JsonResponse
+    public function updateMyOption(Request $request, TranslatorInterface $translator): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
-        if (!is_array($data) || OptionUser::tryFrom(strval($data['key'] ?? '')) === null || !isset($data['value'])) {
-            return $this->json(['success' => 'false'], Response::HTTP_BAD_REQUEST);
+        if (!$this->isCsrfTokenValid(self::CSRF_TOKEN_UPDATE_MY_OPTION, $request->headers->get('X-CSRF-TOKEN'))) {
+            return $this->json(
+                ['success' => false, 'msg' => $translator->trans('user.error.csrf', domain: 'user')],
+                Response::HTTP_FORBIDDEN,
+            );
         }
 
-        $this->optionUserService->saveValueByKee($data['key'], strval($data['value']));
-        return $this->json(['success' => 'true']);
+        $data = json_decode($request->getContent(), true);
+        if (!is_array($data) || !is_string($data['key'] ?? null) || !is_scalar($data['value'] ?? null)) {
+            return $this->json(['success' => false], Response::HTTP_BAD_REQUEST);
+        }
+
+        $success = $this->optionUserService->updateValueFromAdmin($data['key'], strval($data['value']));
+        return $this->json(['success' => $success]);
     }
 
     /**
