@@ -24,6 +24,7 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 use Exception;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use App\Enum\Admin\Global\SvgIcon;
 
 class MenuService extends AppAdminService
 {
@@ -80,7 +81,7 @@ class MenuService extends AppAdminService
 
             $isDefault = '';
             if ($element->isDefaultMenu()) {
-                $isDefault = '<i class="bi bi-menu-button-fill"></i>';
+                $isDefault = SvgIcon::MENU->render('inline w-4 h-4');
             }
 
             $name = $element->getName();

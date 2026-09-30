@@ -33,8 +33,7 @@
     </div>
 
     <p class="text-sm text-[var(--text-secondary)] mb-3">
-        {{ 'sql_manager.index.description' | trans({}, 'sql_manager') }} <br />
-        {#  {{ 'tag.index.description2' | trans({'icon' : '<i class="bi-eye-slash-fill"></i>'}, 'tag') | raw }} #}<br />
+        {{ 'sql_manager.index.description' | trans({}, 'sql_manager') }}
     </p>
 
 
@@ -42,7 +41,7 @@
 
     <twig:Admin:ModaleComponent id="help-grid-faq" bgColor="bg-secondary">
         <twig:block name="header">
-            <i class="bi bi-question-circle"></i> {{ 'sql_manager.index.popin.help.title' | trans({}, 'sql_manager') }}
+            {{ svg_icon('QUESTION', 'inline w-5 h-5') }} {{ 'sql_manager.index.popin.help.title' | trans({}, 'sql_manager') }}
         </twig:block>
 
         <div class="flex flex-row gap-10">

@@ -34,6 +34,7 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AppAdminHandlerService
@@ -66,6 +67,7 @@ class AppAdminHandlerService
         'pageService' => PageService::class,
         'commentService' => CommentService::class,
         'accessDecisionManager' => AccessDecisionManagerInterface::class,
+        'csrfTokenManager' => CsrfTokenManagerInterface::class,
     ];
 
     public function __construct(#[AutowireLocator(self::HANDLERS)] protected ContainerInterface $handlers) {}
@@ -331,5 +333,16 @@ class AppAdminHandlerService
     protected function getAccessDecisionManager(): AccessDecisionManagerInterface
     {
         return $this->handlers->get('accessDecisionManager');
+    }
+
+    /**
+     * Retourne l'interface CsrfTokenManagerInterface
+     * @return CsrfTokenManagerInterface
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getCsrfTokenManager(): CsrfTokenManagerInterface
+    {
+        return $this->handlers->get('csrfTokenManager');
     }
 }
