@@ -31,6 +31,35 @@ class SidebarControllerTest extends AppWebTestCase
     }
 
     /**
+     * Test du rendu de la sidebar : sous-menu vide masqué, chevron orienté sur le sous-menu ouvert
+     * @return void
+     */
+    public function testRenderSidebar(): void
+    {
+        $emptyParent = $this->createSidebarElement([
+            'disabled' => false,
+            'children' => ['disabled' => true],
+        ]);
+        $openParent = $this->createSidebarElement([
+            'disabled' => false,
+            'children' => ['disabled' => false, 'route' => 'admin_sidebar_index'],
+        ]);
+
+        $this->client->loginUser($this->createUserSuperAdmin(), 'admin');
+        $crawler = $this->client->request('GET', $this->router->generate('admin_sidebar_index'));
+        $this->assertResponseIsSuccessful();
+
+        $this->assertCount(0, $crawler->filter('#submenu-' . $emptyParent->getId()));
+        $this->assertCount(0, $crawler->filter('#sidebar i.bi'));
+
+        $this->assertStringContainsString('open', $crawler->filter('#submenu-' . $openParent->getId())->attr('class'));
+        $this->assertStringContainsString(
+            'rotate',
+            $crawler->filter('#chevron-' . $openParent->getId())->attr('class'),
+        );
+    }
+
+    /**
      * Test chargement des données du grid
      * @return void
      */
@@ -64,7 +93,7 @@ class SidebarControllerTest extends AppWebTestCase
      */
     public function testUpdateDisabled(): void
     {
-        $sidebarElement = $this->createSidebarElement();
+        $sidebarElement = $this->createSidebarElement(['lock' => false]);
 
         $this->checkNoAccess('admin_sidebar_update_disabled', ['id' => $sidebarElement->getId()], 'PUT');
 
@@ -73,6 +102,7 @@ class SidebarControllerTest extends AppWebTestCase
         $this->client->request(
             'PUT',
             $this->router->generate('admin_sidebar_update_disabled', ['id' => $sidebarElement->getId()]),
+            server: ['HTTP_X-CSRF-TOKEN' => $this->getCsrfToken()],
         );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
@@ -84,5 +114,71 @@ class SidebarControllerTest extends AppWebTestCase
         $repo = $this->em->getRepository(SidebarElement::class);
         $verif = $repo->findOneBy(['id' => $sidebarElement->getId()]);
         $this->assertEquals(!$sidebarElement->isDisabled(), $verif->isDisabled());
+    }
+
+    /**
+     * Test méthode updateDisabled() sans jeton CSRF valide
+     * @return void
+     */
+    public function testUpdateDisabledWithoutCsrf(): void
+    {
+        $sidebarElement = $this->createSidebarElement(['lock' => false, 'disabled' => false]);
+
+        $this->client->loginUser($this->createUserSuperAdmin(), 'admin');
+        $this->client->request(
+            'PUT',
+            $this->router->generate('admin_sidebar_update_disabled', ['id' => $sidebarElement->getId()]),
+            server: ['HTTP_X-CSRF-TOKEN' => 'jeton-invalide'],
+        );
+        $this->assertResponseStatusCodeSame(403);
+        $content = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertFalse($content['success']);
+
+        $this->em->clear();
+        $verif = $this->em->getRepository(SidebarElement::class)->find($sidebarElement->getId());
+        $this->assertFalse($verif->isDisabled());
+    }
+
+    /**
+     * Test méthode updateDisabled() sur un élément verrouillé
+     * @return void
+     */
+    public function testUpdateDisabledLocked(): void
+    {
+        $sidebarElement = $this->createSidebarElement(['lock' => true, 'disabled' => false]);
+
+        $this->client->loginUser($this->createUserSuperAdmin(), 'admin');
+        $this->client->request(
+            'PUT',
+            $this->router->generate('admin_sidebar_update_disabled', ['id' => $sidebarElement->getId()]),
+            server: ['HTTP_X-CSRF-TOKEN' => $this->getCsrfToken()],
+        );
+        $this->assertResponseStatusCodeSame(403);
+        $content = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertFalse($content['success']);
+
+        $this->em->clear();
+        $verif = $this->em->getRepository(SidebarElement::class)->find($sidebarElement->getId());
+        $this->assertFalse($verif->isDisabled());
+    }
+
+    /**
+     * Retourne le jeton CSRF transmis par le grid dans les actions d'un élément non verrouillé
+     * @return string
+     */
+    private function getCsrfToken(): string
+    {
+        $this->createSidebarElement(['lock' => false]);
+        $this->client->request(
+            'GET',
+            $this->router->generate('admin_sidebar_load_grid_data', ['page' => 1, 'limit' => 50]),
+        );
+        $content = json_decode($this->client->getResponse()->getContent(), true);
+        foreach ($content['data'] as $row) {
+            if (!empty($row['action'])) {
+                return $row['action'][0]['csrf'];
+            }
+        }
+        $this->fail('Aucun jeton CSRF trouvé dans les actions du grid');
     }
 }
