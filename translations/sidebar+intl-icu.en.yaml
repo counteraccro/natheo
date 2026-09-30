@@ -15,3 +15,5 @@ sidebar.info: __sidebar.info
 sidebar.index.popin.help.title: __sidebar.index.popin.help.title
 sidebar.index.popin.help.disabled: __sidebar.index.popin.help.disabled
 sidebar.index.popin.help.enabled: __sidebar.index.popin.help.enabled
+sidebar.error.csrf: "Invalid security token, please reload the page"
+sidebar.error.lock: "The sidebar element <strong>{label}</strong> is locked and cannot be hidden"

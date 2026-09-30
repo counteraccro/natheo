@@ -9,10 +9,12 @@ sidebar.grid.description: Description
 sidebar.grid.created_at: Création
 sidebar.grid.update_at: 'Mise à jour'
 sidebar.grid.action: Action
-sidebar.info: "Les éléments masqués ne s'afficherons pas dans la sidebar et seront alors invisible"
+sidebar.info: "Les éléments verrouillés {icon} ne peuvent pas être masqués. Les éléments masqués {icon2} ne s'affichent plus dans la sidebar, mais restent accessibles par leur URL"
 sidebar.success.no.disabled: "L'élément sidebar <strong>{label}</strong> est maintenant visible"
 sidebar.success.disabled: "L'élément sidebar <strong>{label}</strong> est maintenant masquer pour tout le monde"
 sidebar.confirm.disabled.msg: "L'élément sidebar <strong>{label}</strong> sera désactivé et donc non visible dans l'administration <br /> Confirmez-vous cette action ?"
 sidebar.index.popin.help.title: Aide
 sidebar.index.popin.help.disabled: 'Masque un élément'
 sidebar.index.popin.help.enabled: 'Affiche un élément'
+sidebar.error.csrf: "Jeton de sécurité invalide, veuillez recharger la page"
+sidebar.error.lock: "L'élément sidebar <strong>{label}</strong> est verrouillé et ne peut pas être masqué"

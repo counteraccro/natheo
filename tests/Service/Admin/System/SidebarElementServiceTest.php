@@ -14,6 +14,10 @@ use App\Service\Admin\System\SidebarElementService;
 use App\Tests\AppWebTestCase;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 class SidebarElementServiceTest extends AppWebTestCase
 {
@@ -35,6 +39,11 @@ class SidebarElementServiceTest extends AppWebTestCase
         parent::setUp();
         $this->sidebarElementService = $this->container->get(SidebarElementService::class);
         $this->sidebarElementRepository = $this->em->getRepository(SidebarElement::class);
+
+        // Le jeton CSRF des actions du grid est stocké en session
+        $request = new Request();
+        $request->setSession(new Session(new MockArraySessionStorage()));
+        $this->container->get(RequestStack::class)->push($request);
     }
 
     /**
@@ -110,5 +119,49 @@ class SidebarElementServiceTest extends AppWebTestCase
         $this->assertArrayHasKey('translate', $result);
         $this->assertEquals(7, $result['nb']);
         $this->assertCount(5, $result['data']);
+    }
+
+    /**
+     * Test des actions du grid : icônes SVG, jeton CSRF et absence d'action sur un élément verrouillé
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testGetAllFormatToGridActions(): void
+    {
+        $unlocked = $this->createSidebarElement(['lock' => false, 'disabled' => false]);
+        $this->createSidebarElement(['lock' => true, 'disabled' => true]);
+
+        $result = $this->sidebarElementService->getAllFormatToGrid(1, 10, ['orderField' => 'id', 'order' => 'ASC']);
+        $this->assertCount(2, $result['data']);
+        [$rowUnlocked, $rowLocked] = $result['data'];
+
+        $this->assertCount(1, $rowUnlocked['action']);
+        $this->assertNotEmpty($rowUnlocked['action'][0]['csrf']);
+        $this->assertStringContainsString(
+            $this->router->generate('admin_sidebar_update_disabled', ['id' => $unlocked->getId()]),
+            $rowUnlocked['action'][0]['url'],
+        );
+        $this->assertEmpty($rowLocked['action']);
+
+        $json = json_encode($result['data']);
+        $this->assertStringNotContainsString('bi-', $json);
+        $this->assertStringContainsString('<svg', $json);
+    }
+
+    /**
+     * Test méthode getLabelWithIcon() : le tracé de l'icône est échappé
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testGetLabelWithIcon(): void
+    {
+        $element = $this->createSidebarElement(['icon' => 'M1 1Z"/><script>', 'label' => 'label-test'], false);
+
+        $html = $this->sidebarElementService->getLabelWithIcon($element);
+        $this->assertStringContainsString('d="M1 1Z&quot;/&gt;&lt;script&gt;"', $html);
+        $this->assertStringContainsString('label-test', $html);
+        $this->assertStringNotContainsString('<script>', $html);
     }
 }

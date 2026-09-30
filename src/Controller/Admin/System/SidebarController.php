@@ -81,6 +81,7 @@ class SidebarController extends AppAdminController
      * @param SidebarElement $sidebarElement
      * @param SidebarElementService $sidebarElementService
      * @param TranslatorInterface $translator
+     * @param Request $request
      * @return JsonResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -90,34 +91,33 @@ class SidebarController extends AppAdminController
         #[MapEntity(id: 'id')] SidebarElement $sidebarElement,
         SidebarElementService $sidebarElementService,
         TranslatorInterface $translator,
+        Request $request,
     ): JsonResponse {
+        if (
+            !$this->isCsrfTokenValid(
+                SidebarElementService::CSRF_TOKEN_UPDATE_DISABLED,
+                $request->headers->get('X-CSRF-TOKEN'),
+            )
+        ) {
+            return $this->json(
+                ['success' => false, 'msg' => $translator->trans('sidebar.error.csrf', domain: 'sidebar')],
+                Response::HTTP_FORBIDDEN,
+            );
+        }
+
+        $label = $sidebarElementService->getLabelWithIcon($sidebarElement);
+        if ($sidebarElement->isLock()) {
+            return $this->json(
+                ['success' => false, 'msg' => $translator->trans('sidebar.error.lock', ['label' => $label], 'sidebar')],
+                Response::HTTP_FORBIDDEN,
+            );
+        }
+
         $sidebarElement->setDisabled(!$sidebarElement->isDisabled());
         $sidebarElementService->save($sidebarElement);
 
-        $msg = $translator->trans(
-            'sidebar.success.no.disabled',
-            [
-                'label' =>
-                    '<i class="bi ' .
-                    $sidebarElement->getIcon() .
-                    '"></i> ' .
-                    $translator->trans($sidebarElement->getLabel()),
-            ],
-            'sidebar',
-        );
-        if ($sidebarElement->isDisabled()) {
-            $msg = $translator->trans(
-                'sidebar.success.disabled',
-                [
-                    'label' =>
-                        '<i class="bi ' .
-                        $sidebarElement->getIcon() .
-                        '"></i> ' .
-                        $translator->trans($sidebarElement->getLabel()),
-                ],
-                'sidebar',
-            );
-        }
+        $key = $sidebarElement->isDisabled() ? 'sidebar.success.disabled' : 'sidebar.success.no.disabled';
+        $msg = $translator->trans($key, ['label' => $label], 'sidebar');
 
         return $this->json($sidebarElementService->getResponseAjax($msg));
     }

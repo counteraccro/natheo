@@ -51,6 +51,7 @@ export default {
       cUrl: '',
       isAjax: '',
       httpType: '',
+      csrfToken: '',
       listLimit: {},
       translate: {},
       translateGridPaginate: {},
@@ -68,7 +69,6 @@ export default {
       listOrderField: {},
       order: 'DESC',
       listOrder: { 0: 'ASC', 1: 'DESC' },
-      filterIcon: 'bi-people-fill',
       btnSearchMode: '',
       toasts: {
         toastSuccessGenericGrid: {
@@ -207,11 +207,13 @@ export default {
      * @param is_ajax
      * @param msg_confirm
      * @param type
+     * @param csrf jeton CSRF optionnel, envoyé dans le header X-CSRF-TOKEN
      */
-    redirectAction(url, is_ajax, is_confirm, msg_confirm, type) {
+    redirectAction(url, is_ajax, is_confirm, msg_confirm, type, csrf) {
       this.cUrl = url;
       this.isAjax = is_ajax;
       this.httpType = type;
+      this.csrfToken = csrf;
       this.msgConfirm = this.translate.confirmText;
       this.hideModal();
 
@@ -227,7 +229,12 @@ export default {
             console.error('URL ' + url + " n'a aucun type défini");
           }
 
-          axios[type](url)
+          const config = csrf ? { headers: { 'X-CSRF-TOKEN': csrf } } : {};
+          const request = ['get', 'delete'].includes(type)
+            ? axios[type](url, config)
+            : axios[type](url, undefined, config);
+
+          request
             .then((response) => {
               if (response.data.success === true || response.data.type === 'success') {
                 if (response.data.type === 'success') {
@@ -247,6 +254,10 @@ export default {
               }
             })
             .catch((error) => {
+              if (error.response?.data?.msg) {
+                this.toasts.toastErrorGenericGrid.msg = error.response.data.msg;
+                this.toasts.toastErrorGenericGrid.show = true;
+              }
               console.error(error);
             })
             .finally(() => this.loadData(this.cPage, this.cLimit));
@@ -851,7 +862,7 @@ export default {
       <button
         type="button"
         class="btn btn-primary btn-sm me-2"
-        @click="redirectAction(this.cUrl, this.isAjax, false, '', this.httpType)"
+        @click="redirectAction(this.cUrl, this.isAjax, false, '', this.httpType, this.csrfToken)"
       >
         <svg
           class="icon"

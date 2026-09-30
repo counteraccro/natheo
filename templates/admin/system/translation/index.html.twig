@@ -15,7 +15,7 @@
 
     <p class="text-sm text-[var(--text-secondary)] mb-3">
         {{ 'translate.description' | trans({}, 'translate') }} <br />
-        <i>{{ 'translate.description.2' | trans({'icon' : ' <i class="bi bi-repeat"></i>'}, 'translate') | raw }}</i>
+        <i>{{ 'translate.description.2' | trans({}, 'translate') }}</i>
     </p>
 
     <div {{ vue_component('Admin/System/Translate', {'url_langue' : path('admin_translation_list_languages'),
