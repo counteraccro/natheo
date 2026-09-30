@@ -16,6 +16,8 @@ export interface GridAction {
   type?: string;
   confirm?: boolean;
   msgConfirm?: string;
+  // Jeton envoyé dans le header X-CSRF-TOKEN
+  csrf?: string;
 }
 
 /**

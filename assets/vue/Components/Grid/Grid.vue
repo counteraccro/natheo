@@ -157,7 +157,9 @@ export default defineComponent({
                   class="btn btn-icon m-1 btn-xs"
                   :class="'btn-ghost-' + data.color"
                   v-for="data in entry.action"
-                  @click="$emit('redirect-action', data.url, data.ajax, data.confirm, data.msgConfirm, data.type)"
+                  @click="
+                    $emit('redirect-action', data.url, data.ajax, data.confirm, data.msgConfirm, data.type, data.csrf)
+                  "
                 >
                   <svg
                     class="icon-sm"
