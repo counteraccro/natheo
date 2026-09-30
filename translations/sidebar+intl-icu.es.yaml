@@ -15,3 +15,5 @@ sidebar.info: __sidebar.info
 sidebar.index.popin.help.title: __sidebar.index.popin.help.title
 sidebar.index.popin.help.disabled: __sidebar.index.popin.help.disabled
 sidebar.index.popin.help.enabled: __sidebar.index.popin.help.enabled
+sidebar.error.csrf: "Token de seguridad no válido, vuelva a cargar la página"
+sidebar.error.lock: "El elemento de la barra lateral <strong>{label}</strong> está bloqueado y no se puede ocultar"
