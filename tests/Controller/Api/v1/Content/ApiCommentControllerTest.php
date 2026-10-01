@@ -86,7 +86,7 @@ class ApiCommentControllerTest extends AppApiTestCase
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);
         $this->checkStructureApiRetourError($content);
-        $this->assertEquals('__Choose a orderBy between id or createdAt ', $content['errors'][0]);
+        $this->assertEquals('Choisissez un orderBy entre id ou createdAt ', $content['errors'][0]);
 
         $this->client->request(
             'GET',
@@ -199,7 +199,7 @@ class ApiCommentControllerTest extends AppApiTestCase
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);
         $this->checkStructureApiRetourError($content);
-        $this->assertEquals('__The author parameter cannot be empty ', $content['errors'][0]);
+        $this->assertEquals('Le paramètre author ne peut pas être vide ', $content['errors'][0]);
 
         // Page id wrong
         $this->client->request(
