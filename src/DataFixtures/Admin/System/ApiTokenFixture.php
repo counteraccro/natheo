@@ -12,10 +12,27 @@ use Doctrine\Persistence\ObjectManager;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\Yaml\Yaml;
+use App\Service\Admin\System\OptionSystemService;
+use Psr\Container\ContainerInterface;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
+use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
+use App\Enum\Admin\System\Options\OptionSystem;
 
 class ApiTokenFixture extends AppFixtures implements FixtureGroupInterface, OrderedFixtureInterface
 {
     const API_TOKEN_FIXTURES_DATA_FILE = 'system' . DIRECTORY_SEPARATOR . 'api_token_fixtures_data.yaml';
+
+    public function __construct(
+        #[
+            AutowireLocator([
+                'container' => ContainerBagInterface::class,
+            ]),
+        ]
+        ContainerInterface $handlers,
+        private readonly OptionSystemService $optionSystemService,
+    ) {
+        parent::__construct($handlers);
+    }
 
     /**
      * @param ObjectManager $manager
@@ -44,12 +61,10 @@ class ApiTokenFixture extends AppFixtures implements FixtureGroupInterface, Orde
             $manager->persist($apiToken);
         }
 
-        /** TODO Code à écrire ici  */
-        /**
-         * Générer le token aléatoire en mode lecture
-         * Appeler optionSystemService et appeler saveValueByKee()
-         */
-        $manager->flush();
+        $token = bin2hex(random_bytes(32));
+
+        $this->optionSystemService->saveValueByKee(OptionSystem::OS_FRONT_API_KEY->value, $token);
+        flush();
     }
 
     /**
