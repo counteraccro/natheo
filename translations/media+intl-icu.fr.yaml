@@ -108,8 +108,8 @@ media.mediatheque.edit.input.placeholder.folder: 'Le nom de votre dossier'
 media.mediatheque.move.title: 'Déplacer vers...'
 media.mediatheque.move.btn: Déplacer
 media.mediatheque.move.success: 'Déplacement validé !'
-media.mediatheque.move.label.media: __media.mediatheque.move.label.media
-media.mediatheque.move.label.folder: __media.mediatheque.move.label.folder
+media.mediatheque.move.label.media: 'Déplacer le média {name} vers'
+media.mediatheque.move.label.folder: 'Déplacer le dossier {name} vers'
 media.mediatheque.move.btn.error: 'Erreur de validation'
 media.mediatheque.move.search.placeholder: 'Filtrer les dossier'
 media.mediatheque.move.search.empty.msg: 'Aucun dossier trouvé'

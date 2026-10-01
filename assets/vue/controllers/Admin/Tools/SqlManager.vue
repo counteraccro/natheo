@@ -634,18 +634,13 @@ export default defineComponent({
   </div>
 
   <div class="toast-container position-fixed top-0 end-0 p-2">
-    <toast
-      id="toastSuccess"
-      option-class-header="text-success"
-      :show="toasts.toastSuccess.show"
-      @close-toast="closeToast"
-    >
+    <toast id="toastSuccess" :show="toasts.toastSuccess.show" @close-toast="closeToast">
       <template #body>
         <div v-html="toasts.toastSuccess.msg"></div>
       </template>
     </toast>
 
-    <toast id="toastError" option-class-header="text-danger" :show="toasts.toastError.show" @close-toast="closeToast">
+    <toast id="toastError" :type="'danger'" :show="toasts.toastError.show" @close-toast="closeToast">
       <template #body>
         <div v-html="toasts.toastError.msg"></div>
       </template>

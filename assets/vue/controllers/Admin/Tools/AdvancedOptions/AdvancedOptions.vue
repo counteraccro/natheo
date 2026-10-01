@@ -514,12 +514,7 @@ export default defineComponent({
   <!-- fin modale confirmation suppression -->
   <!-- toast -->
   <div class="toast-container position-fixed top-0 end-0 p-2">
-    <toast
-      :id="'toastError'"
-      :option-class-header="'text-danger'"
-      :show="toasts.toastError.show"
-      @close-toast="closeToast"
-    >
+    <toast :id="'toastError'" :type="'danger'" :show="toasts.toastError.show" @close-toast="closeToast">
       <template #body>
         <div class="whitespace-pre-line">{{ toasts.toastError.msg }}</div>
       </template>

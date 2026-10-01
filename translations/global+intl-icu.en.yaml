@@ -12,7 +12,6 @@ global.user.impersonation: __global.user.impersonation
 global.citation: __global.citation
 global.citation.auteur: __global.citation.auteur
 global.search.placeholder: __global.search.placeholder
-global.search.btn: __global.search.btn
 global.display: __global.display
 global.header.btn.nouveau: __global.header.btn.nouveau
 global.header.btn.nouveau.page: __global.header.btn.nouveau.page

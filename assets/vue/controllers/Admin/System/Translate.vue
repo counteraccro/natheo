@@ -1,51 +1,80 @@
-<script>
+<script lang="ts">
 /**
  * @author Gourdon Aymeric
- * @version 2.1
+ * @version 3.3
  * Permet de gérer les traductions de l'application
  */
 
+import { defineComponent, type PropType } from 'vue';
 import axios from 'axios';
 import { emitter } from '@/utils/useEvent';
-import Toast from '../../../Components/Global/Toast.vue';
-import Modal from '../../../Components/Global/Modal.vue';
+import Toast from '@/vue/Components/Global/Toast.vue';
 import SkeletonText from '@/vue/Components/Skeleton/Text.vue';
 import SkeletonTable from '@/vue/Components/Skeleton/Table.vue';
+import type { Toasts } from '@/ts/Toast/Toast.type';
+import type {
+  TranslateErrorResponse,
+  TranslateFileResponse,
+  TranslateFilesResponse,
+  TranslateLanguagesResponse,
+  TranslateSavePayload,
+  TranslateSaveResponse,
+  TranslateUpdate,
+} from '@/ts/Translate/Translate.type';
 
-export default {
+export default defineComponent({
   name: 'Translate',
-  components: { SkeletonTable, SkeletonText, Modal, Toast },
+  components: { SkeletonTable, SkeletonText, Toast },
   props: {
-    url_langue: String,
-    url_translates_files: String,
-    url_translate_file: String,
-    url_translate_save: String,
-    url_reload_cache: String,
+    url_langue: { type: String, required: true },
+    url_translates_files: { type: String, required: true },
+    url_translate_file: { type: String, required: true },
+    url_translate_save: { type: String, required: true },
+    translate: { type: Object as PropType<Record<string, string>>, required: true },
   },
   data() {
     return {
-      trans: [],
-      currentLanguage: '',
-      files: [],
-      languages: [],
-      currentFile: '',
-      file: [],
-      tabTmpTranslate: [],
-      loading: false,
-      modalReloadCache: false,
-      isReloadCache: false,
-      isReloadCacheFinish: false,
+      currentLanguage: '' as string,
+      files: {} as Record<string, string>,
+      languages: {} as Record<string, string>,
+      currentFile: '' as string,
+      file: {} as Record<string, string>,
+      tabTmpTranslate: [] as TranslateUpdate[],
+      errors: {} as Record<string, string>,
+      search: '' as string,
+      onlyUntranslated: false as boolean,
+      loading: false as boolean,
       toasts: {
-        toastSuccess: {
-          show: false,
-          msg: '',
-        },
-        toastError: {
-          show: false,
-          msg: '',
-        },
-      },
+        toastSuccess: { show: false, msg: '' },
+        toastError: { show: false, msg: '' },
+      } as Toasts,
     };
+  },
+  computed: {
+    hasFile(): boolean {
+      return Object.keys(this.file).length !== 0;
+    },
+    hasFiles(): boolean {
+      return Object.keys(this.files).length !== 0;
+    },
+    untranslatedCount(): number {
+      return Object.values(this.file).filter((value) => this.isUntranslated(value)).length;
+    },
+    filteredFile(): Record<string, string> {
+      const search = this.search.trim().toLowerCase();
+      return Object.fromEntries(
+        Object.entries(this.file).filter(([key, value]) => {
+          if (this.onlyUntranslated && !this.isUntranslated(value)) {
+            return false;
+          }
+          return (
+            search === '' ||
+            key.toLowerCase().includes(search) ||
+            this.getValue(key, value).toLowerCase().includes(search)
+          );
+        })
+      );
+    },
   },
   mounted() {
     this.loadListeLanguages();
@@ -54,16 +83,15 @@ export default {
     /**
      * Charge la liste des langues
      */
-    loadListeLanguages() {
+    loadListeLanguages(): void {
       this.loading = true;
       axios
-        .get(this.url_langue)
+        .get<TranslateLanguagesResponse>(this.url_langue)
         .then((response) => {
           this.languages = response.data.languages;
-          this.trans = response.data.trans;
         })
         .catch((error) => {
-          console.error(error);
+          this.showRequestError(error);
         })
         .finally(() => {
           this.loading = false;
@@ -74,10 +102,10 @@ export default {
      * Event de choix de la langue
      * @param event
      */
-    selectLanguage(event) {
-      this.currentLanguage = event.target.value;
+    selectLanguage(event: Event): void {
+      this.currentLanguage = (event.target as HTMLSelectElement).value;
       this.currentFile = '';
-      this.file = [];
+      this.file = {};
       if (this.currentLanguage !== '') {
         this.loadTranslateListeFile();
       }
@@ -86,16 +114,16 @@ export default {
     /**
      * Charge la liste de fichier en fonction de la langue
      */
-    loadTranslateListeFile() {
-      this.files = [];
+    loadTranslateListeFile(): void {
+      this.files = {};
       this.loading = true;
       axios
-        .get(this.url_translates_files + '/' + this.currentLanguage, {})
+        .get<TranslateFilesResponse>(this.url_translates_files + '/' + this.currentLanguage)
         .then((response) => {
           this.files = response.data.files;
         })
         .catch((error) => {
-          console.error(error);
+          this.showRequestError(error);
         })
         .finally(() => {
           this.loading = false;
@@ -106,8 +134,8 @@ export default {
      * event du choix du fichier
      * @param event
      */
-    selectFile(event) {
-      this.currentFile = event.target.value;
+    selectFile(event: Event): void {
+      this.currentFile = (event.target as HTMLSelectElement).value;
       if (this.currentFile !== '') {
         this.loadFile();
       }
@@ -116,17 +144,20 @@ export default {
     /**
      * Charge le contenu du fichier sélectionné
      */
-    loadFile() {
+    loadFile(): void {
       emitter.emit('reset-check-confirm');
       this.loading = true;
       axios
-        .get(this.url_translate_file + '/' + this.currentFile)
+        .get<TranslateFileResponse>(this.url_translate_file + '/' + this.currentFile)
         .then((response) => {
           this.tabTmpTranslate = [];
+          this.errors = {};
           this.file = response.data.file;
         })
         .catch((error) => {
-          console.error(error);
+          this.currentFile = '';
+          this.file = {};
+          this.showRequestError(error);
         })
         .finally(() => {
           this.loading = false;
@@ -137,20 +168,16 @@ export default {
      * Sauvegarde les translations modifiées de façon temporaire
      * @param event
      */
-    saveTmpTranslate(event) {
-      let value = event.target.value;
-      let key = event.target.getAttribute('data-id');
+    saveTmpTranslate(event: Event): void {
+      const target = event.target as HTMLInputElement | HTMLTextAreaElement;
+      const key = target.getAttribute('data-id') ?? '';
+      const value = target.value;
+      delete this.errors[key];
 
-      let newE = true;
-      for (const i in this.tabTmpTranslate) {
-        let element = this.tabTmpTranslate[i];
-        if (element.key === key) {
-          element.value = value;
-          newE = false;
-          break;
-        }
-      }
-      if (newE) {
+      const element = this.tabTmpTranslate.find((translate) => translate.key === key);
+      if (element) {
+        element.value = value;
+      } else {
         this.tabTmpTranslate.push({ key: key, value: value });
       }
     },
@@ -158,36 +185,37 @@ export default {
     /**
      * Sauvegarde les traductions modifiées de façon définitive
      */
-    saveTranslate() {
+    saveTranslate(): void {
       this.loading = true;
+      const payload: TranslateSavePayload = { file: this.currentFile, translates: this.tabTmpTranslate };
       axios
-        .put(this.url_translate_save, {
-          file: this.currentFile,
-          translates: this.tabTmpTranslate,
-        })
+        .put<TranslateSaveResponse>(this.url_translate_save, payload)
         .then((response) => {
-          if (response.data.success === true) {
+          if (response.data.success) {
             this.toasts.toastSuccess.msg = response.data.msg;
             this.toasts.toastSuccess.show = true;
             this.loadFile();
           } else {
+            this.errors = response.data.errors;
             this.toasts.toastError.msg = response.data.msg;
             this.toasts.toastError.show = true;
             this.loading = false;
           }
         })
         .catch((error) => {
-          console.error(error);
-        })
-        .finally();
+          this.showRequestError(error);
+          this.loading = false;
+        });
     },
 
     /**
-     * Défini si la valeur a été changé ou non pour l'input
+     * Défini la classe de l'input selon qu'il est en erreur ou modifié
      * @param key
-     * @returns {string}
      */
-    isChangeInput(key) {
+    isChangeInput(key: string): string {
+      if (this.errors[key] !== undefined) {
+        return 'is-invalid';
+      }
       if (this.isExist(key)) {
         return 'is-warning';
       }
@@ -197,9 +225,8 @@ export default {
     /**
      * Défini si l valeur à changé pour l'aide
      * @param key
-     * @returns {string}
      */
-    isChangeHelp(key) {
+    isChangeHelp(key: string): string {
       if (this.isExist(key)) {
         return '';
       }
@@ -210,100 +237,61 @@ export default {
      * Retourne la valeur éditer ou la valeur par défaut
      * @param key
      * @param value
-     * @returns {string}
      */
-    getValue(key, value) {
-      for (const i in this.tabTmpTranslate) {
-        let element = this.tabTmpTranslate[i];
-        if (element.key === key) {
-          return element.value;
-        }
-      }
-      return value;
+    getValue(key: string, value: string): string {
+      return this.tabTmpTranslate.find((translate) => translate.key === key)?.value ?? value;
+    },
+
+    /**
+     * translation:extract préfixe par "_" ou "__" les valeurs à traduire
+     * @param value
+     */
+    isUntranslated(value: string): boolean {
+      return value === '' || value.startsWith('_');
     },
 
     /**
      * Défini si une traduction à été changé ou non
      * @param key
-     * @returns {string}
      */
-    isExist(key) {
-      for (const i in this.tabTmpTranslate) {
-        let element = this.tabTmpTranslate[i];
-        if (element.key === key) {
-          return true;
-        }
-      }
-      return false;
+    isExist(key: string): boolean {
+      return this.tabTmpTranslate.some((translate) => translate.key === key);
     },
 
     /**
      * Supprime une modification dans le tableau temporaire
      * @param key
      */
-    revertValue(key) {
-      for (const i in this.tabTmpTranslate) {
-        let element = this.tabTmpTranslate[i];
-        if (element.key === key) {
-          this.tabTmpTranslate.splice(i, 1);
-          break;
-        }
-      }
-      return false;
+    revertValue(key: string): void {
+      this.tabTmpTranslate = this.tabTmpTranslate.filter((translate) => translate.key !== key);
+      delete this.errors[key];
     },
 
     /**
-     * Permet de recharger le cache
+     * Affiche le message d'erreur renvoyé par le serveur, ou un message générique si absent
+     * @param error
      */
-    reloadCache(confirm) {
-      if (confirm) {
-        this.showModal();
-        this.isReloadCache = false;
-      } else {
-        this.isReloadCache = true;
-        axios
-          .get(this.url_reload_cache, {})
-          .then((response) => {})
-          .catch((error) => {
-            console.error(error);
-          })
-          .finally(() => {
-            this.isReloadCacheFinish = true;
-            setTimeout(() => {
-              window.location.reload();
-            }, 3000);
-          });
-      }
+    showRequestError(error: unknown): void {
+      console.error(error);
+      const data = axios.isAxiosError<TranslateErrorResponse>(error) ? error.response?.data : undefined;
+      this.toasts.toastError.msg = data?.msg ?? this.translate.translate_error_request;
+      this.toasts.toastError.show = true;
     },
 
     /**
      * Ferme le toast défini par nameToast
      * @param nameToast
      */
-    closeToast(nameToast) {
+    closeToast(nameToast: string): void {
       this.toasts[nameToast].show = false;
     },
-
-    /**
-     * Affichage la modale
-     */
-    showModal() {
-      this.modalReloadCache = true;
-    },
-
-    /**
-     * Ferme la modale
-     */
-    hideModal() {
-      this.modalReloadCache = false;
-    },
   },
-};
+});
 </script>
 
 <template>
   <div class="card mb-4">
-    <div v-if="this.loading">
+    <div v-if="loading">
       <SkeletonText :nb-paragraphe="2" />
     </div>
     <div v-else>
@@ -329,38 +317,38 @@ export default {
               />
             </svg>
 
-            {{ this.trans.translate_block_search_title }}
+            {{ translate.translate_block_search_title }}
           </div>
           <p class="card-subtitle">
-            {{ this.trans.translate_block_search_sub_title }}
+            {{ translate.translate_block_search_sub_title }}
           </p>
         </div>
       </div>
       <div class="p-5">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4">
           <div class="form-group">
-            <label class="form-label" for="select-file">{{ this.trans.translate_select_language_label }}</label>
+            <label class="form-label" for="select-file">{{ translate.translate_select_language_label }}</label>
             <select
               class="form-input no-control"
               id="select-file"
               @change="selectLanguage($event)"
-              v-model="this.currentLanguage"
+              v-model="currentLanguage"
             >
-              <option value="">{{ this.trans.translate_select_language }}</option>
-              <option v-for="(language, key) in this.languages" v-bind:value="key">{{ language }}</option>
+              <option value="">{{ translate.translate_select_language }}</option>
+              <option v-for="(language, key) in languages" v-bind:value="key">{{ language }}</option>
             </select>
           </div>
           <div class="form-group">
-            <label class="form-label" for="select-time">{{ this.trans.translate_select_file_label }}</label>
+            <label class="form-label" for="select-time">{{ translate.translate_select_file_label }}</label>
             <select
               class="form-input no-control"
               id="select-time"
               @change="selectFile($event)"
-              :disabled="this.files.length === 0"
-              v-model="this.currentFile"
+              :disabled="!hasFiles"
+              v-model="currentFile"
             >
-              <option value="">{{ this.trans.translate_select_file }}</option>
-              <option v-for="(language, key) in this.files" v-bind:value="key">{{ language }}</option>
+              <option value="">{{ translate.translate_select_file }}</option>
+              <option v-for="(language, key) in files" v-bind:value="key">{{ language }}</option>
             </select>
           </div>
         </div>
@@ -369,7 +357,7 @@ export default {
   </div>
 
   <div class="card mb-4">
-    <div v-if="this.loading">
+    <div v-if="loading">
       <SkeletonTable :full="true" />
     </div>
     <div v-else>
@@ -395,22 +383,22 @@ export default {
               />
             </svg>
 
-            <template v-if="this.file.length !== 0">
-              {{ this.currentFile }}
+            <template v-if="hasFile">
+              {{ currentFile }}
             </template>
             <template v-else> --- </template>
           </div>
 
           <p class="card-subtitle">
-            {{ this.trans.translate_block_edit_sub_title }}
+            {{ translate.translate_block_edit_sub_title }}
           </p>
           <p class="card-subtitle" v-if="tabTmpTranslate.length > 0">
-            <b>{{ tabTmpTranslate.length }}</b> {{ this.trans.translate_nb_edit }}
+            <b>{{ tabTmpTranslate.length }}</b> {{ translate.translate_nb_edit }}
           </p>
         </div>
 
-        <div class="card-actions" v-if="this.file.length !== 0">
-          <button class="btn btn-primary btn-sm" @click="this.saveTranslate">
+        <div class="card-actions" v-if="hasFile">
+          <button class="btn btn-primary btn-sm" @click="saveTranslate">
             <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 stroke-linecap="round"
@@ -419,24 +407,12 @@ export default {
                 d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"
               ></path>
             </svg>
-            {{ this.trans.translate_btn_save }}
-          </button>
-
-          <button class="btn btn-dark btn-sm ms-2" @click="this.reloadCache(true)">
-            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-              ></path>
-            </svg>
-            {{ this.trans.translate_btn_cache }}
+            {{ translate.translate_btn_save }}
           </button>
         </div>
       </div>
 
-      <div v-if="this.file.length === 0">
+      <div v-if="!hasFile">
         <p class="text-center text-[var(--text-secondary)] text-sm italic flex justify-center gap-1 p-4">
           <svg
             class="icon"
@@ -456,12 +432,42 @@ export default {
             />
           </svg>
 
-          {{ this.trans.translate_empty_file }}
+          {{ translate.translate_empty_file }}
         </p>
       </div>
       <div v-else>
+        <div class="flex flex-col md:flex-row md:items-center gap-4 p-5 border-b-1 border-b-[var(--border-color)]">
+          <input
+            type="search"
+            class="form-input no-control md:max-w-md"
+            v-model="search"
+            :placeholder="translate.translate_search_placeholder"
+            :aria-label="translate.translate_search_placeholder"
+          />
+          <div class="form-switch form-switch-inline mb-0! md:ml-auto">
+            <input
+              type="checkbox"
+              class="switch-input no-control"
+              id="translate-only-untranslated"
+              role="switch"
+              v-model="onlyUntranslated"
+            />
+            <label class="switch-toggle" for="translate-only-untranslated"></label>
+            <label for="translate-only-untranslated" class="text-sm cursor-pointer">
+              {{ translate.translate_filter_untranslated }} ({{ untranslatedCount }})
+            </label>
+          </div>
+        </div>
+
+        <p
+          v-if="Object.keys(filteredFile).length === 0"
+          class="text-center text-[var(--text-secondary)] text-sm italic p-4"
+        >
+          {{ translate.translate_search_empty }}
+        </p>
+
         <div
-          v-for="(translate, key) in this.file"
+          v-for="(value, key) in filteredFile"
           class="grid grid-cols-1 lg:grid-cols-[30%_1fr] gap-6 p-5 hover:bg-[var(--bg-hover)] transition border-b-1 border-b-[var(--border-color)]"
         >
           <div class="flex items-center">
@@ -470,15 +476,15 @@ export default {
 
           <div>
             <input
-              v-if="translate.length < 120"
+              v-if="value.length < 120"
               type="text"
               class="form-input"
-              :class="this.isChangeInput(key)"
+              :class="isChangeInput(key)"
               :id="key"
               :data-id="key"
-              :value="this.getValue(key, translate)"
-              :data-save="translate"
-              @change="this.saveTmpTranslate($event)"
+              :value="getValue(key, value)"
+              :data-save="value"
+              @change="saveTmpTranslate($event)"
             />
             <textarea
               v-else
@@ -486,21 +492,18 @@ export default {
               rows="3"
               :id="key"
               :data-id="key"
-              :class="this.isChangeInput(key)"
-              :data-save="translate"
-              @change="this.saveTmpTranslate($event)"
-              >{{ this.getValue(key, translate) }}</textarea
-            >
+              :class="isChangeInput(key)"
+              :data-save="value"
+              @change="saveTmpTranslate($event)"
+              >{{ getValue(key, value) }}</textarea>
 
-            <div :data-id="key + '-help'" class="form-text text-warning mt-2" :class="this.isChangeHelp(key)">
-              ⚠ {{ this.trans.translate_info_edit }}
-              <a
-                href="#"
-                onclick="return false;"
-                @click="this.revertValue(key)"
-                class="text-warning float-end no-control"
-                >{{ this.trans.translate_link_revert }}</a
-              >
+            <div v-if="errors[key]" class="form-text text-error mt-2">{{ errors[key] }}</div>
+
+            <div :data-id="key + '-help'" class="form-text text-warning mt-2" :class="isChangeHelp(key)">
+              ⚠ {{ translate.translate_info_edit }}
+              <a href="#" onclick="return false;" @click="revertValue(key)" class="text-warning float-end no-control">{{
+                translate.translate_link_revert
+              }}</a>
             </div>
           </div>
         </div>
@@ -508,166 +511,17 @@ export default {
     </div>
   </div>
 
-  <!-- modale refresh cache -->
-  <modal
-    :id="'modalReloadCache'"
-    :show="this.modalReloadCache"
-    @close-modal="this.hideModal"
-    :option-show-close-btn="false"
-    :option-modal-backdrop="'static'"
-  >
-    <template #title> <i class="bi bi-exclamation-triangle"></i> {{ this.trans.translate_cache_titre }} </template>
-    <template #body>
-      <div v-if="!this.isReloadCacheFinish">
-        <div v-if="!this.isReloadCache">
-          {{ this.trans.translate_cache_info }}
-        </div>
-        <div v-else>
-          {{ this.trans.translate_cache_wait }}
-
-          <div class="text-center rtl:text-right mt-2">
-            <div role="status">
-              <svg
-                aria-hidden="true"
-                class="inline w-6 h-7 text-neutral-tertiary animate-spin fill-[var(--primary)]"
-                viewBox="0 0 100 101"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                  fill="currentColor"
-                />
-                <path
-                  d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                  fill="currentFill"
-                />
-              </svg>
-              <span class="sr-only">Loading...</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div v-else>
-        <div class="flex justify-center gap-1">
-          <svg
-            class="icon"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-            />
-          </svg>
-          {{ this.trans.translate_cache_success }}
-        </div>
-      </div>
-    </template>
-    <template #footer>
-      <div v-if="!isReloadCacheFinish">
-        <button
-          v-if="!this.isReloadCache"
-          type="button"
-          class="btn btn-primary btn-sm me-2"
-          @click="this.reloadCache(false)"
-        >
-          <svg
-            class="icon"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-            />
-          </svg>
-          {{ this.trans.translate_cache_btn_accept }}
-        </button>
-        <button v-if="!this.isReloadCache" type="button" class="btn btn-outline-dark btn-sm" @click="this.hideModal">
-          <svg
-            class="icon"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-            />
-          </svg>
-
-          {{ this.trans.translate_cache_btn_close }}
-        </button>
-      </div>
-      <div v-else>
-        <button type="button" class="btn btn-outline-dark btn-sm" @click="this.hideModal">
-          <svg
-            class="icon"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-            />
-          </svg>
-
-          {{ this.trans.translate_cache_btn_close }}
-        </button>
-      </div>
-    </template>
-  </modal>
-  <!-- fin modale refresh cache -->
-
   <!-- toast -->
   <div class="toast-container position-fixed top-0 end-0 p-2">
-    <toast
-      :id="'toastSuccess'"
-      :option-class-header="'text-success'"
-      :show="this.toasts.toastSuccess.show"
-      @close-toast="this.closeToast"
-    >
+    <toast :id="'toastSuccess'" :show="toasts.toastSuccess.show" @close-toast="closeToast">
       <template #body>
-        <div v-html="this.toasts.toastSuccess.msg"></div>
+        <div v-html="toasts.toastSuccess.msg"></div>
       </template>
     </toast>
 
-    <toast
-      :id="'toastError'"
-      :option-class-header="'text-danger'"
-      :show="this.toasts.toastError.show"
-      @close-toast="this.closeToast"
-    >
+    <toast :id="'toastError'" :type="'danger'" :show="toasts.toastError.show" @close-toast="closeToast">
       <template #body>
-        <div v-html="this.toasts.toastError.msg"></div>
+        <div v-html="toasts.toastError.msg"></div>
       </template>
     </toast>
   </div>
