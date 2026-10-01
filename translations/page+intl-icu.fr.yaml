@@ -173,4 +173,4 @@ page.onglet.information: Informations
 page.page_content_block.bloc: 'Block n°'
 page.status.archived: Archivée
 page.page_content.warning.empty_content: 'Au moins 1 contenu doit être remplit'
-page.msg.auto_save.success: __page.msg.auto_save.success
+page.msg.auto_save.success: 'Sauvegarde automatique effectuée à'

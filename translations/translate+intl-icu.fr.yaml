@@ -5,18 +5,10 @@ translate.select.language: 'Sélectionnez une langue'
 translate.select.file: 'Sélectionnez un fichier'
 translate.empty.file: 'Sélectionnez un fichier de traduction pour le modifier'
 translate.btn.save: Sauvegarder
-translate.btn.cache: 'Mise à jour du cache'
 translate.info.edit: 'Cette traduction à été éditée'
 translate.link.revert: Annuler
 translate.nb.edit: 'ligne(s) modifiée(s) (non sauvegardée(s))'
 translate.loading: 'En cours de traitement...'
-translate.description.2: "N'oubliez pas de rafraichir le cache pour prendre en compte les modifications effectuées sur les traductions"
-translate.cache.info: 'Vous êtes sur le point de recharger le cache applicatif, cette action peux prendre quelques minutes. Confirmez vous ?'
-translate.cache.wait: 'Rechargement du cache en cours..., cela peut prendre du temps'
-translate.cache.btn.close: Fermer
-translate.cache.btn.accept: 'Recharger le cache'
-translate.cache.success: 'Cache rechargé avec succès ! La page va ce recharger toute seule dans 3 secondes'
-translate.cache.titre: 'Rechargement du cache'
 translate.confirm.leave: "Des données n'ont pas encore été sauvegardées, confirmez vous de quitter cette page ?"
 translate.save.success: 'Traductions sauvegardées avec succès'
 translate.toast.title.success: 'Success !'
@@ -27,3 +19,13 @@ translate.block.search.sub.title: 'Choisissez le fichier à éditer en fonction 
 translate.select.language.label: Langue
 translate.select.file.label: Fichier
 translate.block.edit.sub.title: 'Editer les traductions du fichier sélectionné'
+translate.save.error: 'Traductions non sauvegardées : {nb, plural, one {# erreur détectée} other {# erreurs détectées}}'
+translate.save.error.invalid_payload: 'Les données envoyées sont invalides'
+translate.error.file: 'Fichier de traduction introuvable'
+translate.save.error.unknown_key: "Cette clé n'existe pas dans le fichier"
+translate.save.error.not_string: 'La valeur doit être une chaîne de caractères'
+translate.save.error.icu: 'Syntaxe ICU invalide ({error}), vérifiez les accolades et les paramètres'
+translate.error.request: 'Une erreur est survenue, veuillez réessayer'
+translate.search.placeholder: 'Filtrer par clé ou par valeur'
+translate.filter.untranslated: 'Uniquement les non traduites'
+translate.search.empty: 'Aucune traduction ne correspond à votre recherche'

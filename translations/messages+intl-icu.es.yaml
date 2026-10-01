@@ -21,7 +21,6 @@ global.red: __Rouge
 global.blue: __Bleu
 global.green: __Vert
 global.loading_save: '__Sauvegarde en cours'
-option_system.site_name: '__Nom de votre site'
 options_system.site_name: '__Nom de votre site'
 options_system.site_name_help: "__Uniquement des lettres, sans caractères spéciaux. Le nom du site apparaitra dans le footer, les mails, et dans l'administration"
 options_system.site_name_placeholder: '__Votre nom'
@@ -120,13 +119,12 @@ mail.account.adm.enable.title: '__Email information réactivation compte'
 mail.account.adm.enable.description: '__Email envoyé quand un compte user est réactivé (accès administratif)'
 mail.create.account.adm.title: '__Email information création de compte'
 mail.create.account.adm.description: "__Email envoyé quand un administrateur créé un compte pour accéder à l'administration"
-ail.self_disabled.title: '__Utilisateur qui désactive son compte de lui même'
+mail.self_disabled.title: '__Utilisateur qui désactive son compte de lui même'
 mail.self_disabled.description: '__Email envoyé quand un utilisateur décide de désactiver son compte de lui même'
 mail.self_delete.title: '__Utilisateur qui supprime son compte de lui même'
 mail.self_delete.description: '__Email envoyé quand un utilisateur décide de supprimer son compte de lui même'
 mail.self_anonymous.title: '__Utilisateur qui anonymise son compte de lui même'
 mail.self_anonymous.description: "__Email envoyé quand un utilisateur décide d'anonymiser son compte de lui même"
-_system.mail_signature: '__Signature email'
 options_system.mail_signature: '__Signature email'
 options_system.mail_signature_help: '__Texte présent au pied de chaque email qui sera envoyé depuis le CMS, HTML autorisé'
 options_system.mail_signature_placeholder: '__Saisissez une signature'
