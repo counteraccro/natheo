@@ -549,12 +549,7 @@ export default {
   </modal>
 
   <div class="toast-container position-fixed top-0 end-0 p-2">
-    <toast
-      :id="'toastSuccess'"
-      :option-class-header="'text-success'"
-      :show="this.toasts.toastSuccess.show"
-      @close-toast="this.closeToast('toastSuccess')"
-    >
+    <toast :id="'toastSuccess'" :show="this.toasts.toastSuccess.show" @close-toast="this.closeToast('toastSuccess')">
       <template #body>
         <div v-html="this.toasts.toastSuccess.msg"></div>
       </template>
@@ -562,7 +557,7 @@ export default {
 
     <toast
       :id="'toastError'"
-      :option-class-header="'text-danger'"
+      :type="'danger'"
       :show="this.toasts.toastError.show"
       @close-toast="this.closeToast('toastError')"
     >
