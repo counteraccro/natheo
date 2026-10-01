@@ -18,11 +18,11 @@ import type {
   UpdateEnvResponse,
   CheckActionResult,
   CheckActionBddResponse,
-} from '@/ts/Installation/InstallationStepOne';
+} from '@/ts/Installation/InstallationStepOne.type';
 import axios, { AxiosError } from 'axios';
 import SkeletonInstallationStepOne from '@/vue/Components/Skeleton/Installation/InstallationStepOne.vue';
 import Toast from '@/vue/Components/Global/Toast.vue';
-import { Toasts } from '@/ts/Toast/type';
+import { Toasts } from '@/ts/Toast/Toast.type';
 
 export default defineComponent({
   name: 'InstallationStepOne',

@@ -4,7 +4,7 @@
  * Modules intégrés de la toolbar markdown
  */
 
-import type { EditorModule, ToolbarDefinition } from '@/ts/MarkdownEditor/MarkdownEditor.types';
+import type { EditorModule, ToolbarDefinition } from '@/ts/MarkdownEditor/MarkdownEditor.type';
 
 // ─── Helper icônes ────────────────────────────────────────────────────────────
 

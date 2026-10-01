@@ -13,7 +13,7 @@ import Toast from '@/vue/Components/Global/Toast.vue';
 import SkeletonForm from '@/vue/Components/Skeleton/Form.vue';
 import SkeletonText from '@/vue/Components/Skeleton/Text.vue';
 import { InternalLinkModule } from '@/ts/MarkdownEditor/modules/internalLink';
-import { EditorModule } from '@/ts/MarkdownEditor/MarkdownEditor.types';
+import { EditorModule } from '@/ts/MarkdownEditor/MarkdownEditor.type';
 import InternalLink from '@/vue/Components/Global/MarkdownEditor/InternalLink.vue';
 import MediathequeModale from '@/vue/Components/Global/MarkdownEditor/Mediatheque.vue';
 import { MediaModule } from '@/ts/MarkdownEditor/modules/Mediatheque';
@@ -321,24 +321,13 @@ export default defineComponent({
   </div>
 
   <div class="toast-container position-fixed top-0 end-0 p-2">
-    <toast
-      :id="'toastSuccess'"
-      :option-class-header="'text-success'"
-      :show="toasts.toastSuccess.show"
-      @close-toast="closeToast"
-    >
+    <toast :id="'toastSuccess'" :show="toasts.toastSuccess.show" @close-toast="closeToast">
       <template #body>
         <div v-html="toasts.toastSuccess.msg"></div>
       </template>
     </toast>
 
-    <toast
-      :id="'toastError'"
-      :option-class-header="'text-danger'"
-      :show="toasts.toastError.show"
-      :type="'danger'"
-      @close-toast="closeToast"
-    >
+    <toast :id="'toastError'" :type="'danger'" :show="toasts.toastError.show" @close-toast="closeToast">
       <template #body>
         <div v-html="toasts.toastError.msg"></div>
       </template>

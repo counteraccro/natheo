@@ -77,6 +77,62 @@ class PageServiceTest extends AppWebTestCase
     }
 
     /**
+     * Test méthode getAllPaginate avec une recherche
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testGetAllPaginateWithSearch(): void
+    {
+        $user = $this->createUserContributeur();
+
+        // Page sans tag, titre correspondant dans toutes les langues
+        $pageTitre = $this->createPage($user);
+        foreach ($this->locales as $locale) {
+            $this->createPageTranslation($pageTitre, ['locale' => $locale, 'titre' => 'natheo-search-titre']);
+        }
+
+        // Page dont seul le label du tag en français correspond
+        $tag = $this->createTag();
+        $this->createTagTranslation($tag, ['locale' => 'fr', 'label' => 'natheo-search-tag']);
+        $this->createTagTranslation($tag, ['locale' => 'en', 'label' => 'other-label']);
+        $pageTag = $this->createPage($user);
+        $pageTag->addTag($tag);
+        $this->persistAndFlush($pageTag);
+        foreach ($this->locales as $locale) {
+            $this->createPageTranslation($pageTag, ['locale' => $locale, 'titre' => 'other-titre']);
+        }
+
+        // Page dont seul le titre anglais correspond
+        $pageEn = $this->createPage($user);
+        foreach ($this->locales as $locale) {
+            $titre = $locale === 'en' ? 'natheo-search-titre' : 'other-titre';
+            $this->createPageTranslation($pageEn, ['locale' => $locale, 'titre' => $titre]);
+        }
+
+        $queryParams = [
+            'search' => 'natheo-search',
+            'orderField' => 'id',
+            'order' => 'DESC',
+            'locale' => 'fr',
+        ];
+
+        $result = $this->pageService->getAllPaginate(1, 20, $queryParams);
+        $ids = array_map(fn(Page $page) => $page->getId(), iterator_to_array($result));
+        $this->assertEquals(2, $result->count());
+        $this->assertCount(2, $ids);
+        $this->assertContains($pageTitre->getId(), $ids);
+        $this->assertContains($pageTag->getId(), $ids);
+
+        $queryParams['locale'] = 'en';
+        $result = $this->pageService->getAllPaginate(1, 20, $queryParams);
+        $ids = array_map(fn(Page $page) => $page->getId(), iterator_to_array($result));
+        $this->assertEquals(2, $result->count());
+        $this->assertContains($pageTitre->getId(), $ids);
+        $this->assertContains($pageEn->getId(), $ids);
+    }
+
+    /**
      * Test méthode getStatusStr()
      * @return void
      * @throws ContainerExceptionInterface

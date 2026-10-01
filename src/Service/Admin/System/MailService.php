@@ -22,6 +22,7 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use App\Enum\Admin\Global\SvgIcon;
 
 class MailService extends AppAdminService
 {
@@ -213,9 +214,7 @@ class MailService extends AppAdminService
 
         // Bouton test email
         $actions[] = [
-            'label' => [
-                'm3.5 5.5 7.893 6.036a1 1 0 0 0 1.214 0L20.5 5.5M4 19h16a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Z',
-            ],
+            'label' => [SvgIcon::MAIL->value],
             'color' => 'success',
             'type' => 'get',
             'url' => $router->generate('admin_mail_send_demo_mail', ['id' => $mail->getId()]),

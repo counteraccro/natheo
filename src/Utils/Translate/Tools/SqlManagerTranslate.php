@@ -59,6 +59,10 @@ class SqlManagerTranslate extends AppTranslate
                 'sql_manager.toast.msg.save.error',
                 domain: 'sql_manager',
             ),
+            'toast_msg_load_error' => $this->translator->trans(
+                'sql_manager.toast.msg.load.error',
+                domain: 'sql_manager',
+            ),
             'toast_msg_save_success' => $this->translator->trans(
                 'sql_manager.toast.msg.save.success',
                 domain: 'sql_manager',

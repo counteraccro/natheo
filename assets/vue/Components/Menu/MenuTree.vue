@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { MenuElement, MenuElementTranslation, MenuTreeTranslate } from '@/ts/Menu/type';
+import { MenuElement, MenuElementTranslation, MenuTreeTranslate } from '@/ts/Menu/Menu.type';
 import Sortable from 'sortablejs';
 
 export default defineComponent({

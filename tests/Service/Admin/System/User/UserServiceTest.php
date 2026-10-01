@@ -127,9 +127,19 @@ class UserServiceTest extends AppWebTestCase
      */
     public function testGetByRole(): void
     {
-        $user = $this->createUserFounder();
+        $founder = $this->createUserFounder();
+        $superAdmin = $this->createUserSuperAdmin();
+        $this->createUserSuperAdmin(['disabled' => true]);
+        $contributeur = $this->createUserContributeur();
+
+        $result = $this->userService->getByRole(Role::ROLE_SUPER_ADMIN);
+        $this->assertCount(2, $result);
+        $this->assertEquals($founder->getId(), $result[0]->getId());
+        $this->assertEquals($superAdmin->getId(), $result[1]->getId());
+
         $result = $this->userService->getByRole(Role::ROLE_CONTRIBUTEUR);
         $this->assertCount(1, $result);
+        $this->assertEquals($contributeur->getId(), $result[0]->getId());
     }
 
     /**
@@ -194,5 +204,41 @@ class UserServiceTest extends AppWebTestCase
         $user = $this->createUser(['disabled' => true, 'anonymous' => true, 'password' => $password]);
         $result = $this->userService->getUserByEmailAndPassword($user->getEmail(), $password);
         $this->assertNull($result);
+    }
+
+    /**
+     * Test méthode canManage()
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testCanManage(): void
+    {
+        $founder = $this->createUserFounder();
+        $superAdmin = $this->createUserSuperAdmin();
+        $otherSuperAdmin = $this->createUserSuperAdmin();
+        $contributeur = $this->createUserContributeur();
+
+        $this->assertTrue($this->userService->canManage($contributeur, $superAdmin));
+        $this->assertFalse($this->userService->canManage($otherSuperAdmin, $superAdmin));
+        $this->assertFalse($this->userService->canManage($superAdmin, $superAdmin));
+        $this->assertFalse($this->userService->canManage($founder, $superAdmin));
+
+        $this->assertTrue($this->userService->canManage($superAdmin, $founder));
+        $this->assertFalse($this->userService->canManage($founder, $founder));
+    }
+
+    /**
+     * Test méthode isValidPassword()
+     * @return void
+     */
+    public function testIsValidPassword(): void
+    {
+        $this->assertTrue($this->userService->isValidPassword('Azerty123!'));
+        $this->assertFalse($this->userService->isValidPassword('Az1!'));
+        $this->assertFalse($this->userService->isValidPassword('azerty123!'));
+        $this->assertFalse($this->userService->isValidPassword('AZERTY123!'));
+        $this->assertFalse($this->userService->isValidPassword('Azertyuiop!'));
+        $this->assertFalse($this->userService->isValidPassword('Azerty1234'));
     }
 }

@@ -1,25 +1,28 @@
-<script>
+<script lang="ts">
 /**
  * Retourne le schema de la base de données
  * @author Gourdon Aymeric
- * @version 2.0
+ * @version 2.1
  */
+import { defineComponent, type PropType } from 'vue';
+import type { SchemaDatabaseData } from '@/ts/DatabaseManager/SchemaDatabase.type';
 
-export default {
-  name: 'schemaDatabase',
-  components: {},
+export default defineComponent({
+  name: 'SchemaDatabase',
   props: {
-    data: Object,
-    tableName: String,
+    data: {
+      type: Object as PropType<SchemaDatabaseData>,
+      required: true,
+    },
+    tableName: {
+      type: String,
+      default: '',
+    },
   },
-  emits: ['load-schema-table'],
-  data() {
-    return {};
+  emits: {
+    'load-schema-table': (table: string) => typeof table === 'string',
   },
-  mounted() {},
-  computed: {},
-  methods: {},
-};
+});
 </script>
 
 <template>
@@ -29,6 +32,7 @@ export default {
         <tr>
           <th
             v-for="(header, key) in data.header"
+            :key="key"
             class="px-6 py-3 text-xs font-medium uppercase tracking-wider text-[var(--text-secondary)] text-center"
           >
             {{ header }}
@@ -38,14 +42,19 @@ export default {
       <tbody class="divide-y divide-[var(--border-color)]">
         <tr
           v-for="row in data.result"
+          :key="String(row['table_name'])"
           class="hover:bg-[var(--bg-hover)]"
           :style="row['table_name'] === tableName ? 'background : var(--primary-lighter)' : ''"
         >
-          <td v-for="(header, key) in data.header" class="px-3 py-1 text-sm text-[var(--text-secondary)] text-center">
+          <td
+            v-for="key in Object.keys(data.header)"
+            :key="key"
+            class="px-3 py-1 text-sm text-[var(--text-secondary)] text-center"
+          >
             <button
               v-if="key === 'action'"
               class="btn btn-icon m-1 btn-xs btn-ghost-primary"
-              @click="$emit('load-schema-table', row['table_name'])"
+              @click="$emit('load-schema-table', String(row['table_name']))"
             >
               <svg
                 class="icon-sm"

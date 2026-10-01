@@ -2,7 +2,7 @@
 /**
  * Commande pour générer automatiquement les traductions
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  */
 declare(strict_types=1);
 
@@ -13,29 +13,36 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 #[
     AsCommand(
         name: 'natheo:translations:update',
-        description: 'Met à jour les fichiers de traduction pour les locales en, es et fr',
+        description: 'Met à jour les fichiers de traduction pour toutes les locales supportées (app.supported_locales)',
     ),
 ]
 class UpdateTranslationsCommand extends Command
 {
-    private const array SUPPORTED_LOCALES = ['en', 'es', 'fr'];
+    public function __construct(#[Autowire(param: 'app.supported_locales')] private readonly string $supportedLocales)
+    {
+        parent::__construct();
+    }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $io = new SymfonyStyle($input, $output);
-
-        foreach (self::SUPPORTED_LOCALES as $locale) {
+        foreach (explode('|', $this->supportedLocales) as $locale) {
             $this->extractLocale($locale, $output);
         }
 
         return Command::SUCCESS;
     }
 
+    /**
+     * Lance translation:extract pour une locale
+     * @param string $locale
+     * @param OutputInterface $output
+     * @return void
+     */
     private function extractLocale(string $locale, OutputInterface $output): void
     {
         $command = $this->getApplication()->find('translation:extract');

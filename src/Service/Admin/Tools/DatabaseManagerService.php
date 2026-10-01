@@ -78,14 +78,8 @@ class DatabaseManagerService extends AppAdminService
     {
         $kernel = $this->getKernel();
 
-        $fileSystem = new Filesystem();
-        $path = $kernel->getProjectDir() . DatabaseManagerData::getRootPath();
-        if (!$fileSystem->exists($path)) {
-            $fileSystem->mkdir($path);
-        }
-
         $finder = new Finder();
-        $finder->files()->in($path);
+        $finder->files()->in($kernel->getProjectDir() . DatabaseManagerData::getRootPath());
 
         $return = [];
         foreach ($finder as $file) {

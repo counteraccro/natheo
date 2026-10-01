@@ -19,6 +19,7 @@ use App\Service\Admin\GridService;
 use App\Service\Admin\MarkdownEditorService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Utils\Content\Media\MediaFolderConst;
+use App\Utils\Translate\Content\MediaTranslate;
 use App\Utils\Utils;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
@@ -91,6 +92,7 @@ class MediaFolderService extends AppAdminService
                 'optionSystemService' => OptionSystemService::class,
                 'gridService' => GridService::class,
                 'markdownEditorService' => MarkdownEditorService::class,
+                'mediaTranslate' => MediaTranslate::class,
             ]),
         ]
         protected ContainerInterface $handlers,
@@ -144,6 +146,17 @@ class MediaFolderService extends AppAdminService
     }
 
     /**
+     * Retourne la class MediaTranslate
+     * @return MediaTranslate
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getMediaTranslate(): MediaTranslate
+    {
+        return $this->handlers->get('mediaTranslate');
+    }
+
+    /**
      * Supprime l'ensemble des dossiers / fichiers de la médiathèque
      * Recréer le dossier racine
      * Appeler uniquement pour les fixtures
@@ -185,7 +198,9 @@ class MediaFolderService extends AppAdminService
         $filesystem = new Filesystem();
 
         if ($mediaFolder->getParent() != null && !$filesystem->exists($this->rootPathMedia . $mediaFolder->getPath())) {
-            return $this->createFolder($mediaFolder->getParent());
+            // S'assure que la chaîne des parents existe, puis continue pour créer $mediaFolder
+            // lui-même juste après : un simple "return" ici ne le créait jamais.
+            $this->createFolder($mediaFolder->getParent());
         }
 
         $path = $this->rootPathMedia . $mediaFolder->getPath() . DIRECTORY_SEPARATOR . $mediaFolder->getName();
@@ -314,6 +329,23 @@ class MediaFolderService extends AppAdminService
     }
 
     /**
+     * Vérifie si un dossier de même nom existe déjà au sein du même dossier parent, hors
+     * $excludeId (id du dossier en cours d'édition, à ignorer)
+     * @param string $name
+     * @param MediaFolder|null $parent
+     * @param int|null $excludeId
+     * @return bool
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function folderNameExistsInParent(string $name, ?MediaFolder $parent, ?int $excludeId = null): bool
+    {
+        /** @var MediaFolderRepository $repo */
+        $repo = $this->getRepository(MediaFolder::class);
+        return $repo->findOneByNameAndParent($name, $parent, $excludeId) !== null;
+    }
+
+    /**
      * Permet de créer un nouveau dossier en base de donnée ainsi que physiquement si l'option est activée
      * @param string $name
      * @param MediaFolder|null $parent
@@ -357,9 +389,21 @@ class MediaFolderService extends AppAdminService
     public function updateMediaFolder(string $name, MediaFolder $mediaFolder): void
     {
         $oldName = $mediaFolder->getName();
+        // Rien à faire : renommer à l'identique planterait le rename() physique (cible = origine).
+        if ($oldName === $name) {
+            return;
+        }
+
+        $parentPath = $mediaFolder->getPath();
+
+        // Chemin d'identité complet du dossier : un nom nu ("Doc") matcherait à tort
+        // n'importe quel dossier sans rapport dont le nom le contient ("Docker").
+        $oldFullPath = $parentPath . DIRECTORY_SEPARATOR . $oldName;
+        $newFullPath = $parentPath . DIRECTORY_SEPARATOR . $name;
+
         $mediaFolder->setName($name);
 
-        $this->updateAllPathChildren($oldName, $name);
+        $this->updateAllPathChildren($oldFullPath, $newFullPath);
 
         $this->save($mediaFolder);
 
@@ -388,8 +432,12 @@ class MediaFolderService extends AppAdminService
     }
 
     /**
-     * Met à jour tous les paths des dossiers enfants en remplaçant le nom du dossier old par new
+     * Met à jour tous les paths des dossiers enfants en remplaçant le préfixe de chemin old
+     * (le chemin complet, depuis la racine, du dossier renommé/déplacé) par new
      * met à jour tous les paths des médias contenu dans les dossiers enfants
+     * $old/$new doivent être des chemins complets (ex: "/Parent/Doc"), pas de simples noms :
+     * le remplacement n'agit que sur un segment de chemin complet (ancré), jamais sur une
+     * sous-chaîne arbitraire (renommer "/Doc" en "/Documents" ne doit pas toucher "/Docker")
      * @param string $old
      * @param string $new
      * @return void
@@ -398,11 +446,12 @@ class MediaFolderService extends AppAdminService
      */
     private function updateAllPathChildren(string $old, string $new): void
     {
-        $oldNormalized = preg_replace('#/{2,}#', '/', str_replace('\\', '/', $old));
-        $newNormalized = preg_replace('#/{2,}#', '/', str_replace('\\', '/', $new));
+        $oldNormalized = rtrim(preg_replace('#/{2,}#', '/', str_replace('\\', '/', $old)), '/');
+        $newNormalized = rtrim(preg_replace('#/{2,}#', '/', str_replace('\\', '/', $new)), '/');
 
-        $patternPath = '#' . preg_quote($oldNormalized, '#') . '#';
-        $patternWebPath = '#' . preg_quote($oldNormalized, '#') . '#';
+        // Ancré en tout début de chaîne + lookahead (?=/|$) : un segment de chemin complet,
+        // jamais une sous-chaîne ("/Doc" ne doit pas toucher "/Docker").
+        $patternPath = '#^' . preg_quote($oldNormalized, '#') . '(?=/|$)#';
 
         /** @var MediaFolderRepository $repo */
         $repo = $this->getRepository(MediaFolder::class);
@@ -410,7 +459,9 @@ class MediaFolderService extends AppAdminService
 
         $nb = count($listMediaFolder);
         foreach ($listMediaFolder as $i => $mediaFolderChildren) {
-            $mediaFolderChildren->setPath(preg_replace($patternPath, $newNormalized, $mediaFolderChildren->getPath()));
+            $mediaFolderChildren->setPath(
+                preg_replace($patternPath, $newNormalized, $mediaFolderChildren->getPath(), 1),
+            );
             $repo->save($mediaFolderChildren, $i === $nb - 1);
         }
 
@@ -420,8 +471,17 @@ class MediaFolderService extends AppAdminService
 
         $nb = count($listeMedia);
         foreach ($listeMedia as $i => $media) {
-            $media->setPath(preg_replace($patternPath, $newNormalized, $media->getPath()));
-            $media->setWebPath(preg_replace($patternWebPath, $newNormalized, $media->getWebPath()));
+            $media->setPath(preg_replace($patternPath, $newNormalized, $media->getPath(), 1));
+
+            // webPathMedia (préfixe fixe) peut lui-même contenir "/assets" : on le retire avant
+            // de matcher, pour ne jamais toucher une occurrence qui lui appartiendrait.
+            $webPath = $media->getWebPath();
+            if (str_starts_with($webPath, $this->webPathMedia)) {
+                $rest = substr($webPath, strlen($this->webPathMedia));
+                $webPath = $this->webPathMedia . preg_replace($patternPath, $newNormalized, $rest, 1);
+            }
+            $media->setWebPath($webPath);
+
             $repoM->save($media, $i === $nb - 1);
         }
     }
@@ -454,26 +514,17 @@ class MediaFolderService extends AppAdminService
      */
     public function getAllDataForModalMove(int $id, string $type = 'media'): array
     {
-        $translator = $this->getTranslator();
+        $mediaTranslate = $this->getMediaTranslate();
 
         if ($type === 'media') {
             /** @var Media $entity */
             $entity = $this->findOneById(Media::class, $id);
             $folder = $entity->getMediaFolder();
-
-            $label = $translator->trans(
-                'media.mediatheque.move.label.media',
-                ['name' => $entity->getName()],
-                domain: 'media',
-            );
+            $label = $mediaTranslate->getMoveLabelMedia($entity->getName());
         } else {
             /** @var MediaFolder $folder */
             $folder = $this->findOneById(MediaFolder::class, $id);
-            $label = $translator->trans(
-                'media.mediatheque.move.label.folder',
-                ['name' => $folder->getName()],
-                domain: 'media',
-            );
+            $label = $mediaTranslate->getMoveLabelFolder($folder->getName());
         }
 
         $return = [];

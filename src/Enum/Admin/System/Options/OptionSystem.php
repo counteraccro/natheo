@@ -22,11 +22,6 @@ enum OptionSystem: string
     case OS_THEME_SITE = 'OS_THEME_SITE';
 
     /**
-     * Clé pour le logo du site
-     */
-    case OS_LOGO_SITE = 'OS_LOGO_SITE';
-
-    /**
      * Clé option site ouvert
      * @var string
      */

@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin\Tools;
 
 use App\Enum\Admin\Global\Breadcrumb;
+use App\Enum\Admin\Tools\DatabaseManager\DatabaseManagerData;
 use App\Message\Tools\DumpSql;
 use App\Service\Admin\Tools\DatabaseManagerService;
 use App\Utils\Global\Database\DataBase;
@@ -17,9 +18,11 @@ use App\Utils\Translate\Tools\DatabaseManagerTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Messenger\Exception\ExceptionInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Attribute\Route;
@@ -81,13 +84,14 @@ class DatabaseManagerController extends AbstractController
     /**
      * Schéma d'une table
      * @param DatabaseManagerService $databaseManagerService
-     * @param $table
+     * @param string $table
      * @return JsonResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @throws \Doctrine\DBAL\Exception
      */
     #[Route('/ajax/load-schema-table/{table}', name: 'load_schema_table', methods: ['GET'])]
-    public function schemaTable(DatabaseManagerService $databaseManagerService, $table = null): JsonResponse
+    public function schemaTable(DatabaseManagerService $databaseManagerService, string $table = ''): JsonResponse
     {
         $result = $databaseManagerService->getSchemaTableByTable($table);
         return $this->json(['result' => $result]);
@@ -105,20 +109,76 @@ class DatabaseManagerController extends AbstractController
     }
 
     /**
+     * Lance la génération d'un dump SQL en arrière-plan
      * @param MessageBusInterface $bus
      * @param Request $request
      * @param TranslatorInterface $translator
+     * @param DatabaseManagerService $databaseManagerService
      * @return JsonResponse
      * @throws ExceptionInterface
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/save-database', name: 'save_database', methods: ['POST'])]
-    public function saveBdd(MessageBusInterface $bus, Request $request, TranslatorInterface $translator): JsonResponse
-    {
+    public function saveBdd(
+        MessageBusInterface $bus,
+        Request $request,
+        TranslatorInterface $translator,
+        DatabaseManagerService $databaseManagerService,
+    ): JsonResponse {
+        if (!$this->isCsrfTokenValid('database_manager_save_database', $request->headers->get('X-CSRF-TOKEN'))) {
+            return $this->jsonCsrfError($translator);
+        }
+
         $data = json_decode($request->getContent(), true);
-        $bus->dispatch(new DumpSql($data['options'], $this->getUser()->getId()));
-        $return['msg'] = $translator->trans('database_manager.success.dump', domain: 'database_manager');
-        $return['success'] = true;
-        return $this->json($return);
+        $options = is_array($data) ? $data['options'] ?? null : null;
+
+        $all = filter_var($options['all'] ?? true, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+        $tables = $options['tables'] ?? [];
+        if (
+            !is_array($options) ||
+            $all === null ||
+            !is_array($tables) ||
+            array_filter($tables, fn($table) => !is_string($table)) !== [] ||
+            (!$all && $tables === []) ||
+            !in_array($options['data'] ?? null, DatabaseManagerData::getDataTypes(), true)
+        ) {
+            return $this->json([
+                'success' => false,
+                'msg' => $translator->trans('database_manager.error.dump.options', domain: 'database_manager'),
+            ]);
+        }
+
+        $filename = trim((string) ($options['filename'] ?? ''));
+        if ($filename !== '' && !DatabaseManagerData::isValidName($filename)) {
+            return $this->json([
+                'success' => false,
+                'msg' => $translator->trans('database_manager.error.dump.filename', domain: 'database_manager'),
+            ]);
+        }
+        if ($filename !== '' && $databaseManagerService->isDumpExist($filename)) {
+            return $this->json([
+                'success' => false,
+                'msg' => $translator->trans(
+                    'database_manager.error.dump.filename.exist',
+                    ['fichier' => $filename . DatabaseManagerData::FILE_DUMP_EXTENSION->value],
+                    domain: 'database_manager',
+                ),
+            ]);
+        }
+
+        $options = [
+            'filename' => $filename,
+            'all' => $all,
+            'tables' => array_values($tables),
+            'data' => $options['data'],
+        ];
+        $bus->dispatch(new DumpSql($options, $this->getUser()->getId(), $request->getLocale()));
+
+        return $this->json([
+            'success' => true,
+            'msg' => $translator->trans('database_manager.success.dump', domain: 'database_manager'),
+        ]);
     }
 
     /**
@@ -138,6 +198,7 @@ class DatabaseManagerController extends AbstractController
      * Supprime un fichier dump
      * @param DatabaseManagerService $databaseManagerService
      * @param TranslatorInterface $translator
+     * @param Request $request
      * @param string $filename
      * @return JsonResponse
      * @throws ContainerExceptionInterface
@@ -147,8 +208,13 @@ class DatabaseManagerController extends AbstractController
     public function deleteDumpFile(
         DatabaseManagerService $databaseManagerService,
         TranslatorInterface $translator,
+        Request $request,
         string $filename = '',
     ): JsonResponse {
+        if (!$this->isCsrfTokenValid('database_manager_delete_dump_file', $request->headers->get('X-CSRF-TOKEN'))) {
+            return $this->jsonCsrfError($translator);
+        }
+
         $result = $databaseManagerService->deleteDumpFile($filename);
 
         $return['msg'] = $translator->trans(
@@ -163,5 +229,42 @@ class DatabaseManagerController extends AbstractController
         }
 
         return $this->json($return);
+    }
+
+    /**
+     * Télécharge un fichier dump
+     * @param DatabaseManagerService $databaseManagerService
+     * @param string $filename
+     * @return BinaryFileResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/download-dump-file/{filename}', name: 'download_dump_file', methods: ['GET'])]
+    public function downloadDumpFile(
+        DatabaseManagerService $databaseManagerService,
+        string $filename,
+    ): BinaryFileResponse {
+        $path = $databaseManagerService->getDumpFilePath($filename);
+        if ($path === null) {
+            throw $this->createNotFoundException();
+        }
+
+        return $this->file($path, $filename, ResponseHeaderBag::DISPOSITION_ATTACHMENT);
+    }
+
+    /**
+     * Retourne une réponse JSON d'erreur pour un jeton CSRF invalide
+     * @param TranslatorInterface $translator
+     * @return JsonResponse
+     */
+    private function jsonCsrfError(TranslatorInterface $translator): JsonResponse
+    {
+        return $this->json(
+            [
+                'success' => false,
+                'msg' => $translator->trans('database_manager.error.csrf', domain: 'database_manager'),
+            ],
+            Response::HTTP_FORBIDDEN,
+        );
     }
 }

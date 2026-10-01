@@ -182,4 +182,49 @@ class OptionSystemServiceTest extends AppWebTestCase
         $result = $this->optionSystemService->canNotification();
         $this->assertFalse($result);
     }
+
+    /**
+     * Test méthode getOptionConfigByKey()
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testGetOptionConfigByKey(): void
+    {
+        $result = $this->optionSystemService->getOptionConfigByKey(OptionSystemEnum::OS_THEME_SITE->value);
+        $this->assertIsArray($result);
+        $this->assertEquals('select', $result['type']);
+
+        $this->assertNull($this->optionSystemService->getOptionConfigByKey('OS_KEY_NOT_EXIST'));
+    }
+
+    /**
+     * Test méthode updateValueFromAdmin()
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testUpdateValueFromAdmin(): void
+    {
+        $this->assertTrue(
+            $this->optionSystemService->updateValueFromAdmin(OptionSystemEnum::OS_THEME_SITE->value, 'green'),
+        );
+        $this->assertEquals('green', $this->optionSystemService->getValueByKey(OptionSystemEnum::OS_THEME_SITE->value));
+
+        $this->assertFalse(
+            $this->optionSystemService->updateValueFromAdmin(OptionSystemEnum::OS_THEME_SITE->value, 'orange'),
+        );
+        $this->assertEquals('green', $this->optionSystemService->getValueByKey(OptionSystemEnum::OS_THEME_SITE->value));
+
+        $mediaPath = $this->optionSystemService->getValueByKey(OptionSystemEnum::OS_MEDIA_PATH->value);
+        $this->assertFalse(
+            $this->optionSystemService->updateValueFromAdmin(OptionSystemEnum::OS_MEDIA_PATH->value, '../../..'),
+        );
+        $this->assertEquals(
+            $mediaPath,
+            $this->optionSystemService->getValueByKey(OptionSystemEnum::OS_MEDIA_PATH->value),
+        );
+
+        $this->assertFalse($this->optionSystemService->updateValueFromAdmin('OS_KEY_NOT_EXIST', 'value'));
+    }
 }

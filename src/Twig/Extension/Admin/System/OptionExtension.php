@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace App\Twig\Extension\Admin\System;
 
 use App\Entity\Admin\System\OptionSystem;
-use App\Entity\Admin\System\OptionUser;
 use App\Service\Admin\System\OptionSystemService;
 use App\Service\Admin\System\OptionUserService;
 use App\Twig\Extension\Admin\AppAdminExtension;
@@ -37,16 +36,10 @@ class OptionExtension extends AppAdminExtension
     private OptionUserService $optionUserService;
 
     /**
-     * Liste des options système récupéré depuis la base de donnée
+     * Liste des options (système ou user) récupérées depuis la base de donnée
      * @var array
      */
     private array $listOptionSystem;
-
-    /**
-     * Liste des options users
-     * @var array
-     */
-    private array $listOptionUser;
 
     /**
      * Clé globale du fichier de config
@@ -180,7 +173,7 @@ class OptionExtension extends AppAdminExtension
             $html .= '</div>';
 
             foreach ($optionsConfig[$this->globalKey][$category]['options'] as $keyOption => $element) {
-                $html .= '<div class="form-group mb-3 border-b border-[var(--border-color)] pb-5 last:border-0 p-5">';
+                $html .= '<div class="border-b border-[var(--border-color)] p-5 last:border-0">';
 
                 switch ($element['type']) {
                     case 'text':
@@ -216,10 +209,10 @@ class OptionExtension extends AppAdminExtension
      */
     private function generateInputText(string $key, array $element): string
     {
-        $require = $msgError = $placeholder = $labelRequire = '';
+        $require = $placeholder = $labelRequire = '';
+        $msgError = $this->getError($key, $element);
         if (isset($element['required'])) {
             $require = 'required="required"';
-            $msgError = $this->getError($key, $element);
             $labelRequire = ' <span class="text-[var(--error-text)]">*</span>';
         }
 
@@ -247,7 +240,7 @@ class OptionExtension extends AppAdminExtension
             ' ' .
             $placeholder .
             ' value="' .
-            $this->getValueByKey($key) .
+            $this->escape($this->getValueByKey($key)) .
             '" ' .
             $disabled .
             '>' .
@@ -319,10 +312,10 @@ class OptionExtension extends AppAdminExtension
      */
     private function generateTextarea(string $key, array $element): string
     {
-        $require = $msgError = $placeholder = $labelRequire = '';
+        $require = $placeholder = $labelRequire = '';
+        $msgError = $this->getError($key, $element);
         if (isset($element['required'])) {
             $require = 'required="required"';
-            $msgError = $this->getError($key, $element);
             $labelRequire = ' <span class="text-[var(--error-text)]">*</span>';
         }
 
@@ -352,7 +345,7 @@ class OptionExtension extends AppAdminExtension
             ' ' .
             $disabled .
             '>' .
-            $this->getValueByKey($key) .
+            $this->escape($this->getValueByKey($key)) .
             '</textarea>' .
             $msgError;
 
@@ -390,7 +383,8 @@ class OptionExtension extends AppAdminExtension
             }
 
             $optionLabel = $this->translator->trans($option[1]);
-            $optionHtml .= '<option value="' . $option[0] . '" ' . $selected . '>' . $optionLabel . '</option>';
+            $optionHtml .=
+                '<option value="' . $this->escape($option[0]) . '" ' . $selected . '>' . $optionLabel . '</option>';
         }
 
         $html =
@@ -503,22 +497,23 @@ class OptionExtension extends AppAdminExtension
      */
     private function getValueByKey(string $key): string
     {
-        if (!empty($this->optionSystemService)) {
-            foreach ($this->listOptionSystem as $optionSystem) {
-                /* @var OptionSystem $optionSystem */
-                if ($optionSystem->getKey() === $key) {
-                    return $optionSystem->getValue();
-                }
-            }
-        } else {
-            foreach ($this->listOptionUser as $optionUser) {
-                /* @var OptionUser $optionUser */
-                if ($optionUser->getKey() === $key) {
-                    return $optionUser->getValue();
-                }
+        foreach ($this->listOptionSystem as $option) {
+            /* @var OptionSystem $option */
+            if ($option->getKey() === $key) {
+                return $option->getValue() ?? '';
             }
         }
         return '';
+    }
+
+    /**
+     * Échappe une valeur pour l'injecter dans le HTML (contenu ou attribut)
+     * @param string $value
+     * @return string
+     */
+    private function escape(string $value): string
+    {
+        return htmlspecialchars($value, ENT_QUOTES | ENT_HTML5, 'UTF-8');
     }
 
     /**
@@ -531,6 +526,6 @@ class OptionExtension extends AppAdminExtension
     #[AsTwigFunction('get_option_system_value_by_key')]
     public function getOptionValueByKey(string $key): string
     {
-        return $this->optionSystemService->getValueByKey($key);
+        return $this->optionSystemService->getValueByKey($key) ?? '';
     }
 }

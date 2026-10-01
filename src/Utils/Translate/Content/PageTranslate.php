@@ -46,16 +46,10 @@ class PageTranslate extends AppTranslate
             'onglet_comments' => $this->translator->trans('page.onglet.comments', domain: 'page'),
             'onglet_menu' => $this->translator->trans('page.onglet.menu', domain: 'page'),
             'onglet_history' => $this->translator->trans('page.onglet.history', domain: 'page'),
-            'onglet_save' => $this->translator->trans('page.onglet.save', domain: 'page'),
             'onglet_information' => $this->translator->trans('page.onglet.information', domain: 'page'),
             'loading' => $this->translator->trans('page.loading', domain: 'page'),
-            'msg_auto_save_success' => $this->translator->trans('page.msg.auto_save.success', domain: 'page'),
             'tag_title' => $this->translator->trans('page.onglet.tag.title', domain: 'page'),
             'tag_sub_title' => $this->translator->trans('page.onglet.tag.sub_title', domain: 'page'),
-            'msg_add_tag_success' => $this->translator->trans('page.onglet.tag.msg.add_tag_success', domain: 'page'),
-            'msg_del_tag_success' => $this->translator->trans('page.onglet.tag.msg.del_tag_success', domain: 'page'),
-            'msg_remove_content_success' => $this->translator->trans('page.msg.remove_content_success', domain: 'page'),
-            'msg_add_content_success' => $this->translator->trans('page.msg.add_content_success', domain: 'page'),
             'msg_titre_restore_history' => $this->translator->trans('page.msg.titre.restore.history', domain: 'page'),
             'msg_btn_restore_history' => $this->translator->trans('page.msg.btn.restore.history', domain: 'page'),
             'msg_btn_cancel_restore_history' => $this->translator->trans(
@@ -69,7 +63,6 @@ class PageTranslate extends AppTranslate
             'btn_new' => $this->translator->trans('page.btn.new', domain: 'page'),
             'auto_save_success' => $this->translator->trans('page.msg.auto_save.success', domain: 'page'),
             'auto_save_error' => $this->translator->trans('page.msg.auto_save.error', domain: 'page'),
-            'auto_save_run' => $this->translator->trans('page.msg.auto_save.run', domain: 'page'),
             'page_content_form' => $this->getTranslatePageContentForm(),
             'page_content' => $this->getTranslatePageContent(),
             'page_history' => $this->getTranslatePageHistory(),
@@ -85,8 +78,6 @@ class PageTranslate extends AppTranslate
     {
         return [
             'title' => $this->translator->trans('page.page_seo.title', domain: 'page'),
-            'help_legend' => $this->translator->trans('page.page_seo.help.legend', domain: 'page'),
-            'help_description' => $this->translator->trans('page.page_seo.help.description', domain: 'page'),
             'input_meta_description_label' => $this->translator->trans(
                 'page.page_seo.input.meta_description.label',
                 domain: 'page',
@@ -216,24 +207,12 @@ class PageTranslate extends AppTranslate
                     'page.page_content_block.btn.delete_content',
                     domain: 'page',
                 ),
-                'btn_change_content' => $this->translator->trans(
-                    'page.page_content_block.btn.change_content',
-                    domain: 'page',
-                ),
-                'btn_move_content' => $this->translator->trans(
-                    'page.page_content_block.btn.move_content',
-                    domain: 'page',
-                ),
                 'modale_remove_title' => $this->translator->trans(
                     'page.page_content_block.modale.remove.title',
                     domain: 'page',
                 ),
                 'modale_remove_body' => $this->translator->trans(
                     'page.page_content_block.modale.remove.body',
-                    domain: 'page',
-                ),
-                'modale_remove_body_2' => $this->translator->trans(
-                    'page.page_content_block.modale.remove.body.2',
                     domain: 'page',
                 ),
                 'modale_remove_btn_confirm' => $this->translator->trans(
@@ -349,35 +328,6 @@ class PageTranslate extends AppTranslate
                 domain: 'page',
             ),
             'auto_complete_help' => $this->translator->trans('page.tag.auto_complete.help', domain: 'page'),
-            'auto_complete_btn' => $this->translator->trans('page.tag.auto_complete.btn', domain: 'page'),
-            'auto_complete_btn_loading' => $this->translator->trans(
-                'page.tag.auto_complete.btn.loading',
-                domain: 'page',
-            ),
-            'auto_complete_empty_result' => $this->translator->trans(
-                'page.tag.auto_complete.empty.result',
-                domain: 'page',
-            ),
         ];
-    }
-
-    /**
-     * Retourne les traductions pour le preview
-     * @return array[]
-     */
-    public function getTranslatePreview(): array
-    {
-        return [
-            'preview_content' => $this->getTranslatePreviewContent(),
-        ];
-    }
-
-    /**
-     * Traduction du bloc content
-     * @return array
-     */
-    private function getTranslatePreviewContent(): array
-    {
-        return [];
     }
 }

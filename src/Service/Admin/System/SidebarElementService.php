@@ -13,12 +13,18 @@ namespace App\Service\Admin\System;
 use App\Entity\Admin\System\SidebarElement;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
+use App\Enum\Admin\Global\SvgIcon;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
 class SidebarElementService extends AppAdminService
 {
+    /**
+     * Identifiant du jeton CSRF pour masquer / afficher un sidebarElement
+     */
+    public const string CSRF_TOKEN_UPDATE_DISABLED = 'sidebar_update_disabled';
+
     /**
      * Récupère l'ensemble des sidebarElement parent
      * @param bool $disabled
@@ -81,32 +87,19 @@ class SidebarElementService extends AppAdminService
 
             $parent = '---';
             if ($element->getParent() !== null) {
-                $parent =
-                    '<span class="flex items-center"> <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="' .
-                    $element->getParent()->getIcon() .
-                    '"></path></svg>' .
-                    $translator->trans($element->getParent()->getLabel()) .
-                    '</span>';
+                $parent = $this->getLabelWithIcon($element->getParent());
             }
-
-            $icon =
-                '<span class="flex items-center"> <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="' .
-                $element->getIcon() .
-                '"></path></svg>' .
-                $translator->trans($element->getLabel()) .
-                '</span>';
+            $icon = $this->getLabelWithIcon($element);
 
             $action = $this->generateTabAction($element);
 
             $isLock = '';
             if ($element->isLock()) {
-                $isLock = '<i class="bi bi-lock-fill"></i>';
+                $isLock = SvgIcon::LOCK->render('inline w-4 h-4');
             }
             $isDisabled = '';
             if ($element->isDisabled()) {
-                $isDisabled = '<i class="bi bi-eye-slash"></i>';
+                $isDisabled = SvgIcon::EYE_SLASH->render('inline w-4 h-4');
             }
 
             $data[] = [
@@ -157,13 +150,12 @@ class SidebarElementService extends AppAdminService
     {
         $translator = $this->getTranslator();
         $router = $this->getRouter();
+        $csrfToken = $this->getCsrfTokenManager()->getToken(self::CSRF_TOKEN_UPDATE_DISABLED)->getValue();
 
         $actionDisabled = '';
         if (!$element->isLock()) {
             $actionDisabled = [
-                'label' => [
-                    'M3.933 13.909A4.357 4.357 0 0 1 3 12c0-1 4-6 9-6m7.6 3.8A5.068 5.068 0 0 1 21 12c0 1-3 6-9 6-.314 0-.62-.014-.918-.04M5 19 19 5m-4 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z',
-                ],
+                'label' => [SvgIcon::EYE_SLASH->value],
                 'color' => 'primary',
                 'url' => $router->generate('admin_sidebar_update_disabled', ['id' => $element->getId()]),
                 'type' => 'put',
@@ -171,15 +163,10 @@ class SidebarElementService extends AppAdminService
                 'confirm' => true,
                 'msgConfirm' => $translator->trans(
                     'sidebar.confirm.disabled.msg',
-                    [
-                        '{label}' =>
-                            '<i class="bi ' .
-                            $element->getIcon() .
-                            '"></i> ' .
-                            $translator->trans($element->getLabel()),
-                    ],
+                    ['label' => $this->getLabelWithIcon($element)],
                     'sidebar',
                 ),
+                'csrf' => $csrfToken,
             ];
             if ($element->isDisabled()) {
                 $actionDisabled = [
@@ -191,6 +178,7 @@ class SidebarElementService extends AppAdminService
                     'type' => 'put',
                     'url' => $router->generate('admin_sidebar_update_disabled', ['id' => $element->getId()]),
                     'ajax' => true,
+                    'csrf' => $csrfToken,
                 ];
             }
         }
@@ -201,5 +189,20 @@ class SidebarElementService extends AppAdminService
         }
 
         return $action;
+    }
+
+    /**
+     * Retourne le label traduit d'un sidebarElement précédé de son icône
+     * @param SidebarElement $element
+     * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getLabelWithIcon(SidebarElement $element): string
+    {
+        return '<span class="inline-flex items-center">' .
+            SvgIcon::renderPath($element->getIcon(), 'w-4 h-4 mr-2') .
+            htmlspecialchars($this->getTranslator()->trans($element->getLabel())) .
+            '</span>';
     }
 }

@@ -20,7 +20,7 @@ import type {
   FiltersState,
   ToastsState,
   UpdateModerationResponse,
-} from '@/ts/Comment/commentModeration.type';
+} from '@/ts/Comment/CommentModeration.type';
 import SkeletonCommentModeration from '@/vue/Components/Skeleton/CommentModeration.vue';
 
 export default defineComponent({

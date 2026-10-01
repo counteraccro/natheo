@@ -5,7 +5,7 @@
  * @version 2.0
  */
 import { defineComponent, PropType } from 'vue';
-import { Locales, Page, PageData, PageTranslationItem, PageTranslations, Urls } from '@/ts/Page/type';
+import { Locales, Page, PageData, PageTranslationItem, PageTranslations, Urls } from '@/ts/Page/Page.type';
 import axios from 'axios';
 
 type PageContentFieldErrors = {
@@ -173,7 +173,7 @@ export default defineComponent({
       deep: true,
       handler(value: PageContentErrorsByLocale) {
         this.$emit('update:section-errors', {
-          section: 'content',
+          section: 'information',
           hasError: this.hasError,
           errorsByLocale: value,
         });

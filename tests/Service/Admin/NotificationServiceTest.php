@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace App\Tests\Service\Admin;
 
 use App\Entity\Admin\Notification;
-use App\Enum\Admin\Global\Notification\KeyConfig;
+use App\Enum\Admin\Global\Notification\NotificationKeyConfig;
 use App\Enum\Admin\Global\Notification\Notification as NotificationEnum;
 use App\Entity\Admin\System\User;
 use App\Enum\Admin\System\Options\OptionSystem;
@@ -66,9 +66,9 @@ class NotificationServiceTest extends AppWebTestCase
         $notification = $user->getNotifications()->first();
 
         $tab = NotificationEnum::getNotification(NotificationEnum::SELF_DELETE->value);
-        $this->assertEquals($tab[KeyConfig::TITLE->value], $notification->getTitle());
-        $this->assertEquals($tab[KeyConfig::CONTENT->value], $notification->getContent());
-        $this->assertEquals($tab[KeyConfig::LEVEL->value], $notification->getLevel());
+        $this->assertEquals($tab[NotificationKeyConfig::TITLE->value], $notification->getTitle());
+        $this->assertEquals($tab[NotificationKeyConfig::CONTENT->value], $notification->getContent());
+        $this->assertEquals($tab[NotificationKeyConfig::LEVEL->value], $notification->getLevel());
     }
 
     /**
@@ -97,9 +97,9 @@ class NotificationServiceTest extends AppWebTestCase
         $notification = $user->getNotifications()->first();
 
         $tab = NotificationEnum::getNotification(NotificationEnum::SELF_DISABLED->value);
-        $this->assertEquals($tab[KeyConfig::TITLE->value], $notification->getTitle());
-        $this->assertEquals($tab[KeyConfig::CONTENT->value], $notification->getContent());
-        $this->assertEquals($tab[KeyConfig::LEVEL->value], $notification->getLevel());
+        $this->assertEquals($tab[NotificationKeyConfig::TITLE->value], $notification->getTitle());
+        $this->assertEquals($tab[NotificationKeyConfig::CONTENT->value], $notification->getContent());
+        $this->assertEquals($tab[NotificationKeyConfig::LEVEL->value], $notification->getLevel());
     }
 
     /**
@@ -205,6 +205,38 @@ class NotificationServiceTest extends AppWebTestCase
         $this->notificationService->purge(0, $user->getId());
         $nb = $this->notificationService->getNbByUser($user);
         $this->assertEquals(5, $nb);
+    }
+
+    /**
+     * test méthode purge() : seules les notifications lues plus anciennes que le nombre de jours sont supprimées
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testPurgeOnlyOldReadNotifications(): void
+    {
+        $user = $this->createUser();
+        $oldIds = [];
+        for ($i = 0; $i < 3; $i++) {
+            $oldIds[] = $this->createNotification($user, ['read' => true])->getId();
+        }
+        $this->createNotification($user, ['read' => true]);
+        $this->createNotification($user, ['read' => false]);
+
+        $connection = $this->em->getConnection();
+        $connection->executeStatement(
+            'UPDATE notification SET created_at = :date WHERE id IN (' . implode(',', $oldIds) . ')',
+            ['date' => (new \DateTime('-10 days'))->format('Y-m-d H:i:s')],
+        );
+
+        $this->notificationService->purge(5, $user->getId());
+
+        $this->assertEquals(
+            2,
+            $connection->fetchOne('SELECT COUNT(id) FROM notification WHERE user_id = :user', [
+                'user' => $user->getId(),
+            ]),
+        );
     }
 
     /**

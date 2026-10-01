@@ -14,7 +14,7 @@ use App\Entity\Admin\System\UserData;
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Admin\AppAdminService;
 use App\Utils\Api\ApiConst;
-use App\Utils\System\User\UserDataKey;
+use App\Enum\Admin\System\User\UserDataKey;
 use DateTime;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -79,7 +79,7 @@ class UserDataService extends AppAdminService
      */
     public function getLastConnexion(User $user): ?DateTime
     {
-        $userData = $user->getUserDataByKey(UserDataKey::KEY_LAST_CONNEXION);
+        $userData = $user->getUserDataByKey(UserDataKey::LAST_CONNEXION->value);
 
         if ($userData === null) {
             return null;
@@ -98,7 +98,7 @@ class UserDataService extends AppAdminService
      */
     public function getHelpFirstConnexion(User $user): bool
     {
-        $userData = $user->getUserDataByKey(UserDataKey::KEY_HELP_FIRST_CONNEXION);
+        $userData = $user->getUserDataByKey(UserDataKey::HELP_FIRST_CONNEXION->value);
 
         if ($userData === null) {
             return false;
@@ -108,6 +108,47 @@ class UserDataService extends AppAdminService
             return true;
         }
         return false;
+    }
+
+    /**
+     * Génère une clé de réinitialisation du mot de passe pour le user.
+     * Seul le hash de la clé est stocké, la clé en clair est retournée pour être envoyée par mail
+     * @param User $user
+     * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function generateResetPasswordKey(User $user): string
+    {
+        $key = ByteString::fromRandom(48)->toString();
+        $this->update(UserDataKey::RESET_PASSWORD->value, self::hashResetPasswordKey($key), $user);
+        return $key;
+    }
+
+    /**
+     * Retourne le hash d'une clé de réinitialisation du mot de passe
+     * @param string $key
+     * @return string
+     */
+    public static function hashResetPasswordKey(string $key): string
+    {
+        return hash('sha256', $key);
+    }
+
+    /**
+     * Supprime la clé de réinitialisation du mot de passe du user
+     * @param User $user
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function removeResetPasswordKey(User $user): void
+    {
+        $userData = $this->findKeyAndUser(UserDataKey::RESET_PASSWORD->value, $user);
+        if ($userData !== null) {
+            $user->removeUserData($userData);
+            $this->remove($userData);
+        }
     }
 
     /**
@@ -121,7 +162,7 @@ class UserDataService extends AppAdminService
     public function generateUserToken(User $user): string
     {
         $token = ByteString::fromRandom(ApiConst::API_SIZE_USER_TOKEN)->toString();
-        $this->update(UserDataKey::KEY_TOKEN_CONNEXION, $token, $user);
+        $this->update(UserDataKey::TOKEN_CONNEXION->value, $token, $user);
 
         $optionSystem = $this->getOptionSystemService();
         $timeToAdd = $optionSystem->getValueByKey(OptionSystem::OS_API_TIME_VALIDATE_USER_TOKEN->value);
@@ -133,7 +174,7 @@ class UserDataService extends AppAdminService
         }
 
         $dt = new \DateTime($dateTimeStr);
-        $this->update(UserDataKey::TIME_VALIDATE_TOKEN, strval($dt->getTimestamp()), $user);
+        $this->update(UserDataKey::TIME_VALIDATE_TOKEN->value, strval($dt->getTimestamp()), $user);
 
         return $token;
     }

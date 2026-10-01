@@ -30,7 +30,8 @@
 
     <p class="text-sm text-[var(--text-secondary)]">
         {{ 'sidebar.description' | trans({}, 'sidebar') }} <br />
-        <i class="bi bi-info-circle"></i> {{ 'sidebar.info' | trans({'icon': '<i class="bi bi-lock-fill"></i>', 'icon2': '<i class="bi bi-eye-slash"></i>'}, 'sidebar') | raw }}
+        {{ svg_icon('INFO', 'inline w-4 h-4') }}
+        {{ 'sidebar.info' | trans({'icon': svg_icon('LOCK', 'inline w-4 h-4'), 'icon2': svg_icon('EYE_SLASH', 'inline w-4 h-4')}, 'sidebar') | raw }}
     </p>
 
     <div {{ vue_component('Admin/GenericGrid', {'url' : path('admin_sidebar_load_grid_data', {'page' : page, 'limit' : limit}), 'page' : page, 'limit' : limit}) }}></div>

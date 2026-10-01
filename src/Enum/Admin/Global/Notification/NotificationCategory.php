@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace App\Enum\Admin\Global\Notification;
 
-enum Category: string
+enum NotificationCategory: string
 {
     case COMMENT = 'comment';
 

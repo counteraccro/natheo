@@ -5,7 +5,7 @@
  * Permet d'uploader un fichier
  */
 import { defineComponent, type PropType } from 'vue';
-import { FileData, TranslateRecord } from '@/ts/Mediatheque/type';
+import { FileData, TranslateRecord } from '@/ts/Mediatheque/Mediatheque.type';
 
 export default defineComponent({
   name: 'FileUpload',

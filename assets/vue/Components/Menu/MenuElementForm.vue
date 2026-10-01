@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent, PropType, toRaw } from 'vue';
-import { LoadMenuData, Locales, MenuElement, MenuElementTranslation, MenuFormTranslate } from '@/ts/Menu/type';
+import { LoadMenuData, Locales, MenuElement, MenuElementTranslation, MenuFormTranslate } from '@/ts/Menu/Menu.type';
 import Autocomplete, { AutocompleteOption } from '@/vue/Components/Global/AutoComplete.vue';
 
 export default defineComponent({

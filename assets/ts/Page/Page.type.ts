@@ -75,9 +75,6 @@ export interface AutoCompleteTranslate {
   auto_complete_label: string;
   auto_complete_placeholder: string;
   auto_complete_help: string;
-  auto_complete_btn: string;
-  auto_complete_btn_loading: string;
-  auto_complete_empty_result: string;
 }
 
 export interface PageCommentTranslate {
@@ -93,8 +90,6 @@ export interface PageCommentTranslate {
 
 export interface PageSeoTranslate {
   title: string;
-  help_legend: string;
-  help_description: string;
   input_meta_description_label: string;
   input_meta_description_help: string;
   input_meta_keywords_label: string;
@@ -129,14 +124,8 @@ export interface PageTranslations {
   onglet_comments: string;
   onglet_menu: string;
   onglet_history: string;
-  onglet_save: string;
   onglet_information: string;
   loading: string;
-  msg_auto_save_success: string;
-  msg_add_tag_success: string;
-  msg_del_tag_success: string;
-  msg_remove_content_success: string;
-  msg_add_content_success: string;
   msg_error_url_no_unique: string;
   msg_titre_restore_history: string;
   msg_btn_restore_history: string;
@@ -149,7 +138,6 @@ export interface PageTranslations {
   btn_new: string;
   auto_save_success: string;
   auto_save_error: string;
-  auto_save_run: string;
   page_content_form: PageContentFormTranslate;
   page_content: PageContentTranslate;
   page_history: PageHistoryTranslate;
@@ -172,7 +160,6 @@ export interface Urls {
   liste_content_by_id: string;
   is_unique_url_page: string;
   info_render_block: string;
-  page_preview: string;
   load_media: string;
   listing: string;
   new_page: string;

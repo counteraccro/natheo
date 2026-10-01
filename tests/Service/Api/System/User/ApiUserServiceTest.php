@@ -12,7 +12,7 @@ namespace Service\Api\System\User;
 use App\Entity\Admin\System\User;
 use App\Service\Api\System\User\ApiUserService;
 use App\Tests\AppWebTestCase;
-use App\Utils\System\User\UserDataKey;
+use App\Enum\Admin\System\User\UserDataKey;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\Container;
@@ -40,11 +40,11 @@ class ApiUserServiceTest extends AppWebTestCase
     {
         $user = $this->createUserContributeur();
         $userData = $this->createUserData($user, [
-            'key' => UserDataKey::KEY_TOKEN_CONNEXION,
+            'key' => UserDataKey::TOKEN_CONNEXION->value,
             'value' => 'azerty-token',
         ]);
         $this->createUserData($user, [
-            'key' => UserDataKey::TIME_VALIDATE_TOKEN,
+            'key' => UserDataKey::TIME_VALIDATE_TOKEN->value,
             'value' => strval((new \DateTime())->add(new \DateInterval('P10D'))->getTimestamp()),
         ]);
         $user = $this->apiUserService->getUserByUserToken($userData->getValue());
@@ -52,11 +52,11 @@ class ApiUserServiceTest extends AppWebTestCase
 
         $user = $this->createUserContributeur();
         $userData = $this->createUserData($user, [
-            'key' => UserDataKey::KEY_TOKEN_CONNEXION,
+            'key' => UserDataKey::TOKEN_CONNEXION->value,
             'value' => 'azerty-token-2',
         ]);
         $this->createUserData($user, [
-            'key' => UserDataKey::TIME_VALIDATE_TOKEN,
+            'key' => UserDataKey::TIME_VALIDATE_TOKEN->value,
             'value' => strval((new \DateTime())->sub(new \DateInterval('P10D'))->getTimestamp()),
         ]);
         $user = $this->apiUserService->getUserByUserToken($userData->getValue());

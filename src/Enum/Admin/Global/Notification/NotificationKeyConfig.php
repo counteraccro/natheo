@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace App\Enum\Admin\Global\Notification;
 
-enum KeyConfig: string
+enum NotificationKeyConfig: string
 {
     case CATEGORY = 'category';
     case LEVEL = 'level';

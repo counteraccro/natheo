@@ -23,4 +23,21 @@ enum PageStatus: int
      * Status archived pour une page
      */
     case ARCHIVED = 3;
+
+    private const CONF = [
+        self::PUBLISH->value => [
+            'css_class' => 'badge-validated',
+        ],
+        self::ARCHIVED->value => [
+            'css_class' => 'badge-moderated',
+        ],
+        self::DRAFT->value => [
+            'css_class' => 'badge-pending',
+        ],
+    ];
+
+    public function getClassCss(): string
+    {
+        return self::CONF[$this->value]['css_class'];
+    }
 }

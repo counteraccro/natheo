@@ -104,6 +104,7 @@ class AdvancedOptionsTranslate extends AppTranslate
                 'advanced_options.warning.danger.zone',
                 domain: 'advanced_options',
             ),
+            'error_generic' => $this->translator->trans('advanced_options.error.generic', domain: 'advanced_options'),
             'confirm_modale_env' => $this->getModaleConfirmSwitchEnvTranslate(),
             'confirm_modale_reset_database' => $this->getModaleConfirmResetDatabaseTranslate(),
             'confirm_modale_reset_data' => $this->getModaleConfirmResetDataTranslate(),

@@ -5,18 +5,10 @@ translate.description: __translate.description
 translate.select.file: __translate.select.file
 translate.empty.file: __translate.empty.file
 translate.btn.save: __translate.btn.save
-translate.btn.cache: __translate.btn.cache
 translate.info.edit: __translate.info.edit
 translate.link.revert: __translate.link.revert
 translate.nb.edit: __translate.nb.edit
 translate.loading: __translate.loading
-translate.cache.titre: __translate.cache.titre
-translate.cache.info: __translate.cache.info
-translate.cache.wait: __translate.cache.wait
-translate.cache.btn.close: __translate.cache.btn.close
-translate.cache.btn.accept: __translate.cache.btn.accept
-translate.cache.success: __translate.cache.success
-translate.description.2: __translate.description.2
 translate.confirm.leave: __translate.confirm.leave
 translate.save.success: __translate.save.success
 translate.toast.title.success: __translate.toast.title.success
@@ -27,3 +19,13 @@ translate.block.search.sub.title: __translate.block.search.sub.title
 translate.select.language.label: __translate.select.language.label
 translate.select.file.label: __translate.select.file.label
 translate.block.edit.sub.title: __translate.block.edit.sub.title
+translate.save.error: 'Translations not saved: {nb, plural, one {# error found} other {# errors found}}'
+translate.save.error.invalid_payload: 'The submitted data is invalid'
+translate.error.file: 'Translation file not found'
+translate.save.error.unknown_key: 'This key does not exist in the file'
+translate.save.error.not_string: 'The value must be a string'
+translate.save.error.icu: 'Invalid ICU syntax ({error}), check braces and parameters'
+translate.error.request: 'An error occurred, please try again'
+translate.search.placeholder: 'Filter by key or value'
+translate.filter.untranslated: 'Untranslated only'
+translate.search.empty: 'No translation matches your search'

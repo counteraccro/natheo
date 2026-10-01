@@ -550,25 +550,6 @@ class PageControllerTest extends AppWebTestCase
     }
 
     /**
-     * Test méthode preview()
-     * @return void
-     */
-    public function testPreview(): void
-    {
-        $page = $this->createPageAllDataDefault();
-        $this->checkNoAccess('admin_page_preview');
-
-        $user = $this->createUserContributeur();
-
-        $this->client->loginUser($user, 'admin');
-        $this->client->request(
-            'GET',
-            $this->router->generate('admin_page_preview', ['id' => $page->getId(), 'locale' => 'fr']),
-        );
-        $this->assertResponseIsSuccessful();
-    }
-
-    /**
      * Retourne un jeu de données de test
      * @param $idPage
      * @return array

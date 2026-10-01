@@ -1,4 +1,4 @@
-database_manager.schema.all.bdd.error_row.: __database_manager.schema.all.bdd.error_row.
+database_manager.schema.all.bdd.error_row: __database_manager.schema.all.bdd.error_row
 database_manager.schema.all.bdd.row.schema: __database_manager.schema.all.bdd.row.schema
 database_manager.schema.all.bdd.row.table_name: __database_manager.schema.all.bdd.row.table_name
 database_manager.schema.all.bdd.row.row: __database_manager.schema.all.bdd.row.row
@@ -50,3 +50,10 @@ database_manager.list.dump.confirm.delete.texte: __database_manager.list.dump.co
 database_manager.list.dump.confirm.btn.ok: __database_manager.list.dump.confirm.btn.ok
 database_manager.list.dump.confirm.btn.ko: __database_manager.list.dump.confirm.btn.ko
 database_manager.success.delete.file.dump: __database_manager.success.delete.file.dump
+database_manager.error.table.not.found: __database_manager.error.table.not.found
+database_manager.error.delete.file.dump: __database_manager.error.delete.file.dump
+database_manager.error.dump.options: __database_manager.error.dump.options
+database_manager.error.dump.filename: __database_manager.error.dump.filename
+database_manager.error.dump.filename.exist: __database_manager.error.dump.filename.exist
+database_manager.error.csrf: __database_manager.error.csrf
+database_manager.error.generic: __database_manager.error.generic

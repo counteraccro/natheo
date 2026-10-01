@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { Menu, LoadMenuData, MenuElement } from '@/ts/Menu/type';
+import { Menu, LoadMenuData, MenuElement } from '@/ts/Menu/Menu.type';
 import MenuFooterColumnItem from './MenuFooterColumnItem.vue';
 
 export default defineComponent({

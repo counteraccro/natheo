@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Service\Admin;
 
-use App\Enum\Admin\Comment\Status;
+use App\Enum\Admin\Comment\CommentStatus;
 use App\Enum\Admin\Content\Page\PageStatistics;
 use App\Enum\Admin\Content\Page\PageStatus;
 use App\Service\Admin\StatisticsService;
@@ -55,10 +55,10 @@ class StatisticsServiceTest extends AppWebTestCase
 
         $nbComments = $this->getFaker()->numberBetween(2, 5);
         for ($i = 0; $i < $nbComments; $i++) {
-            $this->createComment($page, null, ['status' => Status::VALIDATE->value]);
+            $this->createComment($page, null, ['status' => CommentStatus::VALIDATE->value]);
         }
 
-        $this->createComment($page, null, ['status' => Status::WAIT_VALIDATION->value]);
+        $this->createComment($page, null, ['status' => CommentStatus::WAIT_VALIDATION->value]);
 
         $content = $this->statisticsService->getDashboardStatistics();
         $this->assertArrayHasKey('nbPage', $content);

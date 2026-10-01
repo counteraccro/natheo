@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { Menu, LoadMenuData } from '@/ts/Menu/type';
+import { Menu, LoadMenuData } from '@/ts/Menu/Menu.type';
 import MenuHeaderDropdownItem from './MenuHeaderDropdownItem.vue';
 
 export default defineComponent({

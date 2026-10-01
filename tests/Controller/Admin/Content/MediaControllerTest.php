@@ -13,6 +13,7 @@ use App\Entity\Admin\Content\Media\Media;
 use App\Entity\Admin\Content\Media\MediaFolder;
 use App\Service\Admin\Content\Media\MediaService;
 use App\Tests\AppWebTestCase;
+use App\Utils\Content\Media\MediaConst;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -107,9 +108,7 @@ class MediaControllerTest extends AppWebTestCase
         $this->assertArrayHasKey('id', $content['currentFolder']);
         $this->assertArrayHasKey('canDelete', $content);
         $this->assertArrayHasKey('url', $content);
-        $this->assertArrayHasKey('loadFolder', $content['url']);
         $this->assertArrayHasKey('upload', $content['url']);
-        $this->assertArrayHasKey('loadMediaEdit', $content['url']);
         $this->assertArrayHasKey('saveMediaEdit', $content['url']);
         $this->assertArrayHasKey('listeMove', $content['url']);
         $this->assertArrayHasKey('move', $content['url']);
@@ -118,51 +117,6 @@ class MediaControllerTest extends AppWebTestCase
         $this->assertArrayHasKey('listTrash', $content['url']);
         $this->assertArrayHasKey('remove', $content['url']);
         $this->assertCount(2, $content['medias']);
-    }
-
-    /**
-     * test méthode loadFolder()
-     * @return void
-     */
-    public function testLoadFolder(): void
-    {
-        $this->checkNoAccess('admin_media_load_folder');
-        $user = $this->createUserContributeur();
-        $this->client->loginUser($user, 'admin');
-
-        $folder = $this->createMediaFolder();
-        $media = $this->createMedia($folder, customData: ['trash' => false]);
-        $media2 = $this->createMedia($folder, customData: ['trash' => false]);
-
-        $this->client->request('GET', $this->router->generate('admin_media_load_folder', ['id' => $folder->getId()]));
-        $this->assertResponseIsSuccessful();
-        $response = $this->client->getResponse();
-        $this->assertJson($response->getContent());
-        $content = json_decode($response->getContent(), true);
-
-        $this->assertArrayHasKey('folder', $content);
-        $this->assertArrayHasKey('id', $content['folder']);
-        $this->assertEquals($folder->getId(), $content['folder']['id']);
-        $this->assertArrayHasKey('name', $content['folder']);
-        $this->assertEquals($folder->getName(), $content['folder']['name']);
-        $this->assertArrayHasKey('disabled', $content['folder']);
-        $this->assertEquals($folder->isDisabled(), $content['folder']['disabled']);
-        $this->assertArrayHasKey('createdAt', $content['folder']);
-        $this->assertArrayHasKey('updateAt', $content['folder']);
-        $this->assertArrayHasKey('trash', $content['folder']);
-        $this->assertEquals($folder->isTrash(), $content['folder']['trash']);
-        $this->assertArrayHasKey('path', $content['folder']);
-        $this->assertEquals($folder->getPath(), $content['folder']['path']);
-
-        $this->client->request(
-            'GET',
-            $this->router->generate('admin_media_load_folder', ['id' => $folder->getId(), 'action' => 'see']),
-        );
-        $this->assertResponseIsSuccessful();
-        $response = $this->client->getResponse();
-        $this->assertJson($response->getContent());
-        $content = json_decode($response->getContent(), true);
-        $this->assertArrayHasKey('medias', $content['folder']);
     }
 
     /**
@@ -260,34 +214,48 @@ class MediaControllerTest extends AppWebTestCase
     }
 
     /**
-     * Test méthode loadMedia()
+     * Test méthode updateFolder() : l'unicité du nom est scopée au dossier parent (deux
+     * dossiers de même nom dans deux branches différentes sont autorisés), et le dossier en
+     * cours d'édition est exclu du contrôle (un ré-enregistrement sans changer le nom ne doit
+     * pas être rejeté comme "nom déjà existant")
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
-    public function testLoadMedia(): void
+    public function testUpdateFolderNameUniquenessScopedToParent(): void
     {
-        $this->checkNoAccess('admin_media_load_media_edit');
+        $this->mediaService->resetAllMedia();
+
         $user = $this->createUserContributeur();
         $this->client->loginUser($user, 'admin');
 
-        $media = $this->createMedia();
-        $this->client->request(
-            'GET',
-            $this->router->generate('admin_media_load_media_edit', ['id' => $media->getId()]),
-        );
-        $this->assertResponseIsSuccessful();
-        $response = $this->client->getResponse();
-        $this->assertJson($response->getContent());
-        $content = json_decode($response->getContent(), true);
+        $branchA = $this->createMediaFolder(customData: ['name' => 'branch-a']);
+        $this->mediaService->createFolder($branchA);
+        $branchB = $this->createMediaFolder(customData: ['name' => 'branch-b']);
+        $this->mediaService->createFolder($branchB);
+        $photosInA = $this->createMediaFolder($branchA, customData: ['name' => 'photos']);
+        $this->mediaService->createFolder($photosInA);
 
-        $this->assertIsArray($content);
-        $this->assertArrayHasKey('media', $content);
-        $this->assertArrayHasKey('id', $content['media']);
-        $this->assertArrayHasKey('name', $content['media']);
-        $this->assertArrayHasKey('description', $content['media']);
-        $this->assertArrayHasKey('thumbnail', $content['media']);
-        $this->assertEquals($media->getId(), $content['media']['id']);
-        $this->assertEquals($media->getTitle(), $content['media']['name']);
-        $this->assertEquals($media->getDescription(), $content['media']['description']);
+        // Même nom "photos", mais sous un parent différent : doit être accepté.
+        $data = ['name' => 'photos', 'currentFolder' => $branchB->getId(), 'editFolder' => 0];
+        $this->client->request('POST', $this->router->generate('admin_media_save_folder'), content: json_encode($data));
+        $this->assertResponseIsSuccessful();
+        $content = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertEquals('success', $content['result']);
+
+        // Ré-enregistrement de "photos" (branchA) sans changer le nom : ne doit pas être rejeté.
+        $data = ['name' => 'photos', 'currentFolder' => $branchA->getId(), 'editFolder' => $photosInA->getId()];
+        $this->client->request('POST', $this->router->generate('admin_media_save_folder'), content: json_encode($data));
+        $this->assertResponseIsSuccessful();
+        $content = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertEquals('success', $content['result']);
+
+        // Même nom, même parent (branchA) : toujours rejeté.
+        $data = ['name' => 'photos', 'currentFolder' => $branchA->getId(), 'editFolder' => 0];
+        $this->client->request('POST', $this->router->generate('admin_media_save_folder'), content: json_encode($data));
+        $this->assertResponseIsSuccessful();
+        $content = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertEquals('error', $content['result']);
     }
 
     /**
@@ -301,14 +269,7 @@ class MediaControllerTest extends AppWebTestCase
         $this->client->loginUser($user, 'admin');
 
         $media = $this->createMedia();
-        $this->client->request(
-            'GET',
-            $this->router->generate('admin_media_load_media_edit', ['id' => $media->getId()]),
-        );
-        $this->assertResponseIsSuccessful();
-        $response = $this->client->getResponse();
-        $this->assertJson($response->getContent());
-        $content = json_decode($response->getContent(), true);
+        $content = ['media' => ['id' => $media->getId()]];
 
         $content['media']['name'] = 'title-edit';
         $content['media']['description'] = 'description-edit';
@@ -562,5 +523,359 @@ class MediaControllerTest extends AppWebTestCase
                 $this->mediaService->getRootPathMedia() . $mediaFolder->getPath() . $mediaFolder->getName(),
             ),
         );
+    }
+
+    /**
+     * Test que la route removeTrash() refuse de supprimer définitivement un média qui n'est pas
+     * passé par la corbeille, même appelée directement avec un id valide (bypass de l'UI).
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testRemoveTrashRefusesWhenNotTrashed(): void
+    {
+        $this->mediaService->resetAllMedia();
+
+        $user = $this->createUserContributeur();
+        $this->client->loginUser($user, 'admin');
+        $this->client->catchExceptions(false);
+
+        $media = $this->createMedia(customData: ['name' => 'road.jpg', 'trash' => false]);
+        $this->mediaService->moveMediaFixture('road.jpg', $media);
+
+        $idMedia = $media->getId();
+
+        $data = ['type' => 'media', 'id' => $idMedia];
+        $this->expectException(\RuntimeException::class);
+        $this->client->request('POST', $this->router->generate('admin_media_remove'), content: json_encode($data));
+    }
+
+    /**
+     * Construit le payload attendu par la route upload-media (FileData côté front) à partir
+     * d'un fichier réel des fixtures (public/assets/fixtures/)
+     * @param string $fixtureFileName
+     * @param string $mimeType
+     * @param string $extension
+     * @param string $name
+     * @return array
+     */
+    private function buildUploadFile(
+        string $fixtureFileName,
+        string $mimeType,
+        string $extension,
+        string $name = 'unit-test-upload',
+    ): array {
+        $fixturesPath = dirname($this->mediaService->getRootPathMedia()) . DIRECTORY_SEPARATOR . 'fixtures';
+        $content = file_get_contents($fixturesPath . DIRECTORY_SEPARATOR . $fixtureFileName);
+
+        return [
+            'name' => $name,
+            'description' => 'unit test upload',
+            'fileExtention' => $extension,
+            'url' => 'data:' . $mimeType . ';base64,' . base64_encode($content),
+        ];
+    }
+
+    /**
+     * Test méthode upload() : cas nominal (upload d'une image valide dans un dossier)
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testUpload(): void
+    {
+        $this->mediaService->resetAllMedia();
+
+        $user = $this->createUserContributeur();
+        $this->client->loginUser($user, 'admin');
+
+        $mediaFolder = $this->createMediaFolder();
+        $this->mediaService->createFolder($mediaFolder);
+
+        $data = [
+            'folder' => $mediaFolder->getId(),
+            'file' => $this->buildUploadFile('road.jpg', 'image/jpeg', 'jpg', 'road-photo'),
+        ];
+        $this->client->request('POST', $this->router->generate('admin_media_upload'), content: json_encode($data));
+        $this->assertResponseIsSuccessful();
+
+        $medias = $this->mediaService->getMediaByMediaFolder($mediaFolder);
+        $this->assertCount(1, $medias);
+        $this->assertEquals('road-photo', $medias[0]->getTitle());
+        $this->assertEquals('jpg', $medias[0]->getExtension());
+        $this->assertTrue(
+            $this->fileSystem->exists($this->mediaService->getRootPathMedia() . $medias[0]->getPath()),
+        );
+    }
+
+    /**
+     * Test méthode upload() : accepte aussi les documents bureautiques autorisés
+     * (pas seulement les images)
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testUploadAllowsOfficeDocuments(): void
+    {
+        $this->mediaService->resetAllMedia();
+
+        $user = $this->createUserContributeur();
+        $this->client->loginUser($user, 'admin');
+
+        $data = [
+            'folder' => 0,
+            'file' => $this->buildUploadFile('documentation-natheo.pdf', 'application/pdf', 'pdf'),
+        ];
+        $this->client->request('POST', $this->router->generate('admin_media_upload'), content: json_encode($data));
+        $this->assertResponseIsSuccessful();
+
+        $data = [
+            'folder' => 0,
+            'file' => $this->buildUploadFile('documentation-natheo.docx', 'application/octet-stream', 'docx'),
+        ];
+        $this->client->request('POST', $this->router->generate('admin_media_upload'), content: json_encode($data));
+        $this->assertResponseIsSuccessful();
+
+        $medias = $this->mediaService->getMediaByMediaFolder(null);
+        $this->assertCount(2, $medias);
+        $extensions = array_map(fn($media) => $media->getExtension(), $medias);
+        $this->assertContains('pdf', $extensions);
+        $this->assertContains('docx', $extensions);
+    }
+
+    /**
+     * Test méthode upload() : rejette une extension absente de la liste blanche
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testUploadRejectsDisallowedExtension(): void
+    {
+        $this->mediaService->resetAllMedia();
+
+        $user = $this->createUserContributeur();
+        $this->client->loginUser($user, 'admin');
+        $this->client->catchExceptions(false);
+
+        $data = ['folder' => 0, 'file' => $this->buildUploadFile('road.jpg', 'image/jpeg', 'exe')];
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('File extension not allowed.');
+        $this->client->request('POST', $this->router->generate('admin_media_upload'), content: json_encode($data));
+    }
+
+    /**
+     * Test méthode upload() : rejette un fichier dont le contenu réel ne correspond pas
+     * à l'extension déclarée (extension autorisée mais MIME usurpé)
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testUploadRejectsMimeMismatch(): void
+    {
+        $this->mediaService->resetAllMedia();
+
+        $user = $this->createUserContributeur();
+        $this->client->loginUser($user, 'admin');
+        $this->client->catchExceptions(false);
+
+        $data = [
+            'folder' => 0,
+            'file' => [
+                'name' => 'fake-image',
+                'description' => 'unit test upload',
+                'fileExtention' => 'jpg',
+                'url' => 'data:image/jpeg;base64,' . base64_encode('<?php echo "not an image"; ?>'),
+            ],
+        ];
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessageMatches('#^File type not allowed#');
+        $this->client->request('POST', $this->router->generate('admin_media_upload'), content: json_encode($data));
+    }
+
+    /**
+     * Test méthode upload() : rejette un payload dont la partie base64 est invalide
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testUploadRejectsInvalidBase64(): void
+    {
+        $this->mediaService->resetAllMedia();
+
+        $user = $this->createUserContributeur();
+        $this->client->loginUser($user, 'admin');
+        $this->client->catchExceptions(false);
+
+        $data = [
+            'folder' => 0,
+            'file' => [
+                'name' => 'invalid-payload',
+                'description' => 'unit test upload',
+                'fileExtention' => 'jpg',
+                'url' => 'data:image/jpeg;base64,not-valid-base64-!!!',
+            ],
+        ];
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Invalid base64 data.');
+        $this->client->request('POST', $this->router->generate('admin_media_upload'), content: json_encode($data));
+    }
+
+    /**
+     * Test méthode upload() : une tentative de path traversal via le nom de fichier
+     * (ex: "../../evil") est neutralisée (basename()) et le fichier reste dans le dossier attendu
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testUploadSanitizesPathTraversalInName(): void
+    {
+        $this->mediaService->resetAllMedia();
+
+        $user = $this->createUserContributeur();
+        $this->client->loginUser($user, 'admin');
+
+        $file = $this->buildUploadFile('road.jpg', 'image/jpeg', 'jpg', 'road-photo');
+        $file['name'] = '../../../../etc/evil';
+
+        $data = ['folder' => 0, 'file' => $file];
+        $this->client->request('POST', $this->router->generate('admin_media_upload'), content: json_encode($data));
+        $this->assertResponseIsSuccessful();
+
+        $medias = $this->mediaService->getMediaByMediaFolder(null);
+        $this->assertCount(1, $medias);
+
+        $realRoot = realpath($this->mediaService->getRootPathMedia());
+        $realMediaPath = realpath($this->mediaService->getRootPathMedia() . $medias[0]->getPath());
+        $this->assertNotFalse($realMediaPath);
+        $this->assertStringStartsWith($realRoot . DIRECTORY_SEPARATOR, $realMediaPath);
+        $this->assertStringNotContainsString('..', $medias[0]->getName());
+    }
+
+    /**
+     * Test méthode upload() : rejette un fichier dont le contenu réel correspond à un AUTRE
+     * type autorisé que celui déclaré par l'extension (ex: contenu jpeg réel, extension "pdf")
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testUploadRejectsCrossTypeMismatch(): void
+    {
+        $this->mediaService->resetAllMedia();
+
+        $user = $this->createUserContributeur();
+        $this->client->loginUser($user, 'admin');
+        $this->client->catchExceptions(false);
+
+        // road.jpg est un vrai jpeg, mais déclaré ici avec l'extension "pdf".
+        $file = $this->buildUploadFile('road.jpg', 'image/jpeg', 'pdf');
+
+        $data = ['folder' => 0, 'file' => $file];
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessageMatches('#^File type not allowed#');
+        $this->client->request('POST', $this->router->generate('admin_media_upload'), content: json_encode($data));
+    }
+
+    /**
+     * Test méthode upload() : le fallback "application/zip" n'est accepté que pour les
+     * extensions OOXML (docx/xlsx/pptx), jamais pour une extension sans rapport (ex: jpg)
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testUploadAcceptsGenericZipOnlyForOfficeExtensions(): void
+    {
+        $this->mediaService->resetAllMedia();
+
+        $user = $this->createUserContributeur();
+        $this->client->loginUser($user, 'admin');
+
+        $tmpZip = tempnam(sys_get_temp_dir(), 'media-test-zip');
+        $zip = new \ZipArchive();
+        $zip->open($tmpZip, \ZipArchive::OVERWRITE);
+        $zip->addFromString('dummy.txt', 'hello world');
+        $zip->close();
+        $zipContent = file_get_contents($tmpZip);
+        unlink($tmpZip);
+
+        $file = [
+            'name' => 'archive',
+            'description' => 'unit test upload',
+            'fileExtention' => 'docx',
+            'url' => 'data:application/zip;base64,' . base64_encode($zipContent),
+        ];
+        $data = ['folder' => 0, 'file' => $file];
+        $this->client->request('POST', $this->router->generate('admin_media_upload'), content: json_encode($data));
+        $this->assertResponseIsSuccessful();
+
+        $this->client->catchExceptions(false);
+        $file['fileExtention'] = 'jpg';
+        $data = ['folder' => 0, 'file' => $file];
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessageMatches('#^File type not allowed#');
+        $this->client->request('POST', $this->router->generate('admin_media_upload'), content: json_encode($data));
+    }
+
+    /**
+     * Test méthode upload() : rejette un fichier dépassant la limite de taille serveur
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testUploadRejectsOversizedFile(): void
+    {
+        $this->mediaService->resetAllMedia();
+
+        $user = $this->createUserContributeur();
+        $this->client->loginUser($user, 'admin');
+        $this->client->catchExceptions(false);
+
+        $oversized = str_repeat('A', MediaConst::MAX_UPLOAD_SIZE_BYTES + 1);
+        $file = [
+            'name' => 'too-big',
+            'description' => 'unit test upload',
+            'fileExtention' => 'jpg',
+            'url' => 'data:image/jpeg;base64,' . base64_encode($oversized),
+        ];
+
+        $data = ['folder' => 0, 'file' => $file];
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('File size exceeds the allowed limit.');
+        $this->client->request('POST', $this->router->generate('admin_media_upload'), content: json_encode($data));
+    }
+
+    /**
+     * Test méthode upload() : un upload avec l'extension "jpeg" génère bien une miniature
+     * (régression du bug Thumbnail::getGdImage() qui ne gérait pas "jpeg", seulement "jpg")
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testUploadJpegGeneratesThumbnail(): void
+    {
+        $this->mediaService->resetAllMedia();
+
+        $user = $this->createUserContributeur();
+        $this->client->loginUser($user, 'admin');
+
+        $data = ['folder' => 0, 'file' => $this->buildUploadFile('road.jpg', 'image/jpeg', 'jpeg', 'photo')];
+        $this->client->request('POST', $this->router->generate('admin_media_upload'), content: json_encode($data));
+        $this->assertResponseIsSuccessful();
+
+        $medias = $this->mediaService->getMediaByMediaFolder(null);
+        $this->assertCount(1, $medias);
+        $this->assertEquals(MediaConst::MEDIA_TYPE_IMG, $medias[0]->getType());
+        $this->assertNotNull($medias[0]->getThumbnail());
+        $this->assertTrue(
+            $this->fileSystem->exists(
+                $this->mediaService->getRootPathThumbnail() . DIRECTORY_SEPARATOR . $medias[0]->getThumbnail(),
+            ),
+        );
+
+        // getThumbnail() ne doit pas lever de TypeError.
+        $thumbnailUrl = $this->mediaService->getThumbnail($medias[0]);
+        $this->assertStringContainsString($medias[0]->getThumbnail(), $thumbnailUrl);
     }
 }

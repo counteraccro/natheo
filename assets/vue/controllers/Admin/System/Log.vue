@@ -627,23 +627,13 @@ export default {
 
   <!-- toast -->
   <div class="toast-container position-fixed top-0 end-0 p-2">
-    <toast
-      :id="'toastSuccess'"
-      :option-class-header="'text-success'"
-      :show="this.toasts.toastSuccess.show"
-      @close-toast="this.closeToast"
-    >
+    <toast :id="'toastSuccess'" :show="this.toasts.toastSuccess.show" @close-toast="this.closeToast">
       <template #body>
         <div v-html="this.toasts.toastSuccess.msg"></div>
       </template>
     </toast>
 
-    <toast
-      :id="'toastError'"
-      :option-class-header="'text-danger'"
-      :show="this.toasts.toastError.show"
-      @close-toast="this.closeToast"
-    >
+    <toast :id="'toastError'" :type="'danger'" :show="this.toasts.toastError.show" @close-toast="this.closeToast">
       <template #body>
         <div v-html="this.toasts.toastError.msg"></div>
       </template>
