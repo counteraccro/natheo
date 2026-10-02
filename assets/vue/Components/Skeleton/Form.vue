@@ -1,20 +1,14 @@
-<script>
+<script lang="ts">
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Skeleton d'un form
  */
-export default {
-  name: 'SkeletonForm',
-  props: {},
-  emits: [],
-  data() {
-    return {};
-  },
-  mounted() {},
+import { defineComponent } from 'vue';
 
-  methods: {},
-};
+export default defineComponent({
+  name: 'SkeletonForm',
+});
 </script>
 
 <template>
