@@ -50,7 +50,7 @@ class FaqCategory
             orphanRemoval: true,
         ),
     ]
-    #[ORM\OrderBy(['renderOrder' => 'asc'])]
+    #[ORM\OrderBy(['renderOrder' => \SortDirection::Ascending])]
     private Collection $faqQuestions;
 
     public function __construct()
