@@ -32,7 +32,7 @@ class MenuElement
      * @var Collection<int, self>
      */
     #[ORM\OneToMany(mappedBy: 'parent', targetEntity: self::class, cascade: ['remove', 'persist'])]
-    #[ORM\OrderBy(['columnPosition' => 'ASC', 'rowPosition' => 'ASC'])]
+    #[ORM\OrderBy(['columnPosition' => \SortDirection::Ascending, 'rowPosition' => \SortDirection::Ascending])]
     private Collection $children;
 
     /**

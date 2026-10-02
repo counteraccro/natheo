@@ -35,7 +35,7 @@ class SidebarElement
     private ?self $parent = null;
 
     #[ORM\OneToMany(mappedBy: 'parent', targetEntity: self::class)]
-    #[ORM\OrderBy(['id' => 'ASC'])]
+    #[ORM\OrderBy(['id' => \SortDirection::Ascending])]
     private Collection $children;
 
     #[ORM\Column(type: Types::TEXT)]
