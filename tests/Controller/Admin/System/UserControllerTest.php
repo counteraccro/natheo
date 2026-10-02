@@ -546,7 +546,7 @@ class UserControllerTest extends AppWebTestCase
         /** @var Mail $mail */
         $mail = $mailService->getByKey(MailKey::MAIL_SELF_DISABLED_ACCOUNT);
         $email = $this->getMailerMessage();
-        $this->assertEmailHtmlBodyContains($email, $mail->geMailTranslationByLocale('fr')->getTitle());
+        $this->assertEmailHtmlBodyContains($email, $mail->getMailTranslationByLocale('fr')->getTitle());
 
         /** @var NotificationRepository $notificationRepository */
         $notificationRepository = $this->em->getRepository(Notification::class);
@@ -613,7 +613,7 @@ class UserControllerTest extends AppWebTestCase
         /** @var Mail $mail */
         $mail = $mailService->getByKey(MailKey::MAIL_SELF_ANONYMOUS_ACCOUNT);
         $email = $this->getMailerMessage();
-        $this->assertEmailHtmlBodyContains($email, $mail->geMailTranslationByLocale('fr')->getTitle());
+        $this->assertEmailHtmlBodyContains($email, $mail->getMailTranslationByLocale('fr')->getTitle());
 
         //Delete user - delete
         $userToDelete = $this->createUser();
@@ -640,7 +640,7 @@ class UserControllerTest extends AppWebTestCase
 
         $mail = $mailService->getByKey(MailKey::MAIL_SELF_DELETE_ACCOUNT);
         $email = $this->getMailerMessage();
-        $this->assertEmailHtmlBodyContains($email, $mail->geMailTranslationByLocale('fr')->getTitle());
+        $this->assertEmailHtmlBodyContains($email, $mail->getMailTranslationByLocale('fr')->getTitle());
     }
 
     /**
