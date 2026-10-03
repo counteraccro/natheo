@@ -1,101 +1,112 @@
-<script>
+<script lang="ts">
 /**
  * @author Gourdon Aymeric
- * @version 2.0
+ * @version 3.0
  * Permet d'afficher les logs sous forme de tableau d'après les fichiers de logs
  */
-import Grid from '../../../Components/Grid/Grid.vue';
-import GridPaginate from '../../../Components/Grid/GridPaginate.vue';
+import { defineComponent, type PropType } from 'vue';
 import axios from 'axios';
-import Modal from '../../../Components/Global/Modal.vue';
-import Toast from '../../../Components/Global/Toast.vue';
+import Grid from '@/vue/Components/Grid/Grid.vue';
+import GridPaginate from '@/vue/Components/Grid/GridPaginate.vue';
+import Modal from '@/vue/Components/Global/Modal.vue';
+import Toast from '@/vue/Components/Global/Toast.vue';
 import SkeletonText from '@/vue/Components/Skeleton/Text.vue';
 import SkeletonTable from '@/vue/Components/Skeleton/Table.vue';
+import type { Toasts } from '@/ts/Toast/Toast.type';
+import type { GridRow, GridSortOrders, GridTranslate } from '@/ts/Grid/Grid.type';
+import type { GenericGridTranslate } from '@/ts/Grid/GenericGrid.type';
+import type { GridPaginateTranslate } from '@/ts/Grid/GridPaginate.type';
+import type {
+  LogActionResponse,
+  LogFile,
+  LogFilesResponse,
+  LogLoadFileResponse,
+  LogTimeFilter,
+  LogTranslate,
+} from '@/ts/Log/Log.type';
 
-export default {
+export default defineComponent({
   name: 'Log',
-  components: {
-    SkeletonTable,
-    SkeletonText,
-    Toast,
-    Modal,
-    GridPaginate,
-    Grid,
-  },
+  components: { SkeletonTable, SkeletonText, Toast, Modal, GridPaginate, Grid },
   props: {
-    url_select: String,
-    url_load_log_file: String,
-    url_delete_file: String,
-    url_download_file: String,
-    page: Number,
-    limit: String,
+    url_select: { type: String, required: true },
+    url_load_log_file: { type: String, required: true },
+    url_delete_file: { type: String, required: true },
+    url_download_file: { type: String, required: true },
+    csrf_delete_file: { type: String, required: true },
+    translate: { type: Object as PropType<LogTranslate>, required: true },
+    page: { type: Number, required: true },
+    limit: { type: Number, required: true },
   },
   data() {
     return {
-      select: [],
-      time: 'now',
-      trans: [],
-      searchQuery: '',
-      gridColumns: [],
-      gridData: [],
-      sortOrders: [],
-      nbElements: 0,
-      loading: true,
-      cPage: this.page,
-      cLimit: this.limit,
-      cUrl: '',
-      listLimit: {},
-      translate: {},
-      translateGridPaginate: {},
-      translateGrid: {},
-      msgConfirm: '',
-      selectFile: '',
-      taille: '0 Ko',
-      loadDeleteFile: false,
-      modalDeleteLog: false,
+      files: [] as LogFile[],
+      time: 'now' as LogTimeFilter,
+      searchQuery: '' as string,
+      gridColumns: [] as string[],
+      gridData: [] as GridRow[],
+      sortOrders: {} as GridSortOrders,
+      nbElements: 0 as number,
+      loading: true as boolean,
+      cPage: this.page as number,
+      cLimit: this.limit as number,
+      listLimit: {} as Record<string, number>,
+      translateGenericGrid: {} as Partial<GenericGridTranslate>,
+      translateGridPaginate: {} as GridPaginateTranslate,
+      translateGrid: {} as GridTranslate,
+      selectFile: '' as string,
+      taille: '0 Ko' as string,
+      modalDeleteLog: false as boolean,
       toasts: {
-        toastSuccess: {
-          show: false,
-          msg: '',
-        },
-        toastError: {
-          show: false,
-          msg: '',
-        },
-      },
+        toastSuccess: { show: false, msg: '' },
+        toastError: { show: false, msg: '' },
+      } as Toasts,
     };
+  },
+  computed: {
+    /**
+     * Chemin du fichier sélectionné encodé segment par segment, les "/" séparent les dossiers
+     */
+    encodedSelectFile(): string {
+      return this.selectFile.split('/').map(encodeURIComponent).join('/');
+    },
   },
   mounted() {
     this.loadData();
   },
   methods: {
-    loadData() {
+    /**
+     * Charge la liste des fichiers de logs en fonction de la temporalité
+     */
+    loadData(): void {
       this.loading = true;
       axios
-        .get(this.url_select + '/' + this.time)
+        .get<LogFilesResponse>(this.url_select + '/' + this.time)
         .then((response) => {
-          this.select = response.data.files;
-          this.trans = response.data.trans;
+          this.files = response.data.files;
         })
         .catch((error) => {
-          console.error(error);
+          this.showRequestError(error);
         })
-        .finally(() => (this.loading = false));
+        .finally(() => {
+          this.loading = false;
+        });
     },
-    changeTimeFiltre(event) {
-      this.time = event.target.value;
+
+    /**
+     * Event de changement de temporalité
+     */
+    changeTimeFilter(): void {
       this.selectFile = '';
       this.loadData();
     },
 
     /**
-     * Charge le contenu d'un fichier log
-     * @param event
+     * Event de choix du fichier de log
      */
-    selectLogFile(event) {
-      this.selectFile = event.target.value;
+    selectLogFile(): void {
       if (this.selectFile !== '') {
-        this.loadContentFile(this.page, this.limit);
+        this.loadContentFile(1, this.limit);
       }
     },
 
@@ -104,104 +115,81 @@ export default {
      * @param page
      * @param limit
      */
-    loadContentFile(page, limit) {
+    loadContentFile(page: number, limit: number | string): void {
       this.loading = true;
       axios
-        .get(this.url_load_log_file + '/' + this.selectFile + '/' + page + '/' + limit)
+        .get<LogLoadFileResponse>(this.url_load_log_file + '/' + page + '/' + limit + '/' + this.encodedSelectFile)
         .then((response) => {
-          if (response.data.success === true) {
-            if (page === 1) {
-              this.toasts.toastSuccess.msg = response.data.msg;
-              this.toasts.toastSuccess.show = true;
-            }
-
-            this.gridColumns = response.data.grid.column;
-            this.gridData = response.data.grid.data;
-            this.nbElements = response.data.grid.nb;
-            this.sortOrders = this.gridColumns.reduce((o, key) => ((o[key] = 1), o), {});
-            this.listLimit = response.data.grid.listLimit;
-            this.translate = response.data.grid.translate.genericGrid;
-            this.translateGridPaginate = response.data.grid.translate.gridPaginate;
-            this.translateGrid = response.data.grid.translate.grid;
-            this.cPage = page;
-            this.cLimit = limit;
-            this.taille = response.data.grid.taille;
-          } else {
-            this.toasts.toastError.msg = response.data.msg;
-            this.toasts.toastError.show = true;
-            this.loading = false;
+          if (page === 1) {
+            this.toasts.toastSuccess.msg = response.data.msg;
+            this.toasts.toastSuccess.show = true;
           }
+
+          const grid = response.data.grid;
+          this.gridColumns = grid.column;
+          this.gridData = grid.data;
+          this.nbElements = grid.nb;
+          this.sortOrders = Object.fromEntries(grid.column.map((key) => [key, 1]));
+          this.listLimit = grid.listLimit;
+          this.translateGenericGrid = grid.translate.genericGrid;
+          this.translateGridPaginate = grid.translate.gridPaginate;
+          this.translateGrid = grid.translate.grid;
+          this.cPage = page;
+          this.cLimit = Number(limit);
+          this.taille = grid.taille;
         })
         .catch((error) => {
-          console.error(error);
+          this.showRequestError(error);
         })
-        .finally(() => (this.loading = false));
+        .finally(() => {
+          this.loading = false;
+        });
     },
 
     /**
-     * Supprimer un fichier
-     * @param file
-     * @param confirm
-     * @returns {boolean}
+     * Affiche la modale de confirmation de suppression
      */
-    delete(file, confirm) {
-      if (confirm) {
-        this.showModal();
-        this.msgConfirm =
-          this.trans.log_delete_file_confirm +
-          ' <b>' +
-          this.selectFile +
-          '</b> ? <br /> ' +
-          this.trans.log_delete_file_confirm_2;
-        return false;
-      }
+    confirmDelete(): void {
+      this.modalDeleteLog = true;
+    },
 
+    /**
+     * Supprime le fichier sélectionné
+     */
+    deleteFile(): void {
       this.hideModal();
       this.loading = true;
 
       axios
-        .delete(this.url_delete_file + '/' + file, {})
+        .delete<LogActionResponse>(this.url_delete_file + '/' + this.encodedSelectFile, {
+          headers: { 'X-CSRF-TOKEN': this.csrf_delete_file },
+        })
         .then((response) => {
-          if (response.data.success === true) {
-            this.toasts.toastSuccess.msg = response.data.msg;
-            this.toasts.toastSuccess.show = true;
-            this.time = 'now';
-            this.selectFile = '';
-            this.taille = '0 Ko';
-            this.nbElements = 0;
-            this.loadDeleteFile = false;
-
-            this.loadData();
-          } else {
-            this.toasts.toastError.msg = response.data.msg;
-            this.toasts.toastError.show = true;
-            this.loading = false;
-          }
+          this.toasts.toastSuccess.msg = response.data.msg;
+          this.toasts.toastSuccess.show = true;
+          this.time = 'now';
+          this.selectFile = '';
+          this.taille = '0 Ko';
+          this.nbElements = 0;
+          this.loadData();
         })
         .catch((error) => {
-          console.error(error);
-        })
-        .finally();
+          this.showRequestError(error);
+          this.loading = false;
+        });
     },
 
     /**
-     * Lance le téléchargement
+     * Lance le téléchargement, la réponse étant en "attachment" la page courante n'est pas quittée
      */
-    download(url) {
-      window.open(url, '_blank').focus();
-    },
-
-    /**
-     * Affichage la modale
-     */
-    showModal() {
-      this.modalDeleteLog = true;
+    download(): void {
+      window.location.href = this.url_download_file + '/' + this.encodedSelectFile;
     },
 
     /**
      * Ferme la modale
      */
-    hideModal() {
+    hideModal(): void {
       this.modalDeleteLog = false;
     },
 
@@ -209,16 +197,27 @@ export default {
      * Ferme le toast défini par nameToast
      * @param nameToast
      */
-    closeToast(nameToast) {
+    closeToast(nameToast: string): void {
       this.toasts[nameToast].show = false;
     },
+
+    /**
+     * Affiche le message d'erreur renvoyé par le serveur ou un message générique
+     * @param error
+     */
+    showRequestError(error: unknown): void {
+      console.error(error);
+      const data = axios.isAxiosError<LogActionResponse>(error) ? error.response?.data : undefined;
+      this.toasts.toastError.msg = data?.msg ?? this.translate.log_error_request;
+      this.toasts.toastError.show = true;
+    },
   },
-};
+});
 </script>
 
 <template>
   <div class="card mb-4">
-    <div v-if="this.loading">
+    <div v-if="loading">
       <SkeletonText :nb-paragraphe="2" />
     </div>
 
@@ -243,29 +242,29 @@ export default {
             />
           </svg>
 
-          {{ this.trans.log_block_search_title }}
+          {{ translate.log_block_search_title }}
         </div>
         <p class="card-subtitle">
-          {{ this.trans.log_block_search_sub_title }}
+          {{ translate.log_block_search_sub_title }}
         </p>
       </div>
     </div>
     <div class="p-5">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4">
         <div class="form-group">
-          <label class="form-label" for="select-time">{{ this.trans.log_select_time_label }}</label>
-          <select class="form-input no-control" id="select-time" v-model="this.time" @change="changeTimeFiltre($event)">
-            <option value="all">{{ this.trans.log_select_time_all }}</option>
-            <option value="now">{{ this.trans.log_select_time_now }}</option>
-            <option value="yesterday">{{ this.trans.log_select_time_yesterday }}</option>
+          <label class="form-label" for="select-time">{{ translate.log_select_time_label }}</label>
+          <select class="form-input no-control" id="select-time" v-model="time" @change="changeTimeFilter">
+            <option value="all">{{ translate.log_select_time_all }}</option>
+            <option value="now">{{ translate.log_select_time_now }}</option>
+            <option value="yesterday">{{ translate.log_select_time_yesterday }}</option>
           </select>
         </div>
 
         <div class="form-group">
-          <label class="form-label" for="select-file">{{ this.trans.log_select_file_label }}</label>
-          <select class="form-input no-control" id="select-file" @change="selectLogFile($event)">
-            <option value="" selected>{{ this.trans.log_select_file }}</option>
-            <option v-for="option in this.select" v-bind:value="option.path">{{ option.name }}</option>
+          <label class="form-label" for="select-file">{{ translate.log_select_file_label }}</label>
+          <select class="form-input no-control" id="select-file" v-model="selectFile" @change="selectLogFile">
+            <option value="">{{ translate.log_select_file }}</option>
+            <option v-for="option in files" :key="option.path" :value="option.path">{{ option.name }}</option>
           </select>
         </div>
       </div>
@@ -273,7 +272,7 @@ export default {
   </div>
 
   <div class="card mb-4">
-    <div v-if="this.loading">
+    <div v-if="loading">
       <SkeletonTable :full="true" />
     </div>
 
@@ -299,23 +298,24 @@ export default {
               />
             </svg>
 
-            {{ this.trans.log_file }}
-            <template v-if="this.selectFile !== ''">
-              {{ this.selectFile }}
+            {{ translate.log_file }}
+            <template v-if="selectFile !== ''">
+              {{ selectFile }}
             </template>
             <template v-else> ---- </template>
           </div>
 
           <p class="card-subtitle">
-            {{ this.trans.log_file_size }} {{ this.taille }} - {{ this.nbElements }} {{ this.trans.log_file_ligne }}
+            {{ translate.log_file_size }} {{ taille }} - {{ nbElements }} {{ translate.log_file_ligne }}
           </p>
         </div>
 
         <div class="card-actions">
           <button
             :disabled="selectFile === ''"
+            :title="translate.log_btn_reload"
             class="btn btn-sm btn-primary btn-icon me-2"
-            @click="this.loadContentFile(1, this.limit)"
+            @click="loadContentFile(1, cLimit)"
           >
             <svg
               class="icon"
@@ -337,9 +337,10 @@ export default {
           </button>
 
           <button
-            @click="this.download(this.url_download_file + '/' + this.selectFile)"
             :disabled="selectFile === ''"
+            :title="translate.log_btn_download_file"
             class="btn btn-sm btn-primary btn-icon me-2"
+            @click="download"
           >
             <svg
               class="icon"
@@ -361,9 +362,10 @@ export default {
           </button>
 
           <button
-            @click="this.delete(this.selectFile, true)"
             :disabled="selectFile === ''"
+            :title="translate.log_btn_delete_file"
             class="btn btn-sm btn-dark btn-icon"
+            @click="confirmDelete"
           >
             <svg
               class="icon"
@@ -405,7 +407,7 @@ export default {
               d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
             />
           </svg>
-          {{ this.trans.log_empty_file }}
+          {{ translate.log_empty_file }}
         </p>
       </div>
 
@@ -423,7 +425,7 @@ export default {
           <input
             type="text"
             class="form-input input-icon-left no-control"
-            :placeholder="translate.placeholder"
+            :placeholder="translateGenericGrid.placeholder"
             v-model="searchQuery"
           />
         </div>
@@ -432,7 +434,7 @@ export default {
           :data="gridData"
           :columns="gridColumns"
           :filter-key="searchQuery"
-          :sortOrders="sortOrders"
+          :sort-orders="sortOrders"
           :translate="translateGrid"
           :search-mode="'table'"
         >
@@ -440,8 +442,8 @@ export default {
 
         <GridPaginate
           :current-page="cPage"
-          :nb-elements="cLimit.toString()"
-          :nb-elements-total="parseInt(nbElements)"
+          :nb-elements="cLimit"
+          :nb-elements-total="nbElements"
           :url="url_load_log_file"
           :list-limit="listLimit"
           :translate="translateGridPaginate"
@@ -452,134 +454,17 @@ export default {
     </div>
   </div>
 
-  <!--
-  <div :class="loading === true ? 'block-grid' : ''">
-    <div v-if="loading" class="overlay">
-      <div class="position-absolute top-50 start-50 translate-middle">
-        <div class="spinner-border text-primary" role="status"></div>
-        <span class="txt-overlay">{{ translate.loading }}</span>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col">
-        <select class="form-select no-control" id="select-file" @change="selectLogFile($event)">
-          <option value="" selected>{{ this.trans.log_select_file }}</option>
-          <option v-for="option in this.select" v-bind:value="option.path">{{ option.name }}</option>
-        </select>
-      </div>
-      <div class="col">
-        <select class="form-select no-control" id="select-time" @change="changeTimeFiltre($event)">
-          <option value="all">{{ this.trans.log_select_time_all }}</option>
-          <option value="now">{{ this.trans.log_select_time_now }}</option>
-          <option value="yesterday">{{ this.trans.log_select_time_yesterday }}</option>
-        </select>
-      </div>
-    </div>
-
-    <div v-if="selectFile !== ''">
-      <div class="card mt-3 border border-secondary">
-        <div class="card-header text-bg-secondary">
-          <div class="dropdown float-end">
-            <button
-              class="btn btn-secondary btn-sm dropdown-toggle"
-              type="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              <i class="bi bi-list"></i>
-            </button>
-            <ul class="dropdown-menu">
-              <li>
-                <a class="dropdown-item" href="#" @click="this.loadContentFile(1, this.limit)"
-                  ><i class="bi bi-arrow-clockwise"></i> {{ this.trans.log_btn_reload }}</a
-                >
-              </li>
-              <li>
-                <a class="dropdown-item" target="_blank" :href="this.url_download_file + '/' + this.selectFile"
-                  ><i class="bi bi-download"></i> {{ this.trans.log_btn_download_file }}</a
-                >
-              </li>
-              <li>
-                <a class="dropdown-item" href="#" @click="this.delete(this.selectFile, true)"
-                  ><i class="bi bi-x-lg"></i> {{ this.trans.log_btn_delete_file }}</a
-                >
-              </li>
-            </ul>
-          </div>
-
-          <div class="mt-1">
-            <i class="bi bi-file-earmark-text"></i>
-            {{ this.trans.log_file }}
-            <b>{{ this.selectFile }}</b> - {{ this.trans.log_file_size }} {{ this.taille }} - {{ this.nbElements }}
-            {{ this.trans.log_file_ligne }}
-          </div>
-        </div>
-        <div class="card-body">
-          <form id="search">
-            <div class="input-group mb-3">
-              <span class="input-group-text"><i class="bi bi-search"></i></span>
-              <input
-                type="text"
-                class="form-control no-control"
-                :placeholder="translate.placeholder"
-                v-model="searchQuery"
-              />
-            </div>
-          </form>
-
-          <div>
-            <Grid
-              :data="gridData"
-              :columns="gridColumns"
-              :filter-key="searchQuery"
-              :sortOrders="sortOrders"
-              :translate="translateGrid"
-            >
-            </Grid>
-            <GridPaginate
-              :current-page="cPage"
-              :nb-elements="limit"
-              :nb-elements-total="nbElements"
-              :url="url_load_log_file"
-              :list-limit="listLimit"
-              :translate="translateGridPaginate"
-              @change-page-event="loadContentFile"
-            >
-            </GridPaginate>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div v-else class="card mt-3 border border-secondary">
-      <div class="card-header text-bg-secondary">
-        <div class="btn btn-secondary btn-sm float-end disabled"><i class="bi bi-list"></i></div>
-        <div class="mt-1">
-          <i class="bi bi-file-earmark-text"></i> {{ this.trans.log_file }} -- - {{ this.trans.log_file_size }} 0 Ko - 0
-          {{ this.trans.log_file_ligne }}
-        </div>
-      </div>
-      <div class="card-body">
-        <p class="text-center">
-          <i class="bi bi-info-circle"></i> <i>{{ this.trans.log_empty_file }}</i>
-        </p>
-      </div>
-    </div>
-  </div> -->
-
   <!-- modale confirmation suppression -->
-  <modal
-    :id="'modalDeleteLog'"
-    :show="this.modalDeleteLog"
-    @close-modal="this.hideModal"
-    :option-show-close-btn="false"
-  >
-    <template #title> <i class="bi bi-sign-stop"></i> {{ translate.confirmTitle }} </template>
+  <modal :id="'modalDeleteLog'" :show="modalDeleteLog" @close-modal="hideModal" :option-show-close-btn="false">
+    <template #title> {{ translateGenericGrid.confirmTitle }} </template>
     <template #body>
-      <div v-html="this.msgConfirm"></div>
+      <div>
+        {{ translate.log_delete_file_confirm }} <b>{{ selectFile }}</b> ? <br />
+        {{ translate.log_delete_file_confirm_2 }}
+      </div>
     </template>
     <template #footer>
-      <button type="button" class="btn btn-primary btn-sm me-2" @click="this.delete(this.selectFile, false)">
+      <button type="button" class="btn btn-primary btn-sm me-2" @click="deleteFile">
         <svg
           class="icon"
           aria-hidden="true"
@@ -597,10 +482,10 @@ export default {
             d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
           />
         </svg>
-        {{ trans.log_btn_delete_ok }}
+        {{ translate.log_btn_delete_ok }}
       </button>
 
-      <button type="button" class="btn btn-outline-dark btn-sm" @click="this.hideModal">
+      <button type="button" class="btn btn-outline-dark btn-sm" @click="hideModal">
         <svg
           class="icon"
           aria-hidden="true"
@@ -619,7 +504,7 @@ export default {
           />
         </svg>
 
-        {{ trans.log_btn_delete_ko }}
+        {{ translate.log_btn_delete_ko }}
       </button>
     </template>
   </modal>
@@ -627,15 +512,15 @@ export default {
 
   <!-- toast -->
   <div class="toast-container position-fixed top-0 end-0 p-2">
-    <toast :id="'toastSuccess'" :show="this.toasts.toastSuccess.show" @close-toast="this.closeToast">
+    <toast :id="'toastSuccess'" :show="toasts.toastSuccess.show" @close-toast="closeToast">
       <template #body>
-        <div v-html="this.toasts.toastSuccess.msg"></div>
+        <div v-html="toasts.toastSuccess.msg"></div>
       </template>
     </toast>
 
-    <toast :id="'toastError'" :type="'danger'" :show="this.toasts.toastError.show" @close-toast="this.closeToast">
+    <toast :id="'toastError'" :type="'danger'" :show="toasts.toastError.show" @close-toast="closeToast">
       <template #body>
-        <div v-html="this.toasts.toastError.msg"></div>
+        <div v-html="toasts.toastError.msg"></div>
       </template>
     </toast>
   </div>
