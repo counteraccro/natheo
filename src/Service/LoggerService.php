@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 /**
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 2.0
  * Service qui gère les logs de l'application
  */
 
@@ -12,22 +12,25 @@ namespace App\Service;
 
 use App\Entity\Admin\System\User;
 use App\Enum\Admin\System\Options\OptionSystem;
-use App\Enum\Admin\System\Options\OptionUser;
 use App\Service\Admin\GridService;
 use App\Service\Admin\System\OptionSystemService;
-use App\Service\Admin\System\OptionUserService;
 use App\Utils\Utils;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use InvalidArgumentException;
 use Monolog\Level;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
+use RuntimeException;
+use SplFileObject;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
+use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -36,36 +39,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class LoggerService extends AppService
 {
-    /**
-     * @var LoggerInterface
-     */
-    private LoggerInterface $authLogger;
-
-    /**
-     * @var LoggerInterface
-     */
-    private LoggerInterface $doctrineLogLogger;
-
-    /**
-     * @var GridService
-     */
-    private GridService $gridService;
-
-    /**
-     * @var OptionSystemService
-     */
-    private OptionSystemService $optionSystemService;
-
-    /**
-     * @var OptionUserService
-     */
-    private OptionUserService $optionUserService;
-
-    /**
-     * @var LocaleAwareInterface
-     */
-    private LocaleAwareInterface $localeAware;
-
     /**
      * Action doctrine persistance
      * @var string
@@ -90,6 +63,12 @@ class LoggerService extends AppService
      */
     const DIRECTORY_LOG = 'log';
 
+    /**
+     * Extension des fichiers de log
+     * @var string
+     */
+    const LOG_EXTENSION = '.log';
+
     public function __construct(
         #[
             AutowireLocator([
@@ -102,18 +81,11 @@ class LoggerService extends AppService
                 'doctrineLogLogger' => LoggerInterface::class,
                 'gridService' => GridService::class,
                 'optionSystemService' => OptionSystemService::class,
-                'optionUserService' => OptionUserService::class,
                 'localeAware' => LocaleAwareInterface::class,
             ]),
         ]
         private readonly ContainerInterface $handlers,
     ) {
-        $this->authLogger = $this->handlers->get('authLogger');
-        $this->doctrineLogLogger = $this->handlers->get('doctrineLogLogger');
-        $this->gridService = $this->handlers->get('gridService');
-        $this->optionSystemService = $this->handlers->get('optionSystemService');
-        $this->optionUserService = $this->handlers->get('optionUserService');
-        $this->localeAware = $this->handlers->get('localeAware');
         parent::__construct($handlers);
     }
 
@@ -130,6 +102,33 @@ class LoggerService extends AppService
     }
 
     /**
+     * Retourne le chemin absolu d'un fichier de log à partir de son chemin relatif au dossier des logs,
+     * null si le fichier n'existe pas, n'est pas un .log ou sort du dossier des logs
+     * @param string $fileName ex : cms/prod/auth-2026-01-01.log
+     * @return string|null
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function getSafeLogFilePath(string $fileName): ?string
+    {
+        if (!str_ends_with($fileName, self::LOG_EXTENSION)) {
+            return null;
+        }
+
+        $realRoot = realpath($this->getPathLog());
+        $realFilePath = realpath($this->getPathLog() . DIRECTORY_SEPARATOR . $fileName);
+        if (
+            $realRoot === false ||
+            $realFilePath === false ||
+            !is_file($realFilePath) ||
+            !str_starts_with($realFilePath, $realRoot . DIRECTORY_SEPARATOR)
+        ) {
+            return null;
+        }
+        return $realFilePath;
+    }
+
+    /**
      * Permet de logger l'authentification de l'admin en fonction de $success
      * @param string $user
      * @param string $ip
@@ -140,17 +139,16 @@ class LoggerService extends AppService
      */
     public function logAuthAdmin(string $user, string $ip, bool $success = true): void
     {
-        // On force le changement de langue pour éviter d'enregistrer les logs dans la langue du user courant
-        $this->switchDefaultLocale('system');
-        if ($success) {
-            $msg = $this->translator->trans('log.auth.admin.success', ['user' => $user, 'ip' => $ip], 'log');
-            $level = LogLevel::INFO;
-        } else {
-            $msg = $this->translator->trans('log.auth.admin.error', ['user' => $user, 'ip' => $ip], 'log');
-            $level = LogLevel::WARNING;
-        }
-        $this->authLogger->log($level, $msg);
-        $this->switchDefaultLocale();
+        $this->runInSystemLocale(function () use ($user, $ip, $success): void {
+            if ($success) {
+                $msg = $this->translator->trans('log.auth.admin.success', ['user' => $user, 'ip' => $ip], 'log');
+                $level = LogLevel::INFO;
+            } else {
+                $msg = $this->translator->trans('log.auth.admin.error', ['user' => $user, 'ip' => $ip], 'log');
+                $level = LogLevel::WARNING;
+            }
+            $this->getAuthLogger()->log($level, $msg);
+        });
     }
 
     /**
@@ -163,254 +161,264 @@ class LoggerService extends AppService
      */
     public function logSwitchUser(string $user, string $userToSwitch): void
     {
-        $this->switchDefaultLocale('system');
-        $msg = $this->translator->trans(
-            'log.auth.admin.user.switch',
-            ['user' => $user, 'userToSwitch' => $userToSwitch],
-            'log',
-        );
-        $level = LogLevel::WARNING;
-        $this->authLogger->log($level, $msg);
+        $this->runInSystemLocale(function () use ($user, $userToSwitch): void {
+            $msg = $this->translator->trans(
+                'log.auth.admin.user.switch',
+                ['user' => $user, 'userToSwitch' => $userToSwitch],
+                'log',
+            );
+            $this->getAuthLogger()->warning($msg);
+        });
     }
 
     /**
      * Permet d'enregistrer les logs venant du listener de doctrine
      * @param string $action
      * @param string $entity
-     * @param int $id
+     * @param mixed $id
      * @return void
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
     public function logDoctrine(string $action, string $entity, mixed $id = -1): void
     {
-        /** @var User $currentUser */
-        $currentUser = $this->security->getUser();
-        $user = 'John doe';
-        $idUser = '-';
-        if ($currentUser != null) {
-            $user = $currentUser->getEmail();
-            $idUser = $currentUser->getId();
+        [$key, $level] = match ($action) {
+            self::ACTION_DOCTRINE_PERSIST => ['log.doctrine.persist', LogLevel::NOTICE],
+            self::ACTION_DOCTRINE_REMOVE => ['log.doctrine.remove', LogLevel::WARNING],
+            self::ACTION_DOCTRINE_UPDATE => ['log.doctrine.update', LogLevel::INFO],
+            default => [null, null],
+        };
+        if ($key === null) {
+            return;
         }
 
-        // On force le changement de langue pour éviter d'enregistrer les logs dans la langue du user courant
-        $this->switchDefaultLocale('system');
-        switch ($action) {
-            case self::ACTION_DOCTRINE_PERSIST:
-                $msg = $this->translator->trans(
-                    'log.doctrine.persit',
-                    ['entity' => $entity, 'id' => $id, 'user' => $user, 'id_user' => $idUser],
-                    'log',
-                );
-                $this->doctrineLogLogger->notice($msg);
-                $typeOption = 'user';
-                break;
-            case self::ACTION_DOCTRINE_REMOVE:
-                $msg = $this->translator->trans(
-                    'log.doctrine.remove',
-                    ['entity' => $entity, 'id' => $id, 'user' => $user, 'id_user' => $idUser],
-                    'log',
-                );
-                $this->doctrineLogLogger->warning($msg);
-                $typeOption = 'system';
-                break;
-            case self::ACTION_DOCTRINE_UPDATE:
-                $msg = $this->translator->trans(
-                    'log.doctrine.update',
-                    ['entity' => $entity, 'id' => $id, 'user' => $user, 'id_user' => $idUser],
-                    'log',
-                );
-                $this->doctrineLogLogger->info($msg);
-                $typeOption = 'user';
-                break;
-            default:
-                $msg = '';
-                $typeOption = 'user';
-        }
-        $this->switchDefaultLocale($typeOption);
+        /** @var User|null $currentUser */
+        $currentUser = $this->security->getUser();
+        $parameters = [
+            'entity' => $entity,
+            'id' => $id,
+            'user' => $currentUser?->getEmail() ?? 'John doe',
+            'id_user' => $currentUser?->getId() ?? '-',
+        ];
+
+        $this->runInSystemLocale(function () use ($key, $level, $parameters): void {
+            $this->getDoctrineLogLogger()->log($level, $this->translator->trans($key, $parameters, 'log'));
+        });
     }
 
     /**
      * Retourne l'ensemble des logs (nom de fichiers) en respectant l'arborescence des logs
-     * @param string $date
+     * @param string $time all, now, yesterday ou une date
      * @return array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
-     * @throws Exception
+     * @throws InvalidArgumentException si $time n'est pas une date valide
      */
-    public function getAllFiles(string $date = ''): array
+    public function getAllFiles(string $time = 'all'): array
     {
-        $pathLog = $this->getPathLog();
+        $pattern = '*' . self::LOG_EXTENSION;
+        if ($time !== 'all') {
+            try {
+                $date = new DateTimeImmutable($time);
+            } catch (Exception) {
+                throw new InvalidArgumentException(sprintf('Invalid log date "%s".', $time));
+            }
+            $pattern = '*-' . $date->format('Y-m-d') . self::LOG_EXTENSION;
+        }
 
         $finder = new Finder();
-        if ($date !== 'all') {
-            $date = new \DateTime($date);
-            $finder
-                ->files()
-                ->in($pathLog)
-                ->name('*-' . $date->format('Y-m-d') . '.log');
-        } else {
-            $finder->files()->in($pathLog);
-        }
+        $finder->files()->in($this->getPathLog())->name($pattern)->sortByName();
 
         $return = [];
         foreach ($finder as $file) {
-            $return[] = ['type' => 'file', 'name' => $file->getRelativePathname(), 'path' => $file->getFilename()];
+            // Le chemin relatif identifie le fichier : un même nom existe dans plusieurs environnements
+            $relativePath = str_replace(DIRECTORY_SEPARATOR, '/', $file->getRelativePathname());
+            $return[] = ['type' => 'file', 'name' => $relativePath, 'path' => $relativePath];
         }
         return $return;
     }
 
     /**
-     * Retourne sous la forme d'un tableau GRID le contenu du fichier envoyé en paramètre
-     * @param string $fileName
+     * Retourne sous la forme d'un tableau GRID le contenu du fichier envoyé en paramètre,
+     * les lignes les plus récentes en premier
+     * @param string $fileName chemin relatif au dossier des logs
      * @param int $page
      * @param int $limit
      * @return array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
-     * @throws Exception
+     * @throws RuntimeException si le fichier est introuvable ou invalide
      */
     public function loadLogFile(string $fileName, int $page, int $limit): array
     {
-        $column = [
-            $this->translator->trans('log.grid.level', domain: 'log'),
-            $this->translator->trans('log.grid.date', domain: 'log'),
-            $this->translator->trans('log.grid.message', domain: 'log'),
+        $path = $this->getSafeLogFilePath($fileName);
+        if ($path === null) {
+            throw new RuntimeException(sprintf('Log file "%s" not found.', $fileName));
+        }
+
+        $page = max(1, $page);
+        $limit = max(1, $limit);
+        $columns = [
+            'level' => $this->translator->trans('log.grid.level', domain: 'log'),
+            'date' => $this->translator->trans('log.grid.date', domain: 'log'),
+            'message' => $this->translator->trans('log.grid.message', domain: 'log'),
         ];
 
-        $pathLog = $this->getPathLog();
-        $finder = new Finder();
-        $finder->files()->name($fileName)->in($pathLog);
+        $file = new SplFileObject($path);
+        $total = 0;
+        while (!$file->eof()) {
+            if (trim($file->fgets()) !== '') {
+                $total++;
+            }
+        }
+
+        $end = $total - $limit * ($page - 1);
+        $begin = max(0, $end - $limit);
 
         $tab = [];
-        $total = 0;
-        $taille = 0;
-        if ($finder->hasResults() && $finder->count() === 1) {
-            $iterator = $finder->getIterator();
-            $iterator->rewind();
-            $file = $iterator->current();
-
-            $total = substr_count($file->getContents(), "\n");
-            $taille = $file->getSize();
-            $content = $file->openFile();
-
-            $offset = $total - $limit * $page;
-            $begin = max(0, $offset);
-            $nb = 0;
-            while (!$content->eof()) {
-                $line = $content->fgets();
-
-                if ($nb >= $begin && $nb < $begin + $limit) {
-                    $decoded = json_decode($line, true);
-                    if (is_array($decoded)) {
-                        $tab[] = $this->formatLog($decoded);
-                    }
-                }
-
-                $nb++;
-
-                if ($nb >= $begin + $limit) {
-                    break;
+        $index = 0;
+        $file->rewind();
+        while (!$file->eof() && $index < $end) {
+            $line = trim($file->fgets());
+            if ($line === '') {
+                continue;
+            }
+            if ($index >= $begin) {
+                $decoded = json_decode($line, true);
+                if (is_array($decoded)) {
+                    $tab[] = $this->formatLog($decoded, $columns);
                 }
             }
+            $index++;
         }
 
         $tabReturn = [
             'nb' => $total,
             'data' => array_reverse($tab),
-            'column' => $column,
-            'taille' => Utils::getSizeName($taille),
+            'column' => array_values($columns),
+            'taille' => Utils::getSizeName((int) filesize($path)),
         ];
-        return $this->gridService->addAllDataRequiredGrid($tabReturn);
+        return $this->getGridService()->addAllDataRequiredGrid($tabReturn);
     }
 
     /**
-     * Permet de formater les logs pour l'affichage
+     * Permet de formater les logs pour l'affichage, le message est échappé car il peut contenir des données
+     * saisies par un utilisateur (ex : email d'une tentative de connexion)
      * @param array $tabLog
+     * @param array $columns libellés des colonnes indexés par level, date et message
      * @return array
-     * @throws Exception
      */
-    private function formatLog(array $tabLog): array
+    private function formatLog(array $tabLog, array $columns): array
     {
-        $date = new \DateTime($tabLog['datetime']);
-        $dateStr = $date->format('d-m-Y H:i:s');
+        try {
+            $dateStr = (new DateTimeImmutable((string) ($tabLog['datetime'] ?? '')))->format('d-m-Y H:i:s');
+        } catch (Exception) {
+            $dateStr = '';
+        }
 
-        $class = match (Level::fromName($tabLog['level_name'])) {
-            Level::Debug => 'badge rounded-pill badge-primary',
-            Level::Notice, Level::Info => 'badge rounded-pill badge-validated',
-            Level::Warning => 'badge rounded-pill badge-pending',
-            Level::Error, Level::Critical, Level::Alert, Level::Emergency => 'badge rounded-pill badge-moderated',
-            default => '',
-        };
+        $levelName = (string) ($tabLog['level_name'] ?? '');
+        $class = 'badge rounded-pill';
+        if (in_array($levelName, Level::NAMES, true)) {
+            $class .= match (Level::fromName($levelName)) {
+                Level::Debug => ' badge-primary',
+                Level::Notice, Level::Info => ' badge-validated',
+                Level::Warning => ' badge-pending',
+                Level::Error, Level::Critical, Level::Alert, Level::Emergency => ' badge-moderated',
+            };
+        }
 
         return [
-            $this->translator->trans('log.grid.message', domain: 'log') => $tabLog['message'],
-            $this->translator->trans('log.grid.date', domain: 'log') => $dateStr,
-            $this->translator->trans('log.grid.level', domain: 'log') =>
-                '<span class="' . $class . '">' . $tabLog['level_name'] . '</span>',
+            $columns['message'] => htmlspecialchars((string) ($tabLog['message'] ?? '')),
+            $columns['date'] => $dateStr,
+            $columns['level'] => '<span class="' . $class . '">' . htmlspecialchars($levelName) . '</span>',
         ];
     }
 
     /**
      * Permet de supprimer un fichier de log
-     * @param string $fileName
+     * @param string $fileName chemin relatif au dossier des logs
      * @return bool
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
     public function deleteLog(string $fileName): bool
     {
-        $pathLog = $this->getPathLog();
-        $finder = new Finder();
-
-        $finder->files()->name($fileName)->in($pathLog);
-
-        if ($finder->hasResults()) {
-            foreach ($finder as $file) {
-                $filesystem = new Filesystem();
-                $filesystem->remove($file->getRealPath());
-            }
-            return true;
+        $path = $this->getSafeLogFilePath($fileName);
+        if ($path === null) {
+            return false;
         }
-        return false;
+
+        try {
+            (new Filesystem())->remove($path);
+        } catch (IOExceptionInterface) {
+            return false;
+        }
+        return true;
     }
 
     /**
-     * Retourne le path d'un fichier
-     * @param string $fileName
-     * @return string
+     * Retourne le path d'un fichier, null s'il est introuvable ou invalide
+     * @param string $fileName chemin relatif au dossier des logs
+     * @return string|null
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getPathFile(string $fileName): string
+    public function getPathFile(string $fileName): ?string
     {
-        $pathLog = $this->getPathLog();
-        $finder = new Finder();
-
-        $finder->files()->name($fileName)->in($pathLog);
-
-        if ($finder->hasResults()) {
-            foreach ($finder as $file) {
-                return $file->getPathname();
-            }
-        }
-        return '';
+        return $this->getSafeLogFilePath($fileName);
     }
 
     /**
-     * Permet de forcer la locale si besoin pour enregistrer les logs uniquement dans la langue par défaut du site et
-     * non la langue du user courant
-     * @param string $typeOption user ou system
+     * Exécute $callback avec la langue par défaut du site pour que les logs ne dépendent pas de la langue du
+     * user courant, puis restaure la locale d'origine
+     * @param callable $callback
      * @return void
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    private function switchDefaultLocale(string $typeOption = 'user'): void
+    private function runInSystemLocale(callable $callback): void
     {
-        $locale = match ($typeOption) {
-            'user' => $this->optionUserService->getValueByKey(OptionUser::OU_DEFAULT_LANGUAGE->value, false),
-            default => $this->optionSystemService->getValueByKey(OptionSystem::OS_DEFAULT_LANGUAGE->value),
-        };
-        $this->localeAware->setLocale($locale);
+        /** @var LocaleAwareInterface $localeAware */
+        $localeAware = $this->handlers->get('localeAware');
+        /** @var OptionSystemService $optionSystemService */
+        $optionSystemService = $this->handlers->get('optionSystemService');
+
+        $currentLocale = $localeAware->getLocale();
+        $localeAware->setLocale($optionSystemService->getValueByKey(OptionSystem::OS_DEFAULT_LANGUAGE->value));
+        try {
+            $callback();
+        } finally {
+            $localeAware->setLocale($currentLocale);
+        }
+    }
+
+    /**
+     * @return LoggerInterface
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function getAuthLogger(): LoggerInterface
+    {
+        return $this->handlers->get('authLogger');
+    }
+
+    /**
+     * @return LoggerInterface
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function getDoctrineLogLogger(): LoggerInterface
+    {
+        return $this->handlers->get('doctrineLogLogger');
+    }
+
+    /**
+     * @return GridService
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function getGridService(): GridService
+    {
+        return $this->handlers->get('gridService');
     }
 }

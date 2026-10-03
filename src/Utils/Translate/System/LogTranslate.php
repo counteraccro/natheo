@@ -4,7 +4,7 @@ declare(strict_types=1);
 /**
  * Class pour la génération des traductions pour les scripts vue pour Log
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  */
 namespace App\Utils\Translate\System;
 
@@ -43,6 +43,7 @@ class LogTranslate extends AppTranslate
             'toast_title_success' => $this->translator->trans('log.toast.title.success', domain: 'log'),
             'toast_time' => $this->translator->trans('log.toast.time', domain: 'log'),
             'toast_title_error' => $this->translator->trans('log.toast.title.error', domain: 'log'),
+            'log_error_request' => $this->translator->trans('log.error.request', domain: 'log'),
         ];
     }
 }

@@ -15,7 +15,7 @@ log.delete.file.btn_close: __log.delete.file.btn_close
 log.btn.reload: __log.btn.reload
 log.auth.admin.success: __log.auth.admin.success
 log.auth.admin.error: __log.auth.admin.error
-log.doctrine.persit: __log.doctrine.persit
+log.doctrine.persist: __log.doctrine.persist
 log.doctrine.remove: __log.doctrine.remove
 log.doctrine.update: __log.doctrine.update
 log.grid.level: __log.grid.level
@@ -36,3 +36,7 @@ log.select-file.label: __log.select-file.label
 log.select-time.label: __log.select-time.label
 log.btn.delete.ok: __log.btn.delete.ok
 log.btn.delete.ko: __log.btn.delete.ko
+log.error.file: __log.error.file
+log.error.time: __log.error.time
+log.error.csrf: __log.error.csrf
+log.error.request: __log.error.request
