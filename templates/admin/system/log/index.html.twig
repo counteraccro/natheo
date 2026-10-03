@@ -20,9 +20,11 @@
 
     <div {{ vue_component('Admin/System/Log', {
         'url_select' : path('admin_log_ajax_data_select_log'),
-        'url_load_log_file' : path('admin_log_ajax_load_log_file_empty'),
+        'url_load_log_file' : path('admin_log_ajax_load_log_file'),
         'url_delete_file' : path('admin_log_ajax_delete_file'),
         'url_download_file': path('admin_log_download_log'),
+        'csrf_delete_file': csrf_token(constant('App\\Controller\\Admin\\System\\LogController::CSRF_DELETE_FILE')),
+        'translate': translate,
         'page' : 1, 'limit' : limit}) }}></div>
 
 {% endblock %}
