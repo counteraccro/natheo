@@ -20,6 +20,7 @@ use App\Repository\Admin\Content\Page\PageRepository;
 use App\Repository\Admin\Content\Page\PageStatistiqueRepository;
 use App\Repository\Admin\System\ApiTokenRepository;
 use App\Utils\System\ApiToken\ApiTokenConst;
+use App\Utils\System\ApiToken\TokenHasher;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -52,7 +53,10 @@ class DashboardService extends AppAdminService
         $adresseSite = $optionSystem->getValueByKey(OptionSystem::OS_ADRESSE_SITE->value);
         $openSite = $optionSystem->getValueByKey(OptionSystem::OS_OPEN_SITE->value);
         $apiTokensDefault = $this->findBy(ApiToken::class, [
-            'token' => [ApiTokenConst::API_TOKEN_READ, ApiTokenConst::API_TOKEN_WRITE, ApiTokenConst::API_TOKEN_ADMIN],
+            'token' => array_map(
+                [TokenHasher::class, 'hash'],
+                [ApiTokenConst::API_TOKEN_READ, ApiTokenConst::API_TOKEN_WRITE, ApiTokenConst::API_TOKEN_ADMIN],
+            ),
         ]);
         $nbApiToken = $this->apiTokenRepo->count([]);
 

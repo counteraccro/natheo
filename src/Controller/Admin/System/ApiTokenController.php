@@ -76,10 +76,11 @@ class ApiTokenController extends AppAdminController
     }
 
     /**
-     * Active ou désactive un tag
+     * Active ou désactive un token
      * @param ApiToken $apiToken
      * @param ApiTokenService $apiTokenService
      * @param TranslatorInterface $translator
+     * @param Request $request
      * @return JsonResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -89,7 +90,12 @@ class ApiTokenController extends AppAdminController
         #[MapEntity(id: 'id')] ApiToken $apiToken,
         ApiTokenService $apiTokenService,
         TranslatorInterface $translator,
+        Request $request,
     ): JsonResponse {
+        if (!$this->isCsrfTokenValid(ApiTokenService::CSRF_TOKEN_UPDATE_DISABLED, $request->headers->get('X-CSRF-TOKEN'))) {
+            return $this->jsonCsrfError($translator);
+        }
+
         $apiToken->setDisabled(!$apiToken->isDisabled());
         $apiTokenService->save($apiToken);
 
@@ -102,10 +108,11 @@ class ApiTokenController extends AppAdminController
     }
 
     /**
-     * Permet de supprimer un tag
+     * Permet de supprimer un token
      * @param ApiToken $apiToken
      * @param ApiTokenService $apiTokenService
      * @param TranslatorInterface $translator
+     * @param Request $request
      * @return JsonResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -115,7 +122,12 @@ class ApiTokenController extends AppAdminController
         #[MapEntity(id: 'id')] ApiToken $apiToken,
         ApiTokenService $apiTokenService,
         TranslatorInterface $translator,
+        Request $request,
     ): JsonResponse {
+        if (!$this->isCsrfTokenValid(ApiTokenService::CSRF_TOKEN_DELETE, $request->headers->get('X-CSRF-TOKEN'))) {
+            return $this->jsonCsrfError($translator);
+        }
+
         $msg = $translator->trans('api_token.remove.success', ['label' => $apiToken->getName()], domain: 'api_token');
         $apiTokenService->remove($apiToken);
         return $this->json($apiTokenService->getResponseAjax($msg));
@@ -156,7 +168,7 @@ class ApiTokenController extends AppAdminController
 
         $translate = $apiTokenTranslate->getTranslate();
         if ($apiToken) {
-            $apiToken = $apiTokenService->convertEntityToArray($apiToken, ['createdAt', 'updateAt']);
+            $apiToken = $apiTokenService->getApiTokenFormData($apiToken);
         }
 
         return $this->render('admin/system/api_token/add_update.html.twig', [
@@ -164,7 +176,7 @@ class ApiTokenController extends AppAdminController
             'translate' => $translate,
             'apiToken' => $apiToken,
             'urls' => [
-                'generate_token' => $this->generateUrl('admin_api_token_generate_token'),
+                'regenerate_token' => $this->generateUrl('admin_api_token_regenerate', ['id' => $apiToken['id'] ?? 0]),
                 'save_api_token' => $this->generateUrl('admin_api_token_save'),
                 'index_api_token' => $this->generateUrl('admin_api_token_index'),
                 'delete_api_token' => $this->generateUrl('admin_api_token_delete', ['id' => $apiToken['id'] ?? 0]),
@@ -172,22 +184,46 @@ class ApiTokenController extends AppAdminController
             'datas' => [
                 'roles' => $apiTokenService->getRolesApi(),
             ],
+            'csrfTokens' => [
+                'save' => ApiTokenService::CSRF_TOKEN_SAVE,
+                'regenerate' => ApiTokenService::CSRF_TOKEN_REGENERATE,
+                'delete' => ApiTokenService::CSRF_TOKEN_DELETE,
+            ],
         ]);
     }
 
     /**
-     * Génère un nouveau token
+     * Génère un nouveau token pour un ApiToken existant et le retourne en clair (une seule fois)
+     * @param ApiToken $apiToken
      * @param ApiTokenService $apiTokenService
+     * @param TranslatorInterface $translator
+     * @param Request $request
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
-    #[Route('/generate-token', name: 'generate_token', methods: ['GET'])]
-    public function generateToken(ApiTokenService $apiTokenService): JsonResponse
-    {
-        return $this->json(['token' => $apiTokenService->generateToken()]);
+    #[Route('/ajax/regenerate/{id}', name: 'regenerate', methods: ['PUT'])]
+    public function regenerateToken(
+        #[MapEntity(id: 'id')] ApiToken $apiToken,
+        ApiTokenService $apiTokenService,
+        TranslatorInterface $translator,
+        Request $request,
+    ): JsonResponse {
+        if (!$this->isCsrfTokenValid(ApiTokenService::CSRF_TOKEN_REGENERATE, $request->headers->get('X-CSRF-TOKEN'))) {
+            return $this->jsonCsrfError($translator);
+        }
+
+        $token = $apiTokenService->regenerateToken($apiToken);
+        $response = $apiTokenService->getResponseAjax(
+            $translator->trans('api_token.regenerate.success', domain: 'api_token'),
+        );
+        $response['token'] = $response['success'] === true ? $token : '';
+        return $this->json($response);
     }
 
     /**
-     * Sauvegarde ou créer un ApiToken
+     * Sauvegarde ou créer un ApiToken.
+     * À la création, le token est généré côté serveur et retourné en clair une seule fois
      * @param Request $request
      * @param ApiTokenService $apiTokenService
      * @param TranslatorInterface $translator
@@ -201,19 +237,54 @@ class ApiTokenController extends AppAdminController
         ApiTokenService $apiTokenService,
         TranslatorInterface $translator,
     ): JsonResponse {
-        $data = json_decode($request->getContent(), true);
-        $id = $apiTokenService->createUpdateApiToken($data['apiToken']);
-
-        $response = $apiTokenService->getResponseAjax(
-            $translator->trans('api_token.save.success', domain: 'api_token'),
-        );
-        $response['redirect'] = '';
-        if ($data['apiToken']['id'] === null) {
-            $response['redirect'] = $this->generateUrl('admin_api_token_index');
-            if ($response['success'] === true) {
-                $response['msg'] = $translator->trans('api_token.new.token.success', domain: 'api_token');
-            }
+        if (!$this->isCsrfTokenValid(ApiTokenService::CSRF_TOKEN_SAVE, $request->headers->get('X-CSRF-TOKEN'))) {
+            return $this->jsonCsrfError($translator);
         }
+
+        $data = json_decode($request->getContent(), true);
+        $dataApiToken = is_array($data['apiToken'] ?? null) ? $data['apiToken'] : [];
+        if (trim((string) ($dataApiToken['name'] ?? '')) === '') {
+            return $this->json(
+                ['success' => false, 'msg' => $translator->trans('api_token.card.title.error', domain: 'api_token')],
+                Response::HTTP_BAD_REQUEST,
+            );
+        }
+
+        $id = intval($dataApiToken['id'] ?? 0);
+        if ($id > 0) {
+            $apiToken = $apiTokenService->findOneById(ApiToken::class, $id);
+            if ($apiToken === null) {
+                return $this->json(
+                    ['success' => false, 'msg' => $translator->trans('api_token.update.no.mail.title', domain: 'api_token')],
+                    Response::HTTP_NOT_FOUND,
+                );
+            }
+            $apiTokenService->updateApiToken($apiToken, $dataApiToken);
+            $response = $apiTokenService->getResponseAjax(
+                $translator->trans('api_token.save.success', domain: 'api_token'),
+            );
+            $response['token'] = '';
+            return $this->json($response);
+        }
+
+        $result = $apiTokenService->createApiToken($dataApiToken);
+        $response = $apiTokenService->getResponseAjax(
+            $translator->trans('api_token.new.token.success', domain: 'api_token'),
+        );
+        $response['token'] = $response['success'] === true ? $result['token'] : '';
         return $this->json($response);
+    }
+
+    /**
+     * Réponse JSON en cas de jeton CSRF invalide
+     * @param TranslatorInterface $translator
+     * @return JsonResponse
+     */
+    private function jsonCsrfError(TranslatorInterface $translator): JsonResponse
+    {
+        return $this->json(
+            ['success' => false, 'msg' => $translator->trans('api_token.error.csrf', domain: 'api_token')],
+            Response::HTTP_FORBIDDEN,
+        );
     }
 }

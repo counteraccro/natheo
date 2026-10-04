@@ -14,6 +14,7 @@ use App\Service\Admin\DashboardService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Tests\AppWebTestCase;
 use App\Utils\System\ApiToken\ApiTokenConst;
+use App\Utils\System\ApiToken\TokenHasher;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
@@ -47,7 +48,7 @@ class DashboardServiceTest extends AppWebTestCase
      */
     public function testGetBlockHelpConfig(): void
     {
-        $apiToken = $this->createApiToken(['token' => ApiTokenConst::API_TOKEN_READ]);
+        $apiToken = $this->createApiToken(['token' => TokenHasher::hash(ApiTokenConst::API_TOKEN_READ)]);
 
         $this->optionSystemService->saveValueByKee(OptionSystem::OS_OPEN_SITE->value, '0');
 
@@ -70,7 +71,7 @@ class DashboardServiceTest extends AppWebTestCase
         $this->optionSystemService->saveValueByKee(OptionSystem::OS_ADRESSE_SITE->value, 'www.unit-test.com');
         $this->optionSystemService->saveValueByKee(OptionSystem::OS_OPEN_SITE->value, '1');
 
-        $apiToken->setToken('token-unit-test');
+        $apiToken->setToken(TokenHasher::hash('token-unit-test'));
         $this->dashboardService->save($apiToken);
 
         $result = $this->dashboardService->getBlockHelpConfig();

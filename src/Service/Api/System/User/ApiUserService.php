@@ -13,6 +13,7 @@ use App\Entity\Admin\System\UserData;
 use App\Repository\Admin\System\UserRepository;
 use App\Service\Api\AppApiService;
 use App\Enum\Admin\System\User\UserDataKey;
+use App\Utils\System\ApiToken\TokenHasher;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
@@ -20,6 +21,7 @@ class ApiUserService extends AppApiService
 {
     /**
      * Retourne un utilisateur en fonction de son token si celui ci est valide
+     * et si le compte est toujours actif
      * @param string $userToken
      * @return User|null
      * @throws ContainerExceptionInterface
@@ -28,18 +30,20 @@ class ApiUserService extends AppApiService
     public function getUserByUserToken(string $userToken): ?User
     {
         $repository = $this->getRepository(UserData::class);
-        $userData = $repository->findByKeyValue(UserDataKey::TOKEN_CONNEXION->value, $userToken);
+        $userData = $repository->findByKeyValue(UserDataKey::TOKEN_CONNEXION->value, TokenHasher::hash($userToken));
         if (is_null($userData)) {
             return null;
         }
         /** @var User $user */
         $user = $userData->getUser();
-        $time = intval($user->getUserDataByKey(UserDataKey::TIME_VALIDATE_TOKEN->value)->getValue());
-
-        // Si le token n'est pas périmé
-        if ($time > time()) {
-            return $user;
+        if ($user->isDisabled() || $user->isAnonymous()) {
+            return null;
         }
-        return null;
+
+        $timeValidate = $user->getUserDataByKey(UserDataKey::TIME_VALIDATE_TOKEN->value);
+        if ($timeValidate === null || intval($timeValidate->getValue()) <= time()) {
+            return null;
+        }
+        return $user;
     }
 }

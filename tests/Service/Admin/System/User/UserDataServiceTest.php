@@ -13,8 +13,9 @@ use App\Entity\Admin\System\User;
 use App\Service\Admin\System\OptionSystemService;
 use App\Service\Admin\System\User\UserDataService;
 use App\Tests\AppWebTestCase;
+use App\Enum\Admin\System\Options\OptionSystem;
 use App\Enum\Admin\System\User\UserDataKey;
-use DateMalformedStringException;
+use App\Utils\System\ApiToken\TokenHasher;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
@@ -26,12 +27,18 @@ class UserDataServiceTest extends AppWebTestCase
     private UserDataService $userDataService;
 
     /**
+     * @var OptionSystemService
+     */
+    private OptionSystemService $optionSystemService;
+
+    /**
      * @return void
      */
     public function setUp(): void
     {
         parent::setUp();
         $this->userDataService = $this->container->get(UserDataService::class);
+        $this->optionSystemService = $this->container->get(OptionSystemService::class);
     }
 
     /**
@@ -107,17 +114,43 @@ class UserDataServiceTest extends AppWebTestCase
      * @return void
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
-     * @throws DateMalformedStringException
      */
     public function testGenerateUserToken(): void
     {
         $user = $this->createUser();
-        $this->userDataService->generateUserToken($user);
+        $token = $this->userDataService->generateUserToken($user);
 
         $userDataToken = $this->userDataService->findKeyAndUser(UserDataKey::TOKEN_CONNEXION->value, $user);
         $userDataTime = $this->userDataService->findKeyAndUser(UserDataKey::TIME_VALIDATE_TOKEN->value, $user);
 
         $this->assertNotNull($userDataToken);
         $this->assertNotNull($userDataTime);
+        $this->assertEquals(TokenHasher::hash($token), $userDataToken->getValue());
+        $this->assertLessThanOrEqual(time() + 60 * 60, intval($userDataTime->getValue()));
+
+        // Ancienne valeur "sans limite" : la validité est plafonnée
+        $this->optionSystemService->saveValueByKee(OptionSystem::OS_API_TIME_VALIDATE_USER_TOKEN->value, '-1');
+        $this->userDataService->generateUserToken($user);
+        $userDataTime = $this->userDataService->findKeyAndUser(UserDataKey::TIME_VALIDATE_TOKEN->value, $user);
+        $this->assertLessThanOrEqual(
+            time() + UserDataService::USER_TOKEN_MAX_VALIDITY * 60,
+            intval($userDataTime->getValue()),
+        );
+    }
+
+    /**
+     * Test méthode removeUserToken()
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testRemoveUserToken(): void
+    {
+        $user = $this->createUser();
+        $this->userDataService->generateUserToken($user);
+        $this->userDataService->removeUserToken($user);
+
+        $this->assertNull($this->userDataService->findKeyAndUser(UserDataKey::TOKEN_CONNEXION->value, $user));
+        $this->assertNull($this->userDataService->findKeyAndUser(UserDataKey::TIME_VALIDATE_TOKEN->value, $user));
     }
 }

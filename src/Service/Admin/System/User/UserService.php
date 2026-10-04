@@ -293,7 +293,7 @@ class UserService extends AppAdminService
     }
 
     /**
-     * Met à jour le mot de passe de l'utilisateur passé en paramètre
+     * Met à jour le mot de passe de l'utilisateur passé en paramètre et révoque son token utilisateur API
      * @param User $user
      * @param $password
      * @return void
@@ -306,6 +306,7 @@ class UserService extends AppAdminService
 
         $user->setPassword($passwordHasher->hashPassword($user, $password));
         $this->save($user);
+        $this->getUserData()->removeUserToken($user);
     }
 
     /**

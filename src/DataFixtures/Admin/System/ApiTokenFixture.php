@@ -6,6 +6,7 @@ namespace App\DataFixtures\Admin\System;
 
 use App\DataFixtures\AppFixtures;
 use App\Entity\Admin\System\ApiToken;
+use App\Utils\System\ApiToken\TokenHasher;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -37,6 +38,8 @@ class ApiTokenFixture extends AppFixtures implements FixtureGroupInterface, Orde
             foreach ($dataApiToken as $key => $value) {
                 if ($key === 'roles') {
                     $apiToken->setRoles([$value]);
+                } elseif ($key === 'token') {
+                    $apiToken->setToken(TokenHasher::hash($value));
                 } else {
                     $this->setData($key, $value, $apiToken);
                 }
