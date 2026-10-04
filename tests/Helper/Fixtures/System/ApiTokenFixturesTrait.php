@@ -11,13 +11,14 @@ namespace App\Tests\Helper\Fixtures\System;
 
 use App\Entity\Admin\System\ApiToken;
 use App\Tests\Helper\FakerTrait;
+use App\Utils\System\ApiToken\TokenHasher;
 
 trait ApiTokenFixturesTrait
 {
     use FakerTrait;
 
     /**
-     * Création d'un apiToken
+     * Création d'un apiToken. La clé 'token' attend un hash (voir TokenHasher)
      * @param array $customData
      * @param bool $persist
      * @return ApiToken
@@ -26,7 +27,7 @@ trait ApiTokenFixturesTrait
     {
         $data = [
             'name' => self::getFaker()->text(),
-            'token' => self::getFaker()->text(),
+            'token' => TokenHasher::hash(self::getFaker()->uuid()),
             'roles' => ['ROLE_USER'],
             'comment' => self::getFaker()->text(),
             'disabled' => self::getFaker()->boolean(),

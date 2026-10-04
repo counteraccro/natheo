@@ -9,10 +9,10 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller\Api;
 
-use App\Entity\Admin\System\ApiToken;
 use App\Entity\Admin\System\User;
 use App\Tests\AppWebTestCase;
 use App\Utils\Api\Parameters\ApiParametersUserAuthRef;
+use App\Utils\System\ApiToken\TokenHasher;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AppApiTestCase extends AppWebTestCase
@@ -50,18 +50,17 @@ class AppApiTestCase extends AppWebTestCase
      */
     protected function getCustomHeaders(int $typeHeader = self::HEADER_READ): array
     {
-        $apiToken = match ($typeHeader) {
-            self::HEADER_WRONG => 123,
-            self::HEADER_READ => $this->createApiToken(['roles' => ['ROLE_READ_API'], 'disabled' => false]),
-            self::HEADER_WRITE => $this->createApiToken(['roles' => ['ROLE_WRITE_API'], 'disabled' => false]),
-            self::HEADER_ADMIN => $this->createApiToken(['roles' => ['ROLE_ADMIN_API'], 'disabled' => false]),
-            default => '',
+        $role = match ($typeHeader) {
+            self::HEADER_READ => 'ROLE_READ_API',
+            self::HEADER_WRITE => 'ROLE_WRITE_API',
+            self::HEADER_ADMIN => 'ROLE_ADMIN_API',
+            default => null,
         };
 
-        if ($apiToken instanceof ApiToken) {
-            $token = $apiToken->getToken();
-        } else {
-            $token = $apiToken;
+        $token = $typeHeader === self::HEADER_WRONG ? '123' : '';
+        if ($role !== null) {
+            $token = self::getFaker()->uuid();
+            $this->createApiToken(['token' => TokenHasher::hash($token), 'roles' => [$role], 'disabled' => false]);
         }
 
         return [

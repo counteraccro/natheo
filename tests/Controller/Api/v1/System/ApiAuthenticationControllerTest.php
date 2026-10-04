@@ -9,9 +9,11 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller\Api\v1\System;
 
+use App\Entity\Admin\System\ApiToken;
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Admin\System\OptionSystemService;
 use App\Tests\Controller\Api\AppApiTestCase;
+use App\Utils\System\ApiToken\TokenHasher;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ApiAuthenticationControllerTest extends AppApiTestCase
@@ -35,6 +37,49 @@ class ApiAuthenticationControllerTest extends AppApiTestCase
         $content = json_decode($response->getContent(), true);
         $this->checkStructureApiRetour($content);
         $this->assertContains('ROLE_WRITE_API', $content['data']['roles']);
+    }
+
+    /**
+     * Test authentification par token : hash, expiration, date de dernière utilisation et format du header
+     * @return void
+     */
+    public function testAuthApiToken(): void
+    {
+        $url = $this->router->generate('api_authentication_auth', ['api_version' => self::API_VERSION]);
+        $headers = ['HTTP_Accept' => 'application/json', 'HTTP_Content-Type' => 'application/json'];
+
+        $apiToken = $this->createApiToken([
+            'token' => TokenHasher::hash('token-valide'),
+            'roles' => ['ROLE_READ_API'],
+            'disabled' => false,
+        ]);
+        $this->assertNull($apiToken->getLastUsedAt());
+
+        $this->client->request('GET', $url, server: $headers + ['HTTP_Authorization' => 'Bearer token-valide']);
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->em->clear();
+        $this->assertNotNull($this->em->getRepository(ApiToken::class)->find($apiToken->getId())->getLastUsedAt());
+
+        // Le hash stocké en base ne permet pas de s'authentifier
+        $this->client->request(
+            'GET',
+            $url,
+            server: $headers + ['HTTP_Authorization' => 'Bearer ' . TokenHasher::hash('token-valide')],
+        );
+        $this->assertEquals(401, $this->client->getResponse()->getStatusCode());
+
+        // Le header doit commencer par "Bearer "
+        $this->client->request('GET', $url, server: $headers + ['HTTP_Authorization' => 'xxBearer token-valide']);
+        $this->assertNotEquals(200, $this->client->getResponse()->getStatusCode());
+
+        $this->createApiToken([
+            'token' => TokenHasher::hash('token-expire'),
+            'roles' => ['ROLE_READ_API'],
+            'disabled' => false,
+            'expiresAt' => new \DateTime('-1 day'),
+        ]);
+        $this->client->request('GET', $url, server: $headers + ['HTTP_Authorization' => 'Bearer token-expire']);
+        $this->assertEquals(401, $this->client->getResponse()->getStatusCode());
     }
 
     /**
