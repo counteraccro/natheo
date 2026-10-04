@@ -1,8 +1,8 @@
 user:
   User:
-    email: navarro.pierre@tele2.fr
-    password: $2y$04$NHgaCfrTnbKYVfC2A6CIzuQltW6dpbNNeUM6CBAhyesGRou9LcVnG
-    login: zhernandez
+    email: nicolas.monique@colin.com
+    password: $2y$04$jXoLsKS60jpTPIPvTFYFXeklyC.N3W59Z6mVtlfINREdhlvLsQtWq
+    login: legall.laure
     firstname: ''
     lastname: ''
     roles: ROLE_SUPER_ADMIN

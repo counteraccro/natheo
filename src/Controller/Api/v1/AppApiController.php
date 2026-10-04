@@ -102,7 +102,7 @@ class AppApiController extends AppApiHandlerController
         if ($user === null) {
             throw new HttpException(
                 Response::HTTP_FORBIDDEN,
-                $translator->trans($translator->trans('api_errors.user.token.not.found', domain: 'api_errors')),
+                $translator->trans('api_errors.user.token.not.found', domain: 'api_errors'),
             );
         }
         return $user;

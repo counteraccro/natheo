@@ -11,11 +11,18 @@ namespace App\Service\Api;
 
 use App\Entity\Admin\System\ApiToken;
 use App\Entity\Admin\System\User;
+use App\Utils\System\ApiToken\TokenHasher;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
 class ApiService extends AppApiService
 {
+    /**
+     * Intervalle minimum (en secondes) entre deux mises à jour de la date de dernière utilisation d'un token
+     * @var int
+     */
+    private const int LAST_USED_REFRESH_INTERVAL = 60;
+
     /**
      * Détermine si on peut accéder à l'API ou non
      * @return bool
@@ -40,7 +47,7 @@ class ApiService extends AppApiService
 
     /**
      * Converti un objet ApiToken en User pour le ApiProvider Si les conditions suivantes sont remplis
-     *  - IP autorisée, Token valide
+     *  - IP autorisée, Token valide, actif et non expiré
      * @param string $token
      * @return User|null
      * @throws ContainerExceptionInterface
@@ -53,14 +60,40 @@ class ApiService extends AppApiService
         }
 
         /** @var ApiToken $apiToken */
-        $apiToken = $this->findOneByCriteria(ApiToken::class, ['token' => $token, 'disabled' => 0]);
-        if ($apiToken === null) {
+        $apiToken = $this->findOneByCriteria(ApiToken::class, [
+            'token' => TokenHasher::hash($token),
+            'disabled' => 0,
+        ]);
+        if ($apiToken === null || $apiToken->isExpired()) {
             return null;
         }
+
+        $this->updateLastUsedAt($apiToken);
 
         $user = new User();
         $user->setRoles($apiToken->getRoles());
         $user->setUpdateAt(new \DateTime());
         return $user;
+    }
+
+    /**
+     * Met à jour la date de dernière utilisation du token
+     * @param ApiToken $apiToken
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function updateLastUsedAt(ApiToken $apiToken): void
+    {
+        $now = new \DateTime();
+        $lastUsedAt = $apiToken->getLastUsedAt();
+
+        // Évite une écriture en base à chaque appel API
+        if ($lastUsedAt !== null && $now->getTimestamp() - $lastUsedAt->getTimestamp() < self::LAST_USED_REFRESH_INTERVAL) {
+            return;
+        }
+
+        $apiToken->setLastUsedAt($now);
+        $this->save($apiToken);
     }
 }

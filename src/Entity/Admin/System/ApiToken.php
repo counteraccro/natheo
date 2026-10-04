@@ -26,7 +26,10 @@ class ApiToken
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 255)]
+    /**
+     * Hash SHA-256 du token, le token en clair n'est jamais stocké
+     */
+    #[ORM\Column(length: 64, unique: true)]
     private ?string $token = null;
 
     #[ORM\Column]
@@ -43,6 +46,12 @@ class ApiToken
 
     #[ORM\Column(name: 'update_at', type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $updateAt = null;
+
+    #[ORM\Column(name: 'expires_at', type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $expiresAt = null;
+
+    #[ORM\Column(name: 'last_used_at', type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $lastUsedAt = null;
 
     #[ORM\PrePersist]
     public function onPrePersist(): void
@@ -67,6 +76,10 @@ class ApiToken
         return $this->token;
     }
 
+    /**
+     * @param string $token hash du token (voir TokenHasher)
+     * @return $this
+     */
     public function setToken(string $token): static
     {
         $this->token = $token;
@@ -77,7 +90,6 @@ class ApiToken
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_READ_API';
 
         return array_unique($roles);
@@ -148,5 +160,38 @@ class ApiToken
         $this->disabled = $disabled;
 
         return $this;
+    }
+
+    public function getExpiresAt(): ?\DateTimeInterface
+    {
+        return $this->expiresAt;
+    }
+
+    public function setExpiresAt(?\DateTimeInterface $expiresAt): static
+    {
+        $this->expiresAt = $expiresAt;
+
+        return $this;
+    }
+
+    public function getLastUsedAt(): ?\DateTimeInterface
+    {
+        return $this->lastUsedAt;
+    }
+
+    public function setLastUsedAt(?\DateTimeInterface $lastUsedAt): static
+    {
+        $this->lastUsedAt = $lastUsedAt;
+
+        return $this;
+    }
+
+    /**
+     * Retourne true si le token a dépassé sa date d'expiration
+     * @return bool
+     */
+    public function isExpired(): bool
+    {
+        return $this->expiresAt !== null && $this->expiresAt <= new \DateTime();
     }
 }

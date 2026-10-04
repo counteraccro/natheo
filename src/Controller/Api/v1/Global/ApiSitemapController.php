@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route('/api/{api_version}/sitemap', name: 'api_sitemap_', requirements: ['_version' => '%app.api_version%'])]
+#[Route('/api/{api_version}/sitemap', name: 'api_sitemap_', requirements: ['api_version' => '%app.api_version%'])]
 #[IsGranted('ROLE_READ_API')]
 class ApiSitemapController extends AppApiController
 {
