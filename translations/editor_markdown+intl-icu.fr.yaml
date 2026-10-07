@@ -8,14 +8,6 @@ editor.button.table: Tableau
 editor.button.link: Lien
 editor.button.image: Image
 editor.button.code: Code
-editor.modal.titre.link: 'Ajouter un lien'
-editor.modal.titre.image: 'Ajouter une image'
-editor.modal.button.close: Annuler
-editor.modal.button.valide: Valider
-editor.modal.input.link: 'URL du site web'
-editor.modal.input.image: "URL de l'image"
-editor.modal.input.text: Texte
-editor.titre.label: Titre
 editor.titre.h1: 'Titre H1'
 editor.titre.h2: 'Titre H2'
 editor.titre.h3: 'Titre H3'
@@ -24,19 +16,14 @@ editor.titre.h5: 'Titre H5'
 editor.titre.h6: 'Titre H6'
 editor.button.save: Sauvegarder
 editor.help: 'La mise en forme de votre contenu se fait avec le langage de balisage '
-editor.render: Prévisualisation
 editor.button.keyword: 'Mots clés'
 editor.input.empty: 'Le champ ne peut pas être vide'
 editor.btn.mediatheque: Médiathèque
 editor.mediatheque.title: Médiathèque
 editor.mediatheque.no_media: 'Ce dossier est vide'
-editor.warning.edit: "Vos modifications n'ont pas encore été enregistrées !, cliquez sur le bouton <i class='bi bi-save'></i> pour les sauvegarder."
 editor.button.link.interne: 'Lien interne'
 editor.button.preview: Preview
 editor.loading: Chargement...
-preview.title: 'Preview de votre contenu'
-preview.preview: 'Prévisualisation de mon texte'
-preview.preview.info: 'Ceci est une prévisualisation et peut ne pas correspondre au design de votre site web'
 editor.modale.internal.link.title: 'Ajouter un lien interne'
 editor.modale.internal.link.label.search: 'Rechercher une page'
 editor.modale.internal.link.noResult: 'Aucune page trouvée'
@@ -50,3 +37,16 @@ editor.mediatheque.search.placeholder: Rechercher
 editor.mediatheque.folder: dossier
 editor.mediatheque.img: images
 editor.mediatheque.file: fichier
+editor.button.heading: Titres
+editor.placeholder.bold: 'texte en gras'
+editor.placeholder.italic: 'texte en italique'
+editor.placeholder.strike: 'texte barré'
+editor.placeholder.code: code
+editor.placeholder.link: 'Texte du lien'
+editor.placeholder.image: description
+editor.placeholder.table.column: Colonne
+editor.placeholder.table.cell: Cellule
+editor.modale.internal.link.error: 'Impossible de charger la liste des pages'
+editor.mediatheque.files: fichiers
+editor.mediatheque.root: Racine
+editor.mediatheque.error: 'Impossible de charger la médiathèque'
