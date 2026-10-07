@@ -4,13 +4,14 @@ declare(strict_types=1);
 /**
  * Service pour la génération de l'éditeur Markdown du site
  * @author Gourdon Aymeric
- * @version 1.2
+ * @version 1.3
  */
 
 namespace App\Service\Admin;
 
 use App\Entity\Admin\Content\Page\Page;
-use App\Utils\Content\Page\PageConst;
+use App\Entity\Admin\Content\Page\PageTranslation;
+use App\Enum\Admin\Content\Page\PageStatus;
 use App\Enum\Admin\System\Options\OptionSystem;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -20,48 +21,106 @@ class MarkdownEditorService extends AppAdminService
     /**
      * Transforme certaines balises markdown custom en balise markdown officielle
      * @param string $markdown
+     * @param string|null $locale langue des liens internes, langue courante si null
+     * @param bool $absoluteUrls true pour préfixer les urls relatives par l'adresse du site (ex. emails)
      * @return string
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function parseMarkdown(string $markdown): string
+    public function parseMarkdown(string $markdown, ?string $locale = null, bool $absoluteUrls = false): string
     {
-        $markdown = $this->parseInternalLink($markdown);
+        $markdown = $this->parseInternalLink($markdown, $locale ?? $this->getLocales()['current']);
+        if ($absoluteUrls) {
+            $markdown = $this->makeUrlsAbsolute($markdown);
+        }
         return $markdown;
     }
 
     /**
-     * Génère les liens internes du CMS
+     * Préfixe par l'adresse du site les cibles relatives ("/...") des liens et images markdown
      * @param string $text
      * @return string
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    private function parseInternalLink(string $text): string
+    private function makeUrlsAbsolute(string $text): string
     {
-        $locale = $this->getLocales()['current'];
-        $url = $this->getOptionSystemService()->getByKey(OptionSystem::OS_ADRESSE_SITE->value)->getValue();
+        $siteUrl = $this->getSiteUrl();
+        // "](/x" et "](</x" ; "//" (url sans protocole) est laissé tel quel
+        return preg_replace_callback('/(?<=\]\()(<?)\/(?!\/)/', fn(array $match) => $match[1] . $siteUrl . '/', $text);
+    }
+
+    /**
+     * Adresse du site sans "/" final
+     * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function getSiteUrl(): string
+    {
+        $url = (string) $this->getOptionSystemService()->getValueByKey(OptionSystem::OS_ADRESSE_SITE->value);
+        return rtrim($url, '/');
+    }
+
+    /**
+     * Génère les liens internes du CMS : remplace la cible "P#id" d'un lien markdown par l'url de la page
+     * Une page inexistante, non publiée, désactivée ou non traduite produit un lien "#"
+     * @param string $text
+     * @param string $locale
+     * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function parseInternalLink(string $text, string $locale): string
+    {
+        if (!str_contains($text, 'P#')) {
+            return $text;
+        }
+
+        $url = $this->getSiteUrl();
         $tabCategories = $this->getPageService()->getAllCategories();
 
-        $re = '/(P#(\d+))/m';
-        preg_match_all($re, $text, $matches, PREG_SET_ORDER, 0);
+        $cache = [];
+        return preg_replace_callback(
+            '/(?<=\]\()P#(\d+)(?=[\s)])/',
+            function (array $match) use (&$cache, $locale, $url, $tabCategories): string {
+                $id = (int) $match[1];
+                if (!isset($cache[$id])) {
+                    $cache[$id] = $this->generateInternalUrl($id, $locale, $url, $tabCategories);
+                }
+                return $cache[$id];
+            },
+            $text,
+        );
+    }
 
-        foreach ($matches as $match) {
-            /** @var Page $page */
-            $page = $this->findOneById(Page::class, $match[2]);
-
-            $pageTrans = $page->getPageTranslationByLocale($locale);
-            $urlGenerate =
-                $url .
-                '/' .
-                $locale .
-                '/' .
-                strtolower($tabCategories[$page->getCategory()]) .
-                '/' .
-                $pageTrans->getUrl();
-            $pattern = '/' . preg_quote($match[0], '/') . '(?!\d)/';
-            $text = preg_replace($pattern, $urlGenerate, $text);
+    /**
+     * Construit l'url publique d'une page
+     * @param int $id
+     * @param string $locale
+     * @param string $url
+     * @param array $tabCategories
+     * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function generateInternalUrl(int $id, string $locale, string $url, array $tabCategories): string
+    {
+        /** @var Page|null $page */
+        $page = $this->findOneById(Page::class, $id);
+        if ($page === null || $page->isDisabled() || $page->getStatus() !== PageStatus::PUBLISH->value) {
+            return '#';
         }
-        return $text;
+
+        $pageTrans = $page
+            ->getPageTranslations()
+            ->filter(fn(PageTranslation $translation) => $translation->getLocale() === $locale)
+            ->first();
+        if (!($pageTrans instanceof PageTranslation)) {
+            return '#';
+        }
+
+        $category = strtolower($tabCategories[$page->getCategory()] ?? '');
+        return $url . '/' . $locale . '/' . $category . '/' . $pageTrans->getUrl();
     }
 }

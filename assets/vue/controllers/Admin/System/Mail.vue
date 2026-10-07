@@ -308,7 +308,6 @@ export default defineComponent({
             :me-save="true"
             :me-preview="true"
             :me-required="true"
-            @editor-value="saveContent"
             @editor-value-change="saveContent"
           >
           </markdown-editor>

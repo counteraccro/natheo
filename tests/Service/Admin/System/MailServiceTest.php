@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace App\Tests\Service\Admin\System;
 
 use App\Entity\Admin\System\Mail;
+use App\Enum\Admin\Content\Page\PageCategory;
+use App\Enum\Admin\Content\Page\PageStatus;
+use App\Enum\Admin\System\Options\OptionSystem;
 use App\Repository\Admin\System\MailRepository;
 use App\Service\Admin\System\MailService;
 use App\Service\Admin\System\OptionSystemService;
@@ -172,6 +175,7 @@ class MailServiceTest extends AppWebTestCase
 
         $params = $this->mailService->getDefaultParams($mail, $tabKeyWord, 'en');
         $this->assertEquals($mail->getMailTranslationByLocale('en')->getTitle(), $params[MailService::TITLE]);
+        $this->assertEquals('en', $params[MailService::LOCALE]);
 
         // Langue sans traduction : repli sur la première traduction disponible
         $params = $this->mailService->getDefaultParams($mail, $tabKeyWord, 'xx');
@@ -207,6 +211,54 @@ class MailServiceTest extends AppWebTestCase
         $this->assertEquals('bcc@natheo.test', $email->getBcc()[0]->getAddress());
         // FROM vide : valeur de l'option système utilisée
         $this->assertNotEmpty($email->getFrom());
+    }
+
+    /**
+     * Test envoi mail : liens internes convertis dans la langue de l'email et urls relatives rendues absolues
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws CommonMarkException
+     * @throws TransportExceptionInterface
+     */
+    public function testSendMailInternalLinkAndAbsoluteUrls(): void
+    {
+        $page = $this->createPage(
+            customData: [
+                'status' => PageStatus::PUBLISH->value,
+                'disabled' => false,
+                'category' => PageCategory::PAGE->value,
+            ],
+        );
+        $this->createPageTranslation($page, ['locale' => 'fr', 'url' => 'page-fr']);
+        $this->createPageTranslation($page, ['locale' => 'en', 'url' => 'page-en']);
+        $draft = $this->createPage(customData: ['status' => PageStatus::DRAFT->value, 'disabled' => false]);
+        $this->createPageTranslation($draft, ['locale' => 'en']);
+
+        $this->mailService->sendMail([
+            MailService::TITLE => 'titre',
+            MailService::CONTENT => sprintf(
+                '[page](P#%d) [brouillon](P#%d) ![img](/assets/image.png)',
+                $page->getId(),
+                $draft->getId(),
+            ),
+            MailService::TO => 'to@natheo.test',
+            MailService::TEMPLATE => MailTemplate::EMAIL_SIMPLE_TEMPLATE,
+            MailService::LOCALE => 'en',
+        ]);
+
+        $siteUrl = rtrim(
+            (string) $this->container
+                ->get(OptionSystemService::class)
+                ->getValueByKey(OptionSystem::OS_ADRESSE_SITE->value),
+            '/',
+        );
+        $email = $this->getMailerMessages()[0];
+        $this->assertEmailHtmlBodyContains($email, 'href="' . $siteUrl . '/en/');
+        $this->assertEmailHtmlBodyContains($email, '/page-en"');
+        $this->assertEmailHtmlBodyContains($email, '<a href="#"');
+        $this->assertEmailHtmlBodyContains($email, 'src="' . $siteUrl . '/assets/image.png"');
+        $this->assertEmailHtmlBodyNotContains($email, 'P#');
     }
 
     /**

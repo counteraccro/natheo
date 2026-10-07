@@ -1078,7 +1078,6 @@ export default defineComponent({
                     :me-preview="false"
                     :me-required="true"
                     @editor-value="updateAnswer"
-                    @editor-value-change=""
                   />
                 </div>
               </div>

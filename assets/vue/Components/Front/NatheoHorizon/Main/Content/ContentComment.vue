@@ -1,5 +1,5 @@
 <script>
-import { marked } from 'marked';
+import { renderMarkdown } from '@/ts/MarkdownEditor/markdownRender';
 import { CommentStatus } from '../../../../../../utils/Front/Const/CommentStatus';
 
 /**
@@ -58,7 +58,7 @@ export default {
      * @returns {*}
      */
     output(str) {
-      return marked(str);
+      return renderMarkdown(str);
     },
 
     /**
