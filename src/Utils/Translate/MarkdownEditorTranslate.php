@@ -4,7 +4,7 @@ declare(strict_types=1);
 /**
  * Class pour la génération des traductions pour les scripts vue pour MarkdownEditor
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  */
 
 namespace App\Utils\Translate;
@@ -18,7 +18,6 @@ class MarkdownEditorTranslate extends AppTranslate
     public function getTranslate(): array
     {
         return [
-            'loading' => $this->translator->trans('editor.loading', domain: 'editor_markdown'),
             'btnBold' => $this->translator->trans('editor.button.bold', domain: 'editor_markdown'),
             'btnItalic' => $this->translator->trans('editor.button.italic', domain: 'editor_markdown'),
             'btnStrike' => $this->translator->trans('editor.button.strike', domain: 'editor_markdown'),
@@ -32,7 +31,8 @@ class MarkdownEditorTranslate extends AppTranslate
             'btnCode' => $this->translator->trans('editor.button.code', domain: 'editor_markdown'),
             'btnSave' => $this->translator->trans('editor.button.save', domain: 'editor_markdown'),
             'btnKeyWord' => $this->translator->trans('editor.button.keyword', domain: 'editor_markdown'),
-            'titreLabel' => $this->translator->trans('editor.titre.label', domain: 'editor_markdown'),
+            'btnHeading' => $this->translator->trans('editor.button.heading', domain: 'editor_markdown'),
+            'btnMediatheque' => $this->translator->trans('editor.btn.mediatheque', domain: 'editor_markdown'),
             'titreH1' => $this->translator->trans('editor.titre.h1', domain: 'editor_markdown'),
             'titreH2' => $this->translator->trans('editor.titre.h2', domain: 'editor_markdown'),
             'titreH3' => $this->translator->trans('editor.titre.h3', domain: 'editor_markdown'),
@@ -42,22 +42,31 @@ class MarkdownEditorTranslate extends AppTranslate
             'preview' => $this->translator->trans('editor.button.preview', domain: 'editor_markdown'),
             'emptyPreview' => $this->translator->trans('editor.emptyPreview', domain: 'editor_markdown'),
             'help' => $this->translator->trans('editor.help', domain: 'editor_markdown'),
-            'render' => $this->translator->trans('editor.render', domain: 'editor_markdown'),
-            'modalTitreLink' => $this->translator->trans('editor.modal.titre.link', domain: 'editor_markdown'),
-            'modalInputUrlLink' => $this->translator->trans('editor.modal.input.link', domain: 'editor_markdown'),
-            'modalTitreImage' => $this->translator->trans('editor.modal.titre.image', domain: 'editor_markdown'),
-            'modalInputUrlImage' => $this->translator->trans('editor.modal.input.image', domain: 'editor_markdown'),
-            'modalBtnClose' => $this->translator->trans('editor.modal.button.close', domain: 'editor_markdown'),
-            'modalBtnValide' => $this->translator->trans('editor.modal.button.valide', domain: 'editor_markdown'),
-            'modalInputText' => $this->translator->trans('editor.modal.input.text', domain: 'editor_markdown'),
             'msgEmptyContent' => $this->translator->trans('editor.input.empty', domain: 'editor_markdown'),
-            'btnMediatheque' => $this->translator->trans('editor.btn.mediatheque', domain: 'editor_markdown'),
-            'warning_edit' => $this->translator->trans('editor.warning.edit', domain: 'editor_markdown'),
             'textareaPlaceholder' => $this->translator->trans('editor.textarea.placeholder', domain: 'editor_markdown'),
             'words' => $this->translator->trans('editor.words', domain: 'editor_markdown'),
             'caracteres' => $this->translator->trans('editor.caracteres', domain: 'editor_markdown'),
+            'placeholders' => $this->getTranslatePlaceholders(),
             'modaleMediatheque' => $this->getTranslateMediateque(),
             'modaleInternalLink' => $this->getTranslateModaleInternalLink(),
+        ];
+    }
+
+    /**
+     * Textes insérés par défaut dans l'éditeur lorsqu'aucun texte n'est sélectionné
+     * @return array
+     */
+    private function getTranslatePlaceholders(): array
+    {
+        return [
+            'bold' => $this->translator->trans('editor.placeholder.bold', domain: 'editor_markdown'),
+            'italic' => $this->translator->trans('editor.placeholder.italic', domain: 'editor_markdown'),
+            'strike' => $this->translator->trans('editor.placeholder.strike', domain: 'editor_markdown'),
+            'code' => $this->translator->trans('editor.placeholder.code', domain: 'editor_markdown'),
+            'link' => $this->translator->trans('editor.placeholder.link', domain: 'editor_markdown'),
+            'image' => $this->translator->trans('editor.placeholder.image', domain: 'editor_markdown'),
+            'tableColumn' => $this->translator->trans('editor.placeholder.table.column', domain: 'editor_markdown'),
+            'tableCell' => $this->translator->trans('editor.placeholder.table.cell', domain: 'editor_markdown'),
         ];
     }
 
@@ -75,6 +84,8 @@ class MarkdownEditorTranslate extends AppTranslate
             ),
             'noResult' => $this->translator->trans('editor.modale.internal.link.noResult', domain: 'editor_markdown'),
             'statistique' => $this->translator->trans('editor.modale.internal.link.stats', domain: 'editor_markdown'),
+            'loading' => $this->translator->trans('editor.loading', domain: 'editor_markdown'),
+            'error' => $this->translator->trans('editor.modale.internal.link.error', domain: 'editor_markdown'),
         ];
     }
 
@@ -95,6 +106,9 @@ class MarkdownEditorTranslate extends AppTranslate
             'folder' => $this->translator->trans('editor.mediatheque.folder', domain: 'editor_markdown'),
             'img' => $this->translator->trans('editor.mediatheque.img', domain: 'editor_markdown'),
             'file' => $this->translator->trans('editor.mediatheque.file', domain: 'editor_markdown'),
+            'files' => $this->translator->trans('editor.mediatheque.files', domain: 'editor_markdown'),
+            'root' => $this->translator->trans('editor.mediatheque.root', domain: 'editor_markdown'),
+            'error' => $this->translator->trans('editor.mediatheque.error', domain: 'editor_markdown'),
         ];
     }
 }

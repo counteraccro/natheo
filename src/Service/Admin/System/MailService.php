@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.3
+ * @version 1.4
  * Service lier à l'objet mail
  */
 
@@ -86,6 +86,12 @@ class MailService extends AppAdminService
      * @const string
      */
     public const BODY = 'body';
+
+    /**
+     * Clé LOCALE, langue des liens internes du contenu
+     * @const string
+     */
+    public const LOCALE = 'locale';
 
     /**
      * Retourne une liste de mail formaté pour vueJs et automatiquement traduit en fonction de langue par défaut
@@ -248,6 +254,7 @@ class MailService extends AppAdminService
      *  bcc => string || array - optionnel <br/>
      *  reply_to => string || array - optionnel - Si non défini alors la valeur de OS_MAIL_REPLY_TO sera utilisée<br/>
      *  template => string <br />
+     *  locale => string - optionnel - langue des liens internes, langue courante si non défini <br />
      * @return void
      * @throws CommonMarkException
      * @throws ContainerExceptionInterface
@@ -268,8 +275,14 @@ class MailService extends AppAdminService
         $body = $this->getParamsValue($params, self::BODY);
         $signature = $optionSystemService->getValueByKey(OptionSystem::OS_MAIL_SIGNATURE->value);
 
+        // Liens internes résolus et urls absolues : un email est lu hors du site
+        $content = $this->getMarkdownEditorService()->parseMarkdown(
+            (string) $content,
+            $params[self::LOCALE] ?? null,
+            true,
+        );
         $markdown = new Markdown();
-        $content = $markdown->convertMarkdownToHtml((string) $content);
+        $content = $markdown->convertMarkdownToHtml($content);
         $content = $content . $signature;
 
         $body = array_merge((array) $body, ['content' => $content]);
@@ -352,7 +365,8 @@ class MailService extends AppAdminService
      * MailService::TITLE => titre du mail en fonction de la langue, <br />
      * MailService::CONTENT => contenu du mail avec le tableau de keyword, <br />
      * MailService::TO => '', <br />
-     * MailService::TEMPLATE => MailTemplate::EMAIL_SIMPLE_TEMPLATE <br />
+     * MailService::TEMPLATE => MailTemplate::EMAIL_SIMPLE_TEMPLATE, <br />
+     * MailService::LOCALE => langue de la traduction utilisée <br />
      * ]
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -371,6 +385,7 @@ class MailService extends AppAdminService
             MailService::CONTENT => $this->replaceKeyWords($mailTranslation->getContent(), $tabKeyWord),
             MailService::TO => '',
             MailService::TEMPLATE => MailTemplate::EMAIL_SIMPLE_TEMPLATE,
+            MailService::LOCALE => $mailTranslation->getLocale(),
         ];
     }
 

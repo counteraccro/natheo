@@ -560,10 +560,16 @@ class PageService extends AppAdminService
         $return = [];
         foreach ($listePages as $page) {
             /** @var Page $page */
-            $pageTranslations = $page->getPageTranslationByLocale($locale);
+            $pageTranslation = $page
+                ->getPageTranslations()
+                ->filter(fn(PageTranslation $translation) => $translation->getLocale() === $locale)
+                ->first();
+            if (!($pageTranslation instanceof PageTranslation)) {
+                continue;
+            }
             $return[$page->getId()] = [
                 'id' => $page->getId(),
-                'title' => $pageTranslations->getTitre(),
+                'title' => $pageTranslation->getTitre(),
             ];
         }
         return $return;
