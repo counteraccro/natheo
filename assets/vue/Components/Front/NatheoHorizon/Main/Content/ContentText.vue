@@ -1,5 +1,5 @@
 <script>
-import { marked } from 'marked';
+import { renderMarkdown } from '@/ts/MarkdownEditor/markdownRender';
 
 /**
  * @author Gourdon Aymeric
@@ -47,7 +47,7 @@ export default {
   },
   computed: {
     output() {
-      return marked(this.content);
+      return renderMarkdown(this.content);
     },
   },
   methods: {

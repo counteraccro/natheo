@@ -2,27 +2,20 @@
 /**
  *
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 2.0
  * Modale médiathèque pour l'éditeur markdown
  */
 
 import axios from 'axios';
+import { defineComponent, type PropType } from 'vue';
 import Modal from '@/vue/Components/Global/Modal.vue';
 import type { MediaFile, NatheoMediaEvent } from '@/ts/MarkdownEditor/modules/Mediatheque';
-import type { PropType } from 'vue';
-
-interface MediaItem {
-  id: number;
-  name: string;
-  url: string; // webPath — inséré dans le markdown
-  thumb: string; // thumbnail — affiché dans la modale
-  isImage: boolean;
-}
-
-interface FolderItem {
-  id: number;
-  name: string;
-}
+import type {
+  FolderItem,
+  MediaItem,
+  MediathequeApiItem,
+  MediathequeTranslate,
+} from '@/ts/MarkdownEditor/Mediatheque.type';
 
 const IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', '.avif'];
 
@@ -31,7 +24,7 @@ function checkIsImage(filename: string): boolean {
   return IMAGE_EXTENSIONS.includes(ext);
 }
 
-export default {
+export default defineComponent({
   name: 'MediathequeModale',
 
   components: {
@@ -40,7 +33,9 @@ export default {
 
   props: {
     urlMedia: { type: String, required: true },
-    translate: { type: Object as PropType<Record<string, string>>, default: () => ({}) },
+    translate: { type: Object as PropType<Partial<MediathequeTranslate>>, default: () => ({}) },
+    /** Éditeur propriétaire ; vide = répond uniquement aux events émis hors éditeur */
+    editorId: { type: String, default: '' },
   },
 
   data() {
@@ -65,6 +60,12 @@ export default {
 
       /** Chargement en cours */
       loading: false,
+
+      /** Échec du dernier chargement */
+      error: false,
+
+      /** Numéro de la dernière requête, pour ignorer les réponses obsolètes */
+      requestId: 0,
 
       /** Filtre texte local */
       search: '',
@@ -91,20 +92,34 @@ export default {
     fileMedias(): MediaItem[] {
       return this.filteredMedias.filter((m) => !m.isImage);
     },
+
+    emptyMessage(): string {
+      if (this.error) return this.translate.error ?? '';
+      if (this.search) return `${this.translate.no_search ?? ''} « ${this.search} »`;
+      return this.translate.no_media ?? '';
+    },
+  },
+
+  watch: {
+    // L'url arrive en asynchrone : la modale a pu être ouverte avant
+    urlMedia(): void {
+      if (this.isOpen) this.loadMedias(this.currentFolderId);
+    },
   },
 
   mounted() {
-    window.addEventListener('natheo:open-media', this.handleOpenMedia as EventListener);
+    window.addEventListener('natheo:open-media', this.handleOpenMedia);
   },
 
   beforeUnmount() {
-    window.removeEventListener('natheo:open-media', this.handleOpenMedia as EventListener);
+    window.removeEventListener('natheo:open-media', this.handleOpenMedia);
   },
 
   methods: {
     // ─── Gestion de l'event ────────────────────────────────────────────────
 
     handleOpenMedia(event: NatheoMediaEvent): void {
+      if ((event.detail.editorId ?? '') !== this.editorId) return;
       this.onSelectCallback = event.detail.onSelect;
       this.open();
     },
@@ -113,7 +128,6 @@ export default {
 
     open(): void {
       this.search = '';
-      this.currentFolderId = 0;
       this.breadcrumb = [];
       this.isOpen = true;
       this.loadMedias(0);
@@ -124,42 +138,55 @@ export default {
       this.onSelectCallback = null;
       this.medias = [];
       this.folders = [];
+      this.loading = false;
+      this.requestId++;
     },
 
     // ─── Chargement depuis Symfony ─────────────────────────────────────────
 
     loadMedias(folderId: number): void {
-      this.loading = true;
       this.currentFolderId = folderId;
+      if (!this.urlMedia) return;
+
+      this.loading = true;
+      this.error = false;
+      const requestId = ++this.requestId;
 
       axios
-        .get(`${this.urlMedia}/${folderId}/${this.order}/${this.filter}`)
+        .get<MediathequeApiItem[] | { medias: Record<string, MediathequeApiItem> }>(
+          `${this.urlMedia}/${folderId}/${this.order}/${this.filter}`
+        )
         .then(({ data }) => {
-          // L'API retourne un tableau plat, chaque item a un champ `type`
-          // `type: "folder"` → dossier (navigation uniquement)
-          // `type: "media"`  → fichier sélectionnable (insertion dans l'éditeur)
-          const items: any[] = Array.isArray(data) ? data : Object.values(data.medias);
+          if (requestId !== this.requestId) return;
+
+          const items = Array.isArray(data) ? data : Object.values(data.medias);
 
           this.folders = items
-            .filter((item: any) => item.type === 'folder')
-            .map((f: any) => ({
+            .filter((item) => item.type === 'folder')
+            .map((f) => ({
               id: f.id,
               name: f.name,
             }));
 
           this.medias = items
-            .filter((item: any) => item.type === 'media')
-            .map((m: any) => ({
+            .filter((item) => item.type === 'media')
+            .map((m) => ({
               id: m.id,
               name: m.title ?? m.name,
-              url: m.webPath,
-              thumb: m.thumbnail,
+              url: m.webPath ?? '',
+              thumb: m.thumbnail ?? '',
               isImage: checkIsImage(m.name),
             }));
         })
-        .catch(console.error)
+        .catch((error) => {
+          if (requestId !== this.requestId) return;
+          console.error(error);
+          this.error = true;
+          this.medias = [];
+          this.folders = [];
+        })
         .finally(() => {
-          this.loading = false;
+          if (requestId === this.requestId) this.loading = false;
         });
     },
 
@@ -172,8 +199,7 @@ export default {
 
     goToBreadcrumb(index: number): void {
       this.breadcrumb = this.breadcrumb.slice(0, index + 1);
-      const folder = this.breadcrumb[index];
-      this.loadMedias(folder.id);
+      this.loadMedias(this.breadcrumb[index].id);
     },
 
     goToRoot(): void {
@@ -197,11 +223,16 @@ export default {
       this.close();
     },
   },
-};
+});
 </script>
 
 <template>
-  <modal :id="'modal-media-picker'" :show="isOpen" @close-modal="close" :option-show-close-btn="true">
+  <modal
+    :id="'modal-media-picker' + (editorId ? '-' + editorId : '')"
+    :show="isOpen"
+    @close-modal="close"
+    :option-show-close-btn="true"
+  >
     <!-- Icône -->
     <template #icon>
       <svg class="h-6 w-6 me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -221,6 +252,7 @@ export default {
         <!-- Breadcrumb -->
         <div class="flex items-center gap-2 text-sm flex-1 min-w-0 flex-wrap">
           <button
+            type="button"
             class="flex items-center gap-1.5 px-3 py-1 rounded-lg font-medium transition-opacity hover:opacity-75"
             style="background-color: var(--primary-lighter); color: var(--primary)"
             @click="goToRoot"
@@ -228,7 +260,7 @@ export default {
             <svg class="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
               <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
             </svg>
-            <span>Root</span>
+            <span>{{ translate.root }}</span>
           </button>
 
           <template v-for="(crumb, index) in breadcrumb" :key="crumb.id">
@@ -242,6 +274,7 @@ export default {
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
             </svg>
             <button
+              type="button"
               class="flex items-center gap-1.5 px-3 py-1 rounded-lg font-medium transition-opacity hover:opacity-75"
               style="background-color: var(--primary-lighter); color: var(--primary)"
               @click="goToBreadcrumb(index)"
@@ -296,6 +329,7 @@ export default {
           </h4>
           <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
             <button
+              type="button"
               v-for="folder in folders"
               :key="folder.id"
               class="flex items-center gap-3 px-4 py-3 rounded-lg border-2 border-dashed transition-all text-left"
@@ -328,6 +362,7 @@ export default {
           </h4>
           <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2">
             <button
+              type="button"
               v-for="media in imageMedias"
               :key="media.id"
               class="group relative h-20 rounded-lg overflow-hidden border transition-all hover:opacity-90 focus:outline-none focus:ring-2"
@@ -358,6 +393,7 @@ export default {
           </h4>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
             <button
+              type="button"
               v-for="media in fileMedias"
               :key="media.id"
               class="flex items-center gap-3 px-4 py-3 rounded-lg border transition-all text-left hover:opacity-80 focus:outline-none focus:ring-2"
@@ -409,7 +445,7 @@ export default {
             <polyline points="21 15 16 10 5 21" stroke-width="1.5" />
           </svg>
           <p class="text-sm font-medium" style="color: var(--text-secondary)">
-            {{ search ? translate.no_search + ' « ' + search + ' »' : translate.no_media }}
+            {{ emptyMessage }}
           </p>
         </div>
       </template>
@@ -418,7 +454,7 @@ export default {
     <!-- Footer -->
     <template #footer>
       <span class="text-sm" style="color: var(--text-secondary)">
-        {{ filteredMedias.length }} {{ translate.file }}{{ filteredMedias.length > 1 ? 's' : '' }}
+        {{ filteredMedias.length }} {{ filteredMedias.length > 1 ? translate.files : translate.file }}
       </span>
     </template>
   </modal>

@@ -9,7 +9,7 @@ import { defineComponent, type PropType } from 'vue';
 import axios from 'axios';
 import Toast from '../../../../Components/Global/Toast.vue';
 import SearchPaginate from '../../../../Components/Global/Search/SearchPaginate.vue';
-import { marked } from 'marked';
+import { renderMarkdown } from '@/ts/MarkdownEditor/markdownRender';
 import { emitter } from '@/utils/useEvent';
 import type {
   CommentModerationUrls,
@@ -194,7 +194,7 @@ export default defineComponent({
      * @return {string}
      */
     renderHtml(value: string): string {
-      return marked(value) as string;
+      return renderMarkdown(value);
     },
 
     /**
