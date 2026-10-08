@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace Controller\Api\v1\Content;
 
 use App\Entity\Admin\Content\Comment\Comment;
-use App\Enum\Admin\Comment\Status;
+use App\Enum\Admin\Comment\CommentStatus;
 use App\Tests\Controller\Api\AppApiTestCase;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -26,13 +26,13 @@ class ApiCommentControllerTest extends AppApiTestCase
 
         $page = $this->createPageAllDataDefault();
         for ($i = 0; $i < 3; $i++) {
-            $this->createComment($page, customData: ['status' => Status::VALIDATE->value]);
+            $this->createComment($page, customData: ['status' => CommentStatus::VALIDATE->value]);
         }
 
-        $this->createComment($page, customData: ['status' => Status::WAIT_VALIDATION->value]);
+        $this->createComment($page, customData: ['status' => CommentStatus::WAIT_VALIDATION->value]);
         $comment = $this->createComment(
             $page,
-            customData: ['status' => Status::MODERATE->value, 'moderationComment' => self::getFaker()->text(40)],
+            customData: ['status' => CommentStatus::MODERATE->value, 'moderationComment' => self::getFaker()->text(40)],
         );
 
         // Erreur id et slug non présent
@@ -86,7 +86,7 @@ class ApiCommentControllerTest extends AppApiTestCase
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);
         $this->checkStructureApiRetourError($content);
-        $this->assertEquals('__Choose a orderBy between id or createdAt ', $content['errors'][0]);
+        $this->assertEquals('Choisissez un orderBy entre id ou createdAt ', $content['errors'][0]);
 
         $this->client->request(
             'GET',
@@ -199,7 +199,7 @@ class ApiCommentControllerTest extends AppApiTestCase
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);
         $this->checkStructureApiRetourError($content);
-        $this->assertEquals('__The author parameter cannot be empty ', $content['errors'][0]);
+        $this->assertEquals('Le paramètre author ne peut pas être vide ', $content['errors'][0]);
 
         // Page id wrong
         $this->client->request(
@@ -380,7 +380,7 @@ class ApiCommentControllerTest extends AppApiTestCase
                 'HTTP_User-token' => self::getFaker()->randomKey(),
             ]),
             content: json_encode([
-                'status' => Status::MODERATE->value,
+                'status' => CommentStatus::MODERATE->value,
                 'moderation_comment' => self::getFaker()->text(),
             ]),
         );
@@ -404,7 +404,7 @@ class ApiCommentControllerTest extends AppApiTestCase
             ]),
             server: $this->getCustomHeaders(self::HEADER_READ),
             content: json_encode([
-                'status' => Status::MODERATE->value,
+                'status' => CommentStatus::MODERATE->value,
                 'moderation_comment' => self::getFaker()->text(),
             ]),
         );
@@ -426,7 +426,7 @@ class ApiCommentControllerTest extends AppApiTestCase
                 'HTTP_User-token' => self::getFaker()->randomKey(),
             ]),
             content: json_encode([
-                'status' => Status::MODERATE->value,
+                'status' => CommentStatus::MODERATE->value,
                 'moderation_comment' => self::getFaker()->text(),
             ]),
         );
@@ -447,7 +447,7 @@ class ApiCommentControllerTest extends AppApiTestCase
             ]),
             server: array_merge($this->getCustomHeaders(self::HEADER_READ), ['HTTP_User-token' => $token]),
             content: json_encode([
-                'status' => Status::MODERATE->value,
+                'status' => CommentStatus::MODERATE->value,
                 'moderation_comment' => self::getFaker()->text(),
             ]),
         );

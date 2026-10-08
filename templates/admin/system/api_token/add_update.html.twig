@@ -38,7 +38,12 @@
         'pApiToken' : apiToken,
         'translate' : translate,
         'urls' : urls,
-        'datas' : datas
+        'datas' : datas,
+        'csrfTokens' : {
+            'save' : csrf_token(csrfTokens.save),
+            'regenerate' : csrf_token(csrfTokens.regenerate),
+            'delete' : csrf_token(csrfTokens.delete)
+        }
     }) }}>
     </div >
     {% else  %}

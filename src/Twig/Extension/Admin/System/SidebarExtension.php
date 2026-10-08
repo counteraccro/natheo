@@ -13,6 +13,7 @@ namespace App\Twig\Extension\Admin\System;
 use App\Entity\Admin\System\SidebarElement;
 use App\Service\Admin\System\SidebarElementService;
 use App\Twig\Extension\Admin\AppAdminExtension;
+use App\Enum\Admin\Global\SvgIcon;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -103,14 +104,10 @@ class SidebarExtension extends AppAdminExtension
             $url .
             '" class="sidebar-item ' .
             $active .
-            ' flex items-center px-4 py-3 rounded-lg">
-                <svg class="w-5 h-5 mr-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="' .
-            $sidebarElement->getIcon() .
-            '"/>
-                </svg>
-                <span>' .
-            $this->translator->trans($sidebarElement->getLabel()) .
+            ' flex items-center px-4 py-3 rounded-lg">' .
+            SvgIcon::renderPath($sidebarElement->getIcon(), 'w-5 h-5 mr-3') .
+            '<span>' .
+            $this->translateLabel($sidebarElement) .
             '</span>
             </a>';
     }
@@ -149,30 +146,30 @@ class SidebarExtension extends AppAdminExtension
                 $this->generateRealUrl($child->getRoute()) .
                 '" class="' .
                 $active .
-                ' sidebar-item flex items-center px-4 py-2 rounded-lg text-sm">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="' .
-                $child->getIcon() .
-                '"></path></svg>
-                ' .
-                $this->translator->trans($child->getLabel()) .
+                ' sidebar-item flex items-center px-4 py-2 rounded-lg text-sm">' .
+                SvgIcon::renderPath($child->getIcon(), 'w-4 h-4 mr-2') .
+                $this->translateLabel($child) .
                 $notification .
                 '</a>';
         }
+
+        if ($html === '') {
+            return '';
+        }
+
+        $rotate = $open === 'open' ? 'rotate' : '';
 
         return '<div>
             <button class="sidebar-item flex items-center justify-between w-full px-4 py-3 rounded-lg" onclick="toggleSubmenu(\'' .
             $sidebarElement->getId() .
             '\')">
-                <div class="flex items-center">
-                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="' .
-            $sidebarElement->getIcon() .
-            '"></path>
-                    </svg>
-                    <span>' .
-            $this->translator->trans($sidebarElement->getLabel()) .
-            '</span></div><svg class="w-4 h-4 chevron" id="chevron-' .
+                <div class="flex items-center">' .
+            SvgIcon::renderPath($sidebarElement->getIcon(), 'w-5 h-5 mr-3') .
+            '<span>' .
+            $this->translateLabel($sidebarElement) .
+            '</span></div><svg class="w-4 h-4 chevron ' .
+            $rotate .
+            '" id="chevron-' .
             $sidebarElement->getId() .
             '" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -185,6 +182,16 @@ class SidebarExtension extends AppAdminExtension
             '">' .
             $html .
             '</div></div>';
+    }
+
+    /**
+     * Retourne le label traduit et échappé d'un sidebarElement
+     * @param SidebarElement $sidebarElement
+     * @return string
+     */
+    private function translateLabel(SidebarElement $sidebarElement): string
+    {
+        return htmlspecialchars($this->translator->trans($sidebarElement->getLabel()));
     }
 
     /**

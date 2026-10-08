@@ -221,3 +221,8 @@ user.page_add.profil.description: __user.page_add.profil.description
 user.page_add.information.description: __user.page_add.information.description
 user.page_update.action.description: __user.page_update.action.description
 user.page_update.information.description: __user.page_update.information.description
+user.change_password.input.password_current: 'Current password'
+user.change_password.error.current_password: 'The current password is incorrect'
+user.change_password.error.rule: 'The password does not meet the security rules'
+user.error.csrf: __user.error.csrf
+user.page_update_title_h1_2: 'Account editing'

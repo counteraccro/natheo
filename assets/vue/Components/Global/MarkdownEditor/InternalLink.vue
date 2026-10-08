@@ -1,13 +1,14 @@
 <script lang="ts">
 /**
  * @author Gourdon Aymeric
- * @version 3.0
- * Module pour l'éditeur Markdown, Lien internet
+ * @version 4.0
+ * Module pour l'éditeur Markdown, lien interne
  */
 
 import { defineComponent, ref, computed, watch, nextTick, onMounted, onUnmounted, type PropType } from 'vue';
 import axios from 'axios';
 import type { InternalPage, NatheoInternalLinkEvent } from '@/ts/MarkdownEditor/modules/internalLink';
+import type { InternalLinkTranslate } from '@/ts/MarkdownEditor/InternalLink.type';
 import Modal from '@/vue/Components/Global/Modal.vue';
 
 export default defineComponent({
@@ -15,39 +16,60 @@ export default defineComponent({
   components: { Modal },
 
   props: {
+    /** Identifiant de l'éditeur propriétaire : seuls ses events ouvrent la modale */
+    editorId: {
+      type: String,
+      required: true,
+    },
     url: {
       type: String,
       default: '',
     },
     translate: {
-      type: Object as PropType<Record<string, string>>,
+      type: Object as PropType<Partial<InternalLinkTranslate>>,
       default: () => ({}),
     },
   },
 
-  data() {
-    return {};
-  },
-
   setup(props) {
     const isOpen = ref<boolean>(false);
+    const loading = ref<boolean>(false);
+    const error = ref<boolean>(false);
     const query = ref<string>('');
     const pages = ref<InternalPage[]>([]);
     const searchRef = ref<HTMLInputElement | null>(null);
 
     let onSelectCallback: ((page: InternalPage) => void) | null = null;
 
-    // ── Chargement des pages ──────────────────────────────────────────────────
+    // ── Chargement des pages (rechargées à chaque ouverture) ─────────────────
 
     async function loadPages(): Promise<void> {
-      if (!props.url || pages.value.length > 0) return;
-      const { data } = await axios.get(props.url);
-      pages.value = Object.values(data.pages ?? {}) as InternalPage[];
+      if (!props.url) return;
+      loading.value = true;
+      error.value = false;
+      try {
+        const { data } = await axios.get<{ pages?: Record<string, InternalPage> }>(props.url);
+        pages.value = Object.values(data.pages ?? {});
+      } catch (e) {
+        console.error(e);
+        error.value = true;
+      } finally {
+        loading.value = false;
+      }
     }
+
+    // L'url arrive en asynchrone : la modale a pu être ouverte avant
+    watch(
+      () => props.url,
+      () => {
+        if (isOpen.value) loadPages();
+      }
+    );
 
     // ── Écoute l'événement du module ──────────────────────────────────────────
 
     function handleOpen(e: NatheoInternalLinkEvent): void {
+      if (e.detail.editorId !== props.editorId) return;
       onSelectCallback = e.detail.onSelect;
       query.value = '';
       isOpen.value = true;
@@ -75,8 +97,14 @@ export default defineComponent({
 
     const filteredPages = computed<InternalPage[]>(() => {
       const q = query.value.trim().toLowerCase();
-      if (!q || q === '') return pages.value;
+      if (!q) return pages.value;
       return pages.value.filter((p) => p.title.toLowerCase().includes(q));
+    });
+
+    const emptyMessage = computed<string>(() => {
+      if (loading.value) return props.translate.loading ?? '';
+      if (error.value) return props.translate.error ?? '';
+      return props.translate.noResult ?? '';
     });
 
     // ── Actions ───────────────────────────────────────────────────────────────
@@ -93,9 +121,11 @@ export default defineComponent({
 
     return {
       isOpen,
+      loading,
       query,
       searchRef,
       filteredPages,
+      emptyMessage,
       selectPage,
       close,
     };
@@ -104,9 +134,9 @@ export default defineComponent({
 </script>
 
 <template>
-  <modal :id="'modal-internal-link'" :show="isOpen" @close-modal="close" :option-show-close-btn="true">
+  <modal :id="'modal-internal-link-' + editorId" :show="isOpen" @close-modal="close" :option-show-close-btn="true">
     <template #icon>
-      <svg class="h-6 w-6 me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg class="h-6 w-6 me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
         <path
           stroke-linecap="round"
           stroke-linejoin="round"
@@ -129,43 +159,45 @@ export default defineComponent({
       />
 
       <div class="ilp-list">
-        <div v-if="filteredPages.length === 0" class="ilp-empty">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <div v-if="loading || filteredPages.length === 0" class="ilp-empty">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
             <circle cx="11" cy="11" r="8" />
             <path d="m21 21-4.35-4.35" />
           </svg>
-          {{ query ? translate.noResult : 'Chargement…' }}
+          {{ emptyMessage }}
         </div>
 
         <ul v-else>
-          <li v-for="page in filteredPages" :key="page.id" class="ilp-item" @click="selectPage(page)">
-            <span class="ilp-item-icon">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z" />
-                <polyline points="13 2 13 9 20 9" />
-                <path d="M9 14h6M9 17h3" />
-              </svg>
-            </span>
-            <span class="ilp-item-title">{{ page.title }}</span>
-            <span class="ilp-item-arrow">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
-            </span>
+          <li v-for="page in filteredPages" :key="page.id">
+            <button type="button" class="ilp-item" @click="selectPage(page)">
+              <span class="ilp-item-icon" aria-hidden="true">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z" />
+                  <polyline points="13 2 13 9 20 9" />
+                  <path d="M9 14h6M9 17h3" />
+                </svg>
+              </span>
+              <span class="ilp-item-title">{{ page.title }}</span>
+              <span class="ilp-item-arrow" aria-hidden="true">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </span>
+            </button>
           </li>
         </ul>
       </div>
@@ -179,7 +211,7 @@ export default defineComponent({
   </modal>
 </template>
 
-<style>
+<style scoped>
 .ilp-list {
   max-height: 18rem;
   overflow-y: auto;
@@ -188,7 +220,7 @@ export default defineComponent({
   scrollbar-color: var(--border-dark) transparent;
 }
 
-ul {
+.ilp-list ul {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -196,6 +228,12 @@ ul {
 
 .ilp-item {
   display: flex;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border-top: none;
+  border-right: none;
+  border-bottom: none;
   align-items: center;
   gap: 0.75rem;
   padding: 0.75rem 1.25rem;
@@ -207,16 +245,19 @@ ul {
   position: relative;
 }
 
-.ilp-item:hover {
+.ilp-item:hover,
+.ilp-item:focus-visible {
   background-color: var(--bg-hover);
   border-left-color: var(--primary);
 }
 
-.ilp-item:hover .ilp-item-icon {
+.ilp-item:hover .ilp-item-icon,
+.ilp-item:focus-visible .ilp-item-icon {
   color: var(--primary);
 }
 
-.ilp-item:hover .ilp-item-arrow {
+.ilp-item:hover .ilp-item-arrow,
+.ilp-item:focus-visible .ilp-item-arrow {
   opacity: 1;
   transform: translateX(0);
 }

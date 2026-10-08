@@ -73,5 +73,28 @@ class GlobalSearchControllerTest extends AppWebTestCase
         $this->assertEquals(1, $content['paginate']['current']);
         $this->assertArrayHasKey('limit', $content['paginate']);
         $this->assertEquals(10, $content['paginate']['limit']);
+
+        // Un "/" ou des caractères de regex dans le critère ne doivent pas casser la recherche
+        $search = 'a/b(c';
+        $page = $this->createPageAllDataDefault();
+        $page->getPageTranslationByLocale('fr')->setTitre('Titre ' . $search);
+        $this->em->flush();
+        foreach (['page', 'menu', 'faq', 'tag', 'user'] as $entity) {
+            $this->client->request(
+                'GET',
+                $this->router->generate('admin_search_global', [
+                    'entity' => $entity,
+                    'page' => 1,
+                    'limit' => 10,
+                    'search' => $search,
+                ]),
+            );
+            $this->assertResponseIsSuccessful();
+            $content = json_decode($this->client->getResponse()->getContent(), true);
+            $this->assertEquals($search, $content['recherche page']);
+            if ($entity === 'page') {
+                $this->assertEquals(1, $content['result']['total']);
+            }
+        }
     }
 }

@@ -26,7 +26,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
     Route(
         '/api/{api_version}/authentication',
         name: 'api_authentication_',
-        requirements: ['_version' => '%app.api_version%'],
+        requirements: ['api_version' => '%app.api_version%'],
     ),
 ]
 #[IsGranted('ROLE_READ_API')]
@@ -53,7 +53,6 @@ class ApiAuthenticationController extends AppApiController
      * @return JsonResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
-     * @throws \DateMalformedStringException
      */
     #[Route('/user', name: 'auth_user', methods: ['POST'], format: 'json')]
     public function authUser(

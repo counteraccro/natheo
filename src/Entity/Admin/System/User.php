@@ -22,6 +22,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -29,7 +30,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[UniqueEntity('email')]
 #[ORM\Table(name: 'user')]
 #[ORM\HasLifecycleCallbacks]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, EquatableInterface
 {
     public const string DEFAULT_ALIAS = 'user';
 
@@ -193,6 +194,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->password = $password;
 
         return $this;
+    }
+
+    /**
+     * Appelé à chaque rafraîchissement de la session : si le user rechargé n'est plus équivalent,
+     * la session est invalidée (compte désactivé ou anonymisé, mot de passe, email ou rôles modifiés)
+     * @param UserInterface $user
+     * @return bool
+     */
+    public function isEqualTo(UserInterface $user): bool
+    {
+        if (!($user instanceof self) || $user->isDisabled() || $user->isAnonymous()) {
+            return false;
+        }
+
+        $roles = $this->getRoles();
+        $refreshedRoles = $user->getRoles();
+        sort($roles);
+        sort($refreshedRoles);
+
+        return $this->getUserIdentifier() === $user->getUserIdentifier() &&
+            $this->getPassword() === $user->getPassword() &&
+            $roles === $refreshedRoles;
     }
 
     /**

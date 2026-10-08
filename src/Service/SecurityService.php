@@ -15,7 +15,8 @@ use App\Entity\Admin\System\UserData;
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Repository\Admin\System\UserDataRepository;
 use App\Service\Admin\System\OptionSystemService;
-use App\Utils\System\User\UserDataKey;
+use App\Service\Admin\System\User\UserDataService;
+use App\Enum\Admin\System\User\UserDataKey;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Exception;
@@ -61,7 +62,10 @@ class SecurityService extends AppService
     {
         /** @var UserDataRepository $repo */
         $repo = $this->getRepository(UserData::class);
-        $userData = $repo->findByKeyValue(UserDataKey::KEY_RESET_PASSWORD, $key);
+        $userData = $repo->findByKeyValue(
+            UserDataKey::RESET_PASSWORD->value,
+            UserDataService::hashResetPasswordKey($key),
+        );
         if ($userData === null) {
             return null;
         }

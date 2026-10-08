@@ -13,7 +13,7 @@ use Symfony\Component\String\ByteString;
 
 class Thumbnail
 {
-    const EXT_ALLOW_THUMBNAIL = ['jpg', 'jpeg', 'png', 'gif', 'PNG'];
+    const EXT_ALLOW_THUMBNAIL = ['jpg', 'jpeg', 'png', 'gif'];
 
     private string $rootThumbnailPath = '';
 
@@ -59,7 +59,7 @@ class Thumbnail
     private function getGdImage(string $path, string $ext)
     {
         return match ($ext) {
-            'jpg' => imagecreatefromjpeg($path),
+            'jpg', 'jpeg' => imagecreatefromjpeg($path),
             'png' => imagecreatefrompng($path),
             'gif' => imagecreatefromgif($path),
             default => null,

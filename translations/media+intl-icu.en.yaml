@@ -1,4 +1,5 @@
 media.mediatheque.loading: __media.mediatheque.loading
+media.mediatheque.generique.error: __media.mediatheque.generique.error
 media.mediatheque.btn.new.folder: __media.mediatheque.btn.new.folder
 media.mediatheque.btn.new.media: __media.mediatheque.btn.new.media
 media.mediatheque.header.trash: __media.mediatheque.header.trash
@@ -127,8 +128,8 @@ media.mediatheque.edit.save.media.msg.ok: __media.mediatheque.edit.save.media.ms
 media.mediatheque.folder.error.exist_name: __media.mediatheque.folder.error.exist_name
 media.mediatheque.folder.success: __media.mediatheque.folder.success
 media.mediatheque.folder.edit.success: __media.mediatheque.folder.edit.success
-media.mediatheque.move.label.media: __media.mediatheque.move.label.media
-media.mediatheque.move.label.folder: __media.mediatheque.move.label.folder
+media.mediatheque.move.label.media: 'Move the media {name} to'
+media.mediatheque.move.label.folder: 'Move the folder {name} to'
 media.index.page_title: __media.index.page_title
 media.index.page_title_h1: __media.index.page_title_h1
 media.index.description: __media.index.description

@@ -1,50 +1,39 @@
 <script lang="ts">
 /**
  * @author Gourdon Aymeric
- * @version 3.0
+ * @version 3.1
  * Formulaire pour édition d'un email
  */
 
 import { defineComponent } from 'vue';
-import MarkdownEditor from '../../../Components/Global/MarkdownEditor/MarkdownEditor.vue';
 import axios from 'axios';
+import MarkdownEditor from '@/vue/Components/Global/MarkdownEditor/MarkdownEditor.vue';
 import { emitter } from '@/utils/useEvent';
 import Toast from '@/vue/Components/Global/Toast.vue';
 import SkeletonForm from '@/vue/Components/Skeleton/Form.vue';
 import SkeletonText from '@/vue/Components/Skeleton/Text.vue';
 import { InternalLinkModule } from '@/ts/MarkdownEditor/modules/internalLink';
-import { EditorModule } from '@/ts/MarkdownEditor/MarkdownEditor.types';
-import InternalLink from '@/vue/Components/Global/MarkdownEditor/InternalLink.vue';
-import MediathequeModale from '@/vue/Components/Global/MarkdownEditor/Mediatheque.vue';
 import { MediaModule } from '@/ts/MarkdownEditor/modules/Mediatheque';
-
-// Types locaux
-type KeyWord = {
-  label: string;
-  keyword: string;
-};
-
-type Mail = {
-  id: number;
-  key: number;
-  title: string;
-  description: string;
-  titleTrans: string;
-  contentTrans: string;
-  keyWords: Record<string, string>;
-};
-
-type Toast = {
-  show: boolean;
-  msg: string;
-};
+import type { EditorModule } from '@/ts/MarkdownEditor/MarkdownEditor.type';
+import type { Toasts } from '@/ts/Toast/Toast.type';
+import type {
+  Mail,
+  MailAjaxResponse,
+  MailKeyWord,
+  MailLoadDataResponse,
+  MailPayload,
+  MailTranslate,
+} from '@/ts/Mail/Mail.type';
 
 export default defineComponent({
   name: 'Mail',
-  components: { InternalLink, SkeletonText, SkeletonForm, Toast, MarkdownEditor, MediathequeModale },
+  components: { SkeletonText, SkeletonForm, Toast, MarkdownEditor },
 
   props: {
     url_data: { type: String, required: true },
+    locale: { type: String, required: true },
+    csrf_token_save: { type: String, required: true },
+    csrf_token_send_demo: { type: String, required: true },
   },
 
   setup() {
@@ -55,20 +44,22 @@ export default defineComponent({
   data() {
     return {
       translateEditor: {} as Record<string, Record<string, string>>,
-      translate: {} as Record<string, string>,
+      translate: {} as MailTranslate,
       languages: {} as Record<string, string>,
-      currentLanguage: 'fr' as string,
-      mail: {} as Mail,
+      currentLanguage: this.locale as string,
+      mail: null as Mail | null,
       loading: false as boolean,
+      // Requête de sauvegarde / démo en cours, sans démonter le formulaire
+      sending: false as boolean,
       url_save: '' as string,
       url_demo: '' as string,
       isValideTitle: true as boolean,
       canSave: true as boolean,
-      KeyWords: [] as KeyWord[],
+      keyWords: [] as MailKeyWord[],
       toasts: {
-        toastSuccess: { show: false, msg: '' } as Toast,
-        toastError: { show: false, msg: '' } as Toast,
-      },
+        toastSuccess: { show: false, msg: '' },
+        toastError: { show: false, msg: '' },
+      } as Toasts,
     };
   },
 
@@ -81,7 +72,7 @@ export default defineComponent({
       this.loading = true;
 
       axios
-        .get(this.url_data + '/' + this.currentLanguage)
+        .get<MailLoadDataResponse>(this.url_data + '/' + this.currentLanguage)
         .then((response) => {
           this.translateEditor = response.data.translateEditor;
           this.languages = response.data.languages;
@@ -90,25 +81,23 @@ export default defineComponent({
           this.mail = response.data.mail;
           this.url_save = response.data.save_url;
           this.url_demo = response.data.demo_url;
+          this.keyWords = this.convertKeywords(this.mail.keyWords);
+          this.isValideTitle = true;
+          this.checkCanSave();
         })
-        .catch((error) => {
-          console.error(error);
+        .catch((error: unknown) => {
+          this.showError(error, this.translate.msg_error);
         })
         .finally(() => {
           this.loading = false;
-          this.KeyWords = this.convertKeywords(this.mail.keyWords);
         });
     },
 
-    selectLanguage(event: Event): void {
-      const target = event.target as HTMLSelectElement;
-      this.currentLanguage = target.value;
-      if (this.currentLanguage !== '') {
-        this.loadData();
-      }
+    selectLanguage(): void {
+      this.loadData();
     },
 
-    convertKeywords(raw: Record<string, string>): KeyWord[] {
+    convertKeywords(raw: Record<string, string>): MailKeyWord[] {
       return Object.entries(raw).map(([key, label]) => ({
         label,
         keyword: `[[${key}]]`,
@@ -116,78 +105,85 @@ export default defineComponent({
     },
 
     checkCanSave(): void {
-      this.canSave = this.mail.contentTrans !== '' && this.mail.titleTrans !== '';
+      this.canSave = this.mail !== null && this.mail.contentTrans.trim() !== '' && this.mail.titleTrans.trim() !== '';
     },
 
-    checkTitle(event: Event): void {
-      this.isValideTitle = true;
-      const value = (event.target as HTMLInputElement).value;
-      if (value === '') {
-        this.isValideTitle = false;
-      }
+    checkTitle(): void {
+      this.isValideTitle = (this.mail?.titleTrans ?? '').trim() !== '';
       this.checkCanSave();
     },
 
     saveContent(_id: string, value: string): void {
+      if (this.mail === null) {
+        return;
+      }
       this.mail.contentTrans = value;
       this.checkCanSave();
+    },
+
+    getPayload(): MailPayload {
+      return {
+        locale: this.currentLanguage,
+        title: this.mail?.titleTrans ?? '',
+        content: this.mail?.contentTrans ?? '',
+      };
     },
 
     save(): void {
       this.checkCanSave();
       if (!this.canSave) {
-        this.toasts.toastError.msg = this.translate.msg_cant_save;
-        this.toasts.toastError.show = true;
+        this.showToast('toastError', this.translate.msg_cant_save);
         return;
       }
 
-      this.loading = true;
+      this.sending = true;
       axios
-        .post(this.url_save, {
-          locale: this.currentLanguage,
-          content: this.mail.contentTrans,
-          title: this.mail.titleTrans,
+        .post<MailAjaxResponse>(this.url_save, this.getPayload(), {
+          headers: { 'X-CSRF-TOKEN': this.csrf_token_save },
         })
-        .then((response) => {
-          if (response.data.success === true) {
-            this.toasts.toastSuccess.msg = response.data.msg;
-            this.toasts.toastSuccess.show = true;
-          } else {
-            this.toasts.toastError.msg = response.data.msg;
-            this.toasts.toastError.show = true;
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-        })
+        .then((response) => this.handleResponse(response.data))
+        .catch((error: unknown) => this.showError(error, this.translate.msg_cant_save))
         .finally(() => {
           emitter.emit('reset-check-confirm');
-          this.loading = false;
+          this.sending = false;
         });
     },
 
+    /**
+     * Envoie l'email de démo avec le titre et le contenu en cours d'édition (même non sauvegardés)
+     */
     sendDemoMail(): void {
-      this.loading = true;
+      this.sending = true;
       axios
-        .get(this.url_demo)
-        .then((response) => {
-          if (response.data.success === true) {
-            this.toasts.toastSuccess.msg = response.data.msg;
-            this.toasts.toastSuccess.show = true;
-          } else {
-            this.toasts.toastError.msg = response.data.msg;
-            this.toasts.toastError.show = true;
-          }
+        .post<MailAjaxResponse>(this.url_demo, this.getPayload(), {
+          headers: { 'X-CSRF-TOKEN': this.csrf_token_send_demo },
         })
-        .catch((error) => {
-          console.error(error);
-        })
+        .then((response) => this.handleResponse(response.data))
+        .catch((error: unknown) => this.showError(error, this.translate.msg_error))
         .finally(() => {
-          this.loading = false;
+          this.sending = false;
         });
     },
 
-    closeToast(nameToast: keyof typeof this.toasts): void {
+    handleResponse(data: MailAjaxResponse): void {
+      this.showToast(data.success ? 'toastSuccess' : 'toastError', data.msg);
+    },
+
+    /**
+     * Affiche le message d'erreur renvoyé par le serveur, sinon le message par défaut
+     */
+    showError(error: unknown, defaultMsg: string): void {
+      console.error(error);
+      const msg = axios.isAxiosError<MailAjaxResponse>(error) ? error.response?.data?.msg : undefined;
+      this.showToast('toastError', msg || defaultMsg);
+    },
+
+    showToast(nameToast: string, msg: string): void {
+      this.toasts[nameToast].msg = msg;
+      this.toasts[nameToast].show = true;
+    },
+
+    closeToast(nameToast: string): void {
       this.toasts[nameToast].show = false;
     },
   },
@@ -203,7 +199,7 @@ export default defineComponent({
       <skeleton-form />
     </div>
   </div>
-  <div v-else>
+  <div v-else-if="mail">
     <div class="card rounded-lg p-5 mb-5 flex flex-wrap gap-4">
       <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center bg-[var(--primary-lighter)]">
         <svg class="w-5 h-5 text-[var(--primary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -227,16 +223,17 @@ export default defineComponent({
         <div>
           <select
             class="form-input form-input-sm no-control"
-            id="select-file"
-            @change="selectLanguage($event)"
+            id="select-language"
+            :aria-label="translate.listLanguage"
+            :title="translate.listLanguage"
             v-model="currentLanguage"
+            @change="selectLanguage"
           >
-            <option value="">{{ translate.listLanguage }}</option>
-            <option v-for="(language, key) in languages" v-bind:value="key">{{ language }}</option>
+            <option v-for="(language, key) in languages" :key="key" :value="key">{{ language }}</option>
           </select>
         </div>
         <div>
-          <button class="btn btn-sm btn-primary" @click="save" :disabled="!canSave">
+          <button class="btn btn-sm btn-primary" @click="save" :disabled="!canSave || sending">
             <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 stroke-linecap="round"
@@ -249,7 +246,7 @@ export default defineComponent({
           </button>
         </div>
         <div>
-          <button class="btn btn-sm btn-success" @click="sendDemoMail">
+          <button class="btn btn-sm btn-success" @click="sendDemoMail" :disabled="!canSave || sending">
             <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 stroke-linecap="round"
@@ -292,7 +289,7 @@ export default defineComponent({
             :class="isValideTitle ? '' : 'is-invalid'"
             id="titleTrans"
             v-model="mail.titleTrans"
-            @change="checkTitle"
+            @input="checkTitle"
           />
           <div v-if="!isValideTitle" class="form-text text-error">
             {{ translate.msgEmptyTitle }}
@@ -306,12 +303,11 @@ export default defineComponent({
             :me-value="mail.contentTrans"
             :me-rows="15"
             :me-translate="translateEditor"
-            :me-key-words="KeyWords"
+            :me-key-words="keyWords"
             :me-modules="editorModules"
             :me-save="true"
             :me-preview="true"
             :me-required="true"
-            @editor-value="saveContent"
             @editor-value-change="saveContent"
           >
           </markdown-editor>
@@ -321,29 +317,16 @@ export default defineComponent({
   </div>
 
   <div class="toast-container position-fixed top-0 end-0 p-2">
-    <toast
-      :id="'toastSuccess'"
-      :option-class-header="'text-success'"
-      :show="toasts.toastSuccess.show"
-      @close-toast="closeToast"
-    >
+    <toast id="toastSuccess" :show="toasts.toastSuccess.show" @close-toast="closeToast">
       <template #body>
         <div v-html="toasts.toastSuccess.msg"></div>
       </template>
     </toast>
 
-    <toast
-      :id="'toastError'"
-      :option-class-header="'text-danger'"
-      :show="toasts.toastError.show"
-      :type="'danger'"
-      @close-toast="closeToast"
-    >
+    <toast id="toastError" type="danger" :show="toasts.toastError.show" @close-toast="closeToast">
       <template #body>
         <div v-html="toasts.toastError.msg"></div>
       </template>
     </toast>
   </div>
 </template>
-
-<style scoped></style>

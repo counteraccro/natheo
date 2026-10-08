@@ -13,6 +13,7 @@ use App\Entity\Admin\System\ApiToken;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
 use App\Utils\System\ApiToken\ApiTokenConst;
+use App\Utils\System\ApiToken\TokenHasher;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -20,6 +21,30 @@ use Symfony\Component\String\ByteString;
 
 class ApiTokenService extends AppAdminService
 {
+    /**
+     * Identifiant du jeton CSRF pour l'activation / désactivation d'un token
+     * @var string
+     */
+    public const string CSRF_TOKEN_UPDATE_DISABLED = 'api_token_update_disabled';
+
+    /**
+     * Identifiant du jeton CSRF pour la suppression d'un token
+     * @var string
+     */
+    public const string CSRF_TOKEN_DELETE = 'api_token_delete';
+
+    /**
+     * Identifiant du jeton CSRF pour la sauvegarde d'un token
+     * @var string
+     */
+    public const string CSRF_TOKEN_SAVE = 'api_token_save';
+
+    /**
+     * Identifiant du jeton CSRF pour la régénération d'un token
+     * @var string
+     */
+    public const string CSRF_TOKEN_REGENERATE = 'api_token_regenerate';
+
     /**
      * Retourne une liste de apiToken paginé
      * @param int $page
@@ -55,6 +80,8 @@ class ApiTokenService extends AppAdminService
             $translator->trans('api_token.grid.comment', domain: 'api_token'),
             $translator->trans('api_token.grid.token', domain: 'api_token'),
             $translator->trans('api_token.grid.roles', domain: 'api_token'),
+            $translator->trans('api_token.grid.expires_at', domain: 'api_token'),
+            $translator->trans('api_token.grid.last_used_at', domain: 'api_token'),
             $translator->trans('api_token.grid.created_at', domain: 'api_token'),
             $translator->trans('api_token.grid.update_at', domain: 'api_token'),
             GridService::KEY_ACTION,
@@ -74,6 +101,12 @@ class ApiTokenService extends AppAdminService
                 $translator->trans('api_token.grid.comment', domain: 'api_token') => $apiToken->getComment(),
                 $translator->trans('api_token.grid.token', domain: 'api_token') => '******',
                 $translator->trans('api_token.grid.roles', domain: 'api_token') => implode(', ', $apiToken->getRoles()),
+                $translator->trans('api_token.grid.expires_at', domain: 'api_token') => $this->formatExpiresAt(
+                    $apiToken,
+                ),
+                $translator->trans('api_token.grid.last_used_at', domain: 'api_token') =>
+                    $apiToken->getLastUsedAt()?->format('d/m/y H:i') ??
+                    $translator->trans('api_token.grid.never', domain: 'api_token'),
                 $translator->trans('api_token.grid.created_at', domain: 'api_token') => $apiToken
                     ->getCreatedAt()
                     ->format('d/m/y H:i'),
@@ -81,7 +114,7 @@ class ApiTokenService extends AppAdminService
                     ->getUpdateAt()
                     ->format('d/m/y H:i'),
                 GridService::KEY_ACTION => $actions,
-                'isDisabled' => $apiToken->isDisabled(),
+                'isDisabled' => $apiToken->isDisabled() || $apiToken->isExpired(),
             ];
         }
 
@@ -113,6 +146,8 @@ class ApiTokenService extends AppAdminService
         $optionSystemService = $this->getOptionSystemService();
 
         $label = $apiToken->getName();
+        $csrfTokenManager = $this->getCsrfTokenManager();
+        $csrfDisabled = $csrfTokenManager->getToken(self::CSRF_TOKEN_UPDATE_DISABLED)->getValue();
 
         $actionDisabled = [
             'label' => [
@@ -124,6 +159,7 @@ class ApiTokenService extends AppAdminService
             'ajax' => true,
             'confirm' => true,
             'msgConfirm' => $translator->trans('api_token.confirm.disabled.msg', ['label' => $label], 'api_token'),
+            'csrf' => $csrfDisabled,
         ];
         if ($apiToken->isDisabled()) {
             $actionDisabled = [
@@ -135,6 +171,7 @@ class ApiTokenService extends AppAdminService
                 'type' => 'put',
                 'url' => $router->generate('admin_api_token_update_disabled', ['id' => $apiToken->getId()]),
                 'ajax' => true,
+                'csrf' => $csrfDisabled,
             ];
         }
 
@@ -150,6 +187,7 @@ class ApiTokenService extends AppAdminService
                 'ajax' => true,
                 'confirm' => true,
                 'msgConfirm' => $translator->trans('api_token.confirm.delete.msg', ['label' => $label], 'api_token'),
+                'csrf' => $csrfTokenManager->getToken(self::CSRF_TOKEN_DELETE)->getValue(),
             ];
         }
 
@@ -204,41 +242,132 @@ class ApiTokenService extends AppAdminService
     }
 
     /**
-     * Edite un APi Token si il existe ou le crée dans le cas contraire en fonction de $data
+     * Crée un ApiToken à partir de $data. Le token est généré côté serveur et seul son hash est stocké
      * @param array $data
-     * @return int
+     * @return array{apiToken: ApiToken, token: string} l'entité créée et le token en clair, à n'afficher qu'une fois
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function createUpdateApiToken(array $data): int
+    public function createApiToken(array $data): array
     {
         $apiToken = new ApiToken();
-        if ($data['id'] !== null || $data['id'] > 0) {
-            $apiToken = $this->findOneById(ApiToken::class, $data['id']);
-        }
         $apiToken->setDisabled(false);
-        $apiToken->setName($data['name']);
-        $apiToken->setRoles($data['roles']);
-        $apiToken->setComment($data['comment']);
-        $apiToken->setToken($data['token']);
+        $this->hydrateApiToken($apiToken, $data);
+        $token = $this->generateToken();
+        $apiToken->setToken(TokenHasher::hash($token));
 
         $this->save($apiToken);
-        return $apiToken->getId();
+        return ['apiToken' => $apiToken, 'token' => $token];
     }
 
     /**
-     * Retourne un token valide pour la préview
-     * @return string|null
+     * Met à jour les informations d'un ApiToken, sans modifier ni le token ni son statut
+     * @param ApiToken $apiToken
+     * @param array $data
+     * @return void
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getTokenForPreview(): ?string
+    public function updateApiToken(ApiToken $apiToken, array $data): void
     {
-        /** @var ApiToken $apiToken */
-        $apiToken = $this->findBy(ApiToken::class, ['disabled' => false], ['id' => 'DESC'], 1);
-        if (!empty($apiToken)) {
-            return $apiToken[0]->getToken();
+        $this->hydrateApiToken($apiToken, $data);
+        $this->save($apiToken);
+    }
+
+    /**
+     * Génère un nouveau token pour l'ApiToken, l'ancien devient immédiatement invalide
+     * @param ApiToken $apiToken
+     * @return string le token en clair, à n'afficher qu'une fois
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function regenerateToken(ApiToken $apiToken): string
+    {
+        $token = $this->generateToken();
+        $apiToken->setToken(TokenHasher::hash($token));
+        $apiToken->setLastUsedAt(null);
+        $this->save($apiToken);
+        return $token;
+    }
+
+    /**
+     * Converti un ApiToken en tableau pour le formulaire d'édition, sans le hash du token
+     * @param ApiToken $apiToken
+     * @return array
+     */
+    public function getApiTokenFormData(ApiToken $apiToken): array
+    {
+        return [
+            'id' => $apiToken->getId(),
+            'name' => $apiToken->getName(),
+            'comment' => $apiToken->getComment(),
+            'roles' => array_values($this->filterRoles($apiToken->getRoles())),
+            'disabled' => $apiToken->isDisabled(),
+            'expiresAt' => $apiToken->getExpiresAt()?->format('Y-m-d'),
+            'lastUsedAt' => $apiToken->getLastUsedAt()?->format('d/m/Y H:i'),
+        ];
+    }
+
+    /**
+     * Applique les données du formulaire sur l'ApiToken
+     * @param ApiToken $apiToken
+     * @param array $data
+     * @return void
+     */
+    private function hydrateApiToken(ApiToken $apiToken, array $data): void
+    {
+        $apiToken->setName(trim((string) ($data['name'] ?? '')));
+        $apiToken->setComment(isset($data['comment']) ? (string) $data['comment'] : null);
+        $apiToken->setRoles($this->filterRoles((array) ($data['roles'] ?? [])));
+        $apiToken->setExpiresAt($this->parseExpiresAt($data['expiresAt'] ?? null));
+    }
+
+    /**
+     * Ne conserve que les rôles API autorisés, ROLE_READ_API par défaut
+     * @param array $roles
+     * @return array
+     */
+    private function filterRoles(array $roles): array
+    {
+        $roles = array_values(array_intersect($roles, array_keys(ApiTokenConst::API_TOKEN_ROLES)));
+        if (empty($roles)) {
+            return [ApiTokenConst::API_TOKEN_ROLE_READ];
         }
-        return null;
+        return [$roles[0]];
+    }
+
+    /**
+     * Converti la date d'expiration (Y-m-d) en fin de journée, null si vide ou invalide
+     * @param mixed $expiresAt
+     * @return \DateTime|null
+     */
+    private function parseExpiresAt(mixed $expiresAt): ?\DateTime
+    {
+        if (!is_string($expiresAt) || $expiresAt === '') {
+            return null;
+        }
+        $date = \DateTime::createFromFormat('!Y-m-d', $expiresAt);
+        return $date === false ? null : $date->setTime(23, 59, 59);
+    }
+
+    /**
+     * Retourne la date d'expiration formatée pour le grid
+     * @param ApiToken $apiToken
+     * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function formatExpiresAt(ApiToken $apiToken): string
+    {
+        $translator = $this->getTranslator();
+        if ($apiToken->getExpiresAt() === null) {
+            return $translator->trans('api_token.grid.no_expiration', domain: 'api_token');
+        }
+
+        $date = $apiToken->getExpiresAt()->format('d/m/y');
+        if ($apiToken->isExpired()) {
+            return $translator->trans('api_token.grid.expired', ['date' => $date], 'api_token');
+        }
+        return $date;
     }
 }

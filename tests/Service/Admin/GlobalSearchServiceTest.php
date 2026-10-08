@@ -80,7 +80,9 @@ class GlobalSearchServiceTest extends AppWebTestCase
         $result = $this->searchService->globalSearch('tag', '', 1, 10);
         $this->assertIsArray($result);
         $this->assertArrayHasKey('elements', $result);
+        // 2 tags créés ici + 2 par appel à createPageAllDataDefault()
         $this->assertCount(6, $result['elements']);
+        $this->assertCount(6, array_unique(array_column($result['elements'], 'id')));
         $verif = false;
         foreach ($result['elements'] as $tagElement) {
             if ($tagElement['id'] == $tag->getId()) {
@@ -97,5 +99,10 @@ class GlobalSearchServiceTest extends AppWebTestCase
         $this->assertCount(1, $result['elements']);
         $this->assertArrayHasKey('id', $result['elements'][0]);
         $this->assertEquals($user->getId(), $result['elements'][0]['id']);
+
+        $result = $this->searchService->globalSearch('inconnu', '', 1, 10);
+        $this->assertArrayHasKey('error', $result);
+        $this->assertSame(0, $result['total']);
+        $this->assertSame([], $result['elements']);
     }
 }

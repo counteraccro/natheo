@@ -1,0 +1,19 @@
+<?php
+
+declare(strict_types=1);
+/**
+ * Catégorie de notification
+ * @author Gourdon Aymeric
+ * @version 1.0
+ */
+
+namespace App\Enum\Admin\Global\Notification;
+
+enum NotificationCategory: string
+{
+    case COMMENT = 'comment';
+
+    case ADMIN = 'admin';
+
+    case SQL = 'SQL';
+}

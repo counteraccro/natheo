@@ -57,7 +57,7 @@ mail:
     key: MAIL_ACCOUNT_ADM_ENABLE
     title: mail.account.adm.enable.title
     description: mail.account.adm.enable.description
-    keyWords: MAIL_ACCOUNT_ADM_DISABLE
+    keyWords: MAIL_ACCOUNT_ADM_ENABLE
     translate:
       - locale: 'fr'
         title: 'Votre compte à été réactivé'

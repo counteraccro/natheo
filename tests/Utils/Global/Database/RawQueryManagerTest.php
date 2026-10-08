@@ -34,10 +34,10 @@ class RawQueryManagerTest extends AppWebTestCase
      */
     public function testGetQueryAllInformationSchema(): void
     {
-        $sql = $this->rawQueryManager->getQueryAllInformationSchema('natheo_test');
+        $sql = $this->rawQueryManager->getQueryAllInformationSchema();
         $this->assertNotEmpty($sql);
         $this->assertIsString($sql);
-        $result = $this->database->executeRawQuery($sql);
+        $result = $this->database->executeRawQuery($sql, ['schema' => 'natheo_test']);
         $this->assertIsArray($result);
         $this->assertNotEmpty($result['result']);
         $this->assertNotEmpty($result['header']);
@@ -66,10 +66,17 @@ class RawQueryManagerTest extends AppWebTestCase
      */
     public function testGetQueryExistTable(): void
     {
-        $sql = $this->rawQueryManager->getQueryExistTable('natheo_test', 'user');
+        $sql = $this->rawQueryManager->getQueryExistTable();
         $this->assertNotEmpty($sql);
         $this->assertIsString($sql);
-        $result = $this->database->executeRawQuery($sql);
+        $result = $this->database->executeRawQuery($sql, ['schema' => 'natheo_test', 'table' => 'user']);
+        $this->assertIsArray($result);
+        $this->assertNotEmpty($result['result']);
+        $this->assertEmpty($result['error']);
+
+        $result = $this->database->executeRawQuery($this->rawQueryManager->getQueryExistTable(false), [
+            'table' => 'user',
+        ]);
         $this->assertIsArray($result);
         $this->assertNotEmpty($result['result']);
         $this->assertNotEmpty($result['header']);
@@ -98,8 +105,10 @@ class RawQueryManagerTest extends AppWebTestCase
      */
     public function testGetQueryPurgeNotification(): void
     {
-        $sql = $this->rawQueryManager->getQueryPurgeNotification();
+        $sql = $this->rawQueryManager->getQueryPurgeNotification('notification');
         $this->assertNotEmpty($sql);
         $this->assertIsString($sql);
+        $this->assertStringContainsString('FROM notification n', $sql);
+        $this->assertStringNotContainsString('natheo.', $sql);
     }
 }

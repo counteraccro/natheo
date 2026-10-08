@@ -1,16 +1,16 @@
-<script>
+<script lang="ts">
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 2.0
  * Toast Bootstrap 5.3
  */
 
-import { watch, watchEffect } from 'vue';
+import { defineComponent, watch } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'Toast',
   props: {
-    id: String,
+    id: { type: String, required: true },
     show: Boolean,
     type: {
       type: String,
@@ -20,7 +20,7 @@ export default {
   emits: ['close-toast'],
   data() {
     return {
-      elm: {},
+      elm: null as HTMLElement | null,
       cssElement: {
         bg: 'bg-[var(--alert-success-bg)]',
         text: 'text-[var(--alert-success-text)]',
@@ -30,9 +30,9 @@ export default {
   },
   mounted() {
     this.elm = document.getElementById(this.id);
-    this.elm.classList.add('hidden');
+    this.elm?.classList.add('hidden');
 
-    this.elm.addEventListener('hide.bs.toast', () => {
+    this.elm?.addEventListener('hide.bs.toast', () => {
       this.$emit('close-toast', this.id);
     });
 
@@ -54,13 +54,13 @@ export default {
       (newValue, oldValue) => {
         if (newValue !== oldValue) {
           if (newValue) {
-            this.elm.classList.remove('hidden');
+            this.elm?.classList.remove('hidden');
             setTimeout(() => {
-              this.elm.classList.add('hidden');
+              this.elm?.classList.add('hidden');
               this.$emit('close-toast', this.id);
             }, 3000);
           } else {
-            this.elm.classList.add('hidden');
+            this.elm?.classList.add('hidden');
           }
         }
       },
@@ -68,27 +68,27 @@ export default {
     );
   },
   methods: {
-    close() {
-      this.elm.classList.add('hidden');
+    close(): void {
+      this.elm?.classList.add('hidden');
       this.$emit('close-toast', this.id);
     },
   },
-};
+});
 </script>
 
 <template>
   <div
-    :id="this.id"
+    :id="id"
     class="fixed hidden flex items-center w-full max-w-xs p-4 text-sm space-x-4 text-gray-500 bg-white border divide-x rtl:divide-x-reverse divide-gray-200 rounded-lg shadow-sm top-5 right-5 dark:text-gray-400 dark:divide-gray-700 dark:bg-gray-800"
-    :class="this.cssElement.border"
+    :class="cssElement.border"
     role="alert"
     aria-live="assertive"
     aria-atomic="true"
   >
     <div
-      v-if="this.type === 'success'"
+      v-if="type === 'success'"
       class="inline-flex items-center justify-center shrink-0 w-8 h-8 rounded-lg"
-      :class="this.cssElement.bg + ' ' + this.cssElement.text"
+      :class="cssElement.bg + ' ' + cssElement.text"
     >
       <svg
         class="w-5 h-5"
@@ -106,7 +106,7 @@ export default {
     <div
       v-else-if="type === 'danger'"
       class="inline-flex items-center justify-center shrink-0 w-8 h-8 rounded-lg"
-      :class="this.cssElement.bg + ' ' + this.cssElement.text"
+      :class="cssElement.bg + ' ' + cssElement.text"
     >
       <svg
         class="w-5 h-5"
@@ -121,13 +121,13 @@ export default {
       </svg>
       <span class="sr-only">Error icon</span>
     </div>
-    <div class="ms-3 text-xs font-normal" :class="this.cssElement.text">
+    <div class="ms-3 text-xs font-normal" :class="cssElement.text">
       <slot name="body"></slot>
     </div>
     <button
       type="button"
       class="ms-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
-      @click="this.close"
+      @click="close"
       aria-label="Close"
     >
       <span class="sr-only">Close</span>

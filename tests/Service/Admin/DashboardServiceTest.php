@@ -8,11 +8,13 @@ declare(strict_types=1);
  */
 namespace App\Tests\Service\Admin;
 
+use App\Enum\Admin\Content\Page\PageStatistics;
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Admin\DashboardService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Tests\AppWebTestCase;
 use App\Utils\System\ApiToken\ApiTokenConst;
+use App\Utils\System\ApiToken\TokenHasher;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
@@ -46,7 +48,7 @@ class DashboardServiceTest extends AppWebTestCase
      */
     public function testGetBlockHelpConfig(): void
     {
-        $apiToken = $this->createApiToken(['token' => ApiTokenConst::API_TOKEN_READ]);
+        $apiToken = $this->createApiToken(['token' => TokenHasher::hash(ApiTokenConst::API_TOKEN_READ)]);
 
         $this->optionSystemService->saveValueByKee(OptionSystem::OS_OPEN_SITE->value, '0');
 
@@ -69,7 +71,7 @@ class DashboardServiceTest extends AppWebTestCase
         $this->optionSystemService->saveValueByKee(OptionSystem::OS_ADRESSE_SITE->value, 'www.unit-test.com');
         $this->optionSystemService->saveValueByKee(OptionSystem::OS_OPEN_SITE->value, '1');
 
-        $apiToken->setToken('token-unit-test');
+        $apiToken->setToken(TokenHasher::hash('token-unit-test'));
         $this->dashboardService->save($apiToken);
 
         $result = $this->dashboardService->getBlockHelpConfig();
@@ -115,6 +117,36 @@ class DashboardServiceTest extends AppWebTestCase
         $this->assertArrayHasKey('author', $comment);
         $this->assertArrayHasKey('status', $comment);
         $this->assertArrayHasKey('date', $comment);
+    }
+
+    /**
+     * test méthode getBlockPageMostViewed() : tri par valeur numérique décroissante, malgré le stockage en string
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testGetBlockPageMostViewed(): void
+    {
+        $values = [5, 9, 100, 20];
+        foreach ($values as $value) {
+            $page = $this->createPage();
+            $this->createPageTranslation($page, ['locale' => 'fr']);
+            $this->createPageStatistique($page, [
+                'key' => PageStatistics::NB_READ->value,
+                'value' => (string) $value,
+            ]);
+        }
+
+        $result = $this->dashboardService->getBlockPageMostViewed();
+        $this->assertIsArray($result);
+        $this->assertArrayHasKey('success', $result);
+        $this->assertTrue($result['success']);
+        $this->assertArrayHasKey('body', $result);
+        $body = $result['body'];
+        $this->assertCount(4, $body);
+
+        // Si le tri se faisait sur la string, '100' passerait avant '20' et '9' (tri lexical)
+        $this->assertSame(['100', '20', '9', '5'], array_column($body, 'view'));
     }
 
     /**

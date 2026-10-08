@@ -26,13 +26,16 @@
     </div>
 
     <p class="text-sm text-[var(--text-secondary)] mb-3">
-        {{ 'database_manager.index.description' | trans({}, 'database_manager') }} <br />
-        {#  {{ 'tag.index.description2' | trans({'icon' : '<i class="bi-eye-slash-fill"></i>'}, 'tag') | raw }} #}<br />
+        {{ 'database_manager.index.description' | trans({}, 'database_manager') }}
     </p>
 
     <div {{ vue_component('Admin/Tools/DatabaseManager/DatabaseManager', {
         'urls' : urls,
         'translate' : translate,
+        'csrfTokens' : {
+            'save_database' : csrf_token('database_manager_save_database'),
+            'delete_dump_file' : csrf_token('database_manager_delete_dump_file'),
+        },
     }) }}>
     </div>
 

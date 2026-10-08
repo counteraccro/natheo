@@ -58,7 +58,7 @@ class Menu
      * @var Collection<int, MenuElement>
      */
     #[ORM\OneToMany(mappedBy: 'menu', targetEntity: MenuElement::class, cascade: ['persist'], orphanRemoval: true)]
-    #[ORM\OrderBy(['columnPosition' => 'ASC', 'rowPosition' => 'ASC'])]
+    #[ORM\OrderBy(['columnPosition' => \SortDirection::Ascending, 'rowPosition' => \SortDirection::Ascending])]
     private Collection $menuElements;
 
     /**

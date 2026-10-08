@@ -5,7 +5,7 @@
  * Affiche une liste dynamique de boutons à partir d'un tableau de configuration
  */
 import { defineComponent, type PropType } from 'vue';
-import type { ButtonItem } from '@/ts/Types/ButtonList.types';
+import type { ButtonItem } from '@/ts/Types/ButtonList.type';
 
 export default defineComponent({
   name: 'ButtonList',

@@ -236,6 +236,7 @@ class PageService extends AppAdminService
         return match ($status) {
             PageStatus::DRAFT->value => $translator->trans('page.status.draft', domain: 'page'),
             PageStatus::PUBLISH->value => $translator->trans('page.status.publish', domain: 'page'),
+            PageStatus::ARCHIVED->value => $translator->trans('page.status.archived', domain: 'page'),
             default => $translator->trans('page.status.inconnu', domain: 'page'),
         };
     }
@@ -559,10 +560,16 @@ class PageService extends AppAdminService
         $return = [];
         foreach ($listePages as $page) {
             /** @var Page $page */
-            $pageTranslations = $page->getPageTranslationByLocale($locale);
+            $pageTranslation = $page
+                ->getPageTranslations()
+                ->filter(fn(PageTranslation $translation) => $translation->getLocale() === $locale)
+                ->first();
+            if (!($pageTranslation instanceof PageTranslation)) {
+                continue;
+            }
             $return[$page->getId()] = [
                 'id' => $page->getId(),
-                'title' => $pageTranslations->getTitre(),
+                'title' => $pageTranslation->getTitre(),
             ];
         }
         return $return;

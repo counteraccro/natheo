@@ -19,6 +19,10 @@ class UserTranslate extends AppTranslate
     public function getTranslateChangePassword(): array
     {
         return [
+            'password_current' => $this->translator->trans(
+                'user.change_password.input.password_current',
+                domain: 'user',
+            ),
             'password' => $this->translator->trans('user.change_password.input.password_1', domain: 'user'),
             'password_2' => $this->translator->trans('user.change_password.input.password_2', domain: 'user'),
             'force' => $this->translator->trans('user.change_password.force', domain: 'user'),

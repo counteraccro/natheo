@@ -14,7 +14,8 @@ use App\Entity\Admin\System\UserData;
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Admin\AppAdminService;
 use App\Utils\Api\ApiConst;
-use App\Utils\System\User\UserDataKey;
+use App\Enum\Admin\System\User\UserDataKey;
+use App\Utils\System\ApiToken\TokenHasher;
 use DateTime;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -22,6 +23,12 @@ use Symfony\Component\String\ByteString;
 
 class UserDataService extends AppAdminService
 {
+    /**
+     * Durée de validité maximale (en minutes) du token utilisateur API
+     * @var int
+     */
+    public const int USER_TOKEN_MAX_VALIDITY = 1440;
+
     /**
      * Met à jour une dataUser avec value en fonction de sa clé et du user
      * @param string $key
@@ -79,7 +86,7 @@ class UserDataService extends AppAdminService
      */
     public function getLastConnexion(User $user): ?DateTime
     {
-        $userData = $user->getUserDataByKey(UserDataKey::KEY_LAST_CONNEXION);
+        $userData = $user->getUserDataByKey(UserDataKey::LAST_CONNEXION->value);
 
         if ($userData === null) {
             return null;
@@ -98,7 +105,7 @@ class UserDataService extends AppAdminService
      */
     public function getHelpFirstConnexion(User $user): bool
     {
-        $userData = $user->getUserDataByKey(UserDataKey::KEY_HELP_FIRST_CONNEXION);
+        $userData = $user->getUserDataByKey(UserDataKey::HELP_FIRST_CONNEXION->value);
 
         if ($userData === null) {
             return false;
@@ -111,30 +118,88 @@ class UserDataService extends AppAdminService
     }
 
     /**
-     * Génère un token avec une date de validation pour le user
+     * Génère une clé de réinitialisation du mot de passe pour le user.
+     * Seul le hash de la clé est stocké, la clé en clair est retournée pour être envoyée par mail
      * @param User $user
      * @return string
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
-     * @throws \DateMalformedStringException
+     */
+    public function generateResetPasswordKey(User $user): string
+    {
+        $key = ByteString::fromRandom(48)->toString();
+        $this->update(UserDataKey::RESET_PASSWORD->value, self::hashResetPasswordKey($key), $user);
+        return $key;
+    }
+
+    /**
+     * Retourne le hash d'une clé de réinitialisation du mot de passe
+     * @param string $key
+     * @return string
+     */
+    public static function hashResetPasswordKey(string $key): string
+    {
+        return hash('sha256', $key);
+    }
+
+    /**
+     * Supprime la clé de réinitialisation du mot de passe du user
+     * @param User $user
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function removeResetPasswordKey(User $user): void
+    {
+        $userData = $this->findKeyAndUser(UserDataKey::RESET_PASSWORD->value, $user);
+        if ($userData !== null) {
+            $user->removeUserData($userData);
+            $this->remove($userData);
+        }
+    }
+
+    /**
+     * Génère un token avec une date de validation pour le user.
+     * Seul le hash du token est stocké, le token en clair est retourné à l'appelant
+     * @param User $user
+     * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function generateUserToken(User $user): string
     {
         $token = ByteString::fromRandom(ApiConst::API_SIZE_USER_TOKEN)->toString();
-        $this->update(UserDataKey::KEY_TOKEN_CONNEXION, $token, $user);
+        $this->update(UserDataKey::TOKEN_CONNEXION->value, TokenHasher::hash($token), $user);
 
         $optionSystem = $this->getOptionSystemService();
-        $timeToAdd = $optionSystem->getValueByKey(OptionSystem::OS_API_TIME_VALIDATE_USER_TOKEN->value);
+        $minutes = intval($optionSystem->getValueByKey(OptionSystem::OS_API_TIME_VALIDATE_USER_TOKEN->value));
 
-        if (intval($timeToAdd) === -1) {
-            $dateTimeStr = 'now +10 years';
-        } else {
-            $dateTimeStr = 'now +' . $timeToAdd . ' minutes';
+        // Ancienne valeur "sans limite" (-1) ou valeur hors bornes : on applique le plafond
+        if ($minutes <= 0 || $minutes > self::USER_TOKEN_MAX_VALIDITY) {
+            $minutes = self::USER_TOKEN_MAX_VALIDITY;
         }
 
-        $dt = new \DateTime($dateTimeStr);
-        $this->update(UserDataKey::TIME_VALIDATE_TOKEN, strval($dt->getTimestamp()), $user);
+        $expireAt = time() + $minutes * 60;
+        $this->update(UserDataKey::TIME_VALIDATE_TOKEN->value, strval($expireAt), $user);
 
         return $token;
+    }
+
+    /**
+     * Révoque le token utilisateur API du user (désactivation, changement de mot de passe...)
+     * @param User $user
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function removeUserToken(User $user): void
+    {
+        foreach ([UserDataKey::TOKEN_CONNEXION, UserDataKey::TIME_VALIDATE_TOKEN] as $key) {
+            $userData = $this->findKeyAndUser($key->value, $user);
+            if ($userData !== null) {
+                $user->removeUserData($userData);
+                $this->remove($userData);
+            }
+        }
     }
 }

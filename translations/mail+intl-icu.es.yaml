@@ -2,7 +2,6 @@ mail.page_title: __mail.page_title
 mail.page_title_h1: __mail.page_title_h1
 mail.description: __mail.description
 mail.list.language: __mail.list.language
-mail.loading: __mail.loading
 mail.grid.id: __mail.grid.id
 mail.grid.title: __mail.grid.title
 mail.grid.description: __mail.grid.description
@@ -18,9 +17,6 @@ mail.input.trans.title.empty: __mail.input.trans.title.empty
 mail.index.popin.help.title: __mail.index.popin.help.title
 mail.index.popin.help.send: __mail.index.popin.help.send
 mail.index.popin.help.edit: __mail.index.popin.help.edit
-mail.toast.title.success: __mail.toast.title.success
-mail.toast.title.error: __mail.toast.title.error
-mail.toast.time: __mail.toast.time
 mail.link.save: __mail.link.save
 mail.link.send: __mail.link.send
 mail.link.cant.save: __mail.link.cant.save
@@ -29,3 +25,10 @@ mail.content.subtitle: __mail.content.subtitle
 mail.edit_page.no.mail.title: __mail.edit_page.no.mail.title
 mail.edit_page.no.mail.text: __mail.edit_page.no.mail.text
 mail.edit_page.no.mail.back: __mail.edit_page.no.mail.back
+mail.error.csrf: __mail.error.csrf
+mail.error.save: __mail.error.save
+mail.error.locale: __mail.error.locale
+mail.error.load: __mail.error.load
+mail.demo.success: __mail.demo.success
+mail.demo.error: __mail.demo.error
+mail.template.footer: __mail.template.footer

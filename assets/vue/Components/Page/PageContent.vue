@@ -6,7 +6,7 @@
  */
 
 import { defineComponent, PropType } from 'vue';
-import { Locales, Page, PageTranslations, Urls, PageData } from '@/ts/Page/type';
+import { Locales, Page, PageTranslations, Urls, PageData } from '@/ts/Page/Page.type';
 import PageContentBlock from '@/vue/Components/Page/PageContentBlock.vue';
 
 interface LayoutCol {
@@ -93,7 +93,7 @@ export default defineComponent({
       deep: true,
       handler(value: Record<string, Record<string, string>>) {
         this.$emit('update:section-errors', {
-          section: 'blocks',
+          section: 'content',
           hasError: !this.hasAtLeastOneContent,
           errorsByLocale: value,
         });

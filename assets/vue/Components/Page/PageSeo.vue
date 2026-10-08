@@ -6,7 +6,7 @@
  */
 
 import { defineComponent, PropType } from 'vue';
-import { Locales, Page, PageSeoTranslate, PageTranslations } from '@/ts/Page/type';
+import { Locales, Page, PageSeoTranslate, PageTranslations } from '@/ts/Page/Page.type';
 
 const SEO_FIELDS = ['description', 'keywords', 'author', 'copyright'] as const;
 type SeoField = (typeof SEO_FIELDS)[number];

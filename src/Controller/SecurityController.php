@@ -18,12 +18,10 @@ use App\Service\Installation\InstallationService;
 use App\Service\SecurityService;
 use App\Utils\System\Mail\KeyWord;
 use App\Utils\System\Mail\MailKey;
-use App\Utils\System\User\UserDataKey;
 use App\Utils\Translate\System\UserTranslate;
 use League\CommonMark\Exception\CommonMarkException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,7 +29,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-use Symfony\Component\String\ByteString;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[
@@ -112,29 +109,60 @@ class SecurityController extends AbstractController
         return $this->render('security/admin/change_password.html.twig', [
             'changePasswordTranslate' => $userTranslate->getTranslateChangePassword(),
             'user' => $user,
+            'key' => $key,
             'new' => $new,
         ]);
     }
 
     /**
-     * Changement de mot passe du user
-     * @param User $user
+     * Changement de mot passe du user à partir de sa clé de réinitialisation
+     * @param string $key
+     * @param SecurityService $securityService
      * @param UserService $userService
+     * @param UserDataService $userDataService
      * @param Request $request
      * @param TranslatorInterface $translator
      * @return JsonResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @throws \DateMalformedIntervalStringException
      */
-    #[Route('/change-password/update/{id}', name: 'change_password_update_user', methods: ['POST'])]
+    #[Route('change-password/update/{key}', name: 'change_password_update_user', methods: ['POST'])]
     public function updatePassword(
-        #[MapEntity(id: 'id')] User $user,
+        string $key,
+        SecurityService $securityService,
         UserService $userService,
+        UserDataService $userDataService,
         Request $request,
         TranslatorInterface $translator,
     ): JsonResponse {
+        $user = $securityService->canChangePassword($key);
+        if ($user === null) {
+            return $this->json(
+                [
+                    'status' => 'error',
+                    'msg' => $translator->trans('user.change_password.error_404', domain: 'user'),
+                    'redirect' => false,
+                ],
+                Response::HTTP_NOT_FOUND,
+            );
+        }
+
         $data = json_decode($request->getContent(), true);
-        $userService->updatePassword($user, $data['data']);
+        $password = is_array($data) ? strval($data['data'] ?? '') : '';
+        if (!$userService->isValidPassword($password)) {
+            return $this->json(
+                [
+                    'status' => 'error',
+                    'msg' => $translator->trans('user.change_password.error.rule', domain: 'user'),
+                    'redirect' => false,
+                ],
+                Response::HTTP_BAD_REQUEST,
+            );
+        }
+
+        $userService->updatePassword($user, $password);
+        $userDataService->removeResetPasswordKey($user);
 
         return $this->json([
             'status' => 'success',
@@ -174,8 +202,7 @@ class SecurityController extends AbstractController
             $user = $userService->findOneBy(User::class, 'email', $email);
 
             if ($user != null) {
-                $key = ByteString::fromRandom(48)->toString();
-                $userDataService->update(UserDataKey::KEY_RESET_PASSWORD, $key, $user);
+                $key = $userDataService->generateResetPasswordKey($user);
 
                 $mail = $mailService->getByKey(MailKey::MAIL_CHANGE_PASSWORD);
                 $keyWord = new KeyWord($mail->getKey());

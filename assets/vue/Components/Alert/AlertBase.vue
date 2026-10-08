@@ -7,8 +7,8 @@
  * et les valeurs par défaut de `type` / `icon`.
  */
 import { defineComponent, type PropType } from 'vue';
-import type { AlertIcon } from '@/ts/Alert/types';
-import type { ButtonItem } from '@/ts/Types/ButtonList.types';
+import type { AlertIcon } from '@/ts/Alert/Alert.type';
+import type { ButtonItem } from '@/ts/Types/ButtonList.type';
 import ButtonList from '@/vue/Components/Global/ButtonList.vue';
 
 export default defineComponent({

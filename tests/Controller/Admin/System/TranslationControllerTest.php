@@ -49,9 +49,8 @@ class TranslationControllerTest extends AppWebTestCase
         $this->assertJson($response->getContent());
 
         $content = json_decode($response->getContent(), true);
-        $this->assertArrayHasKey('trans', $content);
+        $this->assertArrayNotHasKey('trans', $content);
         $this->assertArrayHasKey('languages', $content);
-        $this->assertIsArray($content['trans']);
         $this->assertIsArray($content['languages']);
     }
 
@@ -98,6 +97,15 @@ class TranslationControllerTest extends AppWebTestCase
         $content = json_decode($response->getContent(), true);
         $this->assertNotEmpty($content);
         $this->assertArrayHasKey('files', $content);
+
+        // Une langue hors app.supported_locales ne doit pas atteindre le Finder (motif glob)
+        foreach (['*', 'de'] as $language) {
+            $this->client->request(
+                'GET',
+                $this->router->generate('admin_translation_files_translate') . '/' . $language,
+            );
+            $this->assertResponseStatusCodeSame(404);
+        }
     }
 
     /**
@@ -190,5 +198,68 @@ class TranslationControllerTest extends AppWebTestCase
         $this->assertNotEmpty($content['file']);
         $this->assertEquals('value edit', $content['file']['key']);
         $this->removeTranslateFile($path);
+    }
+
+    /**
+     * Test méthode saveTranslate() avec une valeur ICU invalide et un body invalide
+     * @return void
+     */
+    public function testSaveTranslateWithErrors(): void
+    {
+        $path = $this->createTranslateFile(customData: ['key' => 'value']);
+        $fileName = basename($path);
+
+        $user = $this->createUserSuperAdmin();
+        $this->client->loginUser($user, 'admin');
+
+        $this->client->request(
+            'PUT',
+            $this->router->generate('admin_translation_save_translate'),
+            content: json_encode(['file' => $fileName, 'translates' => [['key' => 'key', 'value' => '{broken']]]),
+        );
+        $this->assertResponseIsSuccessful();
+        $content = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertFalse($content['success']);
+        $this->assertArrayHasKey('key', $content['errors']);
+
+        $this->client->request(
+            'PUT',
+            $this->router->generate('admin_translation_save_translate'),
+            content: json_encode(['file' => $fileName]),
+        );
+        $this->assertResponseIsSuccessful();
+        $content = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertFalse($content['success']);
+        $this->assertEmpty($content['errors']);
+
+        $this->client->request(
+            'PUT',
+            $this->router->generate('admin_translation_save_translate'),
+            content: json_encode(['file' => 'inexistant.fr.yaml', 'translates' => []]),
+        );
+        $this->assertResponseIsSuccessful();
+        $content = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertFalse($content['success']);
+
+        $this->removeTranslateFile($path);
+    }
+
+    /**
+     * Test méthode loadFileTranslate() avec un fichier inexistant
+     * @return void
+     */
+    public function testLoadFileTranslateNotFound(): void
+    {
+        $user = $this->createUserSuperAdmin();
+        $this->client->loginUser($user, 'admin');
+
+        $this->client->request(
+            'GET',
+            $this->router->generate('admin_translation_file_translate', ['file' => 'inexistant.fr.yaml']),
+        );
+        $this->assertResponseStatusCodeSame(404);
+        $content = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertFalse($content['success']);
+        $this->assertNotEmpty($content['msg']);
     }
 }

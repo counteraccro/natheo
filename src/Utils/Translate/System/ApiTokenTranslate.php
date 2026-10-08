@@ -24,11 +24,8 @@ class ApiTokenTranslate extends AppTranslate
             'title_edit' => $this->translator->trans('api_token.card.title.edit', domain: 'api_token'),
             'description_add' => $this->translator->trans('api_token.card.description.add', domain: 'api_token'),
             'description_edit' => $this->translator->trans('api_token.card.description.edit', domain: 'api_token'),
-            'btn_new_token' => $this->translator->trans('api_token.card.btn.new_token', domain: 'api_token'),
-            'generate_token_success' => $this->translator->trans(
-                'api_token.card.generate.token.success',
-                domain: 'api_token',
-            ),
+            'btn_regenerate_token' => $this->translator->trans('api_token.card.btn.regenerate', domain: 'api_token'),
+            'btn_back_list' => $this->translator->trans('api_token.card.btn.back_list', domain: 'api_token'),
             'btn_copy_past' => $this->translator->trans('api_token.card.btn.copy_past', domain: 'api_token'),
             'title_label' => $this->translator->trans('api_token.card.title.label', domain: 'api_token'),
             'name_error' => $this->translator->trans('api_token.card.title.error', domain: 'api_token'),
@@ -42,12 +39,16 @@ class ApiTokenTranslate extends AppTranslate
             ),
             'token_label' => $this->translator->trans('api_token.card.token.label', domain: 'api_token'),
             'token_copy_success' => $this->translator->trans('api_token.card.copy.success', domain: 'api_token'),
-            'input_token_help' => $this->translator->trans('api_token.card.input.token.help', domain: 'api_token'),
             'input_token_help_add' => $this->translator->trans(
                 'api_token.card.input.token.help.add',
                 domain: 'api_token',
             ),
-            'token_error' => $this->translator->trans('api_token.card.input.token.error', domain: 'api_token'),
+            'token_once_warning' => $this->translator->trans('api_token.card.token.once.warning', domain: 'api_token'),
+            'token_hidden' => $this->translator->trans('api_token.card.token.hidden', domain: 'api_token'),
+            'expires_at_label' => $this->translator->trans('api_token.card.expires_at.label', domain: 'api_token'),
+            'expires_at_help' => $this->translator->trans('api_token.card.expires_at.help', domain: 'api_token'),
+            'last_used_at_label' => $this->translator->trans('api_token.card.last_used_at.label', domain: 'api_token'),
+            'last_used_at_never' => $this->translator->trans('api_token.card.last_used_at.never', domain: 'api_token'),
             'select_label_role' => $this->translator->trans('api_token.card.select.label.role', domain: 'api_token'),
             'help_role' => $this->translator->trans('api_token.card.help.role', domain: 'api_token'),
             'help_role_read' => $this->translator->trans('api_token.card.help.role_read', domain: 'api_token'),
@@ -82,6 +83,14 @@ class ApiTokenTranslate extends AppTranslate
             ),
             'modale_title_confirm_delete_text' => $this->translator->trans(
                 'api_token.modale.confirm.delete.text',
+                domain: 'api_token',
+            ),
+            'modale_title_confirm_regenerate' => $this->translator->trans(
+                'api_token.modale.confirm.regenerate.title',
+                domain: 'api_token',
+            ),
+            'modale_title_confirm_regenerate_text' => $this->translator->trans(
+                'api_token.modale.confirm.regenerate.text',
                 domain: 'api_token',
             ),
         ];

@@ -9,7 +9,7 @@ import axios, { AxiosResponse } from 'axios';
 import MarkdownEditor from '../../../../Components/Global/MarkdownEditor/MarkdownEditor.vue';
 import Toast from '../../../../Components/Global/Toast.vue';
 import { emitter } from '@/utils/useEvent';
-import { Translate, Urls, Datas, Toasts, LoadCommentResponse, Comment, SaveCommentResponse } from '@/ts/Comment/type';
+import { Translate, Urls, Datas, Toasts, LoadCommentResponse, Comment, SaveCommentResponse } from '@/ts/Comment/CommentEdit.type';
 import SkeletonCommentEdit from '@/vue/Components/Skeleton/CommentEdit.vue';
 
 export default defineComponent({
@@ -507,13 +507,13 @@ export default defineComponent({
   </div>
 
   <div class="toast-container position-fixed top-0 end-0 p-2">
-    <toast id="success" option-class-header="text-success" :show="toasts.success.show" @close-toast="closeToast">
+    <toast id="success" :show="toasts.success.show" @close-toast="closeToast">
       <template #body>
         <div v-html="toasts.success.msg"></div>
       </template>
     </toast>
 
-    <toast id="error" option-class-header="text-danger" :show="toasts.error.show" @close-toast="closeToast">
+    <toast id="error" :type="'danger'" :show="toasts.error.show" @close-toast="closeToast">
       <template #body>
         <div v-html="toasts.error.msg"></div>
       </template>

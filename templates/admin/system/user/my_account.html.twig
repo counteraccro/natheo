@@ -127,13 +127,13 @@
                                 </label>
 
                                 {% if user.avatar is not null %}
-                                    <a href="{{ path('admin_user_delete_avatar') }}" class="btn btn-danger btn-md">
+                                    <button type="submit" form="form-delete-avatar" class="btn btn-danger btn-md">
                                         <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                   d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                                         </svg>
                                         {{ 'user.page_my_account.avatar.delete' | trans({}, 'user') }}
-                                    </a>
+                                    </button>
                                 {% endif %}
                             </div>
                             <span class="form-file-name"
@@ -197,6 +197,9 @@
             </div>
 
             {{ form_end(form) }}
+            <form id="form-delete-avatar" method="POST" action="{{ path('admin_user_delete_avatar') }}">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete_avatar') }}">
+            </form>
         </div>
     </div>
 
@@ -216,7 +219,7 @@
         </div>
         <div class="p-5">
             <div {{ vue_component('Admin/System/User/ChangePassword', {'url_change_password' : path('admin_user_change_my_password'),
-                'translate' : changePasswordTranslate, 'fullScreen' : true}) }}></div>
+                'translate' : changePasswordTranslate, 'fullScreen' : true, 'needCurrentPassword' : true}) }}></div>
         </div>
     </div>
 

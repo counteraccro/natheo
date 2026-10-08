@@ -11,6 +11,7 @@ namespace App\Service\Admin;
 
 use App\Service\Admin\Content\Comment\CommentService;
 use App\Service\Admin\Content\Page\PageService;
+use App\Service\Admin\System\OptionConfigService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Service\Admin\System\User\UserDataService;
 use App\Utils\Global\Database\DataBase;
@@ -33,6 +34,7 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AppAdminHandlerService
@@ -50,6 +52,7 @@ class AppAdminHandlerService
         'requestStack' => RequestStack::class,
         'parameterBag' => ParameterBagInterface::class,
         'optionSystemService' => OptionSystemService::class,
+        'optionConfigService' => OptionConfigService::class,
         'gridService' => GridService::class,
         'markdownEditorService' => MarkdownEditorService::class,
         'userPasswordHasher' => UserPasswordHasherInterface::class,
@@ -64,6 +67,7 @@ class AppAdminHandlerService
         'pageService' => PageService::class,
         'commentService' => CommentService::class,
         'accessDecisionManager' => AccessDecisionManagerInterface::class,
+        'csrfTokenManager' => CsrfTokenManagerInterface::class,
     ];
 
     public function __construct(#[AutowireLocator(self::HANDLERS)] protected ContainerInterface $handlers) {}
@@ -200,6 +204,17 @@ class AppAdminHandlerService
     }
 
     /**
+     * Retourne la class OptionConfigService
+     * @return OptionConfigService
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getOptionConfigService(): OptionConfigService
+    {
+        return $this->handlers->get('optionConfigService');
+    }
+
+    /**
      * Récupère la class RequestStack
      * @return RequestStack
      * @throws ContainerExceptionInterface
@@ -318,5 +333,16 @@ class AppAdminHandlerService
     protected function getAccessDecisionManager(): AccessDecisionManagerInterface
     {
         return $this->handlers->get('accessDecisionManager');
+    }
+
+    /**
+     * Retourne l'interface CsrfTokenManagerInterface
+     * @return CsrfTokenManagerInterface
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getCsrfTokenManager(): CsrfTokenManagerInterface
+    {
+        return $this->handlers->get('csrfTokenManager');
     }
 }

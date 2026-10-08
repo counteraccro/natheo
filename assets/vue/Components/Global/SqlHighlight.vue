@@ -1,10 +1,12 @@
-<script>
+<script lang="ts">
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * SQL formateur
  */
-export default {
+import { defineComponent } from 'vue';
+
+export default defineComponent({
   name: 'SqlHighLight',
   props: {
     sql: { type: String, required: true },
@@ -12,11 +14,8 @@ export default {
     format: { type: Boolean, default: true },
   },
   emits: ['hide-sql', 'save-sql', 'copy-sql'],
-  data() {
-    return { copied: false };
-  },
   computed: {
-    formattedSql() {
+    formattedSql(): string {
       if (!this.format) return this.sql;
       let sql = this.sql.trim();
       sql = sql.replace(
@@ -30,7 +29,7 @@ export default {
       return sql;
     },
 
-    highlightedSql() {
+    highlightedSql(): string {
       let html = this.formattedSql.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
       const keywords = [
         'SELECT',
@@ -139,11 +138,11 @@ export default {
     },
   },
   methods: {
-    async copyToClipboard() {
+    copyToClipboard(): void {
       this.$emit('copy-sql');
     },
   },
-};
+});
 </script>
 
 <template>
@@ -151,7 +150,7 @@ export default {
     <div class="flex items-center justify-between px-4 py-3 bg-[var(--bg-main)] rounded-xl">
       <span class="text-sm font-mono text-slate-400">$ {{ label }}</span>
       <div>
-        <button @click="this.$emit('save-sql')" class="btn-icon btn btn-ghost-primary">
+        <button @click="$emit('save-sql')" class="btn-icon btn btn-ghost-primary">
           <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
@@ -171,7 +170,7 @@ export default {
             ></path>
           </svg>
         </button>
-        <button @click="this.$emit('hide-sql')" class="btn-icon btn btn-ghost-primary">
+        <button @click="$emit('hide-sql')" class="btn-icon btn btn-ghost-primary">
           <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
@@ -188,5 +187,3 @@ export default {
     </div>
   </div>
 </template>
-
-<style></style>

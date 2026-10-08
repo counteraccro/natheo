@@ -11,7 +11,7 @@ namespace App\Utils\Notification;
 
 use App\Entity\Admin\Notification;
 use App\Entity\Admin\System\User;
-use App\Enum\Admin\Global\Notification\KeyConfig;
+use App\Enum\Admin\Global\Notification\NotificationKeyConfig;
 use App\Enum\Admin\Global\Notification\Notification as NotificationEnum;
 
 class NotificationFactory
@@ -55,7 +55,7 @@ class NotificationFactory
         }
         $tabNotif = NotificationEnum::getNotification($key);
 
-        $tabParameter = $tabNotif[KeyConfig::PARAMETERS->value];
+        $tabParameter = $tabNotif[NotificationKeyConfig::PARAMETERS->value];
         foreach ($params as $key => $value) {
             if (isset($tabParameter[$key])) {
                 $tabParameter[$key] = $value;
@@ -63,10 +63,10 @@ class NotificationFactory
         }
 
         $notification = $this->createNotification();
-        $notification->setTitle($tabNotif[KeyConfig::TITLE->value]);
-        $notification->setContent($tabNotif[KeyConfig::CONTENT->value]);
-        $notification->setLevel($tabNotif[KeyConfig::LEVEL->value]);
-        $notification->setCategory($tabNotif[KeyConfig::CATEGORY->value]);
+        $notification->setTitle($tabNotif[NotificationKeyConfig::TITLE->value]);
+        $notification->setContent($tabNotif[NotificationKeyConfig::CONTENT->value]);
+        $notification->setLevel($tabNotif[NotificationKeyConfig::LEVEL->value]);
+        $notification->setCategory($tabNotif[NotificationKeyConfig::CATEGORY->value]);
         $notification->setParameters(json_encode($tabParameter));
 
         return $this;

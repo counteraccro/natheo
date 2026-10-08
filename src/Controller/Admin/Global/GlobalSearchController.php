@@ -68,7 +68,7 @@ class GlobalSearchController extends AppAdminController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/{entity}/{page}/{limit}/{search}', name: 'global', methods: ['GET'])]
+    #[Route('/{entity}/{page}/{limit}/{search}', name: 'global', requirements: ['search' => '.+'], methods: ['GET'])]
     public function search(
         Request $request,
         GlobalSearchService $globalSearchService,

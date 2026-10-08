@@ -19,7 +19,12 @@
         <p class="text-sm text-(--text-secondary) mb-3">{{ 'mail.edit_page_description' | trans({'email' : title}, 'mail') | raw }}</p>
 
 
-        <div {{ vue_component('Admin/System/Mail', {'url_data' : path('admin_mail_load_data', {'id' : mail.id})}) }}></div>
+        <div {{ vue_component('Admin/System/Mail', {
+            'url_data' : path('admin_mail_load_data', {'id' : mail.id}),
+            'locale' : app.request.locale,
+            'csrf_token_save' : csrf_token(csrfTokenSave),
+            'csrf_token_send_demo' : csrf_token(csrfTokenSendDemo)
+        }) }}></div>
 
     {% else  %}
 
@@ -36,12 +41,12 @@
 
             <!-- Titre -->
             <p class="text-lg font-bold mb-2" style="color: var(--text-primary);">
-                {{ 'mail.edit_page.no.mail.title' | trans({}, 'mail') }}</h1>
+                {{ 'mail.edit_page.no.mail.title' | trans({}, 'mail') }}
             </p>
 
             <!-- Description -->
             <p class="text-sm max-w-xs mb-6" style="color: var(--text-secondary);">
-                {{ 'mail.edit_page.no.mail.text' | trans({}, 'mail') }}</h1>
+                {{ 'mail.edit_page.no.mail.text' | trans({}, 'mail') }}
             </p>
 
             <!-- Boutons -->
@@ -50,7 +55,7 @@
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                     </svg>
-                    {{ 'mail.edit_page.no.mail.back' | trans({}, 'mail') }}</h1>
+                    {{ 'mail.edit_page.no.mail.back' | trans({}, 'mail') }}
                 </a>
             </div>
         </div>

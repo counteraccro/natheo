@@ -1,37 +1,39 @@
-<script>
+<script lang="ts">
 /**
  * @author Gourdon Aymeric
- * @version 2.0
+ * @version 2.1
  * Permet d'afficher la pagination pour le grid
  */
-export default {
+import { defineComponent, type PropType } from 'vue';
+import type { GridPaginatePage, GridPaginateTranslate } from '@/ts/Grid/GridPaginate.type';
+
+export default defineComponent({
   name: 'GridPaginate',
   props: {
-    currentPage: Number,
-    nbElementsTotal: Number,
-    nbElements: String,
+    currentPage: { type: Number, required: true },
+    nbElementsTotal: { type: Number, required: true },
+    nbElements: { type: [String, Number], required: true },
     url: String,
-    listLimit: Object,
-    translate: Object,
+    listLimit: { type: Object as PropType<Record<string, number>>, required: true },
+    translate: { type: Object as PropType<GridPaginateTranslate>, required: true },
   },
   emits: ['change-page-event'],
   data() {
     return {
-      cPage: this.currentPage,
-      cLimit: this.nbElements,
+      cPage: this.currentPage as number,
+      cLimit: this.nbElements as string | number,
     };
   },
   computed: {
-    nbPages() {
-      return Math.ceil(this.nbElementsTotal / this.cLimit);
+    nbPages(): number {
+      return Math.ceil(this.nbElementsTotal / Number(this.cLimit));
     },
 
     /**
      * Génère le tableau d'affichage de la pagination
-     * @returns {[]}
      */
-    visiblePages() {
-      const pages = [];
+    visiblePages(): GridPaginatePage[] {
+      const pages: GridPaginatePage[] = [];
       const total = this.nbPages;
       const current = this.cPage;
 
@@ -62,13 +64,13 @@ export default {
     },
   },
   methods: {
-    updateCurrentPage(page) {
+    updateCurrentPage(page: GridPaginatePage): void {
       if (typeof page === 'number') {
         this.cPage = page;
       }
     },
   },
-};
+});
 </script>
 
 <template>

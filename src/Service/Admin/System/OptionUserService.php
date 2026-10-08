@@ -43,6 +43,7 @@ class OptionUserService extends AppAdminService
         $options = [
             OptionSystemEnum::OS_DEFAULT_LANGUAGE->value => OptionUserEnum::OU_DEFAULT_LANGUAGE->value,
             OptionSystemEnum::OS_NB_ELEMENT->value => OptionUserEnum::OU_NB_ELEMENT->value,
+            OptionSystemEnum::OS_THEME_SITE->value => OptionUserEnum::OU_THEME_SITE->value,
         ];
 
         foreach ($options as $optionSystemKey => $optionUserKey) {
@@ -144,18 +145,38 @@ class OptionUserService extends AppAdminService
     }
 
     /**
-     * Retourne le fichier de config des options system sous la forme d'un tableau
+     * Retourne le fichier de config des options user sous la forme d'un tableau
      * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getOptionsUserConfig(): array
     {
-        $return = [];
-        try {
-            $return = Yaml::parseFile($this->getPathConfig());
-        } catch (NotFoundExceptionInterface | ContainerExceptionInterface $e) {
-            die($e->getMessage());
+        return Yaml::parseFile($this->getPathConfig());
+    }
+
+    /**
+     * Met à jour une option du user courant depuis l'interface d'administration.
+     * Refuse les clés absentes de la config, les options désactivées et les valeurs invalides
+     * @param string $key
+     * @param string $value
+     * @return bool
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function updateValueFromAdmin(string $key, string $value): bool
+    {
+        $optionConfigService = $this->getOptionConfigService();
+        $optionConfig = $optionConfigService->findByKey($this->getOptionsUserConfig(), $key);
+        if (
+            !$optionConfigService->isEditable($optionConfig) ||
+            !$optionConfigService->isValidValue($optionConfig, $value)
+        ) {
+            return false;
         }
-        return $return;
+
+        $this->saveValueByKee($key, $value);
+        return true;
     }
 
     /**
@@ -184,6 +205,13 @@ class OptionUserService extends AppAdminService
         $repo = $this->getRepository(OptionUser::class);
         /* @var OptionUser $optionUser */
         $optionUser = $this->getByKey($key);
+        // Users créés avant l'ajout d'une option n'ont pas encore la ligne en base
+        if ($optionUser === null) {
+            /** @var User $user */
+            $user = $this->getSecurity()->getUser();
+            $optionUser = (new OptionUser())->setKey($key);
+            $user->addOptionsUser($optionUser);
+        }
         $optionUser->setValue($value);
         $repo->save($optionUser, true);
 

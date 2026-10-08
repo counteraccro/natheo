@@ -242,7 +242,6 @@ class MenuController extends AppAdminController
         }
 
         $name = $optionSystemService->getValueByKey(OptionSystem::OS_SITE_NAME->value);
-        $logo = $optionSystemService->getValueByKey(OptionSystem::OS_LOGO_SITE->value);
         $urlSite = $optionSystemService->getValueByKey(OptionSystem::OS_ADRESSE_SITE->value);
         $allElement = [];
         if (isset($menu['allElements'])) {
@@ -255,7 +254,6 @@ class MenuController extends AppAdminController
             'data' => [
                 'all_elements' => $allElement,
                 'name' => $name,
-                'logo' => $logo,
                 'url_site' => $urlSite,
                 'pages' => $pageService->getAllTitleAndUrlPage(),
             ],

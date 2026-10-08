@@ -3,18 +3,20 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.2
+ * @version 1.4
  * Service lier à l'objet mail
  */
 
 namespace App\Service\Admin\System;
 
 use App\Entity\Admin\System\Mail;
+use App\Entity\Admin\System\User;
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
 use App\Utils\Markdown;
 use App\Utils\System\Mail\KeyWord;
+use App\Utils\System\Mail\MailKey;
 use App\Utils\System\Mail\MailTemplate;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use League\CommonMark\Exception\CommonMarkException;
@@ -22,9 +24,15 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use App\Enum\Admin\Global\SvgIcon;
 
 class MailService extends AppAdminService
 {
+    /**
+     * Identifiant du jeton CSRF pour l'envoi d'un email de démo
+     */
+    public const string CSRF_TOKEN_SEND_DEMO = 'mail_send_demo';
+
     /**
      * Clé FROM
      * @const string
@@ -50,7 +58,7 @@ class MailService extends AppAdminService
     public const BCC = 'bcc';
 
     /**
-     * Clé REPLAY_TO
+     * Clé REPLY_TO
      * @const string
      */
     public const REPLY_TO = 'reply_to';
@@ -80,6 +88,12 @@ class MailService extends AppAdminService
     public const BODY = 'body';
 
     /**
+     * Clé LOCALE, langue des liens internes du contenu
+     * @const string
+     */
+    public const LOCALE = 'locale';
+
+    /**
      * Retourne une liste de mail formaté pour vueJs et automatiquement traduit en fonction de langue par défaut
      * @param string $locale
      * @param Mail $mail
@@ -91,15 +105,16 @@ class MailService extends AppAdminService
     {
         $translator = $this->getTranslator();
 
-        $mailTranslation = $mail->geMailTranslationByLocale($locale);
+        $mailTranslation = $mail->getMailTranslationByLocale($locale);
         return [
             'id' => $mail->getId(),
-            'key' => rand(1, 9) . rand(1, 9) . rand(1, 9) . rand(1, 9),
+            // Change avec la langue pour forcer le re-rendu de l'éditeur markdown
+            'key' => $mail->getId() . '-' . $locale,
             'title' => $translator->trans($mail->getTitle()),
             'description' => $translator->trans($mail->getDescription()),
             'keyWords' => $this->formatKeyWord($mail->getKeyWords()),
-            'titleTrans' => $mailTranslation->getTitle(),
-            'contentTrans' => $mailTranslation->getContent(),
+            'titleTrans' => $mailTranslation?->getTitle() ?? '',
+            'contentTrans' => $mailTranslation?->getContent() ?? '',
         ];
     }
 
@@ -124,9 +139,10 @@ class MailService extends AppAdminService
     }
 
     /**
-     * Retourne une liste de user paginé
+     * Retourne une liste de mail paginé
      * @param int $page
      * @param int $limit
+     * @param array $queryParams
      * @return Paginator
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -151,34 +167,28 @@ class MailService extends AppAdminService
         $translator = $this->getTranslator();
         $gridService = $this->getGridService();
 
-        $column = [
-            $translator->trans('mail.grid.id', domain: 'mail'),
-            $translator->trans('mail.grid.title', domain: 'mail'),
-            $translator->trans('mail.grid.description', domain: 'mail'),
-            $translator->trans('mail.grid.created_at', domain: 'mail'),
-            $translator->trans('mail.grid.update_at', domain: 'mail'),
-            GridService::KEY_ACTION,
-        ];
+        $labelId = $translator->trans('mail.grid.id', domain: 'mail');
+        $labelTitle = $translator->trans('mail.grid.title', domain: 'mail');
+        $labelDescription = $translator->trans('mail.grid.description', domain: 'mail');
+        $labelCreatedAt = $translator->trans('mail.grid.created_at', domain: 'mail');
+        $labelUpdateAt = $translator->trans('mail.grid.update_at', domain: 'mail');
+
+        $column = [$labelId, $labelTitle, $labelDescription, $labelCreatedAt, $labelUpdateAt, GridService::KEY_ACTION];
 
         $dataPaginate = $this->getAllPaginate($page, $limit, $queryParams);
+        $csrfToken = $this->getCsrfTokenManager()->getToken(self::CSRF_TOKEN_SEND_DEMO)->getValue();
 
         $nb = $dataPaginate->count();
         $data = [];
         foreach ($dataPaginate as $mail) {
-            /* @var Mail $mail */
-
-            $actions = $this->generateTabAction($mail);
+            /** @var Mail $mail */
             $data[] = [
-                $translator->trans('mail.grid.id', domain: 'mail') => $mail->getId(),
-                $translator->trans('mail.grid.title', domain: 'mail') => $translator->trans($mail->getTitle()),
-                $translator->trans('mail.grid.description', domain: 'mail') => $translator->trans(
-                    $mail->getDescription(),
-                ),
-                $translator->trans('mail.grid.created_at', domain: 'mail') => $mail
-                    ->getCreatedAt()
-                    ->format('d/m/y H:i'),
-                $translator->trans('mail.grid.update_at', domain: 'mail') => $mail->getUpdateAt()->format('d/m/y H:i'),
-                GridService::KEY_ACTION => $actions,
+                $labelId => $mail->getId(),
+                $labelTitle => $translator->trans($mail->getTitle()),
+                $labelDescription => $translator->trans($mail->getDescription()),
+                $labelCreatedAt => $mail->getCreatedAt()->format('d/m/y H:i'),
+                $labelUpdateAt => $mail->getUpdateAt()->format('d/m/y H:i'),
+                GridService::KEY_ACTION => $this->generateTabAction($mail, $csrfToken),
             ];
         }
 
@@ -188,11 +198,11 @@ class MailService extends AppAdminService
             GridService::KEY_COLUMN => $column,
             GridService::KEY_RAW_SQL => $gridService->getFormatedSQLQuery($dataPaginate),
             GridService::KEY_LIST_ORDER_FIELD => [
-                'id' => $translator->trans('mail.grid.id', domain: 'mail'),
-                'title' => $translator->trans('mail.grid.title', domain: 'mail'),
-                'description' => $translator->trans('mail.grid.description', domain: 'mail'),
-                'createdAt' => $translator->trans('mail.grid.created_at', domain: 'mail'),
-                'updateAt' => $translator->trans('mail.grid.update_at', domain: 'mail'),
+                'id' => $labelId,
+                'title' => $labelTitle,
+                'description' => $labelDescription,
+                'createdAt' => $labelCreatedAt,
+                'updateAt' => $labelUpdateAt,
             ],
         ];
         return $gridService->addAllDataRequiredGrid($tabReturn);
@@ -201,40 +211,34 @@ class MailService extends AppAdminService
     /**
      * Génère le tableau d'action pour le Grid des mails
      * @param Mail $mail
-     * @return array[]|string[]
+     * @param string $csrfToken jeton CSRF pour l'envoi de l'email de démo
+     * @return array[]
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    private function generateTabAction(Mail $mail): array
+    private function generateTabAction(Mail $mail, string $csrfToken): array
     {
         $router = $this->getRouter();
 
-        $actions = [];
-
-        // Bouton test email
-        $actions[] = [
-            'label' => [
-                'm3.5 5.5 7.893 6.036a1 1 0 0 0 1.214 0L20.5 5.5M4 19h16a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Z',
+        return [
+            [
+                'label' => [SvgIcon::MAIL->value],
+                'color' => 'success',
+                'type' => 'post',
+                'url' => $router->generate('admin_mail_send_demo_mail', ['id' => $mail->getId()]),
+                'ajax' => true,
+                'confirm' => false,
+                'csrf' => $csrfToken,
             ],
-            'color' => 'success',
-            'type' => 'get',
-            'url' => $router->generate('admin_mail_send_demo_mail', ['id' => $mail->getId()]),
-            'ajax' => true,
-            'confirm' => false,
-        ];
-
-        // Bouton edit
-        $actions[] = [
-            'label' => [
-                'M10.779 17.779 4.36 19.918 6.5 13.5m4.279 4.279 8.364-8.643a3.027 3.027 0 0 0-2.14-5.165 3.03 3.03 0 0 0-2.14.886L6.5 13.5m4.279 4.279L6.499 13.5m2.14 2.14 6.213-6.504M12.75 7.04 17 11.28',
+            [
+                'label' => [SvgIcon::PEN->value],
+                'color' => 'primary',
+                'type' => 'get',
+                'id' => $mail->getId(),
+                'url' => $router->generate('admin_mail_edit', ['id' => $mail->getId()]),
+                'ajax' => false,
             ],
-            'color' => 'primary',
-            'type' => 'get',
-            'id' => $mail->getId(),
-            'url' => $router->generate('admin_mail_edit', ['id' => $mail->getId()]),
-            'ajax' => false,
         ];
-        return $actions;
     }
 
     /**
@@ -248,8 +252,9 @@ class MailService extends AppAdminService
      *  to => string || array <br/>
      *  cc =>  string || array  - optionnel<br/>
      *  bcc => string || array - optionnel <br/>
-     *  replayTo => string || array - si son défini alors la valeur de OS_MAIL_REPLAY_TO sera utilisée<br/>
+     *  reply_to => string || array - optionnel - Si non défini alors la valeur de OS_MAIL_REPLY_TO sera utilisée<br/>
      *  template => string <br />
+     *  locale => string - optionnel - langue des liens internes, langue courante si non défini <br />
      * @return void
      * @throws CommonMarkException
      * @throws ContainerExceptionInterface
@@ -270,6 +275,12 @@ class MailService extends AppAdminService
         $body = $this->getParamsValue($params, self::BODY);
         $signature = $optionSystemService->getValueByKey(OptionSystem::OS_MAIL_SIGNATURE->value);
 
+        // Liens internes résolus et urls absolues : un email est lu hors du site
+        $content = $this->getMarkdownEditorService()->parseMarkdown(
+            (string) $content,
+            $params[self::LOCALE] ?? null,
+            true,
+        );
         $markdown = new Markdown();
         $content = $markdown->convertMarkdownToHtml($content);
         $content = $content . $signature;
@@ -277,42 +288,53 @@ class MailService extends AppAdminService
         $body = array_merge((array) $body, ['content' => $content]);
 
         $email = (new TemplatedEmail())
-            ->from($from)
-            ->to($to)
-            ->replyTo($replyTo)
-            ->subject($title)
+            ->from(...$this->toAddresses($from))
+            ->to(...$this->toAddresses($to))
+            ->replyTo(...$this->toAddresses($replyTo))
+            ->subject((string) $title)
             ->htmlTemplate($template)
             ->context($body);
 
         $cc = $this->getParamsValue($params, self::CC);
         if ($cc !== null) {
-            $email->cc($cc);
+            $email->cc(...$this->toAddresses($cc));
         }
 
         $bcc = $this->getParamsValue($params, self::BCC);
         if ($bcc !== null) {
-            $email->cc($bcc);
+            $email->bcc(...$this->toAddresses($bcc));
         }
 
         $mailer->send($email);
     }
 
     /**
-     * Permet de renvoyer la valeur d'une option en fonction de sa clé
-     * @param $params
-     * @param $key
-     * @return string|null
+     * Convertit une ou plusieurs adresses en liste utilisable par les méthodes variadiques de TemplatedEmail
+     * @param string|array|null $addresses
+     * @return array
+     */
+    private function toAddresses(string|array|null $addresses): array
+    {
+        return array_values((array) $addresses);
+    }
+
+    /**
+     * Permet de renvoyer la valeur d'un paramètre d'envoi en fonction de sa clé,
+     * FROM et REPLY_TO prennent la valeur de l'option système si non définis
+     * @param array $params
+     * @param string $key
+     * @return string|array|null
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    private function getParamsValue($params, $key): ?string
+    private function getParamsValue(array $params, string $key): string|array|null
     {
-        $optionSystemService = $this->getOptionSystemService();
-
-        if (isset($params[$key]) && ($params[$key] !== '' || $params !== null)) {
-            return $params[$key];
+        $value = $params[$key] ?? null;
+        if ($value !== null && $value !== '' && $value !== []) {
+            return $value;
         }
 
+        $optionSystemService = $this->getOptionSystemService();
         return match ($key) {
             self::FROM => $optionSystemService->getValueByKey(OptionSystem::OS_MAIL_FROM->value),
             self::REPLY_TO => $optionSystemService->getValueByKey(OptionSystem::OS_MAIL_REPLY_TO->value),
@@ -335,36 +357,124 @@ class MailService extends AppAdminService
 
     /**
      * Retourne la liste des paramètres pour l'envoi d'un email sous la forme d'un tableau
-     * en fonction de la clé d'un email et de la langue du système
+     * en fonction de la clé d'un email et de la langue demandée (langue du système par défaut)
      * @param Mail $mail
      * @param array $tabKeyWord
+     * @param string|null $locale si null, la langue par défaut du système est utilisée
      * @return array <br />[<br />
-     * MailService::TITLE => titre du mail en fonction de la langue du système, <br />
+     * MailService::TITLE => titre du mail en fonction de la langue, <br />
      * MailService::CONTENT => contenu du mail avec le tableau de keyword, <br />
      * MailService::TO => '', <br />
-     * MailService::TEMPLATE => MailTemplate::EMAIL_SIMPLE_TEMPLATE <br />
+     * MailService::TEMPLATE => MailTemplate::EMAIL_SIMPLE_TEMPLATE, <br />
+     * MailService::LOCALE => langue de la traduction utilisée <br />
      * ]
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getDefaultParams(Mail $mail, array $tabKeyWord): array
+    public function getDefaultParams(Mail $mail, array $tabKeyWord, ?string $locale = null): array
     {
-        $optionSystemService = $this->getOptionSystemService();
+        $locale ??= $this->getOptionSystemService()->getValueByKey(OptionSystem::OS_DEFAULT_LANGUAGE->value);
 
-        $mailTranslate = $mail->geMailTranslationByLocale(
-            $optionSystemService->getValueByKey(OptionSystem::OS_DEFAULT_LANGUAGE->value),
-        );
-        $content = str_replace(
-            $tabKeyWord[KeyWord::KEY_SEARCH],
-            $tabKeyWord[KeyWord::KEY_REPLACE],
-            $mailTranslate->getContent(),
-        );
+        $mailTranslation = $mail->getMailTranslationByLocale($locale) ?? $mail->getMailTranslations()->first();
+        if ($mailTranslation === false) {
+            throw new \LogicException(sprintf('Aucune traduction pour l\'email "%s"', $mail->getKey()));
+        }
 
         return [
-            MailService::TITLE => $mailTranslate->getTitle(),
-            MailService::CONTENT => $content,
+            MailService::TITLE => $mailTranslation->getTitle(),
+            MailService::CONTENT => $this->replaceKeyWords($mailTranslation->getContent(), $tabKeyWord),
             MailService::TO => '',
             MailService::TEMPLATE => MailTemplate::EMAIL_SIMPLE_TEMPLATE,
+            MailService::LOCALE => $mailTranslation->getLocale(),
         ];
+    }
+
+    /**
+     * Remplace les mots clés [[...]] d'un contenu par leurs valeurs
+     * @param string $content
+     * @param array $tabKeyWord tableau issu de KeyWord (clés KeyWord::KEY_SEARCH et KeyWord::KEY_REPLACE)
+     * @return string
+     */
+    public function replaceKeyWords(string $content, array $tabKeyWord): string
+    {
+        return str_replace($tabKeyWord[KeyWord::KEY_SEARCH], $tabKeyWord[KeyWord::KEY_REPLACE], $content);
+    }
+
+    /**
+     * Retourne le tableau de mots clés d'un email de démo, rempli avec les données de l'utilisateur courant
+     * @param Mail $mail
+     * @param User $user utilisateur qui reçoit l'email de démo (sert aussi d'administrateur fictif)
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getDemoKeyWords(Mail $mail, User $user): array
+    {
+        $optionSystemService = $this->getOptionSystemService();
+        $url = $this->getRouter()->generate('front_no_local');
+        $keyWord = new KeyWord($mail->getKey());
+
+        return match ($mail->getKey()) {
+            MailKey::MAIL_CHANGE_PASSWORD => $keyWord->getMailChangePassword($user, $url, $optionSystemService),
+            MailKey::MAIL_ACCOUNT_ADM_DISABLE => $keyWord->getTabMailAccountAdmDisabled(
+                $user,
+                $user,
+                $optionSystemService,
+            ),
+            MailKey::MAIL_ACCOUNT_ADM_ENABLE => $keyWord->getTabMailAccountAdmEnabled(
+                $user,
+                $user,
+                $optionSystemService,
+            ),
+            MailKey::MAIL_CREATE_ACCOUNT_ADM => $keyWord->getTabMailCreateAccountAdm(
+                $user,
+                $user,
+                $url,
+                $optionSystemService,
+            ),
+            MailKey::MAIL_SELF_DISABLED_ACCOUNT => $keyWord->getTabMailSelfDisabled($user, $optionSystemService),
+            MailKey::MAIL_SELF_DELETE_ACCOUNT => $keyWord->getTabMailSelfDelete($user, $optionSystemService),
+            MailKey::MAIL_SELF_ANONYMOUS_ACCOUNT => $keyWord->getTabMailSelfAnonymous($user, $optionSystemService),
+            MailKey::MAIL_RESET_PASSWORD => $keyWord->getTabMailResetPassword($user, $user, $url, $optionSystemService),
+            default => [
+                KeyWord::KEY_SEARCH => [],
+                KeyWord::KEY_REPLACE => [],
+            ],
+        };
+    }
+
+    /**
+     * Envoi un email de démo à l'utilisateur.
+     * Si $title et $content sont renseignés, ils remplacent le contenu sauvegardé (test avant sauvegarde)
+     * @param Mail $mail
+     * @param User $user
+     * @param string|null $locale langue de l'email, langue par défaut du système si null
+     * @param string|null $title
+     * @param string|null $content
+     * @return void
+     * @throws CommonMarkException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws TransportExceptionInterface
+     */
+    public function sendDemoMail(
+        Mail $mail,
+        User $user,
+        ?string $locale = null,
+        ?string $title = null,
+        ?string $content = null,
+    ): void {
+        $tabKeyWord = $this->getDemoKeyWords($mail, $user);
+        $params = $this->getDefaultParams($mail, $tabKeyWord, $locale);
+
+        if ($title !== null && $title !== '') {
+            $params[self::TITLE] = $title;
+        }
+        if ($content !== null && $content !== '') {
+            $params[self::CONTENT] = $this->replaceKeyWords($content, $tabKeyWord);
+        }
+        $params[self::TO] = $user->getEmail();
+
+        $this->sendMail($params);
     }
 }

@@ -1,6 +1,7 @@
 media.index.page_title: Médiathèque
 media.index.page_title_h1: 'La médiathèque'
 media.mediatheque.loading: 'Chargement de la médiatheque'
+media.mediatheque.generique.error: 'Une erreur est survenue, veuillez réessayer.'
 media.mediatheque.btn.new.folder: 'Nouveau dossier'
 media.mediatheque.btn.new.media: 'Nouveau média'
 media.mediatheque.btn.filtre: 'Trier par'
@@ -107,8 +108,8 @@ media.mediatheque.edit.input.placeholder.folder: 'Le nom de votre dossier'
 media.mediatheque.move.title: 'Déplacer vers...'
 media.mediatheque.move.btn: Déplacer
 media.mediatheque.move.success: 'Déplacement validé !'
-media.mediatheque.move.label.media: __media.mediatheque.move.label.media
-media.mediatheque.move.label.folder: __media.mediatheque.move.label.folder
+media.mediatheque.move.label.media: 'Déplacer le média {name} vers'
+media.mediatheque.move.label.folder: 'Déplacer le dossier {name} vers'
 media.mediatheque.move.btn.error: 'Erreur de validation'
 media.mediatheque.move.search.placeholder: 'Filtrer les dossier'
 media.mediatheque.move.search.empty.msg: 'Aucun dossier trouvé'

@@ -27,6 +27,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ApiAuthenticator extends AbstractAuthenticator
 {
+    private const string BEARER_PREFIX = 'Bearer ';
+
     public function __construct(
         private TranslatorInterface $translator,
         private OptionSystemService $optionSystemService,
@@ -38,8 +40,7 @@ class ApiAuthenticator extends AbstractAuthenticator
      */
     public function supports(Request $request): ?bool
     {
-        return $request->headers->has('Authorization') &&
-            str_contains($request->headers->get('Authorization'), 'Bearer ');
+        return str_starts_with((string) $request->headers->get('Authorization'), self::BEARER_PREFIX);
     }
 
     /**
@@ -52,7 +53,7 @@ class ApiAuthenticator extends AbstractAuthenticator
     {
         $this->isOpenApi();
 
-        $identifier = trim(str_replace('Bearer ', '', $request->headers->get('Authorization')));
+        $identifier = trim(substr((string) $request->headers->get('Authorization'), strlen(self::BEARER_PREFIX)));
         return new SelfValidatingPassport(new UserBadge($identifier));
     }
 

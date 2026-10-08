@@ -26,9 +26,6 @@ options_system.site_name_help: "Uniquement des lettres, sans caractères spécia
 options_system.site_name_placeholder: 'Votre nom'
 options_system.site_name_msg_error: 'Vous devez saisir un nom pour votre site'
 options_system.site_name_msg_success: 'Le nom à bien été modifié avec succès'
-options_system.logo_site: 'Logo de votre site'
-options_system.logo_site_help: 'Permet de définir un petit logo devant le nom de votre site, laisser vide pour ne pas en avoir'
-options_system.logo_site_no_value: ''
 options_system.replace_delete_user: "Remplacer l'utilisateur supprimé par l'utilisateur fantôme John Doe"
 options_system.replace_delete_user_help: "Permet de remplacer l'utilisateur à supprimer par un utilisateur fantôme au lieu de le désactiver ou de le supprimer. cette option ne fonctionne que si l'option 'Autoriser la suppression des données' est activé"
 options_system.confirm_leave_form: 'Demander une confirmation avant de quitter une page contenant un formulaire'
@@ -97,7 +94,7 @@ mail.global.url: 'Url du site'
 mail.global.url_change_psw: 'Url changement mot de passe'
 mail.global.site_name: 'Nom du site'
 mail.admin.login: 'login administrateur'
-mail.url.time: 'délais lien'
+mail.url.time: 'Délai de validité du lien'
 options_system.mails: Emails
 options_system.mails.title: 'Gestion des emails'
 options_system.mails.description: "Paramétrage des emails envoyés depuis l'application"
@@ -204,7 +201,8 @@ options_system.time.validation.user.half.hour: 'Une demi heure'
 options_system.time.validation.user.one.hour: '1 heure'
 options_system.time.validation.user.two.hour: '2 heures'
 options_system.time.validation.user.three.hour: '3 heures'
-options_system.time.validation.user.no.limit: 'Sans limite'
+options_system.time.validation.user.twelve.hour: '12 heures'
+options_system.time.validation.user.one.day: '24 heures'
 options_system.time.validation.user.token.help: 'Passé ce délais, le token devient obsolète et la connexion ne sera plus autorisé avec celui-ci'
 options_system.comment: Commentaire
 options_system.comment.title: 'Gestion des commentaires'

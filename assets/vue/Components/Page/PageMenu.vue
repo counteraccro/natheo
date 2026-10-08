@@ -15,7 +15,7 @@ import {
   MENU_POSITION_RIGHT,
   MENU_POSITION_FOOTER,
   MENU_POSITION_LEFT,
-} from '@/ts/Page/type';
+} from '@/ts/Page/Page.type';
 
 export default defineComponent({
   name: 'PageMenu',

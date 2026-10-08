@@ -1,21 +1,33 @@
-<script>
+<script lang="ts">
 /**
  * @author Gourdon Aymeric
- * @version 1.5
+ * @version 1.6
  * Permet de générer le tableau GRID
  */
 
-import Grid from '../../Components/Grid/Grid.vue';
-import GridPaginate from '../../Components/Grid/GridPaginate.vue';
+import { defineComponent } from 'vue';
 import axios from 'axios';
-import Modal from '../../Components/Global/Modal.vue';
-import Toast from '../../Components/Global/Toast.vue';
-import { copyToClipboard } from '../../../utils/copyToClipboard';
+import { Dropdown } from 'flowbite';
+import Grid from '@/vue/Components/Grid/Grid.vue';
+import GridPaginate from '@/vue/Components/Grid/GridPaginate.vue';
+import Modal from '@/vue/Components/Global/Modal.vue';
+import Toast from '@/vue/Components/Global/Toast.vue';
 import SkeletonTable from '@/vue/Components/Skeleton/Table.vue';
-import { emitter } from '../../../utils/useEvent';
 import SqlHighLight from '@/vue/Components/Global/SqlHighlight.vue';
+import { copyToClipboard } from '@/utils/copyToClipboard';
+import type { GridRow, GridSearchMode, GridSortOrders, GridTranslate } from '@/ts/Grid/Grid.type';
+import type { GridPaginateTranslate } from '@/ts/Grid/GridPaginate.type';
+import type {
+  GenericGridActionResponse,
+  GenericGridFilter,
+  GenericGridHttpType,
+  GenericGridOrder,
+  GenericGridResponse,
+  GenericGridTranslate,
+} from '@/ts/Grid/GenericGrid.type';
+import type { Toasts } from '@/ts/Toast/Toast.type';
 
-export default {
+export default defineComponent({
   name: 'GenericGrid',
   components: {
     SqlHighLight,
@@ -26,9 +38,9 @@ export default {
     Toast,
   },
   props: {
-    url: String,
-    page: Number,
-    limit: String,
+    url: { type: String, required: true },
+    page: { type: Number, default: 1 },
+    limit: { type: [String, Number], required: true },
     activeSearchData: {
       type: Boolean,
       default: false,
@@ -40,36 +52,36 @@ export default {
   },
   data() {
     return {
-      searchQuery: '',
-      gridColumns: [],
-      gridData: [],
-      sortOrders: { Id: -1 },
-      nbElements: 0,
-      loading: true,
-      cPage: this.page,
-      cLimit: this.limit,
-      cUrl: '',
-      isAjax: '',
-      httpType: '',
-      listLimit: {},
-      translate: {},
-      translateGridPaginate: {},
-      translateGrid: {},
-      showModalGenericGrid: false,
-      msgConfirm: '',
-      searchMode: 'table',
-      searchPlaceholder: '',
-      cQuery: '',
-      showQuery: false,
-      showMoreOption: false,
-      urlSaveQuery: '',
-      filter: 'all',
-      orderField: 'id',
-      listOrderField: {},
-      order: 'DESC',
-      listOrder: { 0: 'ASC', 1: 'DESC' },
-      filterIcon: 'bi-people-fill',
-      btnSearchMode: '',
+      searchQuery: '' as string,
+      gridColumns: [] as string[],
+      gridData: [] as GridRow[],
+      sortOrders: { Id: -1 } as GridSortOrders,
+      nbElements: 0 as number,
+      loading: true as boolean,
+      cPage: this.page as number,
+      cLimit: this.limit as string | number,
+      cUrl: '' as string,
+      isAjax: false as boolean,
+      httpType: undefined as GenericGridHttpType | undefined,
+      csrfToken: undefined as string | undefined,
+      listLimit: {} as Record<string, number>,
+      translate: {} as GenericGridTranslate,
+      translateGridPaginate: {} as GridPaginateTranslate,
+      translateGrid: {} as GridTranslate,
+      showModalGenericGrid: false as boolean,
+      msgConfirm: '' as string,
+      searchMode: 'table' as GridSearchMode,
+      searchPlaceholder: '' as string,
+      cQuery: '' as string,
+      showQuery: false as boolean,
+      showMoreOption: false as boolean,
+      urlSaveQuery: '' as string,
+      filter: 'all' as GenericGridFilter,
+      orderField: 'id' as string,
+      listOrderField: {} as Record<string, string>,
+      order: 'DESC' as GenericGridOrder,
+      listOrder: { 0: 'ASC', 1: 'DESC' } as Record<number, GenericGridOrder>,
+      btnSearchMode: null as Dropdown | null,
       toasts: {
         toastSuccessGenericGrid: {
           show: false,
@@ -79,7 +91,7 @@ export default {
           show: false,
           msg: '',
         },
-      },
+      } as Toasts,
     };
   },
   mounted() {
@@ -96,39 +108,22 @@ export default {
      * @param page
      * @param limit
      */
-    loadData(page, limit) {
+    loadData(page: number, limit: string | number): void {
       this.loading = true;
 
-      let strSearch = this.getSearchParams();
-      let filter = this.getFilterParams();
-      let order = this.getOrderParams();
+      const strSearch = this.getSearchParams();
+      const filter = this.getFilterParams();
+      const order = this.getOrderParams();
 
-      let tmp = this.url.split('/');
+      const tmp = this.url.split('/');
       let url = this.url + '/' + page + '/' + limit + filter + strSearch + order;
+      // Url contenant déjà page/limit : on les remplace
       if (tmp.length > 6) {
-        url =
-          tmp[0] +
-          '/' +
-          tmp[1] +
-          '/' +
-          tmp[2] +
-          '/' +
-          tmp[3] +
-          '/' +
-          tmp[4] +
-          '/' +
-          tmp[5] +
-          '/' +
-          page +
-          '/' +
-          limit +
-          filter +
-          strSearch +
-          order;
+        url = tmp.slice(0, 6).join('/') + '/' + page + '/' + limit + filter + strSearch + order;
       }
 
       axios
-        .get(url)
+        .get<GenericGridResponse>(url)
         .then((response) => {
           this.gridColumns = response.data.column;
           this.gridData = response.data.data;
@@ -139,7 +134,7 @@ export default {
           this.translateGrid = response.data.translate.grid;
           this.cPage = page;
           this.cLimit = limit;
-          this.urlSaveQuery = response.data.urlSaveSql;
+          this.urlSaveQuery = response.data.urlSaveSql ?? '';
 
           if (this.searchPlaceholder === '') {
             this.searchPlaceholder = this.translate.placeholder;
@@ -147,7 +142,7 @@ export default {
 
           if (response.data.listOrderField !== undefined) {
             this.listOrderField = response.data.listOrderField;
-            for (var key in this.listOrderField) {
+            for (const key in this.listOrderField) {
               this.sortOrders[this.listOrderField[key]] = 1;
             }
           }
@@ -160,7 +155,7 @@ export default {
             this.cQuery = response.data.sql;
           }
         })
-        .catch((error) => {
+        .catch((error: unknown) => {
           console.error(error);
         })
         .finally(() => (this.loading = false));
@@ -168,92 +163,108 @@ export default {
 
     /**
      * Génération du paramètre filtre
-     * @return {string}
      */
-    getFilterParams() {
+    getFilterParams(): string {
       return '?filter=' + this.filter;
     },
 
     /**
      * Génération du paramètre de recherche
-     * @return {string}
      */
-    getSearchParams() {
+    getSearchParams(): string {
       if (this.searchMode !== 'table') {
-        return '&search=' + this.searchQuery;
+        return '&search=' + encodeURIComponent(this.searchQuery);
       }
       return '';
     },
 
     /**
      * Génération du paramètre de trie
-     * @returns {string}
      */
-    getOrderParams() {
+    getOrderParams(): string {
       return '&orderField=' + this.orderField + '&order=' + this.order;
     },
 
     /**
      * Rechargement de la page
      */
-    reloadData() {
+    reloadData(): void {
       this.loadData(this.page, this.cLimit);
     },
 
     /**
      * Défini l'action à faire en fonction des paramètres
      * @param url
-     * @param is_confirm
      * @param is_ajax
+     * @param is_confirm
      * @param msg_confirm
      * @param type
+     * @param csrf jeton CSRF optionnel, envoyé dans le header X-CSRF-TOKEN
      */
-    redirectAction(url, is_ajax, is_confirm, msg_confirm, type) {
+    redirectAction(
+      url: string,
+      is_ajax: boolean,
+      is_confirm?: boolean,
+      msg_confirm?: string,
+      type?: GenericGridHttpType,
+      csrf?: string
+    ): void {
       this.cUrl = url;
       this.isAjax = is_ajax;
       this.httpType = type;
+      this.csrfToken = csrf;
       this.msgConfirm = this.translate.confirmText;
       this.hideModal();
 
       if (is_confirm) {
-        this.msgConfirm = msg_confirm;
+        this.msgConfirm = msg_confirm ?? '';
         this.showModal();
-      } else {
-        if (is_ajax) {
-          this.loading = true;
-
-          if (type === undefined) {
-            type = 'post';
-            console.error('URL ' + url + " n'a aucun type défini");
-          }
-
-          axios[type](url)
-            .then((response) => {
-              if (response.data.success === true || response.data.type === 'success') {
-                if (response.data.type === 'success') {
-                  console.error(
-                    "Ancient système de retour de la réponse, à changer pour l'url " +
-                      url +
-                      ' \n ' +
-                      'Voir Controller/Admin/Content/FaqController::updateDisabled pour un exemple de la bonne pratique'
-                  );
-                }
-
-                this.toasts.toastSuccessGenericGrid.msg = response.data.msg;
-                this.toasts.toastSuccessGenericGrid.show = true;
-              } else {
-                this.toasts.toastErrorGenericGrid.msg = response.data.msg;
-                this.toasts.toastErrorGenericGrid.show = true;
-              }
-            })
-            .catch((error) => {
-              console.error(error);
-            })
-            .finally(() => this.loadData(this.cPage, this.cLimit));
-        } else {
-          window.location.href = url;
-        }
+        return;
       }
+
+      if (!is_ajax) {
+        window.location.href = url;
+        return;
+      }
+
+      this.loading = true;
+
+      if (type === undefined) {
+        type = 'post';
+        console.error('URL ' + url + " n'a aucun type défini");
+      }
+
+      const config = csrf ? { headers: { 'X-CSRF-TOKEN': csrf } } : {};
+      const request =
+        type === 'get' || type === 'delete'
+          ? axios[type]<GenericGridActionResponse>(url, config)
+          : axios[type]<GenericGridActionResponse>(url, undefined, config);
+
+      request
+        .then((response) => {
+          if (response.data.success === true || response.data.type === 'success') {
+            if (response.data.type === 'success') {
+              console.error(
+                "Ancient système de retour de la réponse, à changer pour l'url " +
+                  url +
+                  ' \n ' +
+                  'Voir Controller/Admin/Content/FaqController::updateDisabled pour un exemple de la bonne pratique'
+              );
+            }
+
+            this.showToast('toastSuccessGenericGrid', response.data.msg);
+          } else {
+            this.showToast('toastErrorGenericGrid', response.data.msg);
+          }
+        })
+        .catch((error: unknown) => {
+          const msg = axios.isAxiosError<GenericGridActionResponse>(error) ? error.response?.data?.msg : undefined;
+          if (msg) {
+            this.showToast('toastErrorGenericGrid', msg);
+          }
+          console.error(error);
+        })
+        .finally(() => this.loadData(this.cPage, this.cLimit));
     },
 
     /**
@@ -261,39 +272,45 @@ export default {
      * @param field
      * @param order
      */
-    sortAction(field, order) {
-      for (var key in this.listOrderField) {
+    sortAction(field: string, order: number): void {
+      for (const key in this.listOrderField) {
         if (this.listOrderField[key] === field) {
           this.orderField = key;
         }
-
-        this.order = 'ASC';
-        if (order === -1) {
-          this.order = 'DESC';
-        }
       }
+      this.order = order === -1 ? 'DESC' : 'ASC';
       this.loadData(this.page, this.limit);
     },
 
     /**
      * Affichage la modale
      */
-    showModal() {
+    showModal(): void {
       this.showModalGenericGrid = true;
     },
 
     /**
      * Ferme la modale
      */
-    hideModal() {
+    hideModal(): void {
       this.showModalGenericGrid = false;
+    },
+
+    /**
+     * Affiche le toast défini par nameToast avec le message msg
+     * @param nameToast
+     * @param msg
+     */
+    showToast(nameToast: string, msg: string): void {
+      this.toasts[nameToast].msg = msg;
+      this.toasts[nameToast].show = true;
     },
 
     /**
      * Ferme le toast défini par nameToast
      * @param nameToast
      */
-    closeToast(nameToast) {
+    closeToast(nameToast: string): void {
       this.toasts[nameToast].show = false;
     },
 
@@ -301,14 +318,14 @@ export default {
      * Permet de changer de mode de recherche
      * @param mode
      */
-    changeSearchMode(mode) {
+    changeSearchMode(mode: GridSearchMode): boolean {
       this.searchMode = mode;
       if (this.searchMode === 'table') {
         this.searchPlaceholder = this.translate.placeholder;
       } else {
         this.searchPlaceholder = this.translate.placeholderBddSearch;
       }
-      this.btnSearchMode.hide();
+      this.btnSearchMode?.hide();
 
       return false;
     },
@@ -317,8 +334,8 @@ export default {
      * Affiche la requete SQL
      * @param bool
      */
-    showQueryRun(bool) {
-      this.btnSearchMode.hide();
+    showQueryRun(bool: boolean): void {
+      this.btnSearchMode?.hide();
       this.showQuery = bool;
     },
 
@@ -326,41 +343,37 @@ export default {
      * Affiche le bloc plus d'options
      * @param bool
      */
-    showMoreOptionBloc(bool) {
-      this.btnSearchMode.hide();
+    showMoreOptionBloc(bool: boolean): void {
+      this.btnSearchMode?.hide();
       this.showMoreOption = bool;
     },
 
     /**
      * Fait un copier coller
      */
-    async copyQueryRun() {
+    async copyQueryRun(): Promise<void> {
       try {
         await copyToClipboard(this.cQuery);
-        this.toasts.toastSuccessGenericGrid.msg = this.translate.copySuccess;
-        this.toasts.toastSuccessGenericGrid.show = true;
-      } catch (error) {
-        this.toasts.toastErrorGenericGrid.msg = this.translate.copyError;
-        this.toasts.toastErrorGenericGrid.show = true;
+        this.showToast('toastSuccessGenericGrid', this.translate.copySuccess);
+      } catch {
+        this.showToast('toastErrorGenericGrid', this.translate.copyError);
       }
     },
 
-    saveQueryRun() {
+    saveQueryRun(): void {
       this.loading = true;
       axios
-        .post(this.urlSaveQuery, {
+        .post<GenericGridActionResponse>(this.urlSaveQuery, {
           query: this.cQuery,
         })
         .then((response) => {
           if (response.data.success === true) {
-            this.toasts.toastSuccessGenericGrid.msg = response.data.msg;
-            this.toasts.toastSuccessGenericGrid.show = true;
+            this.showToast('toastSuccessGenericGrid', response.data.msg);
           } else {
-            this.toasts.toastErrorGenericGrid.msg = response.data.msg;
-            this.toasts.toastErrorGenericGrid.show = true;
+            this.showToast('toastErrorGenericGrid', response.data.msg);
           }
         })
-        .catch((error) => {
+        .catch((error: unknown) => {
           console.error(error);
         })
         .finally(() => {
@@ -373,9 +386,9 @@ export default {
      * Changement du filtre
      * @param filterChange
      */
-    changeFilter(filterChange) {
+    changeFilter(filterChange: GenericGridFilter): void {
       this.filter = filterChange;
-      this.btnSearchMode.hide();
+      this.btnSearchMode?.hide();
 
       this.loadData(1, this.limit);
     },
@@ -383,11 +396,11 @@ export default {
     /**
      * Change l'ordre et le trie
      */
-    changeOrder() {
+    changeOrder(): void {
       this.loadData(1, this.limit);
     },
   },
-};
+});
 </script>
 
 <template>
@@ -416,7 +429,7 @@ export default {
               <input
                 type="search"
                 class="form-input input-icon-left no-control"
-                :placeholder="this.searchPlaceholder"
+                :placeholder="searchPlaceholder"
                 v-model="searchQuery"
               />
             </div>
@@ -424,10 +437,10 @@ export default {
 
           <div class="flex gap-2">
             <button
-              :disabled="!this.activeSearchData"
-              v-if="this.searchMode === 'bdd'"
+              :disabled="!activeSearchData"
+              v-if="searchMode === 'bdd'"
               type="button"
-              @click="this.loadData(this.cPage, this.cLimit)"
+              @click="loadData(cPage, cLimit)"
               class="btn btn-outline-primary btn-md"
             >
               <svg
@@ -447,7 +460,7 @@ export default {
                 />
               </svg>
 
-              {{ this.translate.btnSearch }}
+              {{ translate.btnSearch }}
             </button>
 
             <button
@@ -543,14 +556,14 @@ export default {
                     d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"
                   />
                 </svg>
-                <div class="font-medium">{{ this.translate.titleSearch }}</div>
+                <div class="font-medium">{{ translate.titleSearch }}</div>
               </div>
               <ul class="py-2 text-sm" aria-labelledby="dropdownDefaultButton">
                 <li>
                   <a
                     href="#"
                     class="no-control px-4 py-2 hover:bg-gray-100 flex item-center"
-                    @click="this.changeSearchMode('table')"
+                    @click="changeSearchMode('table')"
                   >
                     <svg
                       class="w-5 h-5 mr-3 text-[var(--primary)]"
@@ -568,14 +581,14 @@ export default {
                       />
                     </svg>
 
-                    {{ this.translate.textTableSearch }}</a
+                    {{ translate.textTableSearch }}</a
                   >
                 </li>
                 <li>
                   <a
                     href="#"
                     class="no-control flex items-center px-4 py-2 hover:bg-gray-100"
-                    @click="this.changeSearchMode('bdd')"
+                    @click="changeSearchMode('bdd')"
                   >
                     <svg
                       class="w-5 h-5 mr-3 text-[var(--primary)]"
@@ -595,7 +608,7 @@ export default {
                       />
                     </svg>
 
-                    {{ this.translate.textBddSearch }}</a
+                    {{ translate.textBddSearch }}</a
                   >
                 </li>
               </ul>
@@ -603,7 +616,7 @@ export default {
                 <a
                   href="#"
                   class="no-control flex items-center px-4 py-2 text-sm hover:bg-gray-100"
-                  @click="this.showQuery ? this.showQueryRun(false) : this.showQueryRun(true)"
+                  @click="showQuery ? showQueryRun(false) : showQueryRun(true)"
                 >
                   <svg
                     class="w-5 h-5 mr-3 text-[var(--primary)]"
@@ -621,16 +634,16 @@ export default {
                     />
                   </svg>
 
-                  <span class="no-control" v-if="!this.showQuery">{{ this.translate.textShowQuery }}</span>
-                  <span class="no-control" v-else>{{ this.translate.textHideQuery }}</span>
+                  <span class="no-control" v-if="!showQuery">{{ translate.textShowQuery }}</span>
+                  <span class="no-control" v-else>{{ translate.textHideQuery }}</span>
                 </a>
               </div>
-              <ul v-if="this.showFilter" class="py-2 text-sm">
+              <ul v-if="showFilter" class="py-2 text-sm">
                 <li>
                   <a
                     class="no-control flex items-center px-4 py-2 text-sm hover:bg-gray-100"
                     href="#"
-                    @click="this.changeFilter('me')"
+                    @click="changeFilter('me')"
                   >
                     <svg
                       class="w-5 h-5 mr-3 text-[var(--primary)]"
@@ -647,14 +660,14 @@ export default {
                         d="M7 17v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
                       />
                     </svg>
-                    {{ this.translate.filterOnlyMe }}</a
+                    {{ translate.filterOnlyMe }}</a
                   >
                 </li>
                 <li>
                   <a
                     class="no-control flex items-center px-4 py-2 text-sm hover:bg-gray-100"
                     href="#"
-                    @click="this.changeFilter('all')"
+                    @click="changeFilter('all')"
                   >
                     <svg
                       class="w-5 h-5 mr-3 text-[var(--primary)]"
@@ -673,7 +686,7 @@ export default {
                       />
                     </svg>
 
-                    {{ this.translate.filterAll }}</a
+                    {{ translate.filterAll }}</a
                   >
                 </li>
               </ul>
@@ -681,7 +694,7 @@ export default {
                 <a
                   href="#"
                   class="no-control flex items-center px-4 py-2 text-sm hover:bg-gray-100"
-                  @click="this.showMoreOption ? this.showMoreOptionBloc(false) : this.showMoreOptionBloc(true)"
+                  @click="showMoreOption ? showMoreOptionBloc(false) : showMoreOptionBloc(true)"
                 >
                   <svg
                     class="w-5 h-5 mr-3 text-[var(--primary)]"
@@ -705,8 +718,8 @@ export default {
                       d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
                     />
                   </svg>
-                  <span class="no-control" v-if="!this.showMoreOption">{{ this.translate.textShowTrieOption }}</span>
-                  <span class="no-control" v-else>{{ this.translate.textHideTrieOption }}</span>
+                  <span class="no-control" v-if="!showMoreOption">{{ translate.textShowTrieOption }}</span>
+                  <span class="no-control" v-else>{{ translate.textHideTrieOption }}</span>
                 </a>
               </div>
             </div>
@@ -714,17 +727,17 @@ export default {
         </div>
 
         <SqlHighLight
-          v-if="this.showQuery"
-          :sql="this.cQuery"
-          :label="this.translate.queryTitle"
-          @copy-sql="this.copyQueryRun"
-          @hide-sql="this.showQueryRun(false)"
-          @save-sql="this.saveQueryRun"
+          v-if="showQuery"
+          :sql="cQuery"
+          :label="translate.queryTitle"
+          @copy-sql="copyQueryRun"
+          @hide-sql="showQueryRun(false)"
+          @save-sql="saveQueryRun"
         >
         </SqlHighLight>
 
         <div
-          v-if="this.showMoreOption"
+          v-if="showMoreOption"
           class="bg-[var(--bg-card)] rounded-xl shadow-sm border border-[var(--border-color)] mt-3"
         >
           <div class="flex items-center justify-between px-4 py-3 bg-[var(--bg-main)] rounded-xl">
@@ -753,10 +766,10 @@ export default {
                   d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
                 />
               </svg>
-              {{ this.translate.titleTrieOption }}
+              {{ translate.titleTrieOption }}
             </span>
             <div>
-              <button @click="this.showMoreOptionBloc(false)" class="btn-icon btn btn-ghost-primary">
+              <button @click="showMoreOptionBloc(false)" class="btn-icon btn btn-ghost-primary">
                 <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     stroke-linecap="round"
@@ -770,25 +783,25 @@ export default {
           </div>
           <div class="p-5">
             <div>
-              <h3 class="text-[var(--primary)] font-bold">{{ this.translate.titleTrieOptionSubMenu }}</h3>
+              <h3 class="text-[var(--primary)] font-bold">{{ translate.titleTrieOptionSubMenu }}</h3>
               <div class="flex justify-items-center">
                 <div class="form-group me-3">
-                  <label class="form-label">{{ this.translate.trieOptionListeField }}</label>
-                  <select class="form-input" v-model="this.orderField">
-                    <option v-for="(label, field) in this.listOrderField" :value="field">{{ label }}</option>
+                  <label class="form-label">{{ translate.trieOptionListeField }}</label>
+                  <select class="form-input" v-model="orderField">
+                    <option v-for="(label, field) in listOrderField" :value="field">{{ label }}</option>
                   </select>
                 </div>
 
                 <div class="form-group me-3">
-                  <label class="form-label">{{ this.translate.trieOptionListeOrder }}</label>
-                  <select class="form-input" v-model="this.order">
-                    <option v-for="order in this.listOrder" :value="order">{{ order }}</option>
+                  <label class="form-label">{{ translate.trieOptionListeOrder }}</label>
+                  <select class="form-input" v-model="order">
+                    <option v-for="order in listOrder" :value="order">{{ order }}</option>
                   </select>
                 </div>
 
                 <div class="mt-[2rem]">
-                  <button type="button" class="btn btn-primary btn-sm" @click="this.changeOrder">
-                    {{ this.translate.trieOptionBtn }}
+                  <button type="button" class="btn btn-primary btn-sm" @click="changeOrder">
+                    {{ translate.trieOptionBtn }}
                   </button>
                 </div>
               </div>
@@ -798,7 +811,7 @@ export default {
       </form>
     </div>
 
-    <div v-if="this.loading">
+    <div v-if="loading">
       <SkeletonTable :rows="5" :columns="5" :full="true" />
     </div>
     <div v-else>
@@ -808,7 +821,7 @@ export default {
         :filter-key="searchQuery"
         :sortOrders="sortOrders"
         :translate="translateGrid"
-        :search-mode="this.searchMode"
+        :search-mode="searchMode"
         @redirect-action="redirectAction"
         @sort-action="sortAction"
       >
@@ -828,8 +841,8 @@ export default {
 
   <modal
     :id="'generic-grid-modale'"
-    :show="this.showModalGenericGrid"
-    @close-modal="this.hideModal"
+    :show="showModalGenericGrid"
+    @close-modal="hideModal"
     :option-show-close-btn="false"
   >
     <template #icon>
@@ -851,7 +864,7 @@ export default {
       <button
         type="button"
         class="btn btn-primary btn-sm me-2"
-        @click="redirectAction(this.cUrl, this.isAjax, false, '', this.httpType)"
+        @click="redirectAction(cUrl, isAjax, false, '', httpType, csrfToken)"
       >
         <svg
           class="icon"
@@ -872,7 +885,7 @@ export default {
         </svg>
         {{ translate.confirmBtnOK }}
       </button>
-      <button type="button" class="btn btn-outline-dark btn-sm" @click="this.hideModal()">
+      <button type="button" class="btn btn-outline-dark btn-sm" @click="hideModal()">
         <svg
           class="icon"
           aria-hidden="true"
@@ -900,22 +913,22 @@ export default {
     <toast
       :id="'toastSuccessGenericGrid'"
       :type="'success'"
-      :show="this.toasts.toastSuccessGenericGrid.show"
-      @close-toast="this.closeToast"
+      :show="toasts.toastSuccessGenericGrid.show"
+      @close-toast="closeToast"
     >
       <template #body>
-        <div v-html="this.toasts.toastSuccessGenericGrid.msg"></div>
+        <div v-html="toasts.toastSuccessGenericGrid.msg"></div>
       </template>
     </toast>
 
     <toast
       :id="'toastErrorGenericGrid'"
       :type="'danger'"
-      :show="this.toasts.toastErrorGenericGrid.show"
-      @close-toast="this.closeToast"
+      :show="toasts.toastErrorGenericGrid.show"
+      @close-toast="closeToast"
     >
       <template #body>
-        <div v-html="this.toasts.toastErrorGenericGrid.msg"></div>
+        <div v-html="toasts.toastErrorGenericGrid.msg"></div>
       </template>
     </toast>
   </div>

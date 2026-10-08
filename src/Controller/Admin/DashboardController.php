@@ -15,7 +15,7 @@ use App\Enum\Admin\Global\Breadcrumb;
 use App\Service\Admin\DashboardService;
 use App\Service\Admin\StatisticsService;
 use App\Service\Admin\System\User\UserDataService;
-use App\Utils\System\User\UserDataKey;
+use App\Enum\Admin\System\User\UserDataKey;
 use App\Utils\Translate\Dashboard\DashboardTranslate;
 use Psr\Cache\InvalidArgumentException;
 use Psr\Container\ContainerExceptionInterface;
@@ -58,14 +58,21 @@ class DashboardController extends AppAdminController
                 ],
                 'dashboard_last_pages' => [
                     'load_block_dashboard' => $this->generateUrl('admin_dashboard_load_block', [
-                        'id' => 'todo-a-faire',
+                        'id' => DashboardBlock::LAST_PAGE_CREATE->value,
                     ]),
+                    'url_pages' => $this->generateUrl('admin_page_index'),
+                ],
+                'dashboard_page_most_viewed' => [
+                    'load_block_dashboard' => $this->generateUrl('admin_dashboard_load_block', [
+                        'id' => DashboardBlock::PAGES_MOST_VIEWED->value,
+                    ]),
+                    'url_pages' => $this->generateUrl('admin_page_index'),
                 ],
             ],
             'datas' => [
                 'dashboard_help_first_connexion' => [
                     'help_first_connexion' => $userDataService->getHelpFirstConnexion($this->getUser()),
-                    'user_data_key_first_connexion' => UserDataKey::KEY_HELP_FIRST_CONNEXION,
+                    'user_data_key_first_connexion' => UserDataKey::HELP_FIRST_CONNEXION->value,
                 ],
             ],
             'roles' => [
@@ -102,6 +109,8 @@ class DashboardController extends AppAdminController
         $return = match ($id) {
             DashboardBlock::HELP_FIRST_CONNEXION->value => $dashboardService->getBlockHelpConfig(),
             DashboardBlock::LAST_COMMENT->value => $dashboardService->getBlockLastComment(),
+            DashboardBlock::LAST_PAGE_CREATE->value => $dashboardService->getBlockLastPageCreate(),
+            DashboardBlock::PAGES_MOST_VIEWED->value => $dashboardService->getBlockPageMostViewed(),
             default => [
                 'success' => false,
                 'body' => null,

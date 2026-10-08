@@ -12,7 +12,8 @@ namespace Service\Api\System\User;
 use App\Entity\Admin\System\User;
 use App\Service\Api\System\User\ApiUserService;
 use App\Tests\AppWebTestCase;
-use App\Utils\System\User\UserDataKey;
+use App\Enum\Admin\System\User\UserDataKey;
+use App\Utils\System\ApiToken\TokenHasher;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\Container;
@@ -38,28 +39,47 @@ class ApiUserServiceTest extends AppWebTestCase
      */
     public function testGetUserByUserToken(): void
     {
-        $user = $this->createUserContributeur();
-        $userData = $this->createUserData($user, [
-            'key' => UserDataKey::KEY_TOKEN_CONNEXION,
-            'value' => 'azerty-token',
-        ]);
-        $this->createUserData($user, [
-            'key' => UserDataKey::TIME_VALIDATE_TOKEN,
-            'value' => strval((new \DateTime())->add(new \DateInterval('P10D'))->getTimestamp()),
-        ]);
-        $user = $this->apiUserService->getUserByUserToken($userData->getValue());
-        $this->assertInstanceOf(User::class, $user);
+        $user = $this->createUserContributeur(['disabled' => false, 'anonymous' => false]);
+        $this->createUserTokenData($user, 'azerty-token', 'P10D', false);
+        $this->assertInstanceOf(User::class, $this->apiUserService->getUserByUserToken('azerty-token'));
+        // Le hash stocké ne doit pas permettre de s'authentifier
+        $this->assertNull($this->apiUserService->getUserByUserToken(TokenHasher::hash('azerty-token')));
 
-        $user = $this->createUserContributeur();
-        $userData = $this->createUserData($user, [
-            'key' => UserDataKey::KEY_TOKEN_CONNEXION,
-            'value' => 'azerty-token-2',
-        ]);
+        $user = $this->createUserContributeur(['disabled' => false, 'anonymous' => false]);
+        $this->createUserTokenData($user, 'azerty-token-2', 'P10D', true);
+        $this->assertNull($this->apiUserService->getUserByUserToken('azerty-token-2'));
+
+        $user = $this->createUserContributeur(['disabled' => true, 'anonymous' => false]);
+        $this->createUserTokenData($user, 'azerty-token-3', 'P10D', false);
+        $this->assertNull($this->apiUserService->getUserByUserToken('azerty-token-3'));
+
+        $user = $this->createUserContributeur(['disabled' => false, 'anonymous' => false]);
         $this->createUserData($user, [
-            'key' => UserDataKey::TIME_VALIDATE_TOKEN,
-            'value' => strval((new \DateTime())->sub(new \DateInterval('P10D'))->getTimestamp()),
+            'key' => UserDataKey::TOKEN_CONNEXION->value,
+            'value' => TokenHasher::hash('azerty-token-4'),
         ]);
-        $user = $this->apiUserService->getUserByUserToken($userData->getValue());
-        $this->assertNull($user);
+        $this->assertNull($this->apiUserService->getUserByUserToken('azerty-token-4'));
+    }
+
+    /**
+     * Crée le token utilisateur (hashé) et sa date de validité
+     * @param User $user
+     * @param string $token
+     * @param string $interval
+     * @param bool $expired
+     * @return void
+     */
+    private function createUserTokenData(User $user, string $token, string $interval, bool $expired): void
+    {
+        $this->createUserData($user, [
+            'key' => UserDataKey::TOKEN_CONNEXION->value,
+            'value' => TokenHasher::hash($token),
+        ]);
+        $date = new \DateTime();
+        $expired ? $date->sub(new \DateInterval($interval)) : $date->add(new \DateInterval($interval));
+        $this->createUserData($user, [
+            'key' => UserDataKey::TIME_VALIDATE_TOKEN->value,
+            'value' => strval($date->getTimestamp()),
+        ]);
     }
 }

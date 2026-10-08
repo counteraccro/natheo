@@ -1,72 +1,87 @@
-<script>
+<script lang="ts">
+/**
+ * @author Gourdon Aymeric
+ * @version 2.0
+ * Formulaire de création / édition d'un token API
+ */
+
+import { defineComponent, type PropType } from 'vue';
 import axios from 'axios';
-import Toast from '../../../Components/Global/Toast.vue';
+import Toast from '@/vue/Components/Global/Toast.vue';
+import Modal from '@/vue/Components/Global/Modal.vue';
 import { copyToClipboard } from '@/utils/copyToClipboard';
-import Modal from '../../../Components/Global/Modal.vue';
 import { emitter } from '@/utils/useEvent';
 import SkeletonForm from '@/vue/Components/Skeleton/Form.vue';
+import AlertWarning from '@/vue/Components/Alert/Warning.vue';
+import type { Toasts } from '@/ts/Toast/Toast.type';
+import type {
+  ApiToken,
+  ApiTokenAjaxResponse,
+  ApiTokenCsrfTokens,
+  ApiTokenDatas,
+  ApiTokenSaveResponse,
+  ApiTokenTranslate,
+  ApiTokenUrls,
+  ApiTokenValidation,
+} from '@/ts/ApiToken/ApiToken.type';
 
-export default {
+export default defineComponent({
   name: 'ApiToken',
   components: {
+    AlertWarning,
     SkeletonForm,
     Modal,
     Toast,
   },
   props: {
-    translate: Object,
-    urls: Object,
-    pApiToken: Object,
-    datas: Object,
+    translate: { type: Object as PropType<ApiTokenTranslate>, required: true },
+    urls: { type: Object as PropType<ApiTokenUrls>, required: true },
+    pApiToken: { type: Object as PropType<ApiToken>, required: true },
+    datas: { type: Object as PropType<ApiTokenDatas>, required: true },
+    csrfTokens: { type: Object as PropType<ApiTokenCsrfTokens>, required: true },
   },
   data() {
     return {
-      loading: false,
-      apiToken: this.pApiToken,
-      showModalApiTokenConfirm: false,
-      showModalApiTokenDelete: false,
-      canSave: true,
+      loading: false as boolean,
+      apiToken: this.pApiToken as ApiToken,
+      // Token en clair, uniquement après création ou régénération
+      plainToken: '' as string,
+      showModalApiTokenConfirm: false as boolean,
+      showModalApiTokenDelete: false as boolean,
+      showModalApiTokenRegenerate: false as boolean,
+      canSave: true as boolean,
       validation: {
         name: {
           isValide: true,
           msg: '',
         },
-        token: {
-          isValide: true,
-          msg: '',
-        },
-      },
+      } as ApiTokenValidation,
       toasts: {
-        toastSuccess: {
-          show: false,
-          msg: '',
-        },
-        toastError: {
-          show: false,
-          msg: '',
-        },
-      },
+        toastSuccess: { show: false, msg: '' },
+        toastError: { show: false, msg: '' },
+      } as Toasts,
     };
   },
-  mounted() {},
   methods: {
     /**
-     * Génère un token
+     * Régénère le token, l'ancien est immédiatement invalidé
      */
-    generateToken() {
+    regenerateToken(): void {
+      this.showModalApiTokenRegenerate = false;
       this.loading = true;
       axios
-        .get(this.urls.generate_token)
-        .then((response) => {
-          this.apiToken.token = response.data.token;
-          this.toasts.toastSuccess.show = true;
-          this.toasts.toastSuccess.msg = this.translate.generate_token_success;
-          this.validation.token.isValide = true;
-          this.validation.token.msg = '';
-          this.isAllValidate();
+        .put<ApiTokenSaveResponse>(this.urls.regenerate_token, undefined, {
+          headers: { 'X-CSRF-TOKEN': this.csrfTokens.regenerate },
         })
-        .catch((error) => {
+        .then((response) => {
+          this.showResponseToast(response.data);
+          if (response.data.success) {
+            this.plainToken = response.data.token;
+          }
+        })
+        .catch((error: unknown) => {
           console.error(error);
+          this.showErrorFromResponse(error);
         })
         .finally(() => (this.loading = false));
     },
@@ -74,8 +89,8 @@ export default {
     /**
      * Permet de copier coller le token
      */
-    copyToken() {
-      copyToClipboard(this.apiToken.token).then(() => {
+    copyToken(): void {
+      copyToClipboard(this.plainToken).then(() => {
         this.toasts.toastSuccess.show = true;
         this.toasts.toastSuccess.msg = this.translate.token_copy_success;
       });
@@ -84,50 +99,41 @@ export default {
     /**
      * Sauvegarde du token
      * @param isConfirm
-     * @return {boolean}
      */
-    saveToken(isConfirm) {
+    saveToken(isConfirm: boolean): void {
       if (!isConfirm) {
         this.showModalApiTokenConfirm = true;
-        return false;
+        return;
       }
 
       this.showModalApiTokenConfirm = false;
       this.verifField('name', this.apiToken.name);
-      this.verifField('token', this.apiToken.token);
-
-      this.isAllValidate();
 
       if (!this.canSave) {
-        return false;
+        return;
       }
 
       this.loading = true;
       axios
-        .post(this.urls.save_api_token, {
-          apiToken: this.apiToken,
-        })
+        .post<ApiTokenSaveResponse>(
+          this.urls.save_api_token,
+          {
+            apiToken: this.apiToken,
+          },
+          { headers: { 'X-CSRF-TOKEN': this.csrfTokens.save } }
+        )
         .then((response) => {
-          if (response.data.success) {
-            this.toasts.toastSuccess.show = true;
-            this.toasts.toastSuccess.msg = response.data.msg;
-
-            if (response.data.redirect !== '') {
-              setTimeout(() => {
-                window.location.replace(response.data.redirect);
-              }, 1500);
-            } else {
-              this.loading = false;
-            }
-          } else {
-            this.toasts.toastError.show = true;
-            this.toasts.toastError.msg = response.data.msg;
+          this.showResponseToast(response.data);
+          if (response.data.success && response.data.token !== '') {
+            this.plainToken = response.data.token;
           }
         })
-        .catch((error) => {
+        .catch((error: unknown) => {
           console.error(error);
+          this.showErrorFromResponse(error);
         })
         .finally(() => {
+          this.loading = false;
           emitter.emit('reset-check-confirm');
         });
     },
@@ -135,29 +141,47 @@ export default {
     /**
      * Supprime le token
      */
-    deleteToken() {
+    deleteToken(): void {
       this.loading = true;
       this.showModalApiTokenDelete = false;
 
       axios
-        .delete(this.urls.delete_api_token)
+        .delete<ApiTokenAjaxResponse>(this.urls.delete_api_token, {
+          headers: { 'X-CSRF-TOKEN': this.csrfTokens.delete },
+        })
         .then((response) => {
-          if (response.data.success === true) {
-            this.toasts.toastSuccess.msg = response.data.msg;
-            this.toasts.toastSuccess.show = true;
-          } else {
-            this.toasts.toastError.msg = response.data.msg;
-            this.toasts.toastError.show = true;
+          this.showResponseToast(response.data);
+          if (response.data.success) {
+            setTimeout(() => {
+              window.location.href = this.urls.index_api_token;
+            }, 1500);
           }
         })
-        .catch((error) => {
+        .catch((error: unknown) => {
           console.error(error);
+          this.showErrorFromResponse(error);
         })
-        .finally(() => {
-          setTimeout(() => {
-            window.location = this.urls.index_api_token;
-          }, 1500);
-        });
+        .finally(() => (this.loading = false));
+    },
+
+    /**
+     * Affiche le toast de succès ou d'erreur en fonction de la réponse ajax
+     * @param data
+     */
+    showResponseToast(data: ApiTokenAjaxResponse): void {
+      const toast = data.success ? this.toasts.toastSuccess : this.toasts.toastError;
+      toast.msg = data.msg;
+      toast.show = true;
+    },
+
+    /**
+     * Affiche le message d'erreur d'une réponse HTTP en erreur (CSRF invalide, token introuvable...)
+     * @param error
+     */
+    showErrorFromResponse(error: unknown): void {
+      if (axios.isAxiosError<ApiTokenAjaxResponse>(error) && error.response?.data?.msg) {
+        this.showResponseToast(error.response.data);
+      }
     },
 
     /**
@@ -165,13 +189,13 @@ export default {
      * @param name
      * @param value
      */
-    verifField(name, value) {
+    verifField(name: keyof ApiTokenValidation, value: string | null | undefined): void {
       let isValide = true;
       let msg = '';
 
-      if (value === '' || value === null) {
+      if (value === '' || value === null || value === undefined) {
         isValide = false;
-        msg = this.translate[name + '_error'];
+        msg = this.translate[`${name}_error`];
       }
       this.validation[name].isValide = isValide;
       this.validation[name].msg = msg;
@@ -182,37 +206,33 @@ export default {
     /**
      * Vérifie si on peut sauvegarder un token
      */
-    isAllValidate() {
-      this.canSave = true;
-      for (let key in this.validation) {
-        if (!this.validation[key].isValide) {
-          this.canSave = false;
-        }
-      }
+    isAllValidate(): void {
+      this.canSave = Object.values(this.validation).every((field) => field.isValide);
     },
 
     /**
      * Ferme le toast défini par nameToast
      * @param nameToast
      */
-    closeToast(nameToast) {
+    closeToast(nameToast: string): void {
       this.toasts[nameToast].show = false;
     },
 
     /**
      * Ferme la modale
      */
-    hideModal() {
+    hideModal(): void {
       this.showModalApiTokenConfirm = false;
       this.showModalApiTokenDelete = false;
+      this.showModalApiTokenRegenerate = false;
     },
   },
-};
+});
 </script>
 
 <template>
   <div class="card mb-4">
-    <div v-if="this.loading">
+    <div v-if="loading">
       <skeleton-form />
     </div>
     <div class="card-header">
@@ -239,111 +259,108 @@ export default {
               d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"
             />
           </svg>
-          <span v-if="this.apiToken.id === null">
-            {{ this.translate.title_add }}
+          <span v-if="apiToken.id === null">
+            {{ translate.title_add }}
           </span>
           <span v-else>
-            {{ this.translate.title_edit }}
+            {{ translate.title_edit }}
           </span>
         </div>
         <p class="card-subtitle">
-          <span v-if="this.apiToken.id === null">
-            {{ this.translate.description_add }}
+          <span v-if="apiToken.id === null">
+            {{ translate.description_add }}
           </span>
           <span v-else>
-            {{ this.translate.description_edit }}
+            {{ translate.description_edit }}
           </span>
         </p>
       </div>
     </div>
     <div class="p-5">
       <div class="form-group">
-        <label for="api-token-name" class="form-label required">{{ this.translate.title_label }}</label>
+        <label for="api-token-name" class="form-label required">{{ translate.title_label }}</label>
         <input
           type="text"
           class="form-input"
-          :class="this.validation.name.isValide ? '' : 'is-invalid'"
-          :placeholder="this.translate.title_placeholder"
+          :class="validation.name.isValide ? '' : 'is-invalid'"
+          :placeholder="translate.title_placeholder"
           id="api-token-name"
-          v-model="this.apiToken.name"
-          @change="this.verifField('name', this.apiToken.name)"
+          v-model="apiToken.name"
+          @change="verifField('name', apiToken.name)"
         />
-        <div class="form-text text-error">{{ this.validation.name.msg }}</div>
-        <div class="form-text">{{ this.translate.title_help }}</div>
+        <div class="form-text text-error">{{ validation.name.msg }}</div>
+        <div class="form-text">{{ translate.title_help }}</div>
       </div>
 
       <div class="form-group">
-        <label for="api-token-comment" class="form-label">{{ this.translate.comment_label }}</label>
+        <label for="api-token-comment" class="form-label">{{ translate.comment_label }}</label>
         <textarea
           type="text"
           class="form-input"
-          :placeholder="this.translate.comment_placeholder"
+          :placeholder="translate.comment_placeholder"
           id="api-token-comment"
-          v-model="this.apiToken.comment"
+          v-model="apiToken.comment"
         ></textarea>
-        <div class="form-text">{{ this.translate.comment_help }}</div>
+        <div class="form-text">{{ translate.comment_help }}</div>
       </div>
 
-      <label for="token" class="form-label">{{ this.translate.token_label }}</label>
-      <div class="input-button-group">
-        <input
-          type="text"
-          class="form-input"
-          id="token"
-          :class="this.validation.token.isValide ? '' : 'is-invalid'"
-          v-model="this.apiToken.token"
-          disabled
-        />
-        <button class="btn btn-primary btn-sm" @click="this.generateToken()">
+      <label for="token" class="form-label">{{ translate.token_label }}</label>
+      <div v-if="plainToken !== ''">
+        <div class="input-button-group">
+          <input type="text" class="form-input" id="token" :value="plainToken" readonly />
+          <button class="btn btn-dark btn-sm" type="button" @click="copyToken()">
+            <svg
+              class="icon"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 8v3a1 1 0 0 1-1 1H5m11 4h2a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1h-7a1 1 0 0 0-1 1v1m4 3v10a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-7.13a1 1 0 0 1 .24-.65L7.7 8.35A1 1 0 0 1 8.46 8H13a1 1 0 0 1 1 1Z"
+              />
+            </svg>
+            {{ translate.btn_copy_past }}
+          </button>
+        </div>
+        <alert-warning type="alert-warning-light" :text="translate.token_once_warning" class="mt-3" />
+      </div>
+      <div v-else-if="apiToken.id !== null">
+        <div class="form-text">{{ translate.token_hidden }}</div>
+        <button class="btn btn-primary btn-sm mt-2" type="button" @click="showModalApiTokenRegenerate = true">
           <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
               stroke-width="2"
-              d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-            ></path>
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
             ></path>
           </svg>
-          {{ this.translate.btn_new_token }}
-        </button>
-        <button v-if="this.apiToken.id !== null" class="btn btn-dark btn-sm" type="button" @click="this.copyToken()">
-          <svg
-            class="icon"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke="currentColor"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M9 8v3a1 1 0 0 1-1 1H5m11 4h2a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1h-7a1 1 0 0 0-1 1v1m4 3v10a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-7.13a1 1 0 0 1 .24-.65L7.7 8.35A1 1 0 0 1 8.46 8H13a1 1 0 0 1 1 1Z"
-            />
-          </svg>
-
-          {{ this.translate.btn_copy_past }}
+          {{ translate.btn_regenerate_token }}
         </button>
       </div>
-      <div class="form-text text-error">{{ this.validation.token.msg }}</div>
-      <div class="form-text">
-        <span v-if="this.apiToken.id !== null">
-          {{ this.translate.input_token_help }}
-        </span>
-        <span v-else> {{ this.translate.input_token_help_add }} </span>
+      <div v-else class="form-text">{{ translate.input_token_help_add }}</div>
+
+      <div class="form-group mt-3">
+        <label for="api-token-expires-at" class="form-label">{{ translate.expires_at_label }}</label>
+        <input type="date" class="form-input" id="api-token-expires-at" v-model="apiToken.expiresAt" />
+        <div class="form-text">{{ translate.expires_at_help }}</div>
+      </div>
+
+      <div v-if="apiToken.id !== null" class="form-group">
+        <span class="form-label">{{ translate.last_used_at_label }}</span>
+        <div class="form-text">{{ apiToken.lastUsedAt ?? translate.last_used_at_never }}</div>
       </div>
 
       <div class="form-group mt-3">
-        <label for="roles" class="form-label">{{ this.translate.select_label_role }}</label>
-        <select class="form-input" id="roles" v-model="this.apiToken.roles[0]">
-          <option v-for="(role, key) in this.datas.roles" :value="key">{{ role }}</option>
+        <label for="roles" class="form-label">{{ translate.select_label_role }}</label>
+        <select class="form-input" id="roles" v-model="apiToken.roles[0]">
+          <option v-for="(role, key) in datas.roles" :value="key">{{ role }}</option>
         </select>
       </div>
 
@@ -357,11 +374,11 @@ export default {
         </svg>
         <div class="alert-content">
           <div class="alert-message">
-            <div>{{ this.translate.help_role }}</div>
+            <div>{{ translate.help_role }}</div>
             <ul class="list-disc list-inside mt-1">
-              <li>{{ this.translate.help_role_read }}</li>
-              <li>{{ this.translate.help_role_write }}</li>
-              <li>{{ this.translate.help_role_admin }}</li>
+              <li>{{ translate.help_role_read }}</li>
+              <li>{{ translate.help_role_write }}</li>
+              <li>{{ translate.help_role_admin }}</li>
             </ul>
           </div>
         </div>
@@ -369,10 +386,10 @@ export default {
 
       <div class="flex flex-wrap gap-3 pt-4 mt-5 flex-row-reverse">
         <button
-          v-if="this.apiToken.id !== null"
+          v-if="apiToken.id !== null"
           type="button"
           class="btn btn-sm btn-danger"
-          @click="this.showModalApiTokenDelete = true"
+          @click="showModalApiTokenDelete = true"
         >
           <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
@@ -382,7 +399,7 @@ export default {
               d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
             ></path>
           </svg>
-          {{ this.translate.btn_delete_token }}
+          {{ translate.btn_delete_token }}
         </button>
         <button type="button" class="btn btn-outline-dark btn-sm" onclick="window.history.back()">
           <svg
@@ -403,14 +420,18 @@ export default {
             />
           </svg>
 
-          {{ this.translate.btn_cancel_edit_token }}
+          {{ translate.btn_cancel_edit_token }}
         </button>
+        <a v-if="apiToken.id === null && plainToken !== ''" :href="urls.index_api_token" class="btn btn-sm btn-primary">
+          {{ translate.btn_back_list }}
+        </a>
         <button
+          v-else
           class="btn btn-sm btn-primary"
           :disabled="!canSave"
-          @click="this.apiToken.id === null ? this.saveToken(true) : this.saveToken(false)"
+          @click="apiToken.id === null ? saveToken(true) : saveToken(false)"
         >
-          <svg v-if="this.apiToken.id === null" class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg v-if="apiToken.id === null" class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
           </svg>
           <svg
@@ -427,11 +448,11 @@ export default {
               d="M10.779 17.779 4.36 19.918 6.5 13.5m4.279 4.279 8.364-8.643a3.027 3.027 0 0 0-2.14-5.165 3.03 3.03 0 0 0-2.14.886L6.5 13.5m4.279 4.279L6.499 13.5m2.14 2.14 6.213-6.504M12.75 7.04 17 11.28"
             ></path>
           </svg>
-          <span v-if="this.apiToken.id === null">
-            {{ this.translate.btn_save_token_api }}
+          <span v-if="apiToken.id === null">
+            {{ translate.btn_save_token_api }}
           </span>
           <span v-else>
-            {{ this.translate.btn_edit_token_api }}
+            {{ translate.btn_edit_token_api }}
           </span>
         </button>
       </div>
@@ -440,16 +461,16 @@ export default {
 
   <modal
     :id="'confirm-edit-api-token'"
-    :show="this.showModalApiTokenConfirm"
-    @close-modal="this.hideModal"
+    :show="showModalApiTokenConfirm"
+    @close-modal="hideModal"
     :option-show-close-btn="false"
   >
-    <template #title> <i class="bi bi-sign-stop"></i> {{ this.translate.modale_title_confirm_edit }} </template>
+    <template #title> <i class="bi bi-sign-stop"></i> {{ translate.modale_title_confirm_edit }} </template>
     <template #body>
-      <div v-html="this.translate.modale_title_confirm_text"></div>
+      <div v-html="translate.modale_title_confirm_text"></div>
     </template>
     <template #footer>
-      <button type="button" class="btn btn-primary btn-sm me-2" @click="this.saveToken(true)">
+      <button type="button" class="btn btn-primary btn-sm me-2" @click="saveToken(true)">
         <svg
           class="icon"
           aria-hidden="true"
@@ -469,7 +490,7 @@ export default {
         </svg>
         {{ translate.modale_title_confirm_btn_ok }}
       </button>
-      <button type="button" class="btn btn-outline-dark btn-sm" @click="this.hideModal()">
+      <button type="button" class="btn btn-outline-dark btn-sm" @click="hideModal()">
         <svg
           class="icon"
           aria-hidden="true"
@@ -495,16 +516,16 @@ export default {
 
   <modal
     :id="'confirm-delete-api-token'"
-    :show="this.showModalApiTokenDelete"
-    @close-modal="this.hideModal"
+    :show="showModalApiTokenDelete"
+    @close-modal="hideModal"
     :option-show-close-btn="false"
   >
-    <template #title> <i class="bi bi-sign-stop"></i> {{ this.translate.modale_title_confirm_delete }} </template>
+    <template #title> <i class="bi bi-sign-stop"></i> {{ translate.modale_title_confirm_delete }} </template>
     <template #body>
-      <div v-html="this.translate.modale_title_confirm_delete_text"></div>
+      <div v-html="translate.modale_title_confirm_delete_text"></div>
     </template>
     <template #footer>
-      <button type="button" class="btn btn-primary btn-sm me-2" @click="this.deleteToken()">
+      <button type="button" class="btn btn-primary btn-sm me-2" @click="deleteToken()">
         <svg
           class="icon"
           aria-hidden="true"
@@ -524,7 +545,62 @@ export default {
         </svg>
         {{ translate.modale_title_confirm_btn_ok }}
       </button>
-      <button type="button" class="btn btn-outline-dark btn-sm" @click="this.hideModal()">
+      <button type="button" class="btn btn-outline-dark btn-sm" @click="hideModal()">
+        <svg
+          class="icon"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+
+        {{ translate.modale_title_confirm_btn_ko }}
+      </button>
+    </template>
+  </modal>
+
+  <modal
+    :id="'confirm-regenerate-api-token'"
+    :show="showModalApiTokenRegenerate"
+    @close-modal="hideModal"
+    :option-show-close-btn="false"
+  >
+    <template #title> <i class="bi bi-sign-stop"></i> {{ translate.modale_title_confirm_regenerate }} </template>
+    <template #body>
+      <div v-html="translate.modale_title_confirm_regenerate_text"></div>
+    </template>
+    <template #footer>
+      <button type="button" class="btn btn-primary btn-sm me-2" @click="regenerateToken()">
+        <svg
+          class="icon"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+        {{ translate.modale_title_confirm_btn_ok }}
+      </button>
+      <button type="button" class="btn btn-outline-dark btn-sm" @click="hideModal()">
         <svg
           class="icon"
           aria-hidden="true"
@@ -549,25 +625,15 @@ export default {
   </modal>
 
   <div class="toast-container position-fixed top-0 end-0 p-2">
-    <toast
-      :id="'toastSuccess'"
-      :option-class-header="'text-success'"
-      :show="this.toasts.toastSuccess.show"
-      @close-toast="this.closeToast('toastSuccess')"
-    >
+    <toast :id="'toastSuccess'" :show="toasts.toastSuccess.show" @close-toast="closeToast('toastSuccess')">
       <template #body>
-        <div v-html="this.toasts.toastSuccess.msg"></div>
+        <div v-html="toasts.toastSuccess.msg"></div>
       </template>
     </toast>
 
-    <toast
-      :id="'toastError'"
-      :option-class-header="'text-danger'"
-      :show="this.toasts.toastError.show"
-      @close-toast="this.closeToast('toastError')"
-    >
+    <toast :id="'toastError'" :type="'danger'" :show="toasts.toastError.show" @close-toast="closeToast('toastError')">
       <template #body>
-        <div v-html="this.toasts.toastError.msg"></div>
+        <div v-html="toasts.toastError.msg"></div>
       </template>
     </toast>
   </div>

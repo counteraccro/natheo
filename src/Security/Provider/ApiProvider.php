@@ -7,6 +7,7 @@ use App\Entity\Admin\System\ApiToken;
 use App\Service\Api\ApiService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -35,19 +36,13 @@ class ApiProvider implements UserProviderInterface
     }
 
     /**
-     * Refreshes the user after being reloaded from the session.
-     *
-     * When a user is logged in, at the beginning of each request, the
-     * User object is loaded from the session and then this method is
-     * called. Your job is to make sure the user's data is still fresh by,
-     * for example, re-querying for fresh User data.
-     *
-     * If your firewall is "stateless: true" (for a pure API), this
-     * method is not called.
+     * Jamais appelé : le firewall API est stateless, l'utilisateur n'est pas rechargé depuis la session
+     * @param UserInterface $user
+     * @return UserInterface
      */
     public function refreshUser(UserInterface $user): UserInterface
     {
-        throw new \Exception('TODO: fill in refreshUser() inside ' . __FILE__);
+        throw new UnsupportedUserException('Stateless API firewall, refresh is not supported');
     }
 
     /**

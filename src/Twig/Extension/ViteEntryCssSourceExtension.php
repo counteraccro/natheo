@@ -111,11 +111,27 @@ class ViteEntryCssSourceExtension
             }
         }
 
+        // Clé = chemin source (ex : "assets/styles/app_email.scss"), on cherche alors par nom d'entry
+        if ($entry === null) {
+            foreach ($manifest as $item) {
+                if (($item['isEntry'] ?? false) && ($item['name'] ?? null) === $entryName) {
+                    $entry = $item;
+                    break;
+                }
+            }
+        }
+
         if ($entry === null) {
             return [];
         }
 
-        return $entry['css'] ?? [];
+        $files = $entry['css'] ?? [];
+        // Entry purement CSS : le fichier compilé est directement dans "file"
+        if (isset($entry['file']) && str_ends_with($entry['file'], '.css')) {
+            array_unshift($files, $entry['file']);
+        }
+
+        return $files;
     }
 
     /**

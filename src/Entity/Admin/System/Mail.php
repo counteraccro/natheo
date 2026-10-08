@@ -138,15 +138,13 @@ class Mail
     /**
      * Retourne la traduction en fonction de la locale
      * @param string $locale
-     * @return MailTranslation
+     * @return MailTranslation|null null si aucune traduction n'existe pour cette locale
      */
-    public function geMailTranslationByLocale(string $locale): MailTranslation
+    public function getMailTranslationByLocale(string $locale): ?MailTranslation
     {
-        return $this->getMailTranslations()
-            ->filter(function (MailTranslation $mailTranslation) use ($locale) {
-                return $mailTranslation->getLocale() === $locale;
-            })
-            ->first();
+        return $this->getMailTranslations()->findFirst(
+            fn(int $key, MailTranslation $mailTranslation) => $mailTranslation->getLocale() === $locale,
+        );
     }
 
     public function getDescription(): ?string

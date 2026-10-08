@@ -8,10 +8,8 @@ use App\Entity\Admin\System\Mail;
 use App\Entity\Admin\System\MailTranslation;
 use App\Repository\Trait\OrderedQueryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
-use Doctrine\ORM\Query\Parameter;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -77,8 +75,6 @@ class MailRepository extends ServiceEntityRepository
             $query->setParameter('search1', '%' . $queryParams['search'] . '%');
             $query->setParameter('search2', '%' . $queryParams['search'] . '%');
         }
-
-        $doctrineQuery = $query->getQuery();
 
         $paginator = new Paginator($query->getQuery(), true);
         $paginator

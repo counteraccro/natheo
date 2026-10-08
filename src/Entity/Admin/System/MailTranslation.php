@@ -79,9 +79,9 @@ class MailTranslation
         return $this->locale;
     }
 
-    public function setLocale(string $local): self
+    public function setLocale(string $locale): self
     {
-        $this->locale = $local;
+        $this->locale = $locale;
 
         return $this;
     }

@@ -15,7 +15,7 @@ log.delete.file.btn_close: Fermer
 log.btn.reload: Recharger
 log.auth.admin.success: 'Connexion de {user} - IP {ip}'
 log.auth.admin.error: 'Tentative de Connexion de {user} - IP {ip}'
-log.doctrine.persit: "l'entité {entity} #{id} à été créé par {user} (#{id_user})"
+log.doctrine.persist: "l'entité {entity} #{id} a été créée par {user} (#{id_user})"
 log.doctrine.remove: "l'entité {entity} #{id} à été supprimée par {user} (#{id_user})"
 log.doctrine.update: "l'entité {entity} #{id} à été modifiée par {user} (#{id_user})"
 log.page_title: 'Gestion des logs'
@@ -24,7 +24,7 @@ log.description: "Consulter l'ensemble des logs applicatifs, identifier un éven
 log.grid.level: Niveau
 log.grid.date: Date
 log.grid.message: Message
-log.auth.admin.user.switch: 'Le SUPER_ADMIN <b>{user}</b> à prit le contrôle du compte de <b>{userToSwitch}</b>'
+log.auth.admin.user.switch: 'Le SUPER_ADMIN {user} a pris le contrôle du compte de {userToSwitch}'
 log.btn.download.file: Télécharger
 log.toast.title.success: Success
 log.toast.time: "A l'instant"
@@ -36,3 +36,7 @@ log.select-file.label: 'Fichiers de logs'
 log.select-time.label: 'Choix de la temporalité'
 log.btn.delete.ok: 'Supprimer le fichier'
 log.btn.delete.ko: Annuler
+log.error.file: 'Le fichier de log demandé est introuvable'
+log.error.time: 'La temporalité demandée est invalide'
+log.error.csrf: 'Jeton de sécurité invalide, veuillez recharger la page'
+log.error.request: 'Une erreur est survenue lors de la requête'

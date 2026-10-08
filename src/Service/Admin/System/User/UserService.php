@@ -19,11 +19,15 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 use Exception;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactory;
 use Symfony\Component\String\ByteString;
 
 class UserService extends AppAdminService
 {
+    /**
+     * Politique de mot de passe, identique aux règles du composant Vue ChangePassword
+     */
+    public const PASSWORD_PATTERN = '/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[#?!@$%^&*-]).{8,}$/';
+
     /**
      * Retourne une liste de user paginé
      * @param int $page
@@ -71,7 +75,7 @@ class UserService extends AppAdminService
         foreach ($dataPaginate as $user) {
             /* @var User $user */
 
-            $email = $user->getEmail();
+            $email = htmlspecialchars($user->getEmail());
             if ($user->isAnonymous()) {
                 $email = '--@anonyme.com';
             }
@@ -100,10 +104,12 @@ class UserService extends AppAdminService
             $actions = $this->generateTabAction($user);
             $data[] = [
                 $translator->trans('user.grid.id', domain: 'user') => $user->getId(),
-                $translator->trans('user.grid.login', domain: 'user') => $avatar . $user->getLogin() . '</span>',
+                $translator->trans('user.grid.login', domain: 'user') =>
+                    $avatar . htmlspecialchars((string) $user->getLogin()) . '</span>',
                 $translator->trans('user.grid.email', domain: 'user') => $email,
-                $translator->trans('user.grid.name', domain: 'user') =>
+                $translator->trans('user.grid.name', domain: 'user') => htmlspecialchars(
                     $user->getFirstname() . ' ' . $user->getLastname(),
+                ),
                 $translator->trans('user.grid.role', domain: 'user') => $roles,
                 $translator->trans('user.grid.created_at', domain: 'user') => $user
                     ->getCreatedAt()
@@ -143,7 +149,6 @@ class UserService extends AppAdminService
         $translator = $this->getTranslator();
         $router = $this->getRouter();
         $optionSystemService = $this->getOptionSystemService();
-        $security = $this->getSecurity();
 
         $actions = [];
 
@@ -151,9 +156,9 @@ class UserService extends AppAdminService
             return $actions;
         }
 
-        $role = new Role($user);
-        $isSuperAdmin = $user->isFounder() && $role->isSuperAdmin();
-        if (!$isSuperAdmin) {
+        $canManage = $this->canManage($user);
+        $login = htmlspecialchars((string) $user->getLogin());
+        if ($canManage) {
             // Bouton disabled
             $actionDisabled = [
                 'label' => [
@@ -164,11 +169,7 @@ class UserService extends AppAdminService
                 'url' => $router->generate('admin_user_update_disabled', ['id' => $user->getId()]),
                 'ajax' => true,
                 'confirm' => true,
-                'msgConfirm' => $translator->trans(
-                    'user.confirm.disabled.msg',
-                    ['{login}' => $user->getLogin()],
-                    'user',
-                ),
+                'msgConfirm' => $translator->trans('user.confirm.disabled.msg', ['{login}' => $login], 'user'),
             ];
             if ($user->isDisabled()) {
                 $actionDisabled = [
@@ -188,17 +189,13 @@ class UserService extends AppAdminService
             // Bouton Delete
             $actionDelete = '';
             if ($optionSystemService->canDelete()) {
-                $msgConfirm = $translator->trans('user.confirm.delete.msg', ['{login}' => $user->getLogin()], 'user');
+                $msgConfirm = $translator->trans('user.confirm.delete.msg', ['{login}' => $login], 'user');
                 $label = [
                     'M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z',
                 ];
                 $type = 'delete';
                 if ($optionSystemService->canReplace()) {
-                    $msgConfirm = $translator->trans(
-                        'user.confirm.replace.msg',
-                        ['{login}' => $user->getLogin()],
-                        'user',
-                    );
+                    $msgConfirm = $translator->trans('user.confirm.replace.msg', ['{login}' => $login], 'user');
                     $label = [
                         'M16 12h4M4 18v-1a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v1a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1Zm8-10a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z',
                     ];
@@ -233,13 +230,7 @@ class UserService extends AppAdminService
             }
         }
 
-        $isCurrentFounder = false;
-        if ($security->getUser() !== null && $security->getUser()->isFounder()) {
-            $isCurrentFounder = true;
-        }
-
-        // Bouton édition affiché sauf pour le fondateur ou si l'utilisateur courant est le fondateur
-        if (($user->isFounder() && $isCurrentFounder) || !$user->isFounder()) {
+        if ($canManage || $this->isCurrentUser($user)) {
             // Bouton edit
             $actions[] = [
                 'label' => [
@@ -256,19 +247,66 @@ class UserService extends AppAdminService
     }
 
     /**
-     * Met à jour le mot de passe de l'utilisateur passé en paramètre
+     * Détermine si l'utilisateur courant peut gérer (modifier, désactiver, supprimer, incarner) le user.
+     * Le fondateur n'est gérable par personne, un super admin uniquement par le fondateur,
+     * et l'utilisateur courant ne peut pas se gérer lui-même
+     * @param User $user
+     * @param User|null $currentUser utilisateur qui agit, l'utilisateur connecté par défaut
+     * @return bool
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function canManage(User $user, ?User $currentUser = null): bool
+    {
+        $currentUser ??= $this->getSecurity()->getUser();
+        if (!($currentUser instanceof User) || $user->isFounder() || $currentUser->getId() === $user->getId()) {
+            return false;
+        }
+
+        $role = new Role($user);
+        return !$role->isSuperAdmin() || $currentUser->isFounder();
+    }
+
+    /**
+     * Détermine si le user est l'utilisateur courant
+     * @param User $user
+     * @return bool
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function isCurrentUser(User $user): bool
+    {
+        /** @var User|null $currentUser */
+        $currentUser = $this->getSecurity()->getUser();
+        return $currentUser !== null && $currentUser->getId() === $user->getId();
+    }
+
+    /**
+     * Vérifie que le mot de passe respecte la politique de sécurité
+     * (8 caractères minimum, une majuscule, une minuscule, un chiffre et un caractère spécial)
+     * @param string $password
+     * @return bool
+     */
+    public function isValidPassword(string $password): bool
+    {
+        return preg_match(self::PASSWORD_PATTERN, $password) === 1;
+    }
+
+    /**
+     * Met à jour le mot de passe de l'utilisateur passé en paramètre et révoque son token utilisateur API
      * @param User $user
      * @param $password
      * @return void
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function updatePassword(User $user, $password): void
+    public function updatePassword(User $user, string $password): void
     {
         $passwordHasher = $this->getUserPasswordHasher();
 
         $user->setPassword($passwordHasher->hashPassword($user, $password));
         $this->save($user);
+        $this->getUserData()->removeUserToken($user);
     }
 
     /**
@@ -287,13 +325,13 @@ class UserService extends AppAdminService
     }
 
     /**
-     * Retourne une liste d'utilisateur en fonction de son role
+     * Retourne la liste des utilisateurs actifs ayant le rôle
      * @param string $role
-     * @return mixed
+     * @return User[]
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getByRole(string $role): mixed
+    public function getByRole(string $role): array
     {
         $repo = $this->getRepository(User::class);
         return $repo->findByRole($role);
@@ -346,17 +384,16 @@ class UserService extends AppAdminService
         $repo = $this->getRepository(User::class);
         /** @var User $user */
 
+        $passwordHasher = $this->getUserPasswordHasher();
+
         $user = $repo->loadUserByIdentifier($email);
         if ($user === null) {
+            // Hash factice pour ne pas révéler l'existence du compte via le temps de réponse
+            $passwordHasher->hashPassword(new User(), $password);
             return null;
         }
 
-        $factory = new PasswordHasherFactory([
-            'common' => ['algorithm' => 'auto'],
-        ]);
-
-        $hasher = $factory->getPasswordHasher('common');
-        if ($hasher->verify($user->getPassword(), $password)) {
+        if ($passwordHasher->isPasswordValid($user, $password)) {
             return $user;
         }
         return null;
