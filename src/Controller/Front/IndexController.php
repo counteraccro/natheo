@@ -81,7 +81,7 @@ class IndexController extends AppFrontController
         Route(
             '/{locale}/{category}/{slug}',
             name: 'index_2',
-            requirements: ['category' => '|faq|page|article|projet|blog|evenement|documentation|evolution'],
+            requirements: ['category' => '|faq|page|article|projet|blog|evenement|news|documentation|evolution'],
         ),
     ]
     public function index(

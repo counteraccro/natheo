@@ -1,8 +1,8 @@
 user:
   User:
-    email: nicolas.monique@colin.com
-    password: $2y$04$jXoLsKS60jpTPIPvTFYFXeklyC.N3W59Z6mVtlfINREdhlvLsQtWq
-    login: legall.laure
+    email: guy.fernandez@humbert.com
+    password: $2y$04$CymoyWxe0Cvn4P8TpqCs3OkBM0VHkE9h9Tu3.c2oQcoTlLZAHbNIy
+    login: antoinette.moreno
     firstname: ''
     lastname: ''
     roles: ROLE_SUPER_ADMIN

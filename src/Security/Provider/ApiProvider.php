@@ -3,7 +3,7 @@
 declare(strict_types=1);
 namespace App\Security\Provider;
 
-use App\Entity\Admin\System\ApiToken;
+use App\Entity\Admin\System\User;
 use App\Service\Api\ApiService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -50,6 +50,6 @@ class ApiProvider implements UserProviderInterface
      */
     public function supportsClass(string $class): bool
     {
-        return ApiToken::class === $class || is_subclass_of($class, ApiToken::class);
+        return User::class === $class || is_subclass_of($class, User::class);
     }
 }

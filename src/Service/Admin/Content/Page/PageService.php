@@ -605,13 +605,8 @@ class PageService extends AppAdminService
     {
         $locale = $this->getLocales()['current'];
         $url = $this->getOptionSystemService()->getByKey(OptionSystem::OS_ADRESSE_SITE->value)->getValue();
-        $tabCategories = $this->getPageService()->getAllCategories();
-
         $pageTrans = $page->getPageTranslationByLocale($locale);
-        $category = '';
-        if (isset($tabCategories[$page->getCategory()])) {
-            $category = strtolower($tabCategories[$page->getCategory()]);
-        }
+        $category = PageCategory::tryFrom($page->getCategory())?->getSlug() ?? '';
 
         return $url . '/' . $locale . '/' . $category . '/' . $pageTrans->getUrl();
     }

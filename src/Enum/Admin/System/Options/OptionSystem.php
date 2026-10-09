@@ -148,6 +148,12 @@ enum OptionSystem: string
     case OS_MEDIA_URL = 'OS_MEDIA_URL';
 
     /**
+     * Ouverture de l'API
+     * @var string
+     */
+    case OS_OPEN_API = 'OS_OPEN_API';
+
+    /**
      * Temps de validité du token user
      * @var string
      */
@@ -232,6 +238,7 @@ enum OptionSystem: string
     const CONFIG = [
         self::OS_SITE_NAME->value => ['default' => 'Nathéo CMS'],
         self::OS_OPEN_SITE->value => ['default' => '0'],
+        self::OS_OPEN_API->value => ['default' => '1'],
         self::OS_ADRESSE_SITE->value => ['default' => 'http://www.value-must-be-change.com'],
     ];
 

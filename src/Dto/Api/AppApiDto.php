@@ -14,4 +14,9 @@ class AppApiDto
      * Locale prise en charge
      */
     protected const LOCALES = ['fr', 'es', 'en'];
+
+    /**
+     * Nombre maximum d'éléments retournés par page
+     */
+    protected const MAX_LIMIT = 100;
 }
