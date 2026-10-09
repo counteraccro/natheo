@@ -9,7 +9,11 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller\Api\v1\Content;
 
+use App\Enum\Admin\Content\Page\PageCategory;
+use App\Enum\Admin\Content\Page\PageContentType;
 use App\Enum\Admin\Content\Page\PageStatistics;
+use App\Enum\Admin\Content\Page\PageStatus;
+use App\Service\Admin\System\User\UserDataService;
 use App\Tests\Controller\Api\AppApiTestCase;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -107,6 +111,49 @@ class ApiPageControllerTest extends AppApiTestCase
     }
 
     /**
+     * Test des paramètres show_* passés en true/false et du filtre menu_positions
+     * @return void
+     */
+    public function testFindFlagsAndMenuPositions(): void
+    {
+        $page = $this->createPageAllDataDefault();
+        $menu = $this->createMenuAllDataDefault();
+        $page->addMenu($menu);
+        $this->persistAndFlush($page);
+        $slug = $page->getPageTranslationByLocale('fr')->getUrl();
+
+        $find = function (array $params): array {
+            $this->client->request(
+                'GET',
+                $this->router->generate('api_page_find', array_merge(['api_version' => self::API_VERSION], $params)),
+                server: $this->getCustomHeaders(),
+            );
+            return [
+                $this->client->getResponse()->getStatusCode(),
+                json_decode($this->client->getResponse()->getContent(), true),
+            ];
+        };
+
+        [$code, $content] = $find(['slug' => $slug, 'show_tags' => 'true', 'show_statistiques' => 'false']);
+        $this->assertEquals(200, $code);
+        $this->assertArrayHasKey('tags', $content['data']['page']);
+        $this->assertArrayNotHasKey('statistiques', $content['data']['page']);
+
+        [$code] = $find(['slug' => $slug, 'show_tags' => 'peut-etre']);
+        $this->assertEquals(400, $code);
+
+        [, $content] = $find(['slug' => $slug, 'menu_positions' => $menu->getPosition()]);
+        $this->assertArrayHasKey('menus', $content['data']['page']);
+        $this->assertEquals($menu->getId(), current($content['data']['page']['menus'])['id']);
+
+        $otherPosition = $menu->getPosition() === 3 ? 1 : 3;
+        [, $content] = $find(['slug' => $slug, 'menu_positions' => $otherPosition]);
+        foreach ($content['data']['page']['menus'] ?? [] as $formatedMenu) {
+            $this->assertNotEquals($menu->getId(), $formatedMenu['id']);
+        }
+    }
+
+    /**
      * Test méthode find()
      * @return void
      */
@@ -123,13 +170,13 @@ class ApiPageControllerTest extends AppApiTestCase
         );
         $response = $this->client->getResponse();
 
-        $this->assertEquals(403, $response->getStatusCode());
+        $this->assertEquals(400, $response->getStatusCode());
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);
         $this->assertIsArray($content);
         $this->checkStructureApiRetourError($content);
         $this->assertEquals(
-            'Choisir une locale entre fr (français) ou es (espagnol) ou en (anglais) ',
+            'Choisir une locale entre fr (français) ou es (espagnol) ou en (anglais)',
             $content['errors'][0],
         );
     }
@@ -153,7 +200,7 @@ class ApiPageControllerTest extends AppApiTestCase
         );
         $response = $this->client->getResponse();
 
-        $this->assertEquals(403, $response->getStatusCode());
+        $this->assertEquals(404, $response->getStatusCode());
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);
         $this->assertIsArray($content);
@@ -217,6 +264,76 @@ class ApiPageControllerTest extends AppApiTestCase
     }
 
     /**
+     * Test méthode getContentInPage() sur une page non visible
+     * @return void
+     */
+    public function testGetContentInPageNotVisible(): void
+    {
+        // Données préparées avant la première requête : le kernel est redémarré entre deux requêtes
+        $draftPage = $this->createPageAllDataDefault();
+        $draftPage->setStatus(PageStatus::DRAFT->value);
+        $disabledPage = $this->createPageAllDataDefault();
+        $disabledPage->setDisabled(true);
+        $this->persistAndFlush($draftPage);
+        $this->persistAndFlush($disabledPage);
+        $userToken = $this->container
+            ->get(UserDataService::class)
+            ->generateUserToken($this->createUserContributeur(['disabled' => false, 'anonymous' => false]));
+
+        $draftUrl = $this->router->generate('api_page_content', [
+            'api_version' => self::API_VERSION,
+            'id' => $draftPage->getPageContents()->first()->getId(),
+            'locale' => 'fr',
+        ]);
+        $disabledUrl = $this->router->generate('api_page_content', [
+            'api_version' => self::API_VERSION,
+            'id' => $disabledPage->getPageContents()->first()->getId(),
+            'locale' => 'fr',
+        ]);
+
+        // Brouillon invisible sans user token
+        $this->client->request('GET', $draftUrl, server: $this->getCustomHeaders());
+        $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
+
+        // Brouillon visible pour un contributeur
+        $this->client->request(
+            'GET',
+            $draftUrl,
+            server: array_merge($this->getCustomHeaders(), ['HTTP_User-token' => $userToken]),
+        );
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+
+        // Page désactivée invisible, même pour un contributeur
+        $this->client->request(
+            'GET',
+            $disabledUrl,
+            server: array_merge($this->getCustomHeaders(), ['HTTP_User-token' => $userToken]),
+        );
+        $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
+    }
+
+    /**
+     * Test des bornes de pagination
+     * @return void
+     */
+    public function testPaginationBounds(): void
+    {
+        foreach ([['limit' => 1000], ['page' => -1]] as $params) {
+            $this->client->request(
+                'GET',
+                $this->router->generate(
+                    'api_page_category',
+                    array_merge(['api_version' => self::API_VERSION, 'category' => 'page'], $params),
+                ),
+                server: $this->getCustomHeaders(),
+            );
+            $response = $this->client->getResponse();
+            $this->assertEquals(400, $response->getStatusCode());
+            $this->checkStructureApiRetourError(json_decode($response->getContent(), true));
+        }
+    }
+
+    /**
      * Test méthode getContentInPage() mauvais paramètre
      * @return void
      */
@@ -233,13 +350,13 @@ class ApiPageControllerTest extends AppApiTestCase
         );
         $response = $this->client->getResponse();
 
-        $this->assertEquals(403, $response->getStatusCode());
+        $this->assertEquals(400, $response->getStatusCode());
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);
         $this->assertIsArray($content);
         $this->checkStructureApiRetourError($content);
         $this->assertEquals(
-            'Choisir une locale entre fr (français) ou es (espagnol) ou en (anglais) ',
+            'Choisir une locale entre fr (français) ou es (espagnol) ou en (anglais)',
             $content['errors'][0],
         );
     }
@@ -263,7 +380,7 @@ class ApiPageControllerTest extends AppApiTestCase
         );
         $response = $this->client->getResponse();
 
-        $this->assertEquals(403, $response->getStatusCode());
+        $this->assertEquals(404, $response->getStatusCode());
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);
         $this->assertIsArray($content);
@@ -311,6 +428,65 @@ class ApiPageControllerTest extends AppApiTestCase
     }
 
     /**
+     * La catégorie est trouvée quelle que soit la casse ou les accents
+     * @return void
+     */
+    public function testGetPageByCategoryAccent(): void
+    {
+        $page = $this->createPageAllDataDefault();
+        $page->setCategory(PageCategory::EVENEMENT->value);
+        $this->persistAndFlush($page);
+
+        foreach (['evenement', 'Évènement', 'ÉVÈNEMENT'] as $category) {
+            $this->client->request(
+                'GET',
+                $this->router->generate('api_page_category', [
+                    'api_version' => self::API_VERSION,
+                    'category' => $category,
+                ]),
+                server: $this->getCustomHeaders(),
+            );
+            $response = $this->client->getResponse();
+            $this->assertEquals(200, $response->getStatusCode(), $category);
+            $this->assertGreaterThanOrEqual(1, json_decode($response->getContent(), true)['data']['rows']);
+        }
+    }
+
+    /**
+     * Le titre d'un bloc listing reprend la catégorie du bloc et non celle de la page
+     * @return void
+     */
+    public function testGetContentInPageListingTitle(): void
+    {
+        $page = $this->createPageAllDataDefault();
+        $pageContent = $this->createPageContent($page, [
+            'type' => PageContentType::LISTING->value,
+            'typeId' => PageCategory::EVENEMENT->value,
+        ]);
+
+        $this->client->request(
+            'GET',
+            $this->router->generate('api_page_content', [
+                'api_version' => self::API_VERSION,
+                'id' => $pageContent->getId(),
+                'locale' => 'fr',
+            ]),
+            server: $this->getCustomHeaders(),
+        );
+        $response = $this->client->getResponse();
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(
+            $this->translator->trans(
+                'page.content.listing.title',
+                ['category' => $this->translator->trans('page.category.evenement', domain: 'page')],
+                domain: 'page',
+                locale: 'fr',
+            ),
+            json_decode($response->getContent(), true)['data']['title'],
+        );
+    }
+
+    /**
      * Test méthode getPageByCategory()
      * Test une mauvaise locale
      * @return void
@@ -328,13 +504,13 @@ class ApiPageControllerTest extends AppApiTestCase
         );
         $response = $this->client->getResponse();
 
-        $this->assertEquals(403, $response->getStatusCode());
+        $this->assertEquals(400, $response->getStatusCode());
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);
         $this->assertIsArray($content);
         $this->checkStructureApiRetourError($content);
         $this->assertEquals(
-            'Choisir une locale entre fr (français) ou es (espagnol) ou en (anglais) ',
+            'Choisir une locale entre fr (français) ou es (espagnol) ou en (anglais)',
             $content['errors'][0],
         );
     }
@@ -358,7 +534,7 @@ class ApiPageControllerTest extends AppApiTestCase
         );
         $response = $this->client->getResponse();
 
-        $this->assertEquals(403, $response->getStatusCode());
+        $this->assertEquals(404, $response->getStatusCode());
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);
         $this->assertIsArray($content);
@@ -423,13 +599,13 @@ class ApiPageControllerTest extends AppApiTestCase
         );
         $response = $this->client->getResponse();
 
-        $this->assertEquals(403, $response->getStatusCode());
+        $this->assertEquals(400, $response->getStatusCode());
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);
         $this->assertIsArray($content);
         $this->checkStructureApiRetourError($content);
         $this->assertEquals(
-            'Choisir une locale entre fr (français) ou es (espagnol) ou en (anglais) ',
+            'Choisir une locale entre fr (français) ou es (espagnol) ou en (anglais)',
             $content['errors'][0],
         );
     }
@@ -453,7 +629,7 @@ class ApiPageControllerTest extends AppApiTestCase
         );
         $response = $this->client->getResponse();
 
-        $this->assertEquals(403, $response->getStatusCode());
+        $this->assertEquals(404, $response->getStatusCode());
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);
         $this->assertIsArray($content);

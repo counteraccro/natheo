@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace App\Service\Api\Global;
 
 use App\Entity\Admin\Content\Page\Page;
+use App\Enum\Admin\Content\Page\PageCategory;
 use App\Enum\Admin\Content\Page\PageStatus;
 use App\Repository\Admin\Content\Page\PageRepository;
 use App\Service\Api\AppApiService;
@@ -29,8 +30,10 @@ class ApiSitemapService extends AppApiService
     {
         /** @var PageRepository $pageRepo */
         $pageRepo = $this->getRepository(Page::class);
-        $pages = $pageRepo->findBy(['status' => PageStatus::PUBLISH->value], ['updateAt' => 'DESC']);
-        $pageService = $this->getPageService();
+        $pages = $pageRepo->findBy(
+            ['status' => PageStatus::PUBLISH->value, 'disabled' => false],
+            ['updateAt' => 'DESC'],
+        );
 
         $return = [];
         foreach ($pages as $page) {
@@ -39,7 +42,7 @@ class ApiSitemapService extends AppApiService
                     '/' .
                     $pageTranslation->getLocale() .
                     '/' .
-                    strtolower($pageService->getCategoryById($page->getCategory())) .
+                    (PageCategory::tryFrom($page->getCategory())?->getSlug() ?? '') .
                     '/' .
                     $pageTranslation->getUrl();
                 $return[] = [

@@ -52,6 +52,7 @@ class ApiParametersParser
      */
     public function parse(array $refParameter, array $apiParameters): array
     {
+        $this->tabError = [];
         foreach ($refParameter as $parameterName => $parameterType) {
             if (!isset($apiParameters[$parameterName])) {
                 $this->tabError[] = $this->translator->trans(

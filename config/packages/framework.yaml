@@ -20,6 +20,18 @@ framework:
     php_errors:
         log: true
 
+    rate_limiter:
+        # Limite les tentatives d'authentification utilisateur via l'API (clé : IP + login)
+        api_auth_user:
+            policy: 'sliding_window'
+            limit: 5
+            interval: '15 minutes'
+        # Anti-spam sur l'ajout de commentaires via l'API (clé : IP du visiteur transmise par le front)
+        api_add_comment:
+            policy: 'sliding_window'
+            limit: 5
+            interval: '10 minutes'
+
 when@test:
     framework:
         test: true

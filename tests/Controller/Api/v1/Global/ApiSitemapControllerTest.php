@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace App\Tests\Controller\Api\v1\Global;
 
 use App\Entity\Admin\Content\Page\Page;
-use App\Service\Admin\Content\Page\PageService;
+use App\Enum\Admin\Content\Page\PageCategory;
 use App\Tests\Controller\Api\AppApiTestCase;
 
 class ApiSitemapControllerTest extends AppApiTestCase
@@ -25,6 +25,14 @@ class ApiSitemapControllerTest extends AppApiTestCase
         for ($i = 0; $i < 3; $i++) {
             $verif[] = $this->createPageAllDataDefault();
         }
+        // Catégorie accentuée : l'URL doit utiliser le slug ASCII attendu par le front
+        $verif[0]->setCategory(PageCategory::EVENEMENT->value);
+        $this->persistAndFlush($verif[0]);
+
+        // Une page désactivée ne doit pas apparaître dans le sitemap
+        $disabledPage = $this->createPageAllDataDefault();
+        $disabledPage->setDisabled(true);
+        $this->persistAndFlush($disabledPage);
 
         $this->client->request(
             'GET',
@@ -40,9 +48,11 @@ class ApiSitemapControllerTest extends AppApiTestCase
 
         $this->assertCount($i * 3, $content['data']);
 
-        $pageService = $this->getContainer()->get(PageService::class);
+        $evenementUrls = array_filter($content['data'], fn($item) => str_contains($item['loc'], '/evenement/'));
+        $this->assertCount(3, $evenementUrls);
 
         foreach ($content['data'] as $item) {
+            $this->assertMatchesRegularExpression('/^[\x00-\x7F]*$/', $item['loc']);
             foreach ($verif as $page) {
                 /** @var Page $page */
                 foreach ($page->getPageTranslations() as $pageTranslation) {
@@ -50,7 +60,7 @@ class ApiSitemapControllerTest extends AppApiTestCase
                         '/' .
                         $pageTranslation->getLocale() .
                         '/' .
-                        strtolower($pageService->getCategoryById($page->getCategory())) .
+                        PageCategory::from($page->getCategory())->getSlug() .
                         '/' .
                         $pageTranslation->getUrl();
                     if (str_contains($item['loc'], $pageTranslation->getUrl()) === true) {

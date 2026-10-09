@@ -15,8 +15,10 @@ use App\Utils\Api\Parameters\Content\Page\ApiParametersFindPageRef;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class ApiFindPageResolver extends AppApiResolver implements ValueResolverInterface
 {
@@ -53,11 +55,16 @@ class ApiFindPageResolver extends AppApiResolver implements ValueResolverInterfa
                 }
             }
 
+            // Accepte true/false, 1/0, yes/no, on/off ; toute autre valeur est refusée
             if (in_array($parameter, ['show_menus', 'show_tags', 'show_statistiques'])) {
-                if (intval($value) === 0) {
-                    $value = false;
-                } else {
-                    $value = true;
+                $value = is_bool($value) ? $value : filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+                if ($value === null) {
+                    throw new HttpException(
+                        Response::HTTP_BAD_REQUEST,
+                        $this->handlers
+                            ->get('translator')
+                            ->trans('api_errors.params.not.boolean', ['param' => $parameter], domain: 'api_errors'),
+                    );
                 }
             }
 
@@ -77,9 +84,9 @@ class ApiFindPageResolver extends AppApiResolver implements ValueResolverInterfa
         $dto = new ApiFindPageDto(
             $tabParameters[ApiParametersFindPageRef::PARAM_SLUG],
             $tabParameters[ApiParametersFindPageRef::PARAM_LOCALE],
-            filter_var($tabParameters[ApiParametersFindPageRef::PARAM_SHOW_MENUS], FILTER_VALIDATE_BOOLEAN),
-            filter_var($tabParameters[ApiParametersFindPageRef::PARAM_SHOW_TAGS], FILTER_VALIDATE_BOOLEAN),
-            filter_var($tabParameters[ApiParametersFindPageRef::PARAM_SHOW_STATISTIQUES], FILTER_VALIDATE_BOOLEAN),
+            $tabParameters[ApiParametersFindPageRef::PARAM_SHOW_MENUS],
+            $tabParameters[ApiParametersFindPageRef::PARAM_SHOW_TAGS],
+            $tabParameters[ApiParametersFindPageRef::PARAM_SHOW_STATISTIQUES],
             $tabParameters[ApiParametersFindPageRef::PARAM_MENU_POSITION],
             $tabParameters[ApiParametersFindPageRef::PARAM_USER_TOKEN],
         );

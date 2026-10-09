@@ -55,7 +55,7 @@ class ApiFindMenuResolver extends AppApiResolver implements ValueResolverInterfa
         $dto = new ApiFindMenuDto(
             intval($tabParameters[ApiParametersFindMenuRef::PARAM_ID]),
             $tabParameters[ApiParametersFindMenuRef::PARAM_PAGE_SLUG],
-            $tabParameters[ApiParametersFindMenuRef::PARAM_POSITION],
+            intval($tabParameters[ApiParametersFindMenuRef::PARAM_POSITION]),
             $tabParameters[ApiParametersFindMenuRef::PARAM_LOCALE],
             $tabParameters[ApiParametersFindMenuRef::PARAM_USER_TOKEN],
         );
@@ -75,7 +75,7 @@ class ApiFindMenuResolver extends AppApiResolver implements ValueResolverInterfa
             empty($parameters[ApiParametersFindMenuRef::PARAM_PAGE_SLUG])
         ) {
             throw new HttpException(
-                Response::HTTP_FORBIDDEN,
+                Response::HTTP_BAD_REQUEST,
                 $translator->trans('api_errors.find.menu.not.id.slug.together', domain: 'api_errors'),
             );
         }
@@ -86,7 +86,7 @@ class ApiFindMenuResolver extends AppApiResolver implements ValueResolverInterfa
             !empty($parameters[ApiParametersFindMenuRef::PARAM_PAGE_SLUG])
         ) {
             throw new HttpException(
-                Response::HTTP_FORBIDDEN,
+                Response::HTTP_BAD_REQUEST,
                 $translator->trans('api_errors.find.menu.id.slug.together', domain: 'api_errors'),
             );
         }

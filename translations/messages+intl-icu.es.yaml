@@ -204,6 +204,8 @@ options_system.time.validation.user.three.hour: '__3 heures'
 options_system.time.validation.user.twelve.hour: '__12 heures'
 options_system.time.validation.user.one.day: '__24 heures'
 options_system.time.validation.user.token.help: '__Passé ce délais, le token devient obsolète et la connexion ne sera plus autorisé avec celui-ci'
+options_system.open_api: "__Ouvrir l'API ?"
+options_system.open_api_help: "__Si l'API est fermée, toutes les routes /api renvoient une erreur 403. Indépendant de l'ouverture du site au public."
 options_system.comment: __Commentaire
 options_system.comment.title: '__Gestion des commentaires'
 options_system.comment.description: '__Options concernant les commentaires de votre site'

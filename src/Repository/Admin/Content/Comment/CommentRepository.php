@@ -137,19 +137,25 @@ class CommentRepository extends ServiceEntityRepository
 
     /**
      * Retourne une liste de commentaires en fonction du Dto
+     * Seuls les commentaires actifs d'une page active dont le status est dans $pageStatus sont retournés
      * @param ApiCommentByPageDto $dto
+     * @param array $pageStatus
      * @return Paginator
      */
-    public function getCommentsByPageForApi(ApiCommentByPageDto $dto): Paginator
+    public function getCommentsByPageForApi(ApiCommentByPageDto $dto, array $pageStatus): Paginator
     {
-        $query = $this->createQueryBuilder('c');
+        $query = $this->createQueryBuilder('c')
+            ->join('c.page', 'p')
+            ->andWhere('c.disabled = false')
+            ->andWhere('p.disabled = false')
+            ->andWhere('p.status IN (:pageStatus)')
+            ->setParameter('pageStatus', $pageStatus);
 
-        if (!empty($dto->getId()) || $dto->getId() !== 0) {
+        if ($dto->getId() !== 0) {
             $query->andWhere('c.page = :id')->setParameter('id', $dto->getId());
         } else {
             $query
-                ->leftJoin('c.page', 'p')
-                ->leftJoin('p.pageTranslations', 'pt')
+                ->join('p.pageTranslations', 'pt')
                 ->andWhere('pt.url = :slug')
                 ->setParameter('slug', $dto->getPageSlug())
                 ->andWhere('pt.locale = :locale')

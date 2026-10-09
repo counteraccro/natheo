@@ -175,6 +175,12 @@ trait OptionSystemFixturesTrait
         $this->createOptionSystem($data);
 
         $data = [
+            'key' => OptionSystemEnum::OS_OPEN_API->value,
+            'value' => '1',
+        ];
+        $this->createOptionSystem($data);
+
+        $data = [
             'key' => OptionSystemEnum::OS_API_TIME_VALIDATE_USER_TOKEN->value,
             'value' => '60',
         ];

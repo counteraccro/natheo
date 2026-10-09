@@ -26,3 +26,10 @@ api_errors.comment.not.open: 'Les commentaires ne sont pas ouverts'
 api_errors.comment.not.save: 'Une erreur est survenue lors de la création du commentaire'
 api_errors.internal.server.error: 'Erreur serveur interne'
 api_errors.comment.status.no.valid: 'Le status du commentaire est invalide'
+api_errors.bad.request: 'Requête invalide'
+api_errors.method.not.allowed: 'Méthode HTTP non autorisée'
+api_errors.too.many.requests: 'Trop de tentatives, veuillez réessayer plus tard'
+api_errors.request.body.invalid: 'Le corps de la requête doit être un JSON valide'
+api_errors.comment.moderate.forbidden: "Vous n'avez pas les droits pour modérer ce commentaire"
+api_errors.params.not.boolean: 'Le paramètre {param} doit être un booléen (true/false, 1/0)'
+api_errors.access.role.denied: "Les droits du token API ne permettent pas d'accéder à cette ressource"

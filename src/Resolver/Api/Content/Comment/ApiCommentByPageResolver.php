@@ -84,7 +84,7 @@ class ApiCommentByPageResolver extends AppApiResolver implements ValueResolverIn
             empty($parameters[ApiParametersCommentByPageRef::PARAM_PAGE_SLUG])
         ) {
             throw new HttpException(
-                Response::HTTP_FORBIDDEN,
+                Response::HTTP_BAD_REQUEST,
                 $translator->trans('api_errors.comment.by.page.not.id.slug.together', domain: 'api_errors'),
             );
         }
@@ -95,7 +95,7 @@ class ApiCommentByPageResolver extends AppApiResolver implements ValueResolverIn
             !empty($parameters[ApiParametersCommentByPageRef::PARAM_PAGE_SLUG])
         ) {
             throw new HttpException(
-                Response::HTTP_FORBIDDEN,
+                Response::HTTP_BAD_REQUEST,
                 $translator->trans('api_errors.comment.by.page.id.slug.together', domain: 'api_errors'),
             );
         }

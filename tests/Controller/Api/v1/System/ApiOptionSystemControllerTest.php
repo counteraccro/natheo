@@ -90,7 +90,7 @@ class ApiOptionSystemControllerTest extends AppApiTestCase
             server: $this->getCustomHeaders(),
         );
         $response = $this->client->getResponse();
-        $this->assertEquals(403, $response->getStatusCode());
+        $this->assertEquals(404, $response->getStatusCode());
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);
         $this->assertArrayHasKey('errors', $content);
@@ -110,7 +110,7 @@ class ApiOptionSystemControllerTest extends AppApiTestCase
             server: $this->getCustomHeaders(),
         );
         $response = $this->client->getResponse();
-        $this->assertEquals(403, $response->getStatusCode());
+        $this->assertEquals(404, $response->getStatusCode());
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);
         $this->assertArrayHasKey('errors', $content);

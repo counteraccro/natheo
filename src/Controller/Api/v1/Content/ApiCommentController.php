@@ -22,9 +22,12 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\RateLimiter\RateLimiterFactoryInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -56,22 +59,47 @@ class ApiCommentController extends AppApiController
     /**
      * Ajout un nouveau commentaire
      * @param ApiAddCommentDto $apiAddCommentDto
+     * @param Request $request
+     * @param RateLimiterFactoryInterface $apiAddCommentLimiter
      * @return JsonResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/', name: 'add_comment', methods: ['POST'])]
+    #[
+        Route(
+            '{trailingSlash}',
+            name: 'add_comment',
+            requirements: ['trailingSlash' => '/?'],
+            defaults: ['trailingSlash' => ''],
+            methods: ['POST'],
+        ),
+    ]
+    #[IsGranted('ROLE_WRITE_API')]
     public function add(
-        #[MapQueryString(resolver: ApiAddCommentResolver::class)] ApiAddCommentDto $apiAddCommentDto,
+        #[MapRequestPayload(resolver: ApiAddCommentResolver::class)] ApiAddCommentDto $apiAddCommentDto,
+        Request $request,
+        RateLimiterFactoryInterface $apiAddCommentLimiter,
     ): JsonResponse {
         $translator = $this->getTranslator();
         $apiCommentService = $this->getApiCommentService();
+
+        // Le front relaie tous les visiteurs depuis la même IP : on limite sur l'IP du visiteur transmise
+        $ip = $apiAddCommentDto->getIp() !== '' ? $apiAddCommentDto->getIp() : $request->getClientIp();
+        $limit = $apiAddCommentLimiter->create($ip)->consume();
+        if (!$limit->isAccepted()) {
+            throw new HttpException(
+                Response::HTTP_TOO_MANY_REQUESTS,
+                $translator->trans('api_errors.too.many.requests', domain: 'api_errors'),
+                headers: ['Retry-After' => strval(max(0, $limit->getRetryAfter()->getTimestamp() - time()))],
+            );
+        }
+
         $comment = $apiCommentService->addNewComment($apiAddCommentDto);
 
         if ($comment->getId() === null) {
             throw new HttpException(
                 Response::HTTP_INTERNAL_SERVER_ERROR,
-                $translator->trans($translator->trans('api_errors.comment.not.save', domain: 'api_errors')),
+                $translator->trans('api_errors.comment.not.save', domain: 'api_errors'),
             );
         }
 
@@ -91,13 +119,20 @@ class ApiCommentController extends AppApiController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/moderate/{id}', name: 'moderate_comment', methods: ['PUT'])]
+    #[IsGranted('ROLE_WRITE_API')]
     public function moderateComment(
-        #[MapQueryString(resolver: ApiModerateCommentResolver::class)] ApiModerateCommentDto $apiModerateCommentDto,
+        #[MapRequestPayload(resolver: ApiModerateCommentResolver::class)] ApiModerateCommentDto $apiModerateCommentDto,
         #[MapEntity(id: 'id', message: 'Commentaire non disponible')] Comment $comment,
     ): JsonResponse {
         $translator = $this->getTranslator();
         $apiCommentService = $this->getApiCommentService();
         $user = $this->getUserByUserToken($apiModerateCommentDto->getUserToken());
+        if (!$apiCommentService->canModerate($user)) {
+            throw new HttpException(
+                Response::HTTP_FORBIDDEN,
+                $translator->trans('api_errors.comment.moderate.forbidden', domain: 'api_errors'),
+            );
+        }
         $apiCommentService->moderateComment($apiModerateCommentDto, $comment, $user);
 
         return $this->apiResponse(

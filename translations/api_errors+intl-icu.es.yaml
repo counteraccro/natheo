@@ -26,3 +26,10 @@ api_errors.comment.not.open: __api_errors.comment.not.open
 api_errors.comment.not.save: __api_errors.comment.not.save
 api_errors.internal.server.error: __api_errors.internal.server.error
 api_errors.comment.status.no.valid: __api_errors.comment.status.no.valid
+api_errors.bad.request: __api_errors.bad.request
+api_errors.method.not.allowed: __api_errors.method.not.allowed
+api_errors.too.many.requests: __api_errors.too.many.requests
+api_errors.request.body.invalid: __api_errors.request.body.invalid
+api_errors.comment.moderate.forbidden: __api_errors.comment.moderate.forbidden
+api_errors.params.not.boolean: __api_errors.params.not.boolean
+api_errors.access.role.denied: __api_errors.access.role.denied

@@ -45,7 +45,7 @@ class ApiCommentService extends AppApiService
 
         /** @var CommentRepository $repository */
         $repository = $this->getRepository(Comment::class);
-        $results = $repository->getCommentsByPageForApi($dto);
+        $results = $repository->getCommentsByPageForApi($dto, $this->getAllowedPageStatus($user));
 
         $return = [
             'comments' => [],
@@ -78,7 +78,10 @@ class ApiCommentService extends AppApiService
                 'comment' => $com,
             ];
 
-            if ($comment->getStatus() === CommentStatus::MODERATE->value && $this->isGranted(['ROLE_CONTRIBUTEUR'], $user)) {
+            if (
+                $comment->getStatus() === CommentStatus::MODERATE->value &&
+                $this->isGranted(['ROLE_CONTRIBUTEUR'], $user)
+            ) {
                 $return['comments'][$key]['moderate'] = $comment->getModerationComment();
             }
         }
@@ -110,8 +113,8 @@ class ApiCommentService extends AppApiService
 
         if ($page === null) {
             throw new HttpException(
-                Response::HTTP_FORBIDDEN,
-                $translator->trans($translator->trans('api_errors.find.page.not.found', domain: 'api_errors')),
+                Response::HTTP_NOT_FOUND,
+                $translator->trans('api_errors.find.page.not.found', domain: 'api_errors'),
             );
         }
 
@@ -120,7 +123,7 @@ class ApiCommentService extends AppApiService
         if (!$page->isOpenComment() || !$isOpen) {
             throw new HttpException(
                 Response::HTTP_FORBIDDEN,
-                $translator->trans($translator->trans('api_errors.comment.not.open', domain: 'api_errors')),
+                $translator->trans('api_errors.comment.not.open', domain: 'api_errors'),
             );
         }
 
@@ -144,7 +147,7 @@ class ApiCommentService extends AppApiService
         $comment = new Comment();
         $comment->setPage($page);
         $comment->setComment(strip_tags($dto->getComment()));
-        $comment->setAuthor($dto->getAuthor());
+        $comment->setAuthor(strip_tags($dto->getAuthor()));
         $comment->setEmail($dto->getEmail());
         $comment->setIp($dto->getIp());
         $comment->setUserAgent($dto->getUserAgent());
@@ -154,7 +157,7 @@ class ApiCommentService extends AppApiService
 
         $notificationFactory = new NotificationFactory($page->getUser());
         $notificationFactory->addNotification(Notification::NEW_COMMENT->value, [
-            'author' => $dto->getAuthor(),
+            'author' => $comment->getAuthor(),
             'status' => $statusStr,
             'page' => $page->getPageTranslationByLocale($dto->getLocale())->getTitre(),
             'id' => $comment->getId(),
@@ -164,6 +167,18 @@ class ApiCommentService extends AppApiService
         $this->save($user);
 
         return $comment;
+    }
+
+    /**
+     * Détermine si l'utilisateur peut modérer un commentaire (mêmes droits que l'administration)
+     * @param User $user
+     * @return bool
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function canModerate(User $user): bool
+    {
+        return $this->isGranted(['ROLE_CONTRIBUTEUR'], $user);
     }
 
     /**
@@ -177,7 +192,7 @@ class ApiCommentService extends AppApiService
      */
     public function moderateComment(ApiModerateCommentDto $dto, Comment $comment, User $user): void
     {
-        $comment->setModerationComment($dto->getModerationComment());
+        $comment->setModerationComment(strip_tags($dto->getModerationComment()));
         $comment->setStatus(intval($dto->getStatus()));
         $comment->setUserModeration($user);
         $this->save($comment);

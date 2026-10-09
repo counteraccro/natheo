@@ -75,7 +75,7 @@ class ApiFindPageDto extends AppApiDto
          * Position des menus
          * @var array
          */
-        #[Assert\Type(type: 'array', message: 'The show_menus parameter must be a boolean')] #[
+        #[Assert\Type(type: 'array', message: 'The menu_positions parameter must be an array')] #[
             Assert\Choice(
                 choices: self::MENU_POSITIONS,
                 multiple: true,

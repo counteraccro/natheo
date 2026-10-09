@@ -146,7 +146,7 @@ class PageRepository extends ServiceEntityRepository
             ->join('p.tags', 't')
             ->join('t.tagTranslations', 'tt')
             ->where('LOWER(tt.label) like :tag')
-            ->setParameter('tag', '%' . strtolower($tag) . '%')
+            ->setParameter('tag', '%' . addcslashes(strtolower($tag), '%_\\') . '%')
             ->andWhere('p.disabled = :disabled')
             ->setParameter('disabled', false)
             ->andWhere('p.status = :status')

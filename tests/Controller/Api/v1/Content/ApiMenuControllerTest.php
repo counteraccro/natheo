@@ -83,6 +83,38 @@ class ApiMenuControllerTest extends AppApiTestCase
     }
 
     /**
+     * Le paramètre position arrive en chaîne depuis la query string
+     * @return void
+     */
+    public function testFindWithPosition(): void
+    {
+        $page = $this->createPageAllDataDefault();
+        $menu = $this->createMenuAllDataDefault();
+        $page->addMenu($menu);
+        $this->persistAndFlush($page);
+
+        $params = [
+            'api_version' => self::API_VERSION,
+            'page_slug' => $page->getPageTranslationByLocale('fr')->getUrl(),
+        ];
+        $this->client->request(
+            'GET',
+            $this->router->generate('api_menu_find', array_merge($params, ['position' => $menu->getPosition()])),
+            server: $this->getCustomHeaders(),
+        );
+        $response = $this->client->getResponse();
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals($menu->getId(), json_decode($response->getContent(), true)['data']['id']);
+
+        $this->client->request(
+            'GET',
+            $this->router->generate('api_menu_find', array_merge($params, ['position' => 'abc'])),
+            server: $this->getCustomHeaders(),
+        );
+        $this->assertEquals(400, $this->client->getResponse()->getStatusCode());
+    }
+
+    /**
      * Test avec id et page_slug en même temps
      * @return void
      */
@@ -102,7 +134,7 @@ class ApiMenuControllerTest extends AppApiTestCase
         );
         $response = $this->client->getResponse();
 
-        $this->assertEquals(403, $response->getStatusCode());
+        $this->assertEquals(400, $response->getStatusCode());
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);
         $this->assertIsArray($content);
@@ -128,7 +160,7 @@ class ApiMenuControllerTest extends AppApiTestCase
         );
         $response = $this->client->getResponse();
 
-        $this->assertEquals(403, $response->getStatusCode());
+        $this->assertEquals(400, $response->getStatusCode());
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);
         $this->assertIsArray($content);
@@ -158,7 +190,7 @@ class ApiMenuControllerTest extends AppApiTestCase
         );
         $response = $this->client->getResponse();
 
-        $this->assertEquals(403, $response->getStatusCode());
+        $this->assertEquals(404, $response->getStatusCode());
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);
         $this->assertIsArray($content);
