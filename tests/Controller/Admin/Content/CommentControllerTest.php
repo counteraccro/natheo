@@ -87,7 +87,9 @@ class CommentControllerTest extends AppWebTestCase
 
         $this->client->request(
             'GET',
-            $this->router->generate('admin_comment_moderate_comments_filter', ['status' => CommentStatus::MODERATE->value]),
+            $this->router->generate('admin_comment_moderate_comments_filter', [
+                'status' => CommentStatus::MODERATE->value,
+            ]),
         );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
@@ -211,6 +213,20 @@ class CommentControllerTest extends AppWebTestCase
         $comment = $commentRepo->find($comment->getId());
         $this->assertEquals(CommentStatus::VALIDATE->value, $comment->getStatus());
         $this->assertEquals('Je suis un commentaire **en attente de validation**', $comment->getComment());
+        $this->assertNull($comment->getUserModeration());
+        $this->assertNull($comment->getModerationComment());
+
+        // Passage en modéré : le modérateur et le commentaire de modération sont conservés
+        $data['comment']['status'] = CommentStatus::MODERATE->value;
+        $data['comment']['moderationComment'] = 'Propos hors sujet';
+        $this->client->request('PUT', $this->router->generate('admin_comment_save'), content: json_encode($data));
+        $this->assertResponseIsSuccessful();
+
+        $this->em->clear();
+        $comment = $this->em->getRepository(Comment::class)->find($comment->getId());
+        $this->assertEquals(CommentStatus::MODERATE->value, $comment->getStatus());
+        $this->assertEquals('Propos hors sujet', $comment->getModerationComment());
+        $this->assertEquals($user->getId(), $comment->getUserModeration()?->getId());
     }
 
     /**

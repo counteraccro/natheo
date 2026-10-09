@@ -161,7 +161,7 @@ class ApiAuthenticationControllerTest extends AppApiTestCase
         );
 
         $response = $this->client->getResponse();
-        $this->assertEquals(403, $response->getStatusCode());
+        $this->assertEquals(400, $response->getStatusCode());
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);
         $this->checkStructureApiRetourError($content);
@@ -198,6 +198,48 @@ class ApiAuthenticationControllerTest extends AppApiTestCase
     }
 
     /**
+     * Test limitation des tentatives d'authentification utilisateur
+     * @return void
+     */
+    public function testAuthUserRateLimit(): void
+    {
+        $user = $this->createUserContributeur(['disabled' => false, 'anonymous' => false]);
+        $url = $this->router->generate('api_authentication_auth_user', ['api_version' => self::API_VERSION]);
+        $body = json_encode(['username' => $user->getEmail(), 'password' => 'bad-password']);
+
+        for ($i = 0; $i < 5; $i++) {
+            $this->client->request('POST', $url, server: $this->getCustomHeaders(), content: $body);
+            $this->assertEquals(401, $this->client->getResponse()->getStatusCode());
+        }
+
+        $this->client->request('POST', $url, server: $this->getCustomHeaders(), content: $body);
+        $response = $this->client->getResponse();
+        $this->assertEquals(429, $response->getStatusCode());
+        $this->assertTrue($response->headers->has('Retry-After'));
+        $content = json_decode($response->getContent(), true);
+        $this->checkStructureApiRetourError($content);
+        // Le message contient une virgule mais ne doit pas être découpé
+        $this->assertEquals(
+            [$this->translator->trans('api_errors.too.many.requests', domain: 'api_errors')],
+            $content['errors'],
+        );
+    }
+
+    /**
+     * Les routes répondent avec et sans slash final, sans redirection
+     * @return void
+     */
+    public function testTrailingSlash(): void
+    {
+        foreach (['authentication', 'sitemap', 'options-systems'] as $endpoint) {
+            foreach (['/api/v1/' . $endpoint, '/api/v1/' . $endpoint . '/'] as $url) {
+                $this->client->request('GET', $url, server: $this->getCustomHeaders());
+                $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), $url);
+            }
+        }
+    }
+
+    /**
      * Test retour API fermé
      * @return void
      */
@@ -205,8 +247,16 @@ class ApiAuthenticationControllerTest extends AppApiTestCase
     {
         $translator = $this->container->get(TranslatorInterface::class);
         $optionSystemService = $this->container->get(OptionSystemService::class);
+        // Fermer le site au public ne ferme pas l'API
         $optionSystemService->saveValueByKee(OptionSystem::OS_OPEN_SITE->value, '0');
+        $this->client->request(
+            'GET',
+            $this->router->generate('api_authentication_auth', ['api_version' => self::API_VERSION]),
+            server: $this->getCustomHeaders(self::HEADER_WRITE),
+        );
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
 
+        $optionSystemService->saveValueByKee(OptionSystem::OS_OPEN_API->value, '0');
         $this->client->request(
             'GET',
             $this->router->generate('api_authentication_auth', ['api_version' => self::API_VERSION]),

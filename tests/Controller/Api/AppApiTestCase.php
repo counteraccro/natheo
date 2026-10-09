@@ -43,6 +43,13 @@ class AppApiTestCase extends AppWebTestCase
      */
     protected const HEADER_ADMIN = 4;
 
+    public function setUp(): void
+    {
+        parent::setUp();
+        // Le rate limiter est stocké en cache fichier, on repart d'un état vierge à chaque test
+        $this->container->get('cache.rate_limiter')->clear();
+    }
+
     /**
      * Génère le header pour tester les APIs
      * @param int $typeHeader
