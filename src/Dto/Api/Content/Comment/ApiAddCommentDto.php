@@ -46,13 +46,19 @@ class ApiAddCommentDto extends AppApiDto
         #[Assert\Type(type: 'string', message: 'The author parameter must be a string')] #[
             Assert\NotNull(message: 'The author parameter cannot be empty'),
         ]
-        #[Assert\NotBlank(message: 'The author parameter cannot be empty')] private readonly string $author,
+        #[Assert\NotBlank(message: 'The author parameter cannot be empty')] #[
+            Assert\Length(max: 255, maxMessage: 'The author parameter cannot exceed {{ limit }} characters'),
+        ]
+        private readonly string $author,
 
         /**
          * author
          * @var string
          */
-        #[Assert\Email(message: 'The email parameter must be a valid email')] private readonly string $email,
+        #[Assert\Email(message: 'The email parameter must be a valid email')] #[
+            Assert\Length(max: 255, maxMessage: 'The email parameter cannot exceed {{ limit }} characters'),
+        ]
+        private readonly string $email,
 
         /**
          * author
@@ -61,7 +67,10 @@ class ApiAddCommentDto extends AppApiDto
         #[Assert\Type(type: 'string', message: 'The comment parameter must be a string')] #[
             Assert\NotNull(message: 'The comment parameter cannot be empty'),
         ]
-        #[Assert\NotBlank(message: 'The comment parameter cannot be empty')] private readonly string $comment,
+        #[Assert\NotBlank(message: 'The comment parameter cannot be empty')] #[
+            Assert\Length(max: 10000, maxMessage: 'The comment parameter cannot exceed {{ limit }} characters'),
+        ]
+        private readonly string $comment,
 
         /**
          * ip
@@ -73,8 +82,8 @@ class ApiAddCommentDto extends AppApiDto
          * user agent
          * @var string
          */
-        #[
-            Assert\Type(type: 'string', message: 'The userAgent parameter must be a valid ip'),
+        #[Assert\Type(type: 'string', message: 'The userAgent parameter must be a valid ip')] #[
+            Assert\Length(max: 1000, maxMessage: 'The userAgent parameter cannot exceed {{ limit }} characters'),
         ]
         private readonly string $userAgent,
     ) {}

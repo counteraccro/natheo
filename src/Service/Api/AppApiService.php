@@ -9,6 +9,8 @@ declare(strict_types=1);
 namespace App\Service\Api;
 
 use App\Entity\Admin\System\User;
+use App\Entity\Admin\Content\Page\Page;
+use App\Enum\Admin\Content\Page\PageStatus;
 use App\Enum\Admin\System\Options\OptionSystem;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityRepository;
@@ -126,6 +128,36 @@ class AppApiService extends AppApiHandlerService
         } catch (Exception $exception) {
             $this->getLogger()->error($exception->getMessage());
         }
+    }
+
+    /**
+     * Retourne les status de page visibles via l'API, les brouillons sont réservés aux contributeurs
+     * @param User|null $user
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getAllowedPageStatus(?User $user = null): array
+    {
+        if ($user !== null && $this->getSecurity()->isGrantedForUser($user, 'ROLE_CONTRIBUTEUR')) {
+            return [PageStatus::PUBLISH->value, PageStatus::DRAFT->value];
+        }
+        return [PageStatus::PUBLISH->value];
+    }
+
+    /**
+     * Indique si une page est accessible via l'API (active et dans un status autorisé)
+     * @param Page|null $page
+     * @param User|null $user
+     * @return bool
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function isPageVisible(?Page $page, ?User $user = null): bool
+    {
+        return $page !== null &&
+            !$page->isDisabled() &&
+            in_array($page->getStatus(), $this->getAllowedPageStatus($user), true);
     }
 
     /**

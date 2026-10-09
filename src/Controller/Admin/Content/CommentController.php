@@ -288,7 +288,7 @@ class CommentController extends AppAdminController
         $commentPopulate = new CommentPopulate($comment, $data['comment']);
         $comment = $commentPopulate->populate()->getComment();
 
-        if ($comment->getStatus() === CommentStatus::MODERATE) {
+        if ($comment->getStatus() === CommentStatus::MODERATE->value) {
             $comment->setUserModeration($this->getUser());
         } else {
             $comment->setUserModeration(null);

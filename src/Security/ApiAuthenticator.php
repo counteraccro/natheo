@@ -89,7 +89,11 @@ class ApiAuthenticator extends AbstractAuthenticator
      */
     private function isOpenApi(): void
     {
-        $isOpenApi = intval($this->optionSystemService->getValueByKey(OptionSystem::OS_OPEN_SITE->value));
+        // Option absente (installation antérieure) : on applique la valeur par défaut
+        $isOpenApi = intval(
+            $this->optionSystemService->getValueByKey(OptionSystem::OS_OPEN_API->value) ??
+                OptionSystem::OS_OPEN_API->getDefault(),
+        );
         if ($isOpenApi === 0) {
             throw new HttpException(
                 Response::HTTP_FORBIDDEN,

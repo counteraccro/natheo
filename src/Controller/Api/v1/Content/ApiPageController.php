@@ -56,7 +56,7 @@ class ApiPageController extends AppApiController
         if (empty($page)) {
             $translator = $this->getTranslator();
             throw new HttpException(
-                Response::HTTP_FORBIDDEN,
+                Response::HTTP_NOT_FOUND,
                 $translator->trans('api_errors.find.page.not.found', domain: 'api_errors'),
             );
         }
@@ -86,7 +86,7 @@ class ApiPageController extends AppApiController
         if (empty($pageContent)) {
             $translator = $this->getTranslator();
             throw new HttpException(
-                Response::HTTP_FORBIDDEN,
+                Response::HTTP_NOT_FOUND,
                 $translator->trans('api_errors.find.page.content.not.found', domain: 'api_errors'),
             );
         }
@@ -114,7 +114,7 @@ class ApiPageController extends AppApiController
         if (empty($listing)) {
             $translator = $this->getTranslator();
             throw new HttpException(
-                Response::HTTP_FORBIDDEN,
+                Response::HTTP_NOT_FOUND,
                 $translator->trans('api_errors.find.listing.category.not.found', domain: 'api_errors'),
             );
         }
@@ -142,7 +142,7 @@ class ApiPageController extends AppApiController
         if (empty($listing['pages'])) {
             $translator = $this->getTranslator();
             throw new HttpException(
-                Response::HTTP_FORBIDDEN,
+                Response::HTTP_NOT_FOUND,
                 $translator->trans('api_errors.find.listing.tag.not.found', domain: 'api_errors'),
             );
         }

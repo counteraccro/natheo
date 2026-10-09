@@ -17,6 +17,7 @@ use App\Entity\Admin\Content\Menu\MenuElement;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\System\User;
 use App\Enum\Admin\Content\Menu\MenuPosition;
+use App\Enum\Admin\Content\Page\PageCategory;
 use App\Enum\Admin\Content\Page\PageStatistics;
 use App\Enum\Admin\Content\Page\PageStatus;
 use App\Enum\Admin\System\Options\OptionUser;
@@ -30,6 +31,7 @@ use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 class ApiPageService extends AppApiService
 {
@@ -49,9 +51,12 @@ class ApiPageService extends AppApiService
             return [];
         }
 
-        $pageStatistiqueNbPageRead = $page->getPageStatistiqueByKey(PageStatistics::NB_READ->value);
-        $pageStatistiqueNbPageRead->setValue(strval($pageStatistiqueNbPageRead->getValue() + 1));
-        $this->save($pageStatistiqueNbPageRead);
+        // Les prévisualisations de brouillons par un contributeur ne comptent pas comme des lectures
+        if ($page->getStatus() === PageStatus::PUBLISH->value) {
+            $pageStatistiqueNbPageRead = $page->getPageStatistiqueByKey(PageStatistics::NB_READ->value);
+            $pageStatistiqueNbPageRead->setValue(strval($pageStatistiqueNbPageRead->getValue() + 1));
+            $this->save($pageStatistiqueNbPageRead);
+        }
 
         $apiPageFormater = new ApiPageFormater($page, $dto);
         $pageApi = $apiPageFormater->convertPage()->getPageForApi();
@@ -83,6 +88,9 @@ class ApiPageService extends AppApiService
                 $isLeftMenu = true;
             }
 
+            if (!$this->isMenuPositionRequested($menu->getPosition(), $dto)) {
+                continue;
+            }
             $pageApi = $this->getFormatedMenu($menu->getId(), $dto->getLocale(), $pageApi, $apiMenuService, $menuRepo);
         }
 
@@ -95,10 +103,26 @@ class ApiPageService extends AppApiService
                 if ($position === MenuPosition::POSITION_RIGHT->value && $isLeftMenu) {
                     continue;
                 }
+
+                if (!$this->isMenuPositionRequested($position, $dto)) {
+                    continue;
+                }
                 $pageApi = $this->getFormatedMenu($id, $dto->getLocale(), $pageApi, $apiMenuService, $menuRepo);
             }
         }
         return $pageApi;
+    }
+
+    /**
+     * Indique si la position de menu fait partie des positions demandées (paramètre menu_positions, 0 = toutes)
+     * @param int $position
+     * @param ApiFindPageDto $dto
+     * @return bool
+     */
+    private function isMenuPositionRequested(int $position, ApiFindPageDto $dto): bool
+    {
+        $positions = $dto->getMenuPositions();
+        return in_array(0, $positions, true) || in_array($position, $positions, true);
     }
 
     /**
@@ -118,12 +142,20 @@ class ApiPageService extends AppApiService
             'rows' => 0,
         ];
 
-        $pageService = $this->getPageService();
-        $listeCategories = $pageService->getAllCategories();
+        // Comparaison insensible à la casse et aux accents, sur le libellé traduit ou le slug (ex : evenement)
+        $slugger = new AsciiSlugger();
+        $search = $slugger
+            ->slug(trim($dto->getCategory()))
+            ->lower()
+            ->toString();
         $idCategory = 0;
-        foreach ($listeCategories as $id => $label) {
-            if (strtolower(trim($label)) == strtolower(trim($dto->getCategory()))) {
+        foreach ($this->getPageService()->getAllCategories() as $id => $label) {
+            if (
+                $search === $slugger->slug($label)->lower()->toString() ||
+                $search === PageCategory::from($id)->getSlug()
+            ) {
                 $idCategory = $id;
+                break;
             }
         }
 
@@ -233,13 +265,6 @@ class ApiPageService extends AppApiService
     {
         /** @var PageRepository $repository */
         $repository = $this->getRepository(Page::class);
-        $security = $this->getSecurity();
-
-        $status = [PageStatus::PUBLISH->value];
-        if ($user !== null && $security->isGrantedForUser($user, 'ROLE_CONTRIBUTEUR')) {
-            $status = [PageStatus::PUBLISH->value, PageStatus::DRAFT->value];
-        }
-
-        return $repository->getBySlug($slug, $status);
+        return $repository->getBySlug($slug, $this->getAllowedPageStatus($user));
     }
 }

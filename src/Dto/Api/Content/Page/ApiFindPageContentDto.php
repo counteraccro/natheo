@@ -32,13 +32,23 @@ class ApiFindPageContentDto extends AppApiDto
          * Numéro de la page (pagination des elements de la page)
          * @var int
          */
-        #[Assert\Type(type: 'integer', message: 'The page parameter must be a integer')] private readonly int $page,
+        #[Assert\Type(type: 'integer', message: 'The page parameter must be a integer')] #[
+            Assert\Positive(message: 'The page parameter must be greater than 0'),
+        ]
+        private readonly int $page,
 
         /**
          * Nombre maximum de lignes dans un élement de page
          * @var int
          */
-        #[Assert\Type(type: 'integer', message: 'The limit parameter must be a integer')] private readonly int $limit,
+        #[Assert\Type(type: 'integer', message: 'The limit parameter must be a integer')] #[
+            Assert\Range(
+                min: 1,
+                max: self::MAX_LIMIT,
+                notInRangeMessage: 'The limit parameter must be between {{ min }} and {{ max }}',
+            ),
+        ]
+        private readonly int $limit,
 
         /**
          * Token

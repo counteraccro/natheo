@@ -39,7 +39,7 @@ class ApiAddCommentResolver extends AppApiResolver implements ValueResolverInter
             return [];
         }
 
-        $content = json_decode($request->getContent(), true);
+        $content = $this->getJsonContent($request);
 
         $tabParameters = ApiParametersAddCommentRef::PARAMS_REF;
         foreach ($tabParameters as $parameter => $value) {
@@ -59,13 +59,34 @@ class ApiAddCommentResolver extends AppApiResolver implements ValueResolverInter
 
         $dto = new ApiAddCommentDto(
             intval($tabParameters[ApiParametersAddCommentRef::PARAM_ID]),
-            $tabParameters[ApiParametersAddCommentRef::PARAM_PAGE_SLUG],
-            $tabParameters[ApiParametersAddCommentRef::PARAM_LOCALE],
-            $tabParameters[ApiParametersAddCommentRef::PARAM_AUTHOR],
-            $tabParameters[ApiParametersAddCommentRef::PARAM_EMAIL],
-            $tabParameters[ApiParametersAddCommentRef::PARAM_COMMENT],
-            $tabParameters[ApiParametersAddCommentRef::PARAM_IP],
-            $tabParameters[ApiParametersAddCommentRef::PARAM_USER_AGENT],
+            $this->toStringParameter(
+                $tabParameters[ApiParametersAddCommentRef::PARAM_PAGE_SLUG],
+                ApiParametersAddCommentRef::PARAM_PAGE_SLUG,
+            ),
+            $this->toStringParameter(
+                $tabParameters[ApiParametersAddCommentRef::PARAM_LOCALE],
+                ApiParametersAddCommentRef::PARAM_LOCALE,
+            ),
+            $this->toStringParameter(
+                $tabParameters[ApiParametersAddCommentRef::PARAM_AUTHOR],
+                ApiParametersAddCommentRef::PARAM_AUTHOR,
+            ),
+            $this->toStringParameter(
+                $tabParameters[ApiParametersAddCommentRef::PARAM_EMAIL],
+                ApiParametersAddCommentRef::PARAM_EMAIL,
+            ),
+            $this->toStringParameter(
+                $tabParameters[ApiParametersAddCommentRef::PARAM_COMMENT],
+                ApiParametersAddCommentRef::PARAM_COMMENT,
+            ),
+            $this->toStringParameter(
+                $tabParameters[ApiParametersAddCommentRef::PARAM_IP],
+                ApiParametersAddCommentRef::PARAM_IP,
+            ),
+            $this->toStringParameter(
+                $tabParameters[ApiParametersAddCommentRef::PARAM_USER_AGENT],
+                ApiParametersAddCommentRef::PARAM_USER_AGENT,
+            ),
         );
 
         $this->validateDto($dto);
@@ -89,7 +110,7 @@ class ApiAddCommentResolver extends AppApiResolver implements ValueResolverInter
             empty($parameters[ApiParametersAddCommentRef::PARAM_PAGE_SLUG])
         ) {
             throw new HttpException(
-                Response::HTTP_FORBIDDEN,
+                Response::HTTP_BAD_REQUEST,
                 $translator->trans('api_errors.comment.add.not.id.slug.together', domain: 'api_errors'),
             );
         }
@@ -100,7 +121,7 @@ class ApiAddCommentResolver extends AppApiResolver implements ValueResolverInter
             !empty($parameters[ApiParametersAddCommentRef::PARAM_PAGE_SLUG])
         ) {
             throw new HttpException(
-                Response::HTTP_FORBIDDEN,
+                Response::HTTP_BAD_REQUEST,
                 $translator->trans('api_errors.comment.add.id.slug.together', domain: 'api_errors'),
             );
         }

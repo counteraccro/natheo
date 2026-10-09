@@ -38,7 +38,15 @@ class ApiOptionSystemController extends AppApiController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('', name: 'listing', methods: ['GET'])]
+    #[
+        Route(
+            '{trailingSlash}',
+            name: 'listing',
+            requirements: ['trailingSlash' => '/?'],
+            defaults: ['trailingSlash' => ''],
+            methods: ['GET'],
+        ),
+    ]
     public function listing(ApiOptionSystemService $apiOptionSystemService): jsonResponse
     {
         return $this->apiResponse(ApiConst::API_MSG_SUCCESS, $apiOptionSystemService->getAllOptionSystemWithValue());
@@ -62,7 +70,7 @@ class ApiOptionSystemController extends AppApiController
         if (!in_array($key, $apiOptionSystemService->getWhiteListeOptionSystem())) {
             $translator = $this->getTranslator();
             throw new HttpException(
-                Response::HTTP_FORBIDDEN,
+                Response::HTTP_NOT_FOUND,
                 $translator->trans('api_errors.find.option.system.not.found', domain: 'api_errors'),
             );
         }

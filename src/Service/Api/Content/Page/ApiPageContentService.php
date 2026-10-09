@@ -36,8 +36,9 @@ class ApiPageContentService extends AppApiService
      */
     public function getPageContentForApi(ApiFindPageContentDto $dto, ?User $user = null): ?array
     {
+        /** @var PageContent|null $pageContent */
         $pageContent = $this->findOneById(PageContent::class, $dto->getId());
-        if (empty($pageContent)) {
+        if (empty($pageContent) || !$this->isPageVisible($pageContent->getPage(), $user)) {
             return [];
         }
 
@@ -82,7 +83,7 @@ class ApiPageContentService extends AppApiService
                 $translator = $this->getTranslator();
                 $return['title'] = $translator->trans(
                     'page.content.listing.title',
-                    parameters: ['category' => $pageService->getCategoryById($pageContent->getPage()->getCategory())],
+                    parameters: ['category' => $pageService->getCategoryById($pageContent->getTypeId())],
                     domain: 'page',
                     locale: $dto->getLocale(),
                 );

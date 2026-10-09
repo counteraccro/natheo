@@ -40,7 +40,7 @@ class ApiModerateCommentResolver extends AppApiResolver implements ValueResolver
             return [];
         }
 
-        $content = json_decode($request->getContent(), true);
+        $content = $this->getJsonContent($request);
 
         $tabParameters = ApiParametersModerateCommentRef::PARAMS_REF;
         foreach ($tabParameters as $parameter => $value) {
@@ -64,8 +64,14 @@ class ApiModerateCommentResolver extends AppApiResolver implements ValueResolver
 
         $dto = new ApiModerateCommentDto(
             strval($tabParameters[ApiParametersModerateCommentRef::PARAM_STATUS]),
-            $tabParameters[ApiParametersModerateCommentRef::PARAM_MODERATION_COMMENT],
-            $tabParameters[ApiParametersModerateCommentRef::PARAM_USER_TOKEN],
+            $this->toStringParameter(
+                $tabParameters[ApiParametersModerateCommentRef::PARAM_MODERATION_COMMENT],
+                ApiParametersModerateCommentRef::PARAM_MODERATION_COMMENT,
+            ),
+            $this->toStringParameter(
+                $tabParameters[ApiParametersModerateCommentRef::PARAM_USER_TOKEN],
+                ApiParametersModerateCommentRef::PARAM_USER_TOKEN,
+            ),
         );
 
         $this->validateDto($dto);
@@ -83,10 +89,17 @@ class ApiModerateCommentResolver extends AppApiResolver implements ValueResolver
         /** @var TranslatorInterface $translator */
         $translator = $this->handlers->get('translator');
 
-        $tabStatus = [CommentStatus::MODERATE->value, CommentStatus::VALIDATE->value, CommentStatus::WAIT_VALIDATION->value];
-        if (!in_array($parameters[ApiParametersModerateCommentRef::PARAM_STATUS], $tabStatus, true)) {
+        $tabStatus = [
+            CommentStatus::MODERATE->value,
+            CommentStatus::VALIDATE->value,
+            CommentStatus::WAIT_VALIDATION->value,
+        ];
+        // Accepte le status en entier ou en chaîne numérique ("3")
+        $status = $parameters[ApiParametersModerateCommentRef::PARAM_STATUS];
+        $status = is_int($status) || (is_string($status) && ctype_digit($status)) ? intval($status) : null;
+        if (!in_array($status, $tabStatus, true)) {
             throw new HttpException(
-                Response::HTTP_FORBIDDEN,
+                Response::HTTP_BAD_REQUEST,
                 $translator->trans('api_errors.comment.status.no.valid', domain: 'api_errors'),
             );
         }

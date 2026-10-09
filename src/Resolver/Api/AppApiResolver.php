@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Resolver\Api;
 
+use App\Http\Api\ApiHttpException;
 use App\Utils\Api\ApiParametersParser;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -43,13 +44,52 @@ class AppApiResolver
         $validator = $this->handlers->get('validator');
         $errors = $validator->validate($dto);
         if (count($errors) > 0) {
-            $nb = $errors->count();
             $msg = [];
-            for ($i = 0; $i < $nb; $i++) {
-                $msg[] = $errors->get($i)->getMessage() . ' ';
+            foreach ($errors as $error) {
+                $msg[] = $error->getMessage();
             }
-            throw new HttpException(Response::HTTP_FORBIDDEN, implode(',', $msg));
+            throw new ApiHttpException(Response::HTTP_BAD_REQUEST, $msg);
         }
+    }
+
+    /**
+     * Retourne le corps JSON de la requête sous forme de tableau, HttpException 400 si le JSON est invalide
+     * @param Request $request
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getJsonContent(Request $request): array
+    {
+        $content = json_decode($request->getContent(), true);
+        if (!is_array($content)) {
+            $translator = $this->handlers->get('translator');
+            throw new HttpException(
+                Response::HTTP_BAD_REQUEST,
+                $translator->trans('api_errors.request.body.invalid', domain: 'api_errors'),
+            );
+        }
+        return $content;
+    }
+
+    /**
+     * Convertit un paramètre du corps JSON en chaîne, HttpException 400 si ce n'est pas une valeur scalaire
+     * @param mixed $value
+     * @param string $name
+     * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function toStringParameter(mixed $value, string $name): string
+    {
+        if ($value !== null && !is_scalar($value)) {
+            $translator = $this->handlers->get('translator');
+            throw new HttpException(
+                Response::HTTP_BAD_REQUEST,
+                $translator->trans('api_errors.params.not.string', ['param' => $name], domain: 'api_errors'),
+            );
+        }
+        return strval($value);
     }
 
     /**

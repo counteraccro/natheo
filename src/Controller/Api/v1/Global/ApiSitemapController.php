@@ -27,7 +27,15 @@ class ApiSitemapController extends AppApiController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/', name: 'sitemap', methods: ['GET'])]
+    #[
+        Route(
+            '{trailingSlash}',
+            name: 'sitemap',
+            requirements: ['trailingSlash' => '/?'],
+            defaults: ['trailingSlash' => ''],
+            methods: ['GET'],
+        ),
+    ]
     public function getSitemap(): jsonResponse
     {
         $apiSitemapService = $this->getApiSitemapService();

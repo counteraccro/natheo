@@ -48,7 +48,7 @@ class ApiMenuController extends AppApiController
         $translator = $this->getTranslator();
         if (empty($menu)) {
             throw new HttpException(
-                Response::HTTP_FORBIDDEN,
+                Response::HTTP_NOT_FOUND,
                 $translator->trans('api_errors.find.menu.not.found', domain: 'api_errors'),
             );
         }

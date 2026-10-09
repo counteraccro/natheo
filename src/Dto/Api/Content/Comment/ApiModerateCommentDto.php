@@ -28,8 +28,11 @@ class ApiModerateCommentDto extends AppApiDto
          * moderation comment
          * @var string
          */
-        #[
-            Assert\Type(type: 'string', message: 'The moderation_comment parameter must be a string'),
+        #[Assert\Type(type: 'string', message: 'The moderation_comment parameter must be a string')] #[
+            Assert\Length(
+                max: 10000,
+                maxMessage: 'The moderation_comment parameter cannot exceed {{ limit }} characters',
+            ),
         ]
         private readonly string $moderationComment,
 
