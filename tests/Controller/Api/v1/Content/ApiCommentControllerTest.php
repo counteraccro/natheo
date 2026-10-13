@@ -498,7 +498,8 @@ class ApiCommentControllerTest extends AppApiTestCase
     }
 
     /**
-     * Ajout de commentaire limité par IP visiteur, avec ou sans slash final
+     * Ajout de commentaire limité par IP cliente, avec ou sans slash final.
+     * L'IP du payload ne permet pas de contourner la limite
      * @return void
      */
     public function testAddCommentRateLimitAndTrailingSlash(): void
@@ -512,36 +513,24 @@ class ApiCommentControllerTest extends AppApiTestCase
             'ip' => $ip,
             'user_agent' => 'phpunit',
         ]);
+        $server = fn(string $remoteAddr) => array_merge($this->getCustomHeaders(self::HEADER_WRITE), [
+            'REMOTE_ADDR' => $remoteAddr,
+        ]);
         $url = $this->router->generate('api_comment_add_comment', ['api_version' => self::API_VERSION]);
         $urls = [$url, $url . '/'];
 
         for ($i = 0; $i < 5; $i++) {
-            $this->client->request(
-                'POST',
-                $urls[$i % 2],
-                server: $this->getCustomHeaders(self::HEADER_WRITE),
-                content: $body('10.0.0.1'),
-            );
+            $this->client->request('POST', $urls[$i % 2], server: $server('10.0.0.1'), content: $body('10.0.0.' . $i));
             $this->assertEquals(201, $this->client->getResponse()->getStatusCode());
         }
 
-        $this->client->request(
-            'POST',
-            $this->router->generate('api_comment_add_comment', ['api_version' => self::API_VERSION]),
-            server: $this->getCustomHeaders(self::HEADER_WRITE),
-            content: $body('10.0.0.1'),
-        );
+        $this->client->request('POST', $url, server: $server('10.0.0.1'), content: $body('10.0.0.99'));
         $response = $this->client->getResponse();
         $this->assertEquals(429, $response->getStatusCode());
         $this->assertCount(1, json_decode($response->getContent(), true)['errors']);
 
         // Un autre visiteur n'est pas impacté
-        $this->client->request(
-            'POST',
-            $this->router->generate('api_comment_add_comment', ['api_version' => self::API_VERSION]),
-            server: $this->getCustomHeaders(self::HEADER_WRITE),
-            content: $body('10.0.0.2'),
-        );
+        $this->client->request('POST', $url, server: $server('10.0.0.2'), content: $body('10.0.0.1'));
         $this->assertEquals(201, $this->client->getResponse()->getStatusCode());
     }
 

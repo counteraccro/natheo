@@ -113,6 +113,17 @@ class OptionSystemServiceTest extends AppWebTestCase
         $result = $this->optionSystemService->getValueByKey(OptionSystemEnum::OS_THEME_SITE->value);
         $this->assertNotNull($result);
         $this->assertEquals('edit-purple', $result);
+
+        // Option déclarée dans la config mais absente en base : elle est créée
+        $option = $this->optionSystemService->getByKey(OptionSystemEnum::OS_OPEN_API->value);
+        $this->em->remove($option);
+        $this->em->flush();
+        $this->optionSystemService->saveValueByKee(OptionSystemEnum::OS_OPEN_API->value, '0');
+        $this->assertEquals('0', $this->optionSystemService->getValueByKey(OptionSystemEnum::OS_OPEN_API->value));
+
+        // Clé inconnue de la config : rien n'est créé
+        $this->optionSystemService->saveValueByKee('option-qui-n-exise-pas', 'value');
+        $this->assertNull($this->optionSystemService->getValueByKey('option-qui-n-exise-pas'));
     }
 
     /**

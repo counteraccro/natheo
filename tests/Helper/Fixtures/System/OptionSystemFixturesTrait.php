@@ -187,6 +187,12 @@ trait OptionSystemFixturesTrait
         $this->createOptionSystem($data);
 
         $data = [
+            'key' => OptionSystemEnum::OS_FRONT_API_TOKEN->value,
+            'value' => 'front-token-test',
+        ];
+        $this->createOptionSystem($data);
+
+        $data = [
             'key' => OptionSystemEnum::OS_OPEN_COMMENT->value,
             'value' => '1',
         ];
