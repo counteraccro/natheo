@@ -503,7 +503,8 @@ class OptionExtension extends AppAdminExtension
                 return $option->getValue() ?? '';
             }
         }
-        return '';
+        // Option absente en base (ajoutée après l'installation) : on affiche sa valeur par défaut
+        return (string) ($this->optionSystemService->getOptionConfigByKey($key)['default'] ?? '');
     }
 
     /**

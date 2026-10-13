@@ -1,42 +1,48 @@
-<script>
+<script lang="ts">
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 2.0
  * Fil d'ariane
  */
-export default {
+import { defineComponent, type PropType } from 'vue';
+import type { UtilsFront } from '@/utils/Front/UtilsFront';
+import type { FrontPage } from '@/ts/Front/NatheoHorizon/Structure.type';
+
+export default defineComponent({
   name: 'Breadcrumb',
   props: {
-    utilsFront: Object,
-    page: Object,
-    locale: String,
+    utilsFront: {
+      type: Object as PropType<UtilsFront>,
+      required: true,
+    },
+    page: {
+      type: Object as PropType<FrontPage>,
+      required: true,
+    },
+    label: {
+      type: String,
+      required: true,
+    },
   },
-  emits: [],
-  data() {
-    return {
-      value: 'Value',
-    };
+  computed: {
+    homeUrl(): string {
+      return `${this.utilsFront.datas.basePath}/${this.utilsFront.datas.locale}/`;
+    },
   },
-  mounted() {},
-
-  methods: {},
-};
+});
 </script>
 
 <template>
-  <!-- Fil d'Ariane simple - Tailwind CSS 4 -->
   <nav class="text-sm mb-3" aria-label="Breadcrumb">
     <ol class="flex flex-wrap items-center gap-2">
-      <!-- Item 1 -->
       <li class="inline-flex items-center">
-        <a :href="'/' + this.locale" class="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900">
-          <span>Index</span>
+        <a :href="homeUrl" class="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900">
+          <span>{{ label }}</span>
         </a>
       </li>
 
-      <!-- Séparateur -->
       <li aria-hidden="true" class="text-gray-400">
-        <svg class="w-4 h-4" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <svg class="w-4 h-4" viewBox="0 0 20 20" fill="none">
           <path
             d="M7 6l5 4-5 4"
             stroke="currentColor"
@@ -47,9 +53,8 @@ export default {
         </svg>
       </li>
 
-      <!-- Item courant (non cliquable) -->
       <li class="inline-flex items-center" aria-current="page">
-        <span class="text-gray-900 font-medium truncate">{{ this.page.title }}</span>
+        <span class="text-gray-900 font-medium truncate">{{ page.title }}</span>
       </li>
     </ol>
   </nav>

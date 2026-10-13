@@ -130,7 +130,8 @@ class OptionSystemService extends AppAdminService
     }
 
     /**
-     * Permet de sauvegarder la valeur d'une clé
+     * Permet de sauvegarder la valeur d'une clé.
+     * Si l'option est déclarée dans la config mais absente en base (ajoutée après l'installation), elle est créée
      * @param string $key
      * @param string $value
      * @return void
@@ -142,7 +143,11 @@ class OptionSystemService extends AppAdminService
         /* @var OptionSystem $optionSystem */
         $optionSystem = $this->getByKey($key);
         if ($optionSystem === null) {
-            return;
+            if ($this->getOptionConfigByKey($key) === null) {
+                return;
+            }
+            $optionSystem = new OptionSystem();
+            $optionSystem->setKey($key);
         }
         $optionSystem->setValue($value);
         $this->save($optionSystem);

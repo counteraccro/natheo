@@ -1,84 +1,141 @@
-<script>
-import { PageRender } from '../../../../../../utils/Front/Const/PageRender';
-import { UtilsFront } from '../../../../../../utils/Front/UtilsFront';
-import { ContentType } from '../../../../../../utils/Front/Const/ContentType';
+<script lang="ts">
+/**
+ * @author Gourdon Aymeric
+ * @version 2.0
+ * Structure d'une page : en-tête, blocs de contenu selon le rendu, auteur, tags et commentaires
+ */
+import { defineComponent, markRaw, type Component, type PropType } from 'vue';
 import ContentText from './ContentText.vue';
 import ContentFaq from './ContentFaq.vue';
 import ContentListing from './ContentListing.vue';
-import { PageStatus } from '../../../../../../utils/Front/Const/PageStatus';
 import ContentComment from './ContentComment.vue';
 import Breadcrumb from './Breadcrumb.vue';
+import { PageRender } from '@/utils/Front/Const/PageRender';
+import { PageStatus } from '@/utils/Front/Const/PageStatus';
+import { ContentType } from '@/utils/Front/Const/ContentType';
+import type { FrontApi } from '@/utils/Front/FrontApi';
+import type { UtilsFront } from '@/utils/Front/UtilsFront';
+import type {
+  FrontApiError,
+  FrontMainTranslate,
+  FrontPage,
+  FrontPageContent,
+} from '@/ts/Front/NatheoHorizon/Structure.type';
 
-/**
- * @author Gourdon Aymeric
- * @version 1.0
- * ContentStructure page
- */
-export default {
+interface RenderLayout {
+  gap: string;
+  columns: string[];
+}
+
+const FULL = 'col-span-12 mb-3';
+const HALF = 'col-span-12 lg:col-span-6';
+const THIRD = 'col-span-12 lg:col-span-4';
+
+/** Disposition des blocs pour chaque rendu de page : une classe par bloc, dans l'ordre des contenus */
+const LAYOUTS: Record<number, RenderLayout> = {
+  [PageRender.oneBlock]: { gap: '', columns: [FULL] },
+  [PageRender.twoBlock]: { gap: 'gap-5', columns: [HALF, HALF] },
+  [PageRender.threeBlock]: { gap: 'gap-5', columns: [THIRD, THIRD, THIRD] },
+  [PageRender.twoBlockBottom]: { gap: '', columns: [FULL, FULL] },
+  [PageRender.threeBlockBottom]: { gap: '', columns: [FULL, FULL, FULL] },
+  [PageRender.oneTwoBlock]: { gap: 'gap-5', columns: [FULL, HALF, HALF] },
+  [PageRender.twoOneBlock]: { gap: 'gap-5', columns: [HALF, HALF, FULL] },
+  [PageRender.twoTwoBlock]: { gap: 'gap-4', columns: [HALF, HALF, HALF, HALF] },
+};
+
+const COMPONENTS: Record<number, Component> = {
+  [ContentType.text]: markRaw(ContentText),
+  [ContentType.faq]: markRaw(ContentFaq),
+  [ContentType.listing]: markRaw(ContentListing),
+};
+
+interface RenderBlock {
+  content: FrontPageContent;
+  component: Component;
+  css: string;
+}
+
+export default defineComponent({
   name: 'ContentStructure',
   components: { Breadcrumb, ContentComment },
-  computed: {
-    PageStatus() {
-      return PageStatus;
-    },
-    ContentText() {
-      return ContentText;
-    },
-    PageRender() {
-      return PageRender;
-    },
-  },
   props: {
-    data: Object,
-    ajaxRequest: Object,
-    translate: Object,
-    locale: String,
-    utilsFront: Object,
+    page: {
+      type: Object as PropType<FrontPage>,
+      required: true,
+    },
+    frontApi: {
+      type: Object as PropType<FrontApi>,
+      required: true,
+    },
+    translate: {
+      type: Object as PropType<FrontMainTranslate>,
+      required: true,
+    },
+    locale: {
+      type: String,
+      required: true,
+    },
+    utilsFront: {
+      type: Object as PropType<UtilsFront>,
+      required: true,
+    },
   },
-  emits: ['api-failure'],
-  data() {
-    return {
-      page: this.data,
-    };
+  emits: {
+    'api-failure': (_error: FrontApiError) => true,
   },
-  created() {},
+  computed: {
+    layout(): RenderLayout {
+      return LAYOUTS[this.page.render] ?? LAYOUTS[PageRender.oneBlock];
+    },
 
-  mounted() {},
+    blocks(): RenderBlock[] {
+      const blocks: RenderBlock[] = [];
+      this.layout.columns.forEach((css, index) => {
+        const content = this.page.contents[index];
+        const component = content ? COMPONENTS[content.type] : undefined;
+        if (content && component) {
+          blocks.push({ content, component, css });
+        }
+      });
+      return blocks;
+    },
 
+    isDraft(): boolean {
+      return this.page.status === PageStatus.draft;
+    },
+
+    authorAvatar(): string | null {
+      return this.page.author.avatar ? this.utilsFront.datas.pathAvatar + this.page.author.avatar : null;
+    },
+
+    updateIso(): string {
+      return new Date(this.page.update * 1000).toISOString();
+    },
+
+    showComments(): boolean {
+      return this.utilsFront.optionsSystem.OS_OPEN_COMMENT === '1' && this.page.openComment;
+    },
+  },
   methods: {
-    apiFailure(code, msg) {
-      this.$emit('api-failure', code, msg);
-    },
-
-    getComponentByType(type) {
-      if (type === ContentType.text) {
-        return ContentText;
-      }
-
-      if (type === ContentType.faq) {
-        return ContentFaq;
-      }
-
-      if (type === ContentType.listing) {
-        return ContentListing;
-      }
+    apiFailure(error: FrontApiError): void {
+      this.$emit('api-failure', error);
     },
   },
-};
+});
 </script>
 
 <template>
   <div class="relative w-full h-48 sm:h-56 md:h-72 lg:h-80">
     <img
-      v-if="this.page.headerImg !== null"
-      :src="this.page.headerImg"
-      alt="Image d'article"
+      v-if="page.headerImg"
+      :src="page.headerImg"
+      :alt="translate.headerImgAlt"
       class="w-full h-full object-cover rounded-t-2xl"
     />
     <div
-      class="absolute inset-0 bg-gradient-to-t to-transparent rounded-t-2xl"
+      class="absolute inset-0 bg-linear-to-t to-transparent rounded-t-2xl"
       :class="
-        this.page.headerImg !== null
+        page.headerImg
           ? 'from-gray-800/70 via-gray-400/30'
           : 'from-theme-4-750/70 via-theme-4-750/30 border-l border-l-theme-4-750/20 border-r border-r-theme-4-750/20 border-t border-t-blue-100'
       "
@@ -86,283 +143,30 @@ export default {
     <h1
       class="absolute inset-0 flex items-center justify-center text-white text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold text-center px-4"
     >
-      {{ this.page.title }}
+      {{ page.title }}
     </h1>
   </div>
 
-  <div
-    v-if="this.page.status === PageStatus.draft"
-    class="border border-red-300/50 bg-red-600/10 px-4 py-2 text-slate-600"
-  >
+  <div v-if="isDraft" class="border border-red-300/50 bg-red-600/10 px-4 py-2 text-slate-600">
     <p class="text-center font-medium">
-      {{ this.translate.infoDraft }}
+      {{ translate.articleFooter.infoDraft }}
     </p>
   </div>
 
   <div class="p-4 rounded-b-2xl bg-white">
-    <Breadcrumb :page="this.page" :utils-front="this.utilsFront" :locale="this.locale" />
+    <Breadcrumb :page="page" :utils-front="utilsFront" :label="translate.breadcrumb" />
 
-    <div v-if="this.page.render === PageRender.oneBlock">
-      <div class="grid grid-cols-12">
-        <div class="col-span-12 lg:order-1 mb-3">
-          <component
-            :is="this.getComponentByType(this.page.contents[0]?.type)"
-            :data="this.page.contents[0]"
-            :utils-front="this.utilsFront"
-            :locale="this.locale"
-            :ajax-request="this.ajaxRequest"
-            @api-failure="this.apiFailure"
-          >
-          </component>
-        </div>
-      </div>
-    </div>
-    <div v-if="this.page.render === PageRender.twoBlock">
-      <div class="grid grid-cols-12 gap-5">
-        <div class="col-span-12 lg:col-span-6 order-1">
-          <component
-            :is="this.getComponentByType(this.page.contents[0]?.type)"
-            :data="this.page.contents[0]"
-            :utils-front="this.utilsFront"
-            :locale="this.locale"
-            :ajax-request="this.ajaxRequest"
-            @api-failure="this.apiFailure"
-          >
-          </component>
-        </div>
-        <div class="col-span-12 lg:col-span-6 order-2">
-          <component
-            :is="this.getComponentByType(this.page.contents[1]?.type)"
-            :data="this.page.contents[1]"
-            :utils-front="this.utilsFront"
-            :locale="this.locale"
-            :ajax-request="this.ajaxRequest"
-            @api-failure="this.apiFailure"
-          >
-          </component>
-        </div>
-      </div>
-    </div>
-    <div v-if="this.page.render === PageRender.threeBlock">
-      <div class="grid grid-cols-12 gap-5">
-        <div class="col-span-12 lg:col-span-4 order-1">
-          <component
-            :is="this.getComponentByType(this.page.contents[0]?.type)"
-            :data="this.page.contents[0]"
-            :utils-front="this.utilsFront"
-            :locale="this.locale"
-            :ajax-request="this.ajaxRequest"
-            @api-failure="this.apiFailure"
-          >
-          </component>
-        </div>
-        <div class="col-span-12 lg:col-span-4 order-2">
-          <component
-            :is="this.getComponentByType(this.page.contents[1]?.type)"
-            :data="this.page.contents[1]"
-            :utils-front="this.utilsFront"
-            :locale="this.locale"
-            :ajax-request="this.ajaxRequest"
-            @api-failure="this.apiFailure"
-          >
-          </component>
-        </div>
-        <div class="col-span-12 lg:col-span-4 order-3">
-          <component
-            :is="this.getComponentByType(this.page.contents[2]?.type)"
-            :data="this.page.contents[2]"
-            :utils-front="this.utilsFront"
-            :locale="this.locale"
-            :ajax-request="this.ajaxRequest"
-            @api-failure="this.apiFailure"
-          >
-          </component>
-        </div>
-      </div>
-    </div>
-    <div v-if="this.page.render === PageRender.twoBlockBottom">
-      <div class="grid grid-cols-12">
-        <div class="col-span-12 lg:order-1 mb-3">
-          <component
-            :is="this.getComponentByType(this.page.contents[0]?.type)"
-            :data="this.page.contents[0]"
-            :utils-front="this.utilsFront"
-            :locale="this.locale"
-            :ajax-request="this.ajaxRequest"
-            @api-failure="this.apiFailure"
-          >
-          </component>
-        </div>
-        <div class="col-span-12 lg:order-2 mb-3">
-          <component
-            :is="this.getComponentByType(this.page.contents[1]?.type)"
-            :data="this.page.contents[1]"
-            :utils-front="this.utilsFront"
-            :locale="this.locale"
-            :ajax-request="this.ajaxRequest"
-            @api-failure="this.apiFailure"
-          >
-          </component>
-        </div>
-      </div>
-    </div>
-    <div v-if="this.page.render === PageRender.threeBlockBottom">
-      <div class="grid grid-cols-12">
-        <div class="col-span-12 lg:order-1 mb-3">
-          <component
-            :is="this.getComponentByType(this.page.contents[0]?.type)"
-            :data="this.page.contents[0]"
-            :utils-front="this.utilsFront"
-            :locale="this.locale"
-            :ajax-request="this.ajaxRequest"
-            @api-failure="this.apiFailure"
-          >
-          </component>
-        </div>
-        <div class="col-span-12 lg:order-2 mb-3">
-          <component
-            :is="this.getComponentByType(this.page.contents[1]?.type)"
-            :data="this.page.contents[1]"
-            :utils-front="this.utilsFront"
-            :locale="this.locale"
-            :ajax-request="this.ajaxRequest"
-            @api-failure="this.apiFailure"
-          >
-          </component>
-        </div>
-        <div class="col-span-12 lg:order-3 mb-3">
-          <component
-            :is="this.getComponentByType(this.page.contents[2]?.type)"
-            :data="this.page.contents[2]"
-            :utils-front="this.utilsFront"
-            :locale="this.locale"
-            :ajax-request="this.ajaxRequest"
-            @api-failure="this.apiFailure"
-          >
-          </component>
-        </div>
-      </div>
-    </div>
-    <div v-if="this.page.render === PageRender.oneTwoBlock">
-      <div class="grid gap-5 grid-cols-12">
-        <div class="col-span-12 lg:order-1 mb-3">
-          <component
-            :is="this.getComponentByType(this.page.contents[0]?.type)"
-            :data="this.page.contents[0]"
-            :utils-front="this.utilsFront"
-            :locale="this.locale"
-            :ajax-request="this.ajaxRequest"
-            @api-failure="this.apiFailure"
-          >
-          </component>
-        </div>
-        <div class="col-span-12 lg:col-span-6 order-2">
-          <component
-            :is="this.getComponentByType(this.page.contents[1]?.type)"
-            :data="this.page.contents[1]"
-            :utils-front="this.utilsFront"
-            :locale="this.locale"
-            :ajax-request="this.ajaxRequest"
-            @api-failure="this.apiFailure"
-          >
-          </component>
-        </div>
-        <div class="col-span-12 lg:col-span-6 order-3">
-          <component
-            :is="this.getComponentByType(this.page.contents[2]?.type)"
-            :data="this.page.contents[2]"
-            :utils-front="this.utilsFront"
-            :locale="this.locale"
-            :ajax-request="this.ajaxRequest"
-            @api-failure="this.apiFailure"
-          >
-          </component>
-        </div>
-      </div>
-    </div>
-    <div v-if="this.page.render === PageRender.twoOneBlock">
-      <div class="grid gap-5 grid-cols-12">
-        <div class="col-span-12 lg:col-span-6 order-1">
-          <component
-            :is="this.getComponentByType(this.page.contents[0]?.type)"
-            :data="this.page.contents[0]"
-            :utils-front="this.utilsFront"
-            :locale="this.locale"
-            :ajax-request="this.ajaxRequest"
-            @api-failure="this.apiFailure"
-          >
-          </component>
-        </div>
-        <div class="col-span-12 lg:col-span-6 order-2">
-          <component
-            :is="this.getComponentByType(this.page.contents[1]?.type)"
-            :data="this.page.contents[1]"
-            :utils-front="this.utilsFront"
-            :locale="this.locale"
-            :ajax-request="this.ajaxRequest"
-            @api-failure="this.apiFailure"
-          >
-          </component>
-        </div>
-        <div class="col-span-12 lg:order-3 mb-3">
-          <component
-            :is="this.getComponentByType(this.page.contents[2]?.type)"
-            :data="this.page.contents[2]"
-            :utils-front="this.utilsFront"
-            :locale="this.locale"
-            :ajax-request="this.ajaxRequest"
-            @api-failure="this.apiFailure"
-          >
-          </component>
-        </div>
-      </div>
-    </div>
-    <div v-if="this.page.render === PageRender.twoTwoBlock">
-      <div class="grid grid-cols-12 gap-4">
-        <div class="col-span-12 lg:col-span-6 order-1">
-          <component
-            :is="this.getComponentByType(this.page.contents[0]?.type)"
-            :data="this.page.contents[0]"
-            :utils-front="this.utilsFront"
-            :locale="this.locale"
-            :ajax-request="this.ajaxRequest"
-            @api-failure="this.apiFailure"
-          >
-          </component>
-        </div>
-        <div class="col-span-12 lg:col-span-6 order-2">
-          <component
-            :is="this.getComponentByType(this.page.contents[1]?.type)"
-            :data="this.page.contents[1]"
-            :utils-front="this.utilsFront"
-            :locale="this.locale"
-            :ajax-request="this.ajaxRequest"
-            @api-failure="this.apiFailure"
-          >
-          </component>
-        </div>
-        <div class="col-span-12 lg:col-span-6 order-3">
-          <component
-            :is="this.getComponentByType(this.page.contents[2]?.type)"
-            :data="this.page.contents[2]"
-            :utils-front="this.utilsFront"
-            :locale="this.locale"
-            :ajax-request="this.ajaxRequest"
-            @api-failure="this.apiFailure"
-          >
-          </component>
-        </div>
-        <div class="col-span-12 lg:col-span-6 order-4">
-          <component
-            :is="this.getComponentByType(this.page.contents[3]?.type)"
-            :data="this.page.contents[3]"
-            :utils-front="this.utilsFront"
-            :locale="this.locale"
-            :ajax-request="this.ajaxRequest"
-            @api-failure="this.apiFailure"
-          >
-          </component>
-        </div>
+    <div class="grid grid-cols-12" :class="layout.gap">
+      <div v-for="block in blocks" :key="block.content.id" :class="block.css">
+        <component
+          :is="block.component"
+          :data="block.content"
+          :utils-front="utilsFront"
+          :locale="locale"
+          :front-api="frontApi"
+          :translate="translate"
+          @api-failure="apiFailure"
+        />
       </div>
     </div>
 
@@ -372,66 +176,62 @@ export default {
           <div class="flex flex-col sm:flex-row sm:items-center sm:gap-4">
             <div class="shrink-0">
               <img
-                v-if="this.page.author.avatar !== null || this.page.author.avatar !== ''"
-                :src="'/uploads/avatars/' + this.page.author.avatar"
-                :alt="'Avatar de ' + this.page.author.author"
+                v-if="authorAvatar"
+                :src="authorAvatar"
+                :alt="page.author.author"
                 class="size-14 rounded-full object-cover"
               />
-
               <div
                 v-else
-                class="flex size-14 items-center justify-center rounded-full bg-theme-4-750 dark:bg-gray-600 text-white font-semibold ring-1 ring-neutral-200/70dark:ring-neutral-800/70"
+                class="flex size-14 items-center justify-center rounded-full bg-theme-4-750 dark:bg-gray-600 text-white font-semibold ring-1 ring-neutral-200/70 dark:ring-neutral-800/70"
+                aria-hidden="true"
               >
-                {{ this.page.author.author.substring(0, 1).toUpperCase() }}
+                {{ page.author.author.substring(0, 1).toUpperCase() }}
               </div>
             </div>
 
             <h3 class="mt-2 sm:mt-0 text-base font-semibold text-slate-900">
-              {{ this.page.author.author }}
+              {{ page.author.author }}
             </h3>
           </div>
 
           <p class="mt-2 ml-3 text-sm text-slate-600">
-            {{ this.page.author.description }}
+            {{ page.author.description }}
           </p>
         </div>
 
         <div class="sm:text-right">
-          <time datetime="ISO_DATE" class="block text-sm text-slate-600">
-            {{ this.translate.edit }} {{ this.utilsFront.formatDate(this.page.update * 1000) }}
+          <time :datetime="updateIso" class="block text-sm text-slate-600">
+            {{ translate.articleFooter.edit }} {{ utilsFront.formatDate(page.update * 1000) }}
           </time>
           <p class="mt-2 text-sm text-slate-600">
-            {{ this.page.statistiques.PAGE_NB_READ }} {{ this.translate.statPublication }}
+            {{ page.statistiques?.PAGE_NB_READ }} {{ translate.articleFooter.statPublication }}
           </p>
         </div>
       </div>
 
-      <div class="mt-6">
+      <div v-if="page.tags?.length" class="mt-6">
         <ul class="flex flex-wrap gap-2 justify-end">
-          <li v-for="tag in this.page.tags">
-            <a
-              href="#"
-              class="inline-flex items-center rounded-full border border-neutral-200/70 px-3 py-1 text-sm text-neutral-700 hover:bg-theme-4-750 hover:!text-theme-1-100 hover:cursor-pointer hover:dark:bg-gray-600"
+          <li v-for="tag in page.tags" :key="tag.label">
+            <span
+              class="inline-flex items-center rounded-full border border-neutral-200/70 px-3 py-1 text-sm text-neutral-700"
             >
               {{ tag.label }}
-            </a>
+            </span>
           </li>
         </ul>
       </div>
     </div>
   </div>
 
-  <div
-    v-if="this.utilsFront.optionsSystem.OS_OPEN_COMMENT === '1' && this.page.openComment === true"
-    class="p-4 rounded-2xl bg-white mt-3"
-  >
+  <div v-if="showComments" class="p-4 rounded-2xl bg-white mt-3">
     <ContentComment
-      :utils-front="this.utilsFront"
-      :ajax-request="this.ajaxRequest"
-      :translate="this.translate.comment"
-      :locale="this.locale"
-      :slug="this.page.slug"
-      @api-failure="this.apiFailure"
+      :utils-front="utilsFront"
+      :front-api="frontApi"
+      :translate="translate.articleFooter.comment"
+      :locale="locale"
+      :slug="page.slug"
+      @api-failure="apiFailure"
     />
   </div>
 </template>

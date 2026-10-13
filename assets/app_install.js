@@ -13,5 +13,6 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 // Import Bootstrap Icons
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
-// Start the Stimulus application (qui gère aussi Vue)
-import './bootstrap';
+import { startVueControllers } from './bootstrap';
+
+startVueControllers(import.meta.glob('./vue/controllers/Installation/**/*.vue'));

@@ -83,9 +83,8 @@ class ApiCommentController extends AppApiController
         $translator = $this->getTranslator();
         $apiCommentService = $this->getApiCommentService();
 
-        // Le front relaie tous les visiteurs depuis la même IP : on limite sur l'IP du visiteur transmise
-        $ip = $apiAddCommentDto->getIp() !== '' ? $apiAddCommentDto->getIp() : $request->getClientIp();
-        $limit = $apiAddCommentLimiter->create($ip)->consume();
+        // L'IP du payload est falsifiable : un front serveur doit passer par trusted_proxies (X-Forwarded-For)
+        $limit = $apiAddCommentLimiter->create($request->getClientIp())->consume();
         if (!$limit->isAccepted()) {
             throw new HttpException(
                 Response::HTTP_TOO_MANY_REQUESTS,
@@ -94,7 +93,7 @@ class ApiCommentController extends AppApiController
             );
         }
 
-        $comment = $apiCommentService->addNewComment($apiAddCommentDto);
+        $comment = $apiCommentService->addNewComment($apiAddCommentDto, $request->getClientIp());
 
         if ($comment->getId() === null) {
             throw new HttpException(

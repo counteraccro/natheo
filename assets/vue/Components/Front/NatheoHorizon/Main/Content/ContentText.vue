@@ -1,80 +1,68 @@
-<script>
-import { renderMarkdown } from '@/ts/MarkdownEditor/markdownRender';
-
+<script lang="ts">
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 2.0
  * Contenu de type texte
  */
-export default {
+import { defineComponent, type PropType } from 'vue';
+import { renderMarkdown } from '@/ts/MarkdownEditor/markdownRender';
+import { UtilsFront } from '@/utils/Front/UtilsFront';
+import type { FrontApi } from '@/utils/Front/FrontApi';
+import type { FrontApiError, FrontPageContent } from '@/ts/Front/NatheoHorizon/Structure.type';
+import type { ContentTextResponse } from '@/ts/Front/NatheoHorizon/ContentText.type';
+
+export default defineComponent({
   name: 'ContentText',
+  // ContentStructure passe les mêmes props à tous les types de contenu
+  inheritAttrs: false,
   props: {
-    data: Object,
-    utilsFront: Object,
-    locale: String,
-    ajaxRequest: Object,
+    data: {
+      type: Object as PropType<FrontPageContent>,
+      required: true,
+    },
+    locale: {
+      type: String,
+      required: true,
+    },
+    frontApi: {
+      type: Object as PropType<FrontApi>,
+      required: true,
+    },
   },
-  emits: ['api-failure'],
+  emits: {
+    'api-failure': (_error: FrontApiError) => true,
+  },
   data() {
     return {
       content: '',
       isLoad: false,
     };
   },
-  created() {
-    this.loadContent();
-  },
-  mounted() {
-    /**
-     * Ajoute un span à la fin de chaque ligne
-     */
-    document.querySelectorAll('pre code').forEach((codeEl) => {
-      if (codeEl.dataset.lnProcessed === '1') return;
-
-      if (codeEl.querySelector('.code-line')) {
-        codeEl.dataset.lnProcessed = '1';
-        return;
-      }
-
-      const html = codeEl.innerHTML;
-      let lines = html.split(/\r?\n/);
-      if (lines.length && lines[lines.length - 1].trim() === '') lines.pop();
-
-      const wrapped = lines.map((line) => `<span class="code-line">${line.length ? line : '&nbsp;'}</span>`).join('');
-      codeEl.innerHTML = wrapped;
-      codeEl.dataset.lnProcessed = '1';
-    });
-  },
   computed: {
-    output() {
+    output(): string {
       return renderMarkdown(this.content);
     },
   },
+  created() {
+    this.loadContent();
+  },
   methods: {
-    loadContent() {
-      let success = (datas) => {
-        this.content = datas.content;
-      };
-
-      let loader = () => {
-        this.isLoad = true;
-      };
-      let params = {
-        id: this.data.id,
-        locale: this.locale,
-      };
-      this.ajaxRequest.getContentPage(params, success, this.apiFailure, loader);
-    },
-
-    apiFailure(code, msg) {
-      this.$emit('api-failure', code, msg);
+    loadContent(): void {
+      this.frontApi
+        .getContentPage<ContentTextResponse>({ id: this.data.id, locale: this.locale })
+        .then((response) => {
+          this.content = response.content;
+          this.isLoad = true;
+          this.$nextTick(() => UtilsFront.addCodeLineNumbers(this.$refs.content as HTMLElement));
+        })
+        .catch((error: FrontApiError) => this.$emit('api-failure', error));
     },
   },
-};
+});
 </script>
 
 <template>
-  <div v-if="this.isLoad" class="natheo-content-text" v-html="this.output"></div>
+  <div v-if="isLoad" ref="content" class="natheo-content-text" v-html="output"></div>
   <div v-else>
     <div class="mx-auto w-full rounded-md p-4">
       <div class="flex flex-col sm:flex-row animate-pulse gap-4">

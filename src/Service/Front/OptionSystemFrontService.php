@@ -32,6 +32,17 @@ class OptionSystemFrontService extends AppFrontService
     }
 
     /**
+     * Retourne le token API utilisé par le front, chaîne vide si non configuré
+     * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getFrontApiToken(): string
+    {
+        return $this->getOptionSystemService()->getValueByKey(OptionSystem::OS_FRONT_API_TOKEN->value) ?? '';
+    }
+
+    /**
      * Retourne les options lié aux robots
      * @return array
      * @throws ContainerExceptionInterface
@@ -44,14 +55,14 @@ class OptionSystemFrontService extends AppFrontService
         $robotNoIndex = $optionSystemService->getValueByKey(OptionSystem::OS_FRONT_ROBOT_NO_INDEX->value);
 
         if ($format) {
-            $return = [];
-            if (intval($robotNoFollow) === 1) {
-                $return[] = ['name' => 'robots', 'value' => 'nofollow'];
-            }
+            $values = [];
             if (intval($robotNoIndex) === 1) {
-                $return[] = ['name' => 'robots', 'value' => 'noindex'];
+                $values[] = 'noindex';
             }
-            return $return;
+            if (intval($robotNoFollow) === 1) {
+                $values[] = 'nofollow';
+            }
+            return empty($values) ? [] : [['name' => 'robots', 'value' => implode(', ', $values)]];
         }
 
         return [

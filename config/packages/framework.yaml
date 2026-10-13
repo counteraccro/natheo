@@ -26,7 +26,7 @@ framework:
             policy: 'sliding_window'
             limit: 5
             interval: '15 minutes'
-        # Anti-spam sur l'ajout de commentaires via l'API (clé : IP du visiteur transmise par le front)
+        # Anti-spam sur l'ajout de commentaires via l'API (clé : IP cliente de la requête)
         api_add_comment:
             policy: 'sliding_window'
             limit: 5

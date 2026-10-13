@@ -1,42 +1,43 @@
-<script>
+<script lang="ts">
 /**
  * @author Gourdon Aymeric
- * @version 1.0
- * Sous structure megaMenu
+ * @version 2.0
+ * Sous structure (récursive) du mega menu
  */
-export default {
+import { defineComponent, type PropType } from 'vue';
+import type { UtilsFront } from '@/utils/Front/UtilsFront';
+import type { FrontMenuElement } from '@/ts/Front/NatheoHorizon/Structure.type';
+
+export default defineComponent({
   name: 'NavMegaMenuSub',
   props: {
-    data: Object,
-    utilsFront: Object,
-    deep: Number,
+    elements: {
+      type: Array as PropType<FrontMenuElement[]>,
+      required: true,
+    },
+    utilsFront: {
+      type: Object as PropType<UtilsFront>,
+      required: true,
+    },
+    deep: {
+      type: Number,
+      required: true,
+    },
   },
-  emits: [],
-  data() {
-    return {};
-  },
-  mounted() {},
-
-  methods: {},
-};
+});
 </script>
 
 <template>
-  <ul :class="this.deep > 0 ? 'px-' + (this.deep + 2) : ''">
-    <li v-for="element in this.data">
+  <ul :style="deep > 0 ? { paddingInline: `${(deep + 2) * 0.25}rem` } : undefined">
+    <li v-for="element in elements" :key="element.id">
       <a
-        :href="this.utilsFront.getUrl(element)"
-        class="!text-gray-500 hover:bg-theme-4-750 hover:!text-theme-1-100 px-2 py-1 rounded-md font-medium hover:dark:bg-gray-600"
+        :href="utilsFront.getUrl(element)"
+        class="text-gray-500! hover:bg-theme-4-750 hover:text-theme-1-100! px-2 py-1 rounded-md font-medium hover:dark:bg-gray-600"
         :target="element.target"
       >
         {{ element.label }}
       </a>
-      <nav-mega-menu-sub
-        v-if="element.hasOwnProperty('elements')"
-        :data="element.elements"
-        :utils-front="this.utilsFront"
-        :deep="this.deep + 1"
-      />
+      <NavMegaMenuSub v-if="element.elements" :elements="element.elements" :utils-front="utilsFront" :deep="deep + 1" />
     </li>
   </ul>
 </template>

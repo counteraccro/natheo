@@ -1,118 +1,78 @@
-<script>
-import VerticalMenu from './VerticalMenu.vue';
-import ContentStructure from './Content/ContentStructure.vue';
-
+<script lang="ts">
 /**
  * @author Gourdon Aymeric
- * @version 1.0
- * Structure de la page de front
+ * @version 2.0
+ * Contenu principal : menus verticaux éventuels et contenu de la page
  */
-export default {
+import { defineComponent, type PropType } from 'vue';
+import VerticalMenu from './VerticalMenu.vue';
+import ContentStructure from './Content/ContentStructure.vue';
+import type { FrontApi } from '@/utils/Front/FrontApi';
+import type { UtilsFront } from '@/utils/Front/UtilsFront';
+import type { FrontApiError, FrontMainTranslate, FrontPage } from '@/ts/Front/NatheoHorizon/Structure.type';
+
+export default defineComponent({
   name: 'Main',
   components: { ContentStructure, VerticalMenu },
   props: {
-    utilsFront: Object,
-    page: Object,
-    ajaxRequest: Object,
-    translate: Object,
-    locale: String,
+    utilsFront: {
+      type: Object as PropType<UtilsFront>,
+      required: true,
+    },
+    page: {
+      type: Object as PropType<FrontPage>,
+      required: true,
+    },
+    frontApi: {
+      type: Object as PropType<FrontApi>,
+      required: true,
+    },
+    translate: {
+      type: Object as PropType<FrontMainTranslate>,
+      required: true,
+    },
+    locale: {
+      type: String,
+      required: true,
+    },
   },
-  emits: ['api-failure', 'api-loader'],
-  data() {
-    return {};
+  emits: {
+    'api-failure': (_error: FrontApiError) => true,
   },
-
-  mounted() {},
-
+  computed: {
+    contentClass(): string {
+      if (this.page.menus?.LEFT && this.page.menus?.RIGHT) {
+        return 'lg:col-span-8 lg:order-2 order-3';
+      }
+      return this.page.menus?.LEFT ? 'lg:col-span-10 lg:order-2' : 'lg:col-span-10 lg:order-1 order-3';
+    },
+  },
   methods: {
-    apiFailure(code, msg) {
-      this.$emit('api-failure', code, msg);
-    },
-
-    apiSuccess(data) {
-      console.log(data);
-    },
-
-    apiLoader(close) {
-      this.$emit('api-loader', close);
+    apiFailure(error: FrontApiError): void {
+      this.$emit('api-failure', error);
     },
   },
-};
+});
 </script>
 
 <template>
-  <div v-if="this.page.menus?.LEFT && this.page.menus?.RIGHT" class="grid grid-cols-12 gap-2 mt-2">
-    <div class="col-span-12 lg:col-span-2 lg:order-1 rounded-2xl mr-1">
-      <VerticalMenu
-        v-if="this.page.menus?.LEFT"
-        :utils-front="this.utilsFront"
-        :type="this.page.menus.LEFT.type"
-        :slug="this.page.slug"
-        :menu="this.page.menus.LEFT"
+  <div class="grid grid-cols-12 gap-2 mt-2">
+    <div v-if="page.menus?.LEFT" class="col-span-12 lg:col-span-2 lg:order-1 rounded-2xl mr-1">
+      <VerticalMenu :utils-front="utilsFront" :menu="page.menus.LEFT" />
+    </div>
+    <div class="col-span-12" :class="contentClass">
+      <ContentStructure
+        :page="page"
+        :front-api="frontApi"
+        :translate="translate"
+        :locale="locale"
+        :utils-front="utilsFront"
+        @api-failure="apiFailure"
       />
     </div>
-    <div class="col-span-12 lg:col-span-8 lg:order-2 order-3">
-      <content-structure
-        :data="this.page"
-        :ajax-request="this.ajaxRequest"
-        :translate="this.translate.articleFooter"
-        :locale="this.locale"
-        :utils-front="this.utilsFront"
-        @api-failure="this.apiFailure"
-      />
+    <div v-if="page.menus?.RIGHT" class="col-span-12 lg:col-span-2 lg:order-3 order-2 rounded-2xl ml-1">
+      <VerticalMenu :utils-front="utilsFront" :menu="page.menus.RIGHT" />
     </div>
-    <div class="col-span-12 lg:col-span-2 lg:order-3 order-2 rounded-2xl ml-1">
-      <VerticalMenu
-        v-if="this.page.menus?.RIGHT"
-        :utils-front="this.utilsFront"
-        :type="this.page.menus.RIGHT.type"
-        :slug="this.page.slug"
-        :menu="this.page.menus.RIGHT"
-      />
-    </div>
-  </div>
-
-  <div v-else-if="this.page.menus?.LEFT" class="grid grid-cols-12 gap-2 mt-2">
-    <div class="col-span-12 lg:col-span-2 rounded-2xl mr-1">
-      <VerticalMenu
-        v-if="this.page.menus?.LEFT"
-        :utils-front="this.utilsFront"
-        :type="this.page.menus.LEFT.type"
-        :slug="this.page.slug"
-        :menu="this.page.menus.LEFT"
-      />
-    </div>
-    <div class="col-span-12 lg:col-span-10">
-      <content-structure
-        :data="this.page"
-        :ajax-request="this.ajaxRequest"
-        :translate="this.translate.articleFooter"
-        :locale="this.locale"
-        :utils-front="this.utilsFront"
-        @api-failure="this.apiFailure"
-      />
-    </div>
-  </div>
-
-  <div v-else class="grid grid-cols-12 gap-2 mt-2">
-    <div class="col-span-12 lg:col-span-10 lg:order-1 order-2">
-      <content-structure
-        :data="this.page"
-        :ajax-request="this.ajaxRequest"
-        :translate="this.translate.articleFooter"
-        :locale="this.locale"
-        :utils-front="this.utilsFront"
-        @api-failure="this.apiFailure"
-      />
-    </div>
-    <div class="col-span-12 lg:col-span-2 lg:order-2 order-1 rounded-2xl ml-1">
-      <VerticalMenu
-        v-if="this.page.menus?.RIGHT"
-        :utils-front="this.utilsFront"
-        :type="this.page.menus.RIGHT.type"
-        :slug="this.page.slug"
-        :menu="this.page.menus.RIGHT"
-      />
-    </div>
+    <div v-else-if="!page.menus?.LEFT" class="col-span-12 lg:col-span-2 lg:order-3 order-2"></div>
   </div>
 </template>

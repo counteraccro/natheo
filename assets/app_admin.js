@@ -4,7 +4,8 @@
  * Point d'entrée pour le JS et CSS Admin
  */
 
-// Start the Stimulus application (qui gère aussi Vue)
-import './bootstrap';
+import { startVueControllers } from './bootstrap';
 
 import 'flowbite';
+
+startVueControllers(import.meta.glob(['./vue/controllers/Admin/**/*.vue', './vue/controllers/Demo.vue']));

@@ -10,7 +10,6 @@
     "devDependencies": {
         "@hotwired/stimulus": "^3.0.0",
         "@prettier/plugin-php": "^0.24.0",
-        "@symfony/stimulus-bridge": "^4.0.1",
         "@symfony/stimulus-bundle": "file:vendor/symfony/stimulus-bundle/assets",
         "@symfony/ux-vue": "file:vendor/symfony/ux-vue/assets",
         "@tailwindcss/postcss": "^4.1.10",
@@ -18,9 +17,7 @@
         "@types/sortablejs": "^1.15.9",
         "@vitejs/plugin-vue": "^6.0.7",
         "@vue/language-server": "^3.2.4",
-        "autoprefixer": "^10.4.0",
         "postcss": "^8.5.6",
-        "postcss-loader": "^8.1.1",
         "prettier": "^3.6.2",
         "sass": "^1.70.0",
         "tailwindcss": "^4.1.10",
@@ -31,13 +28,10 @@
         "vue-tsc": "^3.2.4"
     },
     "dependencies": {
-        "@babel/traverse": "^7.23.2",
         "@popperjs/core": "^2.11.6",
         "axios": "^1.8.4",
-        "babel-types": "npm:@babel/types@^7.23.6",
         "bootstrap": "5.3.1",
         "bootstrap-icons": "^1.10.5",
-        "core-js": "^3.39",
         "dompurify": "^3",
         "emittery": "^1.0.1",
         "flowbite": "^3.1.2",
@@ -46,10 +40,5 @@
         "sortablejs": "^1.15.7",
         "vue-axios": "^3.5.2",
         "vue-draggable-plus": "^0.6.1"
-    },
-    "resolutions": {
-        "core-js": "^3.39",
-        "babel-types": "npm:@babel/types@^7.23.6",
-        "@babel/traverse": "^7.23.2"
     }
 }

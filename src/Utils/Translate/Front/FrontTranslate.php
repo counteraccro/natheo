@@ -52,13 +52,36 @@ class FrontTranslate extends AppTranslate
             'header' => $this->getTranslateHeader(),
             'main' => [
                 'articleFooter' => $this->getTranslateArticleFooter(),
+                'breadcrumb' => $this->trans('front.breadcrumb.index'),
+                'headerImgAlt' => $this->trans('front.article.header.img.alt'),
+                'listing' => $this->getTranslateListing(),
+                'pagination' => $this->getTranslatePagination(),
             ],
         ];
     }
 
+    /**
+     * Traduction d'une clé du domaine front dans la locale courante
+     * @param string $key
+     * @return string
+     */
+    private function trans(string $key): string
+    {
+        return $this->translator->trans($key, domain: 'front', locale: $this->locale);
+    }
+
+    /**
+     * Traduction des erreurs API
+     * @return array
+     */
     public function getTranslateErrorApi(): array
     {
         return [
+            '404' => $this->trans('front.error.api.modal.error.404'),
+            '429' => $this->trans('front.error.api.modal.error.429'),
+            'default' => $this->trans('front.error.api.modal.error.default'),
+            'tokenMissing' => $this->trans('front.error.api.token.missing'),
+            'back' => $this->trans('front.error.api.modal.back'),
             '401' => $this->translator->trans(
                 'front.error.api.modal.error.401',
                 domain: 'front',
@@ -122,6 +145,38 @@ class FrontTranslate extends AppTranslate
         return [
             'login' => $this->translator->trans('front.header.login', domain: 'front', locale: $this->locale),
             'logout' => $this->translator->trans('front.header.logout', domain: 'front', locale: $this->locale),
+            'openMenu' => $this->trans('front.header.open.menu'),
+            'darkMode' => $this->trans('front.header.dark.mode'),
+        ];
+    }
+
+    /**
+     * Traduction contenu de type listing
+     * @return array
+     */
+    private function getTranslateListing(): array
+    {
+        return [
+            'noImage' => $this->trans('front.listing.no.image'),
+            'by' => $this->trans('front.listing.by'),
+            'empty' => $this->trans('front.listing.empty'),
+            'nbPages' => $this->trans('front.listing.nb.pages'),
+        ];
+    }
+
+    /**
+     * Traduction pagination
+     * @return array
+     */
+    private function getTranslatePagination(): array
+    {
+        return [
+            'of' => $this->trans('front.pagination.of'),
+            'label' => $this->trans('front.pagination.label'),
+            'first' => $this->trans('front.pagination.first'),
+            'previous' => $this->trans('front.pagination.previous'),
+            'next' => $this->trans('front.pagination.next'),
+            'last' => $this->trans('front.pagination.last'),
         ];
     }
 
@@ -251,6 +306,8 @@ class FrontTranslate extends AppTranslate
                 domain: 'front',
                 locale: $this->locale,
             ),
+            'moderationPrefix' => $this->trans('front.comment.moderation.prefix'),
+            'pagination' => $this->getTranslatePagination(),
         ];
     }
 }

@@ -91,11 +91,12 @@ class ApiCommentService extends AppApiService
     /**
      * Ajoute un nouveau commentaire
      * @param ApiAddCommentDto $dto
+     * @param string|null $clientIp IP de la requête, utilisée si le payload n'en fournit pas
      * @return Comment
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function addNewComment(ApiAddCommentDto $dto): Comment
+    public function addNewComment(ApiAddCommentDto $dto, ?string $clientIp = null): Comment
     {
         $translator = $this->getTranslator();
 
@@ -149,7 +150,7 @@ class ApiCommentService extends AppApiService
         $comment->setComment(strip_tags($dto->getComment()));
         $comment->setAuthor(strip_tags($dto->getAuthor()));
         $comment->setEmail($dto->getEmail());
-        $comment->setIp($dto->getIp());
+        $comment->setIp($dto->getIp() !== '' ? $dto->getIp() : $clientIp ?? '');
         $comment->setUserAgent($dto->getUserAgent());
         $comment->setStatus($status);
         $comment->setDisabled(false);

@@ -160,6 +160,12 @@ enum OptionSystem: string
     case OS_API_TIME_VALIDATE_USER_TOKEN = 'OS_API_TIME_VALIDATE_USER_TOKEN';
 
     /**
+     * Token API utilisé par le front du site (généré à l'installation avec le rôle écriture, nécessaire pour les commentaires)
+     * @var string
+     */
+    case OS_FRONT_API_TOKEN = 'OS_FRONT_API_TOKEN';
+
+    /**
      * Ouverture des commentaires
      * @var string
      */
