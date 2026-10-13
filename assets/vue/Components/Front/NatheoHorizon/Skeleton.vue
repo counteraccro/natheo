@@ -1,20 +1,14 @@
-<script>
+<script lang="ts">
 /**
  * @author Gourdon Aymeric
  * @version 1.0
  * Structure de la page de front en loading
  */
-export default {
-  name: 'Skeleton',
-  props: {},
-  emits: [],
-  data() {
-    return {};
-  },
-  mounted() {},
+import { defineComponent } from 'vue';
 
-  methods: {},
-};
+export default defineComponent({
+  name: 'Skeleton',
+});
 </script>
 
 <template>

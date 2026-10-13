@@ -6,7 +6,6 @@ import symfonyPlugin from 'vite-plugin-symfony';
 export default defineConfig(({ command }) => ({
   plugins: [
     symfonyPlugin({
-      stimulus: true,
       refresh: true,
     }),
     vue(),
@@ -14,7 +13,6 @@ export default defineConfig(({ command }) => ({
 
   root: '.',
   base: command === 'serve' ? '/' : '/build/',
-  envDir: './vite-env',
 
   build: {
     manifest: true,
@@ -27,11 +25,8 @@ export default defineConfig(({ command }) => ({
         install_css: './assets/styles/app_install.scss',
         email: './assets/styles/app_email.scss',
         admin: './assets/app_admin.js',
-        front_natheo_horizon: './assets/app_front.js',
+        front_natheo_horizon: './assets/app_front.ts',
         install: './assets/app_install.js',
-      },
-      output: {
-        manualChunks: undefined, // Équivalent de splitEntryChunks
       },
     },
   },

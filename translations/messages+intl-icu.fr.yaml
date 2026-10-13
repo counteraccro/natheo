@@ -206,6 +206,10 @@ options_system.time.validation.user.one.day: '24 heures'
 options_system.time.validation.user.token.help: 'Passé ce délais, le token devient obsolète et la connexion ne sera plus autorisé avec celui-ci'
 options_system.open_api: "Ouvrir l'API ?"
 options_system.open_api_help: "Si l'API est fermée, toutes les routes /api renvoient une erreur 403. Indépendant de l'ouverture du site au public."
+options_system.front_api_token: "Token API utilisé par le front du site"
+options_system.front_api_token_help: "Token envoyé par le front pour appeler l'API, généré à l'installation avec le rôle écriture (nécessaire pour l'ajout et la modération de commentaires). Il est visible publiquement dans le navigateur des visiteurs. Sans token, le front ne peut pas s'afficher."
+options_system.front_api_token_placeholder: "xxxxxxxx.xxxxxxxx.xxxxxxxx.xxxxxxxx"
+options_system.front_api_token_msg_success: "Le token API du front a bien été mis à jour"
 options_system.comment: Commentaire
 options_system.comment.title: 'Gestion des commentaires'
 options_system.comment.description: 'Options concernant les commentaires de votre site'

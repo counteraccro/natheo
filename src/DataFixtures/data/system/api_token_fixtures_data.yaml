@@ -17,3 +17,9 @@ api_token:
         roles: ROLE_ADMIN_API
         comment: 'TOKEN de test pour le role ROLE_ADMIN_API. NE PAS UTILISER EN PRODUCTION'
         disabled: false
+# Token du front du site, généré aléatoirement à chaque installation et enregistré dans l'option OS_FRONT_API_TOKEN
+api_token_front:
+    name: 'Front du site'
+    roles: ROLE_WRITE_API
+    comment: "Token utilisé par le front du site (option système OS_FRONT_API_TOKEN). Visible publiquement dans le navigateur des visiteurs"
+    disabled: false

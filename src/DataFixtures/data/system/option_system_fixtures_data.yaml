@@ -71,6 +71,10 @@ option_system:
     OS_API_TIME_VALIDATE_USER_TOKEN:
         key: 'OS_API_TIME_VALIDATE_USER_TOKEN'
         value: '60'
+    OS_FRONT_API_TOKEN:
+        key: 'OS_FRONT_API_TOKEN'
+        # Valeur renseignée par ApiTokenFixture avec le token front généré
+        value: ''
     OS_OPEN_COMMENT:
         key: 'OS_OPEN_COMMENT'
         value: '1'

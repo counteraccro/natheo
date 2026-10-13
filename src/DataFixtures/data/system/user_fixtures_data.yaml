@@ -1,8 +1,8 @@
 user:
   User:
-    email: guy.fernandez@humbert.com
-    password: $2y$04$CymoyWxe0Cvn4P8TpqCs3OkBM0VHkE9h9Tu3.c2oQcoTlLZAHbNIy
-    login: antoinette.moreno
+    email: mathieu.marcel@free.fr
+    password: $2y$04$U8/1h22m1RYw6uSfhFeK6.ndy3SdNHUHbzWwWOkzFinxS9NvnbBmW
+    login: william28
     firstname: ''
     lastname: ''
     roles: ROLE_SUPER_ADMIN

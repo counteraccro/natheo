@@ -6,6 +6,9 @@ namespace App\DataFixtures\Admin\System;
 
 use App\DataFixtures\AppFixtures;
 use App\Entity\Admin\System\ApiToken;
+use App\Entity\Admin\System\OptionSystem;
+use App\Enum\Admin\System\Options\OptionSystem as OptionSystemEnum;
+use App\Utils\System\ApiToken\TokenGenerator;
 use App\Utils\System\ApiToken\TokenHasher;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
@@ -26,27 +29,54 @@ class ApiTokenFixture extends AppFixtures implements FixtureGroupInterface, Orde
      */
     public function load(ObjectManager $manager): void
     {
-        $debugMode = (bool) $this->container->get('app.debug_mode');
-
-        if (!$debugMode) {
-            return;
-        }
-
         $data = Yaml::parseFile($this->pathDataFixtures . self::API_TOKEN_FIXTURES_DATA_FILE);
-        foreach ($data['api_token'] as $dataApiToken) {
-            $apiToken = new ApiToken();
-            foreach ($dataApiToken as $key => $value) {
-                if ($key === 'roles') {
-                    $apiToken->setRoles([$value]);
-                } elseif ($key === 'token') {
-                    $apiToken->setToken(TokenHasher::hash($value));
-                } else {
-                    $this->setData($key, $value, $apiToken);
-                }
+
+        $this->loadFrontToken($data['api_token_front'], $manager);
+
+        // Tokens d'exemple uniquement en mode debug
+        if ((bool) $this->container->get('app.debug_mode')) {
+            foreach ($data['api_token'] as $dataApiToken) {
+                $manager->persist($this->createApiToken($dataApiToken, $dataApiToken['token']));
             }
-            $manager->persist($apiToken);
         }
         $manager->flush();
+    }
+
+    /**
+     * Crée le token du front avec une valeur aléatoire et l'enregistre dans l'option système OS_FRONT_API_TOKEN
+     * @param array $dataApiToken
+     * @param ObjectManager $manager
+     * @return void
+     */
+    private function loadFrontToken(array $dataApiToken, ObjectManager $manager): void
+    {
+        $token = TokenGenerator::generate();
+        $manager->persist($this->createApiToken($dataApiToken, $token));
+
+        $optionKey = OptionSystemEnum::OS_FRONT_API_TOKEN->value;
+        if ($this->hasReference($optionKey, OptionSystem::class)) {
+            $this->getReference($optionKey, OptionSystem::class)->setValue($token);
+        }
+    }
+
+    /**
+     * Construit un ApiToken à partir des données de fixture, seul le hash du token est stocké
+     * @param array $dataApiToken
+     * @param string $token token en clair
+     * @return ApiToken
+     */
+    private function createApiToken(array $dataApiToken, string $token): ApiToken
+    {
+        $apiToken = new ApiToken();
+        foreach ($dataApiToken as $key => $value) {
+            if ($key === 'roles') {
+                $apiToken->setRoles([$value]);
+            } elseif ($key !== 'token') {
+                $this->setData($key, $value, $apiToken);
+            }
+        }
+        $apiToken->setToken(TokenHasher::hash($token));
+        return $apiToken;
     }
 
     /**

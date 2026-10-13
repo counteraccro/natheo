@@ -11,6 +11,7 @@ namespace App\Controller\Front;
 
 use App\Entity\Admin\Content\Page\PageMeta;
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\Content\Page\PageCategory;
 use App\Service\Admin\System\User\UserDataService;
 use App\Service\Api\Global\ApiSitemapService;
 use App\Utils\Translate\Front\FrontTranslate;
@@ -23,14 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Translation\LocaleSwitcher;
 
-#[
-    Route(
-        '/',
-        name: 'front_',
-        requirements: ['_locale' => '%app.supported_locales%'],
-        defaults: ['_locale' => '%app.default_locale%'],
-    ),
-]
+#[Route('/', name: 'front_')]
 class IndexController extends AppFrontController
 {
     /**
@@ -50,7 +44,7 @@ class IndexController extends AppFrontController
             'urls' => $apiSitemapService->getSitemap(),
             'hostname' => $hostname,
         ]);
-        return new Response($xml, 200, ['Content-Type' => 'text/xml']);
+        return new Response($xml, 200, ['Content-Type' => 'application/xml; charset=UTF-8']);
     }
 
     /**
@@ -65,12 +59,12 @@ class IndexController extends AppFrontController
     }
 
     /**
-     * Redirige vers la connexion
+     * Affiche une page du site
      * @param Request $request
      * @param UserDataService $userDataService
      * @param FrontTranslate $frontTranslate
      * @param ContainerBagInterface $containerBag
-     * @param string|null $locale
+     * @param string $locale
      * @param string|null $slug
      * @return Response
      * @throws ContainerExceptionInterface
@@ -81,7 +75,10 @@ class IndexController extends AppFrontController
         Route(
             '/{locale}/{category}/{slug}',
             name: 'index_2',
-            requirements: ['category' => '|faq|page|article|projet|blog|evenement|news|documentation|evolution'],
+            requirements: [
+                'locale' => '%app.supported_locales%',
+                'category' => '|faq|page|article|projet|blog|evenement|news|documentation|evolution',
+            ],
         ),
     ]
     public function index(
@@ -89,7 +86,7 @@ class IndexController extends AppFrontController
         UserDataService $userDataService,
         FrontTranslate $frontTranslate,
         ContainerBagInterface $containerBag,
-        ?string $locale = '',
+        string $locale,
         ?string $slug = null,
     ): Response {
         if (!$this->installationService->checkSchema()) {
@@ -101,13 +98,11 @@ class IndexController extends AppFrontController
         }
 
         if (!$this->isOpenSite()) {
-            return $this->render($this->getPathTemplate() . DIRECTORY_SEPARATOR . 'close.html.twig', [
-                'scriptsTag' => $this->getScriptTags(),
-            ]);
-        }
-
-        if ($locale === '') {
-            $locale = $this->getParameter('app.default_locale');
+            return $this->render(
+                $this->getPathTemplate() . DIRECTORY_SEPARATOR . 'close.html.twig',
+                ['scriptsTag' => $this->getScriptTags(), 'locale' => $locale],
+                new Response(status: Response::HTTP_SERVICE_UNAVAILABLE),
+            );
         }
 
         $version = $this->getParameter('app.api_version');
@@ -133,23 +128,29 @@ class IndexController extends AppFrontController
         /** @var User $user */
         $user = $this->getUser();
         $token = '';
-        $userInfo = [];
+        $userInfo = null;
         if ($user != null) {
             $token = $userDataService->generateUserToken($user);
             $userInfo = [
                 'login' => $user->getLogin(),
                 'avatarImg' => $user->getAvatar(),
                 'avatar' => substr(ucfirst($user->getLogin()), 0, 1),
-                'pathImgAvatar' => $containerBag->get('app.path.avatar'),
-                'canModerate' => $this->isGranted('ROLE_CONTRIBUTEUR', $user),
+                'canModerate' => $this->isGranted('ROLE_CONTRIBUTEUR'),
             ];
+        }
+
+        $pageCategories = [];
+        foreach (PageCategory::cases() as $category) {
+            $pageCategories[$category->value] = $category->getSlug();
         }
 
         $datas = [
             'slug' => $slug,
             'locale' => $locale,
-            'ip' => $request->getClientIp(),
-            'pageCategories' => $this->pageService->getAllCategories(),
+            'apiToken' => $this->optionSystemFrontService->getFrontApiToken(),
+            'pageCategories' => $pageCategories,
+            'pathAvatar' => $request->getBasePath() . '/' . $containerBag->get('app.path.avatar'),
+            'basePath' => $request->getBasePath(),
             'userToken' => $token,
             'userInfo' => $userInfo,
         ];
@@ -165,6 +166,7 @@ class IndexController extends AppFrontController
             'translate' => $frontTranslate->getTranslate($locale),
             'scriptsTag' => $this->getScriptTags(),
             'metaSeo' => $seo,
+            'locale' => $locale,
         ]);
     }
 }

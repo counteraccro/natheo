@@ -1,4 +1,9 @@
-@import 'tailwindcss';
+@import 'tailwindcss' source(none);
+
+/* Seuls les fichiers du front sont scannés : le CSS ne contient pas les classes de l'admin */
+@source '../../../vue/controllers/Front';
+@source '../../../vue/Components/Front';
+@source '../../../../templates/front';
 
 @theme {
     --color-platinum: oklch(0.8804 0.0162 201.68);
@@ -28,17 +33,46 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* Mode sombre par inversion globale : les médias sont ré-inversés pour garder leurs vraies couleurs */
 .dark {
-    @apply dark:invert dark:-hue-rotate-180 dark:saturate-100 dark:brightness-90;
+    filter: invert(1) hue-rotate(180deg) brightness(0.9);
 }
 
-/*** FIN ELEMENT HTML ***/
+.dark img,
+.dark video,
+.dark picture {
+    filter: invert(1) hue-rotate(180deg);
+}
+
+/*** Animations ***/
+
+@keyframes fade-in-up {
+    from {
+        opacity: 0;
+        transform: translateY(1rem);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in-up {
+    animation: fade-in-up 0.6s ease-out forwards;
+}
+
+/*** Sous-menus du menu déroulant : seul le sous-menu de l'élément survolé s'affiche ***/
+
+.nav-submenu {
+    display: none;
+}
+
+li:hover > .nav-submenu,
+li:focus-within > .nav-submenu {
+    display: block;
+}
 
 /*** CSS Content text **/
-
-.content-paginate .disabled {
-    pointer-events: none;
-}
 
 .natheo-content-text {
     @apply text-slate-600 text-base;
@@ -60,10 +94,6 @@
     @apply text-slate-900 text-lg mb-3 font-bold;
 }
 
-.natheo-content-text h4 {
-    @apply text-slate-900 text-base mb-3 font-bold;
-}
-
 .natheo-content-text h5 {
     @apply text-slate-900 text-base mb-3 italic;
 }
@@ -77,15 +107,15 @@
 }
 
 .natheo-content-text a {
-    @apply hover:bg-theme-4-750 hover:!text-theme-1-100 rounded-md hover:dark:bg-gray-600 p-1 text-theme-4-750;
+    @apply hover:bg-theme-4-750 hover:text-theme-1-100! rounded-md hover:dark:bg-gray-600 p-1 text-theme-4-750;
 }
 
 .natheo-content-text blockquote {
-    @apply p-4 my-4 bg-gray-50 border-1 rounded-sm border-l-4 border-theme-4-750 dark:border-gray-500 dark:bg-gray-800;
+    @apply p-4 my-4 bg-gray-50 border rounded-sm border-l-4 border-theme-4-750 dark:border-gray-500 dark:bg-gray-800;
 }
 
 .natheo-content-text blockquote p {
-    @apply italic leading-relaxed text-shadow-slate-600 dark:text-white;
+    @apply italic leading-relaxed text-slate-600 dark:text-white;
 }
 
 .natheo-content-text ul {

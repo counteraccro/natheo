@@ -13,11 +13,11 @@ use App\Entity\Admin\System\ApiToken;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
 use App\Utils\System\ApiToken\ApiTokenConst;
+use App\Utils\System\ApiToken\TokenGenerator;
 use App\Utils\System\ApiToken\TokenHasher;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use Symfony\Component\String\ByteString;
 
 class ApiTokenService extends AppAdminService
 {
@@ -218,11 +218,7 @@ class ApiTokenService extends AppAdminService
      */
     public function generateToken(): string
     {
-        $token = '';
-        for ($i = 0; $i < ApiTokenConst::API_TOKEN_SEGMENT; $i++) {
-            $token .= ByteString::fromRandom(ApiTokenConst::API_TOKEN_LENGTH)->toString() . '.';
-        }
-        return substr($token, 0, -1);
+        return TokenGenerator::generate();
     }
 
     /**

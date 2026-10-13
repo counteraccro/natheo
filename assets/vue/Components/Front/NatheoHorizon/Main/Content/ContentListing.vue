@@ -1,124 +1,105 @@
-<script>
+<script lang="ts">
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 2.0
  * Contenu de type listing
  */
-export default {
-  name: 'ContentLinsting',
+import { defineComponent, type PropType } from 'vue';
+import Pagination from './Pagination.vue';
+import type { FrontApi } from '@/utils/Front/FrontApi';
+import type { UtilsFront } from '@/utils/Front/UtilsFront';
+import type { FrontApiError, FrontMainTranslate, FrontPageContent } from '@/ts/Front/NatheoHorizon/Structure.type';
+import type { ContentListingResponse, ListingPage } from '@/ts/Front/NatheoHorizon/ContentListing.type';
+
+export default defineComponent({
+  name: 'ContentListing',
+  components: { Pagination },
+  // ContentStructure passe les mêmes props à tous les types de contenu
+  inheritAttrs: false,
   props: {
-    data: Object,
-    utilsFront: Object,
-    locale: String,
-    ajaxRequest: Object,
+    data: {
+      type: Object as PropType<FrontPageContent>,
+      required: true,
+    },
+    utilsFront: {
+      type: Object as PropType<UtilsFront>,
+      required: true,
+    },
+    locale: {
+      type: String,
+      required: true,
+    },
+    frontApi: {
+      type: Object as PropType<FrontApi>,
+      required: true,
+    },
+    translate: {
+      type: Object as PropType<FrontMainTranslate>,
+      required: true,
+    },
   },
-  emits: ['api-failure'],
+  emits: {
+    'api-failure': (_error: FrontApiError) => true,
+  },
   data() {
     return {
       isLoad: false,
       limit: 20,
       page: 1,
-      pages: '',
+      pages: [] as ListingPage[],
       nbElements: 0,
       title: '',
     };
   },
+  computed: {
+    nbPages(): number {
+      return Math.ceil(this.nbElements / this.limit);
+    },
+  },
   created() {
     this.loadContent();
   },
-  mounted() {},
-  computed: {},
   methods: {
-    loadContent() {
-      let success = (datas) => {
-        this.pages = datas.content.pages;
-        this.title = datas.title;
-        this.nbElements = datas.content.rows;
-      };
-
-      let loader = () => {
-        this.isLoad = true;
-      };
-      let params = {
-        id: this.data.id,
-        locale: this.locale,
-        limit: this.limit,
-        page: this.page,
-      };
-      this.ajaxRequest.getContentPage(params, success, this.apiFailure, loader);
-    },
-
-    /**
-     * Génère le lien
-     * @param element
-     * @returns {*}
-     */
-    generateUrl(element) {
-      return this.utilsFront.getUrl(element);
-    },
-
-    /**
-     * Change de page
-     * @param page
-     */
-    changePage(page) {
-      this.page = page;
+    loadContent(): void {
       this.isLoad = false;
+      this.frontApi
+        .getContentPage<ContentListingResponse>({
+          id: this.data.id,
+          locale: this.locale,
+          limit: this.limit,
+          page: this.page,
+        })
+        .then((response) => {
+          this.pages = response.content.pages;
+          this.title = response.title;
+          this.nbElements = response.content.rows;
+          this.isLoad = true;
+        })
+        .catch((error: FrontApiError) => this.$emit('api-failure', error));
+    },
+
+    changePage(page: number): void {
+      this.page = page;
       this.loadContent();
-    },
-
-    /**
-     * Génère le style des liens de la pagination
-     * @param numberPage
-     * @param isCentral
-     * @param isEnd
-     * @returns {string}
-     */
-    getStylePagePagination(numberPage, isCentral, isEnd) {
-      if (numberPage === this.page && isCentral) {
-        return 'px-3 py-1 rounded-lg border border-gray-300 bg-theme-4-750 !text-theme-1-100 hover:dark:bg-gray-600 transition';
-      }
-
-      if (numberPage === this.getNbPage() && isEnd) {
-        return 'px-3 py-1 rounded-lg border border-gray-100 text-gray-300 transition disabled';
-      }
-
-      if (numberPage <= 1 && !isEnd && !isCentral) {
-        return 'px-3 py-1 rounded-lg border border-gray-100 text-gray-300 transition disabled';
-      }
-
-      return 'px-3 py-1 rounded-lg border border-gray-300 text-gray-600 hover:bg-theme-4-750 hover:!text-theme-1-100 hover:dark:bg-gray-600 transition';
-    },
-
-    /**
-     * Retourne le nombre de page
-     * @returns {number}
-     */
-    getNbPage() {
-      return Math.ceil(this.nbElements / this.limit);
-    },
-
-    apiFailure(code, msg) {
-      this.$emit('api-failure', code, msg);
+      (this.$refs.top as HTMLElement | undefined)?.scrollIntoView({ behavior: 'smooth' });
     },
   },
-};
+});
 </script>
 
 <template>
-  <h2 class="text-slate-900 text-2xl font-semibold mb-3">{{ this.title }}</h2>
-  <div v-if="this.isLoad && this.pages.length > 0">
-    <!-- Liste d’articles -->
+  <h2 ref="top" class="text-slate-900 text-2xl font-semibold mb-3">{{ title }}</h2>
+  <div v-if="isLoad && pages.length > 0">
     <ul class="mx-auto divide-y divide-gray-200">
-      <li v-for="page in this.pages" class="py-2">
+      <li v-for="item in pages" :key="item.slug" class="py-2">
         <a
-          :href="this.generateUrl(page)"
+          :href="utilsFront.getUrl(item)"
           class="flex gap-4 hover:bg-theme-4-750/15 hover:dark:bg-gray-600 rounded-xl p-2 transition"
         >
           <img
-            v-if="page.img !== null"
-            :src="page.img"
-            :alt="page.title"
+            v-if="item.img"
+            :src="item.img"
+            :alt="item.title"
             class="h-28 w-40 flex-none rounded-xl object-cover"
             loading="lazy"
           />
@@ -127,83 +108,33 @@ export default {
             class="h-28 w-40 flex-none rounded-xl bg-gray-200 flex flex-col items-center justify-center text-gray-400 text-sm font-medium"
           >
             <div class="h-10 w-16 bg-gray-300 rounded-md mb-2"></div>
-            <span>Pas d’image</span>
+            <span>{{ translate.listing.noImage }}</span>
           </div>
           <div class="min-w-0">
             <h3 class="text-lg font-semibold text-gray-900 line-clamp-2">
-              {{ page.title }}
+              {{ item.title }}
             </h3>
             <p class="mt-1 text-sm text-gray-500">
-              Par <span class="font-medium text-gray-700">{{ page.author }}</span> •
-              {{ this.utilsFront.formatDate(page.created * 1000) }}
+              {{ translate.listing.by }} <span class="font-medium text-gray-700">{{ item.author }}</span> •
+              {{ utilsFront.formatDate(item.created * 1000) }}
             </p>
           </div>
         </a>
       </li>
     </ul>
 
-    <nav
-      class="content-paginate flex flex-wrap gap-y-3 items-center justify-center mt-8 space-x-1"
-      aria-label="Pagination"
-    >
-      <a
-        href="#"
-        @click="this.changePage(1)"
-        :class="this.getStylePagePagination(this.page, false, false)"
-        class="text-sm"
-        ><<</a
-      >
-      <a
-        href="#"
-        @click="this.changePage(this.page - 1)"
-        :class="this.getStylePagePagination(this.page, false, false)"
-        class="text-sm"
-        ><</a
-      >
-
-      <div v-for="(n, i) in this.getNbPage()">
-        <a
-          href="#"
-          :class="this.getStylePagePagination(n, true, false)"
-          @click="this.changePage(n)"
-          v-if="n === this.page - 1 || n === this.page + 1 || n === this.page || n <= 2 || n >= this.getNbPage() - 1"
-          >{{ n }}</a
-        >
-        <a
-          href="#"
-          :class="this.getStylePagePagination(n, true, false)"
-          @click="this.changePage(n)"
-          v-else-if="n === this.page - 2 || n === this.page + 2"
-          >...</a
-        >
-      </div>
-
-      <a
-        href="#"
-        @click="this.changePage(this.page + 1)"
-        :class="this.getStylePagePagination(this.page, false, true)"
-        class="text-sm"
-        >></a
-      >
-      <a
-        href="#"
-        @click="this.changePage(this.getNbPage())"
-        :class="this.getStylePagePagination(this.page, false, true)"
-        class="text-sm"
-        >>></a
-      >
-    </nav>
+    <Pagination :page="page" :nb-pages="nbPages" :translate="translate.pagination" @change="changePage" />
     <div class="flex items-center justify-center mt-2 text-gray-400 text-sm">
-      {{ this.page }} sur {{ this.getNbPage() }} - {{ this.nbElements }} page(s)
+      {{ page }} {{ translate.pagination.of }} {{ nbPages }} - {{ nbElements }} {{ translate.listing.nbPages }}
     </div>
   </div>
 
-  <div v-else-if="this.isLoad && this.pages.length === 0">
+  <div v-else-if="isLoad">
     <div class="p-6">
       <div
         class="flex flex-col items-center justify-center rounded-2xl border border-dashed border-gray-300 p-8 text-center"
       >
-        <p class="text-gray-500 text-lg font-medium">Aucun élément trouvé</p>
+        <p class="text-gray-500 text-lg font-medium">{{ translate.listing.empty }}</p>
       </div>
     </div>
   </div>

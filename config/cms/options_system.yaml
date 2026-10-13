@@ -280,6 +280,13 @@ options_system:
                 list_value: '30:options_system.time.validation.user.half.hour|60:options_system.time.validation.user.one.hour|120:options_system.time.validation.user.two.hour|180:options_system.time.validation.user.three.hour|720:options_system.time.validation.user.twelve.hour|1440:options_system.time.validation.user.one.day'
                 help: 'options_system.time.validation.user.token.help'
                 default: '60'
+            OS_FRONT_API_TOKEN:
+                default: ''
+                label: 'options_system.front_api_token'
+                type: 'text'
+                help: 'options_system.front_api_token_help'
+                placeholder: 'options_system.front_api_token_placeholder'
+                success: 'options_system.front_api_token_msg_success'
     options_system.comment:
         title: 'options_system.comment.title'
         description: 'options_system.comment.description'

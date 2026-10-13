@@ -8,10 +8,10 @@
         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
     {% for url in urls %}
         <url>
-            {% if url.loc|replace({hostname:''}) == url.loc %}
-                <loc>{{ hostname }}{{ url.loc }}</loc>
-            {% else %}
+            {% if url.loc starts with 'http://' or url.loc starts with 'https://' %}
                 <loc>{{ url.loc }}</loc>
+            {% else %}
+                <loc>{{ hostname }}{{ url.loc }}</loc>
             {% endif %}
             {% if url.lastmod is defined %}
                 <lastmod>{{ url.lastmod }}</lastmod>
