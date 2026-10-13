@@ -39,3 +39,23 @@ front.comment.form.new.comment.comment.placeholder: 'Laisser un petit commentair
 front.comment.form.new.comment.pseudo.error: 'Veuillez saisir un pseudonyme'
 front.comment.form.new.comment.error: 'Le commentaire ne doit pas être vide'
 front.comment.new.success.message: 'Commentaire ajouté avec succès'
+front.error.api.modal.error.404: "La page demandée n'existe pas"
+front.error.api.modal.error.429: "Trop de requêtes, veuillez réessayer dans quelques minutes"
+front.error.api.modal.error.default: "Une erreur est survenue lors de l'appel à l'API"
+front.error.api.token.missing: "Le token API du front n'est pas configuré (Options système > API)"
+front.error.api.modal.back: "Retour à l'accueil"
+front.header.open.menu: "Ouvrir le menu"
+front.header.dark.mode: "Basculer le mode sombre"
+front.breadcrumb.index: "Accueil"
+front.article.header.img.alt: "Image d'en-tête de la page"
+front.comment.moderation.prefix: "Modération :"
+front.listing.no.image: "Pas d'image"
+front.listing.by: "Par"
+front.listing.empty: "Aucun élément trouvé"
+front.listing.nb.pages: "page(s)"
+front.pagination.of: "sur"
+front.pagination.label: "Pagination"
+front.pagination.first: "Première page"
+front.pagination.previous: "Page précédente"
+front.pagination.next: "Page suivante"
+front.pagination.last: "Dernière page"
