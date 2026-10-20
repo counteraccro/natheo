@@ -8,6 +8,7 @@
 [![Tailwindcss](https://img.shields.io/badge/Tailwindcss-4.1-00BCFF?style=flat-square&logo=Tailwindcss)](https://tailwindcss.com/)
 [![License](https://img.shields.io/badge/License-GNU-green?style=flat-square)](LICENSE)
 [![Documentation](https://img.shields.io/badge/Docs-En%20ligne-blue?style=flat-square)](https://counteraccro.github.io/natheo.doc/)
+[![XERJ Corpus Hub contributor](https://hub.xerj.org/contributors/counteraccro/badge.svg)](https://hub.xerj.org/contributors/counteraccro)
 
 **Un CMS moderne et performant développé avec Symfony**
 
