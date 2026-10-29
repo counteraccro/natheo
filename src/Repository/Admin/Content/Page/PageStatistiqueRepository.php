@@ -55,7 +55,7 @@ class PageStatistiqueRepository extends ServiceEntityRepository
     }
 
     /**
-     * Retourne les ids de page (+ valeur associée) triés par la valeur d'une statistique, du plus grand au plus petit
+     * Retourne les ids des pages publiées ayant au moins 1 vue (+ valeur associée), triés du plus grand au plus petit
      * @param string $key
      * @param int $limit
      * @param RawQueryManager $rawQueryManager
@@ -71,6 +71,7 @@ class PageStatistiqueRepository extends ServiceEntityRepository
 
         $query = $this->getEntityManager()->createNativeQuery($query, $rsm);
         $query->setParameter('key', $key);
+        $query->setParameter('status', PageStatus::PUBLISH->value);
 
         return $query->getResult();
     }

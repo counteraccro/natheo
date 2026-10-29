@@ -11,7 +11,6 @@ namespace App\Service\Admin;
 use App\Entity\Admin\Content\Comment\Comment;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\System\ApiToken;
-use App\Enum\Admin\Comment\CommentStatus;
 use App\Enum\Admin\Content\Page\PageStatistics;
 use App\Enum\Admin\Content\Page\PageStatus;
 use App\Enum\Admin\System\Options\OptionSystem;
@@ -25,7 +24,6 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 class DashboardService extends AppAdminService
 {
@@ -167,7 +165,7 @@ class DashboardService extends AppAdminService
             ],
         ];
 
-        return ['success' => true, 'body' => $body, 'all', 'configComplete' => $configComplete, 'links' => $links];
+        return ['success' => true, 'body' => $body, 'configComplete' => $configComplete, 'links' => $links];
     }
 
     /**
@@ -211,7 +209,7 @@ class DashboardService extends AppAdminService
         foreach ($result as $page) {
             $body[] = [
                 'id' => $page->getId(),
-                'title' => $page->getPageTranslationByLocale($currentLocale)->getTitre(),
+                'title' => $page->getPageTranslationByLocale($currentLocale)?->getTitre() ?? '',
                 'status' => $this->getStatusFormatedByCode($page->getStatus()),
                 'date' => $page->getCreatedAt()->format('Y-m-d H:i:s'),
             ];
@@ -235,16 +233,21 @@ class DashboardService extends AppAdminService
         );
         $currentLocale = $this->getLocales()['current'];
 
+        $pages = [];
+        foreach ($this->pageRepo->findBy(['id' => array_column($stats, 'page_id')]) as $page) {
+            $pages[$page->getId()] = $page;
+        }
+
         $body = [];
         foreach ($stats as $stat) {
-            $page = $this->pageRepo->find($stat['page_id']);
+            $page = $pages[$stat['page_id']] ?? null;
             if ($page === null) {
                 continue;
             }
 
             $body[] = [
                 'id' => $page->getId(),
-                'title' => $page->getPageTranslationByLocale($currentLocale)->getTitre(),
+                'title' => $page->getPageTranslationByLocale($currentLocale)?->getTitre() ?? '',
                 'view' => (string) $stat['nb'],
                 'date' => $page->getCreatedAt()->format('Y-m-d H:i:s'),
             ];
@@ -265,22 +268,8 @@ class DashboardService extends AppAdminService
         $pageService = $this->getPageService();
         $string = $pageService->getStatusStr($status);
 
-        return match ($status) {
-            PageStatus::PUBLISH->value => '<span class="badge ' .
-                PageStatus::PUBLISH->getClassCss() .
-                '">' .
-                $string .
-                '</span>',
-            PageStatus::ARCHIVED->value => '<span class="badge ' .
-                PageStatus::ARCHIVED->getClassCss() .
-                '">' .
-                $string .
-                '</span>',
-            PageStatus::DRAFT->value => '<span class="badge ' .
-                PageStatus::DRAFT->getClassCss() .
-                '">' .
-                $string .
-                '</span>',
-        };
+        $classCss = PageStatus::tryFrom($status)?->getClassCss() ?? '';
+
+        return '<span class="badge ' . $classCss . '">' . $string . '</span>';
     }
 }

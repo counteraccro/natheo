@@ -60,7 +60,7 @@ interface RawQueryInterface
     public static function getQueryTotalStatByKey(): string;
 
     /**
-     * Retourne les ids de page triés par la valeur (numérique) d'une statistique, du plus grand au plus petit
+     * Retourne les ids des pages publiées ayant au moins 1 vue, triés par la valeur (numérique) d'une statistique
      * @param int $limit
      * @return string
      */

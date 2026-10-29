@@ -83,6 +83,12 @@ class CommentServiceTest extends AppWebTestCase
 
         $result = $this->commentService->getStatusFormatedByCode(CommentStatus::VALIDATE->value);
         $this->assertStringContainsString('badge badge-validated', $result);
+
+        $result = $this->commentService->getStatusFormatedByCode(999);
+        $this->assertStringContainsString(
+            $this->translator->trans('comment.status.inconnu', domain: 'comment'),
+            $result,
+        );
     }
 
     /**

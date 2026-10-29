@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace App\Tests\Service\Admin;
 
 use App\Enum\Admin\Content\Page\PageStatistics;
+use App\Enum\Admin\Content\Page\PageStatus;
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Admin\DashboardService;
 use App\Service\Admin\System\OptionSystemService;
@@ -137,6 +138,17 @@ class DashboardServiceTest extends AppWebTestCase
             ]);
         }
 
+        $excluded = [
+            [PageStatus::DRAFT->value, '500'],
+            [PageStatus::ARCHIVED->value, '400'],
+            [PageStatus::PUBLISH->value, '0'],
+        ];
+        foreach ($excluded as [$status, $value]) {
+            $page = $this->createPage(customData: ['status' => $status]);
+            $this->createPageTranslation($page, ['locale' => 'fr']);
+            $this->createPageStatistique($page, ['key' => PageStatistics::NB_READ->value, 'value' => $value]);
+        }
+
         $result = $this->dashboardService->getBlockPageMostViewed();
         $this->assertIsArray($result);
         $this->assertArrayHasKey('success', $result);
@@ -147,6 +159,41 @@ class DashboardServiceTest extends AppWebTestCase
 
         // Si le tri se faisait sur la string, '100' passerait avant '20' et '9' (tri lexical)
         $this->assertSame(['100', '20', '9', '5'], array_column($body, 'view'));
+    }
+
+    /**
+     * test méthode getBlockLastPageCreate() : une page sans traduction dans la locale courante ne casse pas le block
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testGetBlockLastPageCreate(): void
+    {
+        $page = $this->createPage();
+        $this->createPageTranslation($page, ['locale' => 'fr', 'titre' => 'unit-test']);
+        $pageWithoutTranslation = $this->createPage(customData: ['status' => PageStatus::DRAFT->value]);
+
+        $result = $this->dashboardService->getBlockLastPageCreate();
+        $this->assertTrue($result['success']);
+        $this->assertCount(2, $result['body']);
+        $titles = array_column($result['body'], 'title', 'id');
+        $this->assertSame('unit-test', $titles[$page->getId()]);
+        $this->assertSame('', $titles[$pageWithoutTranslation->getId()]);
+    }
+
+    /**
+     * test méthode getStatusFormatedByCode()
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testGetStatusFormatedByCode(): void
+    {
+        $result = $this->dashboardService->getStatusFormatedByCode(PageStatus::PUBLISH->value);
+        $this->assertStringContainsString('badge ' . PageStatus::PUBLISH->getClassCss(), $result);
+
+        $result = $this->dashboardService->getStatusFormatedByCode(999);
+        $this->assertStringContainsString($this->translator->trans('page.status.inconnu', domain: 'page'), $result);
     }
 
     /**

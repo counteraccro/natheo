@@ -32,23 +32,16 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: [],
   data() {
     return {
       showBlockHelpFirstConnexion: true as boolean,
     };
   },
-  mounted() {},
   methods: {
-    /**
-     * Rechargement du grid
-     */
-    reloadGrid(): void {},
-
     /**
      * Masque le bloc de première connexion
      */
-    hideBlockFistConnexion(): void {
+    hideBlockFirstConnexion(): void {
       this.showBlockHelpFirstConnexion = false;
     },
   },
@@ -59,14 +52,15 @@ export default defineComponent({
   <div id="grid-block-dashboard" class="row">
     <div
       class="grid grid-cols-1 gap-6 mb-6"
-      v-if="datas.dashboard_help_first_connexion.help_first_connexion && showBlockHelpFirstConnexion"
+      v-if="
+        roles.isSuperAdmin && datas.dashboard_help_first_connexion.help_first_connexion && showBlockHelpFirstConnexion
+      "
     >
       <block-help-first-connexion
         :translate="translate.dashboard_help_first_connexion"
         :datas="datas.dashboard_help_first_connexion"
         :urls="urls.dashboard_help_first_connexion"
-        @reload-grid="reloadGrid"
-        @hide-block="hideBlockFistConnexion"
+        @hide-block="hideBlockFirstConnexion"
       />
     </div>
 
@@ -75,13 +69,11 @@ export default defineComponent({
         v-if="roles.isContributeur"
         :translate="translate.dashboard_last_comments"
         :urls="urls.dashboard_last_comments"
-        @reload-grid="reloadGrid"
       />
       <block-page-most-viewed
         v-if="roles.isContributeur"
         :translate="translate.dashboard_page_most_viewed"
         :urls="urls.dashboard_page_most_viewed"
-        @reload-grid="reloadGrid"
       />
     </div>
 
@@ -90,7 +82,6 @@ export default defineComponent({
         v-if="roles.isContributeur"
         :translate="translate.dashboard_last_pages"
         :urls="urls.dashboard_last_pages"
-        @reload-grid="reloadGrid"
       />
     </div>
   </div>
