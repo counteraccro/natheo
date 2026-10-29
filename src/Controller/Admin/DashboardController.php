@@ -106,16 +106,21 @@ class DashboardController extends AppAdminController
         TranslatorInterface $translator,
         DashboardService $dashboardService,
     ): JsonResponse {
-        $return = match ($id) {
-            DashboardBlock::HELP_FIRST_CONNEXION->value => $dashboardService->getBlockHelpConfig(),
-            DashboardBlock::LAST_COMMENT->value => $dashboardService->getBlockLastComment(),
-            DashboardBlock::LAST_PAGE_CREATE->value => $dashboardService->getBlockLastPageCreate(),
-            DashboardBlock::PAGES_MOST_VIEWED->value => $dashboardService->getBlockPageMostViewed(),
-            default => [
+        $block = DashboardBlock::tryFrom($id);
+        if ($block === null) {
+            return $this->json([
                 'success' => false,
                 'body' => null,
                 'error' => $translator->trans('dashboard.error.load.block', domain: 'dashboard'),
-            ],
+            ]);
+        }
+        $this->denyAccessUnlessGranted($block->getRole());
+
+        $return = match ($block) {
+            DashboardBlock::HELP_FIRST_CONNEXION => $dashboardService->getBlockHelpConfig(),
+            DashboardBlock::LAST_COMMENT => $dashboardService->getBlockLastComment(),
+            DashboardBlock::LAST_PAGE_CREATE => $dashboardService->getBlockLastPageCreate(),
+            DashboardBlock::PAGES_MOST_VIEWED => $dashboardService->getBlockPageMostViewed(),
         };
         return $this->json($return);
     }
@@ -127,6 +132,7 @@ class DashboardController extends AppAdminController
      * @throws InvalidArgumentException
      */
     #[Route('/ajax/load-dashboard-stat', name: 'load_dashboard_stat', methods: ['GET'])]
+    #[IsGranted('ROLE_CONTRIBUTEUR')]
     public function loadStatistics(StatisticsService $statisticsService): JsonResponse
     {
         return $this->json($statisticsService->getDashboardStatistics());

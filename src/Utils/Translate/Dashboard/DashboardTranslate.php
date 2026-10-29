@@ -110,7 +110,7 @@ class DashboardTranslate extends AppTranslate
     }
 
     /**
-     * Retourne les traductions du block derniers commentaires
+     * Retourne les traductions du block dernières pages
      * @return array
      */
     public function getBlockLastPagesTranslate(): array
@@ -151,6 +151,10 @@ class DashboardTranslate extends AppTranslate
         ];
     }
 
+    /**
+     * Retourne les traductions du block statistiques
+     * @return array
+     */
     public function getDashboardStatisticsTranslate(): array
     {
         return [

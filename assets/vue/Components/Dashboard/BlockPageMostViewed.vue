@@ -28,7 +28,6 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ['reload-grid'],
   data() {
     return {
       loading: false as boolean,
@@ -59,12 +58,7 @@ export default defineComponent({
         })
         .finally(() => {
           this.loading = false;
-          this.reload();
         });
-    },
-
-    reload(): void {
-      this.$emit('reload-grid');
     },
   },
 });

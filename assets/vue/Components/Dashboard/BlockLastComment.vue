@@ -28,7 +28,6 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ['reload-grid'],
   data() {
     return {
       loading: false as boolean,
@@ -59,12 +58,7 @@ export default defineComponent({
         })
         .finally(() => {
           this.loading = false;
-          this.reload();
         });
-    },
-
-    reload(): void {
-      this.$emit('reload-grid');
     },
   },
 });
@@ -120,7 +114,7 @@ export default defineComponent({
           <tr v-for="comment in result" :key="comment.id" class="hover:bg-gray-50 transition bg-(--bg-card)">
             <td class="px-4 sm:px-6 py-4 text-sm font-medium">#{{ comment.id }}</td>
             <td class="px-4 sm:px-6 py-4 text-sm">{{ comment.author }}</td>
-            <td class="px-4 sm:px-6 py-4 whitespace-nowrap"><span class="badge" v-html="comment.status"></span></td>
+            <td class="px-4 sm:px-6 py-4 whitespace-nowrap"><span v-html="comment.status"></span></td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-(--text-secondary)">{{ comment.date }}</td>
           </tr>
         </tbody>

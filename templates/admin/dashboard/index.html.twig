@@ -4,12 +4,14 @@
 
 {% block body %}
 
-    <div {{ vue_component('Admin/Dashboard/DashboardStatistics', {
-        'translate' : translateStat,
-        'urls' : urlStat
-    }) }}>
-
-    </div>
+    {% if roles.isContributeur %}
+        <div {{ vue_component('Admin/Dashboard/DashboardStatistics', {
+            'translate' : translateStat,
+            'urls' : urlStat,
+            'roles' : roles,
+        }) }}>
+        </div>
+    {% endif %}
 
     <div {{ vue_component('Admin/Dashboard/Dashboard', {
         'urls' : urls,

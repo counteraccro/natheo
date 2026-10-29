@@ -156,23 +156,9 @@ class CommentService extends AppAdminService
     {
         $string = $this->getStatusStringByCode($status);
 
-        return match ($status) {
-            CommentStatus::WAIT_VALIDATION->value => '<span class="badge ' .
-                CommentStatus::WAIT_VALIDATION->getClassCss() .
-                '">' .
-                $string .
-                '</span>',
-            CommentStatus::VALIDATE->value => '<span class="badge ' .
-                CommentStatus::VALIDATE->getClassCss() .
-                '">' .
-                $string .
-                '</span>',
-            CommentStatus::MODERATE->value => '<span class="badge ' .
-                CommentStatus::MODERATE->getClassCss() .
-                '">' .
-                $string .
-                '</span>',
-        };
+        $classCss = CommentStatus::tryFrom($status)?->getClassCss() ?? '';
+
+        return '<span class="badge ' . $classCss . '">' . $string . '</span>';
     }
 
     /**
@@ -186,9 +172,13 @@ class CommentService extends AppAdminService
     {
         $translator = $this->getTranslator();
         return match ($status) {
-            CommentStatus::WAIT_VALIDATION->value => $translator->trans('comment.status.wait.validation', domain: 'comment'),
+            CommentStatus::WAIT_VALIDATION->value => $translator->trans(
+                'comment.status.wait.validation',
+                domain: 'comment',
+            ),
             CommentStatus::VALIDATE->value => $translator->trans('comment.status.validate', domain: 'comment'),
             CommentStatus::MODERATE->value => $translator->trans('comment.status.moderate', domain: 'comment'),
+            default => $translator->trans('comment.status.inconnu', domain: 'comment'),
         };
     }
 
@@ -202,7 +192,10 @@ class CommentService extends AppAdminService
     {
         $translator = $this->getTranslator();
         return [
-            CommentStatus::WAIT_VALIDATION->value => $translator->trans('comment.status.wait.validation', domain: 'comment'),
+            CommentStatus::WAIT_VALIDATION->value => $translator->trans(
+                'comment.status.wait.validation',
+                domain: 'comment',
+            ),
             CommentStatus::VALIDATE->value => $translator->trans('comment.status.validate', domain: 'comment'),
             CommentStatus::MODERATE->value => $translator->trans('comment.status.moderate', domain: 'comment'),
         ];

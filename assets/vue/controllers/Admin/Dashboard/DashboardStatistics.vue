@@ -6,6 +6,7 @@ import {
   DashboardStatisticsTranslate,
   Urls,
 } from '@/ts/Dashboard/DashboardStatistics.type';
+import type { DashboardRoles } from '@/ts/Dashboard/Dashboard.type';
 import axios from 'axios';
 
 export default defineComponent({
@@ -18,6 +19,10 @@ export default defineComponent({
     },
     urls: {
       type: Object as PropType<Urls>,
+      required: true,
+    },
+    roles: {
+      type: Object as PropType<DashboardRoles>,
       required: true,
     },
   },
@@ -124,7 +129,7 @@ export default defineComponent({
         <div>
           <p class="text-sm font-medium" style="color: var(--text-secondary)">{{ translate.users }}</p>
           <p class="text-3xl font-bold mt-2">{{ stats.nbUsers }}</p>
-          <p class="text-xs mt-1" style="color: var(--text-light)">
+          <p v-if="roles.isSuperAdmin" class="text-xs mt-1" style="color: var(--text-light)">
             <a :href="urls.user" class="flex gap-0.5 items-center"
               >{{ translate.link_users }}
               <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">

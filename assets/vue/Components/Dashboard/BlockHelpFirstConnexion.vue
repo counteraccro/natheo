@@ -37,7 +37,7 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ['reload-grid', 'hide-block'],
+  emits: ['hide-block'],
   data() {
     return {
       hide: false as boolean,
@@ -75,15 +75,7 @@ export default defineComponent({
         })
         .finally(() => {
           this.loading = false;
-          this.reload();
         });
-    },
-
-    /**
-     * Rechargement du grid
-     */
-    reload(): void {
-      this.$emit('reload-grid');
     },
 
     /**
@@ -119,7 +111,6 @@ export default defineComponent({
      */
     hideBlock(): void {
       this.$emit('hide-block');
-      this.reload();
     },
 
     /**
@@ -255,40 +246,40 @@ export default defineComponent({
                   </svg>
                   <span>{{ subItem }} </span>
                 </div>
-
-                <div class="flex flex-wrap gap-4 mt-4 pt-4 border-t border-[var(--border-color)]">
-                  <a
-                    :href="links.link_options.link"
-                    class="text-sm font-medium hover:underline flex items-center gap-1.5 text-[color:var(--primary)]"
-                  >
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M4 5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5Zm16 14a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2ZM4 13a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-6Zm16-2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v6Z"
-                      ></path>
-                    </svg>
-
-                    {{ links.link_options.label }}
-                  </a>
-                  <a
-                    :href="links.link_tokens.link"
-                    class="text-sm font-medium hover:underline flex items-center gap-1.5 text-[color:var(--primary)]"
-                  >
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"
-                      ></path>
-                    </svg>
-                    {{ links.link_tokens.label }}
-                  </a>
-                </div>
               </div>
             </div>
+          </div>
+
+          <div v-if="links.link_options" class="flex flex-wrap gap-4 mt-4 pt-4 border-t border-[var(--border-color)]">
+            <a
+              :href="links.link_options.link"
+              class="text-sm font-medium hover:underline flex items-center gap-1.5 text-[color:var(--primary)]"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5Zm16 14a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2ZM4 13a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-6Zm16-2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v6Z"
+                ></path>
+              </svg>
+
+              {{ links.link_options.label }}
+            </a>
+            <a
+              :href="links.link_tokens.link"
+              class="text-sm font-medium hover:underline flex items-center gap-1.5 text-[color:var(--primary)]"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"
+                ></path>
+              </svg>
+              {{ links.link_tokens.label }}
+            </a>
           </div>
         </div>
       </div>

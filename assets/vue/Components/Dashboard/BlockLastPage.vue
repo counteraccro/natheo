@@ -28,7 +28,6 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ['reload-grid'],
   data() {
     return {
       loading: false as boolean,
@@ -59,12 +58,7 @@ export default defineComponent({
         })
         .finally(() => {
           this.loading = false;
-          this.reload();
         });
-    },
-
-    reload(): void {
-      this.$emit('reload-grid');
     },
   },
 });
@@ -122,7 +116,7 @@ export default defineComponent({
           <tr v-for="page in result" :key="page.id" class="hover:bg-gray-50 transition bg-(--bg-card)">
             <td class="px-4 sm:px-6 py-4 text-sm font-medium">#{{ page.id }}</td>
             <td class="px-4 sm:px-6 py-4 text-sm">{{ page.title }}</td>
-            <td class="px-4 sm:px-6 py-4 whitespace-nowrap"><span class="badge" v-html="page.status"></span></td>
+            <td class="px-4 sm:px-6 py-4 whitespace-nowrap"><span v-html="page.status"></span></td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-(--text-secondary)">{{ page.date }}</td>
           </tr>
         </tbody>

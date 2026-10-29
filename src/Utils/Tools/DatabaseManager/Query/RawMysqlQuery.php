@@ -92,9 +92,13 @@ class RawMysqlQuery implements RawQueryInterface
      */
     public static function getQueryPageMostViewedByKey(int $limit): string
     {
+        // Comparaison texte : un CAST dans le WHERE peut être évalué avant le filtre sur key
         return 'SELECT ps.page_id AS page_id, CAST(ps.value AS SIGNED) AS nb
         FROM page_statistique ps
+        JOIN page p ON p.id = ps.page_id
         WHERE ps.key = :key
+        AND p.status = :status
+        AND ps.value <> \'0\'
         ORDER BY nb DESC
         LIMIT ' . $limit;
     }

@@ -16,6 +16,7 @@ comment.status.wait.validation: 'En attente de validation'
 comment.status.validate: Validé
 comment.status.wait.moderation: 'En attente de modération'
 comment.status.moderate: Modéré
+comment.status.inconnu: Inconnu
 comment.moderate.comments.page_title: 'Modération des commentaires'
 comment.moderate.comments.page_title_h1: 'Modération des commentaires'
 comment.see.page_title: Commentaire
