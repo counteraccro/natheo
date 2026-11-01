@@ -19,7 +19,7 @@ use App\Service\Admin\GridService;
 use App\Service\Admin\MarkdownEditorService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Utils\Content\Media\MediaFolderConst;
-use App\Utils\Translate\Content\MediaTranslate;
+use App\Translate\Admin\Content\MediaTranslate;
 use App\Utils\Utils;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;

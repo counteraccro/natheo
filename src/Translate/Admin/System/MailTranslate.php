@@ -6,9 +6,9 @@ declare(strict_types=1);
  * @author Gourdon Aymeric
  * @version 1.1
  */
-namespace App\Utils\Translate\System;
+namespace App\Translate\Admin\System;
 
-use App\Utils\Translate\AppTranslate;
+use App\Translate\AppTranslate;
 
 class MailTranslate extends AppTranslate
 {

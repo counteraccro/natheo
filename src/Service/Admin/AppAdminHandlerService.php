@@ -18,7 +18,7 @@ use App\Utils\Global\Database\DataBase;
 use App\Utils\Global\Database\RawQueryManager;
 use App\Utils\Global\Database\RawResultQueryManager;
 use App\Utils\Global\EnvFile;
-use App\Utils\Translate\GridTranslate;
+use App\Translate\Admin\Global\GridTranslate;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;

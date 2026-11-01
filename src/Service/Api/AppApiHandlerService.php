@@ -13,7 +13,7 @@ use App\Service\Admin\MarkdownEditorService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Service\Api\Content\ApiMenuService;
 use App\Service\Api\Content\Page\ApiPageContentService;
-use App\Utils\Translate\GridTranslate;
+use App\Translate\Admin\Global\GridTranslate;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;

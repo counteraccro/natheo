@@ -12,7 +12,7 @@ namespace App\Controller\Admin\System;
 use App\Controller\Admin\AppAdminController;
 use App\Enum\Admin\Global\Breadcrumb;
 use App\Service\Admin\System\TranslateService;
-use App\Utils\Translate\System\TranslationTranslate;
+use App\Translate\Admin\System\TranslationTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;

@@ -7,9 +7,9 @@ declare(strict_types=1);
  * @version 1.0
  */
 
-namespace App\Utils\Translate\Front;
+namespace App\Translate\Front;
 
-use App\Utils\Translate\AppTranslate;
+use App\Translate\AppTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
