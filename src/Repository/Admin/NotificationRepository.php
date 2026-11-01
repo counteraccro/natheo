@@ -76,7 +76,7 @@ class NotificationRepository extends ServiceEntityRepository
         $query = $this->createQueryBuilder(Notification::DEFAULT_ALIAS)
             ->andWhere(Notification::DEFAULT_ALIAS . '.user = :user')
             ->setParameter('user', $user)
-            ->orderBy(Notification::DEFAULT_ALIAS . '.createdAt', 'DESC');
+            ->orderBy(Notification::DEFAULT_ALIAS . '.createdAt', \SortDirection::Descending);
 
         if ($onlyNotRead) {
             $query->andWhere('COALESCE(' . Notification::DEFAULT_ALIAS . '.read, FALSE) = FALSE');

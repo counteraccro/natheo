@@ -13,8 +13,6 @@ use Doctrine\ORM\QueryBuilder;
 
 trait OrderedQueryTrait
 {
-    private const array ALLOWED_ORDER_DIRECTIONS = ['ASC', 'DESC'];
-
     /**
      * Construit le trie de façon sécurisée
      * @param QueryBuilder $qb
@@ -25,7 +23,6 @@ trait OrderedQueryTrait
     public function applyOrdering(QueryBuilder $qb, string $entity, array $queryParams): QueryBuilder
     {
         $orderField = 'id';
-        $order = 'DESC';
 
         if (
             isset($queryParams['orderField']) &&
@@ -35,15 +32,26 @@ trait OrderedQueryTrait
             $orderField = $queryParams['orderField'];
         }
 
-        if (
-            isset($queryParams['order']) &&
-            in_array(strtoupper($queryParams['order']), self::ALLOWED_ORDER_DIRECTIONS, true)
-        ) {
-            $order = strtoupper($queryParams['order']);
-        }
-
         $orderField = str_contains($orderField, '.') ? $orderField : $entity::DEFAULT_ALIAS . '.' . $orderField;
 
-        return $qb->orderBy($orderField, $order);
+        return $qb->orderBy($orderField, $this->toSortDirection($queryParams['order'] ?? null));
+    }
+
+    /**
+     * Convertit une direction de tri reçue en chaîne ('asc' / 'desc', casse indifférente) en SortDirection
+     * Toute autre valeur renvoie $default
+     * @param string|null $order
+     * @param \SortDirection $default
+     * @return \SortDirection
+     */
+    protected function toSortDirection(
+        ?string $order,
+        \SortDirection $default = \SortDirection::Descending,
+    ): \SortDirection {
+        return match (strtoupper((string) $order)) {
+            'ASC' => \SortDirection::Ascending,
+            'DESC' => \SortDirection::Descending,
+            default => $default,
+        };
     }
 }

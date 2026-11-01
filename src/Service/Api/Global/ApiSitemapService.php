@@ -32,7 +32,7 @@ class ApiSitemapService extends AppApiService
         $pageRepo = $this->getRepository(Page::class);
         $pages = $pageRepo->findBy(
             ['status' => PageStatus::PUBLISH->value, 'disabled' => false],
-            ['updateAt' => 'DESC'],
+            ['updateAt' => \SortDirection::Descending],
         );
 
         $return = [];

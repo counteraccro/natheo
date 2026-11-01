@@ -119,7 +119,7 @@ class PageRepository extends ServiceEntityRepository
             ->setParameter('disabled', false)
             ->andWhere('p.status = :status')
             ->setParameter('status', PageStatus::PUBLISH->value)
-            ->orderBy('p.updateAt', 'DESC');
+            ->orderBy('p.updateAt', \SortDirection::Descending);
 
         if ($categoryId !== 0) {
             $query->andWhere('p.category = :categoryId')->setParameter('categoryId', $categoryId);
@@ -151,7 +151,7 @@ class PageRepository extends ServiceEntityRepository
             ->setParameter('disabled', false)
             ->andWhere('p.status = :status')
             ->setParameter('status', PageStatus::PUBLISH->value)
-            ->orderBy('p.updateAt', 'DESC');
+            ->orderBy('p.updateAt', \SortDirection::Descending);
 
         $paginator = new Paginator($query->getQuery(), true);
         $paginator

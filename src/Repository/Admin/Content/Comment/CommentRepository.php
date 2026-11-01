@@ -105,7 +105,10 @@ class CommentRepository extends ServiceEntityRepository
      */
     public function getListCommentsByFilter(int $status, int $idPage, int $page, int $limit): Paginator
     {
-        $query = $this->createQueryBuilder(Comment::DEFAULT_ALIAS)->addOrderBy(Comment::DEFAULT_ALIAS . '.id', 'DESC');
+        $query = $this->createQueryBuilder(Comment::DEFAULT_ALIAS)->addOrderBy(
+            Comment::DEFAULT_ALIAS . '.id',
+            \SortDirection::Descending,
+        );
 
         if ($status !== 0) {
             $query->andWhere(Comment::DEFAULT_ALIAS . '.status = :status')->setParameter('status', $status);
@@ -162,7 +165,7 @@ class CommentRepository extends ServiceEntityRepository
                 ->setParameter('locale', $dto->getLocale());
         }
 
-        $query->orderBy('c.' . $dto->getOrderBy(), $dto->getOrder());
+        $query->orderBy('c.' . $dto->getOrderBy(), $this->toSortDirection($dto->getOrder()));
 
         $paginator = new Paginator($query->getQuery(), true);
         $paginator

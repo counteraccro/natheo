@@ -59,7 +59,7 @@ class SidebarElementRepository extends ServiceEntityRepository
             ->andWhere(SidebarElement::DEFAULT_ALIAS . '.parent IS NULL')
             ->andWhere(SidebarElement::DEFAULT_ALIAS . '.disabled = :disabled')
             ->setParameter('disabled', $disabled)
-            ->orderBy(SidebarElement::DEFAULT_ALIAS . '.id', 'ASC')
+            ->orderBy(SidebarElement::DEFAULT_ALIAS . '.id', \SortDirection::Ascending)
             ->getQuery()
             ->getResult();
     }
