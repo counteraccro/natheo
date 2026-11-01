@@ -15,9 +15,42 @@ use App\Entity\Admin\Content\Faq\FaqCategoryTranslation;
 use App\Entity\Admin\Content\Faq\FaqQuestion;
 use App\Entity\Admin\Content\Faq\FaqQuestionTranslation;
 use phpDocumentor\Reflection\Types\Void_;
+use App\Utils\Content\PopulateTrait;
 
 class FaqPopulate
 {
+    use PopulateTrait;
+
+    /**
+     * Champs modifiables de FaqCategory
+     * @var string[]
+     */
+    private const array FIELDS_FAQ_CATEGORY = ['disabled', 'renderOrder'];
+
+    /**
+     * Champs modifiables de FaqCategoryTranslation
+     * @var string[]
+     */
+    private const array FIELDS_FAQ_CATEGORY_TRANSLATION = ['locale', 'title'];
+
+    /**
+     * Champs modifiables de FaqQuestion
+     * @var string[]
+     */
+    private const array FIELDS_FAQ_QUESTION = ['disabled', 'renderOrder'];
+
+    /**
+     * Champs modifiables de FaqQuestionTranslation
+     * @var string[]
+     */
+    private const array FIELDS_FAQ_QUESTION_TRANSLATION = ['locale', 'title', 'answer'];
+
+    /**
+     * Champs modifiables de FaqTranslation
+     * @var string[]
+     */
+    private const array FIELDS_FAQ_TRANSLATION = ['title'];
+
     /**
      * Clé pour faqTranslations
      * @var string
@@ -96,17 +129,12 @@ class FaqPopulate
         foreach ($this->populate[self::KEY_FAQ_CATEORIES] as $dataFaqCategorie) {
             $faqCategory = new FaqCategory();
             $faqCategory->setFaq($this->faq);
-            $this->mergeData($faqCategory, $dataFaqCategorie, [
-                'id',
-                'faq',
-                self::KEY_FAQ_CATEGORY_TRANSLATION,
-                self::KEY_FAQ_QUESTION,
-            ]);
+            $this->mergeData($faqCategory, $dataFaqCategorie, self::FIELDS_FAQ_CATEGORY);
 
             foreach ($dataFaqCategorie[self::KEY_FAQ_CATEGORY_TRANSLATION] as $dataFaqCatTranslation) {
                 $faqCategoryTranslation = new FaqCategoryTranslation();
                 $faqCategoryTranslation->setFaqCategory($faqCategory);
-                $this->mergeData($faqCategoryTranslation, $dataFaqCatTranslation, ['id', 'faqCategory']);
+                $this->mergeData($faqCategoryTranslation, $dataFaqCatTranslation, self::FIELDS_FAQ_CATEGORY_TRANSLATION);
                 $faqCategory->addFaqCategoryTranslation($faqCategoryTranslation);
             }
 
@@ -126,12 +154,12 @@ class FaqPopulate
         foreach ($dataFaqCategory[self::KEY_FAQ_QUESTION] as $dataFaqQuestion) {
             $faqQuestion = new FaqQuestion();
             $faqQuestion->setFaqCategory($faqCategory);
-            $this->mergeData($faqQuestion, $dataFaqQuestion, ['id', 'faqCategory', self::KEY_FAQ_QUESTION_TRANSLATION]);
+            $this->mergeData($faqQuestion, $dataFaqQuestion, self::FIELDS_FAQ_QUESTION);
 
             foreach ($dataFaqQuestion[self::KEY_FAQ_QUESTION_TRANSLATION] as $dataFaqQuestionTranslation) {
                 $faqQuestionTranslation = new FaqQuestionTranslation();
                 $faqQuestionTranslation->setFaqQuestion($faqQuestion);
-                $this->mergeData($faqQuestionTranslation, $dataFaqQuestionTranslation, ['id', 'FaqQuestion']);
+                $this->mergeData($faqQuestionTranslation, $dataFaqQuestionTranslation, self::FIELDS_FAQ_QUESTION_TRANSLATION);
                 $faqQuestion->addFaqQuestionTranslation($faqQuestionTranslation);
             }
             $faqCategory->addFaqQuestion($faqQuestion);
@@ -149,7 +177,7 @@ class FaqPopulate
             foreach ($this->faq->getFaqTranslations() as &$faqTranslation) {
                 foreach ($this->populate[self::KEY_FAQ_TRANSLATIONS] as $dataTranslation) {
                     if ($faqTranslation->getLocale() === $dataTranslation['locale']) {
-                        $faqTranslation = $this->mergeData($faqTranslation, $dataTranslation, ['id', 'faq', 'locale']);
+                        $faqTranslation = $this->mergeData($faqTranslation, $dataTranslation, self::FIELDS_FAQ_TRANSLATION);
                     }
                 }
             }
@@ -165,22 +193,4 @@ class FaqPopulate
         return $this->faq;
     }
 
-    /**
-     * Merge des données de $populate dans $object sans prendre en compte $exclude
-     * @param mixed $object
-     * @param array $populate
-     * @param array $exclude
-     * @return mixed
-     */
-    private function mergeData(mixed $object, array $populate, array $exclude = []): mixed
-    {
-        foreach ($populate as $key => $value) {
-            if (in_array($key, $exclude)) {
-                continue;
-            }
-            $func = 'set' . ucfirst($key);
-            $object->$func($value);
-        }
-        return $object;
-    }
 }

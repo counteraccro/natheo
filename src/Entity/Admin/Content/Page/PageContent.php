@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Admin\Content\Page;
 
+use App\Entity\Trait\TranslationByLocaleTrait;
 use App\Enum\Installation\DoctrineStrategy;
 use App\Repository\Admin\Content\Page\PageContentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -14,6 +15,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'page_content')]
 class PageContent
 {
+    use TranslationByLocaleTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: DoctrineStrategy::CURRENT)]
     #[ORM\Column]
@@ -146,16 +149,13 @@ class PageContent
     }
 
     /**
-     * Retourne la traduction en fonction de la locale
+     * Retourne la traduction de $locale, à défaut celle de $defaultLocale, à défaut la première disponible
      * @param string $locale
-     * @return PageContentTranslation
+     * @param string|null $defaultLocale
+     * @return PageContentTranslation|null
      */
-    public function getPageContentTranslationByLocale(string $locale): PageContentTranslation
+    public function getPageContentTranslationByLocale(string $locale, ?string $defaultLocale = null): ?PageContentTranslation
     {
-        return $this->getPageContentTranslations()
-            ->filter(function (PageContentTranslation $pageContentTranslation) use ($locale) {
-                return $pageContentTranslation->getLocale() === $locale;
-            })
-            ->first();
+        return $this->findTranslationByLocale($this->getPageContentTranslations(), $locale, $defaultLocale);
     }
 }

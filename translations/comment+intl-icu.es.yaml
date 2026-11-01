@@ -90,3 +90,4 @@ comment.moderation.status.short.waiting: __comment.moderation.status.short.waiti
 comment.see.comment.error.no.comment.title: __comment.see.comment.error.no.comment.title
 comment.see.comment.error.no.comment.text: __comment.see.comment.error.no.comment.text
 comment.see.comment.btn.back: __comment.see.comment.btn.back
+comment.error.not_found: __comment.error.not_found

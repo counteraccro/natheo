@@ -63,3 +63,5 @@ tag.update.page.back: __tag.update.page.back
 tag.update.page.new: __tag.update.page.new
 tag.save.new: 'La etiqueta <strong>{label}</strong> se ha creado correctamente'
 tag.save.edit: 'La etiqueta <strong>{label}</strong> se ha modificado correctamente'
+tag.error.forbidden: __tag.error.forbidden
+tag.error.not_found: __tag.error.not_found

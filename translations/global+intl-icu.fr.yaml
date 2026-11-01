@@ -27,3 +27,4 @@ global.header.search.input: 'Rechercher une page, un tag, un menu...'
 global.header.theme: 'Thèmes disponibles'
 global.header.dark.mode: 'Mode sombre'
 global.modale.help.close: "Fermer l'aide"
+global.error.csrf: 'Jeton de sécurité invalide, rechargez la page puis réessayez.'

@@ -55,5 +55,4 @@ database_manager.error.delete.file.dump: __database_manager.error.delete.file.du
 database_manager.error.dump.options: __database_manager.error.dump.options
 database_manager.error.dump.filename: __database_manager.error.dump.filename
 database_manager.error.dump.filename.exist: __database_manager.error.dump.filename.exist
-database_manager.error.csrf: __database_manager.error.csrf
 database_manager.error.generic: __database_manager.error.generic

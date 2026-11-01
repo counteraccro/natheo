@@ -22,6 +22,9 @@ class CommentPopulateTest extends AppWebTestCase
     public function testPopulate(): void
     {
         $comment = $this->createComment();
+        $author = $comment->getAuthor();
+        $email = $comment->getEmail();
+        $ip = $comment->getIp();
         $populate = [
             'comment' => 'Commentaire test',
             'author' => 'Auteur',
@@ -33,8 +36,9 @@ class CommentPopulateTest extends AppWebTestCase
         $commentP = $commentPopulate->populate()->getComment();
         $this->assertInstanceOf(Comment::class, $commentP);
         $this->assertEquals($populate['comment'], $commentP->getComment());
-        $this->assertEquals($populate['author'], $commentP->getAuthor());
-        $this->assertEquals($populate['email'], $commentP->getEmail());
-        $this->assertEquals($populate['ip'], $commentP->getIp());
+        // Champs saisis par le visiteur : hors liste blanche, non modifiables en admin
+        $this->assertEquals($author, $commentP->getAuthor());
+        $this->assertEquals($email, $commentP->getEmail());
+        $this->assertEquals($ip, $commentP->getIp());
     }
 }

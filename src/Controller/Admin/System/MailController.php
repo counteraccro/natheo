@@ -266,15 +266,4 @@ class MailController extends AppAdminController
             'msg' => $translator->trans('mail.demo.success', ['email' => $title], domain: 'mail'),
         ]);
     }
-
-    /**
-     * Retourne une réponse JSON d'erreur
-     * @param string $msg
-     * @param int $status
-     * @return JsonResponse
-     */
-    private function jsonError(string $msg, int $status): JsonResponse
-    {
-        return $this->json(['success' => false, 'msg' => $msg], $status);
-    }
 }

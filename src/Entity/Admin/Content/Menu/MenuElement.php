@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity\Admin\Content\Menu;
 
 use App\Entity\Admin\Content\Page\Page;
+use App\Entity\Trait\TranslationByLocaleTrait;
 use App\Enum\Installation\DoctrineStrategy;
 use App\Repository\Admin\Content\Menu\MenuElementRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -15,6 +16,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'menu_element')]
 class MenuElement
 {
+    use TranslationByLocaleTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: DoctrineStrategy::CURRENT)]
     #[ORM\Column]
@@ -129,17 +132,14 @@ class MenuElement
     }
 
     /**
-     * Retourne la traduction en fonction de la locale
+     * Retourne la traduction de $locale, à défaut celle de $defaultLocale, à défaut la première disponible
      * @param string $locale
-     * @return MenuElementTranslation
+     * @param string|null $defaultLocale
+     * @return MenuElementTranslation|null
      */
-    public function getMenuElementTranslationByLocale(string $locale): MenuElementTranslation
+    public function getMenuElementTranslationByLocale(string $locale, ?string $defaultLocale = null): ?MenuElementTranslation
     {
-        return $this->getMenuElementTranslations()
-            ->filter(function (MenuElementTranslation $menuElementTranslation) use ($locale) {
-                return $menuElementTranslation->getLocale() === $locale;
-            })
-            ->first();
+        return $this->findTranslationByLocale($this->getMenuElementTranslations(), $locale, $defaultLocale);
     }
 
     public function getPage(): ?Page

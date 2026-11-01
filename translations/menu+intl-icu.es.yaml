@@ -158,3 +158,5 @@ menu.index.page_title.error.default.info: __menu.index.page_title.error.default.
 menu.btn.back: __menu.btn.back
 menu.no.exist.title: __menu.no.exist.title
 menu.no.exist.text: __menu.no.exist.text
+menu.error.forbidden: __menu.error.forbidden
+menu.error.not_found: __menu.error.not_found

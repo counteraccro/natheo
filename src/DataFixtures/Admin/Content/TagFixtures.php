@@ -12,6 +12,7 @@ namespace App\DataFixtures\Admin\Content;
 use App\DataFixtures\AppFixtures;
 use App\Entity\Admin\Content\Tag\Tag;
 use App\Entity\Admin\Content\Tag\TagTranslation;
+use App\Entity\Admin\System\User;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -35,6 +36,8 @@ class TagFixtures extends AppFixtures implements FixtureGroupInterface, OrderedF
                     foreach ($value as $translate) {
                         $tag->addTagTranslation($this->populateEntity($translate, new TagTranslation()));
                     }
+                } elseif ($key === 'user') {
+                    $tag->setUser($this->getReference($value, User::class));
                 } else {
                     $this->setData($key, $value, $tag);
                 }

@@ -178,7 +178,7 @@ class TagController extends AppAdminController
             }
         }
         if ($tag) {
-            $tag = $tagService->convertEntityToArray($tag, ['createdAt', 'updateAt', 'pages']);
+            $tag = $tagService->convertEntityToArray($tag, ['createdAt', 'updateAt', 'pages', 'user']);
         }
 
         return $this->render('admin/content/tag/add_update.html.twig', [
@@ -203,10 +203,17 @@ class TagController extends AppAdminController
     {
         $data = json_decode($request->getContent(), true);
 
-        $tag = new tag();
+        // Le propriétaire n'est jamais modifiable depuis le formulaire
+        unset($data['tag']['user']);
+
+        $tag = new Tag();
+        $tag->setUser($this->getUser());
         $status = 'new';
         if ($data['tag']['id'] !== null) {
             $tag = $tagService->findOneBy(Tag::class, 'id', $data['tag']['id']);
+            if ($tag === null) {
+                return $this->jsonNotFound('tag');
+            }
             $status = 'edit';
         }
 
@@ -276,14 +283,14 @@ class TagController extends AppAdminController
         string $search = '',
         string $locale = '',
     ): Response {
-        $tag = $tagService->newTagByNameAndLocale($locale, $search);
+        $tag = $tagService->newTagByNameAndLocale($locale, $search, $this->getUser());
 
         $msg = '';
         $success = false;
         if ($tag === null) {
             $msg = $translator->trans('tag.page.error.tag.disabled', domain: 'tag');
         } else {
-            $tag = $tagService->convertEntityToArray($tag, ['createdAt', 'updateAt', 'pages']);
+            $tag = $tagService->convertEntityToArray($tag, ['createdAt', 'updateAt', 'pages', 'user']);
             $success = true;
         }
         return $this->json(['tag' => $tag, 'msg' => $msg, 'success' => $success]);

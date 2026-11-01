@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Admin\Content\Faq;
 
+use App\Entity\Trait\TranslationByLocaleTrait;
 use App\Enum\Installation\DoctrineStrategy;
 use App\Repository\Admin\Content\Faq\FaqCategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -16,6 +17,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'faq_category')]
 class FaqCategory
 {
+    use TranslationByLocaleTrait;
+
     public const string DEFAULT_ALIAS = 'faq_category';
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: DoctrineStrategy::CURRENT)]
@@ -172,17 +175,14 @@ class FaqCategory
     }
 
     /**
-     * Retourne la traduction en fonction de la locale
+     * Retourne la traduction de $locale, à défaut celle de $defaultLocale, à défaut la première disponible
      * @param string $locale
-     * @return FaqCategoryTranslation
+     * @param string|null $defaultLocale
+     * @return FaqCategoryTranslation|null
      */
-    public function getFaqCategoryTranslationByLocale(string $locale): FaqCategoryTranslation
+    public function getFaqCategoryTranslationByLocale(string $locale, ?string $defaultLocale = null): ?FaqCategoryTranslation
     {
-        return $this->faqCategoryTranslations
-            ->filter(function (FaqCategoryTranslation $faqCategoryTranslation) use ($locale) {
-                return $faqCategoryTranslation->getLocale() === $locale;
-            })
-            ->first();
+        return $this->findTranslationByLocale($this->faqCategoryTranslations, $locale, $defaultLocale);
     }
 
     /**

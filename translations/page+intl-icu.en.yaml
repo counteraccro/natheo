@@ -174,3 +174,5 @@ page.page_content_block.bloc: __page.page_content_block.bloc
 page.status.archived: __page.status.archived
 page.page_content.warning.empty_content: __page.page_content.warning.empty_content
 page.msg.auto_save.success: 'Auto-saved at'
+page.error.forbidden: __page.error.forbidden
+page.error.not_found: __page.error.not_found

@@ -93,7 +93,7 @@ class ApiTokenController extends AppAdminController
         Request $request,
     ): JsonResponse {
         if (!$this->isCsrfTokenValid(ApiTokenService::CSRF_TOKEN_UPDATE_DISABLED, $request->headers->get('X-CSRF-TOKEN'))) {
-            return $this->jsonCsrfError($translator);
+            return $this->jsonCsrfError();
         }
 
         $apiToken->setDisabled(!$apiToken->isDisabled());
@@ -125,7 +125,7 @@ class ApiTokenController extends AppAdminController
         Request $request,
     ): JsonResponse {
         if (!$this->isCsrfTokenValid(ApiTokenService::CSRF_TOKEN_DELETE, $request->headers->get('X-CSRF-TOKEN'))) {
-            return $this->jsonCsrfError($translator);
+            return $this->jsonCsrfError();
         }
 
         $msg = $translator->trans('api_token.remove.success', ['label' => $apiToken->getName()], domain: 'api_token');
@@ -210,7 +210,7 @@ class ApiTokenController extends AppAdminController
         Request $request,
     ): JsonResponse {
         if (!$this->isCsrfTokenValid(ApiTokenService::CSRF_TOKEN_REGENERATE, $request->headers->get('X-CSRF-TOKEN'))) {
-            return $this->jsonCsrfError($translator);
+            return $this->jsonCsrfError();
         }
 
         $token = $apiTokenService->regenerateToken($apiToken);
@@ -238,7 +238,7 @@ class ApiTokenController extends AppAdminController
         TranslatorInterface $translator,
     ): JsonResponse {
         if (!$this->isCsrfTokenValid(ApiTokenService::CSRF_TOKEN_SAVE, $request->headers->get('X-CSRF-TOKEN'))) {
-            return $this->jsonCsrfError($translator);
+            return $this->jsonCsrfError();
         }
 
         $data = json_decode($request->getContent(), true);
@@ -273,18 +273,5 @@ class ApiTokenController extends AppAdminController
         );
         $response['token'] = $response['success'] === true ? $result['token'] : '';
         return $this->json($response);
-    }
-
-    /**
-     * Réponse JSON en cas de jeton CSRF invalide
-     * @param TranslatorInterface $translator
-     * @return JsonResponse
-     */
-    private function jsonCsrfError(TranslatorInterface $translator): JsonResponse
-    {
-        return $this->json(
-            ['success' => false, 'msg' => $translator->trans('api_token.error.csrf', domain: 'api_token')],
-            Response::HTTP_FORBIDDEN,
-        );
     }
 }

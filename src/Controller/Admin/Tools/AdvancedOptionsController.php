@@ -9,13 +9,13 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Tools;
 
+use App\Controller\Admin\AppAdminController;
 use App\Enum\Admin\Global\Breadcrumb;
 use App\Service\Admin\CommandService;
 use App\Utils\Global\EnvFile;
 use App\Utils\Translate\Tools\AdvancedOptionsTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,7 +33,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
     ),
 ]
 #[IsGranted('ROLE_SUPER_ADMIN')]
-class AdvancedOptionsController extends AbstractController
+class AdvancedOptionsController extends AppAdminController
 {
     /**
      * Point d'entrée des options avancées
@@ -200,16 +200,6 @@ class AdvancedOptionsController extends AbstractController
         return $request->headers->get('X-CSRF-TOKEN') ?? $request->request->get('_token');
     }
 
-    /**
-     * Retourne une réponse JSON d'erreur
-     * @param string $msg
-     * @param int $status
-     * @return JsonResponse
-     */
-    private function jsonError(string $msg, int $status = Response::HTTP_FORBIDDEN): JsonResponse
-    {
-        return $this->json(['success' => false, 'msg' => $msg], $status);
-    }
 
     /**
      * Retourne une réponse JSON d'erreur suite à l'échec d'une commande console

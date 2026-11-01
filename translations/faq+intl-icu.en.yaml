@@ -89,3 +89,5 @@ faq.edit.confirm.delete.category.title: __faq.edit.confirm.delete.category.title
 faq.edit.confirm.delete.category.body: __faq.edit.confirm.delete.category.body
 faq.edit.confirm.delete.question.title: __faq.edit.confirm.delete.question.title
 faq.edit.confirm.delete.question.body: __faq.edit.confirm.delete.question.body
+faq.error.forbidden: __faq.error.forbidden
+faq.error.not_found: __faq.error.not_found

@@ -1,6 +1,7 @@
 tag:
     Tag_natheo:
         color: '#6F42C1'
+        user: User
         translate:
             - locale: fr
               label: 'Natheo CMS'
@@ -10,6 +11,7 @@ tag:
               label: 'Natheo CMS'
     Tag_dev:
         color: '#7A86B8'
+        user: User
         translate:
             - locale: fr
               label: 'Développement'
@@ -19,6 +21,7 @@ tag:
               label: 'Development'
     Tag_article:
         color: '#1188b4'
+        user: User
         translate:
             - locale: fr
               label: 'Article'
@@ -28,6 +31,7 @@ tag:
               label: 'Article'
     Tag_evolution:
         color: '#b61114'
+        user: User
         translate:
             - locale: fr
               label: 'Evolution'
@@ -37,6 +41,7 @@ tag:
               label: 'Evolution'
     Tag_faq:
         color: '#262cdf'
+        user: User
         translate:
             - locale: fr
               label: 'FAQ'
@@ -46,6 +51,7 @@ tag:
               label: 'FAQ'
     Tag_page:
         color: '#23e515'
+        user: User
         translate:
             - locale: fr
               label: 'Page'
@@ -55,6 +61,7 @@ tag:
               label: 'Page'
     Tag_blog:
         color: '#b8db0a'
+        user: User
         translate:
             - locale: fr
               label: 'Blog'
@@ -64,6 +71,7 @@ tag:
               label: 'Blog'
     Tag_demo:
         color: '#F0C847'
+        user: User
         translate:
             - locale: fr
               label: 'Démo'

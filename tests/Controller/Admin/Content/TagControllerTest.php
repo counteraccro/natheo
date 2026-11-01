@@ -206,6 +206,18 @@ class TagControllerTest extends AppWebTestCase
         $tag = $tags[0];
         $this->assertInstanceOf(Tag::class, $tag);
         $this->assertEquals($data['tag']['color'], $tag->getColor());
+        $this->assertEquals($userContributeur->getId(), $tag->getUser()?->getId(), 'Propriétaire = auteur');
+
+        // Tag inexistant : erreur JSON 404 au lieu d'une erreur 500
+        $data['tag']['id'] = 999999;
+        $this->client->request('POST', $this->router->generate('admin_tag_save'), content: json_encode($data));
+        $this->assertResponseStatusCodeSame(404);
+        $content = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertFalse($content['success']);
+        $this->assertEquals(
+            $this->translator->trans('tag.error.not_found', domain: 'tag'),
+            $content['msg'],
+        );
     }
 
     /**

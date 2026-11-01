@@ -55,5 +55,4 @@ database_manager.error.delete.file.dump: 'Impossible de supprimer le fichier {fi
 database_manager.error.dump.options: 'Les options de sauvegarde sont invalides'
 database_manager.error.dump.filename: 'Le nom de la sauvegarde ne doit contenir que des lettres, chiffres, tirets et underscores (100 caractères maximum)'
 database_manager.error.dump.filename.exist: 'Une sauvegarde nommée {fichier} existe déjà'
-database_manager.error.csrf: 'Jeton de sécurité invalide, rechargez la page puis réessayez.'
 database_manager.error.generic: 'Une erreur est survenue, veuillez réessayer.'
