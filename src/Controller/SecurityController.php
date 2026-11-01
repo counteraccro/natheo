@@ -18,7 +18,7 @@ use App\Service\Installation\InstallationService;
 use App\Service\SecurityService;
 use App\Utils\System\Mail\KeyWord;
 use App\Utils\System\Mail\MailKey;
-use App\Utils\Translate\System\UserTranslate;
+use App\Translate\Admin\System\UserTranslate;
 use League\CommonMark\Exception\CommonMarkException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;

@@ -14,7 +14,7 @@ use App\Entity\Admin\System\User;
 use App\Enum\Admin\Content\Page\PageCategory;
 use App\Service\Admin\System\User\UserDataService;
 use App\Service\Api\Global\ApiSitemapService;
-use App\Utils\Translate\Front\FrontTranslate;
+use App\Translate\Front\FrontTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;

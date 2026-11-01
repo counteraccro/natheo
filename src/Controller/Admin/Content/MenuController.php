@@ -23,7 +23,7 @@ use App\Service\Admin\Content\Menu\MenuConvertToArray;
 use App\Service\Admin\Content\Menu\MenuService;
 use App\Service\Admin\Content\Page\PageService;
 use App\Service\Admin\System\OptionSystemService;
-use App\Utils\Translate\Content\MenuTranslate;
+use App\Translate\Admin\Content\MenuTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;

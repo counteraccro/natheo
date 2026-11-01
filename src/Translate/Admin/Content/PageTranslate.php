@@ -7,10 +7,10 @@ declare(strict_types=1);
  * @version 1.2
  */
 
-namespace App\Utils\Translate\Content;
+namespace App\Translate\Admin\Content;
 
-use App\Utils\Translate\AppTranslate;
-use App\Utils\Translate\MarkdownEditorTranslate;
+use App\Translate\AppTranslate;
+use App\Translate\Admin\Global\MarkdownEditorTranslate;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Contracts\Translation\TranslatorInterface;

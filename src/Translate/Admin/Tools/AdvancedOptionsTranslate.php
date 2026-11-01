@@ -7,9 +7,9 @@ declare(strict_types=1);
  * @version 1.0
  */
 
-namespace App\Utils\Translate\Tools;
+namespace App\Translate\Admin\Tools;
 
-use App\Utils\Translate\AppTranslate;
+use App\Translate\AppTranslate;
 
 class AdvancedOptionsTranslate extends AppTranslate
 {

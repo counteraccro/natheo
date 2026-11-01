@@ -13,7 +13,7 @@ use App\Controller\Admin\AppAdminController;
 use App\Enum\Admin\Global\Breadcrumb;
 use App\Enum\Admin\System\Options\OptionUser;
 use App\Service\LoggerService;
-use App\Utils\Translate\System\LogTranslate;
+use App\Translate\Admin\System\LogTranslate;
 use InvalidArgumentException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;

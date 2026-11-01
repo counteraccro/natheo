@@ -16,7 +16,7 @@ use App\Service\Admin\DashboardService;
 use App\Service\Admin\StatisticsService;
 use App\Service\Admin\System\User\UserDataService;
 use App\Enum\Admin\System\User\UserDataKey;
-use App\Utils\Translate\Dashboard\DashboardTranslate;
+use App\Translate\Admin\Global\DashboardTranslate;
 use Psr\Cache\InvalidArgumentException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;

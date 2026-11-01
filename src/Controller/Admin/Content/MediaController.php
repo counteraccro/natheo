@@ -16,7 +16,7 @@ use App\Enum\Admin\Global\Breadcrumb;
 use App\Service\Admin\Content\Media\MediaFolderService;
 use App\Service\Admin\Content\Media\MediaService;
 use App\Service\Admin\System\OptionSystemService;
-use App\Utils\Translate\Content\MediaTranslate;
+use App\Translate\Admin\Content\MediaTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;

@@ -7,7 +7,9 @@ declare(strict_types=1);
  * @version 1.0
  */
 
-namespace App\Utils\Translate;
+namespace App\Translate\Admin\Global;
+
+use App\Translate\AppTranslate;
 
 class GridTranslate extends AppTranslate
 {

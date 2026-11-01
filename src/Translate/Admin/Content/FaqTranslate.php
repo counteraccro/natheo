@@ -6,9 +6,9 @@ declare(strict_types=1);
  * @author Gourdon Aymeric
  * @version 1.0
  */
-namespace App\Utils\Translate\Content;
+namespace App\Translate\Admin\Content;
 
-use App\Utils\Translate\AppTranslate;
+use App\Translate\AppTranslate;
 
 class FaqTranslate extends AppTranslate
 {

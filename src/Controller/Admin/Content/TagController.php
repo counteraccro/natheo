@@ -16,7 +16,7 @@ use App\Enum\Admin\Global\Breadcrumb;
 use App\Enum\Admin\System\Options\OptionUser;
 use App\Service\Admin\Content\Tag\TagService;
 use App\Utils\Flash\FlashKey;
-use App\Utils\Translate\Content\TagTranslate;
+use App\Translate\Admin\Content\TagTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
