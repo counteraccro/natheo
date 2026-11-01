@@ -7,18 +7,18 @@ updates:
     schedule:
       interval: weekly
     open-pull-requests-limit: 0
-    labels: ["type: dépendances", "tech: php"]
+    labels: ["Dépendances", "PHP"]
 
   - package-ecosystem: npm
     directory: /
     schedule:
       interval: weekly
     open-pull-requests-limit: 0
-    labels: ["type: dépendances", "tech: javascript"]
+    labels: ["Dépendances", "JavaScript"]
 
   # Les actions sont épinglées par SHA : Dependabot propose leurs mises à jour
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: monthly
-    labels: ["type: dépendances", "tech: ci"]
+    labels: ["Dépendances", "CI"]

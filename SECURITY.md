@@ -27,5 +27,5 @@ Indiquez si possible : la version du CMS, la route ou l'écran concerné, les é
 
 1. Créer une **advisory en brouillon** (`Security > Advisories > New draft`), qui contient la description complète : scénario, requêtes, fichiers.
 2. Corriger dans le fork privé temporaire de l'advisory, ou dans une branche dont l'intitulé ne décrit pas la faille.
-3. Côté public, l'issue et la PR (label `type: sécurité`) restent **neutres** : ce qui est renforcé, sans scénario d'exploitation. Le détail reste dans l'advisory.
+3. Côté public, l'issue et la PR (label `Sécurité`) restent **neutres** : ce qui est renforcé, sans scénario d'exploitation. Le détail reste dans l'advisory.
 4. Après la sortie de la version corrigée : publier l'advisory et demander un CVE si besoin.

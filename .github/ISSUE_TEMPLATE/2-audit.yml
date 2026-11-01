@@ -1,7 +1,7 @@
 name: 🔍 Audit
 description: Restituer l'audit d'un module (corrections, améliorations, points de sécurité neutralisés)
 title: "[AUDIT] "
-labels: ["type: audit"]
+labels: ["Audit"]
 assignees: ["counteraccro"]
 body:
   - type: markdown
@@ -37,7 +37,7 @@ body:
         - SQL Manager
         - Options avancées
         - API
-        - Front
+        - Site public
         - Installation
         - Authentification
         - Transverse

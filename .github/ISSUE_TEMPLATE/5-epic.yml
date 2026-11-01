@@ -1,7 +1,7 @@
 name: 🗂️ Epic
 description: Regrouper plusieurs issues autour d'un même objectif (ex. un audit de module)
 title: "[EPIC] "
-labels: ["type: epic"]
+labels: ["Epic"]
 assignees: ["counteraccro"]
 body:
   - type: markdown
@@ -36,7 +36,7 @@ body:
         - SQL Manager
         - Options avancées
         - API
-        - Front
+        - Site public
         - Installation
         - Authentification
         - Transverse

@@ -58,16 +58,17 @@ jobs:
                   errors.push('#' + number + ' est une pull request, pas une issue.');
                 } else {
                   const issueLabels = issue.labels.map((l) => (typeof l === 'string' ? l : l.name));
-                  const kind = issueLabels.some((l) => ['type: bug', 'type: régression', 'type: sécurité'].includes(l))
+                  const kind = issueLabels.some((l) => ['Bug', 'Régression', 'Sécurité'].includes(l))
                     ? 'bug/B'
-                    : issueLabels.includes('type: audit') ? 'audit/A' : 'feature/N';
+                    : issueLabels.includes('Audit') ? 'audit/A' : 'feature/N';
                   if (b && b[1] !== kind) {
                     core.warning('Le type de branche (' + b[1] + ') ne correspond pas au type de l\'issue #' + number + '.');
                   }
 
-                  // L'issue fait foi pour le type, le module, la priorité et le milestone
+                  // L'issue fait foi pour le type, le module, la priorité et le milestone ; le statut reste propre à chacune
+                  const NOT_COPIED = ['En attente de merge', 'Doublon', 'Invalide', 'Ne sera pas traité', 'good first issue', 'help wanted'];
                   const prLabels = pr.labels.map((l) => l.name);
-                  const toCopy = issueLabels.filter((l) => /^(type|module|priorité): /.test(l) && !prLabels.includes(l));
+                  const toCopy = issueLabels.filter((l) => !NOT_COPIED.includes(l) && !/^v\d/.test(l) && !prLabels.includes(l));
                   if (toCopy.length) {
                     await github.rest.issues.addLabels({ ...context.repo, issue_number: pr.number, labels: toCopy });
                   }

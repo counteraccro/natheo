@@ -25,7 +25,7 @@ Elle se crée depuis l'un des formulaires (les issues libres sont désactivées)
 
 Ce qui est fait automatiquement à la création (workflow `issue-triage`) :
 - ajout du numéro dans le titre, pour les bugs uniquement ;
-- labels `type:`, `module:`, `priorité:` et `couche:` d'après les réponses du formulaire ;
+- labels de type, module, priorité et couche d'après les réponses du formulaire ;
 - milestone, s'il n'y en a qu'un seul ouvert (la version en cours).
 
 Les points de sécurité d'un audit sont détaillés dans une advisory privée ([SECURITY.md](SECURITY.md)) ; l'issue d'audit n'en cite que la correction attendue.
@@ -52,21 +52,23 @@ Le `<slug>` est en minuscules, avec des tirets : `bug/B-363-audit-dashboard`.
 - Les vérifications du template (tests, build, traductions, migration, fixtures) sont à cocher avant de demander la relecture.
 
 Ce qui est fait automatiquement (workflow `pull-request`) :
-- labels `tech:` et `couche:` selon les fichiers modifiés ;
-- recopie depuis l'issue des labels `type:`, `module:`, `priorité:` et du milestone ;
+- labels de technologie et de couche selon les fichiers modifiés ;
+- recopie depuis l'issue de ses labels (hors statut) et du milestone ;
 - contrôle du nom de branche, du titre et de `Closes #<n>` : le check échoue si l'un des trois ne respecte pas la convention.
 
 ## Labels
 
 Le référentiel est [`.github/labels.yml`](.github/labels.yml). Pour ajouter ou modifier un label, on modifie ce fichier : il est appliqué au dépôt au merge sur `master`.
 
-| Famille | Rôle | Posé par |
+Les labels n'ont pas de préfixe : leur famille se reconnaît à la couleur et à la description. Les noms de type, module, priorité et couche reprennent exactement les options des formulaires.
+
+| Famille | Labels | Posé par |
 |---|---|---|
-| `type:` | nature du sujet, un seul par issue | formulaire |
-| `priorité:` | `critique`, `medium`, `bas` | formulaire |
-| `module:` | zone fonctionnelle | formulaire |
-| `couche:` | `back`, `front`, `api` | formulaire (issue), fichiers modifiés (PR) |
-| `tech:` | `php`, `typescript`, `javascript`, `twig`, `ci` | fichiers modifiés (PR) |
-| `statut:` | `en attente de merge`, `doublon`, `invalide`, `ne sera pas traité` | à la main |
+| Type | `Bug`, `Audit`, `Feature`, `Évolution`, `Clean code`, `Régression`, `Dépréciation`, `Documentation`, `Sécurité`, `Dépendances`, `Epic`, `Question` (un seul par issue) | formulaire |
+| Priorité | `Critique`, `Medium`, `Bas` | formulaire |
+| Module | zone fonctionnelle (`Pages`, `FAQ`, `Site public`…) | formulaire |
+| Couche | `Back`, `Front`, `API` (`API` sert aussi de module) | formulaire (issue), fichiers modifiés (PR) |
+| Technologie | `PHP`, `TypeScript`, `JavaScript`, `Twig`, `CI` | fichiers modifiés (PR) |
+| Statut | `En attente de merge`, `Doublon`, `Invalide`, `Ne sera pas traité` | à la main |
 
 La version cible passe par le **milestone** (`Sortie v2.0.0`…). Les anciens labels de version (`v2.0.0`…) sont conservés pour l'historique mais ne sont plus posés.
