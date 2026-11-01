@@ -1,0 +1,108 @@
+name: 🔍 Audit
+description: Restituer l'audit d'un module (corrections, améliorations, points de sécurité neutralisés)
+title: "[AUDIT] "
+labels: ["type: audit"]
+assignees: ["counteraccro"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        > 🔒 **Points de sécurité :** décrivez-les en détail dans une advisory privée (voir [SECURITY.md](https://github.com/counteraccro/natheo/blob/master/SECURITY.md)) et ne citez ici que la correction attendue, sans scénario d'exploitation.
+
+        Les labels sont posés à partir de vos réponses. Plusieurs audits liés se regroupent dans une Epic.
+
+  - type: dropdown
+    id: module
+    attributes:
+      label: Module
+      options:
+        - Pages
+        - FAQ
+        - Commentaires
+        - Menu
+        - Tags
+        - Médiathèque
+        - Dashboard
+        - Recherche globale
+        - Éditeur Markdown
+        - Notifications
+        - Utilisateurs
+        - Options système
+        - Sidebar
+        - Traductions
+        - Emails
+        - Logs
+        - Tokens API
+        - Base de données
+        - SQL Manager
+        - Options avancées
+        - API
+        - Front
+        - Installation
+        - Authentification
+        - Transverse
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severite
+    attributes:
+      label: Sévérité
+      description: Sévérité du point le plus grave de l'audit.
+      options:
+        - Critique
+        - Medium
+        - Bas
+    validations:
+      required: true
+
+  - type: dropdown
+    id: couche
+    attributes:
+      label: Couche
+      multiple: true
+      options:
+        - Back
+        - Front
+        - API
+
+  - type: textarea
+    id: contexte
+    attributes:
+      label: Contexte
+      description: Périmètre audité (classes, écrans, routes) et dépendances avec d'autres issues.
+    validations:
+      required: true
+
+  - type: textarea
+    id: points
+    attributes:
+      label: Points à corriger
+      description: Un bloc par point, regroupés du plus grave au moins grave (🔴 critique, 🟠 medium, 🟢 bas).
+      value: |
+        #### 🔴 1. Titre du point
+        _Constat, fichier(s) concerné(s) : `src/...php:ligne`_
+        **À faire :** _correction attendue_
+    validations:
+      required: true
+
+  - type: textarea
+    id: attendu
+    attributes:
+      label: Comportement attendu
+      description: Ce qui doit être vrai une fois l'audit corrigé.
+
+  - type: textarea
+    id: tests
+    attributes:
+      label: Tests à ajouter
+      value: |
+        - [ ]
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Version du CMS
+      placeholder: "ex. 2.0.0 (branche master)"

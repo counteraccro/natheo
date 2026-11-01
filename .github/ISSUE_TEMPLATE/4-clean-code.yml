@@ -1,0 +1,109 @@
+name: 🧹 Clean code
+description: Nettoyage, refactoring, performance, dépréciation ou documentation
+title: "[CLEAN CODE] "
+assignees: ["counteraccro"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Les labels sont posés à partir de vos réponses.
+
+  - type: dropdown
+    id: nature
+    attributes:
+      label: Nature
+      options:
+        - Nettoyage / refactoring
+        - Performance
+        - Dépréciation
+        - Documentation
+    validations:
+      required: true
+
+  - type: dropdown
+    id: module
+    attributes:
+      label: Module
+      options:
+        - Pages
+        - FAQ
+        - Commentaires
+        - Menu
+        - Tags
+        - Médiathèque
+        - Dashboard
+        - Recherche globale
+        - Éditeur Markdown
+        - Notifications
+        - Utilisateurs
+        - Options système
+        - Sidebar
+        - Traductions
+        - Emails
+        - Logs
+        - Tokens API
+        - Base de données
+        - SQL Manager
+        - Options avancées
+        - API
+        - Front
+        - Installation
+        - Authentification
+        - Transverse
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priorite
+    attributes:
+      label: Priorité
+      options:
+        - Critique
+        - Medium
+        - Bas
+    validations:
+      required: true
+
+  - type: dropdown
+    id: couche
+    attributes:
+      label: Couche
+      multiple: true
+      options:
+        - Back
+        - Front
+        - API
+
+  - type: textarea
+    id: constat
+    attributes:
+      label: Constat
+      description: Ce qui pose problème aujourd'hui (duplication, code mort, lenteur), avec les fichiers concernés.
+    validations:
+      required: true
+
+  - type: textarea
+    id: taches
+    attributes:
+      label: Tâches
+      value: |
+        - [ ]
+    validations:
+      required: true
+
+  - type: dropdown
+    id: impact
+    attributes:
+      label: Impact sur le comportement
+      options:
+        - Aucun changement de comportement
+        - Changement de comportement (à détailler dans les tâches)
+    validations:
+      required: true
+
+  - type: textarea
+    id: tests
+    attributes:
+      label: Tests
+      value: |
+        - [ ] Les tests existants passent sans modification

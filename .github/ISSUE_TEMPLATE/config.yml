@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 🔒 Signaler une faille de sécurité
+    url: https://github.com/counteraccro/natheo/security/advisories/new
+    about: Signalement privé, visible uniquement par les mainteneurs. Ne pas ouvrir d'issue publique.
+  - name: 💬 Question ou idée à discuter
+    url: https://github.com/counteraccro/natheo/discussions
+    about: Pour une question d'utilisation ou une idée pas encore assez précise pour une issue.
+  - name: 🎮 Discord Natheo
+    url: https://discord.gg/CgcMCcbmaR
+    about: Échanger directement avec le mainteneur et la communauté.

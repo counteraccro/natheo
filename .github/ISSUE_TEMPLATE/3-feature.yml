@@ -1,0 +1,120 @@
+name: ✨ Feature / évolution
+description: Proposer une nouvelle fonctionnalité ou une amélioration de l'existant
+title: "[FEATURE] "
+assignees: ["counteraccro"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Les labels sont posés à partir de vos réponses.
+
+  - type: dropdown
+    id: nature
+    attributes:
+      label: Nature
+      options:
+        - Nouvelle fonctionnalité
+        - Évolution de l'existant
+    validations:
+      required: true
+
+  - type: dropdown
+    id: module
+    attributes:
+      label: Module
+      options:
+        - Pages
+        - FAQ
+        - Commentaires
+        - Menu
+        - Tags
+        - Médiathèque
+        - Dashboard
+        - Recherche globale
+        - Éditeur Markdown
+        - Notifications
+        - Utilisateurs
+        - Options système
+        - Sidebar
+        - Traductions
+        - Emails
+        - Logs
+        - Tokens API
+        - Base de données
+        - SQL Manager
+        - Options avancées
+        - API
+        - Front
+        - Installation
+        - Authentification
+        - Transverse
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priorite
+    attributes:
+      label: Priorité
+      options:
+        - Critique
+        - Medium
+        - Bas
+    validations:
+      required: true
+
+  - type: dropdown
+    id: couche
+    attributes:
+      label: Couche
+      multiple: true
+      options:
+        - Back
+        - Front
+        - API
+
+  - type: textarea
+    id: resume
+    attributes:
+      label: Résumé
+      description: Ce que la fonctionnalité apporte, en une ou deux phrases.
+    validations:
+      required: true
+
+  - type: textarea
+    id: regles
+    attributes:
+      label: Règles métier
+      value: |
+        -
+
+  - type: textarea
+    id: taches
+    attributes:
+      label: Tâches
+      description: Une case par tâche, avec les fichiers concernés.
+      value: |
+        - [ ]
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: impacts
+    attributes:
+      label: Impacts
+      options:
+        - label: Migration Doctrine
+        - label: Fixtures (`src/DataFixtures/data/...`) et helpers de test (`tests/Helper/Fixtures/...`)
+        - label: Traductions fr / en / es
+
+  - type: textarea
+    id: tests
+    attributes:
+      label: Tests à ajouter
+      value: |
+        - [ ]
+
+  - type: textarea
+    id: divers
+    attributes:
+      label: Divers
+      description: Décisions prises, points ouverts, liens.

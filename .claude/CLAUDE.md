@@ -65,3 +65,11 @@ Content entities (Page, Menu, Faq, Comment, ...) store per-locale data via `*Tra
 ## Code style
 
 Inline (`//`) comments must stay short and concise: 2 lines maximum, and only when they explain the *why*, not narrate the *what* — if a comment only restates what the code already says, remove it. Prefer a clearer name or a shorter comment over a long explanation. Neither rule applies to method-level PHPDoc blocks (`@param`, `@return`, `@throws`), which stay descriptive as elsewhere in the codebase.
+
+## GitHub workflow
+
+The issue → branch → PR workflow, branch/title conventions and label taxonomy are defined in `CONTRIBUTING.md` (imported below) and enforced by `.github/workflows/`. Never commit on `master`. Security vulnerabilities never go into public issues: follow `SECURITY.md`.
+
+When creating an issue with `gh issue create`, the YAML forms are not applied: write the body with the same `### <Field>` headings as the matching form in `.github/ISSUE_TEMPLATE/` (so the triage workflow can label it), and use the `[BUG] ` / `[AUDIT] ` / `[FEATURE] ` / `[CLEAN CODE] ` / `[EPIC] ` title prefix (the triage workflow adds the issue number to `[BUG]` titles only; other types keep their title without number).
+
+@../CONTRIBUTING.md

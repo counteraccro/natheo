@@ -1,0 +1,130 @@
+name: 🐞 Bug
+description: Signaler un bug ou une anomalie (hors faille de sécurité)
+title: "[BUG] "
+labels: ["type: bug"]
+assignees: ["counteraccro"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        > 🔒 **Faille de sécurité ?** N'ouvrez pas d'issue publique : suivez [SECURITY.md](https://github.com/counteraccro/natheo/blob/master/SECURITY.md).
+
+        Le numéro de l'issue est ajouté automatiquement au titre (`[BUG #123] …`), et les labels sont posés à partir de vos réponses.
+
+  - type: dropdown
+    id: module
+    attributes:
+      label: Module
+      options:
+        - Pages
+        - FAQ
+        - Commentaires
+        - Menu
+        - Tags
+        - Médiathèque
+        - Dashboard
+        - Recherche globale
+        - Éditeur Markdown
+        - Notifications
+        - Utilisateurs
+        - Options système
+        - Sidebar
+        - Traductions
+        - Emails
+        - Logs
+        - Tokens API
+        - Base de données
+        - SQL Manager
+        - Options avancées
+        - API
+        - Front
+        - Installation
+        - Authentification
+        - Transverse
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severite
+    attributes:
+      label: Sévérité
+      description: "Critique : perte de données, blocage, faille. Medium : anomalie gênante. Bas : mineur."
+      options:
+        - Critique
+        - Medium
+        - Bas
+    validations:
+      required: true
+
+  - type: dropdown
+    id: couche
+    attributes:
+      label: Couche
+      multiple: true
+      options:
+        - Back
+        - Front
+        - API
+
+  - type: dropdown
+    id: origine
+    attributes:
+      label: Origine
+      options:
+        - Retour utilisateur
+        - Tests
+        - Autre
+
+  - type: checkboxes
+    id: regression
+    attributes:
+      label: Régression
+      options:
+        - label: Fonctionnait avant une mise à jour
+
+  - type: textarea
+    id: contexte
+    attributes:
+      label: Contexte
+      description: Où se situe le problème (écran, route, API) et comment il a été constaté.
+    validations:
+      required: true
+
+  - type: textarea
+    id: points
+    attributes:
+      label: Points à corriger
+      description: Un bloc par point, du plus grave au moins grave. Indiquez les fichiers (`src/...php:ligne`).
+      value: |
+        #### 1. Titre du point
+        _Description du problème_
+
+        **Scénario :** _étapes ou requête qui déclenchent le problème_
+
+        **À faire :** _correction attendue_
+    validations:
+      required: true
+
+  - type: textarea
+    id: attendu
+    attributes:
+      label: Comportement attendu
+
+  - type: textarea
+    id: tests
+    attributes:
+      label: Tests à ajouter
+      value: |
+        - [ ]
+
+  - type: input
+    id: version
+    attributes:
+      label: Version du CMS
+      placeholder: "ex. 2.0.0-beta.2"
+
+  - type: textarea
+    id: environnement
+    attributes:
+      label: Environnement
+      description: PHP, base de données, navigateur (si front).

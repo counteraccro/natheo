@@ -1,0 +1,156 @@
+# Référentiel des labels du dépôt, synchronisé par .github/workflows/labels-sync.yml
+# "from_name" renomme un label existant : les issues et PR qui le portent le conservent.
+
+# --- Type (un seul par issue) ---
+- name: "type: bug"
+  color: "d73a4a"
+  description: "Quelque chose ne fonctionne pas"
+  from_name: "bug"
+- name: "type: audit"
+  color: "5319e7"
+  description: "Résultat d'audit d'un module : corrections et améliorations"
+- name: "type: feature"
+  color: "a2eeef"
+  description: "Nouvelle fonctionnalité"
+  from_name: "enhancement"
+- name: "type: évolution"
+  color: "bfdd79"
+  description: "Amélioration de l'existant"
+  from_name: "Evolution"
+- name: "type: clean code"
+  color: "f0b7fb"
+  description: "Nettoyage, refactoring, suppression de code mort, performance"
+  from_name: "Clean code"
+- name: "type: régression"
+  color: "d93f0b"
+  description: "Régression apparue suite à une mise à jour"
+  from_name: "Regression"
+- name: "type: dépréciation"
+  color: "fbd55f"
+  description: "Suppression d'une dépréciation"
+  from_name: "Deprecation"
+- name: "type: documentation"
+  color: "0075ca"
+  description: "Documentation"
+  from_name: "documentation"
+- name: "type: sécurité"
+  color: "ee0701"
+  description: "Correctif de sécurité (détails dans l'advisory, voir SECURITY.md)"
+- name: "type: dépendances"
+  color: "0366d6"
+  description: "Mise à jour de dépendances"
+  from_name: "dependencies"
+- name: "type: epic"
+  color: "a8424f"
+  description: "Regroupe plusieurs issues"
+  from_name: "Epic"
+- name: "type: question"
+  color: "d876e3"
+  description: "Demande d'information"
+  from_name: "question"
+
+# --- Priorité ---
+- name: "priorité: critique"
+  color: "b60205"
+  description: "Faille, perte de données ou blocage : à traiter en premier"
+- name: "priorité: medium"
+  color: "fbca04"
+  description: "Anomalie gênante ou fonctionnalité attendue"
+- name: "priorité: bas"
+  color: "0e8a16"
+  description: "Amélioration mineure"
+
+# --- Couche ---
+- name: "couche: back"
+  color: "025b5a"
+  description: "Développement back (PHP, Symfony)"
+  from_name: "Back"
+- name: "couche: front"
+  color: "57e223"
+  description: "Développement front (Vue, TypeScript, Twig)"
+  from_name: "Front"
+- name: "couche: api"
+  color: "8f8cfd"
+  description: "API JSON"
+  from_name: "API"
+
+# --- Technologie (posé automatiquement sur les PR selon les fichiers modifiés) ---
+- name: "tech: php"
+  color: "45229e"
+  description: "Code PHP"
+  from_name: "php"
+- name: "tech: typescript"
+  color: "a1ce39"
+  description: "Code TypeScript / Vue"
+  from_name: "TypeScript"
+- name: "tech: javascript"
+  color: "168700"
+  description: "Code JavaScript"
+  from_name: "javascript"
+- name: "tech: twig"
+  color: "bfd4f2"
+  description: "Templates Twig"
+- name: "tech: ci"
+  color: "ededed"
+  description: "GitHub Actions, configuration du dépôt"
+
+# --- Module ---
+- { name: "module: pages", color: "c5def5", description: "Gestion des pages" }
+- { name: "module: faq", color: "c5def5", description: "Gestion des FAQ" }
+- { name: "module: commentaires", color: "c5def5", description: "Gestion des commentaires" }
+- { name: "module: menu", color: "c5def5", description: "Gestion des menus" }
+- { name: "module: tags", color: "c5def5", description: "Gestion des tags" }
+- { name: "module: médiathèque", color: "c5def5", description: "Médiathèque" }
+- { name: "module: dashboard", color: "c5def5", description: "Tableau de bord" }
+- { name: "module: recherche globale", color: "c5def5", description: "Recherche globale" }
+- { name: "module: éditeur markdown", color: "c5def5", description: "Éditeur de texte Markdown" }
+- { name: "module: notifications", color: "c5def5", description: "Notifications" }
+- { name: "module: utilisateurs", color: "c5def5", description: "Gestion des utilisateurs" }
+- { name: "module: options système", color: "c5def5", description: "Options système et utilisateur" }
+- { name: "module: sidebar", color: "c5def5", description: "Sidebar" }
+- { name: "module: traductions", color: "c5def5", description: "Gestion des traductions" }
+- { name: "module: emails", color: "c5def5", description: "Gestion des emails" }
+- { name: "module: logs", color: "c5def5", description: "Logs" }
+- { name: "module: tokens api", color: "c5def5", description: "Gestion des tokens API" }
+- { name: "module: base de données", color: "c5def5", description: "Database manager" }
+- { name: "module: sql manager", color: "c5def5", description: "SQL manager" }
+- { name: "module: options avancées", color: "c5def5", description: "Options avancées" }
+- { name: "module: api", color: "c5def5", description: "API JSON" }
+- { name: "module: front", color: "c5def5", description: "Site public (thème)" }
+- { name: "module: installation", color: "c5def5", description: "Installation du CMS" }
+- { name: "module: authentification", color: "c5def5", description: "Connexion, sécurité des comptes" }
+- { name: "module: transverse", color: "c5def5", description: "Plusieurs modules ou socle commun" }
+
+# --- Statut ---
+- name: "statut: en attente de merge"
+  color: "d9332f"
+  description: "Branche en attente, ne pas merger"
+  from_name: "En attente de merge"
+- name: "statut: doublon"
+  color: "cfd3d7"
+  description: "Existe déjà dans une autre issue ou PR"
+  from_name: "duplicate"
+- name: "statut: invalide"
+  color: "e4e669"
+  description: "Ne semble pas correct"
+  from_name: "invalid"
+- name: "statut: ne sera pas traité"
+  color: "ffffff"
+  description: "Ne sera pas corrigé"
+  from_name: "wontfix"
+
+# --- Communauté (noms reconnus par GitHub, à ne pas renommer) ---
+- name: "good first issue"
+  color: "7057ff"
+  description: "Idéal pour une première contribution"
+- name: "help wanted"
+  color: "008672"
+  description: "Aide bienvenue"
+
+# --- Historique : versions (remplacées par les milestones, ne plus poser) ---
+- { name: "v1.0.0-beta.1", color: "7449c4", description: "(historique) NatheoCMS Bêta 1" }
+- { name: "v1.0.0-beta.2", color: "7449c4", description: "(historique) Natheo CMS Bêta 2" }
+- { name: "v1.0.0-beta.3", color: "7449c4", description: "(historique) Natheo CMS Bêta 3" }
+- { name: "v1.0.0", color: "7449c4", description: "(historique) Natheo CMS 1.0" }
+- { name: "v2.0.0", color: "7449c4", description: "(historique) Natheo CMS 2.0" }
+- { name: "v2.1.0", color: "7449c4", description: "(historique) Natheo CMS 2.1" }
