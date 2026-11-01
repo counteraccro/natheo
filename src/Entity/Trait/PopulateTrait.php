@@ -7,7 +7,7 @@ declare(strict_types=1);
  * @version 1.0
  */
 
-namespace App\Utils\Content;
+namespace App\Entity\Trait;
 
 /**
  * Remplissage d'une entité depuis les données JSON reçues, limité à une liste blanche de champs

@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace App\Utils\Content\Comment;
 
 use App\Entity\Admin\Content\Comment\Comment;
-use App\Utils\Content\PopulateTrait;
+use App\Entity\Trait\PopulateTrait;
 
 class CommentPopulate
 {

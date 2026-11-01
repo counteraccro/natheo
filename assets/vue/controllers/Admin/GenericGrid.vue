@@ -15,7 +15,7 @@ import Toast from '@/vue/Components/Global/Toast.vue';
 import SkeletonTable from '@/vue/Components/Skeleton/Table.vue';
 import SqlHighLight from '@/vue/Components/Global/SqlHighlight.vue';
 import { copyToClipboard } from '@/utils/copyToClipboard';
-import { withCsrf } from '@/utils/Admin/csrf';
+import { withCsrf } from '@/vue/Composables/Admin/csrf';
 import type { GridRow, GridSearchMode, GridSortOrders, GridTranslate } from '@/ts/Grid/Grid.type';
 import type { GridPaginateTranslate } from '@/ts/Grid/GridPaginate.type';
 import type {

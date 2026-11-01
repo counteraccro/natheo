@@ -38,18 +38,25 @@ Controllers are thin; almost all logic lives in `Service` classes, which each ex
 
 Concrete services (e.g. `DashboardService extends AppAdminService`) receive their sub-dependencies (repositories, other services) through a `#[AutowireLocator(self::HANDLERS)] ContainerInterface $handlers` lazy-locator pattern rather than plain constructor injection of everything — look at `HANDLERS` on the base class before adding a new collaborator. Controllers themselves (`AppAdminController` etc.) use the same `AutowireLocator` pattern for their own cross-cutting deps (translator, logger, `OptionUserService`, ...).
 
-Directory shape under `src/` mirrors the domain, duplicated across `Controller/`, `Service/`, `Repository/`, `Entity/`, `Enum/`, `Utils/Translate/`, generally as `Admin/Content/<Domain>/…`, `Admin/System/…`, `Admin/Tools/…` (plus parallel `Api/` and `Front/` trees for those layers). When adding a feature, expect to touch the matching subfolder in several of these trees at once.
+Directory shape under `src/` mirrors the domain, duplicated across `Controller/`, `Service/`, `Repository/`, `Entity/`, `Enum/`, generally as `Admin/Content/<Domain>/…`, `Admin/System/…`, `Admin/Tools/…` (plus parallel `Api/` and `Front/` trees for those layers). When adding a feature, expect to touch the matching subfolder in several of these trees at once.
 
 `Utils/Translate/<Domain>/<Domain>Translate.php` classes (extending `AppTranslate`) centralize building the translation arrays passed to Twig/Vue — controllers call these instead of calling the translator directly for anything non-trivial.
 
 `src/Overwrite/` holds controllers that override/extend a bundle or base controller for demo/override behavior (e.g. read-only demo mode).
+
+### Deprecated `Utils` folders (`src/Utils/`, `assets/utils/`)
+Both are leftovers of an earlier architecture and are being removed gradually:
+- **Never create a new file** in `src/Utils/` or `assets/utils/`.
+- **Migrate as you go:** when an issue touches a `Utils` file, move it to the matching folder (`src/Service/...`, `src/Entity/Trait/`, `src/Enum/...`, etc. for PHP; `assets/vue/Composables/` for front runtime helpers) and update its usages in the same PR. Remaining files are tracked in a dedicated `[CLEAN CODE]` issue.
+- **Constants become enums:** constant holder classes (`*Const`, `*Key`, `FlashKey`, ...) are converted to backed enums under `src/Enum/` when migrated.
+- Reusable traits go in `src/Entity/Trait/` (entity helpers) or `src/Repository/Trait/` (query helpers).
 
 ### Frontend: how Vue mounts into Twig
 Admin pages are server-rendered Twig extending `admin/admin_base.html.twig`; Vue "islands" are mounted into them via the `vue_component()` Twig function from `symfony/ux-vue`:
 ```twig
 <div {{ vue_component('Admin/Dashboard/Dashboard', { 'urls': urls, 'translate': translate, 'datas': datas }) }}></div>
 ```
-The first argument is a path under `assets/vue/controllers/` (e.g. resolves to `assets/vue/controllers/Admin/Dashboard/Dashboard.vue`), and the object is the props passed in. Controllers commonly build three prop groups for a component: `urls` (generated routes), `translate` (from an `AppTranslate` subclass) and `datas`/`datas` (server-side state). Non-mounting reusable pieces live in `assets/vue/Components/...` instead of `assets/vue/controllers/...`.
+The first argument is a path under `assets/vue/controllers/` (e.g. resolves to `assets/vue/controllers/Admin/Dashboard/Dashboard.vue`), and the object is the props passed in. Controllers commonly build three prop groups for a component: `urls` (generated routes), `translate` (from an `AppTranslate` subclass) and `datas`/`datas` (server-side state). Non-mounting reusable pieces live in `assets/vue/Components/...` instead of `assets/vue/controllers/...`; reusable runtime logic without a template (helpers, composables) lives in `assets/vue/Composables/...`.
 
 Reusable Stimulus glue lives in `assets/controllers/` (currently just `vue_controller.js`, wired through `@symfony/stimulus-bundle`).
 
@@ -64,7 +71,7 @@ Content entities (Page, Menu, Faq, Comment, ...) store per-locale data via `*Tra
 
 ### Admin security conventions
 - **Grids:** `Grid.vue` renders every cell with `v-html`, so any user-entered value placed in `GridService::KEY_DATA` (titles, labels, colors, text used in confirmation messages) must be escaped server-side with `htmlspecialchars($value, ENT_QUOTES)`. Only HTML built by the service itself (badges, links, icons) stays unescaped. Colors are validated with `/^#[0-9a-fA-F]{6}$/`.
-- **AJAX write actions** (save, delete, disable, switch): check a CSRF token with `AppAdminController::checkCsrf()` (header `X-CSRF-TOKEN`, sent from Vue with `withCsrf()` from `assets/utils/Admin/csrf.ts`; in grids, via the `'csrf'` key of the action).
+- **AJAX write actions** (save, delete, disable, switch): check a CSRF token with `AppAdminController::checkCsrf()` (header `X-CSRF-TOKEN`, sent from Vue with `withCsrf()` from `assets/vue/Composables/Admin/csrf.ts`; in grids, via the `'csrf'` key of the action).
 - **Content rights** (Page, FAQ, Menu, Tag): check `ContentVoter::EDIT` / `DISABLE` / `DELETE` with `AppAdminController::checkContentAccess()`, which returns the translated `<domain>.error.forbidden` JSON error.
 
 ## Code style

@@ -13,10 +13,10 @@ use App\Entity\Admin\Content\Menu\Menu;
 use App\Entity\Admin\Content\Menu\MenuElement;
 use App\Entity\Admin\Content\Menu\MenuElementTranslation;
 use App\Entity\Admin\Content\Page\Page;
+use App\Entity\Trait\PopulateTrait;
 use App\Service\Admin\Content\Menu\MenuService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use App\Utils\Content\PopulateTrait;
 
 class MenuPopulate
 {

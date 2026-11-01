@@ -7,11 +7,11 @@ declare(strict_types=1);
  * @version 1.0
  */
 
-namespace App\Tests\Utils\Content;
+namespace App\Tests\Entity\Trait;
 
 use App\Entity\Admin\Content\Menu\Menu;
 use App\Entity\Admin\System\User;
-use App\Utils\Content\PopulateTrait;
+use App\Entity\Trait\PopulateTrait;
 use PHPUnit\Framework\TestCase;
 
 class PopulateTraitTest extends TestCase

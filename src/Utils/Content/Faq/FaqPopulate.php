@@ -14,8 +14,8 @@ use App\Entity\Admin\Content\Faq\FaqCategory;
 use App\Entity\Admin\Content\Faq\FaqCategoryTranslation;
 use App\Entity\Admin\Content\Faq\FaqQuestion;
 use App\Entity\Admin\Content\Faq\FaqQuestionTranslation;
+use App\Entity\Trait\PopulateTrait;
 use phpDocumentor\Reflection\Types\Void_;
-use App\Utils\Content\PopulateTrait;
 
 class FaqPopulate
 {

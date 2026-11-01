@@ -16,12 +16,12 @@ use App\Entity\Admin\Content\Page\PageContentTranslation;
 use App\Entity\Admin\Content\Page\PageMeta;
 use App\Entity\Admin\Content\Page\PageMetaTranslation;
 use App\Entity\Admin\Content\Tag\Tag;
+use App\Entity\Trait\PopulateTrait;
 use App\Enum\Admin\Content\Page\PageContentType;
 use App\Enum\Admin\Content\Page\PageRender;
 use App\Service\Admin\Content\Page\PageService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use App\Utils\Content\PopulateTrait;
 
 class PagePopulate
 {
