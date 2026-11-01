@@ -57,6 +57,11 @@ class TagService extends AppAdminService
         $gridService = $this->getGridService();
         $tagRender = $this->getTagRender();
         $locale = $this->getRequestStack()->getCurrentRequest()->getLocale();
+        $csrfTokenManager = $this->getCsrfTokenManager();
+        $csrfTokens = [
+            TagCsrfToken::DISABLED->value => $csrfTokenManager->getToken(TagCsrfToken::DISABLED->value)->getValue(),
+            TagCsrfToken::DELETE->value => $csrfTokenManager->getToken(TagCsrfToken::DELETE->value)->getValue(),
+        ];
 
         $column = [
             $translator->trans('tag.grid.id', domain: 'tag'),
@@ -75,7 +80,7 @@ class TagService extends AppAdminService
         foreach ($dataPaginate as $element) {
             /* @var Tag $element */
 
-            $action = $this->generateTabAction($element, $locale);
+            $action = $this->generateTabAction($element, $locale, $csrfTokens);
 
             $data[] = [
                 $translator->trans('tag.grid.id', domain: 'tag') => $element->getId(),
@@ -114,16 +119,16 @@ class TagService extends AppAdminService
      * Génère le tableau d'actions de la grille des tags, selon les droits (ContentVoter)
      * @param Tag $tag
      * @param string $locale
+     * @param array<string, string> $csrfTokens jetons CSRF indexés par identifiant TagCsrfToken
      * @return array[]
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    private function generateTabAction(Tag $tag, string $locale): array
+    private function generateTabAction(Tag $tag, string $locale, array $csrfTokens): array
     {
         $translator = $this->getTranslator();
         $router = $this->getRouter();
         $security = $this->getSecurity();
-        $csrfTokenManager = $this->getCsrfTokenManager();
 
         $label = $this->getEscapedLabel($tag, $locale);
         $actions = [];
@@ -131,28 +136,25 @@ class TagService extends AppAdminService
         if ($security->isGranted(ContentVoter::DISABLE, $tag)) {
             $actionDisabled = [
                 'label' => [
-                    'M3.933 13.909A4.357 4.357 0 0 1 3 12c0-1 4-6 9-6m7.6 3.8A5.068 5.068 0 0 1 21 12c0 1-3 6-9 6-.314 0-.62-.014-.918-.04M5 19 19 5m-4 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z',
+                    'M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z',
+                    'M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z',
                 ],
                 'color' => 'primary',
                 'type' => 'put',
                 'url' => $router->generate('admin_tag_update_disabled', ['id' => $tag->getId()]),
                 'ajax' => true,
-                'confirm' => true,
-                'msgConfirm' => $translator->trans('tag.confirm.disabled.msg', ['label' => $label], 'tag'),
-                'csrf' => $csrfTokenManager->getToken(TagCsrfToken::DISABLED->value)->getValue(),
+                'csrf' => $csrfTokens[TagCsrfToken::DISABLED->value],
             ];
-            if ($tag->isDisabled()) {
-                $actionDisabled = [
-                    'label' => [
-                        'M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z',
-                        'M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z',
-                    ],
-                    'color' => 'primary',
-                    'type' => 'put',
-                    'url' => $router->generate('admin_tag_update_disabled', ['id' => $tag->getId()]),
-                    'ajax' => true,
-                    'csrf' => $csrfTokenManager->getToken(TagCsrfToken::DISABLED->value)->getValue(),
+            if (!$tag->isDisabled()) {
+                $actionDisabled['label'] = [
+                    'M3.933 13.909A4.357 4.357 0 0 1 3 12c0-1 4-6 9-6m7.6 3.8A5.068 5.068 0 0 1 21 12c0 1-3 6-9 6-.314 0-.62-.014-.918-.04M5 19 19 5m-4 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z',
                 ];
+                $actionDisabled['confirm'] = true;
+                $actionDisabled['msgConfirm'] = $translator->trans(
+                    'tag.confirm.disabled.msg',
+                    ['label' => $label],
+                    'tag',
+                );
             }
             $actions[] = $actionDisabled;
         }
@@ -168,7 +170,7 @@ class TagService extends AppAdminService
                 'ajax' => true,
                 'confirm' => true,
                 'msgConfirm' => $translator->trans('tag.confirm.delete.msg', ['label' => $label], 'tag'),
-                'csrf' => $csrfTokenManager->getToken(TagCsrfToken::DELETE->value)->getValue(),
+                'csrf' => $csrfTokens[TagCsrfToken::DELETE->value],
             ];
         }
 
@@ -240,7 +242,7 @@ class TagService extends AppAdminService
     }
 
     /**
-     * Valide un tag (couleur, libellés, doublons de libellé par locale)
+     * Valide un tag (couleur, un libellé par locale supportée, doublons de libellé par locale)
      * Retourne la liste des messages d'erreur traduits, vide si le tag est valide
      * @param Tag $tag
      * @return string[]
@@ -254,8 +256,10 @@ class TagService extends AppAdminService
         foreach ($this->getValidator()->validate($tag) as $violation) {
             $errors[] = $translator->trans($violation->getMessageTemplate(), domain: 'tag');
         }
-        if ($tag->getTagTranslations()->isEmpty()) {
-            $errors[] = $translator->trans('tag.error.label.blank', domain: 'tag');
+        foreach ($this->getLocales()['locales'] as $locale) {
+            if ($tag->getTagTranslations()->findFirst(fn($k, $t) => $t->getLocale() === $locale) === null) {
+                $errors[] = $translator->trans('tag.error.label.blank', domain: 'tag');
+            }
         }
 
         /** @var TagTranslationRepository $repo */
@@ -353,12 +357,8 @@ class TagService extends AppAdminService
 
         foreach ($this->getLocales()['locales'] as $loc) {
             $tagTranslation = new TagTranslation();
-            $strLabel = $label;
-            if ($loc !== $locale) {
-                $strLabel .= ' (' . $loc . ')';
-            }
             $tagTranslation->setLocale($loc);
-            $tagTranslation->setLabel($strLabel);
+            $tagTranslation->setLabel($loc === $locale ? $label : $this->getFreeLabel($loc, $label));
             $tag->addTagTranslation($tagTranslation);
         }
 
@@ -376,5 +376,26 @@ class TagService extends AppAdminService
         }
 
         return $tag;
+    }
+
+    /**
+     * Retourne un libellé libre dans la locale pour un tag créé depuis une autre langue :
+     * "label (loc)", puis "label (loc 2)", "label (loc 3)"... si le libellé est déjà pris
+     * @param string $locale
+     * @param string $label
+     * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function getFreeLabel(string $locale, string $label): string
+    {
+        $i = 1;
+        do {
+            $suffix = ' (' . $locale . ($i > 1 ? ' ' . $i : '') . ')';
+            $candidate = mb_substr($label, 0, 255 - mb_strlen($suffix)) . $suffix;
+            $i++;
+        } while ($this->searchByNameByLocale($locale, $candidate) !== null);
+
+        return $candidate;
     }
 }

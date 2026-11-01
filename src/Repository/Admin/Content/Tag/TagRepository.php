@@ -11,6 +11,7 @@ namespace App\Repository\Admin\Content\Tag;
 
 use App\Entity\Admin\Content\Tag\Tag;
 use App\Entity\Admin\Content\Tag\TagTranslation;
+use App\Entity\Admin\System\User;
 use App\Repository\Trait\OrderedQueryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -65,10 +66,13 @@ class TagRepository extends ServiceEntityRepository
         $orderField = $queryParams['orderField'] ?? '';
         $search = (string) ($queryParams['search'] ?? '');
 
-        $query = $this->createQueryBuilder(Tag::DEFAULT_ALIAS);
+        $query = $this->createQueryBuilder(Tag::DEFAULT_ALIAS)
+            ->addSelect(User::DEFAULT_ALIAS)
+            ->leftJoin(Tag::DEFAULT_ALIAS . '.user', User::DEFAULT_ALIAS);
         if ($orderField === 'label' || $search !== '') {
+            // LEFT JOIN : un tag sans libellé dans la locale reste visible lors du tri
             $query
-                ->join(
+                ->leftJoin(
                     Tag::DEFAULT_ALIAS . '.tagTranslations',
                     TagTranslation::DEFAULT_ALIAS,
                     'WITH',
@@ -86,7 +90,7 @@ class TagRepository extends ServiceEntityRepository
         if ($search !== '') {
             $query
                 ->andWhere(TagTranslation::DEFAULT_ALIAS . '.label like :search')
-                ->setParameter('search', '%' . $search . '%');
+                ->setParameter('search', '%' . $this->escapeLike($search) . '%');
         }
 
         if ($userId !== null) {
@@ -126,13 +130,23 @@ class TagRepository extends ServiceEntityRepository
             )
             ->andWhere('LOWER(' . TagTranslation::DEFAULT_ALIAS . '.label) LIKE LOWER(:label)')
             ->setParameter('locale', $locale)
-            ->setParameter('label', '%' . $search . '%');
+            ->setParameter('label', '%' . $this->escapeLike($search) . '%');
 
         if (!$withDisabled) {
             $query->andWhere(Tag::DEFAULT_ALIAS . '.disabled = false');
         }
 
         return $query->getQuery()->getArrayResult();
+    }
+
+    /**
+     * Échappe les jokers % et _ d'une valeur recherchée avec LIKE
+     * @param string $value
+     * @return string
+     */
+    private function escapeLike(string $value): string
+    {
+        return addcslashes($value, '\\%_');
     }
 
     /**

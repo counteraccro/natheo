@@ -59,9 +59,12 @@ class TagServiceTest extends AppWebTestCase
         $result = $this->tagService->getAllPaginate(1, 7, ['search' => $search, 'locale' => 'en']);
         $this->assertEquals(0, $result->count());
 
-        // Tri par libellé : une ligne par tag
+        // Tri par libellé : une ligne par tag, y compris un tag sans libellé dans la locale
+        $this->createTag();
         $result = $this->tagService->getAllPaginate(1, 20, ['orderField' => 'label', 'locale' => 'fr']);
-        $this->assertEquals(10, $result->count());
+        $this->assertEquals(11, $result->count());
+
+        $this->assertEquals(0, $this->tagService->getAllPaginate(1, 20, ['search' => '%', 'locale' => 'fr'])->count());
 
         $result = $this->tagService->getAllPaginate(1, 20, [], $user->getId());
         $this->assertEquals(4, $result->count());
@@ -86,6 +89,10 @@ class TagServiceTest extends AppWebTestCase
         $result = $this->tagService->searchByLocale($this->locales[0], $string);
         $this->assertIsArray($result);
         $this->assertCount(1, $result);
+
+        // Les jokers LIKE saisis sont recherchés littéralement
+        $this->assertCount(0, $this->tagService->searchByLocale($this->locales[0], '%'));
+        $this->assertCount(0, $this->tagService->searchByLocale($this->locales[0], '_'));
     }
 
     /**
@@ -132,6 +139,15 @@ class TagServiceTest extends AppWebTestCase
         $this->assertEquals($tag->getId(), $same->getId());
         $this->assertEquals($user->getId(), $same->getUser()?->getId());
 
+        $this->assertEquals('nouveau-tag (en)', $tag->getTagTranslationByLocale('en')->getLabel());
+
+        // Libellés générés déjà pris : suffixe numéroté au lieu d'un conflit d'unicité
+        $fromEn = $this->tagService->newTagByNameAndLocale('en', 'nouveau-tag', $user);
+        $this->assertInstanceOf(Tag::class, $fromEn);
+        $this->assertNotEquals($tag->getId(), $fromEn->getId());
+        $this->assertEquals('nouveau-tag (es 2)', $fromEn->getTagTranslationByLocale('es')->getLabel());
+        $this->assertEquals('nouveau-tag (fr)', $fromEn->getTagTranslationByLocale('fr')->getLabel());
+
         $tag->setDisabled(true);
         $this->persistAndFlush($tag);
         $this->assertNull($this->tagService->newTagByNameAndLocale('fr', 'nouveau-tag', $user));
@@ -159,6 +175,7 @@ class TagServiceTest extends AppWebTestCase
             'tagTranslations' => [
                 ['locale' => 'fr', 'label' => ' libelle '],
                 ['locale' => 'en', 'label' => 'label'],
+                ['locale' => 'es', 'label' => 'etiqueta'],
                 ['locale' => 'xx', 'label' => 'ignore'],
             ],
         ]);
@@ -166,9 +183,20 @@ class TagServiceTest extends AppWebTestCase
         $this->assertTrue($tag->isDisabled());
         $this->assertSame($owner, $tag->getUser());
         $this->assertNull($tag->getCreatedAt());
-        $this->assertCount(2, $tag->getTagTranslations());
+        $this->assertCount(3, $tag->getTagTranslations());
         $this->assertEquals('libelle', $tag->getTagTranslationByLocale('fr')->getLabel());
         $this->assertEmpty($this->tagService->validate($tag));
+
+        $incomplete = new Tag();
+        $this->tagService->populate($incomplete, [
+            'color' => '#000000',
+            'tagTranslations' => [['locale' => 'fr', 'label' => 'seulement-fr']],
+        ]);
+        $this->assertEquals(
+            [$this->translator->trans('tag.error.label.blank', domain: 'tag')],
+            $this->tagService->validate($incomplete),
+            'Un libellé est obligatoire pour chaque langue',
+        );
 
         $tag->setColor('#fff');
         $tag->getTagTranslationByLocale('fr')->setLabel('deja-pris');

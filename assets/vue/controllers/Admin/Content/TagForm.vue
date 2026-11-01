@@ -81,6 +81,12 @@ export default {
       axios
         .post(this.url, { tag: this.tag }, withCsrf(this.csrf_token_save))
         .then((response) => {
+          if (response.data.success === false) {
+            this.toasts.toastError.msg = response.data.msg ?? this.translate.errorSave;
+            this.toasts.toastError.show = true;
+            return;
+          }
+
           emitter.emit('reset-check-confirm');
           this.toasts.toastSuccess.msg = this.translate.successSave;
           this.toasts.toastSuccess.show = true;
