@@ -65,3 +65,10 @@ tag.update.page.back: Retour
 tag.update.page.new: 'Nouveau tag'
 tag.error.forbidden: 'Vous n''avez pas les droits pour effectuer cette action sur ce tag.'
 tag.error.not_found: 'Ce tag n''existe pas ou a été supprimé.'
+tag.grid.author: Auteur
+tag.error.label.blank: 'Le libellé du tag ne peut pas être vide.'
+tag.error.label.length: 'Le libellé du tag ne peut pas dépasser 255 caractères.'
+tag.error.color: 'La couleur doit être au format #rrggbb.'
+tag.error.label.duplicate: 'Le libellé <strong>{label}</strong> est déjà utilisé par un autre tag.'
+tag.error.delete.used: 'Ce tag est utilisé par {nb, plural, one {# page} other {# pages}}, il ne peut pas être supprimé. Corrigez plutôt son libellé ou retirez-le des pages concernées.'
+tag.error.tag_by_name: 'Le libellé ou la langue du tag est invalide.'

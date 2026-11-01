@@ -53,33 +53,44 @@ class TagRepository extends ServiceEntityRepository
 
     /**
      * Retourne une liste de tag Paginé
+     * La jointure sur les traductions est limitée à la locale courante (tri et recherche par libellé)
      * @param int $page
      * @param int $limit
      * @param array $queryParams
+     * @param int|null $userId filtre sur le propriétaire du tag
      * @return Paginator
      */
-    public function getAllPaginate(int $page, int $limit, array $queryParams): Paginator
+    public function getAllPaginate(int $page, int $limit, array $queryParams, ?int $userId = null): Paginator
     {
-        $orderField = 'id';
-        if (isset($queryParams['orderField']) && $queryParams['orderField'] !== '') {
-            $orderField = $queryParams['orderField'];
-        }
+        $orderField = $queryParams['orderField'] ?? '';
+        $search = (string) ($queryParams['search'] ?? '');
 
         $query = $this->createQueryBuilder(Tag::DEFAULT_ALIAS);
-        if ($orderField === 'label' || (isset($queryParams['search']) && $queryParams['search'] !== '')) {
-            $query->join(Tag::DEFAULT_ALIAS . '.tagTranslations', TagTranslation::DEFAULT_ALIAS);
+        if ($orderField === 'label' || $search !== '') {
+            $query
+                ->join(
+                    Tag::DEFAULT_ALIAS . '.tagTranslations',
+                    TagTranslation::DEFAULT_ALIAS,
+                    'WITH',
+                    TagTranslation::DEFAULT_ALIAS . '.locale = :locale',
+                )
+                ->setParameter('locale', (string) ($queryParams['locale'] ?? ''));
         }
 
-        if ($orderField !== 'label') {
-            $this->applyOrdering($query, TAG::class, $queryParams);
-        } else {
+        if ($orderField === 'label') {
             $this->applyOrdering($query, TagTranslation::class, $queryParams);
+        } else {
+            $this->applyOrdering($query, Tag::class, $queryParams);
         }
 
-        if (isset($queryParams['search']) && $queryParams['search'] !== '') {
+        if ($search !== '') {
             $query
                 ->andWhere(TagTranslation::DEFAULT_ALIAS . '.label like :search')
-                ->setParameter('search', '%' . $queryParams['search'] . '%');
+                ->setParameter('search', '%' . $search . '%');
+        }
+
+        if ($userId !== null) {
+            $query->andWhere(Tag::DEFAULT_ALIAS . '.user = :userId')->setParameter('userId', $userId);
         }
 
         $paginator = new Paginator($query->getQuery(), true);
@@ -111,9 +122,10 @@ class TagRepository extends ServiceEntityRepository
                 Tag::DEFAULT_ALIAS . '.tagTranslations',
                 TagTranslation::DEFAULT_ALIAS,
                 'WITH',
-                TagTranslation::DEFAULT_ALIAS . ".locale = '" . $locale . "'",
+                TagTranslation::DEFAULT_ALIAS . '.locale = :locale',
             )
             ->andWhere('LOWER(' . TagTranslation::DEFAULT_ALIAS . '.label) LIKE LOWER(:label)')
+            ->setParameter('locale', $locale)
             ->setParameter('label', '%' . $search . '%');
 
         if (!$withDisabled) {
@@ -121,6 +133,22 @@ class TagRepository extends ServiceEntityRepository
         }
 
         return $query->getQuery()->getArrayResult();
+    }
+
+    /**
+     * Retourne le nombre de pages auxquelles le tag est rattaché
+     * @param Tag $tag
+     * @return int
+     */
+    public function countPages(Tag $tag): int
+    {
+        return (int) $this->createQueryBuilder('t')
+            ->select('COUNT(p.id)')
+            ->innerJoin('t.pages', 'p')
+            ->where('t.id = :id')
+            ->setParameter('id', $tag->getId())
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 
     /**

@@ -87,7 +87,10 @@
             'url_delete' : url_delete,
             'pTag' : tag,
             'translate' : translate,
-            'locales' : locales}) }}>
+            'locales' : locales,
+            'can_delete' : canDelete,
+            'csrf_token_save' : csrf_token(csrfTokenSave),
+            'csrf_token_delete' : csrf_token(csrfTokenDelete)}) }}>
         </div>
 
     {% endif %}

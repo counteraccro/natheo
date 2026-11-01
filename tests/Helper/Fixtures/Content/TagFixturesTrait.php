@@ -10,6 +10,7 @@ namespace App\Tests\Helper\Fixtures\Content;
 
 use App\Entity\Admin\Content\Tag\Tag;
 use App\Entity\Admin\Content\Tag\TagTranslation;
+use App\Entity\Admin\System\User;
 use App\Tests\Helper\FakerTrait;
 
 trait TagFixturesTrait
@@ -18,13 +19,19 @@ trait TagFixturesTrait
 
     /**
      * Créer un tag
+     * @param User|null $user propriétaire, un contributeur est créé si null
      * @param array $customData
      * @param bool $persist
      * @return Tag
      */
-    public function createTag(array $customData = [], bool $persist = true): Tag
+    public function createTag(?User $user = null, array $customData = [], bool $persist = true): Tag
     {
+        if ($user === null) {
+            $user = $this->createUserContributeur();
+        }
+
         $data = [
+            'user' => $user,
             'color' => self::getFaker()->hexColor(),
             'disabled' => self::getFaker()->boolean(),
         ];

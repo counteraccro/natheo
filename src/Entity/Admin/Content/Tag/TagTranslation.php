@@ -7,9 +7,11 @@ namespace App\Entity\Admin\Content\Tag;
 use App\Enum\Installation\DoctrineStrategy;
 use App\Repository\Admin\Content\Tag\TagTranslationRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TagTranslationRepository::class)]
 #[ORM\Table(name: 'tag_translation')]
+#[ORM\UniqueConstraint(name: 'UNIQ_TAG_TRANSLATION_LOCALE_LABEL', columns: ['locale', 'label'])]
 class TagTranslation
 {
     public const DEFAULT_ALIAS = 'tagTranslation';
@@ -29,6 +31,8 @@ class TagTranslation
     private ?string $locale = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'tag.error.label.blank', normalizer: 'trim')]
+    #[Assert\Length(max: 255, maxMessage: 'tag.error.label.length')]
     private ?string $label = null;
 
     public function getId(): ?int

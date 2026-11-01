@@ -47,7 +47,7 @@ class ContentVoterTest extends AppWebTestCase
             $this->createPage($user),
             $this->createFaq($user),
             $this->createMenu($user),
-            $this->createTag(['user' => $user]),
+            $this->createTag($user),
         ];
 
         foreach ($subjects as $subject) {
@@ -97,6 +97,8 @@ class ContentVoterTest extends AppWebTestCase
     public function testWithoutOwner(): void
     {
         $tag = $this->createTag();
+        $tag->setUser(null);
+        $this->persistAndFlush($tag);
 
         $this->assertSame(
             VoterInterface::ACCESS_DENIED,
