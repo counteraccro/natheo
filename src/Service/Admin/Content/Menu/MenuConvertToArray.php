@@ -7,7 +7,7 @@ declare(strict_types=1);
  * @version 1.0
  */
 
-namespace App\Utils\Content\Menu;
+namespace App\Service\Admin\Content\Menu;
 
 use App\Entity\Admin\Content\Menu\Menu;
 use App\Entity\Admin\Content\Menu\MenuElement;
@@ -15,7 +15,6 @@ use App\Entity\Admin\Content\Menu\MenuElementTranslation;
 use App\Entity\Admin\Content\Page\Page;
 use App\Enum\Admin\Content\Menu\MenuPosition;
 use App\Enum\Admin\Content\Menu\MenuType;
-use App\Service\Admin\Content\Menu\MenuService;
 use App\Service\Admin\Content\Page\PageService;
 use App\Utils\Global\Database\DataBase;
 use Doctrine\Common\Collections\Collection;
@@ -200,12 +199,8 @@ class MenuConvertToArray
 
         if ($object instanceof Menu) {
             $structure['pageMenu'] = [];
-            if (!$object->getPages()->isEmpty()) {
-                foreach ($object->getPages() as $page) {
-                    $structure['pageMenu'][] = $page->getId();
-                }
-            } else {
-                $structure['pageMenu'] = ['-1'];
+            foreach ($object->getPages() as $page) {
+                $structure['pageMenu'][] = $page->getId();
             }
         }
         return $structure;

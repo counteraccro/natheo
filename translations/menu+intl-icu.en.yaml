@@ -160,3 +160,9 @@ menu.no.exist.title: __menu.no.exist.title
 menu.no.exist.text: __menu.no.exist.text
 menu.error.forbidden: __menu.error.forbidden
 menu.error.not_found: __menu.error.not_found
+menu.error.default.disabled: __menu.error.default.disabled
+menu.error.default.delete: __menu.error.default.delete
+menu.error.switch.default.disabled: __menu.error.switch.default.disabled
+menu.error.delete.used: __menu.error.delete.used
+menu.error.external_link: __menu.error.external_link
+menu.form.invalid.external.link.error: __menu.form.invalid.external.link.error

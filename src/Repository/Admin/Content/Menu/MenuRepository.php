@@ -7,9 +7,7 @@ namespace App\Repository\Admin\Content\Menu;
 use App\Entity\Admin\Content\Menu\Menu;
 use App\Repository\Trait\OrderedQueryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\NonUniqueResultException;
-use Doctrine\ORM\Query\Parameter;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -85,21 +83,39 @@ class MenuRepository extends ServiceEntityRepository
     }
 
     /**
-     * Retourne tous les menus sauf le champ $field avec $value en fonction de $position
-     * @param string $field
-     * @param mixed $value
+     * Retire le statut « par défaut » de tous les menus de la position $position, sauf $excludeId
+     * @param int $excludeId
      * @param int $position
-     * @return mixed
+     * @return void
      */
-    public function getAllWithoutExcludeByPosition(string $field, mixed $value, int $position): mixed
+    public function unsetDefaultByPosition(int $excludeId, int $position): void
     {
-        $query = $this->createQueryBuilder('m');
-        $query
-            ->where($query->expr()->neq('m.' . $field, ':value'))
-            ->setParameters(new ArrayCollection([new Parameter('value', $value)]))
+        $this->createQueryBuilder('m')
+            ->update()
+            ->set('m.defaultMenu', ':false')
+            ->where('m.id != :excludeId')
             ->andWhere('m.position = :position')
-            ->setParameter('position', $position);
-        return $query->getQuery()->getResult();
+            ->setParameter('false', false)
+            ->setParameter('excludeId', $excludeId)
+            ->setParameter('position', $position)
+            ->getQuery()
+            ->execute();
+    }
+
+    /**
+     * Retourne le nombre de pages auxquelles le menu est rattaché
+     * @param Menu $menu
+     * @return int
+     */
+    public function countPages(Menu $menu): int
+    {
+        return (int) $this->createQueryBuilder('m')
+            ->select('COUNT(p.id)')
+            ->innerJoin('m.pages', 'p')
+            ->where('m.id = :id')
+            ->setParameter('id', $menu->getId())
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 
     /**

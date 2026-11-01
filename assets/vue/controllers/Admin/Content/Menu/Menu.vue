@@ -2,6 +2,8 @@
 import { defineComponent, PropType } from 'vue';
 import { Locales, MenuDatas, Translate, Urls, Menu, MenuElement, LoadMenuData } from '@/ts/Menu/Menu.type';
 import axios from 'axios';
+import { withCsrf } from '@/vue/Composables/Admin/csrf';
+import { isAllowedExternalLink } from '@/vue/Composables/Admin/Menu/externalLink';
 import SkeletonRenderMenu from '@/vue/Components/Skeleton/Menu/MenuRender.vue';
 import SkeletonFormMenu from '@/vue/Components/Skeleton/Menu/MenuForm.vue';
 import SkeletonArchitectureMenu from '@/vue/Components/Skeleton/Menu/MenuArchitecture.vue';
@@ -49,6 +51,10 @@ export default defineComponent({
     },
     id: {
       type: [Number, null] as PropType<number | null>,
+      required: true,
+    },
+    csrf_token_save: {
+      type: String,
       required: true,
     },
   },
@@ -466,7 +472,7 @@ export default defineComponent({
           const hasPage = Number(el.page) > 0;
           const hasExternalUrl = translation?.externalLink?.trim() !== '' && translation?.externalLink !== '#';
 
-          return !hasTextLink || (!hasPage && !hasExternalUrl);
+          return !hasTextLink || (!hasPage && !hasExternalUrl) || !isAllowedExternalLink(translation?.externalLink);
         });
 
         if (isInvalid) ids.push(el.id);
@@ -500,9 +506,7 @@ export default defineComponent({
 
       this.loading = true;
       axios
-        .post(this.urls.save_menu, {
-          menu: this.menu,
-        })
+        .post(this.urls.save_menu, { menu: this.menu }, withCsrf(this.csrf_token_save))
         .then((response) => {
           if (response.data.success === true) {
             this.toasts.success.msg = response.data.msg;
@@ -519,7 +523,13 @@ export default defineComponent({
             this.toasts.error.show = true;
           }
         })
-        .catch((error) => {
+        .catch((error: unknown) => {
+          // Refus serveur (droits, jeton, lien invalide) : message renvoyé avec un code 4xx
+          const msg = axios.isAxiosError<{ msg?: string }>(error) ? error.response?.data?.msg : undefined;
+          if (msg) {
+            this.toasts.error.msg = msg;
+            this.toasts.error.show = true;
+          }
           console.error(error);
         })
         .finally(() => {

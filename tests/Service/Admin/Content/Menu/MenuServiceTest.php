@@ -15,7 +15,6 @@ use App\Enum\Admin\Content\Menu\MenuPosition;
 use App\Repository\Admin\Content\Menu\MenuRepository;
 use App\Service\Admin\Content\Menu\MenuService;
 use App\Tests\AppWebTestCase;
-use App\Utils\Content\Menu\MenuConst;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -233,6 +232,8 @@ class MenuServiceTest extends AppWebTestCase
         );
 
         $this->menuService->switchDefaultMenuToFalse($rMenuF->getId(), MenuPosition::POSITION_FOOTER->value);
+        // UPDATE DQL : les entités déjà chargées ne sont pas rafraîchies
+        $this->em->clear();
 
         /** @var MenuRepository $menuRepo */
         $menuRepo = $this->em->getRepository(Menu::class);
@@ -269,5 +270,29 @@ class MenuServiceTest extends AppWebTestCase
         $this->createMenu(customData: ['position' => MenuPosition::POSITION_LEFT->value, 'defaultMenu' => true]);
         $result = $this->menuService->getErrorDefaultTypeMenu();
         $this->assertCount(3, $result);
+    }
+
+    /**
+     * Test méthode isAllowedExternalLink() et hasInvalidExternalLink()
+     * @return void
+     */
+    public function testExternalLink(): void
+    {
+        foreach (['', '#', 'http://natheo.fr', 'HTTPS://natheo.fr/page', 'mailto:a@b.fr', 'tel:+33100000000', '/page'] as $link) {
+            $this->assertTrue($this->menuService->isAllowedExternalLink($link), $link);
+        }
+        foreach (['javascript:alert(1)', ' JavaScript:alert(1)', 'data:text/html,x', '//evil.fr', 'natheo.fr'] as $link) {
+            $this->assertFalse($this->menuService->isAllowedExternalLink($link), $link);
+        }
+
+        $elements = [
+            [
+                'menuElementTranslations' => [['externalLink' => 'https://natheo.fr']],
+                'children' => [['menuElementTranslations' => [['externalLink' => 'javascript:alert(1)']]]],
+            ],
+        ];
+        $this->assertTrue($this->menuService->hasInvalidExternalLink($elements), 'Lien invalide dans un enfant');
+        $elements[0]['children'] = [];
+        $this->assertFalse($this->menuService->hasInvalidExternalLink($elements));
     }
 }

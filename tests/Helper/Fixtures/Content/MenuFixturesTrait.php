@@ -133,11 +133,12 @@ trait MenuFixturesTrait
 
     /**
      * Créer un jeu de donnée complet d'un menu
+     * @param User|null $user propriétaire du menu, un contributeur est créé si null
      * @return Menu
      */
-    public function createMenuAllDataDefault(): Menu
+    public function createMenuAllDataDefault(?User $user = null): Menu
     {
-        $menu = $this->createMenu(customData: ['disabled' => false]);
+        $menu = $this->createMenu($user, customData: ['disabled' => false]);
         $menuElement = $this->createMenuElement(
             $menu,
             customData: ['columnPosition' => 1, 'rowPosition' => 1, 'disabled' => false],

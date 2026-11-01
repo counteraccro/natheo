@@ -160,3 +160,9 @@ menu.no.exist.text: "Ce menu n'existe pas ou à été supprimé. Vous pouvez ret
 menu.btn.back: Retour
 menu.error.forbidden: 'Vous n''avez pas les droits pour effectuer cette action sur ce menu.'
 menu.error.not_found: 'Ce menu n''existe pas ou a été supprimé.'
+menu.error.default.disabled: 'Le menu par défaut ne peut pas être désactivé : définissez d''abord un autre menu par défaut pour cette position.'
+menu.error.default.delete: 'Le menu par défaut ne peut pas être supprimé : définissez d''abord un autre menu par défaut pour cette position.'
+menu.error.switch.default.disabled: 'Un menu désactivé ne peut pas devenir le menu par défaut.'
+menu.error.delete.used: 'Ce menu est utilisé par {nb, plural, one {# page} other {# pages}}, il ne peut pas être supprimé.'
+menu.error.external_link: 'Lien externe invalide : seuls les liens http://, https://, mailto:, tel: ou un chemin commençant par / sont acceptés.'
+menu.form.invalid.external.link.error: 'Lien invalide : utilisez http://, https://, mailto:, tel: ou un chemin commençant par /'
