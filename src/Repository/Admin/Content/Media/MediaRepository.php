@@ -60,7 +60,7 @@ class MediaRepository extends ServiceEntityRepository
             $query->andWhere('m.mediaFolder IS NULL');
         }
 
-        return $query->orderBy('m.createdAt', 'ASC')->getQuery()->getResult();
+        return $query->orderBy('m.createdAt', \SortDirection::Ascending)->getQuery()->getResult();
     }
 
     /**
@@ -73,7 +73,7 @@ class MediaRepository extends ServiceEntityRepository
     public function getAllByLikePath(string $pathPrefix): mixed
     {
         return $this->applyPathPrefixFilter($this->createQueryBuilder('m'), 'm', $pathPrefix)
-            ->orderBy('m.id', 'ASC')
+            ->orderBy('m.id', \SortDirection::Ascending)
             ->getQuery()
             ->getResult();
     }

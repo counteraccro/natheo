@@ -107,7 +107,7 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
         $users = $this->createQueryBuilder('u')
             ->where('u.disabled = false')
             ->andWhere('u.anonymous = false')
-            ->orderBy('u.id', 'ASC')
+            ->orderBy('u.id', \SortDirection::Ascending)
             ->getQuery()
             ->getResult();
 

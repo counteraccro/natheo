@@ -68,7 +68,9 @@ class MenuElementRepository extends ServiceEntityRepository
             $queryB->andWhere('me.disabled = :disabled')->setParameter('disabled', false);
         }
 
-        $queryB->addOrderBy('me.columnPosition', 'ASC')->addOrderBy('me.rowPosition', 'ASC');
+        $queryB
+            ->addOrderBy('me.columnPosition', \SortDirection::Ascending)
+            ->addOrderBy('me.rowPosition', \SortDirection::Ascending);
 
         return $queryB->getQuery()->getResult();
     }

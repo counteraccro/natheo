@@ -80,7 +80,7 @@ class MediaFolderRepository extends ServiceEntityRepository
     public function getAllByLikePath(string $pathPrefix): mixed
     {
         return $this->applyPathPrefixFilter($this->createQueryBuilder('m'), 'm', $pathPrefix)
-            ->orderBy('m.id', 'ASC')
+            ->orderBy('m.id', \SortDirection::Ascending)
             ->getQuery()
             ->getResult();
     }
@@ -102,7 +102,7 @@ class MediaFolderRepository extends ServiceEntityRepository
                 ->andWhere('m.id != :id')
                 ->setParameter('id', $mediaFolder->getId());
         }
-        return $queryBuilder->orderBy('m.id', 'ASC')->getQuery()->getResult();
+        return $queryBuilder->orderBy('m.id', \SortDirection::Ascending)->getQuery()->getResult();
     }
 
     /**
