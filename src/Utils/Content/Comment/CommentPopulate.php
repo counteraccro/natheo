@@ -10,9 +10,18 @@ declare(strict_types=1);
 namespace App\Utils\Content\Comment;
 
 use App\Entity\Admin\Content\Comment\Comment;
+use App\Entity\Trait\PopulateTrait;
 
 class CommentPopulate
 {
+    use PopulateTrait;
+
+    /**
+     * Champs modifiables de Comment
+     * @var string[]
+     */
+    private const array FIELDS_COMMENT = ['comment', 'status', 'moderationComment'];
+
     /**
      * @var Comment
      */
@@ -39,33 +48,8 @@ class CommentPopulate
      */
     public function populate(): static
     {
-        $this->comment = $this->mergeData($this->comment, $this->populate, [
-            'id',
-            'page',
-            'userModeration',
-            'createdAt',
-            'updateAt',
-        ]);
+        $this->comment = $this->mergeData($this->comment, $this->populate, self::FIELDS_COMMENT);
         return $this;
-    }
-
-    /**
-     * Merge des données de $populate dans $object sans prendre en compte $exclude
-     * @param mixed $object
-     * @param array $populate
-     * @param array $exclude
-     * @return mixed
-     */
-    private function mergeData(mixed $object, array $populate, array $exclude = []): mixed
-    {
-        foreach ($populate as $key => $value) {
-            if (in_array($key, $exclude)) {
-                continue;
-            }
-            $func = 'set' . ucfirst($key);
-            $object->$func($value);
-        }
-        return $object;
     }
 
     /**

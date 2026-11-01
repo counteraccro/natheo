@@ -293,6 +293,9 @@ class MenuController extends AppAdminController
         $msgSuccess = $translator->trans('menu.new.success.save', domain: 'menu');
         if (isset($data['menu']['id']) && $data['menu']['id'] > 0) {
             $menu = $menuService->findOneById(Menu::class, $data['menu']['id']);
+            if ($menu === null) {
+                return $this->jsonNotFound('menu');
+            }
             $redirect = false;
             $msgSuccess = $translator->trans('menu.edit.success.save', domain: 'menu');
         }

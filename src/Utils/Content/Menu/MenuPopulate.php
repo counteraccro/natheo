@@ -13,12 +13,33 @@ use App\Entity\Admin\Content\Menu\Menu;
 use App\Entity\Admin\Content\Menu\MenuElement;
 use App\Entity\Admin\Content\Menu\MenuElementTranslation;
 use App\Entity\Admin\Content\Page\Page;
+use App\Entity\Trait\PopulateTrait;
 use App\Service\Admin\Content\Menu\MenuService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
 class MenuPopulate
 {
+    use PopulateTrait;
+
+    /**
+     * Champs modifiables de Menu
+     * @var string[]
+     */
+    private const array FIELDS_MENU = ['name', 'type', 'position', 'renderOrder', 'defaultMenu', 'disabled'];
+
+    /**
+     * Champs modifiables de MenuElement
+     * @var string[]
+     */
+    private const array FIELDS_MENU_ELEMENT = ['columnPosition', 'rowPosition', 'linkTarget', 'disabled'];
+
+    /**
+     * Champs modifiables de MenuElementTranslation
+     * @var string[]
+     */
+    private const array FIELDS_MENU_ELEMENT_TRANSLATION = ['locale', 'textLink', 'externalLink'];
+
     /**
      * Clé pour les menuElements
      * @var string
@@ -82,7 +103,7 @@ class MenuPopulate
     private function populateMenu(): void
     {
         $populate = $this->castValuesToInt($this->populate, ['type', 'position']);
-        $this->menu = $this->mergeData($this->menu, $populate, [self::KEY_MENU_ELEMENTS, 'refChilds', 'id']);
+        $this->menu = $this->mergeData($this->menu, $populate, self::FIELDS_MENU);
     }
 
     /**
@@ -142,14 +163,7 @@ class MenuPopulate
         $menuElement = new MenuElement();
         $menuElement->setMenu($this->menu);
 
-        $menuElement = $this->mergeData($menuElement, $populateChildren, [
-            self::KEY_MENU_ELEMENTS_CHILDREN,
-            self::KEY_MENU_ELEMENTS_TRANSLATIONS,
-            'id',
-            'page',
-            'parent',
-            'refChilds',
-        ]);
+        $menuElement = $this->mergeData($menuElement, $populateChildren, self::FIELDS_MENU_ELEMENT);
         $menuElement = $this->setPageToMenuElement($menuElement, $populateChildren['page']);
 
         $menuElement = $this->populateMenuElementTranslation(
@@ -197,10 +211,7 @@ class MenuPopulate
     ): MenuElement {
         foreach ($populateMenuElementTranslations as $populateMenuElementTranslation) {
             $menuElementTranslation = new MenuElementTranslation();
-            $menuElementTranslation = $this->mergeData($menuElementTranslation, $populateMenuElementTranslation, [
-                'id',
-                'link',
-            ]);
+            $menuElementTranslation = $this->mergeData($menuElementTranslation, $populateMenuElementTranslation, self::FIELDS_MENU_ELEMENT_TRANSLATION);
             $menuElementTranslation->setMenuElement($menuElement);
             $menuElement->addMenuElementTranslation($menuElementTranslation);
         }
@@ -226,30 +237,6 @@ class MenuPopulate
             $menuElement->setPage($page);
         }
         return $menuElement;
-    }
-
-    /**
-     * Merge des données de $populate dans $object sans prendre en compte $exclude
-     * @param mixed $object
-     * @param array $populate
-     * @param array $exclude
-     * @return mixed
-     */
-    private function mergeData(mixed $object, array $populate, array $exclude = []): mixed
-    {
-        foreach ($populate as $key => $value) {
-            if (in_array($key, $exclude)) {
-                continue;
-            }
-
-            if (is_array($value)) {
-                continue;
-            }
-
-            $func = 'set' . ucfirst($key);
-            $object->$func($value);
-        }
-        return $object;
     }
 
     private function castValuesToInt(array $data, array $keys): array

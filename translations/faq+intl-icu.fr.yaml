@@ -89,3 +89,5 @@ faq.edit.confirm.delete.category.title: "Suppression d'une catégorie"
 faq.edit.confirm.delete.category.body: "Vous êtes sur le point de supprimer cette catégorie ainsi que l'ensemble des questions associées, êtes-vous sur ?"
 faq.edit.confirm.delete.question.title: "Suppression d'une question"
 faq.edit.confirm.delete.question.body: 'Vous êtes sur le point de supprimer cette question, êtes-vous sur ?'
+faq.error.forbidden: 'Vous n''avez pas les droits pour effectuer cette action sur cette FAQ.'
+faq.error.not_found: 'Cette FAQ n''existe pas ou a été supprimée.'

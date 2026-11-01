@@ -11,6 +11,7 @@ namespace App\Service\Admin\Content\Tag;
 
 use App\Entity\Admin\Content\Tag\Tag;
 use App\Entity\Admin\Content\Tag\TagTranslation;
+use App\Entity\Admin\System\User;
 use App\Repository\Admin\Content\Tag\TagRepository;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
@@ -223,11 +224,12 @@ class TagService extends AppAdminService
      * Créer un tag en fonction d'un label et de la locale
      * @param string $locale
      * @param string $label
+     * @param User|null $user propriétaire du tag s'il est créé
      * @return Tag|null
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function newTagByNameAndLocale(string $locale, string $label): ?Tag
+    public function newTagByNameAndLocale(string $locale, string $label, ?User $user = null): ?Tag
     {
         $tag = $this->searchByNameByLocale($locale, $label);
         if ($tag !== null) {
@@ -238,6 +240,7 @@ class TagService extends AppAdminService
         }
 
         $tag = new Tag();
+        $tag->setUser($user);
         $tag->setColor('#' . str_pad(dechex(mt_rand(0, 0xffffff)), 6, '0', STR_PAD_LEFT));
 
         $locales = $this->getLocales();

@@ -16,6 +16,7 @@ use App\Entity\Admin\Content\Page\PageContentTranslation;
 use App\Entity\Admin\Content\Page\PageMeta;
 use App\Entity\Admin\Content\Page\PageMetaTranslation;
 use App\Entity\Admin\Content\Tag\Tag;
+use App\Entity\Trait\PopulateTrait;
 use App\Enum\Admin\Content\Page\PageContentType;
 use App\Enum\Admin\Content\Page\PageRender;
 use App\Service\Admin\Content\Page\PageService;
@@ -24,6 +25,38 @@ use Psr\Container\NotFoundExceptionInterface;
 
 class PagePopulate
 {
+    use PopulateTrait;
+
+    /**
+     * Champs modifiables de PageTranslation
+     * @var string[]
+     */
+    private const array FIELDS_PAGE_TRANSLATION = ['titre', 'url'];
+
+    /**
+     * Champs modifiables de PageContent
+     * @var string[]
+     */
+    private const array FIELDS_PAGE_CONTENT = ['renderBlock', 'renderOrder', 'type'];
+
+    /**
+     * Champs modifiables de PageContentTranslation
+     * @var string[]
+     */
+    private const array FIELDS_PAGE_CONTENT_TRANSLATION = ['locale', 'text'];
+
+    /**
+     * Champs modifiables de PageMeta
+     * @var string[]
+     */
+    private const array FIELDS_PAGE_META = ['name'];
+
+    /**
+     * Champs modifiables de PageMetaTranslation
+     * @var string[]
+     */
+    private const array FIELDS_PAGE_META_TRANSLATION = ['locale', 'value'];
+
     /**
      * Clé pageTranslations
      * @var string
@@ -127,11 +160,7 @@ class PagePopulate
             foreach ($this->page->getPageTranslations() as &$pageTranslation) {
                 foreach ($this->populate[self::KEY_PAGE_TRANSLATION] as $dataTranslation) {
                     if ($pageTranslation->getLocale() === $dataTranslation['locale']) {
-                        $pageTranslation = $this->mergeData($pageTranslation, $dataTranslation, [
-                            'id',
-                            'page',
-                            'locale',
-                        ]);
+                        $pageTranslation = $this->mergeData($pageTranslation, $dataTranslation, self::FIELDS_PAGE_TRANSLATION);
                     }
                 }
             }
@@ -193,22 +222,14 @@ class PagePopulate
                     if ($content['renderBlock'] === $i) {
                         $pageContent = new PageContent();
                         /** @var PageContent $pageContent */
-                        $pageContent = $this->mergeData($pageContent, $content, [
-                            'id',
-                            'page',
-                            'pageContentTranslations',
-                            'typeId',
-                        ]);
+                        $pageContent = $this->mergeData($pageContent, $content, self::FIELDS_PAGE_CONTENT);
 
                         switch ($content['type']) {
                             case PageContentType::TEXT->value:
                                 foreach ($content['pageContentTranslations'] as $pageContentT) {
                                     $pageContentTranslation = new PageContentTranslation();
                                     /** @var PageContentTranslation $pageContentTranslation */
-                                    $pageContentTranslation = $this->mergeData($pageContentTranslation, $pageContentT, [
-                                        'id',
-                                        'pageContent',
-                                    ]);
+                                    $pageContentTranslation = $this->mergeData($pageContentTranslation, $pageContentT, self::FIELDS_PAGE_CONTENT_TRANSLATION);
                                     $pageContentTranslation->setPageContent($pageContent);
                                     $pageContent->addPageContentTranslation($pageContentTranslation);
                                 }
@@ -231,14 +252,11 @@ class PagePopulate
             $this->page->getPageMetas()->clear();
             foreach ($this->populate[self::KEY_PAGE_META] as $dataMeta) {
                 $pageMeta = new PageMeta();
-                $pageMeta = $this->mergeData($pageMeta, $dataMeta, ['id', 'page', 'pageMetaTranslations']);
+                $pageMeta = $this->mergeData($pageMeta, $dataMeta, self::FIELDS_PAGE_META);
 
                 foreach ($dataMeta['pageMetaTranslations'] as $dataPageMetaTranslation) {
                     $pageMetaTranslation = new PageMetaTranslation();
-                    $pageMetaTranslation = $this->mergeData($pageMetaTranslation, $dataPageMetaTranslation, [
-                        'id',
-                        'pageMeta',
-                    ]);
+                    $pageMetaTranslation = $this->mergeData($pageMetaTranslation, $dataPageMetaTranslation, self::FIELDS_PAGE_META_TRANSLATION);
                     $pageMeta->addPageMetaTranslation($pageMetaTranslation);
                 }
                 $this->page->addPageMeta($pageMeta);
@@ -253,25 +271,6 @@ class PagePopulate
     public function getPage(): Page
     {
         return $this->page;
-    }
-
-    /**
-     * Merge des données de $populate dans $object sans prendre en compte $exclude
-     * @param mixed $object
-     * @param array $populate
-     * @param array $exclude
-     * @return mixed
-     */
-    private function mergeData(mixed $object, array $populate, array $exclude = []): mixed
-    {
-        foreach ($populate as $key => $value) {
-            if (in_array($key, $exclude)) {
-                continue;
-            }
-            $func = 'set' . ucfirst($key);
-            $object->$func($value);
-        }
-        return $object;
     }
 
     /**

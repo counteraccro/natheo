@@ -9,6 +9,7 @@ use App\Entity\Admin\Content\Menu\Menu;
 use App\Entity\Admin\Content\Menu\MenuElement;
 use App\Entity\Admin\Content\Tag\Tag;
 use App\Entity\Admin\System\User;
+use App\Entity\Trait\TranslationByLocaleTrait;
 use App\Enum\Installation\DoctrineStrategy;
 use App\Repository\Admin\Content\Page\PageRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -22,6 +23,8 @@ use Doctrine\ORM\Mapping\JoinTable;
 #[ORM\HasLifecycleCallbacks]
 class Page
 {
+    use TranslationByLocaleTrait;
+
     public const string DEFAULT_ALIAS = 'page';
 
     public const array ALLOWED_ORDER_FIELDS = ['id', 'page_translation.titre', 'status', 'updatedAt'];
@@ -331,19 +334,14 @@ class Page
     }
 
     /**
-     * Retourne la traduction en fonction de la locale
+     * Retourne la traduction de $locale, à défaut celle de $defaultLocale, à défaut la première disponible
      * @param string $locale
+     * @param string|null $defaultLocale
      * @return PageTranslation|null
      */
-    public function getPageTranslationByLocale(string $locale): ?PageTranslation
+    public function getPageTranslationByLocale(string $locale, ?string $defaultLocale = null): ?PageTranslation
     {
-        $pageTranslation = $this->getPageTranslations()
-            ->filter(function (PageTranslation $pageTranslation) use ($locale) {
-                return $pageTranslation->getLocale() === $locale;
-            })
-            ->first();
-
-        return $pageTranslation ?: null;
+        return $this->findTranslationByLocale($this->getPageTranslations(), $locale, $defaultLocale);
     }
 
     /**

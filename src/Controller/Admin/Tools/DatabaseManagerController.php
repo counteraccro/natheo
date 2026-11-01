@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Tools;
 
+use App\Controller\Admin\AppAdminController;
 use App\Enum\Admin\Global\Breadcrumb;
 use App\Enum\Admin\Tools\DatabaseManager\DatabaseManagerData;
 use App\Message\Tools\DumpSql;
@@ -17,7 +18,6 @@ use App\Utils\Global\Database\DataBase;
 use App\Utils\Translate\Tools\DatabaseManagerTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,7 +37,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
     ),
 ]
 #[IsGranted('ROLE_SUPER_ADMIN')]
-class DatabaseManagerController extends AbstractController
+class DatabaseManagerController extends AppAdminController
 {
     /**
      * Point d'entrée
@@ -126,8 +126,9 @@ class DatabaseManagerController extends AbstractController
         TranslatorInterface $translator,
         DatabaseManagerService $databaseManagerService,
     ): JsonResponse {
-        if (!$this->isCsrfTokenValid('database_manager_save_database', $request->headers->get('X-CSRF-TOKEN'))) {
-            return $this->jsonCsrfError($translator);
+        $csrfError = $this->checkCsrf('database_manager_save_database', $request);
+        if ($csrfError !== null) {
+            return $csrfError;
         }
 
         $data = json_decode($request->getContent(), true);
@@ -211,8 +212,9 @@ class DatabaseManagerController extends AbstractController
         Request $request,
         string $filename = '',
     ): JsonResponse {
-        if (!$this->isCsrfTokenValid('database_manager_delete_dump_file', $request->headers->get('X-CSRF-TOKEN'))) {
-            return $this->jsonCsrfError($translator);
+        $csrfError = $this->checkCsrf('database_manager_delete_dump_file', $request);
+        if ($csrfError !== null) {
+            return $csrfError;
         }
 
         $result = $databaseManagerService->deleteDumpFile($filename);
@@ -250,21 +252,5 @@ class DatabaseManagerController extends AbstractController
         }
 
         return $this->file($path, $filename, ResponseHeaderBag::DISPOSITION_ATTACHMENT);
-    }
-
-    /**
-     * Retourne une réponse JSON d'erreur pour un jeton CSRF invalide
-     * @param TranslatorInterface $translator
-     * @return JsonResponse
-     */
-    private function jsonCsrfError(TranslatorInterface $translator): JsonResponse
-    {
-        return $this->json(
-            [
-                'success' => false,
-                'msg' => $translator->trans('database_manager.error.csrf', domain: 'database_manager'),
-            ],
-            Response::HTTP_FORBIDDEN,
-        );
     }
 }

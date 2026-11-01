@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Entity\Admin\Content\Tag;
 
 use App\Entity\Admin\Content\Page\Page;
+use App\Entity\Admin\System\User;
+use App\Entity\Trait\TranslationByLocaleTrait;
 use App\Enum\Installation\DoctrineStrategy;
 use App\Repository\Admin\Content\Tag\TagRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -17,6 +19,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\HasLifecycleCallbacks]
 class Tag
 {
+    use TranslationByLocaleTrait;
+
     public const string DEFAULT_ALIAS = 'tag';
 
     public const array ALLOWED_ORDER_FIELDS = ['id', 'color', 'createdAt', 'updateAt'];
@@ -25,6 +29,10 @@ class Tag
     #[ORM\GeneratedValue(strategy: DoctrineStrategy::CURRENT)]
     #[ORM\Column]
     private ?int $id = null;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    private ?User $user = null;
 
     #[ORM\Column(length: 7)]
     private ?string $color = null;
@@ -66,6 +74,18 @@ class Tag
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
     }
 
     public function getColor(): ?string
@@ -147,17 +167,14 @@ class Tag
     }
 
     /**
-     * Retourne la traduction en fonction de la locale
+     * Retourne la traduction de $locale, à défaut celle de $defaultLocale, à défaut la première disponible
      * @param string $locale
-     * @return TagTranslation
+     * @param string|null $defaultLocale
+     * @return TagTranslation|null
      */
-    public function getTagTranslationByLocale(string $locale): TagTranslation
+    public function getTagTranslationByLocale(string $locale, ?string $defaultLocale = null): ?TagTranslation
     {
-        return $this->getTagTranslations()
-            ->filter(function (TagTranslation $tagTranslation) use ($locale) {
-                return $tagTranslation->getLocale() === $locale;
-            })
-            ->first();
+        return $this->findTranslationByLocale($this->getTagTranslations(), $locale, $defaultLocale);
     }
 
     /**

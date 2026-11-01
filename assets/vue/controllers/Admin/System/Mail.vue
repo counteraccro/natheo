@@ -7,6 +7,7 @@
 
 import { defineComponent } from 'vue';
 import axios from 'axios';
+import { withCsrf } from '@/vue/Composables/Admin/csrf';
 import MarkdownEditor from '@/vue/Components/Global/MarkdownEditor/MarkdownEditor.vue';
 import { emitter } from '@/utils/useEvent';
 import Toast from '@/vue/Components/Global/Toast.vue';
@@ -138,9 +139,7 @@ export default defineComponent({
 
       this.sending = true;
       axios
-        .post<MailAjaxResponse>(this.url_save, this.getPayload(), {
-          headers: { 'X-CSRF-TOKEN': this.csrf_token_save },
-        })
+        .post<MailAjaxResponse>(this.url_save, this.getPayload(), withCsrf(this.csrf_token_save))
         .then((response) => this.handleResponse(response.data))
         .catch((error: unknown) => this.showError(error, this.translate.msg_cant_save))
         .finally(() => {
@@ -155,9 +154,7 @@ export default defineComponent({
     sendDemoMail(): void {
       this.sending = true;
       axios
-        .post<MailAjaxResponse>(this.url_demo, this.getPayload(), {
-          headers: { 'X-CSRF-TOKEN': this.csrf_token_send_demo },
-        })
+        .post<MailAjaxResponse>(this.url_demo, this.getPayload(), withCsrf(this.csrf_token_send_demo))
         .then((response) => this.handleResponse(response.data))
         .catch((error: unknown) => this.showError(error, this.translate.msg_error))
         .finally(() => {

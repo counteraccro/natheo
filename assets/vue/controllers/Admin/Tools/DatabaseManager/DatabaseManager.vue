@@ -6,6 +6,7 @@
  */
 import { defineComponent, PropType } from 'vue';
 import axios from 'axios';
+import { withCsrf } from '@/vue/Composables/Admin/csrf';
 import Toast from '../../../../Components/Global/Toast.vue';
 import Modal from '../../../../Components/Global/Modal.vue';
 import SchemaDatabase from '../../../../Components/DatabaseManager/SchemaDatabase.vue';
@@ -195,7 +196,7 @@ export default defineComponent({
         .post<DatabaseManagerResponse>(
           this.urls.save_database,
           { options: this.optionData },
-          { headers: { 'X-CSRF-TOKEN': this.csrfTokens.save_database } }
+          withCsrf(this.csrfTokens.save_database)
         )
         .then((response) => {
           this.showToast(response.data.success ? 'toastSuccess' : 'toastError', response.data.msg);
@@ -224,9 +225,10 @@ export default defineComponent({
 
       this.loading = true;
       axios
-        .delete<DatabaseManagerResponse>(this.urls.delete_dump_file + '/' + encodeURIComponent(filename), {
-          headers: { 'X-CSRF-TOKEN': this.csrfTokens.delete_dump_file },
-        })
+        .delete<DatabaseManagerResponse>(
+          this.urls.delete_dump_file + '/' + encodeURIComponent(filename),
+          withCsrf(this.csrfTokens.delete_dump_file)
+        )
         .then((response) => {
           this.showToast(response.data.success ? 'toastSuccess' : 'toastError', response.data.msg);
         })

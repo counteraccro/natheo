@@ -253,9 +253,12 @@ class FaqController extends AppAdminController
     public function save(Request $request, FaqService $faqService, TranslatorInterface $translator): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
-        /** @var Faq $faq */
 
+        /** @var Faq|null $faq */
         $faq = $faqService->findOneById(Faq::class, $data['faq']['id']);
+        if ($faq === null) {
+            return $this->jsonNotFound('faq');
+        }
 
         $faqPopulate = new FaqPopulate($faq, $data['faq']);
         $faq = $faqPopulate->populate()->getFaq();

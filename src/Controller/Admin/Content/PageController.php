@@ -482,6 +482,9 @@ class PageController extends AppAdminController
         $redirect = true;
         if (isset($data['page']['id']) && $data['page']['id'] > 0) {
             $page = $pageService->findOneById(Page::class, $data['page']['id']);
+            if ($page === null) {
+                return $this->jsonNotFound('page');
+            }
             $redirect = false;
         }
 

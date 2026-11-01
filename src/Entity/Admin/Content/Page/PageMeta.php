@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Admin\Content\Page;
 
+use App\Entity\Trait\TranslationByLocaleTrait;
 use App\Enum\Installation\DoctrineStrategy;
 use App\Repository\Admin\Content\Page\PageMetaRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -13,6 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: PageMetaRepository::class)]
 class PageMeta
 {
+    use TranslationByLocaleTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: DoctrineStrategy::CURRENT)]
     #[ORM\Column]
@@ -81,17 +84,14 @@ class PageMeta
     }
 
     /**
-     * Retourne la traduction en fonction de la locale
+     * Retourne la traduction de $locale, à défaut celle de $defaultLocale, à défaut la première disponible
      * @param string $locale
-     * @return PageMetaTranslation
+     * @param string|null $defaultLocale
+     * @return PageMetaTranslation|null
      */
-    public function getPageMetaTranslationByLocale(string $locale): PageMetaTranslation
+    public function getPageMetaTranslationByLocale(string $locale, ?string $defaultLocale = null): ?PageMetaTranslation
     {
-        return $this->getPageMetaTranslations()
-            ->filter(function (PageMetaTranslation $pageMetaTranslation) use ($locale) {
-                return $pageMetaTranslation->getLocale() === $locale;
-            })
-            ->first();
+        return $this->findTranslationByLocale($this->getPageMetaTranslations(), $locale, $defaultLocale);
     }
 
     public function addPageMetaTranslation(PageMetaTranslation $pageMetaTranslation): static
