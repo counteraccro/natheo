@@ -1,0 +1,38 @@
+# Labels posés sur les PR selon les fichiers modifiés (actions/labeler)
+
+"tech: php":
+  - changed-files:
+      - any-glob-to-any-file: ["src/**/*.php", "tests/**/*.php", "migrations/**/*.php", "config/**/*.php"]
+
+"tech: typescript":
+  - changed-files:
+      - any-glob-to-any-file: ["assets/**/*.ts", "assets/**/*.vue", "tsconfig.json", "vite.config.ts"]
+
+"tech: javascript":
+  - changed-files:
+      - any-glob-to-any-file: ["assets/**/*.js"]
+
+"tech: twig":
+  - changed-files:
+      - any-glob-to-any-file: ["templates/**/*.twig"]
+
+"tech: ci":
+  - changed-files:
+      - any-glob-to-any-file: [".github/**"]
+
+"couche: back":
+  - changed-files:
+      - any-glob-to-any-file: ["src/**", "config/**", "migrations/**"]
+
+"couche: front":
+  - changed-files:
+      - any-glob-to-any-file: ["assets/**", "templates/**"]
+
+"couche: api":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "src/Controller/Api/**"
+          - "src/Service/Api/**"
+          - "src/Dto/Api/**"
+          - "src/Resolver/Api/**"
+          - "src/Utils/Api/**"

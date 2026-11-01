@@ -1,0 +1,91 @@
+name: Triage des issues
+
+on:
+  issues:
+    types: [opened, edited]
+
+permissions:
+  issues: write
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        with:
+          script: |
+            const issue = context.payload.issue;
+            const body = issue.body ?? '';
+
+            // Libellés des champs des formulaires (.github/ISSUE_TEMPLATE/*.yml)
+            const KNOWN_FIELDS = [
+              'Module', 'Sévérité', 'Priorité', 'Couche', 'Origine', 'Régression', 'Nature',
+              'Contexte', 'Points à corriger', 'Comportement attendu', 'Tests à ajouter', 'Version du CMS',
+              'Environnement', 'Résumé', 'Règles métier', 'Tâches', 'Impacts', 'Divers', 'Constat',
+              'Impact sur le comportement', 'Tests', 'Objectif', 'Issues', 'Décisions prises', 'Critères de fin',
+            ];
+            const escapeRe = (s) => s.replace(/[.*+?^$()|[\]\\{}]/g, '\\$&');
+            const headingRe = new RegExp('^### (' + KNOWN_FIELDS.map(escapeRe).join('|') + ')\\s*$', 'gm');
+            const headings = [...body.matchAll(headingRe)];
+            const fields = {};
+            headings.forEach((match, i) => {
+              const start = match.index + match[0].length;
+              const end = i + 1 < headings.length ? headings[i + 1].index : body.length;
+              const value = body.slice(start, end).trim();
+              fields[match[1]] = value === '_No response_' ? '' : value;
+            });
+
+            const split = (value) => (value ? value.split(',').map((v) => v.trim()).filter(Boolean) : []);
+            const NATURE = {
+              'Nouvelle fonctionnalité': 'type: feature',
+              "Évolution de l'existant": 'type: évolution',
+              'Nettoyage / refactoring': 'type: clean code',
+              'Performance': 'type: clean code',
+              'Dépréciation': 'type: dépréciation',
+              'Documentation': 'type: documentation',
+            };
+
+            const wanted = new Set();
+            split(fields['Module']).forEach((m) => wanted.add('module: ' + m.toLowerCase()));
+            split(fields['Couche']).forEach((c) => wanted.add('couche: ' + c.toLowerCase()));
+            const priority = fields['Sévérité'] || fields['Priorité'];
+            if (priority) wanted.add('priorité: ' + priority.toLowerCase());
+            if (NATURE[fields['Nature']]) wanted.add(NATURE[fields['Nature']]);
+            if (/- \[x\]/i.test(fields['Régression'] ?? '')) wanted.add('type: régression');
+
+            const repoLabels = (
+              await github.paginate(github.rest.issues.listLabelsForRepo, { ...context.repo, per_page: 100 })
+            ).map((l) => l.name);
+            const current = issue.labels.map((l) => l.name);
+            const unknown = [...wanted].filter((l) => !repoLabels.includes(l));
+            const toAdd = [...wanted].filter((l) => repoLabels.includes(l) && !current.includes(l));
+
+            if (unknown.length) {
+              core.warning('Labels absents du dépôt, à ajouter dans .github/labels.yml : ' + unknown.join(', '));
+            }
+            if (toAdd.length) {
+              await github.rest.issues.addLabels({ ...context.repo, issue_number: issue.number, labels: toAdd });
+            }
+
+            if (context.payload.action !== 'opened') return;
+
+            // "[BUG] Titre" devient "[BUG #123] Titre"
+            const prefix = issue.title.match(/^\[(BUG|FEATURE|CLEAN CODE|EPIC)\]\s*/);
+            if (prefix) {
+              const title = '[' + prefix[1] + ' #' + issue.number + '] ' + issue.title.slice(prefix[0].length);
+              await github.rest.issues.update({ ...context.repo, issue_number: issue.number, title });
+            }
+
+            // Un seul milestone ouvert = la version en cours
+            if (!issue.milestone) {
+              const { data: milestones } = await github.rest.issues.listMilestones({ ...context.repo, state: 'open' });
+              if (milestones.length === 1) {
+                await github.rest.issues.update({
+                  ...context.repo,
+                  issue_number: issue.number,
+                  milestone: milestones[0].number,
+                });
+              } else {
+                core.notice(milestones.length + ' milestones ouverts : milestone à choisir à la main.');
+              }
+            }

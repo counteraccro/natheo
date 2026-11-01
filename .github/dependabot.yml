@@ -1,0 +1,24 @@
+# open-pull-requests-limit: 0 désactive les montées de version automatiques
+# mais conserve les mises à jour de sécurité, comme aujourd'hui.
+version: 2
+updates:
+  - package-ecosystem: composer
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 0
+    labels: ["type: dépendances", "tech: php"]
+
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 0
+    labels: ["type: dépendances", "tech: javascript"]
+
+  # Les actions sont épinglées par SHA : Dependabot propose leurs mises à jour
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    labels: ["type: dépendances", "tech: ci"]

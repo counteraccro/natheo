@@ -1,0 +1,73 @@
+name: 🗂️ Epic
+description: Regrouper plusieurs issues autour d'un même objectif (ex. un audit de module)
+title: "[EPIC] "
+labels: ["type: epic"]
+assignees: ["counteraccro"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Une Epic n'a pas de branche : chaque issue fille a la sienne. Cochez les issues au fur et à mesure qu'elles sont fermées.
+
+  - type: dropdown
+    id: module
+    attributes:
+      label: Module
+      multiple: true
+      options:
+        - Pages
+        - FAQ
+        - Commentaires
+        - Menu
+        - Tags
+        - Médiathèque
+        - Dashboard
+        - Recherche globale
+        - Éditeur Markdown
+        - Notifications
+        - Utilisateurs
+        - Options système
+        - Sidebar
+        - Traductions
+        - Emails
+        - Logs
+        - Tokens API
+        - Base de données
+        - SQL Manager
+        - Options avancées
+        - API
+        - Front
+        - Installation
+        - Authentification
+        - Transverse
+    validations:
+      required: true
+
+  - type: textarea
+    id: objectif
+    attributes:
+      label: Objectif
+    validations:
+      required: true
+
+  - type: textarea
+    id: issues
+    attributes:
+      label: Issues
+      description: Dans l'ordre de traitement.
+      value: |
+        - [ ] #
+    validations:
+      required: true
+
+  - type: textarea
+    id: decisions
+    attributes:
+      label: Décisions prises
+
+  - type: textarea
+    id: fin
+    attributes:
+      label: Critères de fin
+      value: |
+        - [ ] Toutes les issues sont fermées
