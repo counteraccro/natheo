@@ -23,7 +23,6 @@ use App\Repository\Admin\Content\Page\PageTranslationRepository;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
 use App\Utils\Content\Page\PageHistory;
-use App\Utils\Content\Tag\TagRender;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -347,10 +346,10 @@ class PageService extends AppAdminService
         $requestStack = $this->getRequestStack();
 
         $locale = $requestStack->getCurrentRequest()->getLocale();
+        $tagRender = $this->getTagRender();
         $return = '';
         foreach ($tags as $tag) {
-            $tagRender = new TagRender($tag, $locale);
-            $return .= ' ' . $tagRender->getHtml();
+            $return .= ' ' . $tagRender->getHtml($tag, $locale);
         }
         return trim($return);
     }

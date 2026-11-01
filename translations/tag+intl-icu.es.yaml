@@ -65,3 +65,10 @@ tag.save.new: 'La etiqueta <strong>{label}</strong> se ha creado correctamente'
 tag.save.edit: 'La etiqueta <strong>{label}</strong> se ha modificado correctamente'
 tag.error.forbidden: __tag.error.forbidden
 tag.error.not_found: __tag.error.not_found
+tag.grid.author: __tag.grid.author
+tag.error.label.blank: __tag.error.label.blank
+tag.error.label.length: __tag.error.label.length
+tag.error.color: __tag.error.color
+tag.error.label.duplicate: __tag.error.label.duplicate
+tag.error.delete.used: __tag.error.delete.used
+tag.error.tag_by_name: __tag.error.tag_by_name

@@ -13,6 +13,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TagRepository::class)]
 #[ORM\Table(name: 'tag')]
@@ -25,6 +26,12 @@ class Tag
 
     public const array ALLOWED_ORDER_FIELDS = ['id', 'color', 'createdAt', 'updateAt'];
 
+    /**
+     * Format attendu pour la couleur d'un tag (#rrggbb)
+     * @var string
+     */
+    public const string COLOR_PATTERN = '/^#[0-9a-fA-F]{6}$/';
+
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: DoctrineStrategy::CURRENT)]
     #[ORM\Column]
@@ -35,6 +42,8 @@ class Tag
     private ?User $user = null;
 
     #[ORM\Column(length: 7)]
+    #[Assert\NotNull(message: 'tag.error.color')]
+    #[Assert\Regex(pattern: self::COLOR_PATTERN, message: 'tag.error.color')]
     private ?string $color = null;
 
     #[ORM\Column]
@@ -47,6 +56,7 @@ class Tag
     private ?\DateTimeInterface $updateAt = null;
 
     #[ORM\OneToMany(mappedBy: 'tag', targetEntity: TagTranslation::class, cascade: ['persist'], orphanRemoval: true)]
+    #[Assert\Valid]
     private Collection $tagTranslations;
 
     #[ORM\ManyToMany(targetEntity: Page::class, mappedBy: 'tags')]

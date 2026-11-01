@@ -80,6 +80,10 @@ export default defineComponent({
       type: Object as PropType<PageData>,
       required: true,
     },
+    csrfTokenTag: {
+      type: String,
+      default: '',
+    },
   },
   data() {
     return {
@@ -708,6 +712,7 @@ export default defineComponent({
           :current-locale="currentLocale"
           :locales="locales"
           :urls="urls"
+          :csrf-token="csrfTokenTag"
           @update-tags="handleUpdateTags"
         />
       </div>

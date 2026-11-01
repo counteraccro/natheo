@@ -2,12 +2,13 @@
 /**
  * Gestionnaire des Pages - onglet Tag
  * @author Gourdon Aymeric
- * @version 2.0
+ * @version 2.1
  **/
 
 import { defineComponent, PropType } from 'vue';
 import { Locales, Page, Tag, PageTranslations, Urls, TagSuggestion } from '@/ts/Page/Page.type';
 import axios from 'axios';
+import { withCsrf } from '@/vue/Composables/Admin/csrf';
 
 export default defineComponent({
   name: 'PageTag',
@@ -31,6 +32,10 @@ export default defineComponent({
     urls: {
       type: Object as PropType<Urls>,
       required: true,
+    },
+    csrfToken: {
+      type: String as PropType<string>,
+      default: '',
     },
   },
   emits: ['update-tags'],
@@ -72,7 +77,13 @@ export default defineComponent({
     searchTags() {
       this.isSearching = true;
       axios
-        .get(this.urls.auto_complete_tag + '/' + this.inputValue.trim() + '/' + this.currentLocale)
+        .get(
+          this.urls.auto_complete_tag +
+            '/' +
+            encodeURIComponent(this.inputValue.trim()) +
+            '/' +
+            encodeURIComponent(this.currentLocale)
+        )
         .then((response) => {
           const result = response.data.result as Record<string, TagSuggestion>;
           this.suggestions = Object.values(result).filter((tag) => !this.currentTags.some((t) => t.id === tag.id));
@@ -98,7 +109,11 @@ export default defineComponent({
     },
     fetchOrCreateTag() {
       axios
-        .get(this.urls.tag_by_name + '/' + this.inputValue.trim() + '/' + this.currentLocale, {})
+        .post(
+          this.urls.tag_by_name,
+          { label: this.inputValue.trim(), locale: this.currentLocale },
+          withCsrf(this.csrfToken)
+        )
         .then((response) => {
           if (response.data.success) {
             const tag: Tag = response.data.tag;

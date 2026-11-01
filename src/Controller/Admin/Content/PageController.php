@@ -16,6 +16,7 @@ use App\Enum\Admin\Content\Page\PageCategory;
 use App\Enum\Admin\Content\Page\PageMeta;
 use App\Enum\Admin\Content\Page\PageRender;
 use App\Enum\Admin\Content\Page\PageStatus;
+use App\Enum\Admin\Content\Tag\TagCsrfToken;
 use App\Enum\Admin\Global\Breadcrumb;
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Enum\Admin\System\Options\OptionUser;
@@ -236,6 +237,7 @@ class PageController extends AppAdminController
             'translate' => $translate,
             'locales' => $locales,
             'id' => $id,
+            'csrfTokenTag' => TagCsrfToken::TAG_BY_NAME->value,
             'datas' => [
                 'list_status' => $pageService->getAllStatus(),
                 'list_render' => $pageService->getAllRender(),

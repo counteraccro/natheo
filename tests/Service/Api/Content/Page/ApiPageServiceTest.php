@@ -92,7 +92,7 @@ class ApiPageServiceTest extends AppWebTestCase
     public function testGetListingPagesByTag(): void
     {
         $page = $this->createPageAllDataDefault();
-        $tag = $this->createTag(['disabled' => false]);
+        $tag = $this->createTag(null, ['disabled' => false]);
         foreach ($this->locales as $locale) {
             $this->createTagTranslation($tag, ['locale' => $locale, 'label' => 'unit-tag-' . $locale]);
         }

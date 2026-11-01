@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 2.0
  * Controller pour la gestion des tags
  */
 
@@ -12,11 +12,13 @@ namespace App\Controller\Admin\Content;
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\Content\Tag\Tag;
 use App\Entity\Admin\Content\Tag\TagTranslation;
+use App\Enum\Admin\Content\Tag\TagCsrfToken;
 use App\Enum\Admin\Global\Breadcrumb;
 use App\Enum\Admin\System\Options\OptionUser;
+use App\Security\Voter\ContentVoter;
 use App\Service\Admin\Content\Tag\TagService;
-use App\Utils\Flash\FlashKey;
 use App\Translate\Admin\Content\TagTranslate;
+use App\Utils\Flash\FlashKey;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
@@ -75,7 +77,12 @@ class TagController extends AppAdminController
             'locale' => $request->getLocale(),
         ];
 
-        $grid = $tagService->getAllFormatToGrid($page, $limit, $queryParams);
+        $userId = null;
+        if ($request->query->get('filter') === self::FILTER_ME) {
+            $userId = $this->getUser()->getId();
+        }
+
+        $grid = $tagService->getAllFormatToGrid($page, $limit, $queryParams, $userId);
         return $this->json($grid);
     }
 
@@ -89,28 +96,34 @@ class TagController extends AppAdminController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/ajax/update-disabled/{id}', name: 'update_disabled', methods: ['PUT'])]
+    #[Route('/ajax/update-disabled/{id}', name: 'update_disabled', requirements: ['id' => '\d+'], methods: ['PUT'])]
     public function updateDisabled(
         #[MapEntity(id: 'id')] Tag $tag,
         TagService $tagService,
         TranslatorInterface $translator,
         Request $request,
     ): JsonResponse {
+        $error =
+            $this->checkCsrf(TagCsrfToken::DISABLED->value, $request) ??
+            $this->checkContentAccess(ContentVoter::DISABLE, $tag, 'tag');
+        if ($error !== null) {
+            return $error;
+        }
+
         $tag->setDisabled(!$tag->isDisabled());
         $tagService->save($tag);
 
-        $tagTranslation = $tag->getTagTranslationByLocale($request->getLocale());
-
-        $msg = $translator->trans('tag.success.no.disabled', ['label' => $tagTranslation->getLabel()], 'tag');
+        $label = $tagService->getEscapedLabel($tag, $request->getLocale());
+        $msg = $translator->trans('tag.success.no.disabled', ['label' => $label], 'tag');
         if ($tag->isDisabled()) {
-            $msg = $translator->trans('tag.success.disabled', ['label' => $tagTranslation->getLabel()], 'tag');
+            $msg = $translator->trans('tag.success.disabled', ['label' => $label], 'tag');
         }
 
         return $this->json($tagService->getResponseAjax($msg));
     }
 
     /**
-     * Permet de supprimer un tag
+     * Permet de supprimer un tag, refusé s'il est rattaché à au moins une page
      * @param Tag $tag
      * @param TagService $tagService
      * @param TranslatorInterface $translator
@@ -119,16 +132,29 @@ class TagController extends AppAdminController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/ajax/delete/{id}', name: 'delete', methods: ['DELETE'])]
+    #[Route('/ajax/delete/{id}', name: 'delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(
         #[MapEntity(id: 'id')] Tag $tag,
         TagService $tagService,
         TranslatorInterface $translator,
         Request $request,
     ): JsonResponse {
-        $label = $tag->getTagTranslationByLocale($request->getLocale())->getLabel();
-        $msg = $translator->trans('tag.remove.success', ['label' => $label], domain: 'tag');
+        $error =
+            $this->checkCsrf(TagCsrfToken::DELETE->value, $request) ??
+            $this->checkContentAccess(ContentVoter::DELETE, $tag, 'tag');
+        if ($error !== null) {
+            return $error;
+        }
+
+        $nbPages = $tagService->countPages($tag);
+        if ($nbPages > 0) {
+            return $this->jsonError($translator->trans('tag.error.delete.used', ['nb' => $nbPages], 'tag'));
+        }
+
+        $label = $tagService->getEscapedLabel($tag, $request->getLocale());
         $tagService->remove($tag);
+
+        $msg = $translator->trans('tag.remove.success', ['label' => $label], domain: 'tag');
         return $this->json($tagService->getResponseAjax($msg));
     }
 
@@ -137,23 +163,30 @@ class TagController extends AppAdminController
      * @param TagService $tagService
      * @param TagTranslate $tagTranslate
      * @param Request $request
-     * @param Tag|null $tag
+     * @param int|null $id
      * @return Response
      * @throws ContainerExceptionInterface
      * @throws ExceptionInterface
      * @throws NotFoundExceptionInterface
      */
     #[Route('/add/', name: 'add')]
-    #[Route('/update/{id}', name: 'update')]
+    #[Route('/update/{id}', name: 'update', requirements: ['id' => '\d+'])]
     public function add(
         TagService $tagService,
         TagTranslate $tagTranslate,
         Request $request,
         ?int $id = null,
-        #[MapEntity(id: 'id')] ?Tag $tag = null,
     ): Response {
+        $tag = null;
+        if ($id !== null) {
+            $tag = $tagService->findOneById(Tag::class, $id);
+            if ($tag !== null) {
+                $this->denyAccessUnlessGranted(ContentVoter::EDIT, $tag);
+            }
+        }
+
         $breadcrumbTitle = 'tag.update.page_title_h1';
-        if ($tag === null) {
+        if ($id === null) {
             $breadcrumbTitle = 'tag.add.page_title_h1';
         }
 
@@ -169,7 +202,7 @@ class TagController extends AppAdminController
         $locales = $tagService->getLocales();
         $locales['current'] = $request->getLocale();
 
-        if ($tag === null && $id === null) {
+        if ($id === null) {
             $tag = new Tag();
             foreach ($locales['locales'] as $locale) {
                 $tagTranslation = new TagTranslation();
@@ -177,7 +210,9 @@ class TagController extends AppAdminController
                 $tag->addTagTranslation($tagTranslation);
             }
         }
-        if ($tag) {
+
+        $canDelete = $tag !== null && $tag->getId() !== null && $this->isGranted(ContentVoter::DELETE, $tag);
+        if ($tag !== null) {
             $tag = $tagService->convertEntityToArray($tag, ['createdAt', 'updateAt', 'pages', 'user']);
         }
 
@@ -186,6 +221,9 @@ class TagController extends AppAdminController
             'translate' => $translate,
             'locales' => $locales,
             'tag' => $tag,
+            'canDelete' => $canDelete,
+            'csrfTokenSave' => TagCsrfToken::SAVE->value,
+            'csrfTokenDelete' => TagCsrfToken::DELETE->value,
         ]);
     }
 
@@ -201,30 +239,47 @@ class TagController extends AppAdminController
     #[Route('/ajax/save/', name: 'save', methods: ['POST'])]
     public function save(TagService $tagService, Request $request, TranslatorInterface $translator): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
+        $error = $this->checkCsrf(TagCsrfToken::SAVE->value, $request);
+        if ($error !== null) {
+            return $error;
+        }
 
-        // Le propriétaire n'est jamais modifiable depuis le formulaire
-        unset($data['tag']['user']);
+        $data = json_decode($request->getContent(), true);
+        if (!is_array($data) || !isset($data['tag']) || !is_array($data['tag'])) {
+            return $this->jsonError(
+                $translator->trans('tag.form.error.save', domain: 'tag'),
+                Response::HTTP_BAD_REQUEST,
+            );
+        }
 
         $tag = new Tag();
         $tag->setUser($this->getUser());
         $status = 'new';
-        if ($data['tag']['id'] !== null) {
-            $tag = $tagService->findOneBy(Tag::class, 'id', $data['tag']['id']);
+        $id = $data['tag']['id'] ?? null;
+        if ($id !== null) {
+            $tag = is_numeric($id) ? $tagService->findOneById(Tag::class, (int) $id) : null;
             if ($tag === null) {
                 return $this->jsonNotFound('tag');
+            }
+            $error = $this->checkContentAccess(ContentVoter::EDIT, $tag, 'tag');
+            if ($error !== null) {
+                return $error;
             }
             $status = 'edit';
         }
 
-        /** @var Tag $tag */
-        $tag = $tagService->convertArrayToEntity($data['tag'], Tag::class, $tag);
+        $tagService->populate($tag, $data['tag']);
+        $errors = $tagService->validate($tag);
+        if (!empty($errors)) {
+            return $this->jsonError(implode('<br />', $errors), Response::HTTP_BAD_REQUEST);
+        }
+
         $tag->setUpdateAt(new \DateTime());
         $tagService->save($tag);
 
         $msg = $translator->trans(
             'tag.save.' . $status,
-            ['label' => $tag->getTagTranslationByLocale($request->getLocale())->getLabel()],
+            ['label' => $tagService->getEscapedLabel($tag, $request->getLocale())],
             domain: 'tag',
         );
         $tab = $tagService->getResponseAjax($msg);
@@ -234,7 +289,7 @@ class TagController extends AppAdminController
         } else {
             $this->addFlash(FlashKey::FLASH_DANGER, $tab['msg']);
         }
-        return $this->json(['etat' => $status]);
+        return $this->json(['etat' => $status, 'success' => $tab['success'], 'msg' => $tab['msg']]);
     }
 
     /**
@@ -242,9 +297,13 @@ class TagController extends AppAdminController
      * @param Tag|null $tag
      * @return Response
      */
-    #[Route('/ajax/stats/{id}', name: 'stats', methods: ['GET'])]
+    #[Route('/ajax/stats/{id}', name: 'stats', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function statistique(#[MapEntity(id: 'id')] ?Tag $tag = null): Response
     {
+        if ($tag === null) {
+            throw $this->createNotFoundException();
+        }
+
         return $this->render('admin/content/tag/date_update.html.twig', [
             'tag' => $tag,
         ]);
@@ -252,6 +311,7 @@ class TagController extends AppAdminController
 
     /**
      * Permet de rechercher un ou plusieurs tags pour l'auto-complete
+     * Les valeurs par défaut servent uniquement à générer l'URL de base transmise à Vue
      * @param TagService $tagService
      * @param string $search
      * @param string $locale
@@ -259,31 +319,55 @@ class TagController extends AppAdminController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/ajax/search/{search}/{locale}', name: 'search', methods: ['GET'])]
+    #[
+        Route(
+            '/ajax/search/{search}/{locale}',
+            name: 'search',
+            requirements: ['locale' => '%app.supported_locales%'],
+            methods: ['GET'],
+        ),
+    ]
     public function search(TagService $tagService, string $search = '', string $locale = ''): Response
     {
+        $search = trim($search);
+        if ($search === '' || $locale === '') {
+            throw $this->createNotFoundException();
+        }
+
         $result = $tagService->searchByLocale($locale, $search);
         return $this->json(['result' => $result]);
     }
 
     /**
-     * Retourne un objet tag depuis un label et la locale
+     * Retourne un objet tag depuis un label et la locale (corps JSON {label, locale})
      * Si le tag n'existe pas, il est créé. (utilisé pour l'auto-complete)
      * @param TagService $tagService
      * @param TranslatorInterface $translator
-     * @param string $search
-     * @param string $locale
+     * @param Request $request
      * @return Response
+     * @throws ContainerExceptionInterface
      * @throws ExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
-    #[Route('/ajax/tag-by-name/{search}/{locale}', name: 'tag_by_name', methods: ['GET'])]
-    public function getTagByName(
-        TagService $tagService,
-        TranslatorInterface $translator,
-        string $search = '',
-        string $locale = '',
-    ): Response {
-        $tag = $tagService->newTagByNameAndLocale($locale, $search, $this->getUser());
+    #[Route('/ajax/tag-by-name', name: 'tag_by_name', methods: ['POST'])]
+    public function getTagByName(TagService $tagService, TranslatorInterface $translator, Request $request): Response
+    {
+        $error = $this->checkCsrf(TagCsrfToken::TAG_BY_NAME->value, $request);
+        if ($error !== null) {
+            return $error;
+        }
+
+        $data = json_decode($request->getContent(), true);
+        $label = trim((string) ($data['label'] ?? ''));
+        $locale = (string) ($data['locale'] ?? '');
+        if ($label === '' || mb_strlen($label) > 255 || !in_array($locale, $tagService->getLocales()['locales'], true)) {
+            return $this->jsonError(
+                $translator->trans('tag.error.tag_by_name', domain: 'tag'),
+                Response::HTTP_BAD_REQUEST,
+            );
+        }
+
+        $tag = $tagService->newTagByNameAndLocale($locale, $label, $this->getUser());
 
         $msg = '';
         $success = false;

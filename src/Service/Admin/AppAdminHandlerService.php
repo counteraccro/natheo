@@ -11,6 +11,7 @@ namespace App\Service\Admin;
 
 use App\Service\Admin\Content\Comment\CommentService;
 use App\Service\Admin\Content\Page\PageService;
+use App\Service\Admin\Content\Tag\TagRender;
 use App\Service\Admin\System\OptionConfigService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Service\Admin\System\User\UserDataService;
@@ -20,6 +21,7 @@ use App\Utils\Global\Database\RawResultQueryManager;
 use App\Utils\Global\EnvFile;
 use App\Translate\Admin\Global\GridTranslate;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -35,6 +37,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AppAdminHandlerService
@@ -68,6 +71,9 @@ class AppAdminHandlerService
         'commentService' => CommentService::class,
         'accessDecisionManager' => AccessDecisionManagerInterface::class,
         'csrfTokenManager' => CsrfTokenManagerInterface::class,
+        'tagRender' => TagRender::class,
+        'managerRegistry' => ManagerRegistry::class,
+        'validator' => ValidatorInterface::class,
     ];
 
     public function __construct(#[AutowireLocator(self::HANDLERS)] protected ContainerInterface $handlers) {}
@@ -344,5 +350,38 @@ class AppAdminHandlerService
     protected function getCsrfTokenManager(): CsrfTokenManagerInterface
     {
         return $this->handlers->get('csrfTokenManager');
+    }
+
+    /**
+     * Retourne le service de rendu HTML des tags
+     * @return TagRender
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getTagRender(): TagRender
+    {
+        return $this->handlers->get('tagRender');
+    }
+
+    /**
+     * Retourne le ManagerRegistry de Doctrine
+     * @return ManagerRegistry
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getManagerRegistry(): ManagerRegistry
+    {
+        return $this->handlers->get('managerRegistry');
+    }
+
+    /**
+     * Retourne le validateur Symfony
+     * @return ValidatorInterface
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getValidator(): ValidatorInterface
+    {
+        return $this->handlers->get('validator');
     }
 }

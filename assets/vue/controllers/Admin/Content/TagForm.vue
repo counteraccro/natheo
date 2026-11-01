@@ -2,10 +2,11 @@
 /**
  * Permet d'ajouter ou éditer un tag
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 1.2
  */
 
 import axios from 'axios';
+import { withCsrf } from '@/vue/Composables/Admin/csrf';
 import { emitter } from '@/utils/useEvent';
 import SkeletonForm from '@/vue/Components/Skeleton/Form.vue';
 import Toast from '@/vue/Components/Global/Toast.vue';
@@ -23,6 +24,9 @@ export default {
     translate: Object,
     locales: Object,
     pTag: Object,
+    can_delete: Boolean,
+    csrf_token_save: String,
+    csrf_token_delete: String,
   },
   data() {
     return {
@@ -75,10 +79,14 @@ export default {
       this.classNoControl = 'no-control';
 
       axios
-        .post(this.url, {
-          tag: this.tag,
-        })
+        .post(this.url, { tag: this.tag }, withCsrf(this.csrf_token_save))
         .then((response) => {
+          if (response.data.success === false) {
+            this.toasts.toastError.msg = response.data.msg ?? this.translate.errorSave;
+            this.toasts.toastError.show = true;
+            return;
+          }
+
           emitter.emit('reset-check-confirm');
           this.toasts.toastSuccess.msg = this.translate.successSave;
           this.toasts.toastSuccess.show = true;
@@ -89,7 +97,7 @@ export default {
         })
         .catch((error) => {
           console.error(error);
-          this.toasts.toastError.msg = this.translate.errorSave;
+          this.toasts.toastError.msg = error.response?.data?.msg ?? this.translate.errorSave;
           this.toasts.toastError.show = true;
         })
         .finally(() => {
@@ -118,11 +126,14 @@ export default {
       this.showModalConfirmDelete = false;
 
       axios
-        .delete(this.url_delete)
+        .delete(this.url_delete, withCsrf(this.csrf_token_delete))
         .then((response) => {
           if (response.data.success === true) {
             this.toasts.toastSuccess.msg = response.data.msg;
             this.toasts.toastSuccess.show = true;
+            setTimeout(() => {
+              window.location = this.url_index;
+            }, 1500);
           } else {
             this.toasts.toastError.msg = response.data.msg;
             this.toasts.toastError.show = true;
@@ -130,11 +141,11 @@ export default {
         })
         .catch((error) => {
           console.error(error);
+          this.toasts.toastError.msg = error.response?.data?.msg ?? this.translate.errorSave;
+          this.toasts.toastError.show = true;
         })
         .finally(() => {
-          setTimeout(() => {
-            window.location = this.url_index;
-          }, 1500);
+          this.loading = false;
         });
     },
 
@@ -156,7 +167,7 @@ export default {
       this.msgErrorExa = '';
       this.isErrorHexa = false;
 
-      let reg = /^#([0-9a-f]{3}){1,2}$/i;
+      let reg = /^#[0-9a-f]{6}$/i;
       if (!reg.test(this.tag.color)) {
         this.msgErrorExa = this.translate.formInputColorError;
         this.isErrorHexa = true;
@@ -438,7 +449,7 @@ export default {
 
         <div class="flex flex-wrap gap-3 pt-4 mt-5 flex-row-reverse">
           <button
-            v-if="this.tag.id !== null"
+            v-if="this.tag.id !== null && this.can_delete"
             type="button"
             class="btn btn-sm btn-danger"
             @click="this.showModalConfirmDelete = true"

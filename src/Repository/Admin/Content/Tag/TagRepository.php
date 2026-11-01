@@ -11,6 +11,7 @@ namespace App\Repository\Admin\Content\Tag;
 
 use App\Entity\Admin\Content\Tag\Tag;
 use App\Entity\Admin\Content\Tag\TagTranslation;
+use App\Entity\Admin\System\User;
 use App\Repository\Trait\OrderedQueryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -53,33 +54,47 @@ class TagRepository extends ServiceEntityRepository
 
     /**
      * Retourne une liste de tag Paginé
+     * La jointure sur les traductions est limitée à la locale courante (tri et recherche par libellé)
      * @param int $page
      * @param int $limit
      * @param array $queryParams
+     * @param int|null $userId filtre sur le propriétaire du tag
      * @return Paginator
      */
-    public function getAllPaginate(int $page, int $limit, array $queryParams): Paginator
+    public function getAllPaginate(int $page, int $limit, array $queryParams, ?int $userId = null): Paginator
     {
-        $orderField = 'id';
-        if (isset($queryParams['orderField']) && $queryParams['orderField'] !== '') {
-            $orderField = $queryParams['orderField'];
+        $orderField = $queryParams['orderField'] ?? '';
+        $search = (string) ($queryParams['search'] ?? '');
+
+        $query = $this->createQueryBuilder(Tag::DEFAULT_ALIAS)
+            ->addSelect(User::DEFAULT_ALIAS)
+            ->leftJoin(Tag::DEFAULT_ALIAS . '.user', User::DEFAULT_ALIAS);
+        if ($orderField === 'label' || $search !== '') {
+            // LEFT JOIN : un tag sans libellé dans la locale reste visible lors du tri
+            $query
+                ->leftJoin(
+                    Tag::DEFAULT_ALIAS . '.tagTranslations',
+                    TagTranslation::DEFAULT_ALIAS,
+                    'WITH',
+                    TagTranslation::DEFAULT_ALIAS . '.locale = :locale',
+                )
+                ->setParameter('locale', (string) ($queryParams['locale'] ?? ''));
         }
 
-        $query = $this->createQueryBuilder(Tag::DEFAULT_ALIAS);
-        if ($orderField === 'label' || (isset($queryParams['search']) && $queryParams['search'] !== '')) {
-            $query->join(Tag::DEFAULT_ALIAS . '.tagTranslations', TagTranslation::DEFAULT_ALIAS);
-        }
-
-        if ($orderField !== 'label') {
-            $this->applyOrdering($query, TAG::class, $queryParams);
-        } else {
+        if ($orderField === 'label') {
             $this->applyOrdering($query, TagTranslation::class, $queryParams);
+        } else {
+            $this->applyOrdering($query, Tag::class, $queryParams);
         }
 
-        if (isset($queryParams['search']) && $queryParams['search'] !== '') {
+        if ($search !== '') {
             $query
                 ->andWhere(TagTranslation::DEFAULT_ALIAS . '.label like :search')
-                ->setParameter('search', '%' . $queryParams['search'] . '%');
+                ->setParameter('search', '%' . $this->escapeLike($search) . '%');
+        }
+
+        if ($userId !== null) {
+            $query->andWhere(Tag::DEFAULT_ALIAS . '.user = :userId')->setParameter('userId', $userId);
         }
 
         $paginator = new Paginator($query->getQuery(), true);
@@ -111,16 +126,43 @@ class TagRepository extends ServiceEntityRepository
                 Tag::DEFAULT_ALIAS . '.tagTranslations',
                 TagTranslation::DEFAULT_ALIAS,
                 'WITH',
-                TagTranslation::DEFAULT_ALIAS . ".locale = '" . $locale . "'",
+                TagTranslation::DEFAULT_ALIAS . '.locale = :locale',
             )
             ->andWhere('LOWER(' . TagTranslation::DEFAULT_ALIAS . '.label) LIKE LOWER(:label)')
-            ->setParameter('label', '%' . $search . '%');
+            ->setParameter('locale', $locale)
+            ->setParameter('label', '%' . $this->escapeLike($search) . '%');
 
         if (!$withDisabled) {
             $query->andWhere(Tag::DEFAULT_ALIAS . '.disabled = false');
         }
 
         return $query->getQuery()->getArrayResult();
+    }
+
+    /**
+     * Échappe les jokers % et _ d'une valeur recherchée avec LIKE
+     * @param string $value
+     * @return string
+     */
+    private function escapeLike(string $value): string
+    {
+        return addcslashes($value, '\\%_');
+    }
+
+    /**
+     * Retourne le nombre de pages auxquelles le tag est rattaché
+     * @param Tag $tag
+     * @return int
+     */
+    public function countPages(Tag $tag): int
+    {
+        return (int) $this->createQueryBuilder('t')
+            ->select('COUNT(p.id)')
+            ->innerJoin('t.pages', 'p')
+            ->where('t.id = :id')
+            ->setParameter('id', $tag->getId())
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 
     /**
