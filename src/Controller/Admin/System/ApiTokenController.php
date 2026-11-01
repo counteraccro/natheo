@@ -92,8 +92,9 @@ class ApiTokenController extends AppAdminController
         TranslatorInterface $translator,
         Request $request,
     ): JsonResponse {
-        if (!$this->isCsrfTokenValid(ApiTokenService::CSRF_TOKEN_UPDATE_DISABLED, $request->headers->get('X-CSRF-TOKEN'))) {
-            return $this->jsonCsrfError();
+        $csrfError = $this->checkCsrf(ApiTokenService::CSRF_TOKEN_UPDATE_DISABLED, $request);
+        if ($csrfError !== null) {
+            return $csrfError;
         }
 
         $apiToken->setDisabled(!$apiToken->isDisabled());
@@ -124,8 +125,9 @@ class ApiTokenController extends AppAdminController
         TranslatorInterface $translator,
         Request $request,
     ): JsonResponse {
-        if (!$this->isCsrfTokenValid(ApiTokenService::CSRF_TOKEN_DELETE, $request->headers->get('X-CSRF-TOKEN'))) {
-            return $this->jsonCsrfError();
+        $csrfError = $this->checkCsrf(ApiTokenService::CSRF_TOKEN_DELETE, $request);
+        if ($csrfError !== null) {
+            return $csrfError;
         }
 
         $msg = $translator->trans('api_token.remove.success', ['label' => $apiToken->getName()], domain: 'api_token');
@@ -209,8 +211,9 @@ class ApiTokenController extends AppAdminController
         TranslatorInterface $translator,
         Request $request,
     ): JsonResponse {
-        if (!$this->isCsrfTokenValid(ApiTokenService::CSRF_TOKEN_REGENERATE, $request->headers->get('X-CSRF-TOKEN'))) {
-            return $this->jsonCsrfError();
+        $csrfError = $this->checkCsrf(ApiTokenService::CSRF_TOKEN_REGENERATE, $request);
+        if ($csrfError !== null) {
+            return $csrfError;
         }
 
         $token = $apiTokenService->regenerateToken($apiToken);
@@ -237,8 +240,9 @@ class ApiTokenController extends AppAdminController
         ApiTokenService $apiTokenService,
         TranslatorInterface $translator,
     ): JsonResponse {
-        if (!$this->isCsrfTokenValid(ApiTokenService::CSRF_TOKEN_SAVE, $request->headers->get('X-CSRF-TOKEN'))) {
-            return $this->jsonCsrfError();
+        $csrfError = $this->checkCsrf(ApiTokenService::CSRF_TOKEN_SAVE, $request);
+        if ($csrfError !== null) {
+            return $csrfError;
         }
 
         $data = json_decode($request->getContent(), true);

@@ -126,8 +126,9 @@ class DatabaseManagerController extends AppAdminController
         TranslatorInterface $translator,
         DatabaseManagerService $databaseManagerService,
     ): JsonResponse {
-        if (!$this->isCsrfTokenValid('database_manager_save_database', $request->headers->get('X-CSRF-TOKEN'))) {
-            return $this->jsonCsrfError();
+        $csrfError = $this->checkCsrf('database_manager_save_database', $request);
+        if ($csrfError !== null) {
+            return $csrfError;
         }
 
         $data = json_decode($request->getContent(), true);
@@ -211,8 +212,9 @@ class DatabaseManagerController extends AppAdminController
         Request $request,
         string $filename = '',
     ): JsonResponse {
-        if (!$this->isCsrfTokenValid('database_manager_delete_dump_file', $request->headers->get('X-CSRF-TOKEN'))) {
-            return $this->jsonCsrfError();
+        $csrfError = $this->checkCsrf('database_manager_delete_dump_file', $request);
+        if ($csrfError !== null) {
+            return $csrfError;
         }
 
         $result = $databaseManagerService->deleteDumpFile($filename);

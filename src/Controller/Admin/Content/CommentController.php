@@ -280,7 +280,6 @@ class CommentController extends AppAdminController
         TranslatorInterface $translator,
     ): Response {
         $data = json_decode($request->getContent(), true);
-        unset($data['comment']['statusStr']);
 
         $data['comment']['status'] = intval($data['comment']['status']);
         $comment = $commentService->findOneById(Comment::class, $data['comment']['id']);

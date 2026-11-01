@@ -7,6 +7,7 @@
 
 import { defineComponent } from 'vue';
 import axios from 'axios';
+import { withCsrf } from '@/vue/Composables/Admin/csrf';
 import { emitter } from '@/utils/useEvent';
 import type { OptionField, OptionUpdatePayload, OptionUpdateResponse } from '@/ts/Option/Option.type';
 
@@ -81,7 +82,7 @@ export default defineComponent({
       const payload: OptionUpdatePayload = { key: id, value: value };
 
       axios
-        .post<OptionUpdateResponse>(this.url_update, payload, { headers: { 'X-CSRF-TOKEN': this.csrf_token } })
+        .post<OptionUpdateResponse>(this.url_update, payload, withCsrf(this.csrf_token))
         .then((response) => {
           if (response.data.success) {
             help?.classList.add('hidden');

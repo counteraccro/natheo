@@ -6,6 +6,7 @@
  */
 import { defineComponent, type PropType } from 'vue';
 import axios from 'axios';
+import { withCsrf } from '@/vue/Composables/Admin/csrf';
 import Grid from '@/vue/Components/Grid/Grid.vue';
 import GridPaginate from '@/vue/Components/Grid/GridPaginate.vue';
 import Modal from '@/vue/Components/Global/Modal.vue';
@@ -161,9 +162,7 @@ export default defineComponent({
       this.loading = true;
 
       axios
-        .delete<LogActionResponse>(this.url_delete_file + '/' + this.encodedSelectFile, {
-          headers: { 'X-CSRF-TOKEN': this.csrf_delete_file },
-        })
+        .delete<LogActionResponse>(this.url_delete_file + '/' + this.encodedSelectFile, withCsrf(this.csrf_delete_file))
         .then((response) => {
           this.toasts.toastSuccess.msg = response.data.msg;
           this.toasts.toastSuccess.show = true;

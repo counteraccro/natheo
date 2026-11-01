@@ -7,6 +7,7 @@
 
 import { defineComponent, type PropType } from 'vue';
 import axios from 'axios';
+import { withCsrf } from '@/vue/Composables/Admin/csrf';
 import Toast from '@/vue/Components/Global/Toast.vue';
 import Modal from '@/vue/Components/Global/Modal.vue';
 import { copyToClipboard } from '@/utils/copyToClipboard';
@@ -70,9 +71,7 @@ export default defineComponent({
       this.showModalApiTokenRegenerate = false;
       this.loading = true;
       axios
-        .put<ApiTokenSaveResponse>(this.urls.regenerate_token, undefined, {
-          headers: { 'X-CSRF-TOKEN': this.csrfTokens.regenerate },
-        })
+        .put<ApiTokenSaveResponse>(this.urls.regenerate_token, undefined, withCsrf(this.csrfTokens.regenerate))
         .then((response) => {
           this.showResponseToast(response.data);
           if (response.data.success) {
@@ -120,7 +119,7 @@ export default defineComponent({
           {
             apiToken: this.apiToken,
           },
-          { headers: { 'X-CSRF-TOKEN': this.csrfTokens.save } }
+          withCsrf(this.csrfTokens.save)
         )
         .then((response) => {
           this.showResponseToast(response.data);
@@ -146,9 +145,7 @@ export default defineComponent({
       this.showModalApiTokenDelete = false;
 
       axios
-        .delete<ApiTokenAjaxResponse>(this.urls.delete_api_token, {
-          headers: { 'X-CSRF-TOKEN': this.csrfTokens.delete },
-        })
+        .delete<ApiTokenAjaxResponse>(this.urls.delete_api_token, withCsrf(this.csrfTokens.delete))
         .then((response) => {
           this.showResponseToast(response.data);
           if (response.data.success) {

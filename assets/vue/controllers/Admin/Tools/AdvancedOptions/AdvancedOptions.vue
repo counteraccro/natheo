@@ -6,6 +6,7 @@
  */
 import { defineComponent, PropType } from 'vue';
 import axios from 'axios';
+import { withCsrf } from '@/vue/Composables/Admin/csrf';
 import Toast from '../../../../Components/Global/Toast.vue';
 import Modal from '../../../../Components/Global/Modal.vue';
 import AlertWarning from '@/vue/Components/Alert/Warning.vue';
@@ -119,7 +120,7 @@ export default defineComponent({
       this.loading = true;
       this.msgInfo = msgInfo;
       axios
-        .post<AdvancedOptionsResponse>(url, {}, { headers: { 'X-CSRF-TOKEN': csrfToken } })
+        .post<AdvancedOptionsResponse>(url, {}, withCsrf(csrfToken))
         .then((response) => {
           if (response.data.success !== true) {
             this.showError(response.data.msg);
