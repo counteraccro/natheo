@@ -70,7 +70,7 @@ jobs:
             if (context.payload.action !== 'opened') return;
 
             // "[BUG] Titre" devient "[BUG #123] Titre"
-            const prefix = issue.title.match(/^\[(BUG|FEATURE|CLEAN CODE|EPIC)\]\s*/);
+            const prefix = issue.title.match(/^\[(BUG|AUDIT|FEATURE|CLEAN CODE|EPIC)\]\s*/);
             if (prefix) {
               const title = '[' + prefix[1] + ' #' + issue.number + '] ' + issue.title.slice(prefix[0].length);
               await github.rest.issues.update({ ...context.repo, issue_number: issue.number, title });

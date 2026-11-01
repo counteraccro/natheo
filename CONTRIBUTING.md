@@ -17,7 +17,8 @@ Elle se crée depuis l'un des formulaires (les issues libres sont désactivées)
 
 | Formulaire | Pour | Titre |
 |---|---|---|
-| 🐞 Bug | anomalie, résultat d'audit (hors faille) | `[BUG #n] …` |
+| 🐞 Bug | anomalie constatée (hors faille) | `[BUG #n] …` |
+| 🔍 Audit | restitution de l'audit d'un module | `[AUDIT #n] …` |
 | ✨ Feature / évolution | nouvelle fonctionnalité ou amélioration | `[FEATURE #n] …` |
 | 🧹 Clean code | refactoring, performance, dépréciation, documentation | `[CLEAN CODE #n] …` |
 | 🗂️ Epic | regrouper plusieurs issues (ex. un audit de module) | `[EPIC #n] …` |
@@ -26,6 +27,8 @@ Ce qui est fait automatiquement à la création (workflow `issue-triage`) :
 - ajout du numéro dans le titre ;
 - labels `type:`, `module:`, `priorité:` et `couche:` d'après les réponses du formulaire ;
 - milestone, s'il n'y en a qu'un seul ouvert (la version en cours).
+
+Les points de sécurité d'un audit sont détaillés dans une advisory privée ([SECURITY.md](SECURITY.md)) ; l'issue d'audit n'en cite que la correction attendue.
 
 Une Epic liste ses issues filles en cases à cocher et n'a pas de branche.
 
@@ -36,6 +39,7 @@ Elle part de `master` à jour, avec le numéro de l'issue :
 | Issue | Branche |
 |---|---|
 | Bug | `bug/B-<n>-<slug>` |
+| Audit | `audit/A-<n>-<slug>` |
 | Feature, évolution, clean code | `feature/N-<n>-<slug>` |
 | Maintenance sans issue (montée de version, configuration) | `maintenance/<slug>` |
 
@@ -43,7 +47,7 @@ Le `<slug>` est en minuscules, avec des tirets : `bug/B-363-audit-dashboard`.
 
 ### 3. La pull request
 
-- Titre : `Bug/B-<n> Titre` ou `Feature/N-<n> Titre`.
+- Titre : `Bug/B-<n> Titre`, `Audit/A-<n> Titre` ou `Feature/N-<n> Titre`.
 - Description : le template commence par `Closes #<n>`. C'est ce qui lie la PR à l'issue et ferme l'issue au merge.
 - Les vérifications du template (tests, build, traductions, migration, fixtures) sont à cocher avant de demander la relecture.
 

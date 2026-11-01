@@ -71,7 +71,6 @@ body:
     attributes:
       label: Origine
       options:
-        - Audit
         - Retour utilisateur
         - Tests
         - Autre
