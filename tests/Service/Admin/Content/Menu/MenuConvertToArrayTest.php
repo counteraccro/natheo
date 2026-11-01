@@ -7,14 +7,14 @@ declare(strict_types=1);
  * Test MenuConvertToArray
  */
 
-namespace App\Tests\Utils\Content\Menu;
+namespace App\Tests\Service\Admin\Content\Menu;
 
 use App\Tests\AppWebTestCase;
-use App\Utils\Content\Menu\MenuConvertToArray;
+use App\Service\Admin\Content\Menu\MenuConvertToArray;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
-class MenuToConvertToArrayTest extends AppWebTestCase
+class MenuConvertToArrayTest extends AppWebTestCase
 {
     /**
      * Test de la méthode convertToArray()

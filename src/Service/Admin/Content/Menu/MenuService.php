@@ -11,20 +11,18 @@ namespace App\Service\Admin\Content\Menu;
 
 use App\Entity\Admin\Content\Menu\Menu;
 use App\Entity\Admin\Content\Menu\MenuElement;
-use App\Enum\Admin\Content\Menu\MenuLinkTarget;
+use App\Enum\Admin\Content\Menu\MenuCsrfToken;
 use App\Enum\Admin\Content\Menu\MenuPosition;
 use App\Enum\Admin\Content\Menu\MenuType;
+use App\Enum\Admin\Global\SvgIcon;
 use App\Repository\Admin\Content\Menu\MenuElementRepository;
+use App\Repository\Admin\Content\Menu\MenuRepository;
+use App\Security\Voter\ContentVoter;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
-use App\Utils\Content\Menu\MenuFactory;
-use App\Utils\Global\OrderEntity;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use Exception;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use App\Enum\Admin\Global\SvgIcon;
 
 class MenuService extends AppAdminService
 {
@@ -84,7 +82,7 @@ class MenuService extends AppAdminService
                 $isDefault = SvgIcon::MENU->render('inline w-4 h-4');
             }
 
-            $name = $element->getName();
+            $name = htmlspecialchars($element->getName(), ENT_QUOTES);
             $listeType = $this->getListType();
             $listePosition = $this->getListPosition();
             $strType =
@@ -108,7 +106,10 @@ class MenuService extends AppAdminService
                 $translator->trans('menu.grid.update_at', domain: 'menu') => $element
                     ->getUpdateAt()
                     ->format('d/m/y H:i'),
-                $translator->trans('menu.grid.author', domain: 'menu') => $element->getUser()->getLogin(),
+                $translator->trans('menu.grid.author', domain: 'menu') => htmlspecialchars(
+                    (string) $element->getUser()?->getLogin(),
+                    ENT_QUOTES,
+                ),
                 GridService::KEY_ACTION => $action,
                 'isDisabled' => $element->isDisabled(),
             ];
@@ -131,9 +132,10 @@ class MenuService extends AppAdminService
     }
 
     /**
-     * Génère le tableau d'action pour le Grid des sidebarElement
+     * Génère le tableau d'actions de la grille des menus, selon les droits (ContentVoter)
+     * et les règles du menu par défaut (ni désactivable, ni supprimable ; un menu désactivé ne peut pas le devenir)
      * @param Menu $menu
-     * @return array[]|string[]
+     * @return array[]
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
@@ -141,37 +143,43 @@ class MenuService extends AppAdminService
     {
         $translator = $this->getTranslator();
         $router = $this->getRouter();
-        $optionSystemService = $this->getOptionSystemService();
+        $security = $this->getSecurity();
+        $csrfTokenManager = $this->getCsrfTokenManager();
 
-        $label = $menu->getName();
+        $label = htmlspecialchars($menu->getName(), ENT_QUOTES);
+        $actions = [];
 
-        $actionDisabled = [
-            'label' => [
-                'M3.933 13.909A4.357 4.357 0 0 1 3 12c0-1 4-6 9-6m7.6 3.8A5.068 5.068 0 0 1 21 12c0 1-3 6-9 6-.314 0-.62-.014-.918-.04M5 19 19 5m-4 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z',
-            ],
-            'color' => 'primary',
-            'url' => $router->generate('admin_menu_update_disabled', ['id' => $menu->getId()]),
-            'type' => 'put',
-            'ajax' => true,
-            'confirm' => true,
-            'msgConfirm' => $translator->trans('menu.confirm.disabled.msg', ['label' => $label], 'menu'),
-        ];
-        if ($menu->isDisabled()) {
+        if (!$menu->isDefaultMenu() && $security->isGranted(ContentVoter::DISABLE, $menu)) {
             $actionDisabled = [
                 'label' => [
-                    'M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z',
-                    'M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z',
+                    'M3.933 13.909A4.357 4.357 0 0 1 3 12c0-1 4-6 9-6m7.6 3.8A5.068 5.068 0 0 1 21 12c0 1-3 6-9 6-.314 0-.62-.014-.918-.04M5 19 19 5m-4 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z',
                 ],
                 'color' => 'primary',
-                'type' => 'put',
                 'url' => $router->generate('admin_menu_update_disabled', ['id' => $menu->getId()]),
+                'type' => 'put',
                 'ajax' => true,
+                'confirm' => true,
+                'msgConfirm' => $translator->trans('menu.confirm.disabled.msg', ['label' => $label], 'menu'),
+                'csrf' => $csrfTokenManager->getToken(MenuCsrfToken::DISABLED->value)->getValue(),
             ];
+            if ($menu->isDisabled()) {
+                $actionDisabled = [
+                    'label' => [
+                        'M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z',
+                        'M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z',
+                    ],
+                    'color' => 'primary',
+                    'type' => 'put',
+                    'url' => $router->generate('admin_menu_update_disabled', ['id' => $menu->getId()]),
+                    'ajax' => true,
+                    'csrf' => $csrfTokenManager->getToken(MenuCsrfToken::DISABLED->value)->getValue(),
+                ];
+            }
+            $actions[] = $actionDisabled;
         }
 
-        $actionDelete = '';
-        if ($optionSystemService->canDelete()) {
-            $actionDelete = [
+        if (!$menu->isDefaultMenu() && $security->isGranted(ContentVoter::DELETE, $menu)) {
+            $actions[] = [
                 'label' => [
                     'M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z',
                 ],
@@ -181,16 +189,14 @@ class MenuService extends AppAdminService
                 'ajax' => true,
                 'confirm' => true,
                 'msgConfirm' => $translator->trans('menu.confirm.delete.msg', ['label' => $label], 'menu'),
+                'csrf' => $csrfTokenManager->getToken(MenuCsrfToken::DELETE->value)->getValue(),
             ];
         }
 
-        $actions = [];
-        $actions[] = $actionDisabled;
-        if ($actionDelete != '') {
-            $actions[] = $actionDelete;
+        if (!$security->isGranted(ContentVoter::EDIT, $menu)) {
+            return $actions;
         }
 
-        // Bouton edit
         $actions[] = [
             'label' => [
                 'M10.779 17.779 4.36 19.918 6.5 13.5m4.279 4.279 8.364-8.643a3.027 3.027 0 0 0-2.14-5.165 3.03 3.03 0 0 0-2.14.886L6.5 13.5m4.279 4.279L6.499 13.5m2.14 2.14 6.213-6.504M12.75 7.04 17 11.28',
@@ -201,7 +207,7 @@ class MenuService extends AppAdminService
             'ajax' => false,
         ];
 
-        if (!$menu->isDefaultMenu()) {
+        if (!$menu->isDefaultMenu() && !$menu->isDisabled()) {
             $actions[] = [
                 'label' => [
                     'M3 10h18M6 14h2m3 0h5M3 7v10a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1Z',
@@ -211,11 +217,8 @@ class MenuService extends AppAdminService
                 'type' => 'put',
                 'ajax' => true,
                 'confirm' => true,
-                'msgConfirm' => $translator->trans(
-                    'menu.confirm.switch.default.msg',
-                    ['label' => $menu->getName()],
-                    'menu',
-                ),
+                'msgConfirm' => $translator->trans('menu.confirm.switch.default.msg', ['label' => $label], 'menu'),
+                'csrf' => $csrfTokenManager->getToken(MenuCsrfToken::SWITCH_DEFAULT->value)->getValue(),
             ];
         }
 
@@ -432,14 +435,59 @@ class MenuService extends AppAdminService
      */
     public function switchDefaultMenuToFalse(int $excludeId, int $position): void
     {
+        /** @var MenuRepository $repository */
         $repository = $this->getRepository(Menu::class);
-        $menus = $repository->getAllWithoutExcludeByPosition('id', $excludeId, $position);
+        $repository->unsetDefaultByPosition($excludeId, $position);
+    }
 
-        foreach ($menus as $menu) {
-            /** @var Menu $menu */
-            $menu->setDefaultMenu(false);
-            $this->save($menu, true);
+    /**
+     * Retourne le nombre de pages auxquelles le menu est rattaché
+     * @param Menu $menu
+     * @return int
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function countPages(Menu $menu): int
+    {
+        /** @var MenuRepository $repository */
+        $repository = $this->getRepository(Menu::class);
+        return $repository->countPages($menu);
+    }
+
+    /**
+     * Indique si un lien externe est autorisé : http(s), mailto, tel, chemin relatif « /… »,
+     * ou valeur vide / « # » (élément lié à une page)
+     * @param string|null $link
+     * @return bool
+     */
+    public function isAllowedExternalLink(?string $link): bool
+    {
+        $link = trim((string) $link);
+        if ($link === '' || $link === '#') {
+            return true;
         }
+        // « //domaine » est une URL externe sans schéma : refusée comme chemin relatif
+        return (bool) preg_match('#^(https?://|mailto:|tel:|/(?!/))#i', $link);
+    }
+
+    /**
+     * Indique si au moins un élément (enfants compris) des données reçues a un lien externe non autorisé
+     * @param array $menuElements données des menuElements reçues du formulaire
+     * @return bool
+     */
+    public function hasInvalidExternalLink(array $menuElements): bool
+    {
+        foreach ($menuElements as $menuElement) {
+            foreach ($menuElement['menuElementTranslations'] ?? [] as $translation) {
+                if (!$this->isAllowedExternalLink($translation['externalLink'] ?? null)) {
+                    return true;
+                }
+            }
+            if ($this->hasInvalidExternalLink($menuElement['children'] ?? [])) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

@@ -7,11 +7,11 @@ declare(strict_types=1);
  *  Test menuFactory
  */
 
-namespace App\Tests\Utils\Content\Menu;
+namespace App\Tests\Factory\Admin\Content\Menu;
 
 use App\Entity\Admin\Content\Menu\MenuElement;
 use App\Tests\AppWebTestCase;
-use App\Utils\Content\Menu\MenuFactory;
+use App\Factory\Admin\Content\Menu\MenuFactory;
 
 class MenuFactoryTest extends AppWebTestCase
 {

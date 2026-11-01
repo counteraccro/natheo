@@ -7,7 +7,7 @@ declare(strict_types=1);
  * @version 1.0
  */
 
-namespace App\Utils\Content\Menu;
+namespace App\Factory\Admin\Content\Menu;
 
 use App\Entity\Admin\Content\Menu\MenuElement;
 use App\Entity\Admin\Content\Menu\MenuElementTranslation;

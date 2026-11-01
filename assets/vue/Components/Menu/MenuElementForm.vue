@@ -2,6 +2,7 @@
 import { defineComponent, PropType, toRaw } from 'vue';
 import { LoadMenuData, Locales, MenuElement, MenuElementTranslation, MenuFormTranslate } from '@/ts/Menu/Menu.type';
 import Autocomplete, { AutocompleteOption } from '@/vue/Components/Global/AutoComplete.vue';
+import { isAllowedExternalLink } from '@/vue/Composables/Admin/Menu/externalLink';
 
 export default defineComponent({
   name: 'MenuElementForm',
@@ -36,6 +37,7 @@ export default defineComponent({
       errors: {
         textLink: false,
         link: false,
+        externalLink: false,
       } as Record<string, boolean>,
     };
   },
@@ -83,7 +85,7 @@ export default defineComponent({
       const hasPage = Number(this.menuElement.page) > 0;
       const hasExternalUrl = translation?.externalLink?.trim() !== '' && translation?.externalLink !== '#';
 
-      return hasTextLink && (hasPage || hasExternalUrl);
+      return hasTextLink && (hasPage || hasExternalUrl) && isAllowedExternalLink(translation?.externalLink);
     },
 
     /**
@@ -99,7 +101,7 @@ export default defineComponent({
         const hasPage = Number(this.menuElement.page) > 0;
         const hasExternalUrl = translation?.externalLink?.trim() !== '' && translation?.externalLink !== '#';
 
-        result[locale] = hasTextLink && (hasPage || hasExternalUrl);
+        result[locale] = hasTextLink && (hasPage || hasExternalUrl) && isAllowedExternalLink(translation?.externalLink);
       });
 
       return result;
@@ -176,6 +178,8 @@ export default defineComponent({
 
       if (!hasPage && !hasExternalUrl) {
         this.errors.link = true;
+      } else if (!isAllowedExternalLink(translation?.externalLink)) {
+        this.errors.externalLink = true;
       }
 
       return !Object.values(this.errors).some(Boolean);
@@ -296,7 +300,7 @@ export default defineComponent({
         <input
           type="text"
           class="form-input"
-          :class="errors.link ? 'is-invalid' : ''"
+          :class="errors.link || errors.externalLink ? 'is-invalid' : ''"
           :value="getTranslationValueByKeyAndByLocale(menuElement.menuElementTranslations, 'externalLink')"
           @input="
             setTranslationValueByKeyAndByLocale(
@@ -308,6 +312,9 @@ export default defineComponent({
           @change="validate"
         />
         <span v-if="errors.link" class="form-text text-error">✗ {{ translate.empty_text_link_error }}</span>
+        <span v-if="errors.externalLink" class="form-text text-error"
+          >✗ {{ translate.invalid_external_link_error }}</span
+        >
       </div>
     </div>
 

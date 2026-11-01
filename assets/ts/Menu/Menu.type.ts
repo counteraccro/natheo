@@ -36,6 +36,7 @@ export interface MenuFormTranslate {
   btn_delete: string;
   empty_text_link_error: string;
   empty_internal_link_error: string;
+  invalid_external_link_error: string;
 }
 
 export interface MenuTreeTranslate {
@@ -119,7 +120,6 @@ export interface Urls {
   delete_menu_element: string;
   new_menu_element: string;
   update_parent_menu_element: string;
-  list_parent_menu_element: string;
   reorder_menu_element: string;
 }
 

@@ -47,7 +47,7 @@ Directory shape under `src/` mirrors the domain, duplicated across `Controller/`
 ### Deprecated `Utils` folders (`src/Utils/`, `assets/utils/`)
 Both are leftovers of an earlier architecture and are being removed gradually:
 - **Never create a new file** in `src/Utils/` or `assets/utils/`.
-- **Migrate as you go:** when an issue touches a `Utils` file, move it to the matching folder (`src/Service/...`, `src/Entity/Trait/`, `src/Enum/...`, etc. for PHP; `assets/vue/Composables/` for front runtime helpers) and update its usages in the same PR. Remaining files are tracked in a dedicated `[CLEAN CODE]` issue.
+- **Migrate as you go:** when an issue touches a `Utils` file, move it to the matching folder by role (`src/Service/...` for services, `src/Factory/<Layer>/<Domain>/` for `*Factory`, `src/Populate/<Layer>/<Domain>/` for `*Populate` — both excluded from autowiring in `config/services.yaml` —, `src/Entity/Trait/`, `src/Enum/...`, etc. for PHP; `assets/vue/Composables/` for front runtime helpers) and update its usages in the same PR. Remaining files are tracked in a dedicated `[CLEAN CODE]` issue.
 - **Constants become enums:** constant holder classes (`*Const`, `*Key`, `FlashKey`, ...) are converted to backed enums under `src/Enum/` when migrated.
 - Reusable traits go in `src/Entity/Trait/` (entity helpers) or `src/Repository/Trait/` (query helpers).
 
