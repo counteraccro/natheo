@@ -419,7 +419,7 @@ export default {
                   "
                 />
 
-                <div class="form-switch float-end mt-2" v-if="translation.locale === this.locales.current">
+                <div class="form-switch float-end mt-2 mb-0" v-if="translation.locale === this.locales.current">
                   <input
                     type="checkbox"
                     class="switch-input"
