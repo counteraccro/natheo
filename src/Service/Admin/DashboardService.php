@@ -178,7 +178,7 @@ class DashboardService extends AppAdminService
     {
         $commentService = $this->getCommentService();
 
-        $result = $this->commentRepo->findBy([], ['id' => 'DESC'], 10);
+        $result = $this->commentRepo->findBy([], ['id' => \SortDirection::Descending], 10);
 
         $body = [];
         foreach ($result as $comment) {
@@ -202,7 +202,7 @@ class DashboardService extends AppAdminService
      */
     public function getBlockLastPageCreate(): array
     {
-        $result = $this->pageRepo->findBy([], ['id' => 'DESC'], 10);
+        $result = $this->pageRepo->findBy([], ['id' => \SortDirection::Descending], 10);
         $currentLocale = $this->getLocales()['current'];
 
         $body = [];

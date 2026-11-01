@@ -44,7 +44,7 @@ trait OrderedQueryTrait
      * @param \SortDirection $default
      * @return \SortDirection
      */
-    public function toSortDirection(
+    protected function toSortDirection(
         ?string $order,
         \SortDirection $default = \SortDirection::Descending,
     ): \SortDirection {
