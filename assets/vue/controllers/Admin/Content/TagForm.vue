@@ -396,7 +396,11 @@ export default {
         </div>
       </div>
       <div class="p-5">
-        <div v-for="key in this.locales.locales" class="mb-5 last:mb-0 flow-root">
+        <div
+          v-for="key in this.locales.locales"
+          :class="key === this.locales.current ? 'mb-2' : 'mb-5'"
+          class="last:mb-0 flow-root"
+        >
           <div v-for="translation in tag.tagTranslations">
             <div v-if="translation.locale === key">
               <div class="form-group">
@@ -419,7 +423,7 @@ export default {
                   "
                 />
 
-                <div class="form-switch float-end mt-2 mb-0" v-if="translation.locale === this.locales.current">
+                <div class="form-switch float-end mt-2 mb-0!" v-if="translation.locale === this.locales.current">
                   <input
                     type="checkbox"
                     class="switch-input"
