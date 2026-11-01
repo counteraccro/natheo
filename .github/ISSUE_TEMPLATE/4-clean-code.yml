@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Le numéro de l'issue est ajouté automatiquement au titre (`[CLEAN CODE #123] …`), et les labels sont posés à partir de vos réponses.
+        Les labels sont posés à partir de vos réponses.
 
   - type: dropdown
     id: nature

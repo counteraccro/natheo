@@ -18,13 +18,13 @@ Elle se crée depuis l'un des formulaires (les issues libres sont désactivées)
 | Formulaire | Pour | Titre |
 |---|---|---|
 | 🐞 Bug | anomalie constatée (hors faille) | `[BUG #n] …` |
-| 🔍 Audit | restitution de l'audit d'un module | `[AUDIT #n] …` |
-| ✨ Feature / évolution | nouvelle fonctionnalité ou amélioration | `[FEATURE #n] …` |
-| 🧹 Clean code | refactoring, performance, dépréciation, documentation | `[CLEAN CODE #n] …` |
-| 🗂️ Epic | regrouper plusieurs issues (ex. un audit de module) | `[EPIC #n] …` |
+| 🔍 Audit | restitution de l'audit d'un module | `[AUDIT] …` |
+| ✨ Feature / évolution | nouvelle fonctionnalité ou amélioration | `[FEATURE] …` |
+| 🧹 Clean code | refactoring, performance, dépréciation, documentation | `[CLEAN CODE] …` |
+| 🗂️ Epic | regrouper plusieurs issues (ex. un audit de module) | `[EPIC] …` |
 
 Ce qui est fait automatiquement à la création (workflow `issue-triage`) :
-- ajout du numéro dans le titre ;
+- ajout du numéro dans le titre, pour les bugs uniquement ;
 - labels `type:`, `module:`, `priorité:` et `couche:` d'après les réponses du formulaire ;
 - milestone, s'il n'y en a qu'un seul ouvert (la version en cours).
 

@@ -9,7 +9,7 @@ body:
       value: |
         > 🔒 **Points de sécurité :** décrivez-les en détail dans une advisory privée (voir [SECURITY.md](https://github.com/counteraccro/natheo/blob/master/SECURITY.md)) et ne citez ici que la correction attendue, sans scénario d'exploitation.
 
-        Le numéro de l'issue est ajouté automatiquement au titre (`[AUDIT #123] …`), et les labels sont posés à partir de vos réponses. Plusieurs audits liés se regroupent dans une Epic.
+        Les labels sont posés à partir de vos réponses. Plusieurs audits liés se regroupent dans une Epic.
 
   - type: dropdown
     id: module
