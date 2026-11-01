@@ -396,7 +396,7 @@ export default {
         </div>
       </div>
       <div class="p-5">
-        <div v-for="key in this.locales.locales">
+        <div v-for="key in this.locales.locales" class="mb-5 last:mb-0 flow-root">
           <div v-for="translation in tag.tagTranslations">
             <div v-if="translation.locale === key">
               <div class="form-group">
