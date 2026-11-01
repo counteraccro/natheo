@@ -37,21 +37,20 @@ jobs:
 
             const split = (value) => (value ? value.split(',').map((v) => v.trim()).filter(Boolean) : []);
             const NATURE = {
-              'Nouvelle fonctionnalité': 'type: feature',
-              "Évolution de l'existant": 'type: évolution',
-              'Nettoyage / refactoring': 'type: clean code',
-              'Performance': 'type: clean code',
-              'Dépréciation': 'type: dépréciation',
-              'Documentation': 'type: documentation',
+              'Nouvelle fonctionnalité': 'Feature',
+              "Évolution de l'existant": 'Évolution',
+              'Nettoyage / refactoring': 'Clean code',
+              'Performance': 'Clean code',
+              'Dépréciation': 'Dépréciation',
+              'Documentation': 'Documentation',
             };
 
-            const wanted = new Set();
-            split(fields['Module']).forEach((m) => wanted.add('module: ' + m.toLowerCase()));
-            split(fields['Couche']).forEach((c) => wanted.add('couche: ' + c.toLowerCase()));
+            // Les labels de module, couche et priorité portent le nom exact des options des formulaires
+            const wanted = new Set([...split(fields['Module']), ...split(fields['Couche'])]);
             const priority = fields['Sévérité'] || fields['Priorité'];
-            if (priority) wanted.add('priorité: ' + priority.toLowerCase());
+            if (priority) wanted.add(priority);
             if (NATURE[fields['Nature']]) wanted.add(NATURE[fields['Nature']]);
-            if (/- \[x\]/i.test(fields['Régression'] ?? '')) wanted.add('type: régression');
+            if (/- \[x\]/i.test(fields['Régression'] ?? '')) wanted.add('Régression');
 
             const repoLabels = (
               await github.paginate(github.rest.issues.listLabelsForRepo, { ...context.repo, per_page: 100 })

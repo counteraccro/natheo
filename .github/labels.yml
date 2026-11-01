@@ -1,143 +1,151 @@
 # Référentiel des labels du dépôt, synchronisé par .github/workflows/labels-sync.yml
 # "from_name" renomme un label existant : les issues et PR qui le portent le conservent.
+# Les noms n'ont pas de préfixe de famille : la famille se lit à la couleur et à la description,
+# et les noms de type, module, priorité et couche reprennent les options des formulaires d'issue.
 
 # --- Type (un seul par issue) ---
-- name: "type: bug"
+- name: "Bug"
   color: "d73a4a"
   description: "Quelque chose ne fonctionne pas"
-  from_name: "bug"
-- name: "type: audit"
+  from_name: "type: bug"
+- name: "Audit"
   color: "5319e7"
   description: "Résultat d'audit d'un module : corrections et améliorations"
-- name: "type: feature"
+  from_name: "type: audit"
+- name: "Feature"
   color: "a2eeef"
   description: "Nouvelle fonctionnalité"
-  from_name: "enhancement"
-- name: "type: évolution"
+  from_name: "type: feature"
+- name: "Évolution"
   color: "bfdd79"
   description: "Amélioration de l'existant"
-  from_name: "Evolution"
-- name: "type: clean code"
+  from_name: "type: évolution"
+- name: "Clean code"
   color: "f0b7fb"
   description: "Nettoyage, refactoring, suppression de code mort, performance"
-  from_name: "Clean code"
-- name: "type: régression"
+  from_name: "type: clean code"
+- name: "Régression"
   color: "d93f0b"
   description: "Régression apparue suite à une mise à jour"
-  from_name: "Regression"
-- name: "type: dépréciation"
+  from_name: "type: régression"
+- name: "Dépréciation"
   color: "fbd55f"
   description: "Suppression d'une dépréciation"
-  from_name: "Deprecation"
-- name: "type: documentation"
+  from_name: "type: dépréciation"
+- name: "Documentation"
   color: "0075ca"
   description: "Documentation"
-  from_name: "documentation"
-- name: "type: sécurité"
+  from_name: "type: documentation"
+- name: "Sécurité"
   color: "ee0701"
   description: "Correctif de sécurité (détails dans l'advisory, voir SECURITY.md)"
-- name: "type: dépendances"
+  from_name: "type: sécurité"
+- name: "Dépendances"
   color: "0366d6"
   description: "Mise à jour de dépendances"
-  from_name: "dependencies"
-- name: "type: epic"
+  from_name: "type: dépendances"
+- name: "Epic"
   color: "a8424f"
   description: "Regroupe plusieurs issues"
-  from_name: "Epic"
-- name: "type: question"
+  from_name: "type: epic"
+- name: "Question"
   color: "d876e3"
   description: "Demande d'information"
-  from_name: "question"
+  from_name: "type: question"
 
 # --- Priorité ---
-- name: "priorité: critique"
+- name: "Critique"
   color: "b60205"
   description: "Faille, perte de données ou blocage : à traiter en premier"
-- name: "priorité: medium"
+  from_name: "priorité: critique"
+- name: "Medium"
   color: "fbca04"
   description: "Anomalie gênante ou fonctionnalité attendue"
-- name: "priorité: bas"
+  from_name: "priorité: medium"
+- name: "Bas"
   color: "0e8a16"
   description: "Amélioration mineure"
+  from_name: "priorité: bas"
 
 # --- Couche ---
-- name: "couche: back"
+- name: "Back"
   color: "025b5a"
   description: "Développement back (PHP, Symfony)"
-  from_name: "Back"
-- name: "couche: front"
+  from_name: "couche: back"
+- name: "Front"
   color: "57e223"
   description: "Développement front (Vue, TypeScript, Twig)"
-  from_name: "Front"
-- name: "couche: api"
+  from_name: "couche: front"
+- name: "API"
   color: "8f8cfd"
-  description: "API JSON"
-  from_name: "API"
+  description: "API JSON (module ou couche)"
+  from_name: "couche: api"
 
 # --- Technologie (posé automatiquement sur les PR selon les fichiers modifiés) ---
-- name: "tech: php"
+- name: "PHP"
   color: "45229e"
   description: "Code PHP"
-  from_name: "php"
-- name: "tech: typescript"
+  from_name: "tech: php"
+- name: "TypeScript"
   color: "a1ce39"
   description: "Code TypeScript / Vue"
-  from_name: "TypeScript"
-- name: "tech: javascript"
+  from_name: "tech: typescript"
+- name: "JavaScript"
   color: "168700"
   description: "Code JavaScript"
-  from_name: "javascript"
-- name: "tech: twig"
+  from_name: "tech: javascript"
+- name: "Twig"
   color: "bfd4f2"
   description: "Templates Twig"
-- name: "tech: ci"
+  from_name: "tech: twig"
+- name: "CI"
   color: "ededed"
   description: "GitHub Actions, configuration du dépôt"
+  from_name: "tech: ci"
 
-# --- Module ---
-- { name: "module: pages", color: "c5def5", description: "Gestion des pages" }
-- { name: "module: faq", color: "c5def5", description: "Gestion des FAQ" }
-- { name: "module: commentaires", color: "c5def5", description: "Gestion des commentaires" }
-- { name: "module: menu", color: "c5def5", description: "Gestion des menus" }
-- { name: "module: tags", color: "c5def5", description: "Gestion des tags" }
-- { name: "module: médiathèque", color: "c5def5", description: "Médiathèque" }
-- { name: "module: dashboard", color: "c5def5", description: "Tableau de bord" }
-- { name: "module: recherche globale", color: "c5def5", description: "Recherche globale" }
-- { name: "module: éditeur markdown", color: "c5def5", description: "Éditeur de texte Markdown" }
-- { name: "module: notifications", color: "c5def5", description: "Notifications" }
-- { name: "module: utilisateurs", color: "c5def5", description: "Gestion des utilisateurs" }
-- { name: "module: options système", color: "c5def5", description: "Options système et utilisateur" }
-- { name: "module: sidebar", color: "c5def5", description: "Sidebar" }
-- { name: "module: traductions", color: "c5def5", description: "Gestion des traductions" }
-- { name: "module: emails", color: "c5def5", description: "Gestion des emails" }
-- { name: "module: logs", color: "c5def5", description: "Logs" }
-- { name: "module: tokens api", color: "c5def5", description: "Gestion des tokens API" }
-- { name: "module: base de données", color: "c5def5", description: "Database manager" }
-- { name: "module: sql manager", color: "c5def5", description: "SQL manager" }
-- { name: "module: options avancées", color: "c5def5", description: "Options avancées" }
-- { name: "module: api", color: "c5def5", description: "API JSON" }
-- { name: "module: front", color: "c5def5", description: "Site public (thème)" }
-- { name: "module: installation", color: "c5def5", description: "Installation du CMS" }
-- { name: "module: authentification", color: "c5def5", description: "Connexion, sécurité des comptes" }
-- { name: "module: transverse", color: "c5def5", description: "Plusieurs modules ou socle commun" }
+# --- Module (le module API partage le label API de la couche) ---
+- { name: "Pages", color: "c5def5", description: "Gestion des pages", from_name: "module: pages" }
+- { name: "FAQ", color: "c5def5", description: "Gestion des FAQ", from_name: "module: faq" }
+- { name: "Commentaires", color: "c5def5", description: "Gestion des commentaires", from_name: "module: commentaires" }
+- { name: "Menu", color: "c5def5", description: "Gestion des menus", from_name: "module: menu" }
+- { name: "Tags", color: "c5def5", description: "Gestion des tags", from_name: "module: tags" }
+- { name: "Médiathèque", color: "c5def5", description: "Médiathèque", from_name: "module: médiathèque" }
+- { name: "Dashboard", color: "c5def5", description: "Tableau de bord", from_name: "module: dashboard" }
+- { name: "Recherche globale", color: "c5def5", description: "Recherche globale", from_name: "module: recherche globale" }
+- { name: "Éditeur Markdown", color: "c5def5", description: "Éditeur de texte Markdown", from_name: "module: éditeur markdown" }
+- { name: "Notifications", color: "c5def5", description: "Notifications", from_name: "module: notifications" }
+- { name: "Utilisateurs", color: "c5def5", description: "Gestion des utilisateurs", from_name: "module: utilisateurs" }
+- { name: "Options système", color: "c5def5", description: "Options système et utilisateur", from_name: "module: options système" }
+- { name: "Sidebar", color: "c5def5", description: "Sidebar", from_name: "module: sidebar" }
+- { name: "Traductions", color: "c5def5", description: "Gestion des traductions", from_name: "module: traductions" }
+- { name: "Emails", color: "c5def5", description: "Gestion des emails", from_name: "module: emails" }
+- { name: "Logs", color: "c5def5", description: "Logs", from_name: "module: logs" }
+- { name: "Tokens API", color: "c5def5", description: "Gestion des tokens API", from_name: "module: tokens api" }
+- { name: "Base de données", color: "c5def5", description: "Database manager", from_name: "module: base de données" }
+- { name: "SQL Manager", color: "c5def5", description: "SQL manager", from_name: "module: sql manager" }
+- { name: "Options avancées", color: "c5def5", description: "Options avancées", from_name: "module: options avancées" }
+- { name: "Site public", color: "c5def5", description: "Module : site public (thème)", from_name: "module: front" }
+- { name: "Installation", color: "c5def5", description: "Installation du CMS", from_name: "module: installation" }
+- { name: "Authentification", color: "c5def5", description: "Connexion, sécurité des comptes", from_name: "module: authentification" }
+- { name: "Transverse", color: "c5def5", description: "Plusieurs modules ou socle commun", from_name: "module: transverse" }
 
 # --- Statut ---
-- name: "statut: en attente de merge"
+- name: "En attente de merge"
   color: "d9332f"
   description: "Branche en attente, ne pas merger"
-  from_name: "En attente de merge"
-- name: "statut: doublon"
+  from_name: "statut: en attente de merge"
+- name: "Doublon"
   color: "cfd3d7"
   description: "Existe déjà dans une autre issue ou PR"
-  from_name: "duplicate"
-- name: "statut: invalide"
+  from_name: "statut: doublon"
+- name: "Invalide"
   color: "e4e669"
   description: "Ne semble pas correct"
-  from_name: "invalid"
-- name: "statut: ne sera pas traité"
+  from_name: "statut: invalide"
+- name: "Ne sera pas traité"
   color: "ffffff"
   description: "Ne sera pas corrigé"
-  from_name: "wontfix"
+  from_name: "statut: ne sera pas traité"
 
 # --- Communauté (noms reconnus par GitHub, à ne pas renommer) ---
 - name: "good first issue"
