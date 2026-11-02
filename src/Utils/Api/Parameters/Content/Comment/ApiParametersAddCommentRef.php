@@ -42,7 +42,7 @@ class ApiParametersAddCommentRef
     public const string PARAM_EMAIL = 'email';
 
     /**
-     * Paramètre comment
+     * Paramètre comment (Markdown brut, stocké et renvoyé sans assainissement : à nettoyer par le client)
      * @var string
      */
     public const string PARAM_COMMENT = 'comment';

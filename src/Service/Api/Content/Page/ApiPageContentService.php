@@ -19,7 +19,7 @@ use App\Enum\Admin\Content\Page\PageContentType;
 use App\Enum\Admin\System\Options\OptionUser;
 use App\Repository\Admin\Content\Page\PageRepository;
 use App\Service\Api\AppApiService;
-use App\Utils\Markdown;
+use App\Service\Global\MarkdownService;
 use App\Utils\System\User\PersonalData;
 use League\CommonMark\Exception\CommonMarkException;
 use Psr\Container\ContainerExceptionInterface;
@@ -105,7 +105,7 @@ class ApiPageContentService extends AppApiService
      */
     private function formatContentText(string $text): string
     {
-        $markdown = new Markdown();
+        $markdown = new MarkdownService();
         $text = $this->getMarkdownEditorService()->parseMarkdown($text);
         return $markdown->convertMarkdownToHtml($text);
     }

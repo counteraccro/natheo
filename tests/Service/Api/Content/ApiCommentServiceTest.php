@@ -18,6 +18,7 @@ use App\Service\Api\Content\ApiCommentService;
 use App\Tests\AppWebTestCase;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ApiCommentServiceTest extends AppWebTestCase
@@ -50,7 +51,10 @@ class ApiCommentServiceTest extends AppWebTestCase
             $this->createComment(
                 $page,
                 $user,
-                customData: ['status' => CommentStatus::MODERATE->value, 'moderationComment' => self::getFaker()->text(40)],
+                customData: [
+                    'status' => CommentStatus::MODERATE->value,
+                    'moderationComment' => self::getFaker()->text(40),
+                ],
             );
         }
 
@@ -204,5 +208,84 @@ class ApiCommentServiceTest extends AppWebTestCase
         $this->assertEquals(CommentStatus::MODERATE->value, $commentVerif->getStatus());
         $this->assertEquals($moderate, $commentVerif->getModerationComment());
         $this->assertEquals($user->getId(), $commentVerif->getUserModeration()->getId());
+    }
+
+    /**
+     * Test méthode addNewComment() : texte brut conservé, notification échappée
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testAddNewCommentRawTextAndEscapedNotification(): void
+    {
+        $page = $this->createPageAllDataDefault();
+        $translation = $page->getPageTranslationByLocale('fr');
+        $translation->setTitre('<img src=x onerror=alert(1)>');
+        $this->persistAndFlush($translation);
+
+        $dto = new ApiAddCommentDto(
+            0,
+            $translation->getUrl(),
+            'fr',
+            '<b>Tom</b> & "Jerry"',
+            self::getFaker()->email(),
+            'x<y et `<div>`',
+            self::getFaker()->ipv4(),
+            self::getFaker()->userAgent(),
+        );
+        $result = $this->apiCommentService->addNewComment($dto);
+
+        $this->assertEquals('x<y et `<div>`', $result->getComment());
+        $this->assertEquals('Tom & "Jerry"', $result->getAuthor());
+
+        $notification = $page->getUser()->getNotifications()->last();
+        $parameters = json_decode($notification->getParameters(), true);
+        $this->assertEquals('Tom &amp; &quot;Jerry&quot;', $parameters['author']);
+        $this->assertEquals('&lt;img src=x onerror=alert(1)&gt;', $parameters['page']);
+    }
+
+    /**
+     * Test méthode moderateComment() : statut inconnu refusé
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testModerateCommentInvalidStatus(): void
+    {
+        $user = $this->createUserContributeur();
+        $comment = $this->createComment(customData: ['status' => CommentStatus::WAIT_VALIDATION->value]);
+
+        $dto = new ApiModerateCommentDto('99', 'test', self::getFaker()->iosMobileToken());
+        try {
+            $this->apiCommentService->moderateComment($dto, $comment, $user);
+            $this->fail('Le statut 99 aurait dû être refusé');
+        } catch (HttpException $e) {
+            $this->assertEquals(400, $e->getStatusCode());
+        }
+        $this->assertEquals(CommentStatus::WAIT_VALIDATION->value, $comment->getStatus());
+    }
+
+    /**
+     * Test méthode getCommentByPageIdOrSlug() : auteur masqué des commentaires en attente pour les visiteurs
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testGetCommentByPageAuthorHiddenWhenWaitValidation(): void
+    {
+        $translator = $this->container->get(TranslatorInterface::class);
+        $page = $this->createPageAllDataDefault();
+        $comment = $this->createComment($page, customData: ['status' => CommentStatus::WAIT_VALIDATION->value]);
+
+        $dto = new ApiCommentByPageDto($page->getId(), '', 'fr', 1, 10, 'id', 'asc', '');
+
+        $result = $this->apiCommentService->getCommentByPageIdOrSlug($dto);
+        $this->assertEquals(
+            $translator->trans('api_errors.comment.wait.validation.author', domain: 'api_errors'),
+            $result['comments'][0]['author'],
+        );
+
+        $result = $this->apiCommentService->getCommentByPageIdOrSlug($dto, $this->createUserContributeur());
+        $this->assertEquals($comment->getAuthor(), $result['comments'][0]['author']);
     }
 }

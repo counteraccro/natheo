@@ -33,3 +33,4 @@ api_errors.request.body.invalid: 'Le corps de la requête doit être un JSON val
 api_errors.comment.moderate.forbidden: "Vous n'avez pas les droits pour modérer ce commentaire"
 api_errors.params.not.boolean: 'Le paramètre {param} doit être un booléen (true/false, 1/0)'
 api_errors.access.role.denied: "Les droits du token API ne permettent pas d'accéder à cette ressource"
+api_errors.comment.wait.validation.author: Anonyme

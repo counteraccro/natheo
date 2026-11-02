@@ -14,7 +14,7 @@ use App\Entity\Admin\System\User;
 use App\Enum\Admin\Comment\CommentStatus;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
-use App\Utils\Markdown;
+use App\Service\Global\MarkdownService;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use League\CommonMark\Exception\CommonMarkException;
 use Psr\Container\ContainerExceptionInterface;
@@ -55,24 +55,33 @@ class CommentService extends AppAdminService
 
         $nb = $dataPaginate->count();
         $data = [];
+        $markdown = new MarkdownService();
+        $locale = $requestStack->getCurrentRequest()->getLocale();
         foreach ($dataPaginate as $element) {
             /* @var Comment $element */
 
             $action = $this->generateTabAction($element);
-            $locale = $requestStack->getCurrentRequest()->getLocale();
             $titre = $element->getPage()->getPageTranslationByLocale($locale)->getTitre();
-            $markdown = new Markdown();
-            $comment = $markdown->convertMarkdownToHtml($element->getComment());
+            $excerpt = u($markdown->convertMarkdownToText($element->getComment()))->truncate(100, '…');
 
             $data[] = [
                 $translator->trans('comment.grid.id', domain: 'comment') => $element->getId(),
-                $translator->trans('comment.grid.comment', domain: 'comment') => u($comment)->truncate(100, '…'),
-                $translator->trans('comment.grid.author', domain: 'comment') => $element->getAuthor(),
+                $translator->trans('comment.grid.comment', domain: 'comment') => htmlspecialchars(
+                    $excerpt->toString(),
+                    ENT_QUOTES,
+                ),
+                $translator->trans('comment.grid.author', domain: 'comment') => htmlspecialchars(
+                    $element->getAuthor(),
+                    ENT_QUOTES,
+                ),
                 $translator->trans('comment.grid.page', domain: 'comment') =>
-                    '<a href=' .
-                    $router->generate('admin_page_update', ['id' => $element->getPage()->getId()]) .
-                    '>' .
-                    $titre .
+                    '<a href="' .
+                    htmlspecialchars(
+                        $router->generate('admin_page_update', ['id' => $element->getPage()->getId()]),
+                        ENT_QUOTES,
+                    ) .
+                    '">' .
+                    htmlspecialchars($titre, ENT_QUOTES) .
                     '</a>',
                 $translator->trans('comment.grid.status', domain: 'comment') => $this->getStatusFormatedByCode(
                     $element->getStatus(),
@@ -290,29 +299,36 @@ class CommentService extends AppAdminService
     }
 
     /**
-     * Metà jour une liste de commentaire défini dans $data
+     * Met à jour une liste de commentaires définie dans $data
+     * Retourne false si le statut demandé est inconnu (aucun commentaire n'est alors modifié)
      * @param array $data
      * @param User $user
-     * @return void
+     * @return bool
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function updateMultipleComment(array $data, User $user): void
+    public function updateMultipleComment(array $data, User $user): bool
     {
+        $status = CommentStatus::tryFrom(intval($data['status'] ?? 0));
+        if ($status === null) {
+            return false;
+        }
+
         $repository = $this->getRepository(Comment::class);
-        $comments = $repository->findBy(['id' => $data['selected']]);
+        $comments = $repository->findBy(['id' => $data['selected'] ?? []]);
 
         foreach ($comments as $comment) {
             /** @var Comment $comment */
-            $comment->setStatus($data['status']);
-            if ($comment->getStatus() !== CommentStatus::MODERATE->value) {
+            $comment->setStatus($status->value);
+            if ($status !== CommentStatus::MODERATE) {
                 $comment->setModerationComment(null);
                 $comment->setUserModeration(null);
             } else {
-                $comment->setModerationComment($data['moderateComment']);
+                $comment->setModerationComment(strip_tags((string) ($data['moderateComment'] ?? '')));
                 $comment->setUserModeration($user);
             }
             $this->save($comment);
         }
+        return true;
     }
 }

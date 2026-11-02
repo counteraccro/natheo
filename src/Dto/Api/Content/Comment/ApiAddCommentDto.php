@@ -61,7 +61,8 @@ class ApiAddCommentDto extends AppApiDto
         private readonly string $email,
 
         /**
-         * author
+         * Texte du commentaire, en Markdown brut : il est stocké et renvoyé sans assainissement,
+         * le client doit le nettoyer avant affichage (ex. marked + DOMPurify)
          * @var string
          */
         #[Assert\Type(type: 'string', message: 'The comment parameter must be a string')] #[

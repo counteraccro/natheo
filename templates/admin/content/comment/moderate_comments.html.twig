@@ -16,6 +16,6 @@
         {{ 'comment.moderate.comments.description' | trans({}, 'comment') }}
     </p>
 
-    <div {{ vue_component('Admin/Content/Comment/CommentModeration', {'urls' : urls, 'translate' : translate, 'datas' : datas}) }}></div>
+    <div {{ vue_component('Admin/Content/Comment/CommentModeration', {'urls' : urls, 'translate' : translate, 'datas' : datas, 'csrf_token_moderate' : csrf_token(csrfTokenModerate)}) }}></div>
 
 {% endblock %}

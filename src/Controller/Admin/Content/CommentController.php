@@ -12,6 +12,7 @@ namespace App\Controller\Admin\Content;
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\Content\Comment\Comment;
 use App\Entity\Admin\Content\Page\Page;
+use App\Enum\Admin\Comment\CommentCsrfToken;
 use App\Enum\Admin\Comment\CommentStatus;
 use App\Enum\Admin\Global\Breadcrumb;
 use App\Enum\Admin\System\Options\OptionSystem;
@@ -19,7 +20,7 @@ use App\Enum\Admin\System\Options\OptionUser;
 use App\Service\Admin\Content\Comment\CommentService;
 use App\Service\Admin\Content\Page\PageService;
 use App\Service\Admin\System\OptionSystemService;
-use App\Utils\Content\Comment\CommentPopulate;
+use App\Populate\Admin\Content\Comment\CommentPopulate;
 use App\Translate\Admin\Content\CommentTranslate;
 use App\Translate\Admin\Global\MarkdownEditorTranslate;
 use League\CommonMark\Exception\CommonMarkException;
@@ -131,6 +132,7 @@ class CommentController extends AppAdminController
                 'filter' => $this->generateUrl('admin_comment_moderate_comments_filter'),
                 'update' => $this->generateUrl('admin_comment_update_moderate_comment'),
             ],
+            'csrfTokenModerate' => CommentCsrfToken::MODERATE->value,
             'datas' => [
                 'status' => $commentService->getAllStatus(),
                 'pages' => $pageService->getListeTitlePageByLocale($commentService->getLocales()['current']),
@@ -181,7 +183,7 @@ class CommentController extends AppAdminController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/see/{id}', name: 'see', methods: ['GET'])]
+    #[Route('/see/{id}', name: 'see', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function see(
         int $id,
         Request $request,
@@ -205,9 +207,10 @@ class CommentController extends AppAdminController
             'translate' => $translate,
             'urls' => [
                 'index' => $this->generateUrl('admin_comment_index'),
-                'load_comment' => $this->generateUrl('admin_comment_load'),
+                'load_comment' => $this->generateUrl('admin_comment_load', ['id' => $id]),
                 'save' => $this->generateUrl('admin_comment_save'),
             ],
+            'csrfTokenSave' => CommentCsrfToken::SAVE->value,
             'datas' => [
                 'id' => $id,
                 'status' => $commentService->getAllStatus(),
@@ -221,18 +224,18 @@ class CommentController extends AppAdminController
      * @param CommentService $commentService
      * @param OptionSystemService $optionSystemService
      * @param PageService $pageService
-     * @param int|null $id
+     * @param int $id
      * @return Response
      * @throws ContainerExceptionInterface
      * @throws ExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/ajax/load/{id}', name: 'load', methods: ['GET'])]
+    #[Route('/ajax/load/{id}', name: 'load', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function getComment(
         CommentService $commentService,
         OptionSystemService $optionSystemService,
         PageService $pageService,
-        ?int $id = null,
+        int $id,
     ): Response {
         /** @var Comment $comment */
         $comment = $commentService->findOneById(Comment::class, $id);
@@ -279,13 +282,25 @@ class CommentController extends AppAdminController
         CommentService $commentService,
         TranslatorInterface $translator,
     ): Response {
-        $data = json_decode($request->getContent(), true);
+        $error = $this->checkCsrf(CommentCsrfToken::SAVE->value, $request);
+        if ($error !== null) {
+            return $error;
+        }
 
-        $data['comment']['status'] = intval($data['comment']['status']);
-        $comment = $commentService->findOneById(Comment::class, $data['comment']['id']);
+        $data = json_decode($request->getContent(), true);
+        $comment = $commentService->findOneById(Comment::class, intval($data['comment']['id'] ?? 0));
         if ($comment === null) {
             return $this->jsonNotFound('comment');
         }
+
+        $status = CommentStatus::tryFrom(intval($data['comment']['status'] ?? 0));
+        if ($status === null) {
+            return $this->jsonError(
+                $translator->trans('comment.error.status_invalid', domain: 'comment'),
+                Response::HTTP_BAD_REQUEST,
+            );
+        }
+        $data['comment']['status'] = $status->value;
 
         $commentPopulate = new CommentPopulate($comment, $data['comment']);
         $comment = $commentPopulate->populate()->getComment();
@@ -319,9 +334,18 @@ class CommentController extends AppAdminController
         Request $request,
         TranslatorInterface $translator,
     ): Response {
-        $data = json_decode($request->getContent(), true);
+        $error = $this->checkCsrf(CommentCsrfToken::MODERATE->value, $request);
+        if ($error !== null) {
+            return $error;
+        }
 
-        $commentService->updateMultipleComment($data, $this->getUser());
+        $data = json_decode($request->getContent(), true) ?? [];
+        if (!$commentService->updateMultipleComment($data, $this->getUser())) {
+            return $this->jsonError(
+                $translator->trans('comment.error.status_invalid', domain: 'comment'),
+                Response::HTTP_BAD_REQUEST,
+            );
+        }
 
         $msg = $translator->trans('comment.moderation.update.success', domain: 'comment');
         return $this->json($commentService->getResponseAjax($msg));

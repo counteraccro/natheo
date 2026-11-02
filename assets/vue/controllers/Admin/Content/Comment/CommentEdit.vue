@@ -9,7 +9,16 @@ import axios, { AxiosResponse } from 'axios';
 import MarkdownEditor from '../../../../Components/Global/MarkdownEditor/MarkdownEditor.vue';
 import Toast from '../../../../Components/Global/Toast.vue';
 import { emitter } from '@/utils/useEvent';
-import { Translate, Urls, Datas, Toasts, LoadCommentResponse, Comment, SaveCommentResponse } from '@/ts/Comment/CommentEdit.type';
+import { withCsrf } from '@/vue/Composables/Admin/csrf';
+import {
+  Translate,
+  Urls,
+  Datas,
+  Toasts,
+  LoadCommentResponse,
+  Comment,
+  SaveCommentResponse,
+} from '@/ts/Comment/CommentEdit.type';
 import SkeletonCommentEdit from '@/vue/Components/Skeleton/CommentEdit.vue';
 
 export default defineComponent({
@@ -28,6 +37,10 @@ export default defineComponent({
     },
     datas: {
       type: Object as () => Datas,
+      required: true,
+    },
+    csrf_token_save: {
+      type: String,
       required: true,
     },
   },
@@ -62,7 +75,7 @@ export default defineComponent({
     load(): void {
       this.loading = true;
       axios
-        .get<LoadCommentResponse>(this.urls.load_comment + '/' + this.datas.id)
+        .get<LoadCommentResponse>(this.urls.load_comment)
         .then((response: AxiosResponse<LoadCommentResponse>) => {
           this.comment = response.data.comment;
         })
@@ -91,9 +104,13 @@ export default defineComponent({
     save(): void {
       this.loading = true;
       axios
-        .put<SaveCommentResponse>(this.urls.save, {
-          comment: this.comment,
-        })
+        .put<SaveCommentResponse>(
+          this.urls.save,
+          {
+            comment: this.comment,
+          },
+          withCsrf(this.csrf_token_save)
+        )
         .then((response: AxiosResponse<SaveCommentResponse>) => {
           if (response.data.success) {
             this.toasts.success.msg = response.data.msg;
@@ -106,6 +123,10 @@ export default defineComponent({
         })
         .catch((error: unknown) => {
           console.error(error);
+          if (axios.isAxiosError(error) && error.response?.data?.msg) {
+            this.toasts.error.msg = error.response.data.msg;
+            this.toasts.error.show = true;
+          }
         })
         .finally(() => {
           this.loading = false;
