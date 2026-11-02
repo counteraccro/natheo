@@ -7,11 +7,11 @@ declare(strict_types=1);
  * Test pageHistory
  */
 
-namespace App\Tests\Utils\Content\Page;
+namespace App\Tests\Service\Admin\Content\Page;
 
 use App\Entity\Admin\System\User;
 use App\Tests\AppWebTestCase;
-use App\Utils\Content\Page\PageHistory;
+use App\Service\Admin\Content\Page\PageHistory;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBag;
@@ -175,6 +175,43 @@ class PageHistoryTest extends AppWebTestCase
             $this->pageHistory->getPathPageHistory() . DIRECTORY_SEPARATOR . 'page-' . $idPage . '.txt',
         );
         $this->assertTrue($exist);
+        $this->pageHistory->removePageHistory($idPage);
+    }
+
+    /**
+     * Test méthode save() : historique plafonné aux MAX_ENTRIES dernières entrées
+     * @return void
+     */
+    public function testSaveMaxEntries(): void
+    {
+        $id = 1;
+        $this->pageHistory->removePageHistory($id);
+        for ($i = 0; $i < PageHistory::MAX_ENTRIES + 5; $i++) {
+            $data = $this->getDataTest($id);
+            $data['render'] = $i;
+            $this->pageHistory->save($data);
+        }
+
+        $this->assertCount(PageHistory::MAX_ENTRIES, $this->pageHistory->getHistory($id));
+        // Les plus anciennes sont supprimées : la première ligne est la 6e sauvegarde
+        $this->assertEquals(5, $this->pageHistory->getPageHistoryById(0, $id)['render']);
+        $this->pageHistory->removePageHistory($id);
+    }
+
+    /**
+     * Test méthode renamePageHistorySave() : le brouillon est ajouté à l'historique existant de la page
+     * @return void
+     */
+    public function testRenamePageHistorySaveExistingTarget(): void
+    {
+        $idPage = 98;
+        $this->pageHistory->save($this->getDataTest($idPage));
+        $this->pageHistory->save($this->getDataTest());
+
+        $this->pageHistory->renamePageHistorySave($idPage);
+
+        $this->assertCount(2, $this->pageHistory->getHistory($idPage));
+        $this->assertEmpty($this->pageHistory->getHistory());
         $this->pageHistory->removePageHistory($idPage);
     }
 

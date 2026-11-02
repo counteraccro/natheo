@@ -134,9 +134,8 @@ class ApiPageFormater
     private function getStatistiques(): array
     {
         return [
-            PageStatistics::NB_READ->value => $this->page
-                ->getPageStatistiqueByKey(PageStatistics::NB_READ->value)
-                ->getValue(),
+            PageStatistics::NB_READ->value =>
+                $this->page->getPageStatistiqueByKey(PageStatistics::NB_READ->value)?->getValue() ?? '0',
         ];
     }
 

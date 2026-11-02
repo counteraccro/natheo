@@ -1,0 +1,43 @@
+<?php
+
+declare(strict_types=1);
+/**
+ * Identifiants des jetons CSRF des actions d'écriture sur les pages
+ * @author Gourdon Aymeric
+ * @version 1.0
+ */
+
+namespace App\Enum\Admin\Content\Page;
+
+enum PageCsrfToken: string
+{
+    /**
+     * Suppression d'une page
+     * @var string
+     */
+    case DELETE = 'page_delete';
+
+    /**
+     * Activation / désactivation d'une page
+     * @var string
+     */
+    case DISABLED = 'page_update_disabled';
+
+    /**
+     * Changement de landing page
+     * @var string
+     */
+    case LANDING_PAGE = 'page_switch_landing_page';
+
+    /**
+     * Sauvegarde d'une page
+     * @var string
+     */
+    case SAVE = 'page_save';
+
+    /**
+     * Sauvegarde automatique (historique)
+     * @var string
+     */
+    case AUTO_SAVE = 'page_auto_save';
+}

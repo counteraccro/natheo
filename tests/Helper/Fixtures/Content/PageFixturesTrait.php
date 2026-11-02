@@ -307,11 +307,13 @@ trait PageFixturesTrait
 
     /**
      * Création d'un jeu de donnée de page complet
+     * @param User|null $user propriétaire, un contributeur créé à la volée par défaut
      * @return Page
      */
-    public function createPageAllDataDefault(): Page
+    public function createPageAllDataDefault(?User $user = null): Page
     {
         $page = $this->createPage(
+            $user,
             customData: [
                 'render' => PageRender::TWO_BLOCK_BOTTOM->value,
                 'disabled' => false,

@@ -8,6 +8,7 @@
 import { defineComponent, PropType } from 'vue';
 import { Locales, Page, PageTranslations, Urls } from '@/ts/Page/Page.type';
 import axios from 'axios';
+import { withCsrf } from '@/vue/Composables/Admin/csrf';
 import { initFlowbite } from 'flowbite';
 
 type SectionErrors = Record<string, { hasError: boolean; errorsByLocale: Record<string, Record<string, string>> }>;
@@ -34,6 +35,10 @@ export default defineComponent({
     sectionErrors: {
       type: Object as PropType<SectionErrors>,
       required: true,
+    },
+    csrfTokenAutoSave: {
+      type: String,
+      default: '',
     },
   },
   emits: ['restore-page', 'go-to-error', 'save-page', 'page-preview'],
@@ -173,7 +178,7 @@ export default defineComponent({
       this.autoSaveStatus = 'saving';
 
       axios
-        .put(this.urls.auto_save, { page: this.page })
+        .put(this.urls.auto_save, { page: this.page }, withCsrf(this.csrfTokenAutoSave))
         .then(() => {
           this.autoSaveStatus = 'saved';
           const now = new Date();

@@ -6,8 +6,6 @@ namespace App\Repository\Admin\Content\Page;
 
 use App\Entity\Admin\Content\Page\PageTranslation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\NonUniqueResultException;
-use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -26,21 +24,24 @@ class PageTranslationRepository extends ServiceEntityRepository
     }
 
     /**
-     * Test si l'url est unique ou non
-     * @throws NonUniqueResultException
+     * Vérifie qu'aucune autre page n'utilise déjà l'url dans la locale
+     * @param string $url
+     * @param string $locale
+     * @param int|null $pageId page à exclure (page en cours d'édition)
+     * @return bool
      */
-    public function isUniqueUrl(string $url, ?int $id = null): bool
+    public function isUniqueUrl(string $url, string $locale, ?int $pageId = null): bool
     {
-        $query = $this->createQueryBuilder('pt')->andWhere('pt.url = :val')->setParameter('val', $url);
+        $query = $this->createQueryBuilder('pt')
+            ->select('COUNT(pt.id)')
+            ->where('pt.url = :url')
+            ->andWhere('pt.locale = :locale')
+            ->setParameter('url', $url)
+            ->setParameter('locale', $locale);
 
-        if ($id !== null) {
-            $query->andWhere('pt.id != :id')->setParameter('id', $id);
+        if ($pageId !== null) {
+            $query->andWhere('IDENTITY(pt.page) != :pageId')->setParameter('pageId', $pageId);
         }
-        $result = $query->getQuery()->getOneOrNullResult();
-
-        if ($result === null) {
-            return true;
-        }
-        return false;
+        return (int) $query->getQuery()->getSingleScalarResult() === 0;
     }
 }

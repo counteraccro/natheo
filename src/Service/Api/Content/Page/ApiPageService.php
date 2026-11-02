@@ -15,6 +15,7 @@ use App\Dto\Api\Content\Page\ApiFindPageTagDto;
 use App\Entity\Admin\Content\Menu\Menu;
 use App\Entity\Admin\Content\Menu\MenuElement;
 use App\Entity\Admin\Content\Page\Page;
+use App\Entity\Admin\Content\Page\PageStatistique;
 use App\Entity\Admin\System\User;
 use App\Enum\Admin\Content\Menu\MenuPosition;
 use App\Enum\Admin\Content\Page\PageCategory;
@@ -46,7 +47,7 @@ class ApiPageService extends AppApiService
      */
     public function getPageForApi(ApiFindPageDto $dto, ?User $user = null): array
     {
-        $page = $this->getPageBySlug($dto->getSlug(), $user);
+        $page = $this->getPageBySlug($dto->getSlug(), $dto->getLocale(), $user);
         if (empty($page)) {
             return [];
         }
@@ -54,6 +55,12 @@ class ApiPageService extends AppApiService
         // Les prévisualisations de brouillons par un contributeur ne comptent pas comme des lectures
         if ($page->getStatus() === PageStatus::PUBLISH->value) {
             $pageStatistiqueNbPageRead = $page->getPageStatistiqueByKey(PageStatistics::NB_READ->value);
+            if ($pageStatistiqueNbPageRead === null) {
+                $pageStatistiqueNbPageRead = (new PageStatistique())
+                    ->setKey(PageStatistics::NB_READ->value)
+                    ->setValue('0');
+                $page->addPageStatistique($pageStatistiqueNbPageRead);
+            }
             $pageStatistiqueNbPageRead->setValue(strval($pageStatistiqueNbPageRead->getValue() + 1));
             $this->save($pageStatistiqueNbPageRead);
         }
@@ -254,17 +261,18 @@ class ApiPageService extends AppApiService
     }
 
     /**
-     * Retourne une page en fonction du slug
+     * Retourne une page en fonction du slug, en priorité celle dont le slug est celui de $locale
      * @param string $slug
+     * @param string $locale
      * @param User|null $user
      * @return Page|null
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    private function getPageBySlug(string $slug, ?User $user = null): ?Page
+    private function getPageBySlug(string $slug, string $locale, ?User $user = null): ?Page
     {
         /** @var PageRepository $repository */
         $repository = $this->getRepository(Page::class);
-        return $repository->getBySlug($slug, $this->getAllowedPageStatus($user));
+        return $repository->getBySlug($slug, $this->getAllowedPageStatus($user), $locale);
     }
 }

@@ -7,13 +7,13 @@ declare(strict_types=1);
  *  Test la factory de page
  */
 
-namespace App\Tests\Utils\Content\Page;
+namespace App\Tests\Factory\Admin\Content\Page;
 
 use App\Entity\Admin\Content\Page\Page;
 use App\Enum\Admin\Content\Page\PageContentType;
 use App\Enum\Admin\Content\Page\PageStatistics;
 use App\Tests\AppWebTestCase;
-use App\Utils\Content\Page\PageFactory;
+use App\Factory\Admin\Content\Page\PageFactory;
 
 class PageFactoryTest extends AppWebTestCase
 {

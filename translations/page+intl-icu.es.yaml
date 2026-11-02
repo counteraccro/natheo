@@ -176,3 +176,10 @@ page.page_content.warning.empty_content: __page.page_content.warning.empty_conte
 page.msg.auto_save.success: 'Guardado automático realizado a las'
 page.error.forbidden: __page.error.forbidden
 page.error.not_found: __page.error.not_found
+page.error.url_not_unique: __page.error.url_not_unique
+page.error.invalid_data: __page.error.invalid_data
+page.error.landing.delete: __page.error.landing.delete
+page.error.landing.disabled: __page.error.landing.disabled
+page.error.landing.not_publish: __page.error.landing.not_publish
+page.error.landing.remove: __page.error.landing.remove
+page.content.info.not_found: __page.content.info.not_found

@@ -985,7 +985,7 @@ pages:
             es:
                 locale: es
                 titre: 'Blog - 3 bloques lado a lado'
-                url: 'blog-2-bloques-lado-a-lado'
+                url: 'blog-3-bloques-lado-a-lado'
         pageContent:
             content_1:
                 renderBlock: 1

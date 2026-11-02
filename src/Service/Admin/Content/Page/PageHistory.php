@@ -4,28 +4,34 @@ declare(strict_types=1);
 /**
  * Gestion de l'historique des modifications de pages
  * sauvegarde, restauration, listing, clean
+ * Instancié avec l'utilisateur courant, ce n'est pas un service du conteneur
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 2.0
  */
 
-namespace App\Utils\Content\Page;
+namespace App\Service\Admin\Content\Page;
 
 use App\Entity\Admin\System\User;
 use App\Enum\Admin\System\Options\OptionUser;
 use App\Utils\System\User\PersonalData;
-use App\Utils\Utils;
-use PhpCsFixer\Finder;
-use phpDocumentor\Reflection\Types\Void_;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\DependencyInjection\Attribute\Exclude;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
+#[Exclude]
 class PageHistory
 {
+    /**
+     * Nombre maximum d'entrées conservées par historique (les plus anciennes sont supprimées)
+     * @var int
+     */
+    public const int MAX_ENTRIES = 50;
+
     /**
      * Path pour les historiques de page globale
      * @var string
@@ -91,8 +97,23 @@ class PageHistory
      */
     public function save(array $page): void
     {
-        $path = $this->getPath($page['id']);
-        $this->filesystem->appendToFile($path, $this->serialize($page) . "\n");
+        $id = isset($page['id']) && is_numeric($page['id']) ? (int) $page['id'] : null;
+        $path = $this->getPath($id);
+        $lines = $this->getContentFile($id);
+        $lines[] = $this->serialize($page);
+        $this->writeLines($path, $lines);
+    }
+
+    /**
+     * Écrit les lignes d'historique en ne gardant que les MAX_ENTRIES plus récentes
+     * @param string $path
+     * @param string[] $lines
+     * @return void
+     */
+    private function writeLines(string $path, array $lines): void
+    {
+        $lines = array_slice($lines, -self::MAX_ENTRIES);
+        $this->filesystem->dumpFile($path, implode("\n", $lines) . "\n");
     }
 
     /**
@@ -137,11 +158,27 @@ class PageHistory
      */
     private function getContentFile(?int $id = null): array
     {
-        $path = $this->getPath($id);
-        if (file_exists($path)) {
-            return file($path);
+        return $this->readLines($this->getPath($id));
+    }
+
+    /**
+     * Lit les lignes non vides d'un fichier d'historique
+     * @param string $path
+     * @return string[]
+     */
+    private function readLines(string $path): array
+    {
+        if (!file_exists($path)) {
+            return [];
         }
-        return [];
+
+        $lines = [];
+        $file = new \SplFileObject($path);
+        $file->setFlags(\SplFileObject::DROP_NEW_LINE | \SplFileObject::SKIP_EMPTY | \SplFileObject::READ_AHEAD);
+        foreach ($file as $line) {
+            $lines[] = $line;
+        }
+        return $lines;
     }
 
     /**
@@ -179,43 +216,40 @@ class PageHistory
     }
 
     /**
-     * Convertie une pageHistory brouillon en pageHistory associé à une page
-     * @param $pageId
+     * Rattache le brouillon d'historique de l'utilisateur à une page
+     * Si la page a déjà un historique, le brouillon y est ajouté : il n'est jamais réutilisé pour une autre page
+     * @param int $pageId
      * @return void
      */
-    public function renamePageHistorySave($pageId): void
+    public function renamePageHistorySave(int $pageId): void
     {
         $path = $this->getPath();
-        $newPath = $this->getPath($pageId);
-
-        // Si le fichier de pageHistory existe, on ne fait rien
-        if (file_exists($newPath)) {
-            return;
-        }
-
-        // Si le brouillon n'existe pas, on ne fait rien
         if (!file_exists($path)) {
             return;
         }
 
-        $fileSystem = new Filesystem();
-        $fileSystem->rename($path, $newPath);
-        $fileSystem->remove($path);
+        $newPath = $this->getPath($pageId);
+        if (file_exists($newPath)) {
+            $this->writeLines($newPath, array_merge($this->readLines($newPath), $this->readLines($path)));
+            $this->filesystem->remove($path);
+            return;
+        }
+
+        $this->filesystem->rename($path, $newPath);
     }
 
     /**
      * Supprime une page history en fonction de son id
-     * @param $id
+     * @param int|null $id
      * @return void
      */
-    public function removePageHistory($id = null): void
+    public function removePageHistory(?int $id = null): void
     {
         $path = $this->getPath($id);
         if (!file_exists($path)) {
             return;
         }
-        $fileSystem = new Filesystem();
-        $fileSystem->remove($path);
+        $this->filesystem->remove($path);
     }
 
     /**

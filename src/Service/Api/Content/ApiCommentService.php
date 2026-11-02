@@ -22,7 +22,6 @@ use App\Enum\Admin\System\Options\OptionSystem;
 use App\Repository\Admin\Content\Comment\CommentRepository;
 use App\Repository\Admin\Content\Page\PageRepository;
 use App\Service\Api\AppApiService;
-use App\Utils\Content\Page\PageConst;
 use App\Utils\Notification\NotificationFactory;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -105,7 +104,7 @@ class ApiCommentService extends AppApiService
         /** @var PageRepository $pageRepository */
         $pageRepository = $this->getRepository(Page::class);
         if (empty($dto->getIdPage())) {
-            $page = $pageRepository->getBySlug($dto->getPageSlug());
+            $page = $pageRepository->getBySlug($dto->getPageSlug(), locale: $dto->getLocale());
         } else {
             $page = $pageRepository->findOneBy([
                 'id' => $dto->getIdPage(),

@@ -7,11 +7,16 @@ declare(strict_types=1);
  * Test mde PagePopulate
  */
 
-namespace App\Tests\Utils\Content\Page;
+namespace App\Tests\Populate\Admin\Content\Page;
 
+use App\Enum\Admin\Comment\CommentStatus;
+use App\Enum\Admin\Content\Page\PageCategory;
+use App\Enum\Admin\Content\Page\PageContentType;
+use App\Enum\Admin\Content\Page\PageRender;
+use App\Enum\Admin\Content\Page\PageStatus;
 use App\Service\Admin\Content\Page\PageService;
 use App\Tests\AppWebTestCase;
-use App\Utils\Content\Page\PagePopulate;
+use App\Populate\Admin\Content\Page\PagePopulate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
@@ -243,5 +248,77 @@ class PagePopulateTest extends AppWebTestCase
             }
         }
         $this->assertCount(1, $page->getMenus());
+    }
+
+    /**
+     * Test méthode populate() : valeurs invalides relevées, page inchangée sur ces champs
+     * @return void
+     */
+    public function testPopulateInvalidValues(): void
+    {
+        $page = $this->createPage(
+            customData: [
+                'render' => PageRender::ONE_BLOCK->value,
+                'status' => PageStatus::PUBLISH->value,
+                'category' => PageCategory::PAGE->value,
+            ],
+        );
+        $data = [
+            'render' => 99,
+            'status' => 'abc',
+            'category' => PageCategory::BLOG->value,
+            'ruleComment' => 42,
+            'landingPage' => false,
+            'isOpenComment' => true,
+            'headerImg' => null,
+        ];
+
+        $pagePopulate = new PagePopulate($page, $data, $this->container->get(PageService::class));
+        $page = $pagePopulate->populate()->getPage();
+
+        $this->assertEqualsCanonicalizing(['render', 'status', 'ruleComment'], $pagePopulate->getErrors());
+        $this->assertEquals(PageRender::ONE_BLOCK->value, $page->getRender());
+        $this->assertEquals(PageStatus::PUBLISH->value, $page->getStatus());
+        $this->assertEquals(PageCategory::BLOG->value, $page->getCategory());
+    }
+
+    /**
+     * Test méthode populate() : tags et menus inexistants ignorés, FAQ inexistante refusée
+     * @return void
+     */
+    public function testPopulateInvalidRelations(): void
+    {
+        $page = $this->createPage();
+        $tag = $this->createTag();
+        $faq = $this->createFaqAllDataDefault();
+        $data = [
+            'render' => PageRender::TWO_BLOCK->value,
+            'status' => PageStatus::PUBLISH->value,
+            'category' => PageCategory::PAGE->value,
+            'ruleComment' => CommentStatus::VALIDATE->value,
+            'landingPage' => false,
+            'isOpenComment' => true,
+            'headerImg' => null,
+            'tags' => [['id' => $tag->getId()], ['id' => 999999], ['id' => 'abc'], 'x'],
+            'menus' => [999999, 'abc'],
+            'pageContents' => [
+                [
+                    'renderBlock' => 1,
+                    'renderOrder' => 1,
+                    'type' => PageContentType::FAQ->value,
+                    'typeId' => $faq->getId(),
+                ],
+                ['renderBlock' => 2, 'renderOrder' => 1, 'type' => PageContentType::FAQ->value, 'typeId' => 999999],
+            ],
+        ];
+
+        $pagePopulate = new PagePopulate($page, $data, $this->container->get(PageService::class));
+        $page = $pagePopulate->populate()->getPage();
+
+        $this->assertCount(1, $page->getTags());
+        $this->assertCount(0, $page->getMenus());
+        $this->assertEquals(['pageContents'], $pagePopulate->getErrors());
+        $this->assertCount(1, $page->getPageContents());
+        $this->assertEquals($faq->getId(), $page->getPageContents()->first()->getTypeId());
     }
 }

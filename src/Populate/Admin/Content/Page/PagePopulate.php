@@ -4,11 +4,12 @@ declare(strict_types=1);
 /**
  * Permet de merger les données venant d'un tableau à un objet page
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 2.0
  */
 
-namespace App\Utils\Content\Page;
+namespace App\Populate\Admin\Content\Page;
 
+use App\Entity\Admin\Content\Faq\Faq;
 use App\Entity\Admin\Content\Menu\Menu;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\Content\Page\PageContent;
@@ -17,8 +18,11 @@ use App\Entity\Admin\Content\Page\PageMeta;
 use App\Entity\Admin\Content\Page\PageMetaTranslation;
 use App\Entity\Admin\Content\Tag\Tag;
 use App\Entity\Trait\PopulateTrait;
+use App\Enum\Admin\Comment\CommentStatus;
+use App\Enum\Admin\Content\Page\PageCategory;
 use App\Enum\Admin\Content\Page\PageContentType;
 use App\Enum\Admin\Content\Page\PageRender;
+use App\Enum\Admin\Content\Page\PageStatus;
 use App\Service\Admin\Content\Page\PageService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -37,7 +41,7 @@ class PagePopulate
      * Champs modifiables de PageContent
      * @var string[]
      */
-    private const array FIELDS_PAGE_CONTENT = ['renderBlock', 'renderOrder', 'type'];
+    private const array FIELDS_PAGE_CONTENT = ['renderBlock', 'renderOrder'];
 
     /**
      * Champs modifiables de PageContentTranslation
@@ -102,6 +106,12 @@ class PagePopulate
     private PageService $pageService;
 
     /**
+     * Champs dont la valeur reçue est invalide
+     * @var string[]
+     */
+    private array $errors = [];
+
+    /**
      * @param Page $page
      * @param array $populate
      * @param PageService $pageService
@@ -136,17 +146,59 @@ class PagePopulate
      */
     private function populatePage(): void
     {
-        $this->page->setRender($this->populate['render']);
-        $this->page->setStatus($this->populate['status']);
-        $this->page->setCategory($this->populate['category']);
-        $this->page->setLandingPage(boolval($this->populate['landingPage']));
-        if (isset($this->populate['isOpenComment'])) {
-            $this->page->setIsOpenComment(boolval($this->populate['isOpenComment']));
-        } else {
-            $this->page->setIsOpenComment(boolval($this->populate['openComment']));
+        $render = PageRender::tryFrom($this->getInt('render'));
+        $status = PageStatus::tryFrom($this->getInt('status'));
+        $category = PageCategory::tryFrom($this->getInt('category'));
+        $ruleComment = CommentStatus::tryFrom($this->getInt('ruleComment'));
+
+        foreach (
+            ['render' => $render, 'status' => $status, 'category' => $category, 'ruleComment' => $ruleComment]
+            as $field => $value
+        ) {
+            if ($value === null) {
+                $this->errors[] = $field;
+            }
         }
-        $this->page->setRuleComment($this->populate['ruleComment']);
-        $this->page->setHeaderImg($this->populate['headerImg']);
+
+        if ($render !== null) {
+            $this->page->setRender($render->value);
+        }
+        if ($status !== null) {
+            $this->page->setStatus($status->value);
+        }
+        if ($category !== null) {
+            $this->page->setCategory($category->value);
+        }
+        if ($ruleComment !== null) {
+            $this->page->setRuleComment($ruleComment->value);
+        }
+
+        $this->page->setLandingPage(boolval($this->populate['landingPage'] ?? false));
+        $this->page->setIsOpenComment(
+            boolval($this->populate['isOpenComment'] ?? ($this->populate['openComment'] ?? false)),
+        );
+        $headerImg = $this->populate['headerImg'] ?? null;
+        $this->page->setHeaderImg(is_string($headerImg) && $headerImg !== '' ? $headerImg : null);
+    }
+
+    /**
+     * Retourne une valeur entière de $populate, 0 si absente ou non numérique
+     * @param string $key
+     * @return int
+     */
+    private function getInt(string $key): int
+    {
+        $value = $this->populate[$key] ?? null;
+        return is_numeric($value) ? (int) $value : 0;
+    }
+
+    /**
+     * Retourne les champs dont la valeur reçue est invalide (vide si tout est valide)
+     * @return string[]
+     */
+    public function getErrors(): array
+    {
+        return array_values(array_unique($this->errors));
     }
 
     /**
@@ -160,7 +212,11 @@ class PagePopulate
             foreach ($this->page->getPageTranslations() as &$pageTranslation) {
                 foreach ($this->populate[self::KEY_PAGE_TRANSLATION] as $dataTranslation) {
                     if ($pageTranslation->getLocale() === $dataTranslation['locale']) {
-                        $pageTranslation = $this->mergeData($pageTranslation, $dataTranslation, self::FIELDS_PAGE_TRANSLATION);
+                        $pageTranslation = $this->mergeData(
+                            $pageTranslation,
+                            $dataTranslation,
+                            self::FIELDS_PAGE_TRANSLATION,
+                        );
                     }
                 }
             }
@@ -179,8 +235,11 @@ class PagePopulate
         if (isset($this->populate[self::KEY_TAGS])) {
             $this->page->getTags()->clear();
             foreach ($this->populate[self::KEY_TAGS] as $dataTag) {
-                $tag = $this->pageService->findOneById(Tag::class, $dataTag['id']);
-                $this->page->addTag($tag);
+                $id = is_array($dataTag) ? $dataTag['id'] ?? null : null;
+                $tag = is_numeric($id) ? $this->pageService->findOneById(Tag::class, (int) $id) : null;
+                if ($tag !== null) {
+                    $this->page->addTag($tag);
+                }
             }
         }
     }
@@ -198,8 +257,12 @@ class PagePopulate
             $this->page->getMenus()->clear();
             if (!in_array('-1', $this->populate[self::KEY_MENUS])) {
                 foreach ($this->populate[self::KEY_MENUS] as $dataMenu) {
-                    $menu = $this->pageService->findOneById(Menu::class, $dataMenu);
-                    $this->page->addMenu($menu);
+                    $menu = is_numeric($dataMenu)
+                        ? $this->pageService->findOneById(Menu::class, (int) $dataMenu)
+                        : null;
+                    if ($menu !== null) {
+                        $this->page->addMenu($menu);
+                    }
                 }
             }
         }
@@ -215,28 +278,40 @@ class PagePopulate
         if (isset($this->populate[self::KEY_PAGE_CONTENT])) {
             $this->page->getPageContents()->clear();
 
-            $nbContent = $this->getNbContentByRender($this->populate['render']);
+            $nbContent = $this->getNbContentByRender($this->page->getRender() ?? 0);
 
             for ($i = 1; $i <= $nbContent; $i++) {
                 foreach ($this->populate[self::KEY_PAGE_CONTENT] as $content) {
                     if ($content['renderBlock'] === $i) {
+                        $type = PageContentType::tryFrom(
+                            is_numeric($content['type'] ?? null) ? (int) $content['type'] : 0,
+                        );
+                        if ($type === null || !$this->isValidContentTypeId($type, $content['typeId'] ?? null)) {
+                            $this->errors[] = 'pageContents';
+                            continue;
+                        }
+
                         $pageContent = new PageContent();
                         /** @var PageContent $pageContent */
                         $pageContent = $this->mergeData($pageContent, $content, self::FIELDS_PAGE_CONTENT);
+                        $pageContent->setType($type->value);
 
-                        switch ($content['type']) {
-                            case PageContentType::TEXT->value:
-                                foreach ($content['pageContentTranslations'] as $pageContentT) {
+                        switch ($type) {
+                            case PageContentType::TEXT:
+                                foreach ($content['pageContentTranslations'] ?? [] as $pageContentT) {
                                     $pageContentTranslation = new PageContentTranslation();
                                     /** @var PageContentTranslation $pageContentTranslation */
-                                    $pageContentTranslation = $this->mergeData($pageContentTranslation, $pageContentT, self::FIELDS_PAGE_CONTENT_TRANSLATION);
+                                    $pageContentTranslation = $this->mergeData(
+                                        $pageContentTranslation,
+                                        $pageContentT,
+                                        self::FIELDS_PAGE_CONTENT_TRANSLATION,
+                                    );
                                     $pageContentTranslation->setPageContent($pageContent);
                                     $pageContent->addPageContentTranslation($pageContentTranslation);
                                 }
                                 break;
                             default:
-                                $pageContent->setTypeId($content['typeId']);
-                                $pageContent->setType($content['type']);
+                                $pageContent->setTypeId((int) $content['typeId']);
                         }
                         $pageContent->setPage($this->page);
                         $this->page->addPageContent($pageContent);
@@ -246,6 +321,28 @@ class PagePopulate
         }
     }
 
+    /**
+     * Vérifie que le contenu référencé existe : FAQ existante, catégorie de listing valide
+     * @param PageContentType $type
+     * @param mixed $typeId
+     * @return bool
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function isValidContentTypeId(PageContentType $type, mixed $typeId): bool
+    {
+        return match ($type) {
+            PageContentType::TEXT => true,
+            PageContentType::FAQ => is_numeric($typeId) &&
+                $this->pageService->findOneById(Faq::class, (int) $typeId) !== null,
+            PageContentType::LISTING => is_numeric($typeId) && PageCategory::tryFrom((int) $typeId) !== null,
+        };
+    }
+
+    /**
+     * Reset les pageMeta dans $page et ajoute à la place les pageMeta présents dans $populate
+     * @return void
+     */
     private function populatePageMeta(): void
     {
         if (isset($this->populate[self::KEY_PAGE_META])) {
@@ -256,7 +353,11 @@ class PagePopulate
 
                 foreach ($dataMeta['pageMetaTranslations'] as $dataPageMetaTranslation) {
                     $pageMetaTranslation = new PageMetaTranslation();
-                    $pageMetaTranslation = $this->mergeData($pageMetaTranslation, $dataPageMetaTranslation, self::FIELDS_PAGE_META_TRANSLATION);
+                    $pageMetaTranslation = $this->mergeData(
+                        $pageMetaTranslation,
+                        $dataPageMetaTranslation,
+                        self::FIELDS_PAGE_META_TRANSLATION,
+                    );
                     $pageMeta->addPageMetaTranslation($pageMetaTranslation);
                 }
                 $this->page->addPageMeta($pageMeta);

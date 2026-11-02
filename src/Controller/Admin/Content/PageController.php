@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.2
+ * @version 2.0
  * Controller pour la gestion des pages
  */
 
@@ -13,6 +13,7 @@ use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\System\User;
 use App\Enum\Admin\Content\Page\PageCategory;
+use App\Enum\Admin\Content\Page\PageCsrfToken;
 use App\Enum\Admin\Content\Page\PageMeta;
 use App\Enum\Admin\Content\Page\PageRender;
 use App\Enum\Admin\Content\Page\PageStatus;
@@ -25,10 +26,10 @@ use App\Service\Admin\Content\Menu\MenuService;
 use App\Service\Admin\Content\Page\PageService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Service\Global\DateService;
-use App\Utils\Content\Page\PageConst;
-use App\Utils\Content\Page\PageFactory;
-use App\Utils\Content\Page\PageHistory;
-use App\Utils\Content\Page\PagePopulate;
+use App\Factory\Admin\Content\Page\PageFactory;
+use App\Populate\Admin\Content\Page\PagePopulate;
+use App\Security\Voter\ContentVoter;
+use App\Service\Admin\Content\Page\PageHistory;
 use App\Utils\System\User\PersonalData;
 use App\Translate\Admin\Content\PageTranslate;
 use App\Translate\Admin\Global\MarkdownEditorTranslate;
@@ -114,21 +115,30 @@ class PageController extends AppAdminController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/ajax/update-disabled/{id}', name: 'update_disabled', methods: 'PUT')]
+    #[Route('/ajax/update-disabled/{id}', name: 'update_disabled', requirements: ['id' => '\d+'], methods: 'PUT')]
     public function updateDisabled(
         #[MapEntity(id: 'id')] Page $page,
         PageService $pageService,
         TranslatorInterface $translator,
         Request $request,
     ): JsonResponse {
+        $error =
+            $this->checkCsrf(PageCsrfToken::DISABLED->value, $request) ??
+            $this->checkContentAccess(ContentVoter::DISABLE, $page, 'page');
+        if ($error !== null) {
+            return $error;
+        }
+        if ($page->isLandingPage()) {
+            return $this->jsonError($translator->trans('page.error.landing.disabled', domain: 'page'));
+        }
+
         $page->setDisabled(!$page->isDisabled());
         $pageService->save($page);
 
-        $pageTranslation = $page->getPageTranslationByLocale($request->getLocale());
-
-        $msg = $translator->trans('page.success.no.disabled', ['label' => $pageTranslation->getTitre()], 'page');
+        $label = $pageService->getEscapedTitle($page, $request->getLocale());
+        $msg = $translator->trans('page.success.no.disabled', ['label' => $label], 'page');
         if ($page->isDisabled()) {
-            $msg = $translator->trans('page.success.disabled', ['label' => $pageTranslation->getTitre()], 'page');
+            $msg = $translator->trans('page.success.disabled', ['label' => $label], 'page');
         }
         return $this->json($pageService->getResponseAjax($msg));
     }
@@ -144,7 +154,7 @@ class PageController extends AppAdminController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/ajax/delete/{id}', name: 'delete', methods: ['DELETE'])]
+    #[Route('/ajax/delete/{id}', name: 'delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(
         #[MapEntity(id: 'id')] Page $page,
         PageService $pageService,
@@ -152,18 +162,30 @@ class PageController extends AppAdminController
         Request $request,
         ContainerBagInterface $containerBag,
     ): JsonResponse {
-        $titre = $page->getPageTranslationByLocale($request->getLocale())->getTitre();
+        $error =
+            $this->checkCsrf(PageCsrfToken::DELETE->value, $request) ??
+            $this->checkContentAccess(ContentVoter::DELETE, $page, 'page');
+        if ($error !== null) {
+            return $error;
+        }
+        if ($page->isLandingPage()) {
+            return $this->jsonError($translator->trans('page.error.landing.delete', domain: 'page'));
+        }
+
+        $label = $pageService->getEscapedTitle($page, $request->getLocale());
         $id = $page->getId();
-        /** @var User $user */
-        $user = $this->getUser();
 
         $pageService->remove($page);
+        $msg = $translator->trans('page.remove.success', ['label' => $label], domain: 'page');
+        $response = $pageService->getResponseAjax($msg);
 
-        $pageHistory = new PageHistory($containerBag, $user);
-        $pageHistory->removePageHistory($id);
-
-        $msg = $translator->trans('page.remove.success', ['label' => $titre], domain: 'page');
-        return $this->json($pageService->getResponseAjax($msg));
+        if ($response['success']) {
+            /** @var User $user */
+            $user = $this->getUser();
+            $pageHistory = new PageHistory($containerBag, $user);
+            $pageHistory->removePageHistory($id);
+        }
+        return $this->json($response);
     }
 
     /**
@@ -176,21 +198,35 @@ class PageController extends AppAdminController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/ajax/switch-landing-page/{id}', name: 'switch_Landing_page', methods: ['PUT'])]
+    #[
+        Route(
+            '/ajax/switch-landing-page/{id}',
+            name: 'switch_Landing_page',
+            requirements: ['id' => '\d+'],
+            methods: ['PUT'],
+        ),
+    ]
     public function switchLandingPage(
         #[MapEntity(id: 'id')] Page $page,
         PageService $pageService,
         TranslatorInterface $translator,
         Request $request,
-    ): jsonResponse {
-        $titre = $page->getPageTranslationByLocale($request->getLocale())->getTitre();
+    ): JsonResponse {
+        $error =
+            $this->checkCsrf(PageCsrfToken::LANDING_PAGE->value, $request) ??
+            $this->checkContentAccess(ContentVoter::EDIT, $page, 'page');
+        if ($error !== null) {
+            return $error;
+        }
+        if (!$pageService->canBeLandingPage($page)) {
+            return $this->jsonError($translator->trans('page.error.landing.not_publish', domain: 'page'));
+        }
 
-        $page->setLandingPage(true);
-        $pageService->save($page);
         $pageService->switchLandingPage($page->getId());
 
-        $msg = $translator->trans('page.switch.landing.page.success', ['label' => $titre], domain: 'page');
-        return $this->json($pageService->getResponseAjax($msg));
+        $label = $pageService->getEscapedTitle($page, $request->getLocale());
+        $msg = $translator->trans('page.switch.landing.page.success', ['label' => $label], domain: 'page');
+        return $this->json(['success' => true, 'msg' => $msg]);
     }
 
     /**
@@ -206,7 +242,7 @@ class PageController extends AppAdminController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/add/', name: 'add')]
-    #[Route('/update/{id}', name: 'update')]
+    #[Route('/update/{id}', name: 'update', requirements: ['id' => '\d+'])]
     public function add(
         PageService $pageService,
         PageTranslate $pageTranslate,
@@ -215,6 +251,13 @@ class PageController extends AppAdminController
         OptionSystemService $optionSystemService,
         ?int $id = null,
     ): Response {
+        if ($id !== null) {
+            $page = $pageService->findOneById(Page::class, $id);
+            if ($page !== null) {
+                $this->denyAccessUnlessGranted(ContentVoter::EDIT, $page);
+            }
+        }
+
         $breadcrumbTitle = 'page.update.page_title_h1';
         if ($id === null) {
             $breadcrumbTitle = 'page.add.page_title_h1';
@@ -238,6 +281,8 @@ class PageController extends AppAdminController
             'locales' => $locales,
             'id' => $id,
             'csrfTokenTag' => TagCsrfToken::TAG_BY_NAME->value,
+            'csrfTokenSave' => PageCsrfToken::SAVE->value,
+            'csrfTokenAutoSave' => PageCsrfToken::AUTO_SAVE->value,
             'datas' => [
                 'list_status' => $pageService->getAllStatus(),
                 'list_render' => $pageService->getAllRender(),
@@ -282,7 +327,7 @@ class PageController extends AppAdminController
      * @throws ExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/ajax/load-page/{id}', name: 'load_page', methods: ['GET'])]
+    #[Route('/ajax/load-page/{id}', name: 'load_page', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function loadTabContent(
         PageService $pageService,
         MenuService $menuService,
@@ -296,7 +341,7 @@ class PageController extends AppAdminController
             $page->setRender(PageRender::ONE_BLOCK->value);
             $page->setStatus(PageStatus::DRAFT->value);
             $page->setCategory(PageCategory::PAGE->value);
-            $page->setLandingPage(PageConst::DEFAULT_LANDING_PAGE);
+            $page->setLandingPage(false);
             $page->getPageContents()->clear();
 
             foreach ($page->getPageMetas() as $meta) {
@@ -322,6 +367,10 @@ class PageController extends AppAdminController
             $page = $pageService->findOneById(Page::class, $id);
             if (!$page) {
                 return $this->json(['page' => []]);
+            }
+            $error = $this->checkContentAccess(ContentVoter::EDIT, $page, 'page');
+            if ($error !== null) {
+                return $error;
             }
         }
         $pageArray = $pageService->convertEntityToArray($page, [
@@ -377,12 +426,31 @@ class PageController extends AppAdminController
      * Sauvegarde à un instant T l'objet page dans un fichier plat au format json
      * @param ContainerBagInterface $containerBag
      * @param Request $request
+     * @param PageService $pageService
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/auto-save', name: 'auto_save', methods: ['PUT'])]
-    public function autoSave(ContainerBagInterface $containerBag, Request $request): JsonResponse
-    {
+    public function autoSave(
+        ContainerBagInterface $containerBag,
+        Request $request,
+        PageService $pageService,
+    ): JsonResponse {
+        $error = $this->checkCsrf(PageCsrfToken::AUTO_SAVE->value, $request);
+        if ($error !== null) {
+            return $error;
+        }
+
         $data = json_decode($request->getContent(), true);
+        if (!is_array($data) || !is_array($data['page'] ?? null)) {
+            return $this->jsonError('', Response::HTTP_BAD_REQUEST);
+        }
+        $error = $this->checkPageEditAccess($pageService, $data['page']['id'] ?? null);
+        if ($error !== null) {
+            return $error;
+        }
+
         /** @var User $user */
         $user = $this->getUser();
 
@@ -399,17 +467,24 @@ class PageController extends AppAdminController
      * Charge le tableau d'historique
      * @param ContainerBagInterface $containerBag
      * @param DateService $dateService
+     * @param PageService $pageService
      * @param int|null $id
      * @return JsonResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/ajax/load-tab-history/{id}', name: 'load_tab_history', methods: ['GET'])]
+    #[Route('/ajax/load-tab-history/{id}', name: 'load_tab_history', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function loadTabHistory(
         ContainerBagInterface $containerBag,
         DateService $dateService,
+        PageService $pageService,
         ?int $id = null,
     ): JsonResponse {
+        $error = $this->checkPageEditAccess($pageService, $id);
+        if ($error !== null) {
+            return $error;
+        }
+
         /** @var User $user */
         $user = $this->getUser();
         $pageHistory = new PageHistory($containerBag, $user);
@@ -428,22 +503,30 @@ class PageController extends AppAdminController
      * @param ContainerBagInterface $containerBag
      * @param Request $request
      * @param TranslatorInterface $translator
+     * @param PageService $pageService
      * @return JsonResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/ajax/reload-page-history', name: 'reload_page_history')]
+    #[Route('/ajax/reload-page-history', name: 'reload_page_history', methods: ['POST'])]
     public function reloadPageHistory(
         ContainerBagInterface $containerBag,
         Request $request,
         TranslatorInterface $translator,
+        PageService $pageService,
     ): JsonResponse {
         $data = json_decode($request->getContent(), true);
+        $pageId = is_numeric($data['id'] ?? null) ? (int) $data['id'] : null;
+        $error = $this->checkPageEditAccess($pageService, $pageId);
+        if ($error !== null) {
+            return $error;
+        }
+
         /** @var User $user */
         $user = $this->getUser();
 
         $pageHistory = new PageHistory($containerBag, $user);
-        $page = $pageHistory->getPageHistoryById($data['row_id'], $data['id']);
+        $page = $pageHistory->getPageHistoryById((int) ($data['row_id'] ?? -1), $pageId);
 
         $success = true;
         $msg = $translator->trans('page.page_history.success', ['id' => $data['row_id']], domain: 'page');
@@ -476,25 +559,53 @@ class PageController extends AppAdminController
         TranslatorInterface $translator,
         ContainerBagInterface $containerBag,
     ): JsonResponse {
-        $data = json_decode($request->getContent(), true);
-        $pageFactory = new PageFactory($pageService->getLocales()['locales']);
+        $error = $this->checkCsrf(PageCsrfToken::SAVE->value, $request);
+        if ($error !== null) {
+            return $error;
+        }
 
+        $data = json_decode($request->getContent(), true);
+        if (!is_array($data) || !is_array($data['page'] ?? null)) {
+            return $this->jsonError(
+                $translator->trans('page.error.invalid_data', ['fields' => 'page'], 'page'),
+                Response::HTTP_BAD_REQUEST,
+            );
+        }
+
+        $pageFactory = new PageFactory($pageService->getLocales()['locales']);
         $page = $pageFactory->create()->getPage();
         $page->setUser($this->getUser());
         $redirect = true;
-        if (isset($data['page']['id']) && $data['page']['id'] > 0) {
-            $page = $pageService->findOneById(Page::class, $data['page']['id']);
+        $id = $data['page']['id'] ?? null;
+        if (is_numeric($id) && (int) $id > 0) {
+            $page = $pageService->findOneById(Page::class, (int) $id);
             if ($page === null) {
                 return $this->jsonNotFound('page');
             }
+            $error = $this->checkContentAccess(ContentVoter::EDIT, $page, 'page');
+            if ($error !== null) {
+                return $error;
+            }
             $redirect = false;
         }
+        $wasLandingPage = (bool) $page->isLandingPage();
 
         $pagePopulate = new PagePopulate($page, $data['page'], $pageService);
         $page = $pagePopulate->populate()->getPage();
+
+        $error = $this->checkPageBeforeSave(
+            $page,
+            $pagePopulate->getErrors(),
+            $wasLandingPage,
+            $pageService,
+            $translator,
+        );
+        if ($error !== null) {
+            return $error;
+        }
+
         $pageService->save($page);
 
-        // Si la page est de type landing page, on change les autres
         if ($page->isLandingPage()) {
             $pageService->switchLandingPage($page->getId());
         }
@@ -562,9 +673,14 @@ class PageController extends AppAdminController
     public function isUniqueUrlPage(Request $request, PageService $pageService): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
+        $pageId = is_numeric($data['id'] ?? null) ? (int) $data['id'] : null;
 
         return $this->json([
-            'is_unique' => $pageService->isUniqueUrl($data['url'], $data['id']),
+            'is_unique' => $pageService->isUniqueUrl(
+                (string) ($data['url'] ?? ''),
+                (string) ($data['locale'] ?? ''),
+                $pageId,
+            ),
         ]);
     }
 
@@ -594,5 +710,81 @@ class PageController extends AppAdminController
     {
         $liste = $pageService->getFormatedListePageForInternalLink($pageService->getLocales()['current']);
         return $this->json(['pages' => $liste]);
+    }
+
+    /**
+     * Vérifie le droit de modifier la page $pageId ; null (brouillon d'une nouvelle page) est toujours autorisé
+     * @param PageService $pageService
+     * @param mixed $pageId
+     * @return JsonResponse|null
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function checkPageEditAccess(PageService $pageService, mixed $pageId): ?JsonResponse
+    {
+        if ($pageId === null || $pageId === '') {
+            return null;
+        }
+        $page = is_numeric($pageId) ? $pageService->findOneById(Page::class, (int) $pageId) : null;
+        if ($page === null) {
+            return $this->jsonNotFound('page');
+        }
+        return $this->checkContentAccess(ContentVoter::EDIT, $page, 'page');
+    }
+
+    /**
+     * Contrôles avant l'enregistrement d'une page : valeurs valides, landing page publiée et toujours présente,
+     * url unique dans chaque locale
+     * @param Page $page
+     * @param string[] $errors champs invalides relevés par PagePopulate
+     * @param bool $wasLandingPage
+     * @param PageService $pageService
+     * @param TranslatorInterface $translator
+     * @return JsonResponse|null
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function checkPageBeforeSave(
+        Page $page,
+        array $errors,
+        bool $wasLandingPage,
+        PageService $pageService,
+        TranslatorInterface $translator,
+    ): ?JsonResponse {
+        if (!empty($errors)) {
+            return $this->jsonError(
+                $translator->trans('page.error.invalid_data', ['fields' => implode(', ', $errors)], 'page'),
+                Response::HTTP_BAD_REQUEST,
+            );
+        }
+
+        if ($wasLandingPage && !$page->isLandingPage()) {
+            return $this->jsonError(
+                $translator->trans('page.error.landing.remove', domain: 'page'),
+                Response::HTTP_BAD_REQUEST,
+            );
+        }
+        if ($page->isLandingPage() && !$pageService->canBeLandingPage($page)) {
+            return $this->jsonError(
+                $translator->trans('page.error.landing.not_publish', domain: 'page'),
+                Response::HTTP_BAD_REQUEST,
+            );
+        }
+
+        $duplicate = $pageService->getTranslationWithDuplicateUrl($page);
+        if ($duplicate !== null) {
+            return $this->jsonError(
+                $translator->trans(
+                    'page.error.url_not_unique',
+                    [
+                        'url' => htmlspecialchars((string) $duplicate->getUrl(), ENT_QUOTES),
+                        'locale' => $duplicate->getLocale(),
+                    ],
+                    'page',
+                ),
+                Response::HTTP_BAD_REQUEST,
+            );
+        }
+        return null;
     }
 }
