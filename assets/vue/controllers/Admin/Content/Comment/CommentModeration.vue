@@ -11,6 +11,7 @@ import Toast from '../../../../Components/Global/Toast.vue';
 import SearchPaginate from '../../../../Components/Global/Search/SearchPaginate.vue';
 import { renderMarkdown } from '@/ts/MarkdownEditor/markdownRender';
 import { emitter } from '@/utils/useEvent';
+import { withCsrf } from '@/vue/Composables/Admin/csrf';
 import type {
   CommentModerationUrls,
   CommentModerationTranslate,
@@ -39,6 +40,10 @@ export default defineComponent({
     },
     datas: {
       type: Object as PropType<CommentModerationDatas>,
+      required: true,
+    },
+    csrf_token_moderate: {
+      type: String,
       required: true,
     },
   },
@@ -111,7 +116,7 @@ export default defineComponent({
     moderateComment(): void {
       this.loading = true;
       axios
-        .post<UpdateModerationResponse>(this.urls.update, this.moderation)
+        .post<UpdateModerationResponse>(this.urls.update, this.moderation, withCsrf(this.csrf_token_moderate))
         .then((response) => {
           if (response.data.success === true) {
             this.toasts.toastSuccess.msg = response.data.msg;
@@ -128,6 +133,11 @@ export default defineComponent({
         })
         .catch((error) => {
           console.error(error);
+          if (axios.isAxiosError(error) && error.response?.data?.msg) {
+            this.toasts.toastError.msg = error.response.data.msg;
+            this.toasts.toastError.show = true;
+          }
+          this.loading = false;
         });
     },
 

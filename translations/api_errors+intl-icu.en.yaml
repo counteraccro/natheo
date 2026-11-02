@@ -33,3 +33,4 @@ api_errors.request.body.invalid: __api_errors.request.body.invalid
 api_errors.comment.moderate.forbidden: __api_errors.comment.moderate.forbidden
 api_errors.params.not.boolean: __api_errors.params.not.boolean
 api_errors.access.role.denied: __api_errors.access.role.denied
+api_errors.comment.wait.validation.author: __api_errors.comment.wait.validation.author

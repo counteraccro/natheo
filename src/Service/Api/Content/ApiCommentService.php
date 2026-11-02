@@ -57,11 +57,13 @@ class ApiCommentService extends AppApiService
             /** @var Comment $comment */
 
             $com = $comment->getComment();
+            $author = $comment->getAuthor();
             if (
                 $comment->getStatus() === CommentStatus::WAIT_VALIDATION->value &&
                 !$this->isGranted(['ROLE_CONTRIBUTEUR'], $user)
             ) {
                 $com = $translator->trans('api_errors.comment.wait.validation', domain: 'api_errors');
+                $author = $translator->trans('api_errors.comment.wait.validation.author', domain: 'api_errors');
             } elseif (
                 $comment->getStatus() === CommentStatus::MODERATE->value &&
                 !$this->isGranted(['ROLE_CONTRIBUTEUR'], $user)
@@ -71,7 +73,7 @@ class ApiCommentService extends AppApiService
 
             $return['comments'][$key] = [
                 'id' => $comment->getId(),
-                'author' => $comment->getAuthor(),
+                'author' => $author,
                 'status' => $comment->getStatus(),
                 'createdAt' => $comment->getCreatedAt()->getTimestamp(),
                 'updateAt' => $comment->getUpdateAt()->getTimestamp(),
@@ -147,7 +149,8 @@ class ApiCommentService extends AppApiService
 
         $comment = new Comment();
         $comment->setPage($page);
-        $comment->setComment(strip_tags($dto->getComment()));
+        // Markdown stocké brut : assaini à l'affichage (strip_tags tronquait les textes contenant « < »)
+        $comment->setComment($dto->getComment());
         $comment->setAuthor(strip_tags($dto->getAuthor()));
         $comment->setEmail($dto->getEmail());
         $comment->setIp($dto->getIp() !== '' ? $dto->getIp() : $clientIp ?? '');
@@ -158,9 +161,12 @@ class ApiCommentService extends AppApiService
 
         $notificationFactory = new NotificationFactory($page->getUser());
         $notificationFactory->addNotification(Notification::NEW_COMMENT->value, [
-            'author' => $comment->getAuthor(),
+            'author' => htmlspecialchars($comment->getAuthor(), ENT_QUOTES),
             'status' => $statusStr,
-            'page' => $page->getPageTranslationByLocale($dto->getLocale())->getTitre(),
+            'page' => htmlspecialchars(
+                $page->getPageTranslationByLocale($dto->getLocale())->getTitre(),
+                ENT_QUOTES,
+            ),
             'id' => $comment->getId(),
         ]);
         $user = $notificationFactory->getUser();
@@ -190,11 +196,20 @@ class ApiCommentService extends AppApiService
      * @return void
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @throws HttpException statut inconnu
      */
     public function moderateComment(ApiModerateCommentDto $dto, Comment $comment, User $user): void
     {
+        $status = CommentStatus::tryFrom(intval($dto->getStatus()));
+        if ($status === null) {
+            throw new HttpException(
+                Response::HTTP_BAD_REQUEST,
+                $this->getTranslator()->trans('api_errors.comment.status.no.valid', domain: 'api_errors'),
+            );
+        }
+
         $comment->setModerationComment(strip_tags($dto->getModerationComment()));
-        $comment->setStatus(intval($dto->getStatus()));
+        $comment->setStatus($status->value);
         $comment->setUserModeration($user);
         $this->save($comment);
     }

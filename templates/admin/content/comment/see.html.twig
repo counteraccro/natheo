@@ -14,5 +14,5 @@
 
 
 
-    <div class="mt-5" {{ vue_component('Admin/Content/Comment/CommentEdit', {'urls' : urls, 'translate' : translate, 'datas' : datas}) }}></div>
+    <div class="mt-5" {{ vue_component('Admin/Content/Comment/CommentEdit', {'urls' : urls, 'translate' : translate, 'datas' : datas, 'csrf_token_save' : csrf_token(csrfTokenSave)}) }}></div>
 {% endblock %}

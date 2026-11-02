@@ -14,7 +14,7 @@ use App\Entity\Admin\System\User;
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
-use App\Utils\Markdown;
+use App\Service\Global\MarkdownService;
 use App\Utils\System\Mail\KeyWord;
 use App\Utils\System\Mail\MailKey;
 use App\Utils\System\Mail\MailTemplate;
@@ -281,7 +281,7 @@ class MailService extends AppAdminService
             $params[self::LOCALE] ?? null,
             true,
         );
-        $markdown = new Markdown();
+        $markdown = new MarkdownService();
         $content = $markdown->convertMarkdownToHtml($content);
         $content = $content . $signature;
 

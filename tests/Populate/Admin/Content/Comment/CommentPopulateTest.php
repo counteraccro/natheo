@@ -7,11 +7,11 @@ declare(strict_types=1);
  * Test CommentPopulate
  */
 
-namespace App\Tests\Utils\Content\Comment;
+namespace App\Tests\Populate\Admin\Content\Comment;
 
 use App\Entity\Admin\Content\Comment\Comment;
 use App\Tests\AppWebTestCase;
-use App\Utils\Content\Comment\CommentPopulate;
+use App\Populate\Admin\Content\Comment\CommentPopulate;
 
 class CommentPopulateTest extends AppWebTestCase
 {
@@ -40,5 +40,22 @@ class CommentPopulateTest extends AppWebTestCase
         $this->assertEquals($author, $commentP->getAuthor());
         $this->assertEquals($email, $commentP->getEmail());
         $this->assertEquals($ip, $commentP->getIp());
+    }
+
+    /**
+     * Test de la méthode populate() : texte du commentaire brut, commentaire de modération sans HTML
+     * @return void
+     */
+    public function testPopulateRawCommentAndStripModeration(): void
+    {
+        $comment = $this->createComment();
+        $populate = [
+            'comment' => 'x<y et `<div>`',
+            'moderationComment' => '<b>Hors</b> sujet<script>alert(1)</script>',
+        ];
+
+        $commentP = (new CommentPopulate($comment, $populate))->populate()->getComment();
+        $this->assertEquals('x<y et `<div>`', $commentP->getComment());
+        $this->assertEquals('Hors sujetalert(1)', $commentP->getModerationComment());
     }
 }

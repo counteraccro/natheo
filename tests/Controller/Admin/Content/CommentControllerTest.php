@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Test controller comment
  */
 
@@ -199,7 +199,32 @@ class CommentControllerTest extends AppWebTestCase
         $user = $this->createUserContributeur();
 
         $this->client->loginUser($user, 'admin');
-        $this->client->request('PUT', $this->router->generate('admin_comment_save'), content: json_encode($data));
+        $url = $this->router->generate('admin_comment_save');
+
+        // Sans jeton CSRF : refusé
+        $this->client->request('PUT', $url, content: json_encode($data));
+        $this->assertResponseStatusCodeSame(403);
+
+        $csrf = $this->getSaveCsrfToken($comment);
+
+        // Statut inconnu : refusé
+        $invalid = $data;
+        $invalid['comment']['status'] = 99;
+        $this->client->request('PUT', $url, server: ['HTTP_X-CSRF-TOKEN' => $csrf], content: json_encode($invalid));
+        $this->assertResponseStatusCodeSame(400);
+        $this->em->clear();
+        $this->assertEquals(
+            CommentStatus::WAIT_VALIDATION->value,
+            $this->em->getRepository(Comment::class)->find($comment->getId())->getStatus(),
+        );
+
+        // Commentaire inexistant
+        $unknown = $data;
+        $unknown['comment']['id'] = 999999;
+        $this->client->request('PUT', $url, server: ['HTTP_X-CSRF-TOKEN' => $csrf], content: json_encode($unknown));
+        $this->assertResponseStatusCodeSame(404);
+
+        $this->client->request('PUT', $url, server: ['HTTP_X-CSRF-TOKEN' => $csrf], content: json_encode($data));
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -209,6 +234,7 @@ class CommentControllerTest extends AppWebTestCase
         $this->assertArrayHasKey('success', $content);
         $this->assertTrue($content['success']);
 
+        $this->em->clear();
         $commentRepo = $this->em->getRepository(Comment::class);
         $comment = $commentRepo->find($comment->getId());
         $this->assertEquals(CommentStatus::VALIDATE->value, $comment->getStatus());
@@ -218,14 +244,16 @@ class CommentControllerTest extends AppWebTestCase
 
         // Passage en modéré : le modérateur et le commentaire de modération sont conservés
         $data['comment']['status'] = CommentStatus::MODERATE->value;
-        $data['comment']['moderationComment'] = 'Propos hors sujet';
-        $this->client->request('PUT', $this->router->generate('admin_comment_save'), content: json_encode($data));
+        $data['comment']['moderationComment'] = 'Propos <b>hors</b> sujet';
+        $data['comment']['comment'] = 'x<y et `<div>`';
+        $this->client->request('PUT', $url, server: ['HTTP_X-CSRF-TOKEN' => $csrf], content: json_encode($data));
         $this->assertResponseIsSuccessful();
 
         $this->em->clear();
         $comment = $this->em->getRepository(Comment::class)->find($comment->getId());
         $this->assertEquals(CommentStatus::MODERATE->value, $comment->getStatus());
         $this->assertEquals('Propos hors sujet', $comment->getModerationComment());
+        $this->assertEquals('x<y et `<div>`', $comment->getComment());
         $this->assertEquals($user->getId(), $comment->getUserModeration()?->getId());
     }
 
@@ -250,11 +278,30 @@ class CommentControllerTest extends AppWebTestCase
         $user = $this->createUserContributeur();
 
         $this->client->loginUser($user, 'admin');
+        $url = $this->router->generate('admin_comment_update_moderate_comment');
+
+        // Sans jeton CSRF : refusé
+        $this->client->request('POST', $url, content: json_encode($data));
+        $this->assertResponseStatusCodeSame(403);
+
+        $csrf = $this->getModerateCsrfToken();
+
+        // Statut inconnu : refusé, aucun commentaire modifié
         $this->client->request(
             'POST',
-            $this->router->generate('admin_comment_update_moderate_comment'),
-            content: json_encode($data),
+            $url,
+            server: ['HTTP_X-CSRF-TOKEN' => $csrf],
+            content: json_encode(array_merge($data, ['status' => 99])),
         );
+        $this->assertResponseStatusCodeSame(400);
+        $this->em->clear();
+        $this->assertEquals(
+            CommentStatus::WAIT_VALIDATION->value,
+            $this->em->getRepository(Comment::class)->find($comment1->getId())->getStatus(),
+        );
+
+        $data['moderateComment'] = 'Commentaire <i>modéré</i> en test unitaire';
+        $this->client->request('POST', $url, server: ['HTTP_X-CSRF-TOKEN' => $csrf], content: json_encode($data));
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -264,6 +311,7 @@ class CommentControllerTest extends AppWebTestCase
         $this->assertArrayHasKey('success', $content);
         $this->assertTrue($content['success']);
 
+        $this->em->clear();
         $commentRepo = $this->em->getRepository(Comment::class);
         $comments = $commentRepo->findAll();
 
@@ -271,5 +319,82 @@ class CommentControllerTest extends AppWebTestCase
             $this->assertEquals(CommentStatus::MODERATE->value, $comment->getStatus());
             $this->assertEquals('Commentaire modéré en test unitaire', $comment->getModerationComment());
         }
+    }
+
+    /**
+     * Test méthode loadGridData() : contenus saisis par les visiteurs affichés échappés
+     * @return void
+     */
+    public function testLoadGridDataEscaped(): void
+    {
+        $page = $this->createPage();
+        foreach ($this->locales as $locale) {
+            $this->createPageTranslation($page, ['locale' => $locale, 'titre' => '<img src=x onerror=alert(1)>']);
+        }
+        $this->createComment(
+            $page,
+            customData: [
+                'comment' => '[clic](javascript:alert(1)) <script>alert(2)</script> x<y ' . str_repeat('a', 150),
+                'author' => '<b onmouseover=alert(3)>Pirate</b>',
+            ],
+        );
+
+        $this->checkNoAccess('admin_comment_load_grid_data', ['page' => 1, 'limit' => 20]);
+
+        $this->client->loginUser($this->createUserContributeur(), 'admin');
+        $this->client->request('GET', $this->router->generate('admin_comment_load_grid_data', ['page' => 1, 'limit' => 20]));
+        $this->assertResponseIsSuccessful();
+        $content = $this->client->getResponse()->getContent();
+
+        $this->assertStringNotContainsString('javascript:', $content);
+        $this->assertStringNotContainsString('<script', $content);
+        $this->assertStringNotContainsString('<img', $content);
+        $this->assertStringNotContainsString('<b ', $content);
+
+        $row = json_decode($content, true)['data'][0];
+        $commentCol = $this->translator->trans('comment.grid.comment', domain: 'comment');
+        $authorCol = $this->translator->trans('comment.grid.author', domain: 'comment');
+        $pageCol = $this->translator->trans('comment.grid.page', domain: 'comment');
+        $this->assertStringStartsWith('clic &lt;script&gt;alert(2)&lt;/script&gt; x&lt;y aaa', $row[$commentCol]);
+        $this->assertStringEndsWith('…', $row[$commentCol]);
+        $this->assertEquals('&lt;b onmouseover=alert(3)&gt;Pirate&lt;/b&gt;', $row[$authorCol]);
+        $this->assertStringContainsString('">&lt;img src=x onerror=alert(1)&gt;</a>', $row[$pageCol]);
+        $this->assertStringStartsWith('<a href="', $row[$pageCol]);
+    }
+
+    /**
+     * Retourne le jeton CSRF de sauvegarde passé au composant Vue CommentEdit
+     * @param Comment $comment
+     * @return string
+     */
+    private function getSaveCsrfToken(Comment $comment): string
+    {
+        $this->client->request('GET', $this->router->generate('admin_comment_see', ['id' => $comment->getId()]));
+        return $this->getVuePropsCsrf('Admin/Content/Comment/CommentEdit', 'csrf_token_save');
+    }
+
+    /**
+     * Retourne le jeton CSRF de modération passé au composant Vue CommentModeration
+     * @return string
+     */
+    private function getModerateCsrfToken(): string
+    {
+        $this->client->request('GET', $this->router->generate('admin_comment_moderate_comments'));
+        return $this->getVuePropsCsrf('Admin/Content/Comment/CommentModeration', 'csrf_token_moderate');
+    }
+
+    /**
+     * Lit un jeton dans les props du composant Vue de la page courante
+     * @param string $component
+     * @param string $key
+     * @return string
+     */
+    private function getVuePropsCsrf(string $component, string $key): string
+    {
+        $props = $this->client
+            ->getCrawler()
+            ->filter('[data-symfony--ux-vue--vue-component-value="' . $component . '"]')
+            ->attr('data-symfony--ux-vue--vue-props-value');
+        return json_decode($props, true)[$key];
     }
 }
