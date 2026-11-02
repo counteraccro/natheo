@@ -11,6 +11,7 @@ use App\Entity\Admin\Content\Faq\FaqQuestion;
 use App\Entity\Admin\Content\Faq\FaqQuestionTranslation;
 use App\Entity\Admin\Content\Faq\FaqTranslation;
 use App\Entity\Admin\System\User;
+use App\Repository\Trait\LikeQueryTrait;
 use App\Repository\Trait\OrderedQueryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\AST\Join;
@@ -28,7 +29,9 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class FaqRepository extends ServiceEntityRepository
 {
+    use LikeQueryTrait;
     use OrderedQueryTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Faq::class);
@@ -73,13 +76,18 @@ class FaqRepository extends ServiceEntityRepository
      */
     public function getAllPaginate(int $page, int $limit, array $queryParams): Paginator
     {
-        $orderField = 'id';
-        if (isset($queryParams['orderField']) && $queryParams['orderField'] !== '') {
-            $orderField = $queryParams['orderField'];
-        }
+        $orderField = $queryParams['orderField'] ?? '';
+        $search = (string) ($queryParams['search'] ?? '');
 
-        $query = $this->createQueryBuilder(Faq::DEFAULT_ALIAS);
-        $query->join(Faq::DEFAULT_ALIAS . '.faqTranslations', FaqTranslation::DEFAULT_ALIAS);
+        // Jointure limitée à la locale : une ligne par FAQ, tri et recherche sur le titre affiché
+        $query = $this->createQueryBuilder(Faq::DEFAULT_ALIAS)
+            ->leftJoin(
+                Faq::DEFAULT_ALIAS . '.faqTranslations',
+                FaqTranslation::DEFAULT_ALIAS,
+                'WITH',
+                FaqTranslation::DEFAULT_ALIAS . '.locale = :locale',
+            )
+            ->setParameter('locale', (string) ($queryParams['locale'] ?? ''));
 
         if ($orderField === 'title') {
             $this->applyOrdering($query, FaqTranslation::class, $queryParams);
@@ -87,12 +95,10 @@ class FaqRepository extends ServiceEntityRepository
             $this->applyOrdering($query, Faq::class, $queryParams);
         }
 
-        if (isset($queryParams['search']) && $queryParams['search'] !== '') {
+        if ($search !== '') {
             $query
-                ->andWhere(FaqTranslation::DEFAULT_ALIAS . '.locale = :locale')
                 ->andWhere(FaqTranslation::DEFAULT_ALIAS . '.title like :search')
-                ->setParameter('search', '%' . $queryParams['search'] . '%')
-                ->setParameter('locale', $queryParams['locale']);
+                ->setParameter('search', '%' . $this->escapeLike($search) . '%');
         }
 
         if (isset($queryParams['userId']) && $queryParams['userId'] !== '') {

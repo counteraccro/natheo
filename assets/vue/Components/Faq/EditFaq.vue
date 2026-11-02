@@ -7,6 +7,7 @@
 
 import { defineComponent, type PropType } from 'vue';
 import axios from 'axios';
+import { withCsrf } from '@/vue/Composables/Admin/csrf';
 import { emitter } from '@/utils/useEvent';
 import SkeletonFaq from '@/vue/Components/Skeleton/Faq.vue';
 import Toast from '@/vue/Components/Global/Toast.vue';
@@ -36,6 +37,7 @@ export default defineComponent({
     translate: { type: Object as PropType<TranslateRecord>, required: true },
     locales: { type: Object as PropType<Record<string, string>>, required: true },
     id: Number,
+    csrf_token: { type: String, required: true },
   },
   data() {
     return {
@@ -126,7 +128,7 @@ export default defineComponent({
     loadFaq() {
       this.loading = true;
       axios
-        .get(this.urls.load_faq + '/' + this.id)
+        .get(this.urls.load_faq)
         .then((response) => {
           this.faq = response.data.faq;
           emitter.emit('reset-check-confirm');
@@ -303,9 +305,13 @@ export default defineComponent({
     save(): void {
       this.loading = true;
       axios
-        .put(this.urls.save, {
-          faq: this.faq,
-        })
+        .put(
+          this.urls.save,
+          {
+            faq: this.faq,
+          },
+          withCsrf(this.csrf_token)
+        )
         .then((response) => {
           if (response.data.success === true) {
             this.toasts.success.msg = response.data.msg;
@@ -318,6 +324,10 @@ export default defineComponent({
         })
         .catch((error) => {
           console.error(error);
+          if (error.response?.data?.msg) {
+            this.toasts.error.msg = error.response.data.msg;
+            this.toasts.error.show = true;
+          }
         })
         .finally(() => {
           this.loadFaq();

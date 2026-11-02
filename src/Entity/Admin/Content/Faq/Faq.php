@@ -24,7 +24,7 @@ class Faq
 
     public const string DEFAULT_ALIAS = 'faq';
 
-    public const array ALLOWED_ORDER_FIELDS = ['color', 'createdAt', 'updateAt'];
+    public const array ALLOWED_ORDER_FIELDS = ['id', 'createdAt', 'updateAt'];
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: DoctrineStrategy::CURRENT)]
     #[ORM\Column]
@@ -243,13 +243,14 @@ class Faq
      * @param string $key
      * @return FaqStatistique;
      */
-    public function getFaqStatistiqueByKey(string $key): FaqStatistique
+    public function getFaqStatistiqueByKey(string $key): ?FaqStatistique
     {
-        return $this->getFaqStatistiques()
+        $faqStatistique = $this->getFaqStatistiques()
             ->filter(function (FaqStatistique $faqStatistique) use ($key) {
                 return $faqStatistique->getKey() === $key;
             })
             ->first();
+        return $faqStatistique === false ? null : $faqStatistique;
     }
 
     /**

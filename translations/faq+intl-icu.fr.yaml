@@ -91,3 +91,4 @@ faq.edit.confirm.delete.question.title: "Suppression d'une question"
 faq.edit.confirm.delete.question.body: 'Vous êtes sur le point de supprimer cette question, êtes-vous sur ?'
 faq.error.forbidden: 'Vous n''avez pas les droits pour effectuer cette action sur cette FAQ.'
 faq.error.not_found: 'Cette FAQ n''existe pas ou a été supprimée.'
+faq.error.delete.used: 'Cette FAQ est utilisée par {nb, plural, one {# page} other {# pages}}, elle ne peut pas être supprimée. Retirez-la d''abord des pages concernées.'

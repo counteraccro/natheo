@@ -7,11 +7,11 @@ declare(strict_types=1);
  * Test de la FaqFactory
  */
 
-namespace App\Tests\Utils\Content\Faq;
+namespace App\Tests\Factory\Admin\Content\Faq;
 
 use App\Entity\Admin\Content\Faq\Faq;
 use App\Tests\AppWebTestCase;
-use App\Utils\Content\Faq\FaqFactory;
+use App\Factory\Admin\Content\Faq\FaqFactory;
 
 class FaqFactoryTest extends AppWebTestCase
 {
