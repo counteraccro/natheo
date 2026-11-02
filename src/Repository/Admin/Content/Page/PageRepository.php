@@ -12,8 +12,6 @@ use App\Enum\Admin\Content\Page\PageContentType;
 use App\Enum\Admin\Content\Page\PageStatus;
 use App\Repository\Trait\OrderedQueryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Query\Parameter;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -162,33 +160,28 @@ class PageRepository extends ServiceEntityRepository
     }
 
     /**
-     * Retourne toutes les pages sauf le champ $field avec $value
-     * @param string $field
-     * @param mixed $value
-     * @return float|int|mixed|string
-     */
-    public function getAllWithoutExclude(string $field, mixed $value): mixed
-    {
-        $query = $this->createQueryBuilder('p');
-        $query
-            ->where($query->expr()->neq('p.' . $field, ':value'))
-            ->setParameters(new ArrayCollection([new Parameter('value', $value)]));
-        return $query->getQuery()->getResult();
-    }
-
-    /**
      * Retourne une page en fonction de son slug
      * Si le slug est vide, renvoi la landingPage
+     * L'URL n'est unique que par locale : la page dont le slug est celui de $locale est prioritaire,
+     * à défaut une page dont le slug existe dans une autre locale (page non traduite)
      * @param string $slug
      * @param array $status
+     * @param string|null $locale
      * @return Page|null
      */
-    public function getBySlug(string $slug, array $status = [PageStatus::PUBLISH->value]): ?Page
+    public function getBySlug(string $slug, array $status = [PageStatus::PUBLISH->value], ?string $locale = null): ?Page
     {
         $query = $this->createQueryBuilder('p');
 
         if ($slug !== '') {
             $query->join('p.pageTranslations', 'pt')->where('pt.url = :slug')->setParameter('slug', $slug);
+            if ($locale !== null) {
+                $query
+                    ->addSelect('CASE WHEN pt.locale = :locale THEN 0 ELSE 1 END AS HIDDEN localePriority')
+                    ->setParameter('locale', $locale)
+                    ->orderBy('localePriority', \SortDirection::Ascending);
+            }
+            $query->addOrderBy('p.id', \SortDirection::Ascending);
         } else {
             $query->where('p.landingPage = :landingPage')->setParameter('landingPage', true);
         }
@@ -250,5 +243,34 @@ class PageRepository extends ServiceEntityRepository
             ->setParameter('locale', $locale);
 
         return $query->getQuery()->getArrayResult();
+    }
+
+    /**
+     * Passe la page $pageId en landing page et toutes les autres à false, en une seule requête
+     * @param int $pageId
+     * @return void
+     */
+    public function switchLandingPage(int $pageId): void
+    {
+        $this->createQueryBuilder('p')
+            ->update()
+            ->set('p.landingPage', 'CASE WHEN p.id = :id THEN true ELSE false END')
+            ->setParameter('id', $pageId)
+            ->getQuery()
+            ->execute();
+    }
+
+    /**
+     * Retourne l'id, la locale, le titre et l'url de toutes les traductions de pages
+     * @return array<int, array{id: int, locale: string, titre: string, url: string}>
+     */
+    public function getAllTitleAndUrl(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p.id', 'pt.locale', 'pt.titre', 'pt.url')
+            ->join('p.pageTranslations', 'pt')
+            ->orderBy('p.id', \SortDirection::Descending)
+            ->getQuery()
+            ->getArrayResult();
     }
 }

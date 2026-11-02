@@ -221,10 +221,8 @@ export default defineComponent({
      * @param locale
      */
     checkUrlUniqueness(url: string, locale: string) {
-      const translation = this.page.pageTranslations.find((t) => t.locale === locale);
-
       axios
-        .post(this.urls.is_unique_url_page, { id: translation?.id ?? null, url, locale })
+        .post(this.urls.is_unique_url_page, { id: this.page.id ?? null, url, locale })
         .then((response) => {
           this.urlUniqueCheckResult[locale] = response.data.is_unique;
         })

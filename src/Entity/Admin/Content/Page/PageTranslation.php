@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PageTranslationRepository::class)]
 #[ORM\Table(name: 'page_translation')]
+#[ORM\UniqueConstraint(name: 'UNIQ_PAGE_TRANSLATION_LOCALE_URL', columns: ['locale', 'url'])]
 #[ORM\HasLifecycleCallbacks]
 class PageTranslation
 {

@@ -250,9 +250,22 @@ class PageServiceTest extends AppWebTestCase
      */
     public function testIsUniqueUrl(): void
     {
-        $page = $this->createPageAllDataDefault();
-        $result = $this->pageService->isUniqueUrl('url-demo', $page->getId());
-        $this->assertTrue($result);
+        $page = $this->createPage();
+        $this->createPageTranslation($page, ['locale' => 'fr', 'url' => 'url-demo']);
+
+        $this->assertTrue($this->pageService->isUniqueUrl('url-libre', 'fr'));
+        // Déjà utilisée en fr par une autre page
+        $this->assertFalse($this->pageService->isUniqueUrl('url-demo', 'fr'));
+        // Sa propre url n'est pas un doublon
+        $this->assertTrue($this->pageService->isUniqueUrl('url-demo', 'fr', $page->getId()));
+        // L'unicité est par locale
+        $this->assertTrue($this->pageService->isUniqueUrl('url-demo', 'en'));
+
+        $page2 = $this->createPage();
+        $this->createPageTranslation($page2, ['locale' => 'fr', 'url' => 'autre-url']);
+        $this->assertNull($this->pageService->getTranslationWithDuplicateUrl($page2));
+        $page2->getPageTranslationByLocale('fr')->setUrl('url-demo');
+        $this->assertEquals('fr', $this->pageService->getTranslationWithDuplicateUrl($page2)?->getLocale());
     }
 
     /**
@@ -352,7 +365,7 @@ class PageServiceTest extends AppWebTestCase
 
         $pages = $this->pageService->findBy(Page::class);
         foreach ($pages as $page) {
-            $this->assertFalse($page->isLandingPage());
+            $this->assertEquals($page->getId() === $page1->getId(), $page->isLandingPage());
         }
     }
 
@@ -417,5 +430,39 @@ class PageServiceTest extends AppWebTestCase
         $this->assertArrayHasKey($page->getId(), $result);
         $this->assertArrayHasKey($page2->getId(), $result);
         $this->assertArrayHasKey($page3->getId(), $result);
+    }
+
+    /**
+     * Test méthode getInfoContentByTypeAndTypeId() : contenu supprimé ou inconnu
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testGetInfoContentByTypeAndTypeIdNotFound(): void
+    {
+        $notFound = $this->container
+            ->get(TranslatorInterface::class)
+            ->trans('page.content.info.not_found', domain: 'page');
+
+        $result = $this->pageService->getInfoContentByTypeAndTypeId(PageContentType::FAQ->value, 999999);
+        $this->assertEquals($notFound, $result['info']);
+
+        $result = $this->pageService->getInfoContentByTypeAndTypeId(PageContentType::LISTING->value, 999);
+        $this->assertEquals($notFound, $result['info']);
+    }
+
+    /**
+     * Test méthode getFrontUrl() : page non traduite dans la locale courante
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testGetFrontUrlFallbackLocale(): void
+    {
+        $page = $this->createPage(customData: ['category' => PageCategory::PAGE->value]);
+        $this->createPageTranslation($page, ['locale' => 'en', 'url' => 'only-english']);
+
+        $url = $this->pageService->getFrontUrl($page);
+        $this->assertStringEndsWith('/en/' . PageCategory::PAGE->getSlug() . '/only-english', $url);
     }
 }

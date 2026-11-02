@@ -21,7 +21,7 @@ use App\Entity\Admin\Content\Page\PageTranslation;
 use App\Entity\Admin\Content\Tag\Tag;
 use App\Entity\Admin\System\OptionSystem;
 use App\Entity\Admin\System\User;
-use App\Utils\Content\Page\PageHistory;
+use App\Service\Admin\Content\Page\PageHistory;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;

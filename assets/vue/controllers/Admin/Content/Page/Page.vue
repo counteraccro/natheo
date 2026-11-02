@@ -19,6 +19,7 @@ import {
   Urls,
 } from '@/ts/Page/Page.type';
 import axios from 'axios';
+import { withCsrf } from '@/vue/Composables/Admin/csrf';
 import PageContent from '@/vue/Components/Page/PageContent.vue';
 import { initFlowbite } from 'flowbite';
 import MediathequeModale from '@/vue/Components/Global/MarkdownEditor/Mediatheque.vue';
@@ -81,6 +82,14 @@ export default defineComponent({
       required: true,
     },
     csrfTokenTag: {
+      type: String,
+      default: '',
+    },
+    csrfTokenSave: {
+      type: String,
+      default: '',
+    },
+    csrfTokenAutoSave: {
       type: String,
       default: '',
     },
@@ -347,9 +356,13 @@ export default defineComponent({
     save() {
       this.loading = true;
       axios
-        .post(this.urls.save, {
-          page: this.page,
-        })
+        .post(
+          this.urls.save,
+          {
+            page: this.page,
+          },
+          withCsrf(this.csrfTokenSave)
+        )
         .then((response) => {
           if (response.data.success === true) {
             this.toasts.success.msg = response.data.msg;
@@ -365,6 +378,10 @@ export default defineComponent({
         })
         .catch((error) => {
           console.error(error);
+          if (error.response?.data?.msg) {
+            this.toasts.error.msg = error.response.data.msg;
+            this.toasts.error.show = true;
+          }
         })
         .finally(() => {
           this.loading = false;
@@ -550,7 +567,11 @@ export default defineComponent({
               />
             </svg>
             {{ translate.onglet_content }}
-            <span v-if="hasContentError" class="w-2 h-2 rounded-full" style="background-color: var(--btn-danger)"></span>
+            <span
+              v-if="hasContentError"
+              class="w-2 h-2 rounded-full"
+              style="background-color: var(--btn-danger)"
+            ></span>
           </button>
         </li>
         <li class="me-2" role="presentation">
@@ -752,6 +773,7 @@ export default defineComponent({
     :locales="locales"
     :translate="translate"
     :section-errors="sectionErrors"
+    :csrf-token-auto-save="csrfTokenAutoSave"
     @go-to-error="handleGoToError"
     @save-page="save"
     @page-preview="openPreview"

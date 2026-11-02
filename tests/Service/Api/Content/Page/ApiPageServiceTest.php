@@ -13,6 +13,9 @@ use App\Dto\Api\Content\Page\ApiFindPageCategoryDto;
 use App\Dto\Api\Content\Page\ApiFindPageDto;
 use App\Dto\Api\Content\Page\ApiFindPageTagDto;
 use App\Service\Api\Content\Page\ApiPageService;
+use App\Entity\Admin\Content\Page\Page;
+use App\Enum\Admin\Content\Page\PageStatus;
+use App\Repository\Admin\Content\Page\PageRepository;
 use App\Tests\AppWebTestCase;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -125,5 +128,25 @@ class ApiPageServiceTest extends AppWebTestCase
         $this->assertEquals(1, $result['current_page']);
         $this->assertArrayHasKey('rows', $result);
         $this->assertEquals(0, $result['rows']);
+    }
+
+    /**
+     * Test de PageRepository::getBySlug() : la page dont le slug est celui de la locale demandée est prioritaire
+     * @return void
+     */
+    public function testGetBySlugLocalePriority(): void
+    {
+        $pageFr = $this->createPage(customData: ['disabled' => false, 'status' => PageStatus::PUBLISH->value]);
+        $this->createPageTranslation($pageFr, ['locale' => 'fr', 'url' => 'contact']);
+        $pageEn = $this->createPage(customData: ['disabled' => false, 'status' => PageStatus::PUBLISH->value]);
+        $this->createPageTranslation($pageEn, ['locale' => 'en', 'url' => 'contact']);
+        $this->createPageTranslation($pageEn, ['locale' => 'fr', 'url' => 'nous-contacter']);
+
+        /** @var PageRepository $repository */
+        $repository = $this->em->getRepository(Page::class);
+        $this->assertEquals($pageFr->getId(), $repository->getBySlug('contact', locale: 'fr')?->getId());
+        $this->assertEquals($pageEn->getId(), $repository->getBySlug('contact', locale: 'en')?->getId());
+        // Slug inconnu dans la locale : repli sur une autre locale (page non traduite)
+        $this->assertEquals($pageEn->getId(), $repository->getBySlug('nous-contacter', locale: 'es')?->getId());
     }
 }

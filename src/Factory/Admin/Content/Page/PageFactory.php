@@ -7,7 +7,7 @@ declare(strict_types=1);
  * @version 1.2
  */
 
-namespace App\Utils\Content\Page;
+namespace App\Factory\Admin\Content\Page;
 
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\Content\Page\PageContent;

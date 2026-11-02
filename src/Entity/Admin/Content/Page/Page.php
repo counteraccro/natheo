@@ -27,7 +27,7 @@ class Page
 
     public const string DEFAULT_ALIAS = 'page';
 
-    public const array ALLOWED_ORDER_FIELDS = ['id', 'page_translation.titre', 'status', 'updatedAt'];
+    public const array ALLOWED_ORDER_FIELDS = ['id', 'page_translation.titre', 'status', 'updateAt'];
 
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: DoctrineStrategy::CURRENT)]
@@ -346,15 +346,16 @@ class Page
 
     /**
      * @param string $key
-     * @return PageStatistique;
+     * @return PageStatistique|null null si la statistique n'existe pas
      */
-    public function getPageStatistiqueByKey(string $key): PageStatistique
+    public function getPageStatistiqueByKey(string $key): ?PageStatistique
     {
-        return $this->getPageStatistiques()
+        $pageStatistique = $this->getPageStatistiques()
             ->filter(function (PageStatistique $pageStatistique) use ($key) {
                 return $pageStatistique->getKey() === $key;
             })
             ->first();
+        return $pageStatistique === false ? null : $pageStatistique;
     }
 
     /**
