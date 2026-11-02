@@ -19,6 +19,7 @@ export default defineComponent({
     translate: { type: Object as PropType<TranslateRecord>, required: true },
     locales: { type: Object as PropType<Record<string, string>>, required: true },
     id: Number,
+    csrf_tokens: { type: Object as PropType<{ save: string; new: string }>, required: true },
   },
   data() {
     return {
@@ -36,8 +37,15 @@ export default defineComponent({
 
 <template>
   <!-- Nouvelle FAQ -->
-  <new-faq v-if="id === null" :translate="getSubTranslate('newFaq')" :urls="urls" />
-  <edit-faq v-else :translate="getSubTranslate('editFaq')" :locales="locales" :urls="urls" :id="id" />
+  <new-faq v-if="id === null" :translate="getSubTranslate('newFaq')" :urls="urls" :csrf_token="csrf_tokens.new" />
+  <edit-faq
+    v-else
+    :translate="getSubTranslate('editFaq')"
+    :locales="locales"
+    :urls="urls"
+    :id="id"
+    :csrf_token="csrf_tokens.save"
+  />
 </template>
 
 <style scoped></style>

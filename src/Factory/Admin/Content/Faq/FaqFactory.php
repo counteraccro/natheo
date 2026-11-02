@@ -6,7 +6,7 @@ declare(strict_types=1);
  * @author Gourdon Aymeric
  * @version 1.3
  */
-namespace App\Utils\Content\Faq;
+namespace App\Factory\Admin\Content\Faq;
 
 use App\Entity\Admin\Content\Faq\Faq;
 use App\Entity\Admin\Content\Faq\FaqCategory;
@@ -15,6 +15,7 @@ use App\Entity\Admin\Content\Faq\FaqQuestion;
 use App\Entity\Admin\Content\Faq\FaqQuestionTranslation;
 use App\Entity\Admin\Content\Faq\FaqStatistique;
 use App\Entity\Admin\Content\Faq\FaqTranslation;
+use App\Enum\Admin\Content\Faq\FaqStatistiqueKey;
 
 class FaqFactory
 {
@@ -43,8 +44,8 @@ class FaqFactory
         $this->faq->setDisabled(false);
         $this->createFaqTranslation();
         $this->faq = $this->createFaqCategory($this->faq);
-        $this->createFaqStatistique(FaqStatistiqueKey::KEY_STAT_NB_CATEGORIES, '1');
-        $this->createFaqStatistique(FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS, '1');
+        $this->createFaqStatistique(FaqStatistiqueKey::NB_CATEGORIES->value, '1');
+        $this->createFaqStatistique(FaqStatistiqueKey::NB_QUESTIONS->value, '1');
         return $this;
     }
 

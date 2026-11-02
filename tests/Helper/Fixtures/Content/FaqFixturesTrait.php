@@ -18,7 +18,7 @@ use App\Entity\Admin\Content\Faq\FaqStatistique;
 use App\Entity\Admin\Content\Faq\FaqTranslation;
 use App\Entity\Admin\System\User;
 use App\Tests\Helper\FakerTrait;
-use App\Utils\Content\Faq\FaqStatistiqueKey;
+use App\Enum\Admin\Content\Faq\FaqStatistiqueKey;
 
 trait FaqFixturesTrait
 {
@@ -235,18 +235,19 @@ trait FaqFixturesTrait
 
     /**
      * Créer une FAQ et toutes les données associées par défaut
+     * @param User|null $user propriétaire, un contributeur créé à la volée par défaut
      * @return Faq
      */
-    public function createFaqAllDataDefault(): Faq
+    public function createFaqAllDataDefault(?User $user = null): Faq
     {
-        $faq = $this->createFaq(customData: ['disabled' => false]);
+        $faq = $this->createFaq($user, customData: ['disabled' => false]);
 
         $this->createFaqStatistique($faq, [
-            'key' => FaqStatistiqueKey::KEY_STAT_NB_CATEGORIES,
+            'key' => FaqStatistiqueKey::NB_CATEGORIES->value,
             'value' => strval(self::getFaker()->numberBetween(1, 1000)),
         ]);
         $this->createFaqStatistique($faq, [
-            'key' => FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS,
+            'key' => FaqStatistiqueKey::NB_QUESTIONS->value,
             'value' => strval(self::getFaker()->numberBetween(1, 5)),
         ]);
 
@@ -278,5 +279,62 @@ trait FaqFixturesTrait
         $this->persistAndFlush($faq);
 
         return $faq;
+    }
+
+    /**
+     * Convertit une FAQ au format envoyé par EditFaq.vue
+     * @param Faq $faq
+     * @return array
+     */
+    public function faqToPopulateArray(Faq $faq): array
+    {
+        $data = [
+            'id' => $faq->getId(),
+            'disabled' => $faq->isDisabled(),
+            'faqTranslations' => [],
+            'faqCategories' => [],
+        ];
+        foreach ($faq->getFaqTranslations() as $translation) {
+            $data['faqTranslations'][] = [
+                'id' => $translation->getId(),
+                'locale' => $translation->getLocale(),
+                'title' => $translation->getTitle(),
+            ];
+        }
+        foreach ($faq->getSortedFaqCategories() as $category) {
+            $dataCategory = [
+                'id' => $category->getId(),
+                'disabled' => $category->isDisabled(),
+                'renderOrder' => $category->getRenderOrder(),
+                'faqCategoryTranslations' => [],
+                'faqQuestions' => [],
+            ];
+            foreach ($category->getFaqCategoryTranslations() as $translation) {
+                $dataCategory['faqCategoryTranslations'][] = [
+                    'id' => $translation->getId(),
+                    'locale' => $translation->getLocale(),
+                    'title' => $translation->getTitle(),
+                ];
+            }
+            foreach ($category->getFaqQuestions() as $question) {
+                $dataQuestion = [
+                    'id' => $question->getId(),
+                    'disabled' => $question->isDisabled(),
+                    'renderOrder' => $question->getRenderOrder(),
+                    'faqQuestionTranslations' => [],
+                ];
+                foreach ($question->getFaqQuestionTranslations() as $translation) {
+                    $dataQuestion['faqQuestionTranslations'][] = [
+                        'id' => $translation->getId(),
+                        'locale' => $translation->getLocale(),
+                        'title' => $translation->getTitle(),
+                        'answer' => $translation->getAnswer(),
+                    ];
+                }
+                $dataCategory['faqQuestions'][] = $dataQuestion;
+            }
+            $data['faqCategories'][] = $dataCategory;
+        }
+        return $data;
     }
 }

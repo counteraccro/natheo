@@ -22,4 +22,22 @@ class PageContentRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, PageContent::class);
     }
+
+    /**
+     * Retourne le nombre de pages distinctes utilisant un contenu (ex. une FAQ) via un PageContent
+     * @param int $type valeur de PageContentType
+     * @param int $typeId identifiant du contenu
+     * @return int
+     */
+    public function countPagesByTypeAndTypeId(int $type, int $typeId): int
+    {
+        return (int) $this->createQueryBuilder('pc')
+            ->select('COUNT(DISTINCT IDENTITY(pc.page))')
+            ->where('pc.type = :type')
+            ->andWhere('pc.typeId = :typeId')
+            ->setParameter('type', $type)
+            ->setParameter('typeId', $typeId)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }

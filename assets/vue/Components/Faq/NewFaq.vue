@@ -8,6 +8,7 @@
 import { defineComponent, type PropType } from 'vue';
 import SkeletonFaq from '@/vue/Components/Skeleton/Faq.vue';
 import axios from 'axios';
+import { withCsrf } from '@/vue/Composables/Admin/csrf';
 import { emitter } from '@/utils/useEvent';
 import Toast from '@/vue/Components/Global/Toast.vue';
 
@@ -28,6 +29,7 @@ export default defineComponent({
   props: {
     urls: { type: Object as PropType<Record<string, string>>, required: true },
     translate: { type: Object as PropType<TranslateRecord>, required: true },
+    csrf_token: { type: String, required: true },
   },
   data() {
     return {
@@ -84,9 +86,13 @@ export default defineComponent({
 
       this.loading = true;
       axios
-        .post(this.urls.new_faq, {
-          title: this.faq.title,
-        })
+        .post(
+          this.urls.new_faq,
+          {
+            title: this.faq.title,
+          },
+          withCsrf(this.csrf_token)
+        )
         .then((response) => {
           if (response.data.success === true) {
             this.toasts.success.msg = response.data.msg;
@@ -103,8 +109,12 @@ export default defineComponent({
         })
         .catch((error) => {
           console.error(error);
-        })
-        .finally(() => {});
+          if (error.response?.data?.msg) {
+            this.toasts.error.msg = error.response.data.msg;
+            this.toasts.error.show = true;
+          }
+          this.loading = false;
+        });
     },
 
     /**

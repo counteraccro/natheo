@@ -12,6 +12,7 @@ namespace App\Repository\Admin\Content\Tag;
 use App\Entity\Admin\Content\Tag\Tag;
 use App\Entity\Admin\Content\Tag\TagTranslation;
 use App\Entity\Admin\System\User;
+use App\Repository\Trait\LikeQueryTrait;
 use App\Repository\Trait\OrderedQueryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -27,6 +28,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class TagRepository extends ServiceEntityRepository
 {
+    use LikeQueryTrait;
     use OrderedQueryTrait;
 
     public function __construct(ManagerRegistry $registry)
@@ -137,16 +139,6 @@ class TagRepository extends ServiceEntityRepository
         }
 
         return $query->getQuery()->getArrayResult();
-    }
-
-    /**
-     * Échappe les jokers % et _ d'une valeur recherchée avec LIKE
-     * @param string $value
-     * @return string
-     */
-    private function escapeLike(string $value): string
-    {
-        return addcslashes($value, '\\%_');
     }
 
     /**
