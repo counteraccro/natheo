@@ -125,8 +125,10 @@ class DatabaseTest extends AppWebTestCase
     public function testExecuteRawQuery(): void
     {
         $user = $this->createUser();
+        // « user » est un mot réservé de PostgreSQL
+        $userTable = $this->em->getConnection()->quoteSingleIdentifier('user');
 
-        $query = 'SELECT id, email FROM user';
+        $query = 'SELECT id, email FROM ' . $userTable;
         $result = $this->database->executeRawQuery($query);
         $this->assertIsArray($result);
         $this->assertNotEmpty($result);
@@ -141,7 +143,7 @@ class DatabaseTest extends AppWebTestCase
         $this->assertEquals('id', $result['header'][0]);
         $this->assertEquals('email', $result['header'][1]);
 
-        $query = 'SELECT id, email2 FROM user';
+        $query = 'SELECT id, email2 FROM ' . $userTable;
         $result = $this->database->executeRawQuery($query);
         $this->assertIsArray($result);
         $this->assertArrayHasKey('error', $result);

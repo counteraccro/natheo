@@ -28,7 +28,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity('email')]
-#[ORM\Table(name: 'user')]
+// Nom entre backticks : « user » est un mot réservé de PostgreSQL, Doctrine le cite pour chaque SGBD
+#[ORM\Table(name: '`user`')]
 #[ORM\HasLifecycleCallbacks]
 class User implements UserInterface, PasswordAuthenticatedUserInterface, EquatableInterface
 {
