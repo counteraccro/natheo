@@ -62,7 +62,7 @@ class ApiService extends AppApiService
         /** @var ApiToken $apiToken */
         $apiToken = $this->findOneByCriteria(ApiToken::class, [
             'token' => TokenHasher::hash($token),
-            'disabled' => 0,
+            'disabled' => false,
         ]);
         if ($apiToken === null || $apiToken->isExpired()) {
             return null;

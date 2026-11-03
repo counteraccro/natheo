@@ -14,7 +14,7 @@ use App\Enum\Admin\Global\Breadcrumb;
 use App\Enum\Admin\Tools\DatabaseManager\DatabaseManagerData;
 use App\Message\Tools\DumpSql;
 use App\Service\Admin\Tools\DatabaseManagerService;
-use App\Utils\Global\Database\DataBase;
+use App\Service\Global\Database\DataBase;
 use App\Translate\Admin\Tools\DatabaseManagerTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;

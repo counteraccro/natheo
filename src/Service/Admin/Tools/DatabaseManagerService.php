@@ -187,14 +187,14 @@ class DatabaseManagerService extends AppAdminService
     }
 
     /**
-     * Retourne le nom du schéma sans le séparateur
+     * Retourne le schéma des tables selon le SGBD
      * @return string
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
     private function getSchemaName(): string
     {
-        return str_replace('.', '', (string) $this->getParameterBag()->get('app.default_database_name'));
+        return $this->getDatabase()->getSchemaName();
     }
 
     /**

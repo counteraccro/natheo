@@ -9,7 +9,7 @@ declare(strict_types=1);
 namespace App\Tests\Utils\Global\Database;
 
 use App\Tests\AppWebTestCase;
-use App\Utils\Global\Database\DataBase;
+use App\Service\Global\Database\DataBase;
 use App\Utils\Global\Database\RawQueryManager;
 
 class RawQueryManagerTest extends AppWebTestCase
@@ -37,7 +37,7 @@ class RawQueryManagerTest extends AppWebTestCase
         $sql = $this->rawQueryManager->getQueryAllInformationSchema();
         $this->assertNotEmpty($sql);
         $this->assertIsString($sql);
-        $result = $this->database->executeRawQuery($sql, ['schema' => 'natheo_test']);
+        $result = $this->database->executeRawQuery($sql, ['schema' => $this->database->getSchemaName()]);
         $this->assertIsArray($result);
         $this->assertNotEmpty($result['result']);
         $this->assertNotEmpty($result['header']);
@@ -69,7 +69,7 @@ class RawQueryManagerTest extends AppWebTestCase
         $sql = $this->rawQueryManager->getQueryExistTable();
         $this->assertNotEmpty($sql);
         $this->assertIsString($sql);
-        $result = $this->database->executeRawQuery($sql, ['schema' => 'natheo_test', 'table' => 'user']);
+        $result = $this->database->executeRawQuery($sql, ['schema' => $this->database->getSchemaName(), 'table' => 'user']);
         $this->assertIsArray($result);
         $this->assertNotEmpty($result['result']);
         $this->assertEmpty($result['error']);

@@ -69,6 +69,13 @@ Reusable Stimulus glue lives in `assets/controllers/` (currently just `vue_contr
 ### Multilingual content vs. UI locale
 Content entities (Page, Menu, Faq, Comment, ...) store per-locale data via `*Translation` child entities/tables (e.g. `PageTranslation`, `MenuElementTranslation`), while UI/interface strings live in `translations/<domain>+intl-icu.<locale>.yaml` (or `<domain>.<locale>.yaml`), one domain per feature area, loaded via Symfony's translator with an explicit `domain:` on every `trans()` call. Supported UI locales are `fr`, `en`, `es`.
 
+### Database migrations (MySQL / MariaDB and PostgreSQL)
+Both platforms are supported, so every migration exists **twice, with the same version number**: `migrations/V2/Mysql/VersionXXX.php` (namespace `DoctrineMigrations\V2\Mysql`) and `migrations/V2/Postgresql/VersionXXX.php` (namespace `DoctrineMigrations\V2\Postgresql`). `App\Doctrine\Migrations\PlatformMigrationFinder` (wired in `config/packages/doctrine_migrations.yaml`) only loads the folder matching the current connection platform; each migration also starts with a `skipIf()` on its platform as a safety net.
+- Generate each version with `php bin/console doctrine:migrations:diff --namespace='DoctrineMigrations\V2\Mysql'` against a MySQL `DATABASE_URL`, then the same with `--namespace='DoctrineMigrations\V2\Postgresql'` against a PostgreSQL one, and give both files the same version name.
+- Hand-written data updates must use portable SQL or be written per platform (no `UPDATE … JOIN`, `REGEXP`, `SHA2()`, backticks on the PostgreSQL side; use `UPDATE … FROM`, `~`, `encode(sha256(…), 'hex')`, double quotes).
+- Before merging, run the migrations up and down on both platforms and check `doctrine:schema:validate`.
+- Reserved words used as table names are quoted in the mapping with backticks (e.g. `#[ORM\Table(name: '`user`')]`), so Doctrine quotes them on every platform; raw SQL must quote them too (`Connection::quoteSingleIdentifier()`).
+
 ### Admin security conventions
 - **Grids:** `Grid.vue` renders every cell with `v-html`, so any user-entered value placed in `GridService::KEY_DATA` (titles, labels, colors, text used in confirmation messages) must be escaped server-side with `htmlspecialchars($value, ENT_QUOTES)`. Only HTML built by the service itself (badges, links, icons) stays unescaped. Colors are validated with `/^#[0-9a-fA-F]{6}$/`.
 - **AJAX write actions** (save, delete, disable, switch): check a CSRF token with `AppAdminController::checkCsrf()` (header `X-CSRF-TOKEN`, sent from Vue with `withCsrf()` from `assets/vue/Composables/Admin/csrf.ts`; in grids, via the `'csrf'` key of the action).

@@ -13,7 +13,7 @@ use App\Enum\Admin\System\Options\OptionUser;
 use App\Enum\Installation\OptionInstallation;
 use App\Service\Admin\System\OptionSystemService;
 use App\Service\Admin\System\OptionUserService;
-use App\Utils\Global\Database\DataBase;
+use App\Service\Global\Database\DataBase;
 use Doctrine\DBAL\Exception;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;

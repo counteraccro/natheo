@@ -9,7 +9,7 @@ declare(strict_types=1);
 namespace App\Tests\Utils\Global\Database;
 
 use App\Tests\AppWebTestCase;
-use App\Utils\Global\Database\DataBase;
+use App\Service\Global\Database\DataBase;
 use App\Utils\Global\Database\RawQueryManager;
 use App\Utils\Global\Database\RawResultQueryManager;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -49,7 +49,7 @@ class RawResultQueryManagerTest extends AppWebTestCase
     public function testGetResultAllInformationSchema(): void
     {
         $sql = $this->rawQueryManager->getQueryAllInformationSchema();
-        $result = $this->database->executeRawQuery($sql, ['schema' => 'natheo_test']);
+        $result = $this->database->executeRawQuery($sql, ['schema' => $this->database->getSchemaName()]);
         $result = $this->rawResultQueryManager->getResultAllInformationSchema($result, $this->translate);
 
         $this->assertIsArray($result);
@@ -111,12 +111,12 @@ class RawResultQueryManagerTest extends AppWebTestCase
     public function testGetResultExistTable(): void
     {
         $sql = $this->rawQueryManager->getQueryExistTable();
-        $result = $this->database->executeRawQuery($sql, ['schema' => 'natheo_test', 'table' => 'user']);
+        $result = $this->database->executeRawQuery($sql, ['schema' => $this->database->getSchemaName(), 'table' => 'user']);
         $result = $this->rawResultQueryManager->getResultExistTable($result);
         $this->assertTrue($result);
 
         $sql = $this->rawQueryManager->getQueryExistTable();
-        $result = $this->database->executeRawQuery($sql, ['schema' => 'natheo_test', 'table' => 'test-unit']);
+        $result = $this->database->executeRawQuery($sql, ['schema' => $this->database->getSchemaName(), 'table' => 'test-unit']);
         $result = $this->rawResultQueryManager->getResultExistTable($result);
         $this->assertFalse($result);
     }

@@ -71,7 +71,8 @@ class DumpSqlHandlerTest extends AppWebTestCase
         $platform = $this->em->getConnection()->getDatabasePlatform();
         $content = $this->fileSystem->readFile($this->getPath('test.sql'));
         $this->assertStringContainsString('CREATE TABLE api_token', $content);
-        $this->assertStringContainsString('CREATE TABLE user', $content);
+        // PostgreSQL cite le nom réservé « user », MySQL non
+        $this->assertMatchesRegularExpression('/CREATE TABLE ("user"|user) \(/', $content);
         $this->assertStringContainsString('INSERT INTO ' . $platform->quoteSingleIdentifier('api_token'), $content);
         $this->assertStringContainsString('INSERT INTO ' . $platform->quoteSingleIdentifier('user'), $content);
     }
@@ -147,7 +148,7 @@ class DumpSqlHandlerTest extends AppWebTestCase
         $now = (new \DateTime())->format('Y-m-d H:i:s');
         $values = [];
         for ($i = 1; $i <= 1200; $i++) {
-            $values[] = "('token-$i', 'value-$i', '[]', 0, '$now', '$now')";
+            $values[] = "('token-$i', 'value-$i', '[]', false, '$now', '$now')";
         }
         $connection->executeStatement(
             'INSERT INTO api_token (name, token, roles, disabled, created_at, update_at) VALUES ' .

@@ -1,6 +1,10 @@
 doctrine_migrations:
     # namespace is arbitrary but should be different from App\Migrations
     # as migrations classes should NOT be autoloaded
+    # Un dossier par SGBD : PlatformMigrationFinder ne charge que celui de la plateforme courante
     migrations_paths:
-        'DoctrineMigrations\V2': '%kernel.project_dir%/migrations/V2'
+        'DoctrineMigrations\V2\Mysql': '%kernel.project_dir%/migrations/V2/Mysql'
+        'DoctrineMigrations\V2\Postgresql': '%kernel.project_dir%/migrations/V2/Postgresql'
+    services:
+        'Doctrine\Migrations\Finder\MigrationFinder': 'App\Doctrine\Migrations\PlatformMigrationFinder'
     enable_profiler: false

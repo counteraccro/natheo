@@ -1,25 +1,31 @@
 <?php
 
 declare(strict_types=1);
+/**
+ * Migration initiale de Natheo CMS (MySQL / MariaDB)
+ * @author Gourdon Aymeric
+ * @version 1.0
+ */
 
-namespace DoctrineMigrations\V2;
+namespace DoctrineMigrations\V2\Mysql;
 
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
 /**
- * Migration initiale de Natheo CMS
+ * Migration initiale de Natheo CMS (MySQL / MariaDB)
  */
 final class Version20260823103010 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return 'Migration initiale - NatheoCMS v2.0';
+        return 'Migration initiale - NatheoCMS v2.0 (MySQL / MariaDB)';
     }
 
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
+        $this->skipIf(!$this->platform instanceof AbstractMySQLPlatform, 'Migration réservée à MySQL / MariaDB');
         $this->addSql(
             'CREATE TABLE api_token (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, token VARCHAR(255) NOT NULL, roles JSON NOT NULL, comment LONGTEXT DEFAULT NULL, disabled TINYINT NOT NULL, created_at DATETIME NOT NULL, update_at DATETIME NOT NULL, PRIMARY KEY (id)) DEFAULT CHARACTER SET utf8mb4',
         );
@@ -228,7 +234,7 @@ final class Version20260823103010 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
+        $this->skipIf(!$this->platform instanceof AbstractMySQLPlatform, 'Migration réservée à MySQL / MariaDB');
         $this->addSql('ALTER TABLE comment DROP FOREIGN KEY FK_9474526CC4663E4');
         $this->addSql('ALTER TABLE comment DROP FOREIGN KEY FK_9474526C89731557');
         $this->addSql('ALTER TABLE faq DROP FOREIGN KEY FK_E8FF75CCA76ED395');

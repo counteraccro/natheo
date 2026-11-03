@@ -6,16 +6,16 @@ declare(strict_types=1);
  * @version 1.0
  * Test Database
  */
-namespace App\Tests\Utils\Global\Database;
+namespace App\Tests\Service\Global\Database;
 
 use App\Entity\Admin\System\User;
 use App\Enum\Installation\OptionInstallation;
 use App\Tests\AppWebTestCase;
-use App\Utils\Global\Database\DataBase;
+use App\Service\Global\Database\DataBase;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
-class DatabaseTest extends AppWebTestCase
+class DataBaseTest extends AppWebTestCase
 {
     /**
      * @var DataBase
@@ -125,8 +125,10 @@ class DatabaseTest extends AppWebTestCase
     public function testExecuteRawQuery(): void
     {
         $user = $this->createUser();
+        // « user » est un mot réservé de PostgreSQL
+        $userTable = $this->em->getConnection()->quoteSingleIdentifier('user');
 
-        $query = 'SELECT id, email FROM user';
+        $query = 'SELECT id, email FROM ' . $userTable;
         $result = $this->database->executeRawQuery($query);
         $this->assertIsArray($result);
         $this->assertNotEmpty($result);
@@ -141,7 +143,7 @@ class DatabaseTest extends AppWebTestCase
         $this->assertEquals('id', $result['header'][0]);
         $this->assertEquals('email', $result['header'][1]);
 
-        $query = 'SELECT id, email2 FROM user';
+        $query = 'SELECT id, email2 FROM ' . $userTable;
         $result = $this->database->executeRawQuery($query);
         $this->assertIsArray($result);
         $this->assertArrayHasKey('error', $result);

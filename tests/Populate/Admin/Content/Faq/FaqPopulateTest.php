@@ -42,13 +42,22 @@ class FaqPopulateTest extends AppWebTestCase
         $locale = $data['faqTranslations'][0]['locale'];
         $this->assertEquals('Titre FAQ modifié', $verif->getFaqTranslationByLocale($locale)->getTitle());
 
+        // Par locale : l'ordre des collections de traductions n'est pas garanti (PostgreSQL)
+        $categoryLocale = $data['faqCategories'][0]['faqCategoryTranslations'][0]['locale'];
         $category = $this->em->getRepository(FaqCategory::class)->find($data['faqCategories'][0]['id']);
-        $this->assertEquals('Catégorie modifiée', $category->getFaqCategoryTranslations()->first()->getTitle());
+        $this->assertEquals(
+            'Catégorie modifiée',
+            $category->getFaqCategoryTranslationByLocale($categoryLocale)->getTitle(),
+        );
 
+        $questionLocale = $data['faqCategories'][0]['faqQuestions'][0]['faqQuestionTranslations'][0]['locale'];
         $question = $this->em
             ->getRepository(FaqQuestion::class)
             ->find($data['faqCategories'][0]['faqQuestions'][0]['id']);
-        $this->assertEquals('Réponse modifiée', $question->getFaqQuestionTranslations()->first()->getAnswer());
+        $this->assertEquals(
+            'Réponse modifiée',
+            $question->getFaqQuestionTranslationByLocale($questionLocale)->getAnswer(),
+        );
     }
 
     /**
