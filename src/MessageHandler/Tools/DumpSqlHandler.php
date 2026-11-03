@@ -230,7 +230,8 @@ class DumpSqlHandler
 
         $tables = [];
         foreach ($tablesTmp as $table) {
-            $name = $table->getObjectName()->toString();
+            // Nom non cité : toString() renvoie "user" sous PostgreSQL
+            $name = $table->getObjectName()->getUnqualifiedName()->getValue();
             foreach ($options['tables'] ?? [] as $tDump) {
                 if ($schemaParam . $tDump === $name || $tDump === $name) {
                     $tables[] = $table;

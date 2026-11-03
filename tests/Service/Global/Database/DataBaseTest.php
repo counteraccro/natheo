@@ -6,16 +6,16 @@ declare(strict_types=1);
  * @version 1.0
  * Test Database
  */
-namespace App\Tests\Utils\Global\Database;
+namespace App\Tests\Service\Global\Database;
 
 use App\Entity\Admin\System\User;
 use App\Enum\Installation\OptionInstallation;
 use App\Tests\AppWebTestCase;
-use App\Utils\Global\Database\DataBase;
+use App\Service\Global\Database\DataBase;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
-class DatabaseTest extends AppWebTestCase
+class DataBaseTest extends AppWebTestCase
 {
     /**
      * @var DataBase

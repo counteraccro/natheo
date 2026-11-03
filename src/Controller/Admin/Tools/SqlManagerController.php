@@ -14,7 +14,7 @@ use App\Entity\Admin\Tools\SqlManager;
 use App\Enum\Admin\Global\Breadcrumb;
 use App\Enum\Admin\System\Options\OptionUser;
 use App\Service\Admin\Tools\SqlManagerService;
-use App\Utils\Global\Database\DataBase;
+use App\Service\Global\Database\DataBase;
 use App\Translate\Admin\Tools\SqlManagerTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -143,6 +143,7 @@ class SqlManagerController extends AppAdminController
      * Création / édition d'une faq
      * @param SqlManagerTranslate $sqlManagerTranslate
      * @param SqlManagerService $sqlManagerService
+     * @param DataBase $dataBase
      * @param int|null $id
      * @param bool $isExecute
      * @return Response
@@ -155,6 +156,7 @@ class SqlManagerController extends AppAdminController
     public function add(
         SqlManagerTranslate $sqlManagerTranslate,
         SqlManagerService $sqlManagerService,
+        DataBase $dataBase,
         ?int $id = null,
         bool $isExecute = false,
     ): Response {
@@ -186,7 +188,7 @@ class SqlManagerController extends AppAdminController
             'translate' => $sqlManagerTranslate->getTranslate(),
             'id' => $id,
             'isExecute' => $isExecute,
-            'schema' => $this->getParameter('app.default_database_name'),
+            'schema' => $dataBase->getSchemaName(),
             'datas' => [],
             'urls' => [
                 'load_sql_manager' => $this->generateUrl('admin_sql_manager_load_data', ['id' => $id]),

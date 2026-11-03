@@ -16,7 +16,7 @@ use App\Enum\Installation\OptionInstallation;
 use App\Service\Admin\CommandService;
 use App\Service\Installation\InstallationService;
 use App\Service\Installation\InstallRequirementsChecker;
-use App\Utils\Global\Database\DataBase;
+use App\Service\Global\Database\DataBase;
 use App\Translate\Installation\InstallationTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;

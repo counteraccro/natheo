@@ -7,16 +7,19 @@ declare(strict_types=1);
  * @version 1.0
  */
 
-namespace App\Utils\Global\Database;
+namespace App\Service\Global\Database;
 
 use App\Enum\Installation\DoctrineStrategy;
 use App\Enum\Installation\OptionInstallation;
 use App\Service\Installation\InstallationService;
+use App\Utils\Global\Database\RawQueryManager;
+use App\Utils\Global\Database\RawResultQueryManager;
 use App\Utils\Tools\DatabaseManager\Query\RawPostgresQuery;
 use App\Utils\Utils;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Schema\Name\UnqualifiedName;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -89,6 +92,10 @@ class DataBase
     public function isConnected(array $parameters = []): array
     {
         unset($parameters['dbname']);
+        // Sans dbname, PostgreSQL se connecte à une base du nom de l'utilisateur, qui n'existe pas forcément
+        if (($parameters['driver'] ?? '') === DoctrineStrategy::getDriver(DoctrineStrategy::POSTGRESQL->value)) {
+            $parameters['dbname'] = 'postgres';
+        }
         /** @var RawQueryManager $rawQueryManager */
         $rawQueryManager = $this->handlers->get('rawQueryManager');
 
@@ -125,7 +132,10 @@ class DataBase
             'port' => $parameters['port'],
             'user' => $parameters['login'],
             'password' => $parameters['password'],
-            'driver' => DoctrineStrategy::getDriver(DoctrineStrategy::current()),
+            // Driver de la configuration testée, qui peut différer de la connexion courante pendant l'installation
+            'driver' => DoctrineStrategy::getDriver(
+                empty($parameters['type']) ? DoctrineStrategy::current() : DoctrineStrategy::fromScheme($parameters['type']),
+            ),
             'dbname' => $parameters['bdd_name'],
         ];
 
@@ -147,7 +157,7 @@ class DataBase
         /** @var ParameterBagInterface $parameterBag */
         $parameterBag = $this->handlers->get('parameterBag');
         $prefix = $parameterBag->get('app.default_database_prefix');
-        $schema = $parameterBag->get('app.default_database_name');
+        $schema = $this->getSchemaName();
 
         if ($tableName === null) {
             if ($prefix !== '') {
@@ -184,6 +194,23 @@ class DataBase
             return false;
         }
         return true;
+    }
+
+    /**
+     * Retourne le schéma des tables : la base de données pour MySQL, le schéma courant (ex. public) pour PostgreSQL
+     * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getSchemaName(): string
+    {
+        if ($this->connection->getDatabasePlatform() instanceof PostgreSQLPlatform) {
+            return (string) $this->connection->fetchOne('SELECT current_schema()');
+        }
+
+        /** @var ParameterBagInterface $parameterBag */
+        $parameterBag = $this->handlers->get('parameterBag');
+        return str_replace('.', '', (string) $parameterBag->get('app.default_database_name'));
     }
 
     /**

@@ -40,7 +40,7 @@ class PageMetaRepository extends ServiceEntityRepository
         } elseif (is_string($page)) {
             $query->join('p.pageTranslations', 'pt')->andWhere('pt.url = :url')->setParameter('url', $page);
         } else {
-            $query->andWhere('p.landingPage = 1');
+            $query->andWhere('p.landingPage = true');
         }
 
         return $query->getQuery()->getResult();

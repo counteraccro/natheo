@@ -50,9 +50,19 @@ enum DoctrineStrategy: string
     static function current(): string
     {
         $databaseUrl = $_SERVER['DATABASE_URL'] ?? ($_ENV['DATABASE_URL'] ?? (getenv('DATABASE_URL') ?: ''));
-        $scheme = strtolower((string) strstr((string) $databaseUrl, '://', true));
+        return self::fromScheme((string) strstr((string) $databaseUrl, '://', true));
+    }
 
-        return in_array($scheme, self::POSTGRESQL_SCHEMES, true) ? self::POSTGRESQL->value : self::MYSQL->value;
+    /**
+     * Retourne la valeur du SGBD (MYSQL ou POSTGRESQL) correspondant au schéma d'une DATABASE_URL (mysql, postgresql...)
+     * @param string $scheme
+     * @return string
+     */
+    static function fromScheme(string $scheme): string
+    {
+        return in_array(strtolower($scheme), self::POSTGRESQL_SCHEMES, true)
+            ? self::POSTGRESQL->value
+            : self::MYSQL->value;
     }
 
     /**

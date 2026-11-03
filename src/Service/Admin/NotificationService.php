@@ -155,7 +155,7 @@ class NotificationService extends AppAdminService
         $repo = $this->getRepository(Notification::class);
 
         $nbTotal = $repo->count(['user' => $user->getId()]);
-        $nbNoRead = $repo->count(['user' => $user->getId(), 'read' => 0]);
+        $nbNoRead = $repo->count(['user' => $user->getId(), 'read' => false]);
         $nbToday = $repo->getNbNotificationByUserDateCreation($user, new \DateTime());
         return [
             'nb_noRead' => $nbNoRead,

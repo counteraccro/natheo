@@ -15,7 +15,7 @@ use App\Service\Admin\Content\Tag\TagRender;
 use App\Service\Admin\System\OptionConfigService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Service\Admin\System\User\UserDataService;
-use App\Utils\Global\Database\DataBase;
+use App\Service\Global\Database\DataBase;
 use App\Utils\Global\Database\RawQueryManager;
 use App\Utils\Global\Database\RawResultQueryManager;
 use App\Utils\Global\EnvFile;
