@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Service\Installation\InstallationService;
+use Doctrine\DBAL\Connection;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -30,6 +31,7 @@ class InstallCommand extends Command
         private readonly InstallationService $installationService,
         private readonly ParameterBagInterface $parameterBag,
         private readonly KernelInterface $kernel,
+        private readonly Connection $connection,
     ) {
         parent::__construct();
     }
@@ -75,6 +77,9 @@ class InstallCommand extends Command
         // Drop database
         if ($delete) {
             $io->title($this->translator->trans('install.drop.database', domain: 'command'));
+
+            // PostgreSQL refuse de supprimer une base encore ouverte, ici par checkSchema()
+            $this->connection->close();
 
             $returnCode = $this->runConsoleCommand(['doctrine:database:drop', '--force'], $io);
             if ($returnCode === 0) {
