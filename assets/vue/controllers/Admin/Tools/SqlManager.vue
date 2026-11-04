@@ -401,7 +401,7 @@ export default defineComponent({
         </div>
       </div>
       <div class="p-5">
-        <div class="form-control mb-3">
+        <div class="mb-3">
           <label for="name-query" class="form-label">{{ translate.label_name }} *</label>
           <input
             type="text"
@@ -416,7 +416,7 @@ export default defineComponent({
           </div>
         </div>
 
-        <div class="form-control mb-3">
+        <div class="mb-3">
           <label for="sql-textarea" class="form-label">{{ translate.label_textarea_query }}</label>
           <textarea
             class="form-input code-editor"
@@ -490,10 +490,10 @@ export default defineComponent({
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 p-5">
         <div>
           <h3 class="text-sm font-semibold mb-3 text-(--text-primary)">{{ translate.label_list_table }}</h3>
-          <div class="form-control mb-3">
+          <div class="mb-3">
             <input type="text" class="form-input" v-model="searchTable" :placeholder="translate.placeholder_table" />
           </div>
-          <div class="form-control mb-3">
+          <div class="mb-3">
             <select class="form-input" multiple id="sql-table" size="8" v-model="selectTable" @change="onTableChange">
               <option v-for="table in filteredTable" :key="table.name" :value="table.name">
                 {{ table.name }}
@@ -513,7 +513,7 @@ export default defineComponent({
 
         <div>
           <h3 class="text-sm font-semibold mb-3 text-(--text-primary)">{{ selectLabelTable }}</h3>
-          <div class="form-control mb-3">
+          <div class="mb-3">
             <input
               type="text"
               class="form-input"
@@ -522,7 +522,7 @@ export default defineComponent({
               :disabled="selectColumns.length === 0"
             />
           </div>
-          <div class="form-control mb-3">
+          <div class="mb-3">
             <select
               class="form-input"
               multiple
@@ -536,7 +536,7 @@ export default defineComponent({
               </option>
             </select>
           </div>
-          <div class="form-control mb-3">
+          <div class="mb-3">
             <button
               type="button"
               :disabled="selectColumns.length === 0"

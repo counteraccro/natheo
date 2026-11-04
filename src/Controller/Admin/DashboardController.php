@@ -150,7 +150,7 @@ class DashboardController extends AppAdminController
         $breadcrumb = [
             Breadcrumb::DOMAIN->value => 'message',
             Breadcrumb::BREADCRUMB->value => [
-                'pagedemo.element.html' => '#',
+                'pagedemo.page_title_h1' => '#',
             ],
         ];
 
