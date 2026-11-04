@@ -6,12 +6,12 @@ declare(strict_types=1);
  * @version 1.0
  * Test RawResultQueryManager
  */
-namespace App\Tests\Utils\Global\Database;
+namespace App\Tests\Service\Global\Database;
 
 use App\Tests\AppWebTestCase;
 use App\Service\Global\Database\DataBase;
-use App\Utils\Global\Database\RawQueryManager;
-use App\Utils\Global\Database\RawResultQueryManager;
+use App\Service\Global\Database\RawQueryManager;
+use App\Service\Global\Database\RawResultQueryManager;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RawResultQueryManagerTest extends AppWebTestCase

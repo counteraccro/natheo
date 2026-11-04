@@ -7,9 +7,9 @@ declare(strict_types=1);
  * @version 1.0
  */
 
-namespace App\Utils\Tools\DatabaseManager\QueryResult;
+namespace App\Service\Global\Database\QueryResult;
 
-use App\Utils\Tools\DatabaseManager\QueryResult\RawResultQueryInterface;
+use App\Service\Global\Database\QueryResult\RawResultQueryInterface;
 use App\Utils\Utils;
 use Symfony\Contracts\Translation\TranslatorInterface;
 

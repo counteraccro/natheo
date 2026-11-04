@@ -6,7 +6,7 @@ declare(strict_types=1);
  * @author Gourdon Aymeric
  * @version 1.1
  */
-namespace App\Utils\Tools\DatabaseManager\Query;
+namespace App\Service\Global\Database\Query;
 
 class RawMysqlQuery implements RawQueryInterface
 {

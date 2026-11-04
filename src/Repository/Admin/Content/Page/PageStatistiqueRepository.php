@@ -7,7 +7,7 @@ namespace App\Repository\Admin\Content\Page;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\Content\Page\PageStatistique;
 use App\Enum\Admin\Content\Page\PageStatus;
-use App\Utils\Global\Database\RawQueryManager;
+use App\Service\Global\Database\RawQueryManager;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

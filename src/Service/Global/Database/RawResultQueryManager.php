@@ -7,12 +7,11 @@ declare(strict_types=1);
  * @version 1.0
  */
 
-namespace App\Utils\Global\Database;
+namespace App\Service\Global\Database;
 
 use App\Enum\Installation\DoctrineStrategy;
-use App\Utils\Installation\InstallationConst;
-use App\Utils\Tools\DatabaseManager\QueryResult\RawResultMysqlQuery;
-use App\Utils\Tools\DatabaseManager\QueryResult\RawResultPostgresQuery;
+use App\Service\Global\Database\QueryResult\RawResultMysqlQuery;
+use App\Service\Global\Database\QueryResult\RawResultPostgresQuery;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RawResultQueryManager
