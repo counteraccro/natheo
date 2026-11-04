@@ -7,8 +7,8 @@
 import { defineComponent, type PropType } from 'vue';
 import VerticalMenu from './VerticalMenu.vue';
 import ContentStructure from './Content/ContentStructure.vue';
-import type { FrontApi } from '@/utils/Front/FrontApi';
-import type { UtilsFront } from '@/utils/Front/UtilsFront';
+import type { FrontApi } from '@/vue/Composables/Front/FrontApi';
+import type { UtilsFront } from '@/vue/Composables/Front/UtilsFront';
 import type { FrontApiError, FrontMainTranslate, FrontPage } from '@/ts/Front/NatheoHorizon/Structure.type';
 
 export default defineComponent({

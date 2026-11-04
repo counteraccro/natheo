@@ -6,8 +6,8 @@
  */
 import { defineComponent, type PropType } from 'vue';
 import { renderMarkdown } from '@/ts/MarkdownEditor/markdownRender';
-import { UtilsFront } from '@/utils/Front/UtilsFront';
-import type { FrontApi } from '@/utils/Front/FrontApi';
+import { UtilsFront } from '@/vue/Composables/Front/UtilsFront';
+import type { FrontApi } from '@/vue/Composables/Front/FrontApi';
 import type { FrontApiError, FrontPageContent } from '@/ts/Front/NatheoHorizon/Structure.type';
 import type { ContentFaqResponse, FaqCategory } from '@/ts/Front/NatheoHorizon/ContentFaq.type';
 

@@ -9,7 +9,7 @@ import { defineComponent } from 'vue';
 import axios from 'axios';
 import { withCsrf } from '@/vue/Composables/Admin/csrf';
 import MarkdownEditor from '@/vue/Components/Global/MarkdownEditor/MarkdownEditor.vue';
-import { emitter } from '@/utils/useEvent';
+import { emitter } from '@/vue/Composables/Global/useEvent';
 import Toast from '@/vue/Components/Global/Toast.vue';
 import SkeletonForm from '@/vue/Components/Skeleton/Form.vue';
 import SkeletonText from '@/vue/Components/Skeleton/Text.vue';

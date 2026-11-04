@@ -11,7 +11,7 @@ import MenuTree from '@/vue/Components/Menu/MenuTree.vue';
 import Sortable from 'sortablejs';
 import Modal from '@/vue/Components/Global/Modal.vue';
 import MenuElementForm from '@/vue/Components/Menu/MenuElementForm.vue';
-import { emitter } from '@/utils/useEvent';
+import { emitter } from '@/vue/Composables/Global/useEvent';
 import Toast from '@/vue/Components/Global/Toast.vue';
 import { Toasts } from '@/ts/Toast/Toast.type';
 import MenuHeader from '@/vue/Components/Menu/MenuType/MenuHeader.vue';

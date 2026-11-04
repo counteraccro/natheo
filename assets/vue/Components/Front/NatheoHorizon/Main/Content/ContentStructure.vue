@@ -10,11 +10,11 @@ import ContentFaq from './ContentFaq.vue';
 import ContentListing from './ContentListing.vue';
 import ContentComment from './ContentComment.vue';
 import Breadcrumb from './Breadcrumb.vue';
-import { PageRender } from '@/utils/Front/Const/PageRender';
-import { PageStatus } from '@/utils/Front/Const/PageStatus';
-import { ContentType } from '@/utils/Front/Const/ContentType';
-import type { FrontApi } from '@/utils/Front/FrontApi';
-import type { UtilsFront } from '@/utils/Front/UtilsFront';
+import { PageRender } from '@/vue/Composables/Front/Const/PageRender';
+import { PageStatus } from '@/vue/Composables/Front/Const/PageStatus';
+import { ContentType } from '@/vue/Composables/Front/Const/ContentType';
+import type { FrontApi } from '@/vue/Composables/Front/FrontApi';
+import type { UtilsFront } from '@/vue/Composables/Front/UtilsFront';
 import type {
   FrontApiError,
   FrontMainTranslate,

@@ -8,8 +8,8 @@ import { defineComponent, type PropType } from 'vue';
 import NavMegaMenu from './MegaMenu/NavMegaMenu.vue';
 import NavMenuDropdown from './Dropdown/NavMenuDropdown.vue';
 import NavMenuDropdownMobile from './Dropdown/NavMenuDropdownMobile.vue';
-import { MenuType } from '@/utils/Front/Const/Menu';
-import { UtilsFront } from '@/utils/Front/UtilsFront';
+import { MenuType } from '@/vue/Composables/Front/Const/Menu';
+import { UtilsFront } from '@/vue/Composables/Front/UtilsFront';
 import type {
   FrontHeaderTranslate,
   FrontMenu,

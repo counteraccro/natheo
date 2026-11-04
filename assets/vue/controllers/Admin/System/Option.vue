@@ -8,7 +8,7 @@
 import { defineComponent } from 'vue';
 import axios from 'axios';
 import { withCsrf } from '@/vue/Composables/Admin/csrf';
-import { emitter } from '@/utils/useEvent';
+import { emitter } from '@/vue/Composables/Global/useEvent';
 import type { OptionField, OptionUpdatePayload, OptionUpdateResponse } from '@/ts/Option/Option.type';
 
 export default defineComponent({

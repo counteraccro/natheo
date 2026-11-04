@@ -1,10 +1,9 @@
 /**
  * Permet de faire un copier coller
- * @param textToCopy
- * @returns {Promise<void>}
+ * @param textToCopy texte à copier dans le presse-papiers
  */
 
-export const copyToClipboard = async (textToCopy) => {
+export const copyToClipboard = async (textToCopy: string): Promise<void> => {
   if (navigator.clipboard && window.isSecureContext) {
     await navigator.clipboard.writeText(textToCopy);
   } else {

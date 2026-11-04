@@ -4,7 +4,7 @@
  * @author Gourdon Aymeric
  * @version 1.0
  */
-import { emitter } from '../../../utils/useEvent';
+import { emitter } from '@/vue/Composables/Global/useEvent';
 import Modal from '../../Components/Global/Modal.vue';
 
 export default {

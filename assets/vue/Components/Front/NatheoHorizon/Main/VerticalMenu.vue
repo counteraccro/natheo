@@ -6,7 +6,7 @@
  */
 import { defineComponent, type PropType } from 'vue';
 import VerticalMenuElement from './VerticalMenuElement.vue';
-import type { UtilsFront } from '@/utils/Front/UtilsFront';
+import type { UtilsFront } from '@/vue/Composables/Front/UtilsFront';
 import type { FrontMenu } from '@/ts/Front/NatheoHorizon/Structure.type';
 
 export default defineComponent({
