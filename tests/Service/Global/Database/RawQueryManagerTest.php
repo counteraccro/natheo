@@ -6,11 +6,11 @@ declare(strict_types=1);
  * @version 1.0
  * Test RawQueryManager
  */
-namespace App\Tests\Utils\Global\Database;
+namespace App\Tests\Service\Global\Database;
 
 use App\Tests\AppWebTestCase;
 use App\Service\Global\Database\DataBase;
-use App\Utils\Global\Database\RawQueryManager;
+use App\Service\Global\Database\RawQueryManager;
 
 class RawQueryManagerTest extends AppWebTestCase
 {

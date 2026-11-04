@@ -7,7 +7,7 @@ declare(strict_types=1);
  * @version 1.0
  */
 
-namespace App\Utils\Tools\DatabaseManager\Query;
+namespace App\Service\Global\Database\Query;
 
 interface RawQueryInterface
 {

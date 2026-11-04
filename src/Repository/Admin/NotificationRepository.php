@@ -6,7 +6,7 @@ namespace App\Repository\Admin;
 
 use App\Entity\Admin\Notification;
 use App\Entity\Admin\System\User;
-use App\Utils\Global\Database\RawQueryManager;
+use App\Service\Global\Database\RawQueryManager;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\NonUniqueResultException;

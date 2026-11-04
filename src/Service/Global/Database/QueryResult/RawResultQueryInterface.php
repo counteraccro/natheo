@@ -6,7 +6,7 @@ declare(strict_types=1);
  * @author Gourdon Aymeric
  * @version 1.0
  */
-namespace App\Utils\Tools\DatabaseManager\QueryResult;
+namespace App\Service\Global\Database\QueryResult;
 
 use Symfony\Contracts\Translation\TranslatorInterface;
 

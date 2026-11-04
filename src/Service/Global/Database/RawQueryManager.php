@@ -7,12 +7,11 @@ declare(strict_types=1);
  * @version 1.0
  */
 
-namespace App\Utils\Global\Database;
+namespace App\Service\Global\Database;
 
 use App\Enum\Installation\DoctrineStrategy;
-use App\Utils\Installation\InstallationConst;
-use App\Utils\Tools\DatabaseManager\Query\RawMysqlQuery;
-use App\Utils\Tools\DatabaseManager\Query\RawPostgresQuery;
+use App\Service\Global\Database\Query\RawMysqlQuery;
+use App\Service\Global\Database\Query\RawPostgresQuery;
 
 class RawQueryManager
 {
