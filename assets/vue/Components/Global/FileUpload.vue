@@ -211,7 +211,8 @@ export default defineComponent({
       <div class="text-center">
         <p class="text-xs font-semibold" style="color: var(--text-primary)">{{ translate.help }}</p>
         <p class="text-xs mt-0.5" style="color: var(--text-light)">
-          ou <span style="color: var(--primary); text-decoration: underline">parcourir</span>
+          {{ translate.or }}
+          <span style="color: var(--primary); text-decoration: underline">{{ translate.browse }}</span>
         </p>
       </div>
       <p class="text-xs" style="color: var(--text-light)">Max {{ maxSize }} MB · {{ accept }}</p>

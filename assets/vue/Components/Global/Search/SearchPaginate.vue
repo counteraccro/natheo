@@ -4,6 +4,7 @@
  * @version 1.0
  * Permet d'afficher la pagination pour la recherche
  */
+import { uiTrans } from '@/vue/Composables/Global/uiTranslate';
 
 export default {
   name: 'SearchPaginate',
@@ -21,6 +22,7 @@ export default {
     };
   },
   methods: {
+    uiTrans,
     getNbPage() {
       return Math.ceil(this.nbElementsTotal / this.cLimit);
     },
@@ -47,7 +49,7 @@ export default {
           class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-[var(--primary)] bg-white border border-e-0 border-[var(--primary-hover)] rounded-s-lg hover:bg-[var(--primary-hover)] hover:text-white dark:bg-[var(--btn-dark)]"
           :class="cPage === 1 ? 'disabled' : ''"
         >
-          <span class="sr-only">Previous</span>
+          <span class="sr-only">{{ uiTrans('first') }}</span>
           <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <path
               stroke="currentColor"
@@ -66,7 +68,7 @@ export default {
           class="no-control flex items-center justify-center px-3 h-8 leading-tight text-[var(--primary)] bg-white border border-[var(--primary-hover)] hover:bg-[var(--primary-hover)] hover:text-white dark:bg-[var(--btn-dark)]"
           :class="cPage === 1 ? 'disabled' : ''"
         >
-          <span class="sr-only">Previous</span>
+          <span class="sr-only">{{ uiTrans('previous') }}</span>
           <svg
             class="w-2.5 h-2.5 rtl:rotate-180"
             aria-hidden="true"
@@ -108,7 +110,7 @@ export default {
           class="no-control flex items-center justify-center px-3 h-8 leading-tight text-[var(--primary)] bg-white border border-[var(--primary-hover)] hover:bg-[var(--primary-hover)] hover:text-white dark:bg-[var(--btn-dark)]"
           :class="cPage === this.getNbPage() ? 'disabled' : ''"
         >
-          <span class="sr-only">Next</span>
+          <span class="sr-only">{{ uiTrans('next') }}</span>
           <svg
             class="w-2.5 h-2.5 rtl:rotate-180"
             aria-hidden="true"
@@ -133,7 +135,7 @@ export default {
           class="no-control flex items-center justify-center px-3 h-8 leading-tight rounded-e-lg text-[var(--primary)] bg-white border border-[var(--primary-hover)] hover:bg-[var(--primary-hover)] hover:text-white dark:bg-[var(--btn-dark)]"
           :class="cPage === this.getNbPage() ? 'disabled' : ''"
         >
-          <span class="sr-only">Next</span>
+          <span class="sr-only">{{ uiTrans('last') }}</span>
           <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <path
               stroke="currentColor"

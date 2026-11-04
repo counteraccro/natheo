@@ -221,6 +221,8 @@ class MediaTranslate extends AppTranslate
         return [
             'title' => $this->translator->trans('media.mediatheque.upload.title', domain: 'media'),
             'help' => $this->translator->trans('media.mediatheque.upload.help', domain: 'media'),
+            'or' => $this->translator->trans('media.mediatheque.upload.or', domain: 'media'),
+            'browse' => $this->translator->trans('media.mediatheque.upload.browse', domain: 'media'),
             'form_title' => $this->translator->trans('media.mediatheque.upload.form.title', domain: 'media'),
             'input_upload' => $this->translator->trans('media.mediatheque.upload.input.upload', domain: 'media'),
             'btn_close' => $this->translator->trans('media.mediatheque.upload.btn.close', domain: 'media'),

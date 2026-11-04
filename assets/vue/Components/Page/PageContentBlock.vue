@@ -174,14 +174,12 @@ export default defineComponent({
         renderBlock: this.renderBlockId,
         pageContentTranslations:
           this.idSelectContent === 1
-            ? this.locales.locales.map(
-                (locale): PageContentTranslationItem => ({
-                  id: null,
-                  pageContent: null,
-                  locale,
-                  text: `[${locale}] ${this.translate.page_content.page_content_block.default_text}`,
-                })
-              )
+            ? this.locales.locales.map((locale): PageContentTranslationItem => ({
+                id: null,
+                pageContent: null,
+                locale,
+                text: `[${locale}] ${this.translate.page_content.page_content_block.default_text}`,
+              }))
             : [],
       };
 
@@ -295,7 +293,9 @@ export default defineComponent({
             />
           </svg>
           <div>
-            <p class="text-sm font-semibold" style="color: var(--text-primary)">FAQ</p>
+            <p class="text-sm font-semibold" style="color: var(--text-primary)">
+              {{ translate.page_content.page_content_block.type_faq }}
+            </p>
             <p class="text-xs" style="color: var(--text-secondary)">
               {{ translate.page_content.page_content_block.faq_id }} : {{ blockContent!.typeId }}
             </p>
@@ -312,7 +312,9 @@ export default defineComponent({
             />
           </svg>
           <div>
-            <p class="text-sm font-semibold" style="color: var(--text-primary)">Listing</p>
+            <p class="text-sm font-semibold" style="color: var(--text-primary)">
+              {{ translate.page_content.page_content_block.type_listing }}
+            </p>
             <p class="text-xs" style="color: var(--text-secondary)">
               {{ translate.page_content.page_content_block.listing_id }} : {{ blockContent!.typeId }}
             </p>

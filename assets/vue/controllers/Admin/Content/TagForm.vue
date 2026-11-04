@@ -346,7 +346,7 @@ export default {
               />
             </div>
             <span v-if="this.msgErrorExa" class="form-text text-error">✗ {{ this.msgErrorExa }}</span>
-            <span v-else class="form-text">Choisissez une couleur pour identifier visuellement ce tag</span>
+            <span v-else class="form-text">{{ translate.formInputColorHelp }}</span>
           </div>
 
           <div class="w-3/12">

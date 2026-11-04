@@ -93,7 +93,7 @@ page.page_history.time: Date
 page.page_history.user: Origine
 page.page_history.action: Dernière
 page.page_history.error: 'Une erreur est survenue lors de la restauration des données'
-page.content.type.faq: Faq
+page.content.type.faq: 'FAQ'
 page.content.faq.list: 'Choisir une FAQ parmi la liste'
 page.content.faq.list.help: 'Seule les FAQs non désactivées sont listées'
 page.content.type.unknown: Inconnu
@@ -106,7 +106,7 @@ page.category.blog: Blog
 page.page_content.list_categories_label: 'Catégorie de la page'
 page.page_content.list_categories_help: 'Définie la catégorie de la page'
 page.category.evenement: Évènement
-page.content.type.listing: Listing
+page.content.type.listing: 'Listing'
 page.content.listing.list: 'Choisir quel type de listing vous voulez'
 page.content.listing.list.help: 'La page sera une liste paginée de page avec la catégorie choisie'
 page.content.type.listing.info: 'Listing des pages {type}'
@@ -183,3 +183,5 @@ page.error.landing.disabled: 'La landing page ne peut pas être désactivée. D�
 page.error.landing.not_publish: 'Seule une page publiée et active peut devenir la landing page.'
 page.error.landing.remove: 'Le site doit toujours avoir une landing page : définissez-en une autre depuis la liste des pages.'
 page.content.info.not_found: 'Contenu introuvable, il a peut-être été supprimé.'
+page.page_content_block.faq_id: 'Identifiant de la FAQ'
+page.page_content_block.listing_id: 'Identifiant de la catégorie'

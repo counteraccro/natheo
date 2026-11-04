@@ -7,6 +7,7 @@
 
 import { defineComponent, watch } from 'vue';
 import { Modal } from 'flowbite';
+import { uiTrans } from '@/vue/Composables/Global/uiTranslate';
 
 export default defineComponent({
   name: 'Modal',
@@ -70,6 +71,7 @@ export default defineComponent({
     );
   },
   methods: {
+    uiTrans,
     cleanBackdrops() {
       document
         .querySelectorAll('div.bg-gray-900\\/50.dark\\:bg-gray-900\\/80.fixed.inset-0.z-40')
@@ -116,7 +118,7 @@ export default defineComponent({
                 d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
               />
             </svg>
-            <span class="sr-only">Close modal</span>
+            <span class="sr-only">{{ uiTrans('close') }}</span>
           </button>
         </div>
         <div class="p-4 md:p-5 space-y-4">

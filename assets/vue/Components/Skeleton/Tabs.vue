@@ -4,8 +4,10 @@
  * @version 1.0
  * Skeleton d'un form
  */
+import { uiTrans } from '@/vue/Composables/Global/uiTranslate';
 export default {
   name: 'SkeletonTabs',
+  methods: { uiTrans },
   props: {},
   emits: [],
   data() {
@@ -213,6 +215,6 @@ export default {
       </div>
     </div>
 
-    <span class="sr-only">Chargement...</span>
+    <span class="sr-only">{{ uiTrans('loading') }}</span>
   </div>
 </template>

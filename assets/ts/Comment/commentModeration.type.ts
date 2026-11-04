@@ -40,6 +40,7 @@ export interface CommentModerationTranslate {
   comment_unselect_all: string;
   comment_select_all: string;
   statistiques: string;
+  comment_selected: string;
   status_short_validate: string;
   status_short_moderate: string;
   status_short_waiting: string;

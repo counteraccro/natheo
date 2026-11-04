@@ -476,7 +476,7 @@ export default defineComponent({
                 d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
               ></path>
             </svg>
-            <span class="hidden sm:inline">Trier par</span>
+            <span class="hidden sm:inline">{{ translate.btn_filtre }}</span>
             <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
             </svg>
@@ -578,7 +578,7 @@ export default defineComponent({
         <!-- Delete selected -->
         <button
           class="btn btn-xs btn-outline-danger p-2 relative"
-          title="Supprimer la sélection"
+          :title="translate.header_trash as string"
           @click="
             switchRender('trash');
             loadInTrash();

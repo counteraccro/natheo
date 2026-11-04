@@ -25,6 +25,8 @@ export interface PageContentBlockTranslate {
   default_text: string;
   faq_id: string;
   listing_id: string;
+  type_faq: string;
+  type_listing: string;
   modale_new_title: string;
   modale_new_choice_label: string;
   modale_new_choice_info: string;

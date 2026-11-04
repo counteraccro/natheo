@@ -28,3 +28,9 @@ global.header.theme: __global.header.theme
 global.header.dark.mode: __global.header.dark.mode
 global.modale.help.close: __global.modale.help.close
 global.error.csrf: __global.error.csrf
+global.a11y.close: 'Close'
+global.a11y.loading: 'Loading…'
+global.a11y.first: 'First page'
+global.a11y.previous: 'Previous page'
+global.a11y.next: 'Next page'
+global.a11y.last: 'Last page'
