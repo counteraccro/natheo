@@ -483,7 +483,7 @@ export default defineComponent({
           </button>
           <div
             id="sortDropdown"
-            class="z-50 dropdown-menu rounded-lg shadow-lg w-48 hidden"
+            class="z-50 rounded-lg shadow-lg w-48 hidden"
             data-popper-placement="bottom"
             style="
               background-color: var(--bg-card);
@@ -498,7 +498,7 @@ export default defineComponent({
             <a
               href="#"
               @click="changeFilter('created_at')"
-              class="dropdown-item flex items-center gap-2 px-4 py-2 text-sm"
+              class="flex items-center gap-2 px-4 py-2 text-sm"
               @mouseover="onMenuHover($event, 'var(--bg-hover)')"
               @mouseleave="onMenuHover($event, '')"
             >
@@ -517,7 +517,7 @@ export default defineComponent({
             <a
               href="#"
               @click="changeFilter('name')"
-              class="dropdown-item flex items-center gap-2 px-4 py-2 text-sm"
+              class="flex items-center gap-2 px-4 py-2 text-sm"
               @mouseover="onMenuHover($event, 'var(--bg-hover)')"
               @mouseleave="onMenuHover($event, '')"
             >
@@ -536,7 +536,7 @@ export default defineComponent({
             <a
               @click="changeFilter('type')"
               href="#"
-              class="dropdown-item flex items-center gap-2 px-4 py-2 text-sm"
+              class="flex items-center gap-2 px-4 py-2 text-sm"
               @mouseover="onMenuHover($event, 'var(--bg-hover)')"
               @mouseleave="onMenuHover($event, '')"
             >

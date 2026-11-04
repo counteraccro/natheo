@@ -8,4 +8,4 @@ import { startVueControllers } from './bootstrap';
 
 import 'flowbite';
 
-startVueControllers(import.meta.glob(['./vue/controllers/Admin/**/*.vue', './vue/controllers/Demo.vue']));
+startVueControllers(import.meta.glob('./vue/controllers/Admin/**/*.vue'));
