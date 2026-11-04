@@ -9,7 +9,7 @@ import SkeletonCardStat from '@/vue/Components/Skeleton/CardStat.vue';
 import SkeletonTabs from '@/vue/Components/Skeleton/Tabs.vue';
 import Notification from '@/vue/controllers/Admin/Notification/Notification.vue';
 import Modal from '@/vue/Components/Global/Modal.vue';
-import { toastSuccess, toastError } from '@/vue/Composables/Global/toast';
+import { toastSuccess, toastError, toastRequestError } from '@/vue/Composables/Global/toast';
 
 export default {
   name: 'NotificationList',
@@ -75,7 +75,7 @@ export default {
           this.stats.nb_total = response.data.nb_total;
         })
         .catch((error) => {
-          console.error(error);
+          toastRequestError(error);
         })
         .finally(() => {
           this.loadingStat = false;
@@ -98,7 +98,7 @@ export default {
           this.checkedAll = true;
         })
         .catch((error) => {
-          console.error(error);
+          toastRequestError(error);
         })
         .finally(() => {
           let element = document.getElementById('check-all');
@@ -156,7 +156,7 @@ export default {
           }
         })
         .catch((error) => {
-          console.error(error);
+          toastRequestError(error);
         })
         .finally(() => {
           this.loadStatistic();
@@ -189,7 +189,7 @@ export default {
             }
           })
           .catch((error) => {
-            console.error(error);
+            toastRequestError(error);
           })
           .finally(() => {
             this.loadStatistic();
@@ -213,7 +213,7 @@ export default {
           }
         })
         .catch((error) => {
-          console.error(error);
+          toastRequestError(error);
         })
         .finally(() => {
           this.loadStatistic();
@@ -227,7 +227,7 @@ export default {
         .post(this.urls.purge, {})
         .then((response) => {})
         .catch((error) => {
-          console.error(error);
+          toastRequestError(error);
         })
         .finally(() => {
           this.loadStatistic();
@@ -309,7 +309,7 @@ export default {
           }
         })
         .catch((error) => {
-          console.error(error);
+          toastRequestError(error);
         })
         .finally(() => {});
     },

@@ -25,7 +25,7 @@ import type {
   GenericGridResponse,
   GenericGridTranslate,
 } from '@/ts/Grid/GenericGrid.type';
-import { toastSuccess, toastError } from '@/vue/Composables/Global/toast';
+import { toastSuccess, toastError, toastRequestError } from '@/vue/Composables/Global/toast';
 
 export default defineComponent({
   name: 'GenericGrid',
@@ -145,7 +145,7 @@ export default defineComponent({
           }
         })
         .catch((error: unknown) => {
-          console.error(error);
+          toastRequestError(error);
         })
         .finally(() => (this.loading = false));
     },
@@ -345,7 +345,7 @@ export default defineComponent({
           }
         })
         .catch((error: unknown) => {
-          console.error(error);
+          toastRequestError(error);
         })
         .finally(() => {
           this.loading = false;

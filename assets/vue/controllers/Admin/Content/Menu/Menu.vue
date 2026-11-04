@@ -15,7 +15,7 @@ import { emitter } from '@/vue/Composables/Global/useEvent';
 import MenuHeader from '@/vue/Components/Menu/MenuType/MenuHeader.vue';
 import MenuFooter from '@/vue/Components/Menu/MenuType/MenuFooter.vue';
 import MenuLeftRight from '@/vue/Components/Menu/MenuType/MenuLeftRight.vue';
-import { toastSuccess, toastError } from '@/vue/Composables/Global/toast';
+import { toastSuccess, toastError, toastRequestError } from '@/vue/Composables/Global/toast';
 
 export default defineComponent({
   name: 'Menu',
@@ -120,7 +120,7 @@ export default defineComponent({
           }
         })
         .catch((error) => {
-          console.error(error);
+          toastRequestError(error);
         })
         .finally(() => {
           this.loading = false;

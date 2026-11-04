@@ -14,6 +14,7 @@ import type {
   LoadBlockDashboardResponse,
   Page,
 } from '@/ts/Dashboard/BlockLastPage.type';
+import { toastRequestError } from '@/vue/Composables/Global/toast';
 
 export default defineComponent({
   name: 'BlockLastPage',
@@ -54,7 +55,7 @@ export default defineComponent({
           }
         })
         .catch((error) => {
-          console.error(error);
+          toastRequestError(error);
         })
         .finally(() => {
           this.loading = false;

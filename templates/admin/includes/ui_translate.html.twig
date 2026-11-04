@@ -1,4 +1,4 @@
-{# Libellés d'accessibilité des composants Vue génériques, lus par assets/vue/Composables/Global/uiTranslate.ts #}
+{# Libellés communs des composants Vue génériques (accessibilité, erreur générique), lus par assets/vue/Composables/Global/uiTranslate.ts #}
 <script type="application/json" id="ui-translate">
     {{- {
         'close': 'global.a11y.close' | trans({}, 'global'),
@@ -7,5 +7,6 @@
         'previous': 'global.a11y.previous' | trans({}, 'global'),
         'next': 'global.a11y.next' | trans({}, 'global'),
         'last': 'global.a11y.last' | trans({}, 'global'),
+        'error': 'global.error.generic' | trans({}, 'global'),
     } | json_encode(constant('JSON_HEX_TAG') b-or constant('JSON_UNESCAPED_UNICODE')) | raw -}}
 </script>

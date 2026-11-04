@@ -7,6 +7,7 @@
 import { defineComponent, PropType } from 'vue';
 import { Locales, Page, PageData, PageTranslationItem, PageTranslations, Urls } from '@/ts/Page/Page.type';
 import axios from 'axios';
+import { toastRequestError } from '@/vue/Composables/Global/toast';
 
 type PageContentFieldErrors = {
   titre: string;
@@ -227,7 +228,7 @@ export default defineComponent({
           this.urlUniqueCheckResult[locale] = response.data.is_unique;
         })
         .catch((error) => {
-          console.error(error);
+          toastRequestError(error);
         })
         .finally(() => {
           this.urlCheckPending[locale] = false;

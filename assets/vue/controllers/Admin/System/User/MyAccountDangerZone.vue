@@ -7,6 +7,7 @@
 
 import axios from 'axios';
 import Modal from '@/vue/Components/Global/Modal.vue';
+import { toastRequestError } from '@/vue/Composables/Global/toast';
 
 export default {
   name: 'MyAccountDangerZone',
@@ -52,7 +53,7 @@ export default {
             this.url_reload = response.data.redirect;
           })
           .catch((error) => {
-            console.error(error);
+            toastRequestError(error);
           })
           .finally(() => {
             setTimeout(() => {
@@ -77,7 +78,7 @@ export default {
             this.url_reload = response.data.redirect;
           })
           .catch((error) => {
-            console.error(error);
+            toastRequestError(error);
           })
           .finally(() => {
             setTimeout(() => {

@@ -9,7 +9,7 @@ import { MediaItem } from '@/ts/Mediatheque/Mediatheque.type';
 import AlertWarning from '@/vue/Components/Alert/Warning.vue';
 import axios from 'axios';
 import translate from '@/vue/controllers/Admin/System/Translate.vue';
-import { toastSuccess, toastError } from '@/vue/Composables/Global/toast';
+import { toastSuccess, toastError, toastRequestError } from '@/vue/Composables/Global/toast';
 
 type TranslateRecord = { [key: string]: string | TranslateRecord };
 
@@ -87,7 +87,7 @@ export default defineComponent({
           this.save = true;
         })
         .catch((error) => {
-          console.error(error);
+          toastRequestError(error);
         })
         .finally(() => {
           setTimeout(() => {
@@ -116,7 +116,7 @@ export default defineComponent({
           }
         })
         .catch((error) => {
-          console.error(error);
+          toastRequestError(error);
         })
         .finally(() => {
           setTimeout(() => {

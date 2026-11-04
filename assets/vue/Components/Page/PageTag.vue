@@ -9,6 +9,7 @@ import { defineComponent, PropType } from 'vue';
 import { Locales, Page, Tag, PageTranslations, Urls, TagSuggestion } from '@/ts/Page/Page.type';
 import axios from 'axios';
 import { withCsrf } from '@/vue/Composables/Admin/csrf';
+import { toastRequestError } from '@/vue/Composables/Global/toast';
 
 export default defineComponent({
   name: 'PageTag',
@@ -123,7 +124,7 @@ export default defineComponent({
           }
         })
         .catch((error) => {
-          console.error(error);
+          toastRequestError(error);
         });
     },
     addTag(tag: Tag) {

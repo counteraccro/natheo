@@ -21,7 +21,7 @@ import type {
   UpdateModerationResponse,
 } from '@/ts/Comment/CommentModeration.type';
 import SkeletonCommentModeration from '@/vue/Components/Skeleton/CommentModeration.vue';
-import { toastSuccess, toastError } from '@/vue/Composables/Global/toast';
+import { toastSuccess, toastError, toastRequestError } from '@/vue/Composables/Global/toast';
 
 export default defineComponent({
   name: 'CommentModeration',
@@ -92,7 +92,7 @@ export default defineComponent({
           this.result = response.data;
         })
         .catch((error) => {
-          console.error(error);
+          toastRequestError(error);
         })
         .finally(() => {
           this.loading = false;

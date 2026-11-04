@@ -10,7 +10,7 @@ import { withCsrf } from '@/vue/Composables/Admin/csrf';
 import { emitter } from '@/vue/Composables/Global/useEvent';
 import SkeletonForm from '@/vue/Components/Skeleton/Form.vue';
 import Modal from '@/vue/Components/Global/Modal.vue';
-import { toastSuccess, toastError } from '@/vue/Composables/Global/toast';
+import { toastSuccess, toastError, toastRequestError } from '@/vue/Composables/Global/toast';
 
 export default {
   name: 'TagForm',
@@ -100,7 +100,7 @@ export default {
           this.templateStat = response.data;
         })
         .catch((error) => {
-          console.error(error);
+          toastRequestError(error);
         })
         .finally(() => {});
     },

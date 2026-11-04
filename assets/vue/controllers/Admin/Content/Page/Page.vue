@@ -37,7 +37,7 @@ import AlertWarning from '@/vue/Components/Alert/Warning.vue';
 import AlertInfo from '@/vue/Components/Alert/Info.vue';
 import translate from '@/vue/controllers/Admin/System/Translate.vue';
 import AlertPrimary from '@/vue/Components/Alert/Primary.vue';
-import { toastSuccess, toastError } from '@/vue/Composables/Global/toast';
+import { toastSuccess, toastError, toastRequestError } from '@/vue/Composables/Global/toast';
 
 export default defineComponent({
   name: 'Page',
@@ -154,7 +154,7 @@ export default defineComponent({
           this.history = response.data.history;
         })
         .catch((error) => {
-          console.error(error);
+          toastRequestError(error);
         })
         .finally(() => {
           this.loading = false;

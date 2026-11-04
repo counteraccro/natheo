@@ -26,7 +26,7 @@ import type {
 import type { ListDumpItem } from '@/ts/DatabaseManager/ListDump.type';
 import type { SchemaDatabaseData } from '@/ts/DatabaseManager/SchemaDatabase.type';
 import type { SchemaTableData } from '@/ts/DatabaseManager/SchemaTable.type';
-import { toastSuccess, toastError } from '@/vue/Composables/Global/toast';
+import { toastSuccess, toastError, toastRequestError } from '@/vue/Composables/Global/toast';
 
 export default defineComponent({
   name: 'DatabaseManager',
@@ -117,7 +117,7 @@ export default defineComponent({
           }
         })
         .catch((error) => {
-          console.error(error);
+          toastRequestError(error);
         });
     },
 
@@ -140,7 +140,7 @@ export default defineComponent({
           this.schemaTableName = response.data.result.table;
         })
         .catch((error) => {
-          console.error(error);
+          toastRequestError(error);
         })
         .finally(() => {
           this.loading = false;
@@ -157,7 +157,7 @@ export default defineComponent({
           this.listDump = response.data.result;
         })
         .catch((error) => {
-          console.error(error);
+          toastRequestError(error);
         });
     },
 
@@ -171,7 +171,7 @@ export default defineComponent({
           this.tables = response.data.tables;
         })
         .catch((error) => {
-          console.error(error);
+          toastRequestError(error);
         });
     },
 

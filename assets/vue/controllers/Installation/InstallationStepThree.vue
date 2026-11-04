@@ -21,6 +21,7 @@ import type {
 } from '@/ts/Installation/InstallationStepThree.type';
 import axios, { AxiosError } from 'axios';
 import SkeletonInstallationStepThree from '@/vue/Components/Skeleton/Installation/InstallationStepThree.vue';
+import { toastRequestError } from '@/vue/Composables/Global/toast';
 
 export default defineComponent({
   name: 'InstallationStepThree',
@@ -148,7 +149,7 @@ export default defineComponent({
           this.userSuccess = response.data.success;
         })
         .catch((error: AxiosError) => {
-          console.error(error);
+          toastRequestError(error);
         })
         .finally(() => {
           this.userCreating = false;

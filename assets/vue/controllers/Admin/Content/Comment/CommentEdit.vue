@@ -18,7 +18,7 @@ import {
   SaveCommentResponse,
 } from '@/ts/Comment/CommentEdit.type';
 import SkeletonCommentEdit from '@/vue/Components/Skeleton/CommentEdit.vue';
-import { toastSuccess, toastError } from '@/vue/Composables/Global/toast';
+import { toastSuccess, toastError, toastRequestError } from '@/vue/Composables/Global/toast';
 
 export default defineComponent({
   name: 'CommentEdit',
@@ -69,7 +69,7 @@ export default defineComponent({
           this.comment = response.data.comment;
         })
         .catch((error: unknown) => {
-          console.error(error);
+          toastRequestError(error);
         })
         .finally(() => {
           this.loading = false;

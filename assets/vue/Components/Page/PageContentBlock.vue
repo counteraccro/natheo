@@ -12,6 +12,7 @@ import {
 import axios from 'axios';
 import MarkdownEditor from '@/vue/Components/Global/MarkdownEditor/MarkdownEditor.vue';
 import Modal from '@/vue/Components/Global/Modal.vue';
+import { toastRequestError } from '@/vue/Composables/Global/toast';
 
 interface ContentType {
   list: Record<string, string>;
@@ -156,7 +157,7 @@ export default defineComponent({
           this.idSelectTypeContent = response.data.selected;
         })
         .catch((error) => {
-          console.error(error);
+          toastRequestError(error);
         })
         .finally(() => {
           this.loading = false;

@@ -17,7 +17,7 @@ import MediaEdit from '@/vue/Components/Mediatheque/MediaEdit.vue';
 import MediaMove from '@/vue/Components/Mediatheque/MediaMove.vue';
 import MediaNew from '@/vue/Components/Mediatheque/MediaNew.vue';
 import MediasTrash from '@/vue/Components/Mediatheque/MediasTrash.vue';
-import { toastSuccess, toastError } from '@/vue/Composables/Global/toast';
+import { toastSuccess, toastError, toastRequestError } from '@/vue/Composables/Global/toast';
 
 export default defineComponent({
   name: 'Mediatheque',
@@ -150,7 +150,7 @@ export default defineComponent({
           this.nbTrash = response.data.nb;
         })
         .catch((error) => {
-          console.error(error);
+          toastRequestError(error);
         })
         .finally(() => {});
     },

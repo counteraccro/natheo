@@ -9,6 +9,7 @@ import { defineComponent, PropType } from 'vue';
 import { PageHistoryEntry, PageHistoryTranslate, Urls } from '@/ts/Page/Page.type';
 import axios from 'axios';
 import SkeletonPageHistory from '@/vue/Components/Skeleton/Page/PageHistory.vue';
+import { toastRequestError } from '@/vue/Composables/Global/toast';
 
 export default defineComponent({
   name: 'PageHistory',
@@ -84,7 +85,7 @@ export default defineComponent({
           this.history = response.data.history;
         })
         .catch((error) => {
-          console.error(error);
+          toastRequestError(error);
         })
         .finally(() => {
           this.loading = false;
@@ -107,7 +108,7 @@ export default defineComponent({
           this.$emit('restore-history', response.data.page, response.data.msg);
         })
         .catch((error) => {
-          console.error(error);
+          toastRequestError(error);
         })
         .finally(() => {
           this.loading = false;

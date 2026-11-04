@@ -24,7 +24,7 @@ import { EditorModule } from '@/ts/MarkdownEditor/MarkdownEditor.type';
 import { InternalLinkModule } from '@/ts/MarkdownEditor/modules/internalLink';
 import Modal from '@/vue/Components/Global/Modal.vue';
 import { MediaModule } from '@/ts/MarkdownEditor/modules/Mediatheque';
-import { toastSuccess, toastError } from '@/vue/Composables/Global/toast';
+import { toastSuccess, toastError, toastRequestError } from '@/vue/Composables/Global/toast';
 
 type TranslateRecord = { [key: string]: string | TranslateRecord };
 
@@ -126,7 +126,7 @@ export default defineComponent({
           this.loadDraggableCategories();
         })
         .catch((error) => {
-          console.error(error);
+          toastRequestError(error);
         })
         .finally(() => {});
     },

@@ -6,7 +6,7 @@
  */
 
 import axios from 'axios';
-import { toastSuccess, toastError } from '@/vue/Composables/Global/toast';
+import { toastSuccess, toastError, toastRequestError } from '@/vue/Composables/Global/toast';
 
 export default {
   name: 'MyAccountMoreOptions',
@@ -42,7 +42,7 @@ export default {
           (response.data.success ? toastSuccess : toastError)(response.data.msg);
         })
         .catch((error) => {
-          console.error(error);
+          toastRequestError(error);
         })
         .finally(() => {
           this.loading = false;

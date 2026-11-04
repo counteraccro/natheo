@@ -21,7 +21,7 @@ import type {
 } from '@/ts/Installation/InstallationStepOne.type';
 import axios, { AxiosError } from 'axios';
 import SkeletonInstallationStepOne from '@/vue/Components/Skeleton/Installation/InstallationStepOne.vue';
-import { toastSuccess } from '@/vue/Composables/Global/toast';
+import { toastSuccess, toastRequestError } from '@/vue/Composables/Global/toast';
 
 export default defineComponent({
   name: 'InstallationStepOne',
@@ -129,7 +129,7 @@ export default defineComponent({
           }
         })
         .catch((error: AxiosError) => {
-          console.error(error);
+          toastRequestError(error);
         })
         .finally(() => {
           this.loading = false;

@@ -16,6 +16,7 @@ import type {
   GlobalSearchPaginate,
   GlobalSearchResponse,
 } from '@/ts/Global/GlobalSearch.type';
+import { toastRequestError } from '@/vue/Composables/Global/toast';
 
 export default defineComponent({
   name: 'GlobalSearch',
@@ -114,7 +115,7 @@ export default defineComponent({
           }
         })
         .catch((error) => {
-          console.error(error);
+          toastRequestError(error);
         })
         .finally(() => {
           this.loading[entity] = false;
