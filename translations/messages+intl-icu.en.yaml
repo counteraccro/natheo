@@ -258,7 +258,8 @@ options_system.front_robot_no_index_help: "__Si cette option est activé, les mo
 options_system.front_robot_no_follow: '__Bloquer le suivi des liens de votre site pour les moteurs de recherches'
 options_system.front_robot_no_follow_help: '__Si cette option est activé, les moteurs de recherches ne suivrons pas les liens dans les pages de votre site'
 key_separator: '__séparateur artificiel pour séparer translate generate auto (sous cette ligne) et autre-------------------------------------------------------------------------------'
-pagedemo.page_title_h1: __pagedemo.page_title_h1
+pagedemo.page_title_h1: 'Original page of the overwrite demo'
+pagedemo.description: 'This page is only displayed if the overwrite of the {route} route is disabled in {file}. It is the original page of the overwrite example.'
 date.diff.start: "__Il y'a"
 date.diff.year: "{years, plural,\n    =1    {__année}\n    other {__années}\n}"
 date.diff.month: __mois

@@ -461,7 +461,23 @@ export default defineComponent({
     :option-modal-backdrop="'static'"
     :option-show-close-btn="false"
   >
-    <template #title> <i class="bi bi-exclamation-circle-fill"></i> {{ modalConfirm.title }} </template>
+    <template #title>
+      <svg
+        class="inline-block w-5 h-5 align-text-bottom"
+        aria-hidden="true"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+        />
+      </svg>
+      {{ modalConfirm.title }}
+    </template>
     <template #body>
       <p class="text-sm text-(--text-secondary)">{{ modalConfirm.text_1 }}</p>
       <p class="text-sm text-(--text-secondary)">
