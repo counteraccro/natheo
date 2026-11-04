@@ -7,12 +7,10 @@
 import { defineComponent, PropType } from 'vue';
 import axios from 'axios';
 import { withCsrf } from '@/vue/Composables/Admin/csrf';
-import Toast from '../../../../Components/Global/Toast.vue';
 import Modal from '../../../../Components/Global/Modal.vue';
 import AlertWarning from '@/vue/Components/Alert/Warning.vue';
 import SkeletonText from '@/vue/Components/Skeleton/Text.vue';
 import AlertDanger from '@/vue/Components/Alert/Danger.vue';
-import { Toasts } from '@/ts/Toast/Toast.type';
 import type {
   AdvancedOptionsUrls,
   AdvancedOptionsCsrfTokens,
@@ -22,6 +20,7 @@ import type {
   AdvancedOptionsModalConfirm,
   AdvancedOptionsResponse,
 } from '@/ts/AdvancedOptions/AdvancedOptions.type';
+import { toastError } from '@/vue/Composables/Global/toast';
 
 export default defineComponent({
   name: 'AdvancedOptions',
@@ -30,7 +29,6 @@ export default defineComponent({
     SkeletonText,
     AlertWarning,
     Modal,
-    Toast,
   },
   props: {
     urls: {
@@ -66,12 +64,6 @@ export default defineComponent({
       modalTab: {
         modaleConfirm: false,
       } as Record<string, boolean>,
-      toasts: {
-        toastError: {
-          show: false,
-          msg: '',
-        },
-      } as Toasts,
     };
   },
   methods: {
@@ -147,8 +139,7 @@ export default defineComponent({
     showError(msg?: string) {
       this.loading = false;
       this.msgInfo = '';
-      this.toasts.toastError.msg = msg || this.translate.error_generic;
-      this.toasts.toastError.show = true;
+      toastError(msg || this.translate.error_generic);
     },
 
     /**
@@ -222,14 +213,6 @@ export default defineComponent({
     },
 
     /**
-     * Ferme un toast en fonction de son id
-     * @param nameToast
-     */
-    closeToast(nameToast: string) {
-      this.toasts[nameToast].show = false;
-    },
-
-    /**
      * Met à jour le status d'une modale défini par son id et son état
      * @param nameModale
      * @param state true|false
@@ -254,7 +237,7 @@ export default defineComponent({
     <div class="card rounded-lg p-6 mb-4 mt-4">
       <p class="text-sm font-semibold mb-1 text-(--text-primary)">{{ translate.msg_info.title }}</p>
       <p class="text-sm mb-4 text-(--text-secondary)">{{ msgInfo }}</p>
-      <skeleton-text />
+      <SkeletonText />
     </div>
   </div>
   <div v-else>
@@ -296,7 +279,7 @@ export default defineComponent({
               <li>{{ translate.switch_env_define_dev_4 }}</li>
             </ul>
 
-            <alert-warning type="alert-warning-light" :text="translate.switch_env_define_dev_warning" class="mt-5" />
+            <AlertWarning type="alert-warning-light" :text="translate.switch_env_define_dev_warning" class="mt-5" />
           </div>
           <div v-else>
             <p class="mb-2">{{ translate.switch_env_define_prod }}</p>
@@ -306,7 +289,7 @@ export default defineComponent({
               <li>{{ translate.switch_env_define_prod_3 }}</li>
             </ul>
 
-            <alert-warning type="alert-warning-light" :text="translate.switch_env_define_prod_warning" class="mt-5" />
+            <AlertWarning type="alert-warning-light" :text="translate.switch_env_define_prod_warning" class="mt-5" />
           </div>
         </div>
 
@@ -341,7 +324,7 @@ export default defineComponent({
   <div v-if="isDebug()">
     <div v-if="loading">
       <div class="card rounded-lg p-6 mb-4 mt-4">
-        <skeleton-text />
+        <SkeletonText />
       </div>
     </div>
     <div v-else>
@@ -378,7 +361,7 @@ export default defineComponent({
           </div>
         </div>
         <div class="p-5">
-          <alert-danger type="alert-danger-light" :text="translate.warning_danger_zone" />
+          <AlertDanger type="alert-danger-light" :text="translate.warning_danger_zone" />
 
           <div class="mb-6 pb-6 border-b-1 border-b-(--border-color)">
             <h4 class="text-base font-semibold mb-2 mt-4 text-(--text-primary)">
@@ -530,11 +513,4 @@ export default defineComponent({
   </modal>
   <!-- fin modale confirmation suppression -->
   <!-- toast -->
-  <div class="toast-container position-fixed top-0 end-0 p-2">
-    <toast :id="'toastError'" :type="'danger'" :show="toasts.toastError.show" @close-toast="closeToast">
-      <template #body>
-        <div class="whitespace-pre-line">{{ toasts.toastError.msg }}</div>
-      </template>
-    </toast>
-  </div>
 </template>

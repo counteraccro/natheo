@@ -8,6 +8,7 @@ import {
 } from '@/ts/Dashboard/DashboardStatistics.type';
 import type { DashboardRoles } from '@/ts/Dashboard/Dashboard.type';
 import axios from 'axios';
+import { toastRequestError } from '@/vue/Composables/Global/toast';
 
 export default defineComponent({
   name: 'DashboardStatistiques',
@@ -50,7 +51,7 @@ export default defineComponent({
           this.stats = response.data;
         })
         .catch((error) => {
-          console.error(error);
+          toastRequestError(error);
         })
         .finally(() => {
           this.loading = false;

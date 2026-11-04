@@ -37,8 +37,8 @@ export default defineComponent({
 
 <template>
   <!-- Nouvelle FAQ -->
-  <new-faq v-if="id === null" :translate="getSubTranslate('newFaq')" :urls="urls" :csrf_token="csrf_tokens.new" />
-  <edit-faq
+  <NewFaq v-if="id === null" :translate="getSubTranslate('newFaq')" :urls="urls" :csrf_token="csrf_tokens.new" />
+  <EditFaq
     v-else
     :translate="getSubTranslate('editFaq')"
     :locales="locales"

@@ -1,20 +1,13 @@
-<script>
+<script lang="ts">
 /**
  * @author Gourdon Aymeric
  * @version 1.0
  * Skeleton d'un form
  */
-export default {
+import { defineComponent } from 'vue';
+export default defineComponent({
   name: 'SkeletonArchitectureMenu',
-  props: {},
-  emits: [],
-  data() {
-    return {};
-  },
-  mounted() {},
-
-  methods: {},
-};
+});
 </script>
 
 <template>

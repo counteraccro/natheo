@@ -8,13 +8,11 @@
 import { defineComponent, type PropType } from 'vue';
 import axios from 'axios';
 import { withCsrf } from '@/vue/Composables/Admin/csrf';
-import Toast from '@/vue/Components/Global/Toast.vue';
 import Modal from '@/vue/Components/Global/Modal.vue';
 import { copyToClipboard } from '@/vue/Composables/Global/copyToClipboard';
 import { emitter } from '@/vue/Composables/Global/useEvent';
 import SkeletonForm from '@/vue/Components/Skeleton/Form.vue';
 import AlertWarning from '@/vue/Components/Alert/Warning.vue';
-import type { Toasts } from '@/ts/Toast/Toast.type';
 import type {
   ApiToken,
   ApiTokenAjaxResponse,
@@ -25,6 +23,7 @@ import type {
   ApiTokenUrls,
   ApiTokenValidation,
 } from '@/ts/ApiToken/ApiToken.type';
+import { toastSuccess, toastError } from '@/vue/Composables/Global/toast';
 
 export default defineComponent({
   name: 'ApiToken',
@@ -32,7 +31,6 @@ export default defineComponent({
     AlertWarning,
     SkeletonForm,
     Modal,
-    Toast,
   },
   props: {
     translate: { type: Object as PropType<ApiTokenTranslate>, required: true },
@@ -57,10 +55,6 @@ export default defineComponent({
           msg: '',
         },
       } as ApiTokenValidation,
-      toasts: {
-        toastSuccess: { show: false, msg: '' },
-        toastError: { show: false, msg: '' },
-      } as Toasts,
     };
   },
   methods: {
@@ -90,8 +84,7 @@ export default defineComponent({
      */
     copyToken(): void {
       copyToClipboard(this.plainToken).then(() => {
-        this.toasts.toastSuccess.show = true;
-        this.toasts.toastSuccess.msg = this.translate.token_copy_success;
+        toastSuccess(this.translate.token_copy_success);
       });
     },
 
@@ -166,9 +159,7 @@ export default defineComponent({
      * @param data
      */
     showResponseToast(data: ApiTokenAjaxResponse): void {
-      const toast = data.success ? this.toasts.toastSuccess : this.toasts.toastError;
-      toast.msg = data.msg;
-      toast.show = true;
+      (data.success ? toastSuccess : toastError)(data.msg);
     },
 
     /**
@@ -208,14 +199,6 @@ export default defineComponent({
     },
 
     /**
-     * Ferme le toast défini par nameToast
-     * @param nameToast
-     */
-    closeToast(nameToast: string): void {
-      this.toasts[nameToast].show = false;
-    },
-
-    /**
      * Ferme la modale
      */
     hideModal(): void {
@@ -230,7 +213,7 @@ export default defineComponent({
 <template>
   <div class="card mb-4">
     <div v-if="loading">
-      <skeleton-form />
+      <SkeletonForm />
     </div>
     <div class="card-header">
       <div>
@@ -325,7 +308,7 @@ export default defineComponent({
             {{ translate.btn_copy_past }}
           </button>
         </div>
-        <alert-warning type="alert-warning-light" :text="translate.token_once_warning" class="mt-3" />
+        <AlertWarning type="alert-warning-light" :text="translate.token_once_warning" class="mt-3" />
       </div>
       <div v-else-if="apiToken.id !== null">
         <div class="form-text">{{ translate.token_hidden }}</div>
@@ -668,18 +651,4 @@ export default defineComponent({
       </button>
     </template>
   </modal>
-
-  <div class="toast-container position-fixed top-0 end-0 p-2">
-    <toast :id="'toastSuccess'" :show="toasts.toastSuccess.show" @close-toast="closeToast('toastSuccess')">
-      <template #body>
-        <div v-html="toasts.toastSuccess.msg"></div>
-      </template>
-    </toast>
-
-    <toast :id="'toastError'" :type="'danger'" :show="toasts.toastError.show" @close-toast="closeToast('toastError')">
-      <template #body>
-        <div v-html="toasts.toastError.msg"></div>
-      </template>
-    </toast>
-  </div>
 </template>

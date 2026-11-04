@@ -1,36 +1,40 @@
-<script>
+<script lang="ts">
 /**
  * Affiche le résultat de la recherche
  * @author Gourdon Aymeric
  * @version 2.0
  */
-import SearchPaginate from './SearchPaginate.vue';
+import { defineComponent, type PropType } from 'vue';
+import GridPaginate from '@/vue/Components/Grid/GridPaginate.vue';
+import type {
+  GlobalSearchEntity,
+  GlobalSearchPaginate,
+  GlobalSearchResult,
+  GlobalSearchTranslateOnglet,
+  GlobalSearchTranslatePaginate,
+} from '@/ts/Global/GlobalSearch.type';
 
-export default {
+export default defineComponent({
   name: 'TabSearchResult',
-  components: { SearchPaginate },
+  components: { GridPaginate },
   props: {
-    result: Object,
-    paginate: Object,
-    translate: Object,
-    translatePaginate: Object,
-    entity: String,
+    result: { type: Object as PropType<GlobalSearchResult>, required: true },
+    paginate: { type: Object as PropType<GlobalSearchPaginate>, required: true },
+    translate: { type: Object as PropType<GlobalSearchTranslateOnglet>, required: true },
+    translatePaginate: { type: Object as PropType<GlobalSearchTranslatePaginate>, required: true },
+    entity: { type: String as PropType<GlobalSearchEntity>, required: true },
   },
   emits: ['change-page-event'],
-  data() {
-    return {};
-  },
-  mounted() {},
   methods: {
-    changePageEvent(page, limit) {
+    changePageEvent(page: number, limit: number): void {
       this.$emit('change-page-event', this.entity, page, limit);
     },
   },
-};
+});
 </script>
 
 <template>
-  <div v-for="row in this.result.elements" class="card rounded-lg flex mb-3 p-6 gap-2.5">
+  <div v-for="row in result.elements" class="card rounded-lg flex mb-3 p-6 gap-2.5">
     <div class="w-32">
       <img v-if="row.img" :src="row.img" class="max-w-xs h-20 aspect-3/2 object-cover rounded" alt="" />
       <div
@@ -59,7 +63,7 @@ export default {
     <div>
       <h3 class="text-lg font-semibold mb-0.5 text-[var(--text-primary)]" v-html="row.label"></h3>
       <p v-if="row.contents[0]" class="text-sm text-[var(--text-secondary)] font-bold">
-        {{ this.translate.content }}
+        {{ translate.content }}
       </p>
       <p
         v-if="row.contents[0]"
@@ -85,14 +89,14 @@ export default {
         </svg>
         <span v-html="content"></span>
       </p>
-      <p v-else-if="this.translate.noResultContent" class="text-sm text-[var(--text-secondary)]">
-        {{ this.translate.noResultContent }}
+      <p v-else-if="translate.noResultContent" class="text-sm text-[var(--text-secondary)]">
+        {{ translate.noResultContent }}
       </p>
 
       <p class="text-[var(--text-light)] flex gap-2.5 mt-4 text-xs">
-        <span>{{ this.translate.create }} {{ row.date.create }} </span>
-        <span>{{ this.translate.update }} {{ row.date.update }}</span>
-        <span v-if="row.author"> {{ this.translate.author }} <span v-html="row.author"></span></span>
+        <span>{{ translate.create }} {{ row.date.create }} </span>
+        <span>{{ translate.update }} {{ row.date.update }}</span>
+        <span v-if="row.author"> {{ translate.author }} <span v-html="row.author"></span></span>
       </p>
     </div>
     <div class="ml-auto">
@@ -124,12 +128,12 @@ export default {
     </div>
   </div>
 
-  <search-paginate
-    :nb-elements="this.paginate.limit"
-    :current-page="this.paginate.current"
-    :nb-elements-total="this.result.total"
-    :translate="this.translatePaginate"
+  <GridPaginate
+    :nb-elements="paginate.limit"
+    :current-page="paginate.current"
+    :nb-elements-total="result.total"
+    :translate="translatePaginate"
     @change-page-event="changePageEvent"
   >
-  </search-paginate>
+  </GridPaginate>
 </template>

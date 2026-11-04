@@ -42,18 +42,6 @@ export interface SaveCommentResponse {
   msg: string;
 }
 
-/** Structure d'un toast */
-export interface ToastState {
-  show: boolean;
-  msg: string;
-}
-
-/** Ensemble des toasts du composant */
-export interface Toasts {
-  success: ToastState;
-  error: ToastState;
-}
-
 /** URLs passées en props */
 export interface Urls {
   load_comment: string;

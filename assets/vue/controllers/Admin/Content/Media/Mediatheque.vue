@@ -15,10 +15,9 @@ import MediaInfo from '@/vue/Components/Mediatheque/MediaInfo.vue';
 import { MediaItem, TranslateRecord, TranslateWithGenericError } from '@/ts/Mediatheque/Mediatheque.type';
 import MediaEdit from '@/vue/Components/Mediatheque/MediaEdit.vue';
 import MediaMove from '@/vue/Components/Mediatheque/MediaMove.vue';
-import Toast from '@/vue/Components/Global/Toast.vue';
-import { Toasts } from '@/ts/Toast/Toast.type';
 import MediaNew from '@/vue/Components/Mediatheque/MediaNew.vue';
 import MediasTrash from '@/vue/Components/Mediatheque/MediasTrash.vue';
+import { toastSuccess, toastError, toastRequestError } from '@/vue/Composables/Global/toast';
 
 export default defineComponent({
   name: 'Mediatheque',
@@ -26,7 +25,6 @@ export default defineComponent({
   components: {
     MediasTrash,
     MediaNew,
-    Toast,
     MediaMove,
     MediaEdit,
     MediaInfo,
@@ -77,16 +75,6 @@ export default defineComponent({
       nbTrash: 0,
       mediasTrash: [],
       key: 0,
-      toasts: {
-        success: {
-          show: false,
-          msg: '',
-        },
-        error: {
-          show: false,
-          msg: '',
-        },
-      } as Toasts,
     };
   },
 
@@ -162,7 +150,7 @@ export default defineComponent({
           this.nbTrash = response.data.nb;
         })
         .catch((error) => {
-          console.error(error);
+          toastRequestError(error);
         })
         .finally(() => {});
     },
@@ -178,12 +166,7 @@ export default defineComponent({
           type: type,
         })
         .then(() => {
-          this.toasts.success.show = true;
-          if (trash) {
-            this.toasts.success.msg = this.translate.success_add_trash as string;
-          } else {
-            this.toasts.success.msg = this.translate.success_remove_trash as string;
-          }
+          toastSuccess((trash ? this.translate.success_add_trash : this.translate.success_remove_trash) as string);
         })
         .catch((error) => {
           console.error(error);
@@ -305,9 +288,7 @@ export default defineComponent({
           type: type,
         })
         .then(() => {
-          this.toasts.success.show = true;
-          // @ts-expect-error
-          this.toasts.success.msg = this.translate.remove.success as string;
+          toastSuccess((this.translate.remove as TranslateRecord).success as string);
         })
         .catch((error) => {
           console.error(error);
@@ -332,26 +313,17 @@ export default defineComponent({
     },
 
     /**
-     * Ferme le toast défini par nameToast
-     * @param nameToast
-     */
-    closeToast(nameToast: string): void {
-      this.toasts[nameToast].show = false;
-    },
-
-    /**
      * Affiche le toast d'erreur générique
      */
     showGenericError(): void {
-      this.toasts.error.show = true;
-      this.toasts.error.msg = this.translate.generic_error;
+      toastError(this.translate.generic_error);
     },
   },
 });
 </script>
 
 <template>
-  <skeleton-mediatheque v-if="loading" />
+  <SkeletonMediatheque v-if="loading" />
 
   <div v-else id="block-mediatheque" class="card rounded-xl overflow-hidden">
     <div
@@ -677,7 +649,7 @@ export default defineComponent({
 
     <div class="browser-inner">
       <div class="browser-content">
-        <medias-grid
+        <MediasGrid
           v-if="render !== 'trash'"
           :render="render"
           :medias="medias"
@@ -689,7 +661,7 @@ export default defineComponent({
           @move="openBlockDrawer"
           @trash="updateTrash"
         >
-        </medias-grid>
+        </MediasGrid>
 
         <MediasTrash
           v-else
@@ -702,7 +674,7 @@ export default defineComponent({
         </MediasTrash>
       </div>
       <div class="info-drawer" id="infoDrawer" :class="drawerOpen ? 'open' : ''">
-        <media-info
+        <MediaInfo
           :key="'MI-' + key"
           v-if="selectedAction === 'show'"
           :translate="translate.info as TranslateRecord"
@@ -710,7 +682,7 @@ export default defineComponent({
           @close="closeDrawer"
         />
 
-        <media-edit
+        <MediaEdit
           :key="'ME-' + key"
           v-if="selectedAction === 'edit' || selectedAction === 'new-folder'"
           :translate="translate.edit as TranslateRecord"
@@ -720,7 +692,7 @@ export default defineComponent({
           @reload="reload"
         />
 
-        <media-move
+        <MediaMove
           :key="'ME-' + key"
           v-if="selectedAction === 'move'"
           :translate="translate.move as TranslateWithGenericError"
@@ -733,7 +705,7 @@ export default defineComponent({
           @reload="reload"
         />
 
-        <media-new
+        <MediaNew
           :key="'ME-' + key"
           v-if="selectedAction === 'new-media'"
           :translate="translate.upload as TranslateWithGenericError"
@@ -758,20 +730,6 @@ export default defineComponent({
         "
       ></span>
     </div>
-  </div>
-
-  <div class="toast-container position-fixed top-0 end-0 p-2">
-    <toast :id="'toastSuccess'" :type="'success'" :show="toasts.success.show" @close-toast="closeToast('success')">
-      <template #body>
-        <div v-html="toasts.success.msg"></div>
-      </template>
-    </toast>
-
-    <toast :id="'toastError'" :type="'danger'" :show="toasts.error.show" @close-toast="closeToast('error')">
-      <template #body>
-        <div v-html="toasts.error.msg"></div>
-      </template>
-    </toast>
   </div>
 </template>
 

@@ -9,13 +9,12 @@ import { defineComponent, type PropType } from 'vue';
 import { FileData, TranslateWithGenericError } from '@/ts/Mediatheque/Mediatheque.type';
 import FileUpload from '@/vue/Components/Global/FileUpload.vue';
 import axios from 'axios';
-import { Toasts } from '@/ts/Toast/Toast.type';
-import Toast from '@/vue/Components/Global/Toast.vue';
 import SkeletonMediathequeUpload from '@/vue/Components/Skeleton/MediathequeUpload.vue';
+import { toastSuccess, toastError } from '@/vue/Composables/Global/toast';
 
 export default defineComponent({
   name: 'MediaNew',
-  components: { SkeletonMediathequeUpload, Toast, FileUpload },
+  components: { SkeletonMediathequeUpload, FileUpload },
   props: {
     translate: { type: Object as PropType<TranslateWithGenericError>, required: true },
     currentFolder: { type: Number, required: true },
@@ -25,16 +24,6 @@ export default defineComponent({
   data() {
     return {
       loading: false,
-      toasts: {
-        success: {
-          show: false,
-          msg: '',
-        },
-        error: {
-          show: false,
-          msg: '',
-        },
-      } as Toasts,
     };
   },
   computed: {},
@@ -52,8 +41,7 @@ export default defineComponent({
           folder: this.currentFolder,
         })
         .then(() => {
-          this.toasts.success.show = true;
-          this.toasts.success.msg = this.translate.loading_msg_success as string;
+          toastSuccess(this.translate.loading_msg_success as string);
           setTimeout(() => {
             this.$emit('reload', this.currentFolder, false, {});
           }, 2000);
@@ -61,17 +49,8 @@ export default defineComponent({
         .catch((error) => {
           console.error(error);
           this.loading = false;
-          this.toasts.error.show = true;
-          this.toasts.error.msg = this.translate.generic_error;
+          toastError(this.translate.generic_error);
         });
-    },
-
-    /**
-     * Ferme le toast défini par nameToast
-     * @param nameToast
-     */
-    closeToast(nameToast: string): void {
-      this.toasts[nameToast].show = false;
     },
   },
 });
@@ -111,28 +90,14 @@ export default defineComponent({
       </button>
     </div>
 
-    <skeleton-mediatheque-upload v-if="loading" />
-    <file-upload
+    <SkeletonMediathequeUpload v-if="loading" />
+    <FileUpload
       v-else
       :max-size="20"
       accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx"
       :translate="translate"
       @file-uploaded="saveMedia"
     />
-  </div>
-
-  <div class="toast-container position-fixed top-0 end-0 p-2">
-    <toast :id="'toastSuccess'" :type="'success'" :show="toasts.success.show" @close-toast="closeToast('success')">
-      <template #body>
-        <div v-html="toasts.success.msg"></div>
-      </template>
-    </toast>
-
-    <toast :id="'toastError'" :type="'danger'" :show="toasts.error.show" @close-toast="closeToast('error')">
-      <template #body>
-        <div v-html="toasts.error.msg"></div>
-      </template>
-    </toast>
   </div>
 </template>
 

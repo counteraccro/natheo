@@ -19,6 +19,7 @@ import type {
   LoadBlockDashboardResponse,
   UpdateUserDataResponse,
 } from '@/ts/Dashboard/BlockHelpFirstConnexion.type';
+import { toastRequestError } from '@/vue/Composables/Global/toast';
 
 export default defineComponent({
   name: 'BlockHelpFirstConnexion',
@@ -71,7 +72,7 @@ export default defineComponent({
           }
         })
         .catch((error) => {
-          console.error(error);
+          toastRequestError(error);
         })
         .finally(() => {
           this.loading = false;
@@ -98,7 +99,7 @@ export default defineComponent({
           }
         })
         .catch((error) => {
-          console.error(error);
+          toastRequestError(error);
         })
         .finally(() => {
           this.loading = false;

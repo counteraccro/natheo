@@ -251,7 +251,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <installation-step-two-skeleton v-if="initialLoading" />
+  <InstallationStepTwoSkeleton v-if="initialLoading" />
 
   <div v-else>
     <h2 class="text-2xl font-bold mb-2">{{ translate.create_bdd_h1 }}</h2>

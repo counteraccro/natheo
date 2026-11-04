@@ -8,10 +8,8 @@
 import { defineComponent, type PropType } from 'vue';
 import axios from 'axios';
 import { emitter } from '@/vue/Composables/Global/useEvent';
-import Toast from '@/vue/Components/Global/Toast.vue';
 import SkeletonText from '@/vue/Components/Skeleton/Text.vue';
 import SkeletonTable from '@/vue/Components/Skeleton/Table.vue';
-import type { Toasts } from '@/ts/Toast/Toast.type';
 import type {
   TranslateErrorResponse,
   TranslateFileResponse,
@@ -21,10 +19,11 @@ import type {
   TranslateSaveResponse,
   TranslateUpdate,
 } from '@/ts/Translate/Translate.type';
+import { toastSuccess, toastError } from '@/vue/Composables/Global/toast';
 
 export default defineComponent({
   name: 'Translate',
-  components: { SkeletonTable, SkeletonText, Toast },
+  components: { SkeletonTable, SkeletonText },
   props: {
     url_langue: { type: String, required: true },
     url_translates_files: { type: String, required: true },
@@ -44,10 +43,6 @@ export default defineComponent({
       search: '' as string,
       onlyUntranslated: false as boolean,
       loading: false as boolean,
-      toasts: {
-        toastSuccess: { show: false, msg: '' },
-        toastError: { show: false, msg: '' },
-      } as Toasts,
     };
   },
   computed: {
@@ -192,13 +187,11 @@ export default defineComponent({
         .put<TranslateSaveResponse>(this.url_translate_save, payload)
         .then((response) => {
           if (response.data.success) {
-            this.toasts.toastSuccess.msg = response.data.msg;
-            this.toasts.toastSuccess.show = true;
+            toastSuccess(response.data.msg);
             this.loadFile();
           } else {
             this.errors = response.data.errors;
-            this.toasts.toastError.msg = response.data.msg;
-            this.toasts.toastError.show = true;
+            toastError(response.data.msg);
             this.loading = false;
           }
         })
@@ -274,16 +267,7 @@ export default defineComponent({
     showRequestError(error: unknown): void {
       console.error(error);
       const data = axios.isAxiosError<TranslateErrorResponse>(error) ? error.response?.data : undefined;
-      this.toasts.toastError.msg = data?.msg ?? this.translate.translate_error_request;
-      this.toasts.toastError.show = true;
-    },
-
-    /**
-     * Ferme le toast défini par nameToast
-     * @param nameToast
-     */
-    closeToast(nameToast: string): void {
-      this.toasts[nameToast].show = false;
+      toastError(data?.msg ?? this.translate.translate_error_request);
     },
   },
 });
@@ -512,19 +496,6 @@ export default defineComponent({
   </div>
 
   <!-- toast -->
-  <div class="toast-container position-fixed top-0 end-0 p-2">
-    <toast :id="'toastSuccess'" :show="toasts.toastSuccess.show" @close-toast="closeToast">
-      <template #body>
-        <div v-html="toasts.toastSuccess.msg"></div>
-      </template>
-    </toast>
-
-    <toast :id="'toastError'" :type="'danger'" :show="toasts.toastError.show" @close-toast="closeToast">
-      <template #body>
-        <div v-html="toasts.toastError.msg"></div>
-      </template>
-    </toast>
-  </div>
 </template>
 
 <style>

@@ -21,12 +21,11 @@ import type {
 } from '@/ts/Installation/InstallationStepOne.type';
 import axios, { AxiosError } from 'axios';
 import SkeletonInstallationStepOne from '@/vue/Components/Skeleton/Installation/InstallationStepOne.vue';
-import Toast from '@/vue/Components/Global/Toast.vue';
-import { Toasts } from '@/ts/Toast/Toast.type';
+import { toastSuccess, toastRequestError } from '@/vue/Composables/Global/toast';
 
 export default defineComponent({
   name: 'InstallationStepOne',
-  components: { Toast, SkeletonInstallationStepOne },
+  components: { SkeletonInstallationStepOne },
   props: {
     urls: {
       type: Object as PropType<InstallationStepOneUrls>,
@@ -61,16 +60,6 @@ export default defineComponent({
         charset: '',
         version: '',
       } as DataBaseConfigErrors,
-      toasts: {
-        success: {
-          show: false,
-          msg: '',
-        },
-        error: {
-          show: false,
-          msg: '',
-        },
-      } as Toasts,
     };
   },
   computed: {
@@ -135,13 +124,12 @@ export default defineComponent({
         .post<UpdateEnvResponse>(this.urls.update_env, payload)
         .then((response) => {
           if (response.data.success) {
-            this.toasts.success.msg = this.translate.config_bdd_loading_msg_update_file;
-            this.toasts.success.show = true;
+            toastSuccess(this.translate.config_bdd_loading_msg_update_file);
             this.checkConnexion();
           }
         })
         .catch((error: AxiosError) => {
-          console.error(error);
+          toastRequestError(error);
         })
         .finally(() => {
           this.loading = false;
@@ -165,20 +153,12 @@ export default defineComponent({
 
       return this.isValid;
     },
-
-    /**
-     * Ferme le toast défini par nameToast
-     * @param nameToast
-     */
-    closeToast(nameToast: string): void {
-      this.toasts[nameToast].show = false;
-    },
   },
 });
 </script>
 
 <template>
-  <skeleton-installation-step-one v-if="initialLoading" />
+  <SkeletonInstallationStepOne v-if="initialLoading" />
 
   <div v-else>
     <div class="card rounded-xl overflow-hidden mb-4">
@@ -421,19 +401,5 @@ export default defineComponent({
         </div>
       </div>
     </div>
-  </div>
-
-  <div class="toast-container position-fixed top-0 end-0 p-2">
-    <toast :id="'toastSuccess'" :type="'success'" :show="toasts.success.show" @close-toast="closeToast('success')">
-      <template #body>
-        <div v-html="toasts.success.msg"></div>
-      </template>
-    </toast>
-
-    <toast :id="'toastError'" :type="'danger'" :show="toasts.error.show" @close-toast="closeToast('error')">
-      <template #body>
-        <div v-html="toasts.error.msg"></div>
-      </template>
-    </toast>
   </div>
 </template>

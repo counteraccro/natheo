@@ -7,7 +7,6 @@
 
 import { defineComponent, PropType } from 'vue';
 import axios from 'axios';
-import Toast from '@/vue/Components/Global/Toast.vue';
 import { emitter } from '@/vue/Composables/Global/useEvent';
 import SkeletonText from '@/vue/Components/Skeleton/Text.vue';
 import SkeletonTabs from '@/vue/Components/Skeleton/Tabs.vue';
@@ -19,16 +18,16 @@ import type {
   DatabaseTable,
   SqlManagerUrls,
   SqlManagerTranslations,
-  ToastState,
   LoadSqlManagerResponse,
   LoadDataDatabaseResponse,
   ExecuteSqlResponse,
   SaveResponse,
 } from '@/ts/SqlManager/SqlManager.type';
+import { toastSuccess, toastError } from '@/vue/Composables/Global/toast';
 
 export default defineComponent({
   name: 'SqlManager',
-  components: { AlertDanger, AlertPrimary, SkeletonSearchResult, SkeletonTabs, SkeletonText, Toast },
+  components: { AlertDanger, AlertPrimary, SkeletonSearchResult, SkeletonTabs, SkeletonText },
   props: {
     urls: {
       type: Object as PropType<SqlManagerUrls>,
@@ -67,10 +66,6 @@ export default defineComponent({
       isErrorValidateName: false,
       isErrorValidateQuery: false,
       showQueryBuilder: true,
-      toasts: {
-        toastSuccess: { show: false, msg: '' } as ToastState,
-        toastError: { show: false, msg: '' } as ToastState,
-      },
     };
   },
   computed: {
@@ -154,11 +149,9 @@ export default defineComponent({
           this.resultHeader = response.data.data.header;
 
           if (this.error === '') {
-            this.toasts.toastSuccess.show = true;
-            this.toasts.toastSuccess.msg = this.translate.toast_msg_exec_success;
+            toastSuccess(this.translate.toast_msg_exec_success);
           } else {
-            this.toasts.toastError.show = true;
-            this.toasts.toastError.msg = this.translate.toast_msg_exec_error;
+            toastError(this.translate.toast_msg_exec_error);
           }
         })
         .catch((error) => {
@@ -186,15 +179,13 @@ export default defineComponent({
         })
         .then((response) => {
           if (response.data.success) {
-            this.toasts.toastSuccess.msg = response.data.msg;
-            this.toasts.toastSuccess.show = true;
+            toastSuccess(response.data.msg);
             // Cas première query, on force la redirection pour passer en mode édition
             if (response.data.redirect && response.data.url_redirect) {
               window.location.replace(response.data.url_redirect);
             }
           } else {
-            this.toasts.toastError.msg = response.data.msg;
-            this.toasts.toastError.show = true;
+            toastError(response.data.msg);
           }
         })
         .catch((error) => {
@@ -237,16 +228,7 @@ export default defineComponent({
      */
     showError(msg: string, error: unknown) {
       console.error(error);
-      this.toasts.toastError.msg = msg;
-      this.toasts.toastError.show = true;
-    },
-
-    /**
-     * Ferme un toast en fonction de son id
-     * @param nameToast
-     */
-    closeToast(nameToast: 'toastSuccess' | 'toastError') {
-      this.toasts[nameToast].show = false;
+      toastError(msg);
     },
 
     /**
@@ -314,13 +296,13 @@ export default defineComponent({
 <template>
   <div v-if="loading">
     <div class="card rounded-lg p-6 mb-4">
-      <skeleton-text :nb-paragraphe="3" />
+      <SkeletonText :nb-paragraphe="3" />
     </div>
     <div class="card rounded-lg p-6 mb-4">
-      <skeleton-text :nb-paragraphe="3" />
+      <SkeletonText :nb-paragraphe="3" />
     </div>
     <div class="card rounded-lg p-6 mb-4">
-      <skeleton-search-result :rows="2" />
+      <SkeletonSearchResult :rows="2" />
     </div>
   </div>
 
@@ -449,8 +431,8 @@ export default defineComponent({
           </div>
         </div>
 
-        <alert-danger v-if="error !== ''" type="alert-danger-solid mb-3" :text="error" />
-        <alert-primary type="alert-primary-solid" :text="translate.help_text_1" />
+        <AlertDanger v-if="error !== ''" type="alert-danger-solid mb-3" :text="error" />
+        <AlertPrimary type="alert-primary-solid" :text="translate.help_text_1" />
       </div>
     </div>
 
@@ -631,20 +613,6 @@ export default defineComponent({
         </table>
       </div>
     </div>
-  </div>
-
-  <div class="toast-container position-fixed top-0 end-0 p-2">
-    <toast id="toastSuccess" :show="toasts.toastSuccess.show" @close-toast="closeToast">
-      <template #body>
-        <div v-html="toasts.toastSuccess.msg"></div>
-      </template>
-    </toast>
-
-    <toast id="toastError" :type="'danger'" :show="toasts.toastError.show" @close-toast="closeToast">
-      <template #body>
-        <div v-html="toasts.toastError.msg"></div>
-      </template>
-    </toast>
   </div>
 </template>
 

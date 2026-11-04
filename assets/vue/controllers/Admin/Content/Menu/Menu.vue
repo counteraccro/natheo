@@ -12,16 +12,14 @@ import Sortable from 'sortablejs';
 import Modal from '@/vue/Components/Global/Modal.vue';
 import MenuElementForm from '@/vue/Components/Menu/MenuElementForm.vue';
 import { emitter } from '@/vue/Composables/Global/useEvent';
-import Toast from '@/vue/Components/Global/Toast.vue';
-import { Toasts } from '@/ts/Toast/Toast.type';
 import MenuHeader from '@/vue/Components/Menu/MenuType/MenuHeader.vue';
 import MenuFooter from '@/vue/Components/Menu/MenuType/MenuFooter.vue';
 import MenuLeftRight from '@/vue/Components/Menu/MenuType/MenuLeftRight.vue';
+import { toastSuccess, toastError, toastRequestError } from '@/vue/Composables/Global/toast';
 
 export default defineComponent({
   name: 'Menu',
   components: {
-    Toast,
     MenuElementForm,
     Modal,
     MenuTree,
@@ -85,16 +83,6 @@ export default defineComponent({
           isConfirm: false,
         },
       },
-      toasts: {
-        success: {
-          show: false,
-          msg: '',
-        },
-        error: {
-          show: false,
-          msg: '',
-        },
-      } as Toasts,
     };
   },
   mounted() {
@@ -132,7 +120,7 @@ export default defineComponent({
           }
         })
         .catch((error) => {
-          console.error(error);
+          toastRequestError(error);
         })
         .finally(() => {
           this.loading = false;
@@ -509,8 +497,7 @@ export default defineComponent({
         .post(this.urls.save_menu, { menu: this.menu }, withCsrf(this.csrf_token_save))
         .then((response) => {
           if (response.data.success === true) {
-            this.toasts.success.msg = response.data.msg;
-            this.toasts.success.show = true;
+            toastSuccess(response.data.msg);
             // Cas première page, on force la redirection pour passer en mode édition
             if (response.data.redirect === true) {
               window.location.replace(response.data.url);
@@ -519,16 +506,14 @@ export default defineComponent({
             this.noSaveElementIds = [];
             this.updateNoSave = false;
           } else {
-            this.toasts.error.msg = response.data.msg;
-            this.toasts.error.show = true;
+            toastError(response.data.msg);
           }
         })
         .catch((error: unknown) => {
           // Refus serveur (droits, jeton, lien invalide) : message renvoyé avec un code 4xx
           const msg = axios.isAxiosError<{ msg?: string }>(error) ? error.response?.data?.msg : undefined;
           if (msg) {
-            this.toasts.error.msg = msg;
-            this.toasts.error.show = true;
+            toastError(msg);
           }
           console.error(error);
         })
@@ -544,23 +529,15 @@ export default defineComponent({
     hideModalConfirmDelete() {
       this.showModalConfirmDelete = false;
     },
-
-    /**
-     * Ferme le toast défini par nameToast
-     * @param nameToast
-     */
-    closeToast(nameToast: string) {
-      this.toasts[nameToast].show = false;
-    },
   },
 });
 </script>
 
 <template>
   <div v-if="loading">
-    <skeleton-render-menu />
-    <skeleton-form-menu />
-    <skeleton-architecture-menu />
+    <SkeletonRenderMenu />
+    <SkeletonFormMenu />
+    <SkeletonArchitectureMenu />
   </div>
 
   <div v-else-if="Object.keys(menu).length === 0">
@@ -919,7 +896,7 @@ export default defineComponent({
         </div>
 
         <div class="py-3 px-5 flex-1 overflow-y-auto min-h-0" ref="rootListRef">
-          <menu-tree
+          <MenuTree
             v-for="menuElement in menu.menuElements"
             :key="menuElement.id"
             :menu-element="menuElement"
@@ -1043,7 +1020,7 @@ export default defineComponent({
           </div>
         </div>
 
-        <menu-element-form
+        <MenuElementForm
           v-else
           :translate="translate.menu_form"
           :locale="currentLocale"
@@ -1118,20 +1095,6 @@ export default defineComponent({
       </button>
     </template>
   </modal>
-
-  <div class="toast-container position-fixed top-0 end-0 p-2">
-    <toast :id="'toastSuccess'" :type="'success'" :show="toasts.success.show" @close-toast="closeToast('success')">
-      <template #body>
-        <div v-html="toasts.success.msg"></div>
-      </template>
-    </toast>
-
-    <toast :id="'toastError'" :type="'danger'" :show="toasts.error.show" @close-toast="closeToast('error')">
-      <template #body>
-        <div v-html="toasts.error.msg"></div>
-      </template>
-    </toast>
-  </div>
 </template>
 
 <style scoped></style>

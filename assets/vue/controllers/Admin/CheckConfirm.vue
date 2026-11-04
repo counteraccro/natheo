@@ -1,122 +1,106 @@
-<script>
+<script lang="ts">
 /**
  * Permet d'afficher une modale de confirmation si un champ à été modifié sans sauvegarde
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 2.0
  */
+import { defineComponent, type PropType } from 'vue';
 import { emitter } from '@/vue/Composables/Global/useEvent';
-import Modal from '../../Components/Global/Modal.vue';
+import Modal from '@/vue/Components/Global/Modal.vue';
+import type { CheckConfirmTranslate } from '@/ts/Global/CheckConfirm.type';
 
-export default {
+const EXCLUDE_CLASS = 'no-control';
+
+export default defineComponent({
   name: 'CheckConfirm',
   components: { Modal },
   props: {
-    option: String,
-    translate: Object,
+    // Valeur de l'option système OS_CONFIRM_LEAVE_FORM ('1' = active)
+    option: { type: String, default: '1' },
+    translate: { type: Object as PropType<CheckConfirmTranslate>, required: true },
   },
-  emits: [],
   data() {
     return {
       isChange: false,
-      excludeClass: 'no-control',
       tmpUrl: '',
-      modalTab: {
-        confirmModal: false,
-      },
+      confirmModal: false,
     };
   },
   mounted() {
+    if (this.option !== '1') {
+      return;
+    }
     document.addEventListener('click', this.onClick);
-    document.addEventListener('input', (evt) => {
-      let tabClass = evt.target.className.split(' ');
-
-      // Si on détecte la class excluante, on ne fait rien
-      if (!tabClass.includes(this.excludeClass)) {
-        this.isChange = true;
-      }
-    });
-
-    emitter.on('reset-check-confirm', async () => {
-      this.reset();
-    });
+    document.addEventListener('input', this.onInput);
+    emitter.on('reset-check-confirm', this.reset);
   },
-  beforeDestroy() {
+  beforeUnmount() {
     document.removeEventListener('click', this.onClick);
-    document.removeEventListener('input', (evt) => {});
+    document.removeEventListener('input', this.onInput);
+    emitter.off('reset-check-confirm', this.reset);
   },
-  computed: {},
   methods: {
-    reset() {
+    reset(): void {
       this.isChange = false;
     },
 
     /**
-     * Met à jour le status d'une modale défini par son id et son état
-     * @param nameModale
-     * @param state true|false
+     * Retourne true si l'élément porte la classe excluante (ou une classe SVG, non comparable)
+     * @param element
      */
-    updateModal(nameModale, state) {
-      this.modalTab[nameModale] = state;
-    },
-
-    /** Ferme la modale **/
-    closeModal(id) {
-      this.updateModal(id, false);
+    isExcluded(element: Element): boolean {
+      return typeof element.className !== 'string' || element.classList.contains(EXCLUDE_CLASS);
     },
 
     /**
-     * Évènement onclick
+     * Évènement oninput : un champ a été modifié
      * @param ev
-     * @returns {boolean}
      */
-    onClick(ev) {
-      let target = ev.target;
-      let parent = target.parentElement;
-      let tabClass = '';
+    onInput(ev: Event): void {
+      if (ev.target instanceof Element && !this.isExcluded(ev.target)) {
+        this.isChange = true;
+      }
+    },
 
-      if (target.className instanceof SVGAnimatedString) {
-        return true;
+    /**
+     * Évènement onclick : intercepte les liens si un champ a été modifié sans sauvegarde
+     * @param ev
+     */
+    onClick(ev: MouseEvent): void {
+      const target = ev.target;
+      if (!(target instanceof Element) || this.isExcluded(target)) {
+        return;
       }
 
-      tabClass = target.className.split(' ');
-
-      // Si on détecte la class excluante, on ne fait rien
-      if (tabClass.includes(this.excludeClass)) {
-        return true;
+      const link = target instanceof HTMLAnchorElement ? target : target.parentElement;
+      if (!(link instanceof HTMLAnchorElement) || link.href === '') {
+        return;
       }
 
-      // Si un lien est détecté ou le parent direct est un lien
-      if (target.href !== undefined || parent.href !== undefined) {
-        if (target.href !== undefined) {
-          this.tmpUrl = ev.target.href;
-        } else {
-          this.tmpUrl = parent.href;
-        }
-
-        if (this.isChange) {
-          this.updateModal('confirmModal', true);
-          ev.preventDefault();
-          ev.stopImmediatePropagation();
-        }
+      this.tmpUrl = link.href;
+      if (this.isChange) {
+        this.confirmModal = true;
+        ev.preventDefault();
+        ev.stopImmediatePropagation();
       }
     },
 
     /**
      * Redirige vers le lien défini
      */
-    redirect() {
+    redirect(): void {
       this.isChange = false;
       document.location.href = this.tmpUrl;
     },
   },
-};
+});
 </script>
 
 <template>
   <modal
     :id="'confirmModal'"
-    :show="this.modalTab.confirmModal"
-    @close-modal="this.closeModal"
+    :show="confirmModal"
+    @close-modal="confirmModal = false"
     :option-modal-backdrop="'static'"
     :option-show-close-btn="false"
   >
@@ -139,12 +123,12 @@ export default {
         />
       </svg>
     </template>
-    <template #title>{{ this.translate.titre }}</template>
+    <template #title>{{ translate.titre }}</template>
     <template #body>
-      <p v-html="this.translate.corps"></p>
+      <p v-html="translate.corps"></p>
     </template>
     <template #footer>
-      <button type="button" class="btn btn-primary btn-md me-2" @click="this.redirect">
+      <button type="button" class="btn btn-primary btn-md me-2" @click="redirect">
         <svg
           class="icon"
           aria-hidden="true"
@@ -163,9 +147,9 @@ export default {
           />
         </svg>
 
-        {{ this.translate.oui }}
+        {{ translate.oui }}
       </button>
-      <button type="button" class="btn btn-outline-dark btn-md" @click="this.updateModal('confirmModal', false)">
+      <button type="button" class="btn btn-outline-dark btn-md" @click="confirmModal = false">
         <svg
           class="icon"
           aria-hidden="true"
@@ -184,7 +168,7 @@ export default {
           />
         </svg>
 
-        {{ this.translate.non }}
+        {{ translate.non }}
       </button>
     </template>
   </modal>

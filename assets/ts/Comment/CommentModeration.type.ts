@@ -4,6 +4,8 @@
  * @version 1.0
  */
 
+import type { GridPaginateTranslate } from '@/ts/Grid/GridPaginate.type';
+
 export interface CommentModerationUrls {
   filter: string;
   update: string;
@@ -36,7 +38,7 @@ export interface CommentModerationTranslate {
   toast_title_success: string;
   toast_title_error: string;
   toast_time: string;
-  paginate: Record<string, string>;
+  paginate: GridPaginateTranslate;
   comment_unselect_all: string;
   comment_select_all: string;
   statistiques: string;
@@ -84,16 +86,6 @@ export interface ModerationState {
 export interface FiltersState {
   status: string;
   pages: string;
-}
-
-export interface ToastState {
-  show: boolean;
-  msg: string;
-}
-
-export interface ToastsState {
-  toastSuccess: ToastState;
-  toastError: ToastState;
 }
 
 export interface UpdateModerationResponse {

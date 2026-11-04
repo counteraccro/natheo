@@ -7,24 +7,23 @@
 import { defineComponent } from 'vue';
 import axios, { AxiosResponse } from 'axios';
 import MarkdownEditor from '../../../../Components/Global/MarkdownEditor/MarkdownEditor.vue';
-import Toast from '../../../../Components/Global/Toast.vue';
 import { emitter } from '@/vue/Composables/Global/useEvent';
 import { withCsrf } from '@/vue/Composables/Admin/csrf';
 import {
   Translate,
   Urls,
   Datas,
-  Toasts,
   LoadCommentResponse,
   Comment,
   SaveCommentResponse,
 } from '@/ts/Comment/CommentEdit.type';
 import SkeletonCommentEdit from '@/vue/Components/Skeleton/CommentEdit.vue';
+import { toastSuccess, toastError, toastRequestError } from '@/vue/Composables/Global/toast';
 
 export default defineComponent({
   name: 'CommentEdit',
 
-  components: { SkeletonCommentEdit, Toast, MarkdownEditor },
+  components: { SkeletonCommentEdit, MarkdownEditor },
 
   props: {
     urls: {
@@ -51,16 +50,6 @@ export default defineComponent({
     return {
       loading: false as boolean,
       comment: null as Comment | null,
-      toasts: {
-        success: {
-          show: false,
-          msg: '',
-        },
-        error: {
-          show: false,
-          msg: '',
-        },
-      } as Toasts,
     };
   },
 
@@ -80,7 +69,7 @@ export default defineComponent({
           this.comment = response.data.comment;
         })
         .catch((error: unknown) => {
-          console.error(error);
+          toastRequestError(error);
         })
         .finally(() => {
           this.loading = false;
@@ -113,19 +102,16 @@ export default defineComponent({
         )
         .then((response: AxiosResponse<SaveCommentResponse>) => {
           if (response.data.success) {
-            this.toasts.success.msg = response.data.msg;
-            this.toasts.success.show = true;
+            toastSuccess(response.data.msg);
             emitter.emit('reset-check-confirm');
           } else {
-            this.toasts.error.msg = response.data.msg;
-            this.toasts.error.show = true;
+            toastError(response.data.msg);
           }
         })
         .catch((error: unknown) => {
           console.error(error);
           if (axios.isAxiosError(error) && error.response?.data?.msg) {
-            this.toasts.error.msg = error.response.data.msg;
-            this.toasts.error.show = true;
+            toastError(error.response.data.msg);
           }
         })
         .finally(() => {
@@ -140,20 +126,12 @@ export default defineComponent({
     goBack(): void {
       window.history.back();
     },
-
-    /**
-     * Ferme un toast en fonction de son identifiant
-     * @param nameToast - Clé du toast à fermer
-     */
-    closeToast(nameToast: keyof Toasts): void {
-      this.toasts[nameToast].show = false;
-    },
   },
 });
 </script>
 
 <template>
-  <skeleton-comment-edit v-if="loading" />
+  <SkeletonCommentEdit v-if="loading" />
   <div v-if="!comment">
     <div class="flex flex-col items-center justify-center py-16 px-6 text-center">
       <!-- Icône -->
@@ -525,19 +503,5 @@ export default defineComponent({
         </div>
       </div>
     </div>
-  </div>
-
-  <div class="toast-container position-fixed top-0 end-0 p-2">
-    <toast id="success" :show="toasts.success.show" @close-toast="closeToast">
-      <template #body>
-        <div v-html="toasts.success.msg"></div>
-      </template>
-    </toast>
-
-    <toast id="error" :type="'danger'" :show="toasts.error.show" @close-toast="closeToast">
-      <template #body>
-        <div v-html="toasts.error.msg"></div>
-      </template>
-    </toast>
   </div>
 </template>

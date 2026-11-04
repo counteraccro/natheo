@@ -1,19 +1,19 @@
-<script>
+<script lang="ts">
 /**
  * @author Gourdon Aymeric
  * @version 1.0
  * Permet d'afficher le nombre de notification dans la zone admin
  */
+import { defineComponent } from 'vue';
 import axios from 'axios';
 
-export default {
+export default defineComponent({
   name: 'NotificationBadge',
   props: {
-    url: String,
+    url: { type: String, required: true },
   },
   data() {
     return {
-      translate: {},
       number: 0,
     };
   },
@@ -21,26 +21,25 @@ export default {
     this.loadData();
   },
   methods: {
-    /*
-        Chargement des données
-         */
-    loadData() {
+    /**
+     * Chargement du nombre de notifications non lues
+     */
+    loadData(): void {
       axios
-        .get(this.url, {})
+        .get(this.url)
         .then((response) => {
           this.number = response.data.number;
         })
         .catch((error) => {
           console.error(error);
-        })
-        .finally();
+        });
     },
   },
-};
+});
 </script>
 
 <template>
-  <span v-if="this.number > 0" class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+  <span v-if="number > 0" class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
 </template>
 
 <style scoped></style>

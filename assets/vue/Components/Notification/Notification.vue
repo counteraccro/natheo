@@ -1,46 +1,40 @@
-<script>
+<script lang="ts">
 /**
  * @author Gourdon Aymeric
  * @version 2.0
- * Permet d'afficher le nombre de notification dans la zone admin
+ * Affiche une notification de la liste des notifications
  */
+import { defineComponent, type PropType } from 'vue';
+import type { NotificationItem, NotificationItemTranslate } from '@/ts/Notification/Notification.type';
 
-export default {
+export default defineComponent({
   name: 'Notification',
   props: {
-    notification: Object,
-    translation: Object,
-    render: [String, null],
-    checked: [Boolean],
+    notification: { type: Object as PropType<NotificationItem>, required: true },
+    translation: { type: Object as PropType<NotificationItemTranslate>, required: true },
+    render: { type: String, default: null },
+    checked: { type: Boolean, default: false },
   },
   emits: ['check-notification', 'mark-as-read', 'delete'],
-  data() {
-    return {
-      translate: {},
-      number: 0,
-    };
-  },
-  mounted() {},
   methods: {
     /**
      * Permet de check la notification
      * @param event
      */
-    checkNotification(event) {
-      let target = event.target;
+    checkNotification(event: Event): void {
+      const target = event.target as HTMLInputElement;
       this.$emit('check-notification', target.dataset.notification, target.dataset.isread, target.checked);
     },
 
     /**
-     * Affichage de l'heure
+     * Affichage de l'heure, dans la langue de l'interface
      * @param timestamp
-     * @returns {*}
      */
-    relativeTime(timestamp) {
+    relativeTime(timestamp: number): string {
       const now = Math.floor(Date.now() / 1000);
       const diff = now - timestamp;
 
-      const rtf = new Intl.RelativeTimeFormat('fr', { numeric: 'auto' });
+      const rtf = new Intl.RelativeTimeFormat(document.documentElement.lang || 'fr', { numeric: 'auto' });
 
       if (diff < 60) return rtf.format(-diff, 'second');
       if (diff < 3600) return rtf.format(-Math.floor(diff / 60), 'minute');
@@ -54,7 +48,7 @@ export default {
     /**
      * Marque comme lu
      */
-    markAsRead() {
+    markAsRead(): void {
       this.notification.read = true;
       this.$emit('mark-as-read', this.notification.id);
     },
@@ -62,17 +56,17 @@ export default {
     /**
      * Supprime une notification
      */
-    delete() {
+    remove(): void {
       this.$emit('delete', this.notification.id, true);
     },
   },
-};
+});
 </script>
 
 <template>
   <div
     class="notification-item p-4 sm:p-6"
-    :class="!this.notification.read ? 'unread border-b border-[var(--border-color)]' : ''"
+    :class="!notification.read ? 'unread border-b border-[var(--border-color)]' : ''"
     style="display: block"
     data-type="comments"
     data-read="false"
@@ -80,14 +74,14 @@ export default {
     <div class="flex items-start gap-3">
       <div class="checkbox-custom mt-1">
         <input
-          v-if="this.render === 'all'"
+          v-if="render === 'all'"
           type="checkbox"
           class="form-check-input"
           id="check1"
           :data-notification="notification.id"
           :data-isRead="notification.read"
-          :checked="this.checked"
-          @change="this.checkNotification"
+          :checked="checked"
+          @change="checkNotification"
         />
       </div>
 
@@ -111,9 +105,9 @@ export default {
 
           <div class="flex justify-items-end gap-2 mb-0 items-center">
             <span class="text-xs whitespace-nowrap" style="color: var(--text-light)">{{
-              this.relativeTime(notification.createdAt.timestamp)
+              relativeTime(notification.createdAt.timestamp)
             }}</span>
-            <button class="btn-ghost p-1.5 rounded cursor-pointer" @click="this.delete">
+            <button class="btn-ghost p-1.5 rounded cursor-pointer" @click="remove">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   stroke-linecap="round"
@@ -129,12 +123,12 @@ export default {
         <div class="flex flex-wrap items-center gap-2">
           <a
             v-if="notification.category === 'comment'"
-            :href="notification.tmpObjectId"
+            :href="notification.tmpObjectId ?? undefined"
             target="_blank"
             class="text-xs font-semibold hover:underline cursor-pointer"
             style="color: var(--primary)"
           >
-            {{ this.translation.seeComment }}
+            {{ translation.seeComment }}
           </a>
           <span
             v-if="notification.category === 'comment' && notification.read === false"
@@ -148,7 +142,7 @@ export default {
             style="color: var(--text-secondary)"
             @click="markAsRead()"
           >
-            {{ this.translation.read }}
+            {{ translation.read }}
           </button>
         </div>
       </div>

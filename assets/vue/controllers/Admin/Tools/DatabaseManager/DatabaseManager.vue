@@ -7,7 +7,6 @@
 import { defineComponent, PropType } from 'vue';
 import axios from 'axios';
 import { withCsrf } from '@/vue/Composables/Admin/csrf';
-import Toast from '../../../../Components/Global/Toast.vue';
 import Modal from '../../../../Components/Global/Modal.vue';
 import SchemaDatabase from '../../../../Components/DatabaseManager/SchemaDatabase.vue';
 import SchemaTable from '../../../../Components/DatabaseManager/SchemaTable.vue';
@@ -16,7 +15,6 @@ import SkeletonCardStat from '@/vue/Components/Skeleton/CardStat.vue';
 import SkeletonTabs from '@/vue/Components/Skeleton/Tabs.vue';
 import AlertWarning from '@/vue/Components/Alert/Warning.vue';
 import AlertDanger from '@/vue/Components/Alert/Danger.vue';
-import { Toasts } from '@/ts/Toast/Toast.type';
 import type {
   DatabaseManagerCsrfTokens,
   DatabaseManagerDumpOptions,
@@ -28,6 +26,7 @@ import type {
 import type { ListDumpItem } from '@/ts/DatabaseManager/ListDump.type';
 import type { SchemaDatabaseData } from '@/ts/DatabaseManager/SchemaDatabase.type';
 import type { SchemaTableData } from '@/ts/DatabaseManager/SchemaTable.type';
+import { toastSuccess, toastError, toastRequestError } from '@/vue/Composables/Global/toast';
 
 export default defineComponent({
   name: 'DatabaseManager',
@@ -40,7 +39,6 @@ export default defineComponent({
     SchemaTable,
     SchemaDatabase,
     Modal,
-    Toast,
   },
   props: {
     urls: {
@@ -80,16 +78,6 @@ export default defineComponent({
       modalTab: {
         modaleConfirmDeleteDump: false,
       } as Record<string, boolean>,
-      toasts: {
-        toastSuccess: {
-          show: false,
-          msg: '',
-        },
-        toastError: {
-          show: false,
-          msg: '',
-        },
-      } as Toasts,
     };
   },
   mounted() {
@@ -125,11 +113,11 @@ export default defineComponent({
           this.result = response.data.query;
           this.result.header['action'] = this.translate.action;
           if (this.result.error) {
-            this.showToast('toastError', this.result.error);
+            toastError(this.result.error);
           }
         })
         .catch((error) => {
-          console.error(error);
+          toastRequestError(error);
         });
     },
 
@@ -145,14 +133,14 @@ export default defineComponent({
         .get<{ result: SchemaTableData }>(this.urls.load_schema_table + '/' + encodeURIComponent(table))
         .then((response) => {
           if (response.data.result.error) {
-            this.showToast('toastError', response.data.result.error);
+            toastError(response.data.result.error);
             return;
           }
           this.schemaTable = response.data.result;
           this.schemaTableName = response.data.result.table;
         })
         .catch((error) => {
-          console.error(error);
+          toastRequestError(error);
         })
         .finally(() => {
           this.loading = false;
@@ -169,7 +157,7 @@ export default defineComponent({
           this.listDump = response.data.result;
         })
         .catch((error) => {
-          console.error(error);
+          toastRequestError(error);
         });
     },
 
@@ -183,7 +171,7 @@ export default defineComponent({
           this.tables = response.data.tables;
         })
         .catch((error) => {
-          console.error(error);
+          toastRequestError(error);
         });
     },
 
@@ -199,7 +187,7 @@ export default defineComponent({
           withCsrf(this.csrfTokens.save_database)
         )
         .then((response) => {
-          this.showToast(response.data.success ? 'toastSuccess' : 'toastError', response.data.msg);
+          (response.data.success ? toastSuccess : toastError)(response.data.msg);
         })
         .catch((error) => {
           this.showRequestError(error);
@@ -230,7 +218,7 @@ export default defineComponent({
           withCsrf(this.csrfTokens.delete_dump_file)
         )
         .then((response) => {
-          this.showToast(response.data.success ? 'toastSuccess' : 'toastError', response.data.msg);
+          (response.data.success ? toastSuccess : toastError)(response.data.msg);
         })
         .catch((error) => {
           this.showRequestError(error);
@@ -245,31 +233,13 @@ export default defineComponent({
     },
 
     /**
-     * Affiche un toast avec un message
-     * @param nameToast
-     * @param msg
-     */
-    showToast(nameToast: 'toastSuccess' | 'toastError', msg: string): void {
-      this.toasts[nameToast].msg = msg;
-      this.toasts[nameToast].show = true;
-    },
-
-    /**
      * Affiche le message d'erreur renvoyé par le serveur, ou un message générique
      * @param error
      */
     showRequestError(error: unknown): void {
       console.error(error);
       const msg = axios.isAxiosError<DatabaseManagerResponse>(error) ? error.response?.data?.msg : undefined;
-      this.showToast('toastError', msg || this.translate.error_generic);
-    },
-
-    /**
-     * Ferme un toast en fonction de son id
-     * @param nameToast
-     */
-    closeToast(nameToast: string): void {
-      this.toasts[nameToast].show = false;
+      toastError(msg || this.translate.error_generic);
     },
 
     /**
@@ -294,8 +264,8 @@ export default defineComponent({
 
 <template>
   <div v-if="loading">
-    <skeleton-card-stat />
-    <skeleton-tabs />
+    <SkeletonCardStat />
+    <SkeletonTabs />
   </div>
 
   <div v-else>
@@ -598,8 +568,8 @@ export default defineComponent({
             </select>
           </div>
 
-          <alert-warning type="alert-primary-solid mt-6" :text="translate.dump_option.help_body" />
-          <alert-danger type="alert-danger-solid mt-6" :text="translate.dump_option.warning_body" />
+          <AlertWarning type="alert-primary-solid mt-6" :text="translate.dump_option.help_body" />
+          <AlertDanger type="alert-danger-solid mt-6" :text="translate.dump_option.warning_body" />
 
           <button class="btn btn-sm btn-primary w-full mt-6 no-control" @click="dumpSQL">
             <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -683,17 +653,4 @@ export default defineComponent({
   </modal>
 
   <!-- toast -->
-  <div class="toast-container position-fixed top-0 end-0 p-2">
-    <toast :id="'toastSuccess'" :show="toasts.toastSuccess.show" @close-toast="closeToast">
-      <template #body>
-        <div>{{ toasts.toastSuccess.msg }}</div>
-      </template>
-    </toast>
-
-    <toast :id="'toastError'" :type="'danger'" :show="toasts.toastError.show" @close-toast="closeToast">
-      <template #body>
-        <div>{{ toasts.toastError.msg }}</div>
-      </template>
-    </toast>
-  </div>
 </template>

@@ -10,10 +10,8 @@ import { withCsrf } from '@/vue/Composables/Admin/csrf';
 import Grid from '@/vue/Components/Grid/Grid.vue';
 import GridPaginate from '@/vue/Components/Grid/GridPaginate.vue';
 import Modal from '@/vue/Components/Global/Modal.vue';
-import Toast from '@/vue/Components/Global/Toast.vue';
 import SkeletonText from '@/vue/Components/Skeleton/Text.vue';
 import SkeletonTable from '@/vue/Components/Skeleton/Table.vue';
-import type { Toasts } from '@/ts/Toast/Toast.type';
 import type { GridRow, GridSortOrders, GridTranslate } from '@/ts/Grid/Grid.type';
 import type { GenericGridTranslate } from '@/ts/Grid/GenericGrid.type';
 import type { GridPaginateTranslate } from '@/ts/Grid/GridPaginate.type';
@@ -25,10 +23,11 @@ import type {
   LogTimeFilter,
   LogTranslate,
 } from '@/ts/Log/Log.type';
+import { toastSuccess, toastError } from '@/vue/Composables/Global/toast';
 
 export default defineComponent({
   name: 'Log',
-  components: { SkeletonTable, SkeletonText, Toast, Modal, GridPaginate, Grid },
+  components: { SkeletonTable, SkeletonText, Modal, GridPaginate, Grid },
   props: {
     url_select: { type: String, required: true },
     url_load_log_file: { type: String, required: true },
@@ -58,10 +57,6 @@ export default defineComponent({
       selectFile: '' as string,
       taille: '0 Ko' as string,
       modalDeleteLog: false as boolean,
-      toasts: {
-        toastSuccess: { show: false, msg: '' },
-        toastError: { show: false, msg: '' },
-      } as Toasts,
     };
   },
   computed: {
@@ -122,8 +117,7 @@ export default defineComponent({
         .get<LogLoadFileResponse>(this.url_load_log_file + '/' + page + '/' + limit + '/' + this.encodedSelectFile)
         .then((response) => {
           if (page === 1) {
-            this.toasts.toastSuccess.msg = response.data.msg;
-            this.toasts.toastSuccess.show = true;
+            toastSuccess(response.data.msg);
           }
 
           const grid = response.data.grid;
@@ -164,8 +158,7 @@ export default defineComponent({
       axios
         .delete<LogActionResponse>(this.url_delete_file + '/' + this.encodedSelectFile, withCsrf(this.csrf_delete_file))
         .then((response) => {
-          this.toasts.toastSuccess.msg = response.data.msg;
-          this.toasts.toastSuccess.show = true;
+          toastSuccess(response.data.msg);
           this.time = 'now';
           this.selectFile = '';
           this.taille = '0 Ko';
@@ -193,22 +186,13 @@ export default defineComponent({
     },
 
     /**
-     * Ferme le toast défini par nameToast
-     * @param nameToast
-     */
-    closeToast(nameToast: string): void {
-      this.toasts[nameToast].show = false;
-    },
-
-    /**
      * Affiche le message d'erreur renvoyé par le serveur ou un message générique
      * @param error
      */
     showRequestError(error: unknown): void {
       console.error(error);
       const data = axios.isAxiosError<LogActionResponse>(error) ? error.response?.data : undefined;
-      this.toasts.toastError.msg = data?.msg ?? this.translate.log_error_request;
-      this.toasts.toastError.show = true;
+      toastError(data?.msg ?? this.translate.log_error_request);
     },
   },
 });
@@ -443,7 +427,6 @@ export default defineComponent({
           :current-page="cPage"
           :nb-elements="cLimit"
           :nb-elements-total="nbElements"
-          :url="url_load_log_file"
           :list-limit="listLimit"
           :translate="translateGridPaginate"
           @change-page-event="loadContentFile"
@@ -510,17 +493,4 @@ export default defineComponent({
   <!-- fin modale confirmation supression -->
 
   <!-- toast -->
-  <div class="toast-container position-fixed top-0 end-0 p-2">
-    <toast :id="'toastSuccess'" :show="toasts.toastSuccess.show" @close-toast="closeToast">
-      <template #body>
-        <div v-html="toasts.toastSuccess.msg"></div>
-      </template>
-    </toast>
-
-    <toast :id="'toastError'" :type="'danger'" :show="toasts.toastError.show" @close-toast="closeToast">
-      <template #body>
-        <div v-html="toasts.toastError.msg"></div>
-      </template>
-    </toast>
-  </div>
 </template>

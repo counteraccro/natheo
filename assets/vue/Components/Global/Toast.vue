@@ -1,87 +1,48 @@
 <script lang="ts">
 /**
  * @author Gourdon Aymeric
- * @version 2.0
- * Toast Bootstrap 5.3
+ * @version 3.0
+ * Affichage d'un toast (succès ou erreur), piloté par ToastContainer
  */
 
-import { defineComponent, watch } from 'vue';
+import { defineComponent, type PropType } from 'vue';
+import type { ToastType } from '@/ts/Toast/Toast.type';
 import { uiTrans } from '@/vue/Composables/Global/uiTranslate';
+
+const CSS: Record<ToastType, { bg: string; text: string; border: string }> = {
+  success: {
+    bg: 'bg-[var(--alert-success-bg)]',
+    text: 'text-[var(--alert-success-text)]',
+    border: 'border-[var(--alert-success-border)]',
+  },
+  danger: {
+    bg: 'bg-[var(--alert-danger-bg)]',
+    text: 'text-[var(--alert-danger-text)]',
+    border: 'border-[var(--alert-danger-border)]',
+  },
+};
 
 export default defineComponent({
   name: 'Toast',
   props: {
-    id: { type: String, required: true },
-    show: Boolean,
-    type: {
-      type: String,
-      default: 'success',
+    type: { type: String as PropType<ToastType>, default: 'success' },
+    msg: { type: String, required: true },
+  },
+  emits: ['close'],
+  computed: {
+    cssElement(): { bg: string; text: string; border: string } {
+      return CSS[this.type];
     },
-  },
-  emits: ['close-toast'],
-  data() {
-    return {
-      elm: null as HTMLElement | null,
-      cssElement: {
-        bg: 'bg-[var(--alert-success-bg)]',
-        text: 'text-[var(--alert-success-text)]',
-        border: 'border-[var(--alert-success-border)]',
-      },
-    };
-  },
-  mounted() {
-    this.elm = document.getElementById(this.id);
-    this.elm?.classList.add('hidden');
-
-    this.elm?.addEventListener('hide.bs.toast', () => {
-      this.$emit('close-toast', this.id);
-    });
-
-    switch (this.type) {
-      case 'success':
-        this.cssElement.bg = 'bg-[var(--alert-success-bg)]';
-        this.cssElement.text = 'text-[var(--alert-success-text)]';
-        this.cssElement.border = 'border-[var(--alert-success-border)]';
-        break;
-      case 'danger':
-        this.cssElement.bg = 'bg-[var(--alert-danger-bg)]';
-        this.cssElement.text = 'text-[var(--alert-danger-text)]';
-        this.cssElement.border = 'border-[var(--alert-danger-border)]';
-        break;
-    }
-
-    watch(
-      () => this.show,
-      (newValue, oldValue) => {
-        if (newValue !== oldValue) {
-          if (newValue) {
-            this.elm?.classList.remove('hidden');
-            setTimeout(() => {
-              this.elm?.classList.add('hidden');
-              this.$emit('close-toast', this.id);
-            }, 3000);
-          } else {
-            this.elm?.classList.add('hidden');
-          }
-        }
-      },
-      { immediate: true, deep: true }
-    );
   },
   methods: {
     uiTrans,
-    close(): void {
-      this.elm?.classList.add('hidden');
-      this.$emit('close-toast', this.id);
-    },
   },
 });
 </script>
 
 <template>
   <div
-    :id="id"
-    class="fixed hidden flex items-center w-full max-w-xs p-4 text-sm space-x-4 text-gray-500 bg-white border divide-x rtl:divide-x-reverse divide-gray-200 rounded-lg shadow-sm top-5 right-5 dark:text-gray-400 dark:divide-gray-700 dark:bg-gray-800"
+    class="flex items-center w-full max-w-xs p-4 text-sm space-x-4 text-gray-500 bg-white border divide-x rtl:divide-x-reverse divide-gray-200 rounded-lg shadow-sm dark:text-gray-400 dark:divide-gray-700 dark:bg-gray-800"
     :class="cssElement.border"
     role="alert"
     aria-live="assertive"
@@ -122,12 +83,12 @@ export default defineComponent({
       </svg>
     </div>
     <div class="ms-3 text-xs font-normal" :class="cssElement.text">
-      <slot name="body"></slot>
+      <div v-html="msg"></div>
     </div>
     <button
       type="button"
       class="ms-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
-      @click="close"
+      @click="$emit('close')"
       :aria-label="uiTrans('close')"
     >
       <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">

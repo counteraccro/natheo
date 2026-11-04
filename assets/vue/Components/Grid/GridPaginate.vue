@@ -2,7 +2,7 @@
 /**
  * @author Gourdon Aymeric
  * @version 2.1
- * Permet d'afficher la pagination pour le grid
+ * Pagination commune (grilles, logs, recherche globale, modération des commentaires)
  */
 import { defineComponent, type PropType } from 'vue';
 import type { GridPaginatePage, GridPaginateTranslate } from '@/ts/Grid/GridPaginate.type';
@@ -14,8 +14,7 @@ export default defineComponent({
     currentPage: { type: Number, required: true },
     nbElementsTotal: { type: Number, required: true },
     nbElements: { type: [String, Number], required: true },
-    url: String,
-    listLimit: { type: Object as PropType<Record<string, number>>, required: true },
+    listLimit: { type: Object as PropType<Record<string, number>>, default: () => ({}) },
     translate: { type: Object as PropType<GridPaginateTranslate>, required: true },
   },
   emits: ['change-page-event'],
@@ -200,7 +199,7 @@ export default defineComponent({
       </li>
     </ul>
 
-    <div>
+    <div v-if="Object.keys(listLimit).length > 0">
       <select
         class="no-control form-input form-input-sm"
         v-model="cLimit"

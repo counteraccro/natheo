@@ -10,22 +10,13 @@ import SkeletonFaq from '@/vue/Components/Skeleton/Faq.vue';
 import axios from 'axios';
 import { withCsrf } from '@/vue/Composables/Admin/csrf';
 import { emitter } from '@/vue/Composables/Global/useEvent';
-import Toast from '@/vue/Components/Global/Toast.vue';
+import { toastSuccess, toastError } from '@/vue/Composables/Global/toast';
 
 type TranslateRecord = { [key: string]: string | TranslateRecord };
 
-type Toast = {
-  show: boolean;
-  msg: string;
-};
-
-type Toasts = {
-  [key: string]: Toast;
-};
-
 export default defineComponent({
   name: 'NewFaq',
-  components: { Toast, SkeletonFaq },
+  components: { SkeletonFaq },
   props: {
     urls: { type: Object as PropType<Record<string, string>>, required: true },
     translate: { type: Object as PropType<TranslateRecord>, required: true },
@@ -38,16 +29,6 @@ export default defineComponent({
       faq: {
         title: null,
       },
-      toasts: {
-        success: {
-          show: false,
-          msg: '',
-        },
-        error: {
-          show: false,
-          msg: '',
-        },
-      } as Toasts,
     };
   },
   mounted(): any {},
@@ -95,34 +76,23 @@ export default defineComponent({
         )
         .then((response) => {
           if (response.data.success === true) {
-            this.toasts.success.msg = response.data.msg;
-            this.toasts.success.show = true;
+            toastSuccess(response.data.msg);
             emitter.emit('reset-check-confirm');
             setTimeout(function () {
               window.location.replace(response.data.url_redirect);
             }, 2000);
           } else {
-            this.toasts.error.msg = response.data.msg;
-            this.toasts.error.show = true;
+            toastError(response.data.msg);
             this.loading = false;
           }
         })
         .catch((error) => {
           console.error(error);
           if (error.response?.data?.msg) {
-            this.toasts.error.msg = error.response.data.msg;
-            this.toasts.error.show = true;
+            toastError(error.response.data.msg);
           }
           this.loading = false;
         });
-    },
-
-    /**
-     * Ferme le toast défini par nameToast
-     * @param nameToast
-     */
-    closeToast(nameToast: string): void {
-      this.toasts[nameToast].show = false;
     },
   },
 });
@@ -206,20 +176,6 @@ export default defineComponent({
         </div>
       </div>
     </div>
-  </div>
-
-  <div class="toast-container position-fixed top-0 end-0 p-2">
-    <toast :id="'toastSuccess'" :type="'success'" :show="toasts.success.show" @close-toast="closeToast('success')">
-      <template #body>
-        <div v-html="toasts.success.msg"></div>
-      </template>
-    </toast>
-
-    <toast :id="'toastError'" :type="'danger'" :show="toasts.error.show" @close-toast="closeToast('error')">
-      <template #body>
-        <div v-html="toasts.error.msg"></div>
-      </template>
-    </toast>
   </div>
 </template>
 

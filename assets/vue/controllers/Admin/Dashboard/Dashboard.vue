@@ -56,7 +56,7 @@ export default defineComponent({
         roles.isSuperAdmin && datas.dashboard_help_first_connexion.help_first_connexion && showBlockHelpFirstConnexion
       "
     >
-      <block-help-first-connexion
+      <BlockHelpFirstConnexion
         :translate="translate.dashboard_help_first_connexion"
         :datas="datas.dashboard_help_first_connexion"
         :urls="urls.dashboard_help_first_connexion"
@@ -65,12 +65,12 @@ export default defineComponent({
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-      <block-last-comment
+      <BlockLastComment
         v-if="roles.isContributeur"
         :translate="translate.dashboard_last_comments"
         :urls="urls.dashboard_last_comments"
       />
-      <block-page-most-viewed
+      <BlockPageMostViewed
         v-if="roles.isContributeur"
         :translate="translate.dashboard_page_most_viewed"
         :urls="urls.dashboard_page_most_viewed"
@@ -78,7 +78,7 @@ export default defineComponent({
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-      <block-last-page
+      <BlockLastPage
         v-if="roles.isContributeur"
         :translate="translate.dashboard_last_pages"
         :urls="urls.dashboard_last_pages"

@@ -1,22 +1,15 @@
-<script>
+<script lang="ts">
 /**
  * @author Gourdon Aymeric
  * @version 1.0
  * Skeleton d'un form
  */
+import { defineComponent } from 'vue';
 import { uiTrans } from '@/vue/Composables/Global/uiTranslate';
-export default {
+export default defineComponent({
   name: 'SkeletonTabs',
   methods: { uiTrans },
-  props: {},
-  emits: [],
-  data() {
-    return {};
-  },
-  mounted() {},
-
-  methods: {},
-};
+});
 </script>
 
 <template>

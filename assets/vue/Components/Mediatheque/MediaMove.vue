@@ -8,12 +8,11 @@ import { defineComponent, type PropType } from 'vue';
 import { MediaItem, TranslateWithGenericError } from '@/ts/Mediatheque/Mediatheque.type';
 import SkeletonMediathequeMove from '@/vue/Components/Skeleton/MediathequeMove.vue';
 import axios from 'axios';
-import { Toasts } from '@/ts/Toast/Toast.type';
-import Toast from '@/vue/Components/Global/Toast.vue';
+import { toastSuccess, toastError } from '@/vue/Composables/Global/toast';
 
 export default defineComponent({
   name: 'MediaMove',
-  components: { Toast, SkeletonMediathequeMove },
+  components: { SkeletonMediathequeMove },
   props: {
     data: { type: Object as PropType<MediaItem>, required: true },
     translate: { type: Object as PropType<TranslateWithGenericError>, required: true },
@@ -30,16 +29,6 @@ export default defineComponent({
       },
       selectedId: -10,
       search: '',
-      toasts: {
-        success: {
-          show: false,
-          msg: '',
-        },
-        error: {
-          show: false,
-          msg: '',
-        },
-      } as Toasts,
     };
   },
 
@@ -107,8 +96,7 @@ export default defineComponent({
         .then(() => {
           this.loading = false;
           this.isError = false;
-          this.toasts.success.show = true;
-          this.toasts.success.msg = this.translate.move_success as string;
+          toastSuccess(this.translate.move_success as string);
           this.move = true;
           setTimeout(() => {
             this.$emit('reload', this.selectedId, false, this.data);
@@ -131,19 +119,10 @@ export default defineComponent({
     },
 
     /**
-     * Ferme le toast défini par nameToast
-     * @param nameToast
-     */
-    closeToast(nameToast: string): void {
-      this.toasts[nameToast].show = false;
-    },
-
-    /**
      * Affiche le toast d'erreur générique
      */
     showGenericError(): void {
-      this.toasts.error.show = true;
-      this.toasts.error.msg = this.translate.generic_error;
+      toastError(this.translate.generic_error);
     },
   },
 });
@@ -151,7 +130,7 @@ export default defineComponent({
 
 <template>
   <div class="info-drawer-inner">
-    <skeleton-mediatheque-move v-if="loading" />
+    <SkeletonMediathequeMove v-if="loading" />
 
     <div v-else>
       <!-- Header du panneau -->
@@ -272,20 +251,6 @@ export default defineComponent({
         ></button>
       </div>
     </div>
-  </div>
-
-  <div class="toast-container position-fixed top-0 end-0 p-2">
-    <toast :id="'toastSuccess'" :type="'success'" :show="toasts.success.show" @close-toast="closeToast('success')">
-      <template #body>
-        <div v-html="toasts.success.msg"></div>
-      </template>
-    </toast>
-
-    <toast :id="'toastError'" :type="'danger'" :show="toasts.error.show" @close-toast="closeToast('error')">
-      <template #body>
-        <div v-html="toasts.error.msg"></div>
-      </template>
-    </toast>
   </div>
 </template>
 

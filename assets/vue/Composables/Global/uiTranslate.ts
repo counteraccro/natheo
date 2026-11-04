@@ -1,7 +1,7 @@
 /**
  * @author Gourdon Aymeric
  * @version 1.0
- * Libellés d'accessibilité communs aux composants génériques (Toast, Modal, paginations, skeletons),
+ * Libellés communs aux composants génériques (accessibilité, erreur générique),
  * traduits côté serveur et injectés une seule fois dans la page (#ui-translate)
  */
 import type { UiTranslateKey } from '@/ts/Global/UiTranslate.type';
