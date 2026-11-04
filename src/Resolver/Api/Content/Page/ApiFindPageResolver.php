@@ -11,7 +11,7 @@ namespace App\Resolver\Api\Content\Page;
 
 use App\Dto\Api\Content\Page\ApiFindPageDto;
 use App\Resolver\Api\AppApiResolver;
-use App\Utils\Api\Parameters\Content\Page\ApiParametersFindPageRef;
+use App\Enum\Api\Parameters\Content\Page\ApiFindPageParameter;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,7 +38,7 @@ class ApiFindPageResolver extends AppApiResolver implements ValueResolverInterfa
             return [];
         }
 
-        $tabParameters = ApiParametersFindPageRef::PARAMS_REF;
+        $tabParameters = ApiFindPageParameter::PARAMS_REF;
 
         foreach ($tabParameters as $parameter => $value) {
             if (in_array($parameter, ['show_menus', 'show_tags', 'show_statistiques'])) {
@@ -47,7 +47,7 @@ class ApiFindPageResolver extends AppApiResolver implements ValueResolverInterfa
                 $value = $request->query->get($parameter, '');
             }
 
-            if ($parameter === ApiParametersFindPageRef::PARAM_MENU_POSITION && !empty($value)) {
+            if ($parameter === ApiFindPageParameter::MENU_POSITION->value && !empty($value)) {
                 $tab = explode(',', $value);
                 $value = [];
                 foreach ($tab as $tmp) {
@@ -71,24 +71,24 @@ class ApiFindPageResolver extends AppApiResolver implements ValueResolverInterfa
             if (
                 !is_bool($value) &&
                 empty($value) &&
-                isset(ApiParametersFindPageRef::PARAMS_DEFAULT_VALUE[$parameter])
+                isset(ApiFindPageParameter::PARAMS_DEFAULT_VALUE[$parameter])
             ) {
-                $value = ApiParametersFindPageRef::PARAMS_DEFAULT_VALUE[$parameter];
+                $value = ApiFindPageParameter::PARAMS_DEFAULT_VALUE[$parameter];
             }
 
             $tabParameters[$parameter] = $value;
         }
 
-        $tabParameters[ApiParametersFindPageRef::PARAM_USER_TOKEN] = $this->getUserToken($request);
+        $tabParameters[ApiFindPageParameter::USER_TOKEN->value] = $this->getUserToken($request);
 
         $dto = new ApiFindPageDto(
-            $tabParameters[ApiParametersFindPageRef::PARAM_SLUG],
-            $tabParameters[ApiParametersFindPageRef::PARAM_LOCALE],
-            $tabParameters[ApiParametersFindPageRef::PARAM_SHOW_MENUS],
-            $tabParameters[ApiParametersFindPageRef::PARAM_SHOW_TAGS],
-            $tabParameters[ApiParametersFindPageRef::PARAM_SHOW_STATISTIQUES],
-            $tabParameters[ApiParametersFindPageRef::PARAM_MENU_POSITION],
-            $tabParameters[ApiParametersFindPageRef::PARAM_USER_TOKEN],
+            $tabParameters[ApiFindPageParameter::SLUG->value],
+            $tabParameters[ApiFindPageParameter::LOCALE->value],
+            $tabParameters[ApiFindPageParameter::SHOW_MENUS->value],
+            $tabParameters[ApiFindPageParameter::SHOW_TAGS->value],
+            $tabParameters[ApiFindPageParameter::SHOW_STATISTIQUES->value],
+            $tabParameters[ApiFindPageParameter::MENU_POSITION->value],
+            $tabParameters[ApiFindPageParameter::USER_TOKEN->value],
         );
 
         $this->validateDto($dto);

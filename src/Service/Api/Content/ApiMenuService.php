@@ -14,7 +14,7 @@ use App\Entity\Admin\Content\Menu\Menu;
 use App\Entity\Admin\Content\Menu\MenuElement;
 use App\Entity\Admin\System\User;
 use App\Service\Api\AppApiService;
-use App\Utils\Api\Content\ApiMenuFormater;
+use App\Formatter\Api\Content\ApiMenuFormater;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 

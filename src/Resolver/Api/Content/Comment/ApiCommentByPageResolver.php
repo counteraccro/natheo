@@ -11,7 +11,7 @@ namespace App\Resolver\Api\Content\Comment;
 
 use App\Dto\Api\Content\Comment\ApiCommentByPageDto;
 use App\Resolver\Api\AppApiResolver;
-use App\Utils\Api\Parameters\Content\Comment\ApiParametersCommentByPageRef;
+use App\Enum\Api\Parameters\Content\Comment\ApiCommentByPageParameter;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,28 +39,28 @@ class ApiCommentByPageResolver extends AppApiResolver implements ValueResolverIn
             return [];
         }
 
-        $tabParameters = ApiParametersCommentByPageRef::PARAMS_REF;
+        $tabParameters = ApiCommentByPageParameter::PARAMS_REF;
         foreach ($tabParameters as $parameter => $value) {
             $value = $request->query->get($parameter, '');
-            if (empty($value) && isset(ApiParametersCommentByPageRef::PARAMS_DEFAULT_VALUE[$parameter])) {
-                $value = ApiParametersCommentByPageRef::PARAMS_DEFAULT_VALUE[$parameter];
+            if (empty($value) && isset(ApiCommentByPageParameter::PARAMS_DEFAULT_VALUE[$parameter])) {
+                $value = ApiCommentByPageParameter::PARAMS_DEFAULT_VALUE[$parameter];
             }
             $tabParameters[$parameter] = $value;
         }
 
         $this->checkParameters($tabParameters);
 
-        $tabParameters[ApiParametersCommentByPageRef::PARAM_USER_TOKEN] = $this->getUserToken($request);
+        $tabParameters[ApiCommentByPageParameter::USER_TOKEN->value] = $this->getUserToken($request);
 
         $dto = new ApiCommentByPageDto(
-            intval($tabParameters[ApiParametersCommentByPageRef::PARAM_ID]),
-            $tabParameters[ApiParametersCommentByPageRef::PARAM_PAGE_SLUG],
-            $tabParameters[ApiParametersCommentByPageRef::PARAM_LOCALE],
-            intval($tabParameters[ApiParametersCommentByPageRef::PARAM_PAGE]),
-            intval($tabParameters[ApiParametersCommentByPageRef::PARAM_LIMIT]),
-            $tabParameters[ApiParametersCommentByPageRef::PARAM_ORDER_BY],
-            $tabParameters[ApiParametersCommentByPageRef::PARAM_ORDER],
-            $tabParameters[ApiParametersCommentByPageRef::PARAM_USER_TOKEN],
+            intval($tabParameters[ApiCommentByPageParameter::ID->value]),
+            $tabParameters[ApiCommentByPageParameter::PAGE_SLUG->value],
+            $tabParameters[ApiCommentByPageParameter::LOCALE->value],
+            intval($tabParameters[ApiCommentByPageParameter::PAGE->value]),
+            intval($tabParameters[ApiCommentByPageParameter::LIMIT->value]),
+            $tabParameters[ApiCommentByPageParameter::ORDER_BY->value],
+            $tabParameters[ApiCommentByPageParameter::ORDER->value],
+            $tabParameters[ApiCommentByPageParameter::USER_TOKEN->value],
         );
 
         $this->validateDto($dto);
@@ -80,8 +80,8 @@ class ApiCommentByPageResolver extends AppApiResolver implements ValueResolverIn
 
         // Cas id et page_slug sont vides (n'existe pas dans la query)
         if (
-            empty($parameters[ApiParametersCommentByPageRef::PARAM_ID]) &&
-            empty($parameters[ApiParametersCommentByPageRef::PARAM_PAGE_SLUG])
+            empty($parameters[ApiCommentByPageParameter::ID->value]) &&
+            empty($parameters[ApiCommentByPageParameter::PAGE_SLUG->value])
         ) {
             throw new HttpException(
                 Response::HTTP_BAD_REQUEST,
@@ -91,8 +91,8 @@ class ApiCommentByPageResolver extends AppApiResolver implements ValueResolverIn
 
         // Cas id et page_slug ensemble
         if (
-            !empty($parameters[ApiParametersCommentByPageRef::PARAM_ID]) &&
-            !empty($parameters[ApiParametersCommentByPageRef::PARAM_PAGE_SLUG])
+            !empty($parameters[ApiCommentByPageParameter::ID->value]) &&
+            !empty($parameters[ApiCommentByPageParameter::PAGE_SLUG->value])
         ) {
             throw new HttpException(
                 Response::HTTP_BAD_REQUEST,

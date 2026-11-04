@@ -11,8 +11,8 @@ namespace App\Resolver\Api;
 
 use App\Dto\Api\Authentication\ApiAuthUserDto;
 use App\Http\Api\ApiHttpException;
-use App\Utils\Api\ApiParametersParser;
-use App\Utils\Api\Parameters\ApiParametersUserAuthRef;
+use App\Service\Api\ApiParametersParser;
+use App\Enum\Api\Parameters\ApiUserAuthParameter;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,7 +42,7 @@ class ApiAuthUserResolver extends AppApiResolver implements ValueResolverInterfa
 
         /** @var ApiParametersParser $apiParametersParser */
         $apiParametersParser = $this->handlers->get('apiParametersParser');
-        $return = $apiParametersParser->parse(ApiParametersUserAuthRef::PARAMS_REF_AUTH_USER, $data);
+        $return = $apiParametersParser->parse(ApiUserAuthParameter::PARAMS_REF, $data);
 
         if (!empty($return)) {
             throw new ApiHttpException(Response::HTTP_BAD_REQUEST, $return);

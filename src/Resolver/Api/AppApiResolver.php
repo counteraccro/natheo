@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Resolver\Api;
 
 use App\Http\Api\ApiHttpException;
-use App\Utils\Api\ApiParametersParser;
+use App\Service\Api\ApiParametersParser;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;

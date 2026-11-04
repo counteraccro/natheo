@@ -7,11 +7,11 @@ declare(strict_types=1);
  * Test ApiPageFormater
  */
 
-namespace Utils\Api\Content;
+namespace App\Tests\Formatter\Api\Content;
 
 use App\Dto\Api\Content\Page\ApiFindPageDto;
 use App\Tests\AppWebTestCase;
-use App\Utils\Api\Content\ApiPageFormater;
+use App\Formatter\Api\Content\ApiPageFormater;
 
 class ApiPageFormaterTest extends AppWebTestCase
 {

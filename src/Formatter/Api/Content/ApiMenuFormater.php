@@ -7,7 +7,7 @@ declare(strict_types=1);
  * Converti un menu en array pour le retour API
  */
 
-namespace App\Utils\Api\Content;
+namespace App\Formatter\Api\Content;
 
 use App\Entity\Admin\Content\Menu\MenuElement;
 use App\Enum\Admin\Content\Menu\MenuPosition;
