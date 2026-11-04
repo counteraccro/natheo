@@ -12,7 +12,7 @@ namespace App\Controller\Admin\Tools;
 use App\Controller\Admin\AppAdminController;
 use App\Enum\Admin\Global\Breadcrumb;
 use App\Service\Admin\CommandService;
-use App\Utils\Global\EnvFile;
+use App\Service\Global\EnvFile;
 use App\Translate\Admin\Tools\AdvancedOptionsTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;

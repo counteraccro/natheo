@@ -7,7 +7,7 @@ declare(strict_types=1);
  * @version 2.0
  */
 
-namespace App\Utils\Notification;
+namespace App\Factory\Admin\Global\Notification;
 
 use App\Entity\Admin\Notification;
 use App\Entity\Admin\System\User;

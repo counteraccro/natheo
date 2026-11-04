@@ -7,7 +7,7 @@ declare(strict_types=1);
  * Permet de lire et manipuler le fichier .env
  */
 
-namespace App\Utils\Global;
+namespace App\Service\Global;
 
 use App\Enum\Installation\Env;
 use App\Enum\Installation\KeyEnv;

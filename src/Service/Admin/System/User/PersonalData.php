@@ -7,7 +7,7 @@ declare(strict_types=1);
  * Génère l'affichage des données personnelles de l'utilisateur on fonction de ses préférences
  */
 
-namespace App\Utils\System\User;
+namespace App\Service\Admin\System\User;
 
 use App\Entity\Admin\System\User;
 

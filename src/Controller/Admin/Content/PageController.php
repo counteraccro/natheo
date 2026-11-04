@@ -30,7 +30,7 @@ use App\Factory\Admin\Content\Page\PageFactory;
 use App\Populate\Admin\Content\Page\PagePopulate;
 use App\Security\Voter\ContentVoter;
 use App\Service\Admin\Content\Page\PageHistory;
-use App\Utils\System\User\PersonalData;
+use App\Service\Admin\System\User\PersonalData;
 use App\Translate\Admin\Content\PageTranslate;
 use App\Translate\Admin\Global\MarkdownEditorTranslate;
 use Psr\Container\ContainerExceptionInterface;

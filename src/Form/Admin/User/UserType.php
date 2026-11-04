@@ -11,7 +11,7 @@ namespace App\Form\Admin\User;
 
 use App\Entity\Admin\System\User;
 use App\Form\AppFormType;
-use App\Utils\System\User\Role;
+use App\Enum\Admin\System\User\Role;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -57,7 +57,7 @@ class UserType extends AppFormType
             ]);
 
         if (!$options['is_super_adm']) {
-            $roles = Role::getListRole();
+            $roles = Role::choices();
             $rolesTrans = [];
             foreach ($roles as $key => $role) {
                 $rolesTrans[$this->translator->trans($key, domain: 'user')] = $role;

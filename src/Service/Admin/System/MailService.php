@@ -15,8 +15,8 @@ use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
 use App\Service\Global\MarkdownService;
-use App\Utils\System\Mail\KeyWord;
-use App\Utils\System\Mail\MailTemplate;
+use App\Service\Admin\System\Mail\KeyWord;
+use App\Enum\Admin\System\Mail\MailTemplate;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use League\CommonMark\Exception\CommonMarkException;
 use Psr\Container\ContainerExceptionInterface;
@@ -365,7 +365,7 @@ class MailService extends AppAdminService
      * MailService::TITLE => titre du mail en fonction de la langue, <br />
      * MailService::CONTENT => contenu du mail avec le tableau de keyword, <br />
      * MailService::TO => '', <br />
-     * MailService::TEMPLATE => MailTemplate::EMAIL_SIMPLE_TEMPLATE, <br />
+     * MailService::TEMPLATE => MailTemplate::SIMPLE->value, <br />
      * MailService::LOCALE => langue de la traduction utilisée <br />
      * ]
      * @throws ContainerExceptionInterface
@@ -384,7 +384,7 @@ class MailService extends AppAdminService
             MailService::TITLE => $mailTranslation->getTitle(),
             MailService::CONTENT => $this->replaceKeyWords($mailTranslation->getContent(), $tabKeyWord),
             MailService::TO => '',
-            MailService::TEMPLATE => MailTemplate::EMAIL_SIMPLE_TEMPLATE,
+            MailService::TEMPLATE => MailTemplate::SIMPLE->value,
             MailService::LOCALE => $mailTranslation->getLocale(),
         ];
     }

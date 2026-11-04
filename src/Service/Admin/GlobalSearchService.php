@@ -18,7 +18,7 @@ use App\Entity\Admin\System\User;
 use App\Enum\Admin\Content\Page\PageContentType;
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Enum\Admin\System\Options\OptionUser;
-use App\Utils\System\User\PersonalData;
+use App\Service\Admin\System\User\PersonalData;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;

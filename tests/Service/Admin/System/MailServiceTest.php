@@ -12,8 +12,8 @@ use App\Repository\Admin\System\MailRepository;
 use App\Service\Admin\System\MailService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Tests\AppWebTestCase;
-use App\Utils\System\Mail\KeyWord;
-use App\Utils\System\Mail\MailTemplate;
+use App\Service\Admin\System\Mail\KeyWord;
+use App\Enum\Admin\System\Mail\MailTemplate;
 use League\CommonMark\Exception\CommonMarkException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -199,7 +199,7 @@ class MailServiceTest extends AppWebTestCase
             MailService::CC => ['cc1@natheo.test', 'cc2@natheo.test'],
             MailService::BCC => 'bcc@natheo.test',
             MailService::FROM => '',
-            MailService::TEMPLATE => MailTemplate::EMAIL_SIMPLE_TEMPLATE,
+            MailService::TEMPLATE => MailTemplate::SIMPLE->value,
         ]);
 
         /** @var Email $email */
@@ -243,7 +243,7 @@ class MailServiceTest extends AppWebTestCase
                 $draft->getId(),
             ),
             MailService::TO => 'to@natheo.test',
-            MailService::TEMPLATE => MailTemplate::EMAIL_SIMPLE_TEMPLATE,
+            MailService::TEMPLATE => MailTemplate::SIMPLE->value,
             MailService::LOCALE => 'en',
         ]);
 

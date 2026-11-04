@@ -12,7 +12,7 @@ namespace App\Service\Admin\Content\Media;
 use App\Entity\Admin\Content\Media\Media;
 use App\Entity\Admin\Content\Media\MediaFolder;
 use App\Repository\Admin\Content\Media\MediaRepository;
-use App\Utils\Content\Media\Thumbnail;
+use App\Service\Admin\Content\Media\Thumbnail;
 use App\Utils\Utils;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;

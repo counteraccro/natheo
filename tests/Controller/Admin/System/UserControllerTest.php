@@ -22,7 +22,7 @@ use App\Service\Admin\System\MailService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Service\Admin\System\User\UserDataService;
 use App\Tests\AppWebTestCase;
-use App\Utils\System\User\Anonymous;
+use App\Service\Admin\System\User\Anonymous;
 use App\Enum\Admin\System\User\UserDataKey;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;

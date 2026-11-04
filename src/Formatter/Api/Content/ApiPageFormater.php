@@ -12,7 +12,7 @@ use App\Entity\Admin\Content\Tag\Tag;
 use App\Entity\Admin\System\User;
 use App\Enum\Admin\Content\Page\PageStatistics;
 use App\Enum\Admin\System\Options\OptionUser;
-use App\Utils\System\User\PersonalData;
+use App\Service\Admin\System\User\PersonalData;
 use Doctrine\Common\Collections\Collection;
 
 class ApiPageFormater

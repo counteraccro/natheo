@@ -7,7 +7,7 @@ declare(strict_types=1);
  * @version 1.0
  */
 
-namespace App\Utils\System\Mail;
+namespace App\Service\Admin\System\Mail;
 
 use App\Entity\Admin\System\User;
 use App\Enum\Admin\System\Mail\MailKey;

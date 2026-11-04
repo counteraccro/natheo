@@ -7,7 +7,7 @@ declare(strict_types=1);
  * @version 1.0
  */
 
-namespace App\Utils\Content\Media;
+namespace App\Service\Admin\Content\Media;
 
 use Symfony\Component\String\ByteString;
 
