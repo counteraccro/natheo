@@ -258,7 +258,8 @@ options_system.front_robot_no_index_help: "Si cette option est activé, les mote
 options_system.front_robot_no_follow: 'Bloquer le suivi des liens de votre site pour les moteurs de recherches'
 options_system.front_robot_no_follow_help: 'Si cette option est activé, les moteurs de recherches ne suivrons pas les liens dans les pages de votre site'
 key_separator: 'séparateur artificiel pour séparer translate generate auto (sous cette ligne) et autre-------------------------------------------------------------------------------'
-pagedemo.page_title_h1: 'Elements HML disponibles (trad)'
+pagedemo.page_title_h1: 'Page d''origine de la démo de surcharge'
+pagedemo.description: 'Cette page n''est affichée que si la surcharge de la route {route} est désactivée dans {file}. Elle sert de page d''origine à l''exemple de surcharge.'
 date.diff.start: "Il y'a"
 date.diff.start.short: "Il y'a environ"
 date.diff.year: "{years, plural,\n    =1    {année}\n    other {années}\n}"

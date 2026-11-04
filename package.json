@@ -28,17 +28,11 @@
         "vue-tsc": "^3.2.4"
     },
     "dependencies": {
-        "@popperjs/core": "^2.11.6",
         "axios": "^1.8.4",
-        "bootstrap": "5.3.1",
-        "bootstrap-icons": "^1.10.5",
         "dompurify": "^3",
         "emittery": "^1.0.1",
         "flowbite": "^3.1.2",
-        "lodash-es": "^4.17.21",
         "marked": "^18.1.0",
-        "sortablejs": "^1.15.7",
-        "vue-axios": "^3.5.2",
-        "vue-draggable-plus": "^0.6.1"
+        "sortablejs": "^1.15.7"
     }
 }
