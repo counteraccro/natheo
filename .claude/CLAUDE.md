@@ -44,12 +44,12 @@ Directory shape under `src/` mirrors the domain, duplicated across `Controller/`
 
 `src/Overwrite/` holds controllers that override/extend a bundle or base controller for demo/override behavior (e.g. read-only demo mode).
 
-### Deprecated `Utils` folders (`src/Utils/`, `assets/utils/`)
-Both are leftovers of an earlier architecture and are being removed gradually:
-- **Never create a new file** in `src/Utils/` or `assets/utils/`.
-- **Migrate as you go:** when an issue touches a `Utils` file, move it to the matching folder by role (`src/Service/...` for services, `src/Factory/<Layer>/<Domain>/` for `*Factory`, `src/Populate/<Layer>/<Domain>/` for `*Populate`, `src/Formatter/<Layer>/<Domain>/` for `*Formater` — all three excluded from autowiring in `config/services.yaml` —, `src/Entity/Trait/`, `src/Enum/...`, etc. for PHP; `assets/vue/Composables/` for front runtime helpers) and update its usages in the same PR. Remaining files are tracked in a dedicated `[CLEAN CODE]` issue.
-- **Constants become enums:** constant holder classes (`*Const`, `*Key`, `FlashKey`, ...) are converted to backed enums under `src/Enum/` when migrated.
-- Reusable traits go in `src/Entity/Trait/` (entity helpers) or `src/Repository/Trait/` (query helpers).
+### Where non-service code goes
+The former `src/Utils/` and `assets/utils/` catch-all folders were removed (#377): never recreate them. Place code by role instead:
+- `src/Service/...` for services (and plain helper classes used by them), `src/Enum/...` for constants — constant holder classes are written as backed enums;
+- `src/Factory/<Layer>/<Domain>/` for `*Factory`, `src/Populate/<Layer>/<Domain>/` for `*Populate`, `src/Formatter/<Layer>/<Domain>/` for `*Formatter`/`*Formater` — all three excluded from autowiring in `config/services.yaml`;
+- `src/Entity/Trait/` (entity helpers) or `src/Repository/Trait/` (query helpers) for reusable traits;
+- `assets/vue/Composables/` for front runtime helpers and constants (`Admin/`, `Front/`, `Global/`).
 
 ### Frontend: how Vue mounts into Twig
 Admin pages are server-rendered Twig extending `admin/admin_base.html.twig`; Vue "islands" are mounted into them via the `vue_component()` Twig function from `symfony/ux-vue`:
