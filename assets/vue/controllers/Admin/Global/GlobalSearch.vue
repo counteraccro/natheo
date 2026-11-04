@@ -334,7 +334,7 @@ export default defineComponent({
         >
           {{ translate.ongletPage.noResult }}
         </div>
-        <div v-if="results.page !== null" class="mt-2">
+        <div v-if="results.page !== null && paginate.page" class="mt-2">
           <TabSearchResult
             key="1"
             :result="results.page"
@@ -366,7 +366,7 @@ export default defineComponent({
         >
           {{ translate.ongletMenu.noResult }}
         </div>
-        <div v-if="results.menu !== null" class="mt-2">
+        <div v-if="results.menu !== null && paginate.menu" class="mt-2">
           <TabSearchResult
             key="3"
             :result="results.menu"
@@ -398,7 +398,7 @@ export default defineComponent({
         >
           {{ translate.ongletFaq.noResult }}
         </div>
-        <div v-if="results.faq !== null" class="mt-2">
+        <div v-if="results.faq !== null && paginate.faq" class="mt-2">
           <TabSearchResult
             key="4"
             :result="results.faq"
@@ -431,7 +431,7 @@ export default defineComponent({
           {{ translate.ongletTag.noResult }}
         </div>
 
-        <div v-if="results.tag !== null" class="mt-2">
+        <div v-if="results.tag !== null && paginate.tag" class="mt-2">
           <TabSearchResult
             key="5"
             :result="results.tag"
@@ -464,7 +464,7 @@ export default defineComponent({
           {{ translate.ongletUser.noResult }}
         </div>
 
-        <div v-if="results.user !== null" class="mt-2">
+        <div v-if="results.user !== null && paginate.user" class="mt-2">
           <TabSearchResult
             key="6"
             :result="results.user"

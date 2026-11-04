@@ -488,7 +488,7 @@ class TagControllerTest extends AppWebTestCase
         $this->client->request('GET', $this->router->generate('admin_tag_add'));
         $props = $this->client
             ->getCrawler()
-            ->filter('[data-symfony--ux-vue--vue-component-value="Admin/Content/TagForm"]')
+            ->filter('[data-symfony--ux-vue--vue-component-value="Admin/Content/Tag/TagForm"]')
             ->attr('data-symfony--ux-vue--vue-props-value');
         return json_decode($props, true)['csrf_token_save'];
     }

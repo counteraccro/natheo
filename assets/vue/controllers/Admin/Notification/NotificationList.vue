@@ -1,38 +1,41 @@
-<script>
+<script lang="ts">
 /**
  * @author Gourdon Aymeric
  * @version 2.0
  * Permet d'afficher la liste des notifications
  */
+import { defineComponent, type PropType } from 'vue';
 import axios from 'axios';
 import SkeletonCardStat from '@/vue/Components/Skeleton/CardStat.vue';
 import SkeletonTabs from '@/vue/Components/Skeleton/Tabs.vue';
-import Notification from '@/vue/controllers/Admin/Notification/Notification.vue';
+import Notification from '@/vue/Components/Notification/Notification.vue';
+import type { NotificationItem } from '@/ts/Notification/Notification.type';
+import type {
+  NotificationCategory,
+  NotificationChecked,
+  NotificationListTranslate,
+  NotificationListUrls,
+} from '@/ts/Notification/NotificationList.type';
 import Modal from '@/vue/Components/Global/Modal.vue';
 import { toastSuccess, toastError, toastRequestError } from '@/vue/Composables/Global/toast';
 
-export default {
+export default defineComponent({
   name: 'NotificationList',
   components: { Modal, Notification, SkeletonTabs, SkeletonCardStat },
   props: {
-    urls: Object,
-    page: Number,
-    limit: Number,
-    translation: Object,
-    categories: Object,
+    urls: { type: Object as PropType<NotificationListUrls>, required: true },
+    page: { type: Number, required: true },
+    limit: { type: Number, required: true },
+    translation: { type: Object as PropType<NotificationListTranslate>, required: true },
+    categories: { type: Object as PropType<Record<string, NotificationCategory>>, required: true },
   },
   data() {
     return {
-      notifications: [],
-      notificationsChecked: {},
+      notifications: [] as NotificationItem[],
+      notificationsChecked: {} as Record<string, NotificationChecked>,
       checkedAll: false,
-      listLimit: Object,
-      cLimit: this.limit,
       loading: true,
       loadingStat: true,
-      locale: '',
-      onlyNotRead: 1,
-      allReadBtn: true,
       modale: {
         showModale: false,
         msgConfirm: '',
@@ -50,23 +53,24 @@ export default {
   },
   computed: {
     /**
-     * Compte le nombre de notification lue
-     * @returns {boolean}
+     * Au moins une notification est cochée
      */
-    hasNotificationsChecked() {
+    hasNotificationsChecked(): boolean {
       return Object.keys(this.notificationsChecked).length > 0;
     },
 
     /**
-     * Au moins une notification est lue
-     * @returns {*}
+     * Au moins une notification cochée est lue
      */
-    hasAtLeastOneRead() {
+    hasAtLeastOneRead(): boolean {
       return Object.values(this.notificationsChecked).some((notif) => notif.isRead === true);
     },
   },
   methods: {
-    loadStatistic() {
+    /**
+     * Chargement des statistiques
+     */
+    loadStatistic(): void {
       axios
         .get(this.urls.statistics)
         .then((response) => {
@@ -88,21 +92,21 @@ export default {
      * @param limit
      * @param onlyNotRead
      */
-    loadData(page, limit, onlyNotRead) {
+    loadData(page: number, limit: number, onlyNotRead: number): void {
       axios
         .get(this.urls.list + '/' + page + '/' + limit + '/' + onlyNotRead)
         .then((response) => {
           this.notifications = response.data.notifications;
-          this.locale = response.data.locale;
-          this.listLimit = response.data.listLimit;
           this.checkedAll = true;
         })
         .catch((error) => {
           toastRequestError(error);
         })
         .finally(() => {
-          let element = document.getElementById('check-all');
-          element.checked = false;
+          const element = document.getElementById('check-all') as HTMLInputElement | null;
+          if (element) {
+            element.checked = false;
+          }
 
           this.notificationsChecked = {};
           this.checkedAll = false;
@@ -116,7 +120,7 @@ export default {
      * @param isRead
      * @param isChecked
      */
-    updateTabNotificationChecked(id, isRead, isChecked) {
+    updateTabNotificationChecked(id: string, isRead: string, isChecked: boolean): void {
       if (isChecked) {
         this.notificationsChecked[id] = { id: id, isRead: isRead === 'true' };
       } else {
@@ -128,11 +132,11 @@ export default {
      * Selectionne toutes les notifications
      * @param event
      */
-    checkedAllNotification(event) {
-      let target = event.target;
+    checkedAllNotification(event: Event): void {
+      const target = event.target as HTMLInputElement;
       if (target.checked) {
         this.checkedAll = true;
-        this.notifications.forEach((notification, index) => {
+        this.notifications.forEach((notification) => {
           this.notificationsChecked[notification.id] = { id: notification.id, isRead: notification.read };
         });
       } else {
@@ -143,8 +147,9 @@ export default {
 
     /**
      * Met à jour une ou plusieurs notifications
+     * @param read
      */
-    updateNotification(read) {
+    updateNotification(read: boolean): void {
       this.loading = true;
       axios
         .post(this.urls.update, { notifications: this.notificationsChecked, read: read })
@@ -164,18 +169,17 @@ export default {
         });
     },
 
-    deleteNotification(confirm) {
+    /**
+     * Supprime les notifications cochées (confirm : affiche d'abord la modale de confirmation)
+     * @param confirm
+     */
+    deleteNotification(confirm: boolean): void {
       if (confirm) {
         this.showModal();
-        this.modale.msgConfirm = this.translation.confirmMsg;
-        this.modale.msgConfirm = this.modale.msgConfirm.replace(
-          '{total}',
-          Object.keys(this.notificationsChecked).length
-        );
-        this.modale.msgConfirm = this.modale.msgConfirm.replace(
-          '{noRead}',
-          Object.values(this.notificationsChecked).filter((notif) => !notif.isRead).length
-        );
+        const checked = Object.values(this.notificationsChecked);
+        this.modale.msgConfirm = this.translation.confirmMsg
+          .replace('{total}', String(checked.length))
+          .replace('{noRead}', String(checked.filter((notif) => !notif.isRead).length));
       } else {
         this.loading = true;
         this.modale.showModale = false;
@@ -201,7 +205,7 @@ export default {
     /**
      * Met toutes les notifications non lu en lu
      */
-    readAll() {
+    readAll(): void {
       this.loading = true;
       axios
         .get(this.urls.readAll, {})
@@ -221,11 +225,12 @@ export default {
         });
     },
 
-    /** Lance la purge des notifications **/
-    purge() {
+    /**
+     * Lance la purge des notifications
+     */
+    purge(): void {
       axios
         .post(this.urls.purge, {})
-        .then((response) => {})
         .catch((error) => {
           toastRequestError(error);
         })
@@ -236,56 +241,32 @@ export default {
     },
 
     /**
-     * Affiche le bon format de la date
-     * @param dateString
-     * @returns {string}
-     */
-    formatDate(dateString) {
-      const date = new Date(dateString);
-      return new Intl.DateTimeFormat(this.locale, { dateStyle: 'long', timeStyle: 'short' }).format(date);
-    },
-
-    /**
-     * Retourne une liste de notification en fonction de sa catégorie
+     * Retourne les notifications d'une catégorie
      * @param category
-     * @returns {[]}
      */
-    getNotifByCategory(category) {
-      let tmp = [];
-      this.notifications.forEach((notification, index) => {
-        if (notification.category === category) {
-          tmp.push(notification);
-        }
-      });
-      return tmp;
+    getNotifByCategory(category: string): NotificationItem[] {
+      return this.notifications.filter((notification) => notification.category === category);
     },
 
     /**
-     * Retourne une liste de notification en fonction de sa catégorie
-     * @returns {[]}
+     * Retourne les notifications lues ou non lues
      * @param isRead
      */
-    getNotifByIsRead(isRead) {
-      let tmp = [];
-      this.notifications.forEach((notification, index) => {
-        if (notification.read === isRead) {
-          tmp.push(notification);
-        }
-      });
-      return tmp;
+    getNotifByIsRead(isRead: boolean): NotificationItem[] {
+      return this.notifications.filter((notification) => notification.read === isRead);
     },
 
     /**
      * Affichage la modale
      */
-    showModal() {
+    showModal(): void {
       this.modale.showModale = true;
     },
 
     /**
      * Ferme la modale
      */
-    hideModal() {
+    hideModal(): void {
       this.modale.showModale = false;
     },
 
@@ -293,11 +274,10 @@ export default {
      * Marque une notification comme lu
      * @param id
      */
-    markAsRead(id) {
+    markAsRead(id: number): void {
       this.stats.nb_noRead--;
 
-      let tab = {};
-      tab[id] = { id: id, isRead: id };
+      const tab: Record<string, NotificationChecked> = { [id]: { id: id, isRead: false } };
 
       axios
         .post(this.urls.update, { notifications: tab, read: true })
@@ -310,8 +290,7 @@ export default {
         })
         .catch((error) => {
           toastRequestError(error);
-        })
-        .finally(() => {});
+        });
     },
 
     /**
@@ -319,7 +298,7 @@ export default {
      * @param id
      * @param confirm
      */
-    deleteNotif(id, confirm) {
+    deleteNotif(id: number, confirm: boolean): void {
       if (confirm) {
         this.notificationsChecked = {};
         this.notificationsChecked[id] = { id: id, isRead: true };
@@ -328,19 +307,19 @@ export default {
       }
     },
   },
-};
+});
 </script>
 
 <template>
-  <div v-if="this.loadingStat">
+  <div v-if="loadingStat">
     <SkeletonCardStat />
   </div>
   <div v-else class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
     <div class="card rounded-lg p-4">
       <div class="flex items-center justify-between">
         <div>
-          <p class="text-sm font-medium" style="color: var(--text-secondary)">{{ this.translation.statNonLu }}</p>
-          <p class="text-2xl font-bold mt-1" id="unreadCount">{{ this.stats.nb_noRead }}</p>
+          <p class="text-sm font-medium" style="color: var(--text-secondary)">{{ translation.statNonLu }}</p>
+          <p class="text-2xl font-bold mt-1" id="unreadCount">{{ stats.nb_noRead }}</p>
         </div>
         <div
           class="w-12 h-12 rounded-lg flex items-center justify-center"
@@ -361,8 +340,8 @@ export default {
     <div class="card rounded-lg p-4">
       <div class="flex items-center justify-between">
         <div>
-          <p class="text-sm font-medium" style="color: var(--text-secondary)">{{ this.translation.statToday }}</p>
-          <p class="text-2xl font-bold mt-1" id="todayCount">{{ this.stats.nb_today }}</p>
+          <p class="text-sm font-medium" style="color: var(--text-secondary)">{{ translation.statToday }}</p>
+          <p class="text-2xl font-bold mt-1" id="todayCount">{{ stats.nb_today }}</p>
         </div>
         <div
           class="w-12 h-12 rounded-lg flex items-center justify-center"
@@ -389,8 +368,8 @@ export default {
     <div class="card rounded-lg p-4">
       <div class="flex items-center justify-between">
         <div>
-          <p class="text-sm font-medium" style="color: var(--text-secondary)">{{ this.translation.statAll }}</p>
-          <p class="text-2xl font-bold mt-1" id="totalCount">{{ this.stats.nb_total }}</p>
+          <p class="text-sm font-medium" style="color: var(--text-secondary)">{{ translation.statAll }}</p>
+          <p class="text-2xl font-bold mt-1" id="totalCount">{{ stats.nb_total }}</p>
         </div>
         <div
           class="w-12 h-12 rounded-lg flex items-center justify-center"
@@ -409,16 +388,12 @@ export default {
     </div>
   </div>
 
-  <div v-if="this.loading">
+  <div v-if="loading">
     <SkeletonTabs />
   </div>
   <div v-else>
     <div class="flex items-end gap-2 flex-row-reverse">
-      <button
-        class="btn btn-outline-dark px-4 py-2 text-sm"
-        @click="this.readAll"
-        :disabled="this.stats.nb_noRead === 0"
-      >
+      <button class="btn btn-outline-dark px-4 py-2 text-sm" @click="readAll" :disabled="stats.nb_noRead === 0">
         <svg
           class="icon"
           aria-hidden="true"
@@ -437,7 +412,7 @@ export default {
           />
         </svg>
 
-        {{ this.translation.readAll }}
+        {{ translation.readAll }}
       </button>
 
       <div v-if="hasNotificationsChecked">
@@ -463,7 +438,7 @@ export default {
             />
           </svg>
 
-          {{ this.translation.read }}
+          {{ translation.read }}
         </button>
         <button v-else class="btn btn-outline-dark px-4 py-2 text-sm me-2" @click="updateNotification(false)">
           <svg
@@ -484,10 +459,10 @@ export default {
             />
           </svg>
 
-          {{ this.translation.noRead }}
+          {{ translation.noRead }}
         </button>
 
-        <button class="btn btn-outline-dark px-4 py-2 text-sm" @click="this.deleteNotification(true)">
+        <button class="btn btn-outline-dark px-4 py-2 text-sm" @click="deleteNotification(true)">
           <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
@@ -496,13 +471,13 @@ export default {
               d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
             ></path>
           </svg>
-          {{ this.translation.deleteSelected }}
+          {{ translation.deleteSelected }}
         </button>
       </div>
     </div>
   </div>
 
-  <div v-show="!this.loading" class="card rounded-lg mb-6 mt-3">
+  <div v-show="!loading" class="card rounded-lg mb-6 mt-3">
     <div class="border-b border-default" style="border-color: var(--border-color)">
       <ul
         class="flex flex-wrap -mb-px text-sm font-medium text-center px-4 sm:px-6"
@@ -516,7 +491,7 @@ export default {
             type="checkbox"
             class="form-check-input ms-3 no-control"
             id="check-all"
-            @change="this.checkedAllNotification"
+            @change="checkedAllNotification"
           />
           <button
             class="inline-block p-3 border-b-2 hover:text-fg-brand hover:border-brand border-[var(--primary)] cursor-pointer"
@@ -528,13 +503,13 @@ export default {
             aria-controls="all"
             aria-selected="false"
           >
-            {{ this.translation.all }}
+            {{ translation.all }}
           </button>
         </li>
         <li class="me-2" role="presentation">
           <button
             class="inline-block border-b-2 hover:text-fg-brand hover:border-brand border-[var(--primary)] cursor-pointer"
-            :class="this.stats.nb_noRead ? 'p-[0.67em]' : 'p-3'"
+            :class="stats.nb_noRead ? 'p-[0.67em]' : 'p-3'"
             id="not-read-tab"
             style="margin-bottom: -1px"
             data-tabs-target="#not-read"
@@ -543,11 +518,11 @@ export default {
             aria-controls="not-read"
             aria-selected="true"
           >
-            {{ this.translation.onlyNotRead }}
-            <span v-if="this.stats.nb_noRead > 0" class="ms-3 badge badge-primary"> {{ this.stats.nb_noRead }} </span>
+            {{ translation.onlyNotRead }}
+            <span v-if="stats.nb_noRead > 0" class="ms-3 badge badge-primary"> {{ stats.nb_noRead }} </span>
           </button>
         </li>
-        <li v-for="category in this.categories" role="presentation" class="me-2">
+        <li v-for="category in categories" role="presentation" class="me-2">
           <button
             class="inline-block p-3 border-b-2 hover:text-fg-brand hover:border-brand cursor-pointer"
             :id="category.id + '-tab'"
@@ -566,15 +541,15 @@ export default {
     <div id="default-tab-content">
       <div class="hidden rounded-base bg-neutral-secondary-soft" id="all" role="tabpanel" aria-labelledby="all-tab">
         <notification
-          v-if="this.notifications.length > 0"
-          v-for="notification in this.notifications"
-          :translation="this.translation.notification"
+          v-if="notifications.length > 0"
+          v-for="notification in notifications"
+          :translation="translation.notification"
           :notification="notification"
           :render="'all'"
-          @check-notification="this.updateTabNotificationChecked"
-          @mark-as-read="this.markAsRead"
-          @delete="this.deleteNotif"
-          :checked="this.checkedAll"
+          @check-notification="updateTabNotificationChecked"
+          @mark-as-read="markAsRead"
+          @delete="deleteNotif"
+          :checked="checkedAll"
         />
 
         <div v-else class="text-sm text-[var(--text-secondary)] p-4 sm:p-6 flex gap-1">
@@ -596,17 +571,17 @@ export default {
             />
           </svg>
 
-          {{ this.translation.empty }}
+          {{ translation.empty }}
         </div>
       </div>
       <div class="rounded-base bg-neutral-secondary-soft" id="not-read" role="tabpanel" aria-labelledby="not-read-tab">
         <notification
-          v-if="this.getNotifByIsRead(false).length > 0"
-          v-for="notification in this.getNotifByIsRead(false)"
-          :translation="this.translation.notification"
+          v-if="getNotifByIsRead(false).length > 0"
+          v-for="notification in getNotifByIsRead(false)"
+          :translation="translation.notification"
           :notification="notification"
-          @mark-as-read="this.markAsRead"
-          @delete="this.deleteNotif"
+          @mark-as-read="markAsRead"
+          @delete="deleteNotif"
         />
         <div v-else class="text-sm text-[var(--text-secondary)] p-4 sm:p-6 flex gap-1">
           <svg
@@ -627,23 +602,23 @@ export default {
             />
           </svg>
 
-          {{ this.translation.empty }}
+          {{ translation.empty }}
         </div>
       </div>
       <div
-        v-for="category in this.categories"
+        v-for="category in categories"
         class="hidden rounded-base bg-neutral-secondary-soft"
         :id="category.id"
         role="tabpanel"
         :aria-labelledby="category.id + '-tab'"
       >
         <notification
-          v-if="this.getNotifByCategory(category.id).length > 0"
-          v-for="notification in this.getNotifByCategory(category.id)"
-          :translation="this.translation.notification"
+          v-if="getNotifByCategory(category.id).length > 0"
+          v-for="notification in getNotifByCategory(category.id)"
+          :translation="translation.notification"
           :notification="notification"
-          @mark-as-read="this.markAsRead"
-          @delete="this.deleteNotif"
+          @mark-as-read="markAsRead"
+          @delete="deleteNotif"
         />
         <div v-else class="text-sm text-[var(--text-secondary)] p-4 sm:p-6 flex gap-1">
           <svg
@@ -664,7 +639,7 @@ export default {
             />
           </svg>
 
-          {{ this.translation.empty }}
+          {{ translation.empty }}
         </div>
       </div>
     </div>
@@ -672,8 +647,8 @@ export default {
 
   <modal
     :id="'confirm-modale-notification'"
-    :show="this.modale.showModale"
-    @close-modal="this.hideModal"
+    :show="modale.showModale"
+    @close-modal="hideModal"
     :option-show-close-btn="false"
   >
     <template #icon>
@@ -687,12 +662,12 @@ export default {
         />
       </svg>
     </template>
-    <template #title> {{ this.translation.confirmTitle }} </template>
+    <template #title> {{ translation.confirmTitle }} </template>
     <template #body>
-      <div v-html="this.modale.msgConfirm"></div>
+      <div v-html="modale.msgConfirm"></div>
     </template>
     <template #footer>
-      <button type="button" class="btn btn-primary btn-sm me-2" @click="this.deleteNotification(false)">
+      <button type="button" class="btn btn-primary btn-sm me-2" @click="deleteNotification(false)">
         <svg
           class="icon"
           aria-hidden="true"
@@ -710,9 +685,9 @@ export default {
             d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
           />
         </svg>
-        {{ this.translation.confirmBtnOK }}
+        {{ translation.confirmBtnOK }}
       </button>
-      <button type="button" class="btn btn-outline-dark btn-sm" @click="this.hideModal()">
+      <button type="button" class="btn btn-outline-dark btn-sm" @click="hideModal()">
         <svg
           class="icon"
           aria-hidden="true"
@@ -731,7 +706,7 @@ export default {
           />
         </svg>
 
-        {{ this.translation.confirmBtnNo }}
+        {{ translation.confirmBtnNo }}
       </button>
     </template>
   </modal>

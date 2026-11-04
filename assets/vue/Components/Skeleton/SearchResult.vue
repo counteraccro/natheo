@@ -1,10 +1,11 @@
-<script>
+<script lang="ts">
 /**
  * @author Gourdon Aymeric
  * @version 1.0
  * Skeleton d'un resultat de recherche
  */
-export default {
+import { defineComponent } from 'vue';
+export default defineComponent({
   name: 'SkeletonSearchResult',
   props: {
     rows: {
@@ -12,14 +13,7 @@ export default {
       default: 5,
     },
   },
-  emits: [],
-  data() {
-    return {};
-  },
-  mounted() {},
-
-  methods: {},
-};
+});
 </script>
 
 <template>

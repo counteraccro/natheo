@@ -1,20 +1,13 @@
-<script>
+<script lang="ts">
 /**
  * @author Gourdon Aymeric
  * @version 1.0
  * Skeleton d'un form
  */
-export default {
+import { defineComponent } from 'vue';
+export default defineComponent({
   name: 'SkeletonCommentEdit',
-  props: {},
-  emits: [],
-  data() {
-    return {};
-  },
-  mounted() {},
-
-  methods: {},
-};
+});
 </script>
 
 <template>
@@ -117,7 +110,7 @@ export default {
         </div>
         <!-- 4 lignes d'info -->
         <div class="divide-y divide-[var(--border-color)]">
-          <div v-for="i in 4" class="flex items-center gap-3 px-5 py-4">
+          <div v-for="i in 4" :key="i" class="flex items-center gap-3 px-5 py-4">
             <div class="w-8 h-8 rounded-lg flex-shrink-0 bg-gray-200 dark:bg-gray-700"></div>
             <div class="flex flex-col gap-1.5 flex-1">
               <div class="h-3 w-16 rounded bg-gray-200 dark:bg-gray-700"></div>
