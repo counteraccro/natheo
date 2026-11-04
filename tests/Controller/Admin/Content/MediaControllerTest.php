@@ -13,10 +13,10 @@ use App\Entity\Admin\Content\Media\Media;
 use App\Entity\Admin\Content\Media\MediaFolder;
 use App\Service\Admin\Content\Media\MediaService;
 use App\Tests\AppWebTestCase;
-use App\Utils\Content\Media\MediaConst;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use App\Enum\Admin\Content\Media\MediaType;
 
 class MediaControllerTest extends AppWebTestCase
 {
@@ -832,7 +832,7 @@ class MediaControllerTest extends AppWebTestCase
         $this->client->loginUser($user, 'admin');
         $this->client->catchExceptions(false);
 
-        $oversized = str_repeat('A', MediaConst::MAX_UPLOAD_SIZE_BYTES + 1);
+        $oversized = str_repeat('A', MediaService::MAX_UPLOAD_SIZE_BYTES + 1);
         $file = [
             'name' => 'too-big',
             'description' => 'unit test upload',
@@ -866,7 +866,7 @@ class MediaControllerTest extends AppWebTestCase
 
         $medias = $this->mediaService->getMediaByMediaFolder(null);
         $this->assertCount(1, $medias);
-        $this->assertEquals(MediaConst::MEDIA_TYPE_IMG, $medias[0]->getType());
+        $this->assertEquals(MediaType::IMG->value, $medias[0]->getType());
         $this->assertNotNull($medias[0]->getThumbnail());
         $this->assertTrue(
             $this->fileSystem->exists(

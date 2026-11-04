@@ -305,7 +305,7 @@ class MediaFolderServiceTest extends AppWebTestCase
     /**
      * Test méthode updateMediaFolder() : le webPath d'un média ne doit pas être corrompu quand
      * le nom du dossier renommé coïncide avec un segment du préfixe fixe de webPathMedia
-     * (ex: un dossier nommé "assets", qui apparaît aussi dans MediaFolderConst::PATH_WEB_PATH)
+     * (ex: un dossier nommé "assets", qui apparaît aussi dans MediaFolderPath::PATH_WEB_PATH->value)
      * @return void
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface

@@ -25,9 +25,7 @@ use App\Service\Admin\System\OptionSystemService;
 use App\Service\Admin\System\OptionUserService;
 use App\Service\Admin\System\User\UserDataService;
 use App\Service\Admin\System\User\UserService;
-use App\Utils\Flash\FlashKey;
 use App\Utils\System\Mail\KeyWord;
-use App\Utils\System\Mail\MailKey;
 use App\Utils\System\User\Role;
 use App\Enum\Admin\System\User\UserDataKey;
 use App\Translate\Admin\System\UserTranslate;
@@ -51,6 +49,8 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use App\Enum\Admin\Global\FlashKey;
+use App\Enum\Admin\System\Mail\MailKey;
 
 #[Route('/admin/{_locale}/user', name: 'admin_user_', requirements: ['_locale' => '%app.supported_locales%'])]
 class UserController extends AppAdminController
@@ -283,7 +283,7 @@ class UserController extends AppAdminController
             $user = $form->getData();
             $userService->save($user);
             $this->addFlash(
-                FlashKey::FLASH_SUCCESS,
+                FlashKey::SUCCESS->value,
                 $translator->trans('user.page_update.success', ['email' => $user->getEmail()], domain: 'user'),
             );
         }
@@ -356,7 +356,7 @@ class UserController extends AppAdminController
                     $avatarFile->move($avatarDirectory, $newFilename);
                 } catch (FileException $e) {
                     $this->addFlash(
-                        FlashKey::FLASH_DANGER,
+                        FlashKey::DANGER->value,
                         $translator->trans('user.page_my_account.upload.avatar.error', domain: 'user'),
                     );
                 }
@@ -366,7 +366,7 @@ class UserController extends AppAdminController
 
             $userService->save($user);
             $this->addFlash(
-                FlashKey::FLASH_SUCCESS,
+                FlashKey::SUCCESS->value,
                 $translator->trans('user.page_my_account.success', domain: 'user'),
             );
         }
@@ -410,7 +410,7 @@ class UserController extends AppAdminController
         #[Autowire('%app.folder.upload.avatar%')] string $avatarDirectory,
     ): RedirectResponse {
         if (!$this->isCsrfTokenValid('delete_avatar', $request->request->getString('_token'))) {
-            $this->addFlash(FlashKey::FLASH_DANGER, $translator->trans('user.error_not_allowed', domain: 'user'));
+            $this->addFlash(FlashKey::DANGER->value, $translator->trans('user.error_not_allowed', domain: 'user'));
             return $this->redirectToRoute('admin_user_my_account');
         }
 
@@ -425,7 +425,7 @@ class UserController extends AppAdminController
             $userService->save($user);
         }
 
-        $this->addFlash(FlashKey::FLASH_SUCCESS, $translator->trans('user.delete_avatar.success', domain: 'user'));
+        $this->addFlash(FlashKey::SUCCESS->value, $translator->trans('user.delete_avatar.success', domain: 'user'));
 
         return $this->redirectToRoute('admin_user_my_account');
     }
@@ -518,7 +518,7 @@ class UserController extends AppAdminController
         }
 
         if ($optionSystemService->canSendMailNotification() && !$role->isSuperAdmin()) {
-            $mail = $mailService->getByKey(MailKey::MAIL_SELF_DISABLED_ACCOUNT);
+            $mail = $mailService->getByKey(MailKey::SELF_DISABLED_ACCOUNT->value);
             $keyWord = new KeyWord($mail->getKey());
             $tabKeyWord = $keyWord->getTabMailSelfDisabled($user, $optionSystemService);
             $params = $mailService->getDefaultParams($mail, $tabKeyWord);
@@ -617,12 +617,12 @@ class UserController extends AppAdminController
         ) {
             if ($status === 1) {
                 // anonymisation
-                $mail = $mailService->getByKey(MailKey::MAIL_SELF_ANONYMOUS_ACCOUNT);
+                $mail = $mailService->getByKey(MailKey::SELF_ANONYMOUS_ACCOUNT->value);
                 $keyWord = new KeyWord($mail->getKey());
                 $tabKeyWord = $keyWord->getTabMailSelfAnonymous($user2, $optionSystemService);
             } else {
                 // delete
-                $mail = $mailService->getByKey(MailKey::MAIL_SELF_DELETE_ACCOUNT);
+                $mail = $mailService->getByKey(MailKey::SELF_DELETE_ACCOUNT->value);
                 $keyWord = new KeyWord($mail->getKey());
                 $tabKeyWord = $keyWord->getTabMailSelfDelete($user2, $optionSystemService);
             }
@@ -705,7 +705,7 @@ class UserController extends AppAdminController
 
             $key = $userDataService->generateResetPasswordKey($user);
 
-            $mail = $mailService->getByKey(MailKey::MAIL_CREATE_ACCOUNT_ADM);
+            $mail = $mailService->getByKey(MailKey::CREATE_ACCOUNT_ADM->value);
             $keyWord = new KeyWord($mail->getKey());
             $tabKeyWord = $keyWord->getTabMailCreateAccountAdm(
                 $user,
@@ -719,7 +719,7 @@ class UserController extends AppAdminController
             $mailService->sendMail($params);
 
             $this->addFlash(
-                FlashKey::FLASH_SUCCESS,
+                FlashKey::SUCCESS->value,
                 $translator->trans('user.page_add.success', ['email' => $user->getEmail()], domain: 'user'),
             );
 
@@ -784,7 +784,7 @@ class UserController extends AppAdminController
 
         $key = $userDataService->generateResetPasswordKey($user);
 
-        $mail = $mailService->getByKey(MailKey::MAIL_RESET_PASSWORD);
+        $mail = $mailService->getByKey(MailKey::RESET_PASSWORD->value);
         $keyWord = new KeyWord($mail->getKey());
         $tabKeyWord = $keyWord->getTabMailResetPassword(
             $user,
@@ -798,7 +798,7 @@ class UserController extends AppAdminController
         $mailService->sendMail($params);
 
         $this->addFlash(
-            FlashKey::FLASH_SUCCESS,
+            FlashKey::SUCCESS->value,
             $translator->trans('user.page_my_account.reset_password_success', domain: 'user'),
         );
 

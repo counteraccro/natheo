@@ -13,16 +13,20 @@ use App\Entity\Admin\System\User;
 use App\Entity\Admin\System\UserData;
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Admin\AppAdminService;
-use App\Utils\Api\ApiConst;
 use App\Enum\Admin\System\User\UserDataKey;
-use App\Utils\System\ApiToken\TokenHasher;
 use DateTime;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\String\ByteString;
+use App\Service\Global\Token\TokenHasher;
 
 class UserDataService extends AppAdminService
 {
+    /**
+     * Longueur du token utilisateur de l'API
+     */
+    private const int USER_TOKEN_SIZE = 32;
+
     /**
      * Durée de validité maximale (en minutes) du token utilisateur API
      * @var int
@@ -168,7 +172,7 @@ class UserDataService extends AppAdminService
      */
     public function generateUserToken(User $user): string
     {
-        $token = ByteString::fromRandom(ApiConst::API_SIZE_USER_TOKEN)->toString();
+        $token = ByteString::fromRandom(self::USER_TOKEN_SIZE)->toString();
         $this->update(UserDataKey::TOKEN_CONNEXION->value, TokenHasher::hash($token), $user);
 
         $optionSystem = $this->getOptionSystemService();

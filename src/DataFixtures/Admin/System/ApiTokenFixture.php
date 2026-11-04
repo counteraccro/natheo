@@ -8,14 +8,14 @@ use App\DataFixtures\AppFixtures;
 use App\Entity\Admin\System\ApiToken;
 use App\Entity\Admin\System\OptionSystem;
 use App\Enum\Admin\System\Options\OptionSystem as OptionSystemEnum;
-use App\Utils\System\ApiToken\TokenGenerator;
-use App\Utils\System\ApiToken\TokenHasher;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\Yaml\Yaml;
+use App\Service\Global\Token\TokenGenerator;
+use App\Service\Global\Token\TokenHasher;
 
 class ApiTokenFixture extends AppFixtures implements FixtureGroupInterface, OrderedFixtureInterface
 {

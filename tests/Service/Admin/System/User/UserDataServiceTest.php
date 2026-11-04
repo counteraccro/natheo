@@ -15,9 +15,9 @@ use App\Service\Admin\System\User\UserDataService;
 use App\Tests\AppWebTestCase;
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Enum\Admin\System\User\UserDataKey;
-use App\Utils\System\ApiToken\TokenHasher;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use App\Service\Global\Token\TokenHasher;
 
 class UserDataServiceTest extends AppWebTestCase
 {

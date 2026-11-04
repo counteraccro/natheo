@@ -17,7 +17,6 @@ use App\Service\Admin\System\User\UserService;
 use App\Service\Installation\InstallationService;
 use App\Service\SecurityService;
 use App\Utils\System\Mail\KeyWord;
-use App\Utils\System\Mail\MailKey;
 use App\Translate\Admin\System\UserTranslate;
 use League\CommonMark\Exception\CommonMarkException;
 use Psr\Container\ContainerExceptionInterface;
@@ -30,6 +29,7 @@ use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use App\Enum\Admin\System\Mail\MailKey;
 
 #[
     Route(
@@ -204,7 +204,7 @@ class SecurityController extends AbstractController
             if ($user != null) {
                 $key = $userDataService->generateResetPasswordKey($user);
 
-                $mail = $mailService->getByKey(MailKey::MAIL_CHANGE_PASSWORD);
+                $mail = $mailService->getByKey(MailKey::CHANGE_PASSWORD->value);
                 $keyWord = new KeyWord($mail->getKey());
                 $tabKeyWord = $keyWord->getMailChangePassword(
                     $user,

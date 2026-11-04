@@ -18,7 +18,6 @@ use App\Resolver\Api\Content\Page\ApiFindPageCategoryResolver;
 use App\Resolver\Api\Content\Page\ApiFindPageContentResolver;
 use App\Resolver\Api\Content\Page\ApiFindPageResolver;
 use App\Resolver\Api\Content\Page\ApiFindPageTagResolver;
-use App\Utils\Api\ApiConst;
 use Doctrine\ORM\NonUniqueResultException;
 use League\CommonMark\Exception\CommonMarkException;
 use Psr\Container\ContainerExceptionInterface;
@@ -29,6 +28,7 @@ use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use App\Enum\Api\ApiMessage;
 
 #[Route('/api/{api_version}/page', name: 'api_page_', requirements: ['api_version' => '%app.api_version%'])]
 #[IsGranted('ROLE_READ_API')]
@@ -61,7 +61,7 @@ class ApiPageController extends AppApiController
             );
         }
 
-        return $this->apiResponse(ApiConst::API_MSG_SUCCESS, ['page' => $page]);
+        return $this->apiResponse(ApiMessage::SUCCESS->value, ['page' => $page]);
     }
 
     /**
@@ -90,7 +90,7 @@ class ApiPageController extends AppApiController
                 $translator->trans('api_errors.find.page.content.not.found', domain: 'api_errors'),
             );
         }
-        return $this->apiResponse(ApiConst::API_MSG_SUCCESS, $pageContent);
+        return $this->apiResponse(ApiMessage::SUCCESS->value, $pageContent);
     }
 
     /**
@@ -119,7 +119,7 @@ class ApiPageController extends AppApiController
             );
         }
 
-        return $this->apiResponse(ApiConst::API_MSG_SUCCESS, $listing);
+        return $this->apiResponse(ApiMessage::SUCCESS->value, $listing);
     }
 
     /**
@@ -146,6 +146,6 @@ class ApiPageController extends AppApiController
                 $translator->trans('api_errors.find.listing.tag.not.found', domain: 'api_errors'),
             );
         }
-        return $this->apiResponse(ApiConst::API_MSG_SUCCESS, $listing);
+        return $this->apiResponse(ApiMessage::SUCCESS->value, $listing);
     }
 }

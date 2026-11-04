@@ -12,7 +12,6 @@ namespace App\Controller\Api\v1\System;
 use App\Controller\Api\v1\AppApiController;
 use App\Service\Admin\System\OptionSystemService;
 use App\Service\Api\System\ApiOptionSystemService;
-use App\Utils\Api\ApiConst;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -20,6 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use App\Enum\Api\ApiMessage;
 
 #[
     Route(
@@ -49,7 +49,7 @@ class ApiOptionSystemController extends AppApiController
     ]
     public function listing(ApiOptionSystemService $apiOptionSystemService): jsonResponse
     {
-        return $this->apiResponse(ApiConst::API_MSG_SUCCESS, $apiOptionSystemService->getAllOptionSystemWithValue());
+        return $this->apiResponse(ApiMessage::SUCCESS->value, $apiOptionSystemService->getAllOptionSystemWithValue());
     }
 
     /**
@@ -74,7 +74,7 @@ class ApiOptionSystemController extends AppApiController
                 $translator->trans('api_errors.find.option.system.not.found', domain: 'api_errors'),
             );
         }
-        return $this->apiResponse(ApiConst::API_MSG_SUCCESS, [
+        return $this->apiResponse(ApiMessage::SUCCESS->value, [
             'key' => $key,
             'value' => $optionSystemService->getValueByKey($key),
         ]);

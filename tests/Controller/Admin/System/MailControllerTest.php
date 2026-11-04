@@ -13,8 +13,8 @@ use App\Entity\Admin\System\Mail;
 use App\Repository\Admin\System\MailRepository;
 use App\Service\Admin\System\MailService;
 use App\Tests\AppWebTestCase;
-use App\Utils\System\Mail\MailKey;
 use Symfony\Component\HttpFoundation\Response;
+use App\Enum\Admin\System\Mail\MailKey;
 
 class MailControllerTest extends AppWebTestCase
 {
@@ -207,7 +207,7 @@ class MailControllerTest extends AppWebTestCase
         $mailRepository = $this->em->getRepository(Mail::class);
 
         /** @var Mail $mail */
-        $mail = $mailRepository->findOneBy(['key' => MailKey::MAIL_CHANGE_PASSWORD]);
+        $mail = $mailRepository->findOneBy(['key' => MailKey::CHANGE_PASSWORD->value]);
         $this->checkNoAccess('admin_mail_send_demo_mail', ['id' => $mail->getId()], 'POST');
 
         $userSuperAdm = $this->createUserSuperAdmin();
@@ -222,14 +222,14 @@ class MailControllerTest extends AppWebTestCase
 
         $token = $this->getCsrfTokens($mail)['csrf_token_send_demo'];
 
-        $this->testEmail(MailKey::MAIL_CHANGE_PASSWORD, $userSuperAdm->getLogin(), $token);
-        $this->testEmail(MailKey::MAIL_ACCOUNT_ADM_DISABLE, $userSuperAdm->getLogin(), $token);
-        $this->testEmail(MailKey::MAIL_ACCOUNT_ADM_ENABLE, $userSuperAdm->getLogin(), $token);
-        $this->testEmail(MailKey::MAIL_CREATE_ACCOUNT_ADM, $userSuperAdm->getLogin(), $token);
-        $this->testEmail(MailKey::MAIL_SELF_DISABLED_ACCOUNT, $userSuperAdm->getLogin(), $token);
-        $this->testEmail(MailKey::MAIL_SELF_DELETE_ACCOUNT, $userSuperAdm->getLogin(), $token);
-        $this->testEmail(MailKey::MAIL_SELF_ANONYMOUS_ACCOUNT, $userSuperAdm->getLogin(), $token);
-        $this->testEmail(MailKey::MAIL_RESET_PASSWORD, $userSuperAdm->getLogin(), $token);
+        $this->testEmail(MailKey::CHANGE_PASSWORD->value, $userSuperAdm->getLogin(), $token);
+        $this->testEmail(MailKey::ACCOUNT_ADM_DISABLE->value, $userSuperAdm->getLogin(), $token);
+        $this->testEmail(MailKey::ACCOUNT_ADM_ENABLE->value, $userSuperAdm->getLogin(), $token);
+        $this->testEmail(MailKey::CREATE_ACCOUNT_ADM->value, $userSuperAdm->getLogin(), $token);
+        $this->testEmail(MailKey::SELF_DISABLED_ACCOUNT->value, $userSuperAdm->getLogin(), $token);
+        $this->testEmail(MailKey::SELF_DELETE_ACCOUNT->value, $userSuperAdm->getLogin(), $token);
+        $this->testEmail(MailKey::SELF_ANONYMOUS_ACCOUNT->value, $userSuperAdm->getLogin(), $token);
+        $this->testEmail(MailKey::RESET_PASSWORD->value, $userSuperAdm->getLogin(), $token);
     }
 
     /**
@@ -240,7 +240,7 @@ class MailControllerTest extends AppWebTestCase
     {
         $this->generateDefaultMails();
         $mailService = $this->container->get(MailService::class);
-        $mail = $mailService->getByKey(MailKey::MAIL_CHANGE_PASSWORD);
+        $mail = $mailService->getByKey(MailKey::CHANGE_PASSWORD->value);
 
         $userSuperAdm = $this->createUserSuperAdmin();
         $this->client->loginUser($userSuperAdm, 'admin');

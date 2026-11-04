@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace App\Utils\System\Mail;
 
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\System\Mail\MailKey;
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Admin\System\OptionSystemService;
 use Psr\Container\ContainerExceptionInterface;
@@ -103,28 +104,28 @@ class KeyWord
             self::GLOBAL_URL => '',
             self::GLOBAL_SITE_NAME => '',
         ],
-        MailKey::MAIL_CHANGE_PASSWORD => [
+        MailKey::CHANGE_PASSWORD->value => [
             self::GLOBAL_URL_CHANGE_PASSWORD => '',
         ],
-        MailKey::MAIL_RESET_PASSWORD => [
-            self::GLOBAL_URL_CHANGE_PASSWORD => '',
-            self::ADMIN_LOGIN_ACTION => '',
-            self::URL_TIME => '',
-        ],
-        MailKey::MAIL_ACCOUNT_ADM_DISABLE => [
-            self::ADMIN_LOGIN_ACTION => '',
-        ],
-        MailKey::MAIL_ACCOUNT_ADM_ENABLE => [
-            self::ADMIN_LOGIN_ACTION => '',
-        ],
-        MailKey::MAIL_CREATE_ACCOUNT_ADM => [
+        MailKey::RESET_PASSWORD->value => [
             self::GLOBAL_URL_CHANGE_PASSWORD => '',
             self::ADMIN_LOGIN_ACTION => '',
             self::URL_TIME => '',
         ],
-        MailKey::MAIL_SELF_DISABLED_ACCOUNT => [],
-        MailKey::MAIL_SELF_DELETE_ACCOUNT => [],
-        MailKey::MAIL_SELF_ANONYMOUS_ACCOUNT => [],
+        MailKey::ACCOUNT_ADM_DISABLE->value => [
+            self::ADMIN_LOGIN_ACTION => '',
+        ],
+        MailKey::ACCOUNT_ADM_ENABLE->value => [
+            self::ADMIN_LOGIN_ACTION => '',
+        ],
+        MailKey::CREATE_ACCOUNT_ADM->value => [
+            self::GLOBAL_URL_CHANGE_PASSWORD => '',
+            self::ADMIN_LOGIN_ACTION => '',
+            self::URL_TIME => '',
+        ],
+        MailKey::SELF_DISABLED_ACCOUNT->value => [],
+        MailKey::SELF_DELETE_ACCOUNT->value => [],
+        MailKey::SELF_ANONYMOUS_ACCOUNT->value => [],
     ];
 
     /**

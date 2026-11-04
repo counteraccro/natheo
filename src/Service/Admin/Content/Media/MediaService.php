@@ -12,17 +12,54 @@ namespace App\Service\Admin\Content\Media;
 use App\Entity\Admin\Content\Media\Media;
 use App\Entity\Admin\Content\Media\MediaFolder;
 use App\Repository\Admin\Content\Media\MediaRepository;
-use App\Utils\Content\Media\MediaConst;
-use App\Utils\Content\Media\MediaFolderConst;
 use App\Utils\Content\Media\Thumbnail;
 use App\Utils\Utils;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use App\Enum\Admin\Content\Media\MediaType;
+use App\Enum\Admin\Content\Media\MediaFolderPath;
 
 class MediaService extends MediaFolderService
 {
+    /**
+     * Extensions autorisées à l'upload et type(s) MIME réel(s) accepté(s) pour chacune : le
+     * couple extension déclarée / contenu réel est toujours vérifié, jamais indépendamment.
+     * "application/zip" n'est toléré que pour docx/xlsx/pptx (formats OOXML = archives zip).
+     * @var array<string, string[]>
+     */
+    public const array UPLOAD_ALLOWED_MIMES_BY_EXTENSION = [
+        'jpg' => ['image/jpeg'],
+        'jpeg' => ['image/jpeg'],
+        'png' => ['image/png'],
+        'gif' => ['image/gif'],
+        'webp' => ['image/webp'],
+        'pdf' => ['application/pdf'],
+        'doc' => ['application/msword'],
+        'docx' => [
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            'application/zip',
+        ],
+        'xls' => ['application/vnd.ms-excel'],
+        'xlsx' => [
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'application/zip',
+        ],
+        'ppt' => ['application/vnd.ms-powerpoint'],
+        'pptx' => [
+            'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+            'application/zip',
+        ],
+    ];
+
+    /**
+     * Taille maximale (en octets) d'un fichier uploadé, alignée sur la limite déjà
+     * appliquée côté front (FileUpload.vue, prop max-size en Mo)
+     * @var int
+     */
+    public const int MAX_UPLOAD_SIZE_BYTES = 20 * 1024 * 1024;
+
     /**
      * Pour les fixtures, déplace un média du dossier fixture vers le dossier média
      * @param string $file
@@ -42,7 +79,7 @@ class MediaService extends MediaFolderService
 
         $rootPath = $containerBag->get('kernel.project_dir');
         $fixturesPath =
-            $rootPath . DIRECTORY_SEPARATOR . MediaFolderConst::ROOT_FOLDER_NAME . 'fixtures' . DIRECTORY_SEPARATOR;
+            $rootPath . DIRECTORY_SEPARATOR . MediaFolderPath::ROOT_FOLDER_NAME->value . 'fixtures' . DIRECTORY_SEPARATOR;
 
         $fileSystem = new Filesystem();
 
@@ -87,11 +124,11 @@ class MediaService extends MediaFolderService
                 }
 
                 $nameThumbnail = null;
-                $type = MediaConst::MEDIA_TYPE_FILE;
+                $type = MediaType::FILE->value;
                 if (in_array($file->getExtension(), Thumbnail::EXT_ALLOW_THUMBNAIL)) {
                     $thumbnail = new Thumbnail($this->rootPathThumbnail);
                     $nameThumbnail = $thumbnail->create($file->getRealPath(), $file->getExtension());
-                    $type = MediaConst::MEDIA_TYPE_IMG;
+                    $type = MediaType::IMG->value;
                 }
 
                 $media->setThumbnail($nameThumbnail);
@@ -289,7 +326,7 @@ class MediaService extends MediaFolderService
                 'nb_elements' => $nb_elements,
                 'nb_files' => $nb_files,
                 'children' => $children,
-                'thumbnail' => MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'folder.svg',
+                'thumbnail' => MediaFolderPath::PATH_WEB_NATHEO_MEDIA->value . 'folder.svg',
             ];
         }
 
@@ -341,7 +378,7 @@ class MediaService extends MediaFolderService
         $path = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $path);
 
         $ext = strtolower($file['fileExtention']);
-        if (!isset(MediaConst::UPLOAD_ALLOWED_MIMES_BY_EXTENSION[$ext])) {
+        if (!isset(self::UPLOAD_ALLOWED_MIMES_BY_EXTENSION[$ext])) {
             throw new \RuntimeException('File extension not allowed.');
         }
 
@@ -352,12 +389,12 @@ class MediaService extends MediaFolderService
             throw new \RuntimeException('Invalid base64 data.');
         }
 
-        if (strlen($data) > MediaConst::MAX_UPLOAD_SIZE_BYTES) {
+        if (strlen($data) > self::MAX_UPLOAD_SIZE_BYTES) {
             throw new \RuntimeException('File size exceeds the allowed limit.');
         }
 
         $mimeType = (new \finfo(FILEINFO_MIME_TYPE))->buffer($data);
-        if (!in_array($mimeType, MediaConst::UPLOAD_ALLOWED_MIMES_BY_EXTENSION[$ext], true)) {
+        if (!in_array($mimeType, self::UPLOAD_ALLOWED_MIMES_BY_EXTENSION[$ext], true)) {
             throw new \RuntimeException('File type not allowed: ' . $mimeType);
         }
 
@@ -395,17 +432,17 @@ class MediaService extends MediaFolderService
      */
     public function getThumbnail(Media $media): string
     {
-        if ($media->getType() === MediaConst::MEDIA_TYPE_IMG && $media->getThumbnail() !== null) {
+        if ($media->getType() === MediaType::IMG->value && $media->getThumbnail() !== null) {
             return $this->getWebPathThumbnail($media->getThumbnail());
         }
 
         return match ($media->getExtension()) {
-            'pdf' => MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file_pdf.svg',
-            'xls', 'xlsx' => MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file_xls.svg',
-            'csv' => MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file_csv.svg',
-            'doc', 'docx' => MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file_doc.svg',
-            'ppt', 'pptx' => MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file_ppt.svg',
-            default => MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file.svg',
+            'pdf' => MediaFolderPath::PATH_WEB_NATHEO_MEDIA->value . 'file_pdf.svg',
+            'xls', 'xlsx' => MediaFolderPath::PATH_WEB_NATHEO_MEDIA->value . 'file_xls.svg',
+            'csv' => MediaFolderPath::PATH_WEB_NATHEO_MEDIA->value . 'file_csv.svg',
+            'doc', 'docx' => MediaFolderPath::PATH_WEB_NATHEO_MEDIA->value . 'file_doc.svg',
+            'ppt', 'pptx' => MediaFolderPath::PATH_WEB_NATHEO_MEDIA->value . 'file_ppt.svg',
+            default => MediaFolderPath::PATH_WEB_NATHEO_MEDIA->value . 'file.svg',
         };
     }
 
@@ -534,7 +571,7 @@ class MediaService extends MediaFolderService
                 'id' => $folder->getId(),
                 'name' => $folder->getName(),
                 'created_at' => $folder->getCreatedAt()->getTimestamp(),
-                'thumbnail' => MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'folder.svg',
+                'thumbnail' => MediaFolderPath::PATH_WEB_NATHEO_MEDIA->value . 'folder.svg',
             ];
         }
 

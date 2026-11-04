@@ -13,7 +13,6 @@ use App\Service\Admin\System\MailService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Tests\AppWebTestCase;
 use App\Utils\System\Mail\KeyWord;
-use App\Utils\System\Mail\MailKey;
 use App\Utils\System\Mail\MailTemplate;
 use League\CommonMark\Exception\CommonMarkException;
 use Psr\Container\ContainerExceptionInterface;
@@ -26,6 +25,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\String\ByteString;
+use App\Enum\Admin\System\Mail\MailKey;
 
 class MailServiceTest extends AppWebTestCase
 {
@@ -60,7 +60,7 @@ class MailServiceTest extends AppWebTestCase
     public function testGetMailFormat(): void
     {
         $this->generateDefaultMails();
-        $mail = $this->mailRepository->findOneBy(['key' => MailKey::MAIL_CHANGE_PASSWORD]);
+        $mail = $this->mailRepository->findOneBy(['key' => MailKey::CHANGE_PASSWORD->value]);
         $result = $this->mailService->getMailFormat('fr', $mail);
         $this->assertNotEmpty($result);
         $this->assertEquals($this->translator->trans($mail->getTitle()), $result['title']);
@@ -108,7 +108,7 @@ class MailServiceTest extends AppWebTestCase
         $userSuperAdmin = $this->createUserSuperAdmin();
         $key = ByteString::fromRandom(48)->toString();
 
-        $mail = $this->mailService->getByKey(MailKey::MAIL_RESET_PASSWORD);
+        $mail = $this->mailService->getByKey(MailKey::RESET_PASSWORD->value);
         $keyWord = new KeyWord($mail->getKey());
         $tabKeyWord = $keyWord->getTabMailResetPassword(
             $user,
@@ -139,7 +139,7 @@ class MailServiceTest extends AppWebTestCase
     public function testGetByKey(): void
     {
         $this->generateDefaultMails();
-        $mail = $this->mailService->getByKey(MailKey::MAIL_RESET_PASSWORD);
+        $mail = $this->mailService->getByKey(MailKey::RESET_PASSWORD->value);
         $this->assertNotNull($mail);
     }
 
@@ -156,7 +156,7 @@ class MailServiceTest extends AppWebTestCase
         $userSuperAdmin = $this->createUserSuperAdmin();
         $key = ByteString::fromRandom(48)->toString();
 
-        $mail = $this->mailService->getByKey(MailKey::MAIL_RESET_PASSWORD);
+        $mail = $this->mailService->getByKey(MailKey::RESET_PASSWORD->value);
         $keyWord = new KeyWord($mail->getKey());
         $tabKeyWord = $keyWord->getTabMailResetPassword(
             $user,
@@ -285,7 +285,7 @@ class MailServiceTest extends AppWebTestCase
         $this->generateDefaultMails();
         $user = $this->createUserSuperAdmin();
 
-        $mail = $this->mailService->getByKey(MailKey::MAIL_RESET_PASSWORD);
+        $mail = $this->mailService->getByKey(MailKey::RESET_PASSWORD->value);
         $tab = $this->mailService->getDemoKeyWords($mail, $user);
         $this->assertContains('[[admin.login]]', $tab[KeyWord::KEY_SEARCH]);
         $this->assertContains($user->getLogin(), $tab[KeyWord::KEY_REPLACE]);
@@ -307,7 +307,7 @@ class MailServiceTest extends AppWebTestCase
     {
         $this->generateDefaultMails();
         $user = $this->createUserSuperAdmin();
-        $mail = $this->mailService->getByKey(MailKey::MAIL_CHANGE_PASSWORD);
+        $mail = $this->mailService->getByKey(MailKey::CHANGE_PASSWORD->value);
 
         $this->mailService->sendDemoMail($mail, $user, 'fr', 'Mon titre', 'Mon contenu [[user.email]]');
 

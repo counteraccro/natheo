@@ -12,12 +12,12 @@ namespace App\Service\Admin\System;
 use App\Entity\Admin\System\ApiToken;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
-use App\Utils\System\ApiToken\ApiTokenConst;
-use App\Utils\System\ApiToken\TokenGenerator;
-use App\Utils\System\ApiToken\TokenHasher;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use App\Service\Global\Token\TokenGenerator;
+use App\Service\Global\Token\TokenHasher;
+use App\Enum\Admin\System\ApiToken\ApiTokenRole;
 
 class ApiTokenService extends AppAdminService
 {
@@ -230,10 +230,10 @@ class ApiTokenService extends AppAdminService
     public function getRolesApi(): array
     {
         $translator = $this->getTranslator();
-        $roles = ApiTokenConst::API_TOKEN_ROLES;
-        $roles[ApiTokenConst::API_TOKEN_ROLE_READ] = $translator->trans('api_token.role.read', domain: 'api_token');
-        $roles[ApiTokenConst::API_TOKEN_ROLE_WRITE] = $translator->trans('api_token.role.write', domain: 'api_token');
-        $roles[ApiTokenConst::API_TOKEN_ROLE_ADMIN] = $translator->trans('api_token.role.admin', domain: 'api_token');
+        $roles = ApiTokenRole::choices();
+        $roles[ApiTokenRole::READ->value] = $translator->trans('api_token.role.read', domain: 'api_token');
+        $roles[ApiTokenRole::WRITE->value] = $translator->trans('api_token.role.write', domain: 'api_token');
+        $roles[ApiTokenRole::ADMIN->value] = $translator->trans('api_token.role.admin', domain: 'api_token');
         return $roles;
     }
 
@@ -325,9 +325,9 @@ class ApiTokenService extends AppAdminService
      */
     private function filterRoles(array $roles): array
     {
-        $roles = array_values(array_intersect($roles, array_keys(ApiTokenConst::API_TOKEN_ROLES)));
+        $roles = array_values(array_intersect($roles, array_keys(ApiTokenRole::choices())));
         if (empty($roles)) {
-            return [ApiTokenConst::API_TOKEN_ROLE_READ];
+            return [ApiTokenRole::READ->value];
         }
         return [$roles[0]];
     }

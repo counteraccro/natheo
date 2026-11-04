@@ -12,7 +12,6 @@ namespace App\Controller\Api\v1\Content;
 use App\Controller\Api\v1\AppApiController;
 use App\Dto\Api\Content\Menu\ApiFindMenuDto;
 use App\Resolver\Api\Content\Menu\ApiFindMenuResolver;
-use App\Utils\Api\ApiConst;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -21,6 +20,7 @@ use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use App\Enum\Api\ApiMessage;
 
 #[Route('/api/{api_version}/menu', name: 'api_menu_', requirements: ['api_version' => '%app.api_version%'])]
 #[IsGranted('ROLE_READ_API')]
@@ -52,6 +52,6 @@ class ApiMenuController extends AppApiController
                 $translator->trans('api_errors.find.menu.not.found', domain: 'api_errors'),
             );
         }
-        return $this->apiResponse(ApiConst::API_MSG_SUCCESS, $menu);
+        return $this->apiResponse(ApiMessage::SUCCESS->value, $menu);
     }
 }

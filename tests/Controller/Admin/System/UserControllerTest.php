@@ -22,7 +22,6 @@ use App\Service\Admin\System\MailService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Service\Admin\System\User\UserDataService;
 use App\Tests\AppWebTestCase;
-use App\Utils\System\Mail\MailKey;
 use App\Utils\System\User\Anonymous;
 use App\Enum\Admin\System\User\UserDataKey;
 use Doctrine\ORM\NonUniqueResultException;
@@ -30,6 +29,7 @@ use Doctrine\ORM\NoResultException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\Response;
+use App\Enum\Admin\System\Mail\MailKey;
 
 class UserControllerTest extends AppWebTestCase
 {
@@ -544,7 +544,7 @@ class UserControllerTest extends AppWebTestCase
 
         $mailService = $this->container->get(MailService::class);
         /** @var Mail $mail */
-        $mail = $mailService->getByKey(MailKey::MAIL_SELF_DISABLED_ACCOUNT);
+        $mail = $mailService->getByKey(MailKey::SELF_DISABLED_ACCOUNT->value);
         $email = $this->getMailerMessage();
         $this->assertEmailHtmlBodyContains($email, $mail->getMailTranslationByLocale('fr')->getTitle());
 
@@ -611,7 +611,7 @@ class UserControllerTest extends AppWebTestCase
 
         $mailService = $this->container->get(MailService::class);
         /** @var Mail $mail */
-        $mail = $mailService->getByKey(MailKey::MAIL_SELF_ANONYMOUS_ACCOUNT);
+        $mail = $mailService->getByKey(MailKey::SELF_ANONYMOUS_ACCOUNT->value);
         $email = $this->getMailerMessage();
         $this->assertEmailHtmlBodyContains($email, $mail->getMailTranslationByLocale('fr')->getTitle());
 
@@ -638,7 +638,7 @@ class UserControllerTest extends AppWebTestCase
         $userToCheck = $userRepository->findOneBy(['id' => $userToDelete->getId()]);
         $this->assertNull($userToCheck);
 
-        $mail = $mailService->getByKey(MailKey::MAIL_SELF_DELETE_ACCOUNT);
+        $mail = $mailService->getByKey(MailKey::SELF_DELETE_ACCOUNT->value);
         $email = $this->getMailerMessage();
         $this->assertEmailHtmlBodyContains($email, $mail->getMailTranslationByLocale('fr')->getTitle());
     }

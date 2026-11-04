@@ -12,8 +12,8 @@ namespace App\Tests\Controller\Api;
 use App\Entity\Admin\System\User;
 use App\Tests\AppWebTestCase;
 use App\Utils\Api\Parameters\ApiParametersUserAuthRef;
-use App\Utils\System\ApiToken\TokenHasher;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use App\Service\Global\Token\TokenHasher;
 
 class AppApiTestCase extends AppWebTestCase
 {

@@ -13,12 +13,12 @@ use App\Entity\Admin\Content\Media\Media;
 use App\Entity\Admin\Content\Media\MediaFolder;
 use App\Service\Admin\Content\Media\MediaService;
 use App\Tests\AppWebTestCase;
-use App\Utils\Content\Media\MediaConst;
-use App\Utils\Content\Media\MediaFolderConst;
 use App\Utils\Utils;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use App\Enum\Admin\Content\Media\MediaType;
+use App\Enum\Admin\Content\Media\MediaFolderPath;
 
 class MediaServiceTest extends AppWebTestCase
 {
@@ -209,30 +209,30 @@ class MediaServiceTest extends AppWebTestCase
      */
     public function testGetThumbnail(): void
     {
-        $media = $this->createMedia(customData: ['type' => MediaConst::MEDIA_TYPE_IMG, 'trash' => false]);
+        $media = $this->createMedia(customData: ['type' => MediaType::IMG->value, 'trash' => false]);
         $result = $this->mediaService->getThumbnail($media);
         $this->assertNotNull($result);
         $this->assertEquals($this->mediaService->getWebPathThumbnail($media->getThumbnail()), $result);
 
-        $media = $this->createMedia(customData: ['type' => MediaConst::MEDIA_TYPE_FILE, 'extension' => 'pdf']);
+        $media = $this->createMedia(customData: ['type' => MediaType::FILE->value, 'extension' => 'pdf']);
         $result = $this->mediaService->getThumbnail($media);
-        $this->assertEquals(MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file_pdf.svg', $result);
+        $this->assertEquals(MediaFolderPath::PATH_WEB_NATHEO_MEDIA->value . 'file_pdf.svg', $result);
 
-        $media = $this->createMedia(customData: ['type' => MediaConst::MEDIA_TYPE_FILE, 'extension' => 'xls']);
+        $media = $this->createMedia(customData: ['type' => MediaType::FILE->value, 'extension' => 'xls']);
         $result = $this->mediaService->getThumbnail($media);
-        $this->assertEquals(MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file_xls.svg', $result);
+        $this->assertEquals(MediaFolderPath::PATH_WEB_NATHEO_MEDIA->value . 'file_xls.svg', $result);
 
-        $media = $this->createMedia(customData: ['type' => MediaConst::MEDIA_TYPE_FILE, 'extension' => 'csv']);
+        $media = $this->createMedia(customData: ['type' => MediaType::FILE->value, 'extension' => 'csv']);
         $result = $this->mediaService->getThumbnail($media);
-        $this->assertEquals(MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file_csv.svg', $result);
+        $this->assertEquals(MediaFolderPath::PATH_WEB_NATHEO_MEDIA->value . 'file_csv.svg', $result);
 
-        $media = $this->createMedia(customData: ['type' => MediaConst::MEDIA_TYPE_FILE, 'extension' => 'docx']);
+        $media = $this->createMedia(customData: ['type' => MediaType::FILE->value, 'extension' => 'docx']);
         $result = $this->mediaService->getThumbnail($media);
-        $this->assertEquals(MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file_doc.svg', $result);
+        $this->assertEquals(MediaFolderPath::PATH_WEB_NATHEO_MEDIA->value . 'file_doc.svg', $result);
 
-        $media = $this->createMedia(customData: ['type' => MediaConst::MEDIA_TYPE_FILE, 'extension' => 'ext']);
+        $media = $this->createMedia(customData: ['type' => MediaType::FILE->value, 'extension' => 'ext']);
         $result = $this->mediaService->getThumbnail($media);
-        $this->assertEquals(MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file.svg', $result);
+        $this->assertEquals(MediaFolderPath::PATH_WEB_NATHEO_MEDIA->value . 'file.svg', $result);
     }
 
     /**
@@ -243,10 +243,10 @@ class MediaServiceTest extends AppWebTestCase
     public function testGetThumbnailFallsBackWhenThumbnailMissing(): void
     {
         $media = $this->createMedia(
-            customData: ['type' => MediaConst::MEDIA_TYPE_IMG, 'thumbnail' => null, 'extension' => 'jpeg'],
+            customData: ['type' => MediaType::IMG->value, 'thumbnail' => null, 'extension' => 'jpeg'],
         );
         $result = $this->mediaService->getThumbnail($media);
-        $this->assertEquals(MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file.svg', $result);
+        $this->assertEquals(MediaFolderPath::PATH_WEB_NATHEO_MEDIA->value . 'file.svg', $result);
     }
 
     /**
