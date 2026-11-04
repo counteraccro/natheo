@@ -11,7 +11,7 @@ namespace App\Resolver\Api\Content\Menu;
 
 use App\Dto\Api\Content\Menu\ApiFindMenuDto;
 use App\Resolver\Api\AppApiResolver;
-use App\Utils\Api\Parameters\Content\Menu\ApiParametersFindMenuRef;
+use App\Enum\Api\Parameters\Content\Menu\ApiFindMenuParameter;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,25 +39,25 @@ class ApiFindMenuResolver extends AppApiResolver implements ValueResolverInterfa
             return [];
         }
 
-        $tabParameters = ApiParametersFindMenuRef::PARAMS_REF;
+        $tabParameters = ApiFindMenuParameter::PARAMS_REF;
         foreach ($tabParameters as $parameter => $value) {
             $value = $request->query->get($parameter, '');
-            if (empty($value) && isset(ApiParametersFindMenuRef::PARAMS_REF_DEFAULT_VALUE[$parameter])) {
-                $value = ApiParametersFindMenuRef::PARAMS_REF_DEFAULT_VALUE[$parameter];
+            if (empty($value) && isset(ApiFindMenuParameter::PARAMS_DEFAULT_VALUE[$parameter])) {
+                $value = ApiFindMenuParameter::PARAMS_DEFAULT_VALUE[$parameter];
             }
             $tabParameters[$parameter] = $value;
         }
 
         $this->checkParameters($tabParameters);
 
-        $tabParameters[ApiParametersFindMenuRef::PARAM_USER_TOKEN] = $this->getUserToken($request);
+        $tabParameters[ApiFindMenuParameter::USER_TOKEN->value] = $this->getUserToken($request);
 
         $dto = new ApiFindMenuDto(
-            intval($tabParameters[ApiParametersFindMenuRef::PARAM_ID]),
-            $tabParameters[ApiParametersFindMenuRef::PARAM_PAGE_SLUG],
-            intval($tabParameters[ApiParametersFindMenuRef::PARAM_POSITION]),
-            $tabParameters[ApiParametersFindMenuRef::PARAM_LOCALE],
-            $tabParameters[ApiParametersFindMenuRef::PARAM_USER_TOKEN],
+            intval($tabParameters[ApiFindMenuParameter::ID->value]),
+            $tabParameters[ApiFindMenuParameter::PAGE_SLUG->value],
+            intval($tabParameters[ApiFindMenuParameter::POSITION->value]),
+            $tabParameters[ApiFindMenuParameter::LOCALE->value],
+            $tabParameters[ApiFindMenuParameter::USER_TOKEN->value],
         );
 
         $this->validateDto($dto);
@@ -71,8 +71,8 @@ class ApiFindMenuResolver extends AppApiResolver implements ValueResolverInterfa
 
         // Cas id et page_slug sont vides (n'existe pas dans la query)
         if (
-            empty($parameters[ApiParametersFindMenuRef::PARAM_ID]) &&
-            empty($parameters[ApiParametersFindMenuRef::PARAM_PAGE_SLUG])
+            empty($parameters[ApiFindMenuParameter::ID->value]) &&
+            empty($parameters[ApiFindMenuParameter::PAGE_SLUG->value])
         ) {
             throw new HttpException(
                 Response::HTTP_BAD_REQUEST,
@@ -82,8 +82,8 @@ class ApiFindMenuResolver extends AppApiResolver implements ValueResolverInterfa
 
         // Cas id et page_slug ensemble
         if (
-            !empty($parameters[ApiParametersFindMenuRef::PARAM_ID]) &&
-            !empty($parameters[ApiParametersFindMenuRef::PARAM_PAGE_SLUG])
+            !empty($parameters[ApiFindMenuParameter::ID->value]) &&
+            !empty($parameters[ApiFindMenuParameter::PAGE_SLUG->value])
         ) {
             throw new HttpException(
                 Response::HTTP_BAD_REQUEST,

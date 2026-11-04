@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Utils\Api\Content;
+namespace App\Formatter\Api\Content;
 
 use App\Dto\Api\Content\Page\ApiFindPageDto;
 use App\Entity\Admin\Content\Page\Page;

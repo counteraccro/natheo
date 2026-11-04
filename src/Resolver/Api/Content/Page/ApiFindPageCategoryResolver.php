@@ -11,8 +11,8 @@ namespace App\Resolver\Api\Content\Page;
 
 use App\Dto\Api\Content\Page\ApiFindPageCategoryDto;
 use App\Resolver\Api\AppApiResolver;
-use App\Utils\Api\Parameters\Content\Page\ApiParametersFindPageCategoryRef;
-use App\Utils\Api\Parameters\Content\Page\ApiParametersFindPageContentRef;
+use App\Enum\Api\Parameters\Content\Page\ApiFindPageCategoryParameter;
+use App\Enum\Api\Parameters\Content\Page\ApiFindPageContentParameter;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,25 +37,25 @@ class ApiFindPageCategoryResolver extends AppApiResolver implements ValueResolve
             return [];
         }
 
-        $tabParameters = ApiParametersFindPageCategoryRef::PARAMS_REF;
+        $tabParameters = ApiFindPageCategoryParameter::PARAMS_REF;
 
         foreach ($tabParameters as $parameter => $value) {
             $value = $request->query->get($parameter, '');
 
-            if (empty($value) && isset(ApiParametersFindPageCategoryRef::PARAMS_DEFAULT_VALUE[$parameter])) {
-                $value = ApiParametersFindPageCategoryRef::PARAMS_DEFAULT_VALUE[$parameter];
+            if (empty($value) && isset(ApiFindPageCategoryParameter::PARAMS_DEFAULT_VALUE[$parameter])) {
+                $value = ApiFindPageCategoryParameter::PARAMS_DEFAULT_VALUE[$parameter];
             }
             $tabParameters[$parameter] = $value;
         }
 
-        $tabParameters[ApiParametersFindPageCategoryRef::PARAM_USER_TOKEN] = $this->getUserToken($request);
+        $tabParameters[ApiFindPageCategoryParameter::USER_TOKEN->value] = $this->getUserToken($request);
 
         $dto = new ApiFindPageCategoryDto(
-            $tabParameters[ApiParametersFindPageCategoryRef::PARAM_CATEGORY],
-            $tabParameters[ApiParametersFindPageCategoryRef::PARAM_LOCALE],
-            intval($tabParameters[ApiParametersFindPageCategoryRef::PARAM_PAGE]),
-            intval($tabParameters[ApiParametersFindPageCategoryRef::PARAM_LIMIT]),
-            $tabParameters[ApiParametersFindPageCategoryRef::PARAM_USER_TOKEN],
+            $tabParameters[ApiFindPageCategoryParameter::CATEGORY->value],
+            $tabParameters[ApiFindPageCategoryParameter::LOCALE->value],
+            intval($tabParameters[ApiFindPageCategoryParameter::PAGE->value]),
+            intval($tabParameters[ApiFindPageCategoryParameter::LIMIT->value]),
+            $tabParameters[ApiFindPageCategoryParameter::USER_TOKEN->value],
         );
 
         $this->validateDto($dto);

@@ -11,7 +11,7 @@ namespace App\Resolver\Api\Content\Comment;
 
 use App\Dto\Api\Content\Comment\ApiAddCommentDto;
 use App\Resolver\Api\AppApiResolver;
-use App\Utils\Api\Parameters\Content\Comment\ApiParametersAddCommentRef;
+use App\Enum\Api\Parameters\Content\Comment\ApiAddCommentParameter;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -41,7 +41,7 @@ class ApiAddCommentResolver extends AppApiResolver implements ValueResolverInter
 
         $content = $this->getJsonContent($request);
 
-        $tabParameters = ApiParametersAddCommentRef::PARAMS_REF;
+        $tabParameters = ApiAddCommentParameter::PARAMS_REF;
         foreach ($tabParameters as $parameter => $value) {
             if (array_key_exists($parameter, $content)) {
                 $value = $content[$parameter];
@@ -49,8 +49,8 @@ class ApiAddCommentResolver extends AppApiResolver implements ValueResolverInter
                 $value = '';
             }
 
-            if (empty($value) && isset(ApiParametersAddCommentRef::PARAMS_DEFAULT_VALUE[$parameter])) {
-                $value = ApiParametersAddCommentRef::PARAMS_DEFAULT_VALUE[$parameter];
+            if (empty($value) && isset(ApiAddCommentParameter::PARAMS_DEFAULT_VALUE[$parameter])) {
+                $value = ApiAddCommentParameter::PARAMS_DEFAULT_VALUE[$parameter];
             }
             $tabParameters[$parameter] = $value;
         }
@@ -58,34 +58,34 @@ class ApiAddCommentResolver extends AppApiResolver implements ValueResolverInter
         $this->checkParameters($tabParameters);
 
         $dto = new ApiAddCommentDto(
-            intval($tabParameters[ApiParametersAddCommentRef::PARAM_ID]),
+            intval($tabParameters[ApiAddCommentParameter::ID->value]),
             $this->toStringParameter(
-                $tabParameters[ApiParametersAddCommentRef::PARAM_PAGE_SLUG],
-                ApiParametersAddCommentRef::PARAM_PAGE_SLUG,
+                $tabParameters[ApiAddCommentParameter::PAGE_SLUG->value],
+                ApiAddCommentParameter::PAGE_SLUG->value,
             ),
             $this->toStringParameter(
-                $tabParameters[ApiParametersAddCommentRef::PARAM_LOCALE],
-                ApiParametersAddCommentRef::PARAM_LOCALE,
+                $tabParameters[ApiAddCommentParameter::LOCALE->value],
+                ApiAddCommentParameter::LOCALE->value,
             ),
             $this->toStringParameter(
-                $tabParameters[ApiParametersAddCommentRef::PARAM_AUTHOR],
-                ApiParametersAddCommentRef::PARAM_AUTHOR,
+                $tabParameters[ApiAddCommentParameter::AUTHOR->value],
+                ApiAddCommentParameter::AUTHOR->value,
             ),
             $this->toStringParameter(
-                $tabParameters[ApiParametersAddCommentRef::PARAM_EMAIL],
-                ApiParametersAddCommentRef::PARAM_EMAIL,
+                $tabParameters[ApiAddCommentParameter::EMAIL->value],
+                ApiAddCommentParameter::EMAIL->value,
             ),
             $this->toStringParameter(
-                $tabParameters[ApiParametersAddCommentRef::PARAM_COMMENT],
-                ApiParametersAddCommentRef::PARAM_COMMENT,
+                $tabParameters[ApiAddCommentParameter::COMMENT->value],
+                ApiAddCommentParameter::COMMENT->value,
             ),
             $this->toStringParameter(
-                $tabParameters[ApiParametersAddCommentRef::PARAM_IP],
-                ApiParametersAddCommentRef::PARAM_IP,
+                $tabParameters[ApiAddCommentParameter::IP->value],
+                ApiAddCommentParameter::IP->value,
             ),
             $this->toStringParameter(
-                $tabParameters[ApiParametersAddCommentRef::PARAM_USER_AGENT],
-                ApiParametersAddCommentRef::PARAM_USER_AGENT,
+                $tabParameters[ApiAddCommentParameter::USER_AGENT->value],
+                ApiAddCommentParameter::USER_AGENT->value,
             ),
         );
 
@@ -106,8 +106,8 @@ class ApiAddCommentResolver extends AppApiResolver implements ValueResolverInter
 
         // Cas id et page_slug sont vides (n'existe pas dans la query)
         if (
-            empty($parameters[ApiParametersAddCommentRef::PARAM_ID]) &&
-            empty($parameters[ApiParametersAddCommentRef::PARAM_PAGE_SLUG])
+            empty($parameters[ApiAddCommentParameter::ID->value]) &&
+            empty($parameters[ApiAddCommentParameter::PAGE_SLUG->value])
         ) {
             throw new HttpException(
                 Response::HTTP_BAD_REQUEST,
@@ -117,8 +117,8 @@ class ApiAddCommentResolver extends AppApiResolver implements ValueResolverInter
 
         // Cas id et page_slug ensemble
         if (
-            !empty($parameters[ApiParametersAddCommentRef::PARAM_ID]) &&
-            !empty($parameters[ApiParametersAddCommentRef::PARAM_PAGE_SLUG])
+            !empty($parameters[ApiAddCommentParameter::ID->value]) &&
+            !empty($parameters[ApiAddCommentParameter::PAGE_SLUG->value])
         ) {
             throw new HttpException(
                 Response::HTTP_BAD_REQUEST,

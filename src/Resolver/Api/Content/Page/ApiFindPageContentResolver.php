@@ -11,7 +11,7 @@ namespace App\Resolver\Api\Content\Page;
 
 use App\Dto\Api\Content\Page\ApiFindPageContentDto;
 use App\Resolver\Api\AppApiResolver;
-use App\Utils\Api\Parameters\Content\Page\ApiParametersFindPageContentRef;
+use App\Enum\Api\Parameters\Content\Page\ApiFindPageContentParameter;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,25 +36,25 @@ class ApiFindPageContentResolver extends AppApiResolver implements ValueResolver
             return [];
         }
 
-        $tabParameters = ApiParametersFindPageContentRef::PARAMS_REF;
+        $tabParameters = ApiFindPageContentParameter::PARAMS_REF;
 
         foreach ($tabParameters as $parameter => $value) {
             $value = $request->query->get($parameter, '');
 
-            if (empty($value) && isset(ApiParametersFindPageContentRef::PARAMS_DEFAULT_VALUE[$parameter])) {
-                $value = ApiParametersFindPageContentRef::PARAMS_DEFAULT_VALUE[$parameter];
+            if (empty($value) && isset(ApiFindPageContentParameter::PARAMS_DEFAULT_VALUE[$parameter])) {
+                $value = ApiFindPageContentParameter::PARAMS_DEFAULT_VALUE[$parameter];
             }
             $tabParameters[$parameter] = $value;
         }
 
-        $tabParameters[ApiParametersFindPageContentRef::PARAM_USER_TOKEN] = $this->getUserToken($request);
+        $tabParameters[ApiFindPageContentParameter::USER_TOKEN->value] = $this->getUserToken($request);
 
         $dto = new ApiFindPageContentDto(
-            intval($tabParameters[ApiParametersFindPageContentRef::PARAM_ID]),
-            $tabParameters[ApiParametersFindPageContentRef::PARAM_LOCALE],
-            intval($tabParameters[ApiParametersFindPageContentRef::PARAM_PAGE]),
-            intval($tabParameters[ApiParametersFindPageContentRef::PARAM_LIMIT]),
-            $tabParameters[ApiParametersFindPageContentRef::PARAM_USER_TOKEN],
+            intval($tabParameters[ApiFindPageContentParameter::ID->value]),
+            $tabParameters[ApiFindPageContentParameter::LOCALE->value],
+            intval($tabParameters[ApiFindPageContentParameter::PAGE->value]),
+            intval($tabParameters[ApiFindPageContentParameter::LIMIT->value]),
+            $tabParameters[ApiFindPageContentParameter::USER_TOKEN->value],
         );
 
         $this->validateDto($dto);

@@ -11,7 +11,7 @@ namespace App\Tests\Controller\Api;
 
 use App\Entity\Admin\System\User;
 use App\Tests\AppWebTestCase;
-use App\Utils\Api\Parameters\ApiParametersUserAuthRef;
+use App\Enum\Api\Parameters\ApiUserAuthParameter;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use App\Service\Global\Token\TokenHasher;
 
@@ -138,13 +138,13 @@ class AppApiTestCase extends AppWebTestCase
             ];
         } elseif ($role === 'bad_type') {
             $userAuth = [
-                ApiParametersUserAuthRef::PARAMS_REF_AUTH_USER_USERNAME => 22,
-                ApiParametersUserAuthRef::PARAMS_REF_AUTH_USER_PASSWORD => true,
+                ApiUserAuthParameter::USERNAME->value => 22,
+                ApiUserAuthParameter::PASSWORD->value => true,
             ];
         } else {
             $userAuth = [
-                ApiParametersUserAuthRef::PARAMS_REF_AUTH_USER_USERNAME => $user->getEmail(),
-                ApiParametersUserAuthRef::PARAMS_REF_AUTH_USER_PASSWORD => $password,
+                ApiUserAuthParameter::USERNAME->value => $user->getEmail(),
+                ApiUserAuthParameter::PASSWORD->value => $password,
             ];
         }
         return array_merge($params, $userAuth);

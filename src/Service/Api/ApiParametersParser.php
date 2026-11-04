@@ -7,7 +7,7 @@ declare(strict_types=1);
  * Class qui va controller les paramètres reçu en fonction des paramètres attendu
  */
 
-namespace App\Utils\Api;
+namespace App\Service\Api;
 
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
