@@ -8,7 +8,7 @@
 import { defineComponent, PropType } from 'vue';
 import axios from 'axios';
 import Toast from '@/vue/Components/Global/Toast.vue';
-import { emitter } from '@/utils/useEvent';
+import { emitter } from '@/vue/Composables/Global/useEvent';
 import SkeletonText from '@/vue/Components/Skeleton/Text.vue';
 import SkeletonTabs from '@/vue/Components/Skeleton/Tabs.vue';
 import SkeletonSearchResult from '@/vue/Components/Skeleton/SearchResult.vue';

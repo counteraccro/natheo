@@ -7,9 +7,9 @@
 import { defineComponent, type PropType } from 'vue';
 import Pagination from './Pagination.vue';
 import { renderMarkdown } from '@/ts/MarkdownEditor/markdownRender';
-import { CommentStatus } from '@/utils/Front/Const/CommentStatus';
-import type { FrontApi } from '@/utils/Front/FrontApi';
-import type { UtilsFront } from '@/utils/Front/UtilsFront';
+import { CommentStatus } from '@/vue/Composables/Front/Const/CommentStatus';
+import type { FrontApi } from '@/vue/Composables/Front/FrontApi';
+import type { UtilsFront } from '@/vue/Composables/Front/UtilsFront';
 import type { FrontApiError, FrontCommentTranslate } from '@/ts/Front/NatheoHorizon/Structure.type';
 import type { FrontComment } from '@/ts/Front/NatheoHorizon/ContentComment.type';
 

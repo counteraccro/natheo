@@ -9,7 +9,7 @@ import { defineComponent, type PropType } from 'vue';
 import SkeletonFaq from '@/vue/Components/Skeleton/Faq.vue';
 import axios from 'axios';
 import { withCsrf } from '@/vue/Composables/Admin/csrf';
-import { emitter } from '@/utils/useEvent';
+import { emitter } from '@/vue/Composables/Global/useEvent';
 import Toast from '@/vue/Components/Global/Toast.vue';
 
 type TranslateRecord = { [key: string]: string | TranslateRecord };

@@ -10,7 +10,7 @@ import axios from 'axios';
 import Toast from '../../../../Components/Global/Toast.vue';
 import SearchPaginate from '../../../../Components/Global/Search/SearchPaginate.vue';
 import { renderMarkdown } from '@/ts/MarkdownEditor/markdownRender';
-import { emitter } from '@/utils/useEvent';
+import { emitter } from '@/vue/Composables/Global/useEvent';
 import { withCsrf } from '@/vue/Composables/Admin/csrf';
 import type {
   CommentModerationUrls,

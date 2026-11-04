@@ -6,8 +6,8 @@
  */
 import { defineComponent, type PropType } from 'vue';
 import FooterColonne from './FooterColonne.vue';
-import { MenuType } from '@/utils/Front/Const/Menu';
-import type { UtilsFront } from '@/utils/Front/UtilsFront';
+import { MenuType } from '@/vue/Composables/Front/Const/Menu';
+import type { UtilsFront } from '@/vue/Composables/Front/UtilsFront';
 import type { FrontFooterTranslate, FrontMenu, FrontUrls } from '@/ts/Front/NatheoHorizon/Structure.type';
 
 interface FooterLayout {

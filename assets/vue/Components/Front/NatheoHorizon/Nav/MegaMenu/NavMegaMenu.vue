@@ -6,8 +6,8 @@
  */
 import { defineComponent, type PropType } from 'vue';
 import NavMegaMenuSub from './NavMegaMenuSub.vue';
-import { MenuType } from '@/utils/Front/Const/Menu';
-import type { UtilsFront } from '@/utils/Front/UtilsFront';
+import { MenuType } from '@/vue/Composables/Front/Const/Menu';
+import type { UtilsFront } from '@/vue/Composables/Front/UtilsFront';
 import type { FrontMenuElement } from '@/ts/Front/NatheoHorizon/Structure.type';
 
 const FIXED_COLUMNS: Record<number, number> = {

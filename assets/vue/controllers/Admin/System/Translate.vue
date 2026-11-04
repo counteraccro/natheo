@@ -7,7 +7,7 @@
 
 import { defineComponent, type PropType } from 'vue';
 import axios from 'axios';
-import { emitter } from '@/utils/useEvent';
+import { emitter } from '@/vue/Composables/Global/useEvent';
 import Toast from '@/vue/Components/Global/Toast.vue';
 import SkeletonText from '@/vue/Components/Skeleton/Text.vue';
 import SkeletonTable from '@/vue/Components/Skeleton/Table.vue';

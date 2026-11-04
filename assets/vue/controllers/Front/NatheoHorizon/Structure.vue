@@ -9,8 +9,8 @@ import Nav from '@/vue/Components/Front/NatheoHorizon/Nav/Nav.vue';
 import Main from '@/vue/Components/Front/NatheoHorizon/Main/Main.vue';
 import Footer from '@/vue/Components/Front/NatheoHorizon/Footer/Footer.vue';
 import Skeleton from '@/vue/Components/Front/NatheoHorizon/Skeleton.vue';
-import { FrontApi } from '@/utils/Front/FrontApi';
-import { UtilsFront } from '@/utils/Front/UtilsFront';
+import { FrontApi } from '@/vue/Composables/Front/FrontApi';
+import { UtilsFront } from '@/vue/Composables/Front/UtilsFront';
 import type {
   FrontApiError,
   FrontDatas,

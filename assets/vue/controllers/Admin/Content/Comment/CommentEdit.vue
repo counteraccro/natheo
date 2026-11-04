@@ -8,7 +8,7 @@ import { defineComponent } from 'vue';
 import axios, { AxiosResponse } from 'axios';
 import MarkdownEditor from '../../../../Components/Global/MarkdownEditor/MarkdownEditor.vue';
 import Toast from '../../../../Components/Global/Toast.vue';
-import { emitter } from '@/utils/useEvent';
+import { emitter } from '@/vue/Composables/Global/useEvent';
 import { withCsrf } from '@/vue/Composables/Admin/csrf';
 import {
   Translate,

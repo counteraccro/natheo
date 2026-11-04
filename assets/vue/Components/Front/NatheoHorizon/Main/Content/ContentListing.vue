@@ -6,8 +6,8 @@
  */
 import { defineComponent, type PropType } from 'vue';
 import Pagination from './Pagination.vue';
-import type { FrontApi } from '@/utils/Front/FrontApi';
-import type { UtilsFront } from '@/utils/Front/UtilsFront';
+import type { FrontApi } from '@/vue/Composables/Front/FrontApi';
+import type { UtilsFront } from '@/vue/Composables/Front/UtilsFront';
 import type { FrontApiError, FrontMainTranslate, FrontPageContent } from '@/ts/Front/NatheoHorizon/Structure.type';
 import type { ContentListingResponse, ListingPage } from '@/ts/Front/NatheoHorizon/ContentListing.type';
 

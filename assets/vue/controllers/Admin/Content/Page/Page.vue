@@ -33,7 +33,7 @@ import PageTag from '@/vue/Components/Page/PageTag.vue';
 import PageMenu from '@/vue/Components/Page/PageMenu.vue';
 import PageComment from '@/vue/Components/Page/PageComment.vue';
 import PageInformation from '@/vue/Components/Page/PageInformation.vue';
-import { emitter } from '@/utils/useEvent';
+import { emitter } from '@/vue/Composables/Global/useEvent';
 import AlertSuccess from '@/vue/Components/Alert/Success.vue';
 import AlertWarning from '@/vue/Components/Alert/Warning.vue';
 import AlertInfo from '@/vue/Components/Alert/Info.vue';
