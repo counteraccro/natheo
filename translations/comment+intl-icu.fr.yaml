@@ -92,3 +92,4 @@ comment.see.comment.error.no.comment.text: "Ce commentaire n'existe pas ou à é
 comment.see.comment.btn.back: Retour
 comment.error.not_found: 'Ce commentaire n''existe pas ou a été supprimé.'
 comment.error.status_invalid: 'Ce statut de commentaire n''existe pas.'
+comment.moderation.selected: 'Commentaires sélectionnés'

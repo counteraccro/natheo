@@ -95,6 +95,7 @@ class CommentTranslate extends AppTranslate
                 domain: 'comment',
             ),
             'statistiques' => $this->translator->trans('comment.moderation.statistiques', domain: 'comment'),
+            'comment_selected' => $this->translator->trans('comment.moderation.selected', domain: 'comment'),
             'paginate' => $this->getTranslatePaginate(),
             'status_short_validate' => $this->translator->trans(
                 'comment.moderation.status.short.validate',

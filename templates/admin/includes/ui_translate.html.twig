@@ -1,0 +1,11 @@
+{# Libellés d'accessibilité des composants Vue génériques, lus par assets/vue/Composables/Global/uiTranslate.ts #}
+<script type="application/json" id="ui-translate">
+    {{- {
+        'close': 'global.a11y.close' | trans({}, 'global'),
+        'loading': 'global.a11y.loading' | trans({}, 'global'),
+        'first': 'global.a11y.first' | trans({}, 'global'),
+        'previous': 'global.a11y.previous' | trans({}, 'global'),
+        'next': 'global.a11y.next' | trans({}, 'global'),
+        'last': 'global.a11y.last' | trans({}, 'global'),
+    } | json_encode(constant('JSON_HEX_TAG') b-or constant('JSON_UNESCAPED_UNICODE')) | raw -}}
+</script>

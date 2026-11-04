@@ -112,8 +112,8 @@ page.render.1.2.block: __page.render.1.2.block
 page.render.2.1.block: __page.render.2.1.block
 page.render.2.2.block: __page.render.2.2.block
 page.content.text: __page.content.text
-page.content.type.faq: __page.content.type.faq
-page.content.type.listing: __page.content.type.listing
+page.content.type.faq: 'FAQ'
+page.content.type.listing: 'Listing'
 page.category.page: __page.category.page
 page.category.projet: __page.category.projet
 page.category.article: __page.category.article
@@ -183,3 +183,5 @@ page.error.landing.disabled: __page.error.landing.disabled
 page.error.landing.not_publish: __page.error.landing.not_publish
 page.error.landing.remove: __page.error.landing.remove
 page.content.info.not_found: __page.content.info.not_found
+page.page_content_block.faq_id: 'FAQ ID'
+page.page_content_block.listing_id: 'Category ID'

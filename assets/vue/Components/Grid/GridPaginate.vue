@@ -6,6 +6,7 @@
  */
 import { defineComponent, type PropType } from 'vue';
 import type { GridPaginatePage, GridPaginateTranslate } from '@/ts/Grid/GridPaginate.type';
+import { uiTrans } from '@/vue/Composables/Global/uiTranslate';
 
 export default defineComponent({
   name: 'GridPaginate',
@@ -64,6 +65,7 @@ export default defineComponent({
     },
   },
   methods: {
+    uiTrans,
     updateCurrentPage(page: GridPaginatePage): void {
       if (typeof page === 'number') {
         this.cPage = page;
@@ -88,7 +90,7 @@ export default defineComponent({
           class="no-control flex items-center justify-center px-3 h-8 ms-0 leading-tight text-[var(--primary)] bg-white border border-e-0 border-[var(--primary-hover)] rounded-s-lg hover:bg-[var(--primary-hover)] hover:text-white dark:bg-[var(--btn-dark)]"
           :class="{ 'opacity-50 pointer-events-none': cPage === 1 }"
         >
-          <span class="sr-only">First</span>
+          <span class="sr-only">{{ uiTrans('first') }}</span>
           <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <path
               stroke="currentColor"
@@ -109,7 +111,7 @@ export default defineComponent({
           class="no-control flex items-center justify-center px-3 h-8 leading-tight text-[var(--primary)] bg-white border border-[var(--primary-hover)] hover:bg-[var(--primary-hover)] hover:text-white dark:bg-[var(--btn-dark)]"
           :class="{ 'opacity-50 pointer-events-none': cPage === 1 }"
         >
-          <span class="sr-only">Previous</span>
+          <span class="sr-only">{{ uiTrans('previous') }}</span>
           <svg
             class="w-2.5 h-2.5 rtl:rotate-180"
             aria-hidden="true"
@@ -157,7 +159,7 @@ export default defineComponent({
           class="no-control flex items-center justify-center px-3 h-8 leading-tight text-[var(--primary)] bg-white border border-[var(--primary-hover)] hover:bg-[var(--primary-hover)] hover:text-white dark:bg-[var(--btn-dark)]"
           :class="{ 'opacity-50 pointer-events-none': cPage === nbPages }"
         >
-          <span class="sr-only">Next</span>
+          <span class="sr-only">{{ uiTrans('next') }}</span>
           <svg
             class="w-2.5 h-2.5 rtl:rotate-180"
             aria-hidden="true"
@@ -184,7 +186,7 @@ export default defineComponent({
           class="no-control flex items-center justify-center px-3 h-8 leading-tight rounded-e-lg text-[var(--primary)] bg-white border border-[var(--primary-hover)] hover:bg-[var(--primary-hover)] hover:text-white dark:bg-[var(--btn-dark)]"
           :class="{ 'opacity-50 pointer-events-none': cPage === nbPages }"
         >
-          <span class="sr-only">Last</span>
+          <span class="sr-only">{{ uiTrans('last') }}</span>
           <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <path
               stroke="currentColor"

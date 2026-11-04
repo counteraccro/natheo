@@ -2,9 +2,9 @@ media.mediatheque.loading: __media.mediatheque.loading
 media.mediatheque.generique.error: __media.mediatheque.generique.error
 media.mediatheque.btn.new.folder: __media.mediatheque.btn.new.folder
 media.mediatheque.btn.new.media: __media.mediatheque.btn.new.media
-media.mediatheque.header.trash: __media.mediatheque.header.trash
+media.mediatheque.header.trash: 'Papelera'
 media.mediatheque.nb.files.trash: __media.mediatheque.nb.files.trash
-media.mediatheque.btn.filtre: __media.mediatheque.btn.filtre
+media.mediatheque.btn.filtre: 'Ordenar por'
 media.mediatheque.filtre.date: __media.mediatheque.filtre.date
 media.mediatheque.filtre.nom: __media.mediatheque.filtre.nom
 media.mediatheque.filtre.type: __media.mediatheque.filtre.type
@@ -133,3 +133,5 @@ media.mediatheque.move.label.folder: 'Mover la carpeta {name} a'
 media.index.page_title: __media.index.page_title
 media.index.page_title_h1: __media.index.page_title_h1
 media.index.description: __media.index.description
+media.mediatheque.upload.or: 'o'
+media.mediatheque.upload.browse: 'examinar'

@@ -520,7 +520,7 @@ export default defineComponent({
             class="rounded-lg p-3.5"
             style="background-color: var(--primary-lighter); border: 1px solid var(--primary-light)"
           >
-            <p class="text-xs font-semibold mb-1" style="color: var(--primary)">Commentaires sélectionnés</p>
+            <p class="text-xs font-semibold mb-1" style="color: var(--primary)">{{ translate.comment_selected }}</p>
             <p id="selectedList" class="text-sm font-bold" style="color: var(--text-primary)">
               <span v-if="moderation.selected.length === 0">---</span>
               <span v-else v-for="id in moderation.selected"> #{{ id }},</span>

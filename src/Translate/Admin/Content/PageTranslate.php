@@ -198,6 +198,10 @@ class PageTranslate extends AppTranslate
                 domain: 'page',
             ),
             'page_content_block' => [
+                'faq_id' => $this->translator->trans('page.page_content_block.faq_id', domain: 'page'),
+                'listing_id' => $this->translator->trans('page.page_content_block.listing_id', domain: 'page'),
+                'type_faq' => $this->translator->trans('page.content.type.faq', domain: 'page'),
+                'type_listing' => $this->translator->trans('page.content.type.listing', domain: 'page'),
                 'markdown' => $this->markdownEditorTranslate->getTranslate(),
                 'btn_new_content' => $this->translator->trans(
                     'page.page_content_block.btn.new_content',

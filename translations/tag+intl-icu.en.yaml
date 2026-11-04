@@ -72,3 +72,4 @@ tag.error.color: __tag.error.color
 tag.error.label.duplicate: __tag.error.label.duplicate
 tag.error.delete.used: __tag.error.delete.used
 tag.error.tag_by_name: __tag.error.tag_by_name
+tag.form.input.color.help: 'Choose a color to visually identify this tag'

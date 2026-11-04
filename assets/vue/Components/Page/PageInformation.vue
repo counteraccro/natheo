@@ -418,7 +418,7 @@ export default defineComponent({
 
       <div class="form-group">
         <label for="list-page" class="form-label">{{ translate.page_save.list_landing_page_label }}</label>
-        <select id="list-page" class="form-input" aria-label="Default select example" v-model="page.landingPage">
+        <select id="list-page" class="form-input" v-model="page.landingPage">
           <option :value="true">{{ translate.page_save.select_page_landing_page }}</option>
           <option :value="false">{{ translate.page_save.select_page_normal_page }}</option>
         </select>

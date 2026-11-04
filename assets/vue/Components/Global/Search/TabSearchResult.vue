@@ -32,7 +32,7 @@ export default {
 <template>
   <div v-for="row in this.result.elements" class="card rounded-lg flex mb-3 p-6 gap-2.5">
     <div class="w-32">
-      <img v-if="row.img" :src="row.img" class="max-w-xs h-20 aspect-3/2 object-cover rounded" alt="img" />
+      <img v-if="row.img" :src="row.img" class="max-w-xs h-20 aspect-3/2 object-cover rounded" alt="" />
       <div
         v-else
         class="m-auto w-[7.5rem] h-20 flex items-center justify-center bg-[var(--primary-lighter)] rounded-lg"
