@@ -237,7 +237,7 @@ export default defineComponent({
     <div class="card rounded-lg p-6 mb-4 mt-4">
       <p class="text-sm font-semibold mb-1 text-(--text-primary)">{{ translate.msg_info.title }}</p>
       <p class="text-sm mb-4 text-(--text-secondary)">{{ msgInfo }}</p>
-      <skeleton-text />
+      <SkeletonText />
     </div>
   </div>
   <div v-else>
@@ -279,7 +279,7 @@ export default defineComponent({
               <li>{{ translate.switch_env_define_dev_4 }}</li>
             </ul>
 
-            <alert-warning type="alert-warning-light" :text="translate.switch_env_define_dev_warning" class="mt-5" />
+            <AlertWarning type="alert-warning-light" :text="translate.switch_env_define_dev_warning" class="mt-5" />
           </div>
           <div v-else>
             <p class="mb-2">{{ translate.switch_env_define_prod }}</p>
@@ -289,7 +289,7 @@ export default defineComponent({
               <li>{{ translate.switch_env_define_prod_3 }}</li>
             </ul>
 
-            <alert-warning type="alert-warning-light" :text="translate.switch_env_define_prod_warning" class="mt-5" />
+            <AlertWarning type="alert-warning-light" :text="translate.switch_env_define_prod_warning" class="mt-5" />
           </div>
         </div>
 
@@ -324,7 +324,7 @@ export default defineComponent({
   <div v-if="isDebug()">
     <div v-if="loading">
       <div class="card rounded-lg p-6 mb-4 mt-4">
-        <skeleton-text />
+        <SkeletonText />
       </div>
     </div>
     <div v-else>
@@ -361,7 +361,7 @@ export default defineComponent({
           </div>
         </div>
         <div class="p-5">
-          <alert-danger type="alert-danger-light" :text="translate.warning_danger_zone" />
+          <AlertDanger type="alert-danger-light" :text="translate.warning_danger_zone" />
 
           <div class="mb-6 pb-6 border-b-1 border-b-(--border-color)">
             <h4 class="text-base font-semibold mb-2 mt-4 text-(--text-primary)">

@@ -264,8 +264,8 @@ export default defineComponent({
 
 <template>
   <div v-if="loading">
-    <skeleton-card-stat />
-    <skeleton-tabs />
+    <SkeletonCardStat />
+    <SkeletonTabs />
   </div>
 
   <div v-else>
@@ -568,8 +568,8 @@ export default defineComponent({
             </select>
           </div>
 
-          <alert-warning type="alert-primary-solid mt-6" :text="translate.dump_option.help_body" />
-          <alert-danger type="alert-danger-solid mt-6" :text="translate.dump_option.warning_body" />
+          <AlertWarning type="alert-primary-solid mt-6" :text="translate.dump_option.help_body" />
+          <AlertDanger type="alert-danger-solid mt-6" :text="translate.dump_option.warning_body" />
 
           <button class="btn btn-sm btn-primary w-full mt-6 no-control" @click="dumpSQL">
             <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">

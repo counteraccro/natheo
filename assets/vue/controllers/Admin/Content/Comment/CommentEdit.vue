@@ -131,7 +131,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <skeleton-comment-edit v-if="loading" />
+  <SkeletonCommentEdit v-if="loading" />
   <div v-if="!comment">
     <div class="flex flex-col items-center justify-center py-16 px-6 text-center">
       <!-- Icône -->

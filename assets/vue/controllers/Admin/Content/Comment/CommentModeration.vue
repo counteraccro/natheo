@@ -7,7 +7,7 @@
 
 import { defineComponent, type PropType } from 'vue';
 import axios from 'axios';
-import SearchPaginate from '../../../../Components/Global/Search/SearchPaginate.vue';
+import GridPaginate from '@/vue/Components/Grid/GridPaginate.vue';
 import { renderMarkdown } from '@/ts/MarkdownEditor/markdownRender';
 import { emitter } from '@/vue/Composables/Global/useEvent';
 import { withCsrf } from '@/vue/Composables/Admin/csrf';
@@ -26,7 +26,7 @@ import { toastSuccess, toastError, toastRequestError } from '@/vue/Composables/G
 export default defineComponent({
   name: 'CommentModeration',
 
-  components: { SkeletonCommentModeration, SearchPaginate },
+  components: { SkeletonCommentModeration, GridPaginate },
 
   props: {
     urls: {
@@ -227,7 +227,7 @@ export default defineComponent({
           </button>
         </div>
       </div>
-      <skeleton-comment-moderation v-if="loading" />
+      <SkeletonCommentModeration v-if="loading" />
       <div v-else-if="result !== null">
         <div
           v-for="comment in result.data"
@@ -357,14 +357,14 @@ export default defineComponent({
         </div>
       </div>
 
-      <search-paginate
+      <GridPaginate
         v-if="result !== null && result.nb !== 0"
         :nb-elements="Number(datas.limit)"
         :current-page="datas.page"
         :nb-elements-total="result.nb"
         :translate="translate.paginate"
         @change-page-event="changePageEvent"
-      ></search-paginate>
+      ></GridPaginate>
     </div>
     <div class="flex flex-col gap-6">
       <div class="card mb-4">

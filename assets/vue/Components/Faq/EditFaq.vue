@@ -1054,7 +1054,7 @@ export default defineComponent({
                     </svg>
                     {{ translate.answer_label }}
                   </label>
-                  <markdown-editor
+                  <MarkdownEditor
                     :key="keyMarkdownEditor"
                     :me-id="getValueByLocale(question.faqQuestionTranslations, 'id', 'faqQuestionTranslations|answer')"
                     :me-value="getValueByLocale(question.faqQuestionTranslations, 'answer')"

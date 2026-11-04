@@ -535,9 +535,9 @@ export default defineComponent({
 
 <template>
   <div v-if="loading">
-    <skeleton-render-menu />
-    <skeleton-form-menu />
-    <skeleton-architecture-menu />
+    <SkeletonRenderMenu />
+    <SkeletonFormMenu />
+    <SkeletonArchitectureMenu />
   </div>
 
   <div v-else-if="Object.keys(menu).length === 0">
@@ -896,7 +896,7 @@ export default defineComponent({
         </div>
 
         <div class="py-3 px-5 flex-1 overflow-y-auto min-h-0" ref="rootListRef">
-          <menu-tree
+          <MenuTree
             v-for="menuElement in menu.menuElements"
             :key="menuElement.id"
             :menu-element="menuElement"
@@ -1020,7 +1020,7 @@ export default defineComponent({
           </div>
         </div>
 
-        <menu-element-form
+        <MenuElementForm
           v-else
           :translate="translate.menu_form"
           :locale="currentLocale"

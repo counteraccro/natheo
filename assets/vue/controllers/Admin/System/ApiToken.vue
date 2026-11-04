@@ -213,7 +213,7 @@ export default defineComponent({
 <template>
   <div class="card mb-4">
     <div v-if="loading">
-      <skeleton-form />
+      <SkeletonForm />
     </div>
     <div class="card-header">
       <div>
@@ -308,7 +308,7 @@ export default defineComponent({
             {{ translate.btn_copy_past }}
           </button>
         </div>
-        <alert-warning type="alert-warning-light" :text="translate.token_once_warning" class="mt-3" />
+        <AlertWarning type="alert-warning-light" :text="translate.token_once_warning" class="mt-3" />
       </div>
       <div v-else-if="apiToken.id !== null">
         <div class="form-text">{{ translate.token_hidden }}</div>

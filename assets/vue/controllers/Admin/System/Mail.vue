@@ -176,10 +176,10 @@ export default defineComponent({
 <template>
   <div v-if="loading">
     <div class="card rounded-lg p-6 mb-4">
-      <skeleton-text :nb-paragraphe="1" />
+      <SkeletonText :nb-paragraphe="1" />
     </div>
     <div class="card rounded-lg p-6 mb-4">
-      <skeleton-form />
+      <SkeletonForm />
     </div>
   </div>
   <div v-else-if="mail">
@@ -280,7 +280,7 @@ export default defineComponent({
         </div>
 
         <div class="mb-3">
-          <markdown-editor
+          <MarkdownEditor
             :key="mail.key"
             :me-id="String(mail.id)"
             :me-value="mail.contentTrans"
@@ -293,7 +293,7 @@ export default defineComponent({
             :me-required="true"
             @editor-value-change="saveContent"
           >
-          </markdown-editor>
+          </MarkdownEditor>
         </div>
       </div>
     </div>

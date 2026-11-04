@@ -410,7 +410,7 @@ export default {
   </div>
 
   <div v-if="this.loading">
-    <skeleton-tabs />
+    <SkeletonTabs />
   </div>
   <div v-else>
     <div class="flex items-end gap-2 flex-row-reverse">

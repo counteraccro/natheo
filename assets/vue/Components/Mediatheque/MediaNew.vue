@@ -90,8 +90,8 @@ export default defineComponent({
       </button>
     </div>
 
-    <skeleton-mediatheque-upload v-if="loading" />
-    <file-upload
+    <SkeletonMediathequeUpload v-if="loading" />
+    <FileUpload
       v-else
       :max-size="20"
       accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx"

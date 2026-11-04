@@ -4,11 +4,11 @@
  * @author Gourdon Aymeric
  * @version 2.0
  */
-import SearchPaginate from './SearchPaginate.vue';
+import GridPaginate from '@/vue/Components/Grid/GridPaginate.vue';
 
 export default {
   name: 'TabSearchResult',
-  components: { SearchPaginate },
+  components: { GridPaginate },
   props: {
     result: Object,
     paginate: Object,
@@ -124,12 +124,12 @@ export default {
     </div>
   </div>
 
-  <search-paginate
+  <GridPaginate
     :nb-elements="this.paginate.limit"
     :current-page="this.paginate.current"
     :nb-elements-total="this.result.total"
     :translate="this.translatePaginate"
     @change-page-event="changePageEvent"
   >
-  </search-paginate>
+  </GridPaginate>
 </template>

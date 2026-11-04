@@ -427,7 +427,6 @@ export default defineComponent({
           :current-page="cPage"
           :nb-elements="cLimit"
           :nb-elements-total="nbElements"
-          :url="url_load_log_file"
           :list-limit="listLimit"
           :translate="translateGridPaginate"
           @change-page-event="loadContentFile"

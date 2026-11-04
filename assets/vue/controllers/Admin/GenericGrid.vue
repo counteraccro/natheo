@@ -801,7 +801,6 @@ export default defineComponent({
         :current-page="cPage"
         :nb-elements="cLimit"
         :nb-elements-total="nbElements"
-        :url="url"
         :list-limit="listLimit"
         :translate="translateGridPaginate"
         @change-page-event="loadData"

@@ -158,7 +158,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <skeleton-installation-step-one v-if="initialLoading" />
+  <SkeletonInstallationStepOne v-if="initialLoading" />
 
   <div v-else>
     <div class="card rounded-xl overflow-hidden mb-4">

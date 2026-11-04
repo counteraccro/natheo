@@ -226,7 +226,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <skeleton-installation-step-three v-if="initialLoading" />
+  <SkeletonInstallationStepThree v-if="initialLoading" />
 
   <div v-else>
     <h2 class="text-2xl font-bold mb-2">{{ translate.title_h1 }}</h2>

@@ -130,7 +130,7 @@ export default defineComponent({
 
 <template>
   <div class="info-drawer-inner">
-    <skeleton-mediatheque-move v-if="loading" />
+    <SkeletonMediathequeMove v-if="loading" />
 
     <div v-else>
       <!-- Header du panneau -->

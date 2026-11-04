@@ -430,7 +430,7 @@ export default defineComponent({
   </div>
 
   <div v-else>
-    <alert-primary
+    <AlertPrimary
       class="mt-4"
       type="alert-primary-light"
       v-if="history.show_msg"
@@ -449,7 +449,7 @@ export default defineComponent({
           onClick: dismissHistory,
         },
       ]"
-    ></alert-primary>
+    ></AlertPrimary>
 
     <div class="mb-4 mt-4 border-b border-gray-200 dark:border-gray-700" id="nav-tab-option-system">
       <div class="float-right flex items-center" style="margin-top: -0.5rem">

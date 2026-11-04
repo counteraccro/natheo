@@ -323,7 +323,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <skeleton-mediatheque v-if="loading" />
+  <SkeletonMediatheque v-if="loading" />
 
   <div v-else id="block-mediatheque" class="card rounded-xl overflow-hidden">
     <div
@@ -649,7 +649,7 @@ export default defineComponent({
 
     <div class="browser-inner">
       <div class="browser-content">
-        <medias-grid
+        <MediasGrid
           v-if="render !== 'trash'"
           :render="render"
           :medias="medias"
@@ -661,7 +661,7 @@ export default defineComponent({
           @move="openBlockDrawer"
           @trash="updateTrash"
         >
-        </medias-grid>
+        </MediasGrid>
 
         <MediasTrash
           v-else
@@ -674,7 +674,7 @@ export default defineComponent({
         </MediasTrash>
       </div>
       <div class="info-drawer" id="infoDrawer" :class="drawerOpen ? 'open' : ''">
-        <media-info
+        <MediaInfo
           :key="'MI-' + key"
           v-if="selectedAction === 'show'"
           :translate="translate.info as TranslateRecord"
@@ -682,7 +682,7 @@ export default defineComponent({
           @close="closeDrawer"
         />
 
-        <media-edit
+        <MediaEdit
           :key="'ME-' + key"
           v-if="selectedAction === 'edit' || selectedAction === 'new-folder'"
           :translate="translate.edit as TranslateRecord"
@@ -692,7 +692,7 @@ export default defineComponent({
           @reload="reload"
         />
 
-        <media-move
+        <MediaMove
           :key="'ME-' + key"
           v-if="selectedAction === 'move'"
           :translate="translate.move as TranslateWithGenericError"
@@ -705,7 +705,7 @@ export default defineComponent({
           @reload="reload"
         />
 
-        <media-new
+        <MediaNew
           :key="'ME-' + key"
           v-if="selectedAction === 'new-media'"
           :translate="translate.upload as TranslateWithGenericError"

@@ -296,13 +296,13 @@ export default defineComponent({
 <template>
   <div v-if="loading">
     <div class="card rounded-lg p-6 mb-4">
-      <skeleton-text :nb-paragraphe="3" />
+      <SkeletonText :nb-paragraphe="3" />
     </div>
     <div class="card rounded-lg p-6 mb-4">
-      <skeleton-text :nb-paragraphe="3" />
+      <SkeletonText :nb-paragraphe="3" />
     </div>
     <div class="card rounded-lg p-6 mb-4">
-      <skeleton-search-result :rows="2" />
+      <SkeletonSearchResult :rows="2" />
     </div>
   </div>
 
@@ -431,8 +431,8 @@ export default defineComponent({
           </div>
         </div>
 
-        <alert-danger v-if="error !== ''" type="alert-danger-solid mb-3" :text="error" />
-        <alert-primary type="alert-primary-solid" :text="translate.help_text_1" />
+        <AlertDanger v-if="error !== ''" type="alert-danger-solid mb-3" :text="error" />
+        <AlertPrimary type="alert-primary-solid" :text="translate.help_text_1" />
       </div>
     </div>
 

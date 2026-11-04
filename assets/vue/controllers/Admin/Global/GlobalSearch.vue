@@ -318,7 +318,7 @@ export default defineComponent({
   <div id="tab-search-content">
     <div class="hidden" id="tab-page" role="tabpanel">
       <div v-if="loading.page">
-        <skeleton-search-result :rows="limit" />
+        <SkeletonSearchResult :rows="limit" />
       </div>
       <div v-else>
         <h2 class="text-xl font-bold">{{ translate.ongletPage.description }}</h2>
@@ -335,7 +335,7 @@ export default defineComponent({
           {{ translate.ongletPage.noResult }}
         </div>
         <div v-if="results.page !== null" class="mt-2">
-          <tab-search-result
+          <TabSearchResult
             key="1"
             :result="results.page"
             :translate="translate.ongletPage"
@@ -344,14 +344,14 @@ export default defineComponent({
             :entity="'page'"
             @change-page-event="changePage"
           >
-          </tab-search-result>
+          </TabSearchResult>
         </div>
       </div>
     </div>
 
     <div class="hidden" id="tab-menu" role="tabpanel">
       <div v-if="loading.menu">
-        <skeleton-search-result :rows="limit" />
+        <SkeletonSearchResult :rows="limit" />
       </div>
       <div v-else>
         <h2 class="text-xl font-bold">{{ translate.ongletMenu.description }}</h2>
@@ -367,7 +367,7 @@ export default defineComponent({
           {{ translate.ongletMenu.noResult }}
         </div>
         <div v-if="results.menu !== null" class="mt-2">
-          <tab-search-result
+          <TabSearchResult
             key="3"
             :result="results.menu"
             :translate="translate.ongletMenu"
@@ -376,14 +376,14 @@ export default defineComponent({
             :entity="'menu'"
             @change-page-event="changePage"
           >
-          </tab-search-result>
+          </TabSearchResult>
         </div>
       </div>
     </div>
 
     <div class="hidden" id="tab-faq" role="tabpanel">
       <div v-if="loading.faq">
-        <skeleton-search-result :rows="limit" />
+        <SkeletonSearchResult :rows="limit" />
       </div>
       <div v-else>
         <h2 class="text-xl font-bold">{{ translate.ongletFaq.description }}</h2>
@@ -399,7 +399,7 @@ export default defineComponent({
           {{ translate.ongletFaq.noResult }}
         </div>
         <div v-if="results.faq !== null" class="mt-2">
-          <tab-search-result
+          <TabSearchResult
             key="4"
             :result="results.faq"
             :translate="translate.ongletFaq"
@@ -408,14 +408,14 @@ export default defineComponent({
             :entity="'faq'"
             @change-page-event="changePage"
           >
-          </tab-search-result>
+          </TabSearchResult>
         </div>
       </div>
     </div>
 
     <div class="hidden" id="tab-tag" role="tabpanel">
       <div v-if="loading.tag">
-        <skeleton-search-result :rows="limit" />
+        <SkeletonSearchResult :rows="limit" />
       </div>
       <div v-else>
         <h2 class="text-xl font-bold">{{ translate.ongletTag.description }}</h2>
@@ -432,7 +432,7 @@ export default defineComponent({
         </div>
 
         <div v-if="results.tag !== null" class="mt-2">
-          <tab-search-result
+          <TabSearchResult
             key="5"
             :result="results.tag"
             :translate="translate.ongletTag"
@@ -441,14 +441,14 @@ export default defineComponent({
             :entity="'tag'"
             @change-page-event="changePage"
           >
-          </tab-search-result>
+          </TabSearchResult>
         </div>
       </div>
     </div>
 
     <div class="hidden" id="tab-user" role="tabpanel">
       <div v-if="loading.user">
-        <skeleton-search-result :rows="limit" />
+        <SkeletonSearchResult :rows="limit" />
       </div>
       <div v-else>
         <h2 class="text-xl font-bold">{{ translate.ongletUser.description }}</h2>
@@ -465,7 +465,7 @@ export default defineComponent({
         </div>
 
         <div v-if="results.user !== null" class="mt-2">
-          <tab-search-result
+          <TabSearchResult
             key="6"
             :result="results.user"
             :translate="translate.ongletUser"
@@ -474,7 +474,7 @@ export default defineComponent({
             :entity="'user'"
             @change-page-event="changePage"
           >
-          </tab-search-result>
+          </TabSearchResult>
         </div>
       </div>
     </div>
