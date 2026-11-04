@@ -9,12 +9,12 @@ import axios from 'axios';
 import { withCsrf } from '@/vue/Composables/Admin/csrf';
 import { emitter } from '@/vue/Composables/Global/useEvent';
 import SkeletonForm from '@/vue/Components/Skeleton/Form.vue';
-import Toast from '@/vue/Components/Global/Toast.vue';
 import Modal from '@/vue/Components/Global/Modal.vue';
+import { toastSuccess, toastError } from '@/vue/Composables/Global/toast';
 
 export default {
   name: 'TagForm',
-  components: { Modal, Toast, SkeletonForm },
+  components: { Modal, SkeletonForm },
   props: {
     url: String,
     url_stats: String,
@@ -40,16 +40,6 @@ export default {
       templateStat: '',
       classNoControl: '',
       showModalConfirmDelete: false,
-      toasts: {
-        toastSuccess: {
-          show: false,
-          msg: '',
-        },
-        toastError: {
-          show: false,
-          msg: '',
-        },
-      },
     };
   },
   mounted() {
@@ -82,14 +72,12 @@ export default {
         .post(this.url, { tag: this.tag }, withCsrf(this.csrf_token_save))
         .then((response) => {
           if (response.data.success === false) {
-            this.toasts.toastError.msg = response.data.msg ?? this.translate.errorSave;
-            this.toasts.toastError.show = true;
+            toastError(response.data.msg ?? this.translate.errorSave);
             return;
           }
 
           emitter.emit('reset-check-confirm');
-          this.toasts.toastSuccess.msg = this.translate.successSave;
-          this.toasts.toastSuccess.show = true;
+          toastSuccess(this.translate.successSave);
 
           if (response.data.etat === 'new') {
             window.location = this.url_index;
@@ -97,8 +85,7 @@ export default {
         })
         .catch((error) => {
           console.error(error);
-          this.toasts.toastError.msg = error.response?.data?.msg ?? this.translate.errorSave;
-          this.toasts.toastError.show = true;
+          toastError(error.response?.data?.msg ?? this.translate.errorSave);
         })
         .finally(() => {
           this.loadStat();
@@ -129,20 +116,17 @@ export default {
         .delete(this.url_delete, withCsrf(this.csrf_token_delete))
         .then((response) => {
           if (response.data.success === true) {
-            this.toasts.toastSuccess.msg = response.data.msg;
-            this.toasts.toastSuccess.show = true;
+            toastSuccess(response.data.msg);
             setTimeout(() => {
               window.location = this.url_index;
             }, 1500);
           } else {
-            this.toasts.toastError.msg = response.data.msg;
-            this.toasts.toastError.show = true;
+            toastError(response.data.msg);
           }
         })
         .catch((error) => {
           console.error(error);
-          this.toasts.toastError.msg = error.response?.data?.msg ?? this.translate.errorSave;
-          this.toasts.toastError.show = true;
+          toastError(error.response?.data?.msg ?? this.translate.errorSave);
         })
         .finally(() => {
           this.loading = false;
@@ -262,14 +246,6 @@ export default {
      */
     canSubmit() {
       return this.isErrorHexa || this.isErrorLabel;
-    },
-
-    /**
-     * Ferme le toast défini par nameToast
-     * @param nameToast
-     */
-    closeToast(nameToast) {
-      this.toasts[nameToast].show = false;
     },
 
     /**
@@ -586,20 +562,6 @@ export default {
       </button>
     </template>
   </modal>
-
-  <div class="toast-container position-fixed top-0 end-0 p-2">
-    <toast :id="'toastSuccess'" :type="'success'" :show="this.toasts.toastSuccess.show" @close-toast="this.closeToast">
-      <template #body>
-        <div v-html="this.toasts.toastSuccess.msg"></div>
-      </template>
-    </toast>
-
-    <toast :id="'toastError'" :type="'danger'" :show="this.toasts.toastError.show" @close-toast="this.closeToast">
-      <template #body>
-        <div v-html="this.toasts.toastError.msg"></div>
-      </template>
-    </toast>
-  </div>
 </template>
 
 <style scoped></style>

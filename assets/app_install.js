@@ -15,4 +15,6 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 
 import { startVueControllers } from './bootstrap';
 
-startVueControllers(import.meta.glob('./vue/controllers/Installation/**/*.vue'));
+startVueControllers(
+  import.meta.glob(['./vue/controllers/Installation/**/*.vue', './vue/controllers/Admin/Global/ToastContainer.vue'])
+);

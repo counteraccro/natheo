@@ -7,7 +7,6 @@
 
 import { defineComponent, type PropType } from 'vue';
 import axios from 'axios';
-import Toast from '../../../../Components/Global/Toast.vue';
 import SearchPaginate from '../../../../Components/Global/Search/SearchPaginate.vue';
 import { renderMarkdown } from '@/ts/MarkdownEditor/markdownRender';
 import { emitter } from '@/vue/Composables/Global/useEvent';
@@ -19,15 +18,15 @@ import type {
   CommentListResult,
   ModerationState,
   FiltersState,
-  ToastsState,
   UpdateModerationResponse,
 } from '@/ts/Comment/CommentModeration.type';
 import SkeletonCommentModeration from '@/vue/Components/Skeleton/CommentModeration.vue';
+import { toastSuccess, toastError } from '@/vue/Composables/Global/toast';
 
 export default defineComponent({
   name: 'CommentModeration',
 
-  components: { SkeletonCommentModeration, SearchPaginate, Toast },
+  components: { SkeletonCommentModeration, SearchPaginate },
 
   props: {
     urls: {
@@ -64,16 +63,6 @@ export default defineComponent({
         status: this.datas.defaultStatus,
         pages: '0',
       } as FiltersState,
-      toasts: {
-        toastSuccess: {
-          show: false,
-          msg: '',
-        },
-        toastError: {
-          show: false,
-          msg: '',
-        },
-      } as ToastsState,
     };
   },
 
@@ -119,23 +108,20 @@ export default defineComponent({
         .post<UpdateModerationResponse>(this.urls.update, this.moderation, withCsrf(this.csrf_token_moderate))
         .then((response) => {
           if (response.data.success === true) {
-            this.toasts.toastSuccess.msg = response.data.msg;
-            this.toasts.toastSuccess.show = true;
+            toastSuccess(response.data.msg);
             emitter.emit('reset-check-confirm');
             this.allSelected = false;
             this.resetSelected();
             this.load();
           } else {
-            this.toasts.toastError.msg = response.data.msg;
-            this.toasts.toastError.show = true;
+            toastError(response.data.msg);
             this.loading = false;
           }
         })
         .catch((error) => {
           console.error(error);
           if (axios.isAxiosError(error) && error.response?.data?.msg) {
-            this.toasts.toastError.msg = error.response.data.msg;
-            this.toasts.toastError.show = true;
+            toastError(error.response.data.msg);
           }
           this.loading = false;
         });
@@ -205,14 +191,6 @@ export default defineComponent({
      */
     renderHtml(value: string): string {
       return renderMarkdown(value);
-    },
-
-    /**
-     * Ferme un toast en fonction de son id
-     * @param nameToast
-     */
-    closeToast(nameToast: keyof ToastsState): void {
-      this.toasts[nameToast].show = false;
     },
   },
 });
@@ -578,19 +556,5 @@ export default defineComponent({
         </div>
       </div>
     </div>
-  </div>
-
-  <div class="toast-container position-fixed top-0 end-0 p-2">
-    <toast :id="'toastSuccess'" :type="'success'" :show="toasts.toastSuccess.show" @close-toast="closeToast">
-      <template #body>
-        <div v-html="toasts.toastSuccess.msg"></div>
-      </template>
-    </toast>
-
-    <toast :id="'toastError'" :type="'danger'" :show="toasts.toastError.show" @close-toast="closeToast">
-      <template #body>
-        <div v-html="toasts.toastError.msg"></div>
-      </template>
-    </toast>
   </div>
 </template>

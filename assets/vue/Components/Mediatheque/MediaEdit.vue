@@ -7,16 +7,15 @@
 import { defineComponent, type PropType } from 'vue';
 import { MediaItem } from '@/ts/Mediatheque/Mediatheque.type';
 import AlertWarning from '@/vue/Components/Alert/Warning.vue';
-import { Toasts } from '@/ts/Toast/Toast.type';
-import Toast from '@/vue/Components/Global/Toast.vue';
 import axios from 'axios';
 import translate from '@/vue/controllers/Admin/System/Translate.vue';
+import { toastSuccess, toastError } from '@/vue/Composables/Global/toast';
 
 type TranslateRecord = { [key: string]: string | TranslateRecord };
 
 export default defineComponent({
   name: 'MediaEdit',
-  components: { Toast, AlertWarning },
+  components: { AlertWarning },
   props: {
     data: { type: Object as PropType<MediaItem>, required: true },
     translate: { type: Object as PropType<TranslateRecord>, required: true },
@@ -37,16 +36,6 @@ export default defineComponent({
         currentFolder: 0,
         editFolder: 0,
       },
-      toasts: {
-        success: {
-          show: false,
-          msg: '',
-        },
-        error: {
-          show: false,
-          msg: '',
-        },
-      } as Toasts,
     };
   },
   mounted(): any {
@@ -94,8 +83,7 @@ export default defineComponent({
           media: this.media,
         })
         .then(() => {
-          this.toasts.success.show = true;
-          this.toasts.success.msg = this.translate.save_media_msg_ok as string;
+          toastSuccess(this.translate.save_media_msg_ok as string);
           this.save = true;
         })
         .catch((error) => {
@@ -121,11 +109,9 @@ export default defineComponent({
         .post(this.url, this.folder)
         .then((response) => {
           if (response.data.result === 'error') {
-            this.toasts.error.show = true;
-            this.toasts.error.msg = response.data.msg as string;
+            toastError(response.data.msg as string);
           } else {
-            this.toasts.success.show = true;
-            this.toasts.success.msg = response.data.msg as string;
+            toastSuccess(response.data.msg as string);
             this.save = true;
           }
         })
@@ -139,14 +125,6 @@ export default defineComponent({
             }
           }, 2000);
         });
-    },
-
-    /**
-     * Ferme le toast défini par nameToast
-     * @param nameToast
-     */
-    closeToast(nameToast: string): void {
-      this.toasts[nameToast].show = false;
     },
 
     labelBtnSave(): string {
@@ -261,20 +239,6 @@ export default defineComponent({
         v-html="isError ? '✘ ' + translate.btn_error : !save ? labelBtnSave() : '✓ ' + translate.save_ok"
       ></button>
     </div>
-  </div>
-
-  <div class="toast-container position-fixed top-0 end-0 p-2">
-    <toast :id="'toastSuccess'" :type="'success'" :show="toasts.success.show" @close-toast="closeToast('success')">
-      <template #body>
-        <div v-html="toasts.success.msg"></div>
-      </template>
-    </toast>
-
-    <toast :id="'toastError'" :type="'danger'" :show="toasts.error.show" @close-toast="closeToast('error')">
-      <template #body>
-        <div v-html="toasts.error.msg"></div>
-      </template>
-    </toast>
   </div>
 </template>
 

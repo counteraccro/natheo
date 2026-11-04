@@ -10,13 +10,11 @@ import axios from 'axios';
 import { withCsrf } from '@/vue/Composables/Admin/csrf';
 import MarkdownEditor from '@/vue/Components/Global/MarkdownEditor/MarkdownEditor.vue';
 import { emitter } from '@/vue/Composables/Global/useEvent';
-import Toast from '@/vue/Components/Global/Toast.vue';
 import SkeletonForm from '@/vue/Components/Skeleton/Form.vue';
 import SkeletonText from '@/vue/Components/Skeleton/Text.vue';
 import { InternalLinkModule } from '@/ts/MarkdownEditor/modules/internalLink';
 import { MediaModule } from '@/ts/MarkdownEditor/modules/Mediatheque';
 import type { EditorModule } from '@/ts/MarkdownEditor/MarkdownEditor.type';
-import type { Toasts } from '@/ts/Toast/Toast.type';
 import type {
   Mail,
   MailAjaxResponse,
@@ -25,10 +23,11 @@ import type {
   MailPayload,
   MailTranslate,
 } from '@/ts/Mail/Mail.type';
+import { toastSuccess, toastError } from '@/vue/Composables/Global/toast';
 
 export default defineComponent({
   name: 'Mail',
-  components: { SkeletonText, SkeletonForm, Toast, MarkdownEditor },
+  components: { SkeletonText, SkeletonForm, MarkdownEditor },
 
   props: {
     url_data: { type: String, required: true },
@@ -57,10 +56,6 @@ export default defineComponent({
       isValideTitle: true as boolean,
       canSave: true as boolean,
       keyWords: [] as MailKeyWord[],
-      toasts: {
-        toastSuccess: { show: false, msg: '' },
-        toastError: { show: false, msg: '' },
-      } as Toasts,
     };
   },
 
@@ -133,7 +128,7 @@ export default defineComponent({
     save(): void {
       this.checkCanSave();
       if (!this.canSave) {
-        this.showToast('toastError', this.translate.msg_cant_save);
+        toastError(this.translate.msg_cant_save);
         return;
       }
 
@@ -163,7 +158,7 @@ export default defineComponent({
     },
 
     handleResponse(data: MailAjaxResponse): void {
-      this.showToast(data.success ? 'toastSuccess' : 'toastError', data.msg);
+      (data.success ? toastSuccess : toastError)(data.msg);
     },
 
     /**
@@ -172,16 +167,7 @@ export default defineComponent({
     showError(error: unknown, defaultMsg: string): void {
       console.error(error);
       const msg = axios.isAxiosError<MailAjaxResponse>(error) ? error.response?.data?.msg : undefined;
-      this.showToast('toastError', msg || defaultMsg);
-    },
-
-    showToast(nameToast: string, msg: string): void {
-      this.toasts[nameToast].msg = msg;
-      this.toasts[nameToast].show = true;
-    },
-
-    closeToast(nameToast: string): void {
-      this.toasts[nameToast].show = false;
+      toastError(msg || defaultMsg);
     },
   },
 });
@@ -311,19 +297,5 @@ export default defineComponent({
         </div>
       </div>
     </div>
-  </div>
-
-  <div class="toast-container position-fixed top-0 end-0 p-2">
-    <toast id="toastSuccess" :show="toasts.toastSuccess.show" @close-toast="closeToast">
-      <template #body>
-        <div v-html="toasts.toastSuccess.msg"></div>
-      </template>
-    </toast>
-
-    <toast id="toastError" type="danger" :show="toasts.toastError.show" @close-toast="closeToast">
-      <template #body>
-        <div v-html="toasts.toastError.msg"></div>
-      </template>
-    </toast>
   </div>
 </template>

@@ -86,16 +86,6 @@ export interface FiltersState {
   pages: string;
 }
 
-export interface ToastState {
-  show: boolean;
-  msg: string;
-}
-
-export interface ToastsState {
-  toastSuccess: ToastState;
-  toastError: ToastState;
-}
-
 export interface UpdateModerationResponse {
   success: boolean;
   msg: string;

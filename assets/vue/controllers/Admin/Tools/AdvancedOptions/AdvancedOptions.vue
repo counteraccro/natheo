@@ -7,12 +7,10 @@
 import { defineComponent, PropType } from 'vue';
 import axios from 'axios';
 import { withCsrf } from '@/vue/Composables/Admin/csrf';
-import Toast from '../../../../Components/Global/Toast.vue';
 import Modal from '../../../../Components/Global/Modal.vue';
 import AlertWarning from '@/vue/Components/Alert/Warning.vue';
 import SkeletonText from '@/vue/Components/Skeleton/Text.vue';
 import AlertDanger from '@/vue/Components/Alert/Danger.vue';
-import { Toasts } from '@/ts/Toast/Toast.type';
 import type {
   AdvancedOptionsUrls,
   AdvancedOptionsCsrfTokens,
@@ -22,6 +20,7 @@ import type {
   AdvancedOptionsModalConfirm,
   AdvancedOptionsResponse,
 } from '@/ts/AdvancedOptions/AdvancedOptions.type';
+import { toastError } from '@/vue/Composables/Global/toast';
 
 export default defineComponent({
   name: 'AdvancedOptions',
@@ -30,7 +29,6 @@ export default defineComponent({
     SkeletonText,
     AlertWarning,
     Modal,
-    Toast,
   },
   props: {
     urls: {
@@ -66,12 +64,6 @@ export default defineComponent({
       modalTab: {
         modaleConfirm: false,
       } as Record<string, boolean>,
-      toasts: {
-        toastError: {
-          show: false,
-          msg: '',
-        },
-      } as Toasts,
     };
   },
   methods: {
@@ -147,8 +139,7 @@ export default defineComponent({
     showError(msg?: string) {
       this.loading = false;
       this.msgInfo = '';
-      this.toasts.toastError.msg = msg || this.translate.error_generic;
-      this.toasts.toastError.show = true;
+      toastError(msg || this.translate.error_generic);
     },
 
     /**
@@ -219,14 +210,6 @@ export default defineComponent({
      */
     isDebug(): boolean {
       return this.data.app_debug;
-    },
-
-    /**
-     * Ferme un toast en fonction de son id
-     * @param nameToast
-     */
-    closeToast(nameToast: string) {
-      this.toasts[nameToast].show = false;
     },
 
     /**
@@ -514,11 +497,4 @@ export default defineComponent({
   </modal>
   <!-- fin modale confirmation suppression -->
   <!-- toast -->
-  <div class="toast-container position-fixed top-0 end-0 p-2">
-    <toast :id="'toastError'" :type="'danger'" :show="toasts.toastError.show" @close-toast="closeToast">
-      <template #body>
-        <div class="whitespace-pre-line">{{ toasts.toastError.msg }}</div>
-      </template>
-    </toast>
-  </div>
 </template>

@@ -8,12 +8,12 @@ import axios from 'axios';
 import SkeletonCardStat from '@/vue/Components/Skeleton/CardStat.vue';
 import SkeletonTabs from '@/vue/Components/Skeleton/Tabs.vue';
 import Notification from '@/vue/controllers/Admin/Notification/Notification.vue';
-import Toast from '@/vue/Components/Global/Toast.vue';
 import Modal from '@/vue/Components/Global/Modal.vue';
+import { toastSuccess, toastError } from '@/vue/Composables/Global/toast';
 
 export default {
   name: 'NotificationList',
-  components: { Modal, Toast, Notification, SkeletonTabs, SkeletonCardStat },
+  components: { Modal, Notification, SkeletonTabs, SkeletonCardStat },
   props: {
     urls: Object,
     page: Number,
@@ -41,16 +41,6 @@ export default {
         nb_noRead: 0,
         nb_today: 0,
         nb_total: 0,
-      },
-      toasts: {
-        toastSuccess: {
-          show: false,
-          msg: '',
-        },
-        toastError: {
-          show: false,
-          msg: '',
-        },
       },
     };
   },
@@ -99,11 +89,6 @@ export default {
      * @param onlyNotRead
      */
     loadData(page, limit, onlyNotRead) {
-      setTimeout(() => {
-        this.toasts.toastSuccess.show = false;
-        this.toasts.toastError.show = false;
-      }, 2500);
-
       axios
         .get(this.urls.list + '/' + page + '/' + limit + '/' + onlyNotRead)
         .then((response) => {
@@ -165,11 +150,9 @@ export default {
         .post(this.urls.update, { notifications: this.notificationsChecked, read: read })
         .then((response) => {
           if (response.data.success === true) {
-            this.toasts.toastSuccess.msg = response.data.msg;
-            this.toasts.toastSuccess.show = true;
+            toastSuccess(response.data.msg);
           } else {
-            this.toasts.toastError.msg = response.data.msg;
-            this.toasts.toastError.show = true;
+            toastError(response.data.msg);
           }
         })
         .catch((error) => {
@@ -200,11 +183,9 @@ export default {
           .post(this.urls.delete, { notifications: this.notificationsChecked })
           .then((response) => {
             if (response.data.success === true) {
-              this.toasts.toastSuccess.msg = response.data.msg;
-              this.toasts.toastSuccess.show = true;
+              toastSuccess(response.data.msg);
             } else {
-              this.toasts.toastError.msg = response.data.msg;
-              this.toasts.toastError.show = true;
+              toastError(response.data.msg);
             }
           })
           .catch((error) => {
@@ -226,11 +207,9 @@ export default {
         .get(this.urls.readAll, {})
         .then((response) => {
           if (response.data.success === true) {
-            this.toasts.toastSuccess.msg = response.data.msg;
-            this.toasts.toastSuccess.show = true;
+            toastSuccess(response.data.msg);
           } else {
-            this.toasts.toastError.msg = response.data.msg;
-            this.toasts.toastError.show = true;
+            toastError(response.data.msg);
           }
         })
         .catch((error) => {
@@ -311,14 +290,6 @@ export default {
     },
 
     /**
-     * Ferme un toast en fonction de son id
-     * @param nameToast
-     */
-    closeToast(nameToast) {
-      this.toasts[nameToast].show = false;
-    },
-
-    /**
      * Marque une notification comme lu
      * @param id
      */
@@ -332,11 +303,9 @@ export default {
         .post(this.urls.update, { notifications: tab, read: true })
         .then((response) => {
           if (response.data.success === true) {
-            this.toasts.toastSuccess.msg = response.data.msg;
-            this.toasts.toastSuccess.show = true;
+            toastSuccess(response.data.msg);
           } else {
-            this.toasts.toastError.msg = response.data.msg;
-            this.toasts.toastError.show = true;
+            toastError(response.data.msg);
           }
         })
         .catch((error) => {
@@ -766,20 +735,6 @@ export default {
       </button>
     </template>
   </modal>
-
-  <div class="toast-container position-fixed top-0 end-0 p-2">
-    <toast :id="'toastSuccess'" :type="'success'" :show="this.toasts.toastSuccess.show" @close-toast="this.closeToast">
-      <template #body>
-        <div v-html="this.toasts.toastSuccess.msg"></div>
-      </template>
-    </toast>
-
-    <toast :id="'toastError'" :type="'danger'" :show="this.toasts.toastError.show" @close-toast="this.closeToast">
-      <template #body>
-        <div v-html="this.toasts.toastError.msg"></div>
-      </template>
-    </toast>
-  </div>
 </template>
 
 <style scoped></style>

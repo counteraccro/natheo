@@ -25,8 +25,6 @@ import { initFlowbite } from 'flowbite';
 import MediathequeModale from '@/vue/Components/Global/MarkdownEditor/Mediatheque.vue';
 import PageHistory from '@/vue/Components/Page/PageHistory.vue';
 import PageStatusBar from '@/vue/Components/Page/PageStatusBar.vue';
-import Toast from '@/vue/Components/Global/Toast.vue';
-import { Toasts } from '@/ts/Toast/Toast.type';
 import PageSeo from '@/vue/Components/Page/PageSeo.vue';
 import PageSEO from '@/vue/Components/Page/PageSeo.vue';
 import PageTag from '@/vue/Components/Page/PageTag.vue';
@@ -39,6 +37,7 @@ import AlertWarning from '@/vue/Components/Alert/Warning.vue';
 import AlertInfo from '@/vue/Components/Alert/Info.vue';
 import translate from '@/vue/controllers/Admin/System/Translate.vue';
 import AlertPrimary from '@/vue/Components/Alert/Primary.vue';
+import { toastSuccess, toastError } from '@/vue/Composables/Global/toast';
 
 export default defineComponent({
   name: 'Page',
@@ -53,7 +52,6 @@ export default defineComponent({
     PageTag,
     PageSEO,
     PageSeo,
-    Toast,
     PageStatusBar,
     PageHistory,
     MediathequeModale,
@@ -108,10 +106,6 @@ export default defineComponent({
         string,
         { hasError: boolean; errorsByLocale: Record<string, Record<string, string>> }
       >,
-      toasts: {
-        success: { show: false, msg: '' },
-        error: { show: false, msg: '' },
-      } as Toasts,
     };
   },
   mounted() {
@@ -328,11 +322,7 @@ export default defineComponent({
       (this.$refs.statusBar as InstanceType<typeof PageStatusBar>).notifyRestore();
       this.page = page;
       this.restoreCount++;
-      this.toasts.success.show = true;
-      this.toasts.success.msg = msg;
-      setTimeout(() => {
-        this.toasts.success.show = false;
-      }, 3000);
+      toastSuccess(msg);
     },
 
     /**
@@ -365,22 +355,19 @@ export default defineComponent({
         )
         .then((response) => {
           if (response.data.success === true) {
-            this.toasts.success.msg = response.data.msg;
-            this.toasts.success.show = true;
+            toastSuccess(response.data.msg);
             // Cas première page, on force la redirection pour passer en mode édition
             if (response.data.redirect === true) {
               window.location.replace(response.data.url_redirect);
             }
           } else {
-            this.toasts.error.msg = response.data.msg;
-            this.toasts.error.show = true;
+            toastError(response.data.msg);
           }
         })
         .catch((error) => {
           console.error(error);
           if (error.response?.data?.msg) {
-            this.toasts.error.msg = error.response.data.msg;
-            this.toasts.error.show = true;
+            toastError(error.response.data.msg);
           }
         })
         .finally(() => {
@@ -388,9 +375,6 @@ export default defineComponent({
           this.$nextTick(() => {
             initFlowbite();
           });
-          setTimeout(() => {
-            this.toasts.success.show = false;
-          }, 3000);
           emitter.emit('reset-check-confirm');
         });
     },
@@ -780,19 +764,6 @@ export default defineComponent({
   />
 
   <MediathequeModale :url-media="urls.load_media" :translate="translate.page_content_form.mediatheque" />
-
-  <div class="toast-container position-fixed top-0 end-0 p-2">
-    <toast :id="'toastSuccess'" :type="'success'" :show="toasts.success.show">
-      <template #body>
-        <div v-html="toasts.success.msg"></div>
-      </template>
-    </toast>
-    <toast :id="'toastError'" :type="'danger'" :show="toasts.error.show">
-      <template #body>
-        <div v-html="toasts.error.msg"></div>
-      </template>
-    </toast>
-  </div>
 </template>
 
 <style scoped></style>

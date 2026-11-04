@@ -6,11 +6,10 @@
  */
 
 import axios from 'axios';
-import Toast from '@/vue/Components/Global/Toast.vue';
+import { toastSuccess, toastError } from '@/vue/Composables/Global/toast';
 
 export default {
   name: 'MyAccountMoreOptions',
-  components: { Toast },
   props: {
     translate: Object,
     datas: Object,
@@ -21,12 +20,6 @@ export default {
       loading: false,
       btnHelpBlock: this.datas.help_first_connexion,
       msg: null,
-      toast: {
-        confirm: {
-          show: false,
-          msg: '',
-        },
-      },
     };
   },
   mounted() {},
@@ -46,8 +39,7 @@ export default {
           if (response.data.success === true) {
             this.btnHelpBlock = !(value !== 1);
           }
-          this.toast.confirm.show = true;
-          this.toast.confirm.msg = response.data.msg;
+          (response.data.success ? toastSuccess : toastError)(response.data.msg);
         })
         .catch((error) => {
           console.error(error);
@@ -55,14 +47,6 @@ export default {
         .finally(() => {
           this.loading = false;
         });
-    },
-
-    /**
-     * Ferme le toast défini par nameToast
-     * @param nameToast
-     */
-    closeToast(nameToast) {
-      this.toast[nameToast].show = false;
     },
   },
 };
@@ -139,12 +123,6 @@ export default {
       {{ this.translate.btn_hide_help }}
     </button>
   </div>
-
-  <toast :id="'confirm'" :type="'success'" :show="this.toast.confirm.show" @close-toast="this.closeToast">
-    <template #body>
-      <div v-html="this.toast.confirm.msg"></div>
-    </template>
-  </toast>
 </template>
 
 <style scoped></style>

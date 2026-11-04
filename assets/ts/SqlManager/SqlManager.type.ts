@@ -53,11 +53,6 @@ export interface SqlManagerTranslations {
   no_result_query_help: string;
 }
 
-export interface ToastState {
-  show: boolean;
-  msg: string;
-}
-
 export interface LoadSqlManagerResponse {
   sqlManager: SqlManagerQuery;
 }

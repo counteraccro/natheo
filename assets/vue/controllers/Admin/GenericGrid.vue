@@ -11,7 +11,6 @@ import { Dropdown } from 'flowbite';
 import Grid from '@/vue/Components/Grid/Grid.vue';
 import GridPaginate from '@/vue/Components/Grid/GridPaginate.vue';
 import Modal from '@/vue/Components/Global/Modal.vue';
-import Toast from '@/vue/Components/Global/Toast.vue';
 import SkeletonTable from '@/vue/Components/Skeleton/Table.vue';
 import SqlHighLight from '@/vue/Components/Global/SqlHighlight.vue';
 import { copyToClipboard } from '@/vue/Composables/Global/copyToClipboard';
@@ -26,7 +25,7 @@ import type {
   GenericGridResponse,
   GenericGridTranslate,
 } from '@/ts/Grid/GenericGrid.type';
-import type { Toasts } from '@/ts/Toast/Toast.type';
+import { toastSuccess, toastError } from '@/vue/Composables/Global/toast';
 
 export default defineComponent({
   name: 'GenericGrid',
@@ -36,7 +35,6 @@ export default defineComponent({
     GridPaginate,
     Grid,
     Modal,
-    Toast,
   },
   props: {
     url: { type: String, required: true },
@@ -83,16 +81,6 @@ export default defineComponent({
       order: 'DESC' as GenericGridOrder,
       listOrder: { 0: 'ASC', 1: 'DESC' } as Record<number, GenericGridOrder>,
       btnSearchMode: null as Dropdown | null,
-      toasts: {
-        toastSuccessGenericGrid: {
-          show: false,
-          msg: '',
-        },
-        toastErrorGenericGrid: {
-          show: false,
-          msg: '',
-        },
-      } as Toasts,
     };
   },
   mounted() {
@@ -253,15 +241,15 @@ export default defineComponent({
               );
             }
 
-            this.showToast('toastSuccessGenericGrid', response.data.msg);
+            toastSuccess(response.data.msg);
           } else {
-            this.showToast('toastErrorGenericGrid', response.data.msg);
+            toastError(response.data.msg);
           }
         })
         .catch((error: unknown) => {
           const msg = axios.isAxiosError<GenericGridActionResponse>(error) ? error.response?.data?.msg : undefined;
           if (msg) {
-            this.showToast('toastErrorGenericGrid', msg);
+            toastError(msg);
           }
           console.error(error);
         })
@@ -295,24 +283,6 @@ export default defineComponent({
      */
     hideModal(): void {
       this.showModalGenericGrid = false;
-    },
-
-    /**
-     * Affiche le toast défini par nameToast avec le message msg
-     * @param nameToast
-     * @param msg
-     */
-    showToast(nameToast: string, msg: string): void {
-      this.toasts[nameToast].msg = msg;
-      this.toasts[nameToast].show = true;
-    },
-
-    /**
-     * Ferme le toast défini par nameToast
-     * @param nameToast
-     */
-    closeToast(nameToast: string): void {
-      this.toasts[nameToast].show = false;
     },
 
     /**
@@ -355,9 +325,9 @@ export default defineComponent({
     async copyQueryRun(): Promise<void> {
       try {
         await copyToClipboard(this.cQuery);
-        this.showToast('toastSuccessGenericGrid', this.translate.copySuccess);
+        toastSuccess(this.translate.copySuccess);
       } catch {
-        this.showToast('toastErrorGenericGrid', this.translate.copyError);
+        toastError(this.translate.copyError);
       }
     },
 
@@ -369,9 +339,9 @@ export default defineComponent({
         })
         .then((response) => {
           if (response.data.success === true) {
-            this.showToast('toastSuccessGenericGrid', response.data.msg);
+            toastSuccess(response.data.msg);
           } else {
-            this.showToast('toastErrorGenericGrid', response.data.msg);
+            toastError(response.data.msg);
           }
         })
         .catch((error: unknown) => {
@@ -909,30 +879,6 @@ export default defineComponent({
       </button>
     </template>
   </modal>
-
-  <div class="toast-container position-fixed top-0 end-0 p-2">
-    <toast
-      :id="'toastSuccessGenericGrid'"
-      :type="'success'"
-      :show="toasts.toastSuccessGenericGrid.show"
-      @close-toast="closeToast"
-    >
-      <template #body>
-        <div v-html="toasts.toastSuccessGenericGrid.msg"></div>
-      </template>
-    </toast>
-
-    <toast
-      :id="'toastErrorGenericGrid'"
-      :type="'danger'"
-      :show="toasts.toastErrorGenericGrid.show"
-      @close-toast="closeToast"
-    >
-      <template #body>
-        <div v-html="toasts.toastErrorGenericGrid.msg"></div>
-      </template>
-    </toast>
-  </div>
 </template>
 
 <style scoped></style>
