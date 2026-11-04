@@ -19,7 +19,7 @@ use App\Service\Admin\GridService;
 use App\Service\Admin\MarkdownEditorService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Translate\Admin\Content\MediaTranslate;
-use App\Utils\Utils;
+use App\Formatter\Global\FileSizeFormatter;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
@@ -272,7 +272,7 @@ class MediaFolderService extends AppAdminService
 
         return [
             'root' => $root,
-            'size' => Utils::getSizeName($size),
+            'size' => FileSizeFormatter::format($size),
             'path' => $path,
             'id' => $id,
         ];

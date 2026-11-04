@@ -13,7 +13,7 @@ use App\Entity\Admin\Content\Media\Media;
 use App\Entity\Admin\Content\Media\MediaFolder;
 use App\Service\Admin\Content\Media\MediaService;
 use App\Tests\AppWebTestCase;
-use App\Utils\Utils;
+use App\Formatter\Global\FileSizeFormatter;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -174,7 +174,7 @@ class MediaServiceTest extends AppWebTestCase
                 $this->assertArrayHasKey('description', $row);
                 $this->assertEquals($media->getDescription(), $row['description']);
                 $this->assertArrayHasKey('size', $row);
-                $this->assertEquals(Utils::getSizeName($media->getSize()), $row['size']);
+                $this->assertEquals(FileSizeFormatter::format($media->getSize()), $row['size']);
                 $this->assertArrayHasKey('webPath', $row);
                 $this->assertEquals($media->getWebPath(), $row['webPath']);
                 $this->assertArrayHasKey('thumbnail', $row);

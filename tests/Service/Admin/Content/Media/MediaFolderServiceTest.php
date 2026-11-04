@@ -14,7 +14,7 @@ use App\Entity\Admin\Content\Media\MediaFolder;
 use App\Service\Admin\Content\Media\MediaFolderService;
 use App\Service\Admin\Content\Media\MediaService;
 use App\Tests\AppWebTestCase;
-use App\Utils\Utils;
+use App\Formatter\Global\FileSizeFormatter;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -184,7 +184,7 @@ class MediaFolderServiceTest extends AppWebTestCase
         $this->assertArrayHasKey('root', $result);
         $this->assertCount(3, $result['root']);
         $this->assertArrayHasKey('size', $result);
-        $this->assertEquals(Utils::getSizeName(0), $result['size']);
+        $this->assertEquals(FileSizeFormatter::format(0), $result['size']);
         $this->assertArrayHasKey('path', $result);
         $this->assertEquals(
             $subSubMediaFolder->getPath() . DIRECTORY_SEPARATOR . $subSubMediaFolder->getName(),

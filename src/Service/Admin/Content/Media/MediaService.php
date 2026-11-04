@@ -13,7 +13,7 @@ use App\Entity\Admin\Content\Media\Media;
 use App\Entity\Admin\Content\Media\MediaFolder;
 use App\Repository\Admin\Content\Media\MediaRepository;
 use App\Service\Admin\Content\Media\Thumbnail;
-use App\Utils\Utils;
+use App\Formatter\Global\FileSizeFormatter;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -245,7 +245,7 @@ class MediaService extends MediaFolderService
                 'id' => $media->getId(),
                 'name' => $media->getName(),
                 'description' => $media->getDescription(),
-                'size' => Utils::getSizeName($media->getSize()),
+                'size' => FileSizeFormatter::format($media->getSize()),
                 'webPath' => $media->getWebPath(),
                 'thumbnail' => $this->getThumbnail($media),
                 'created_at' => $media->getCreatedAt()->getTimestamp(),
@@ -322,7 +322,7 @@ class MediaService extends MediaFolderService
                 'name' => $folder->getName(),
                 'created_at' => $folder->getCreatedAt()->getTimestamp(),
                 'date' => $folder->getCreatedAt()->format('d-m-Y H:i:s'),
-                'size' => Utils::getSizeName($this->getFolderSize($folder)),
+                'size' => FileSizeFormatter::format($this->getFolderSize($folder)),
                 'nb_elements' => $nb_elements,
                 'nb_files' => $nb_files,
                 'children' => $children,
@@ -557,7 +557,7 @@ class MediaService extends MediaFolderService
                 'id' => $media->getId(),
                 'name' => $media->getName(),
                 'description' => $media->getDescription(),
-                'size' => Utils::getSizeName($media->getSize()),
+                'size' => FileSizeFormatter::format($media->getSize()),
                 'webPath' => $media->getWebPath(),
                 'thumbnail' => $this->getThumbnail($media),
                 'created_at' => $media->getCreatedAt()->getTimestamp(),

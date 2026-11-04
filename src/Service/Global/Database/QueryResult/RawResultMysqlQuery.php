@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace App\Service\Global\Database\QueryResult;
 
 use App\Service\Global\Database\QueryResult\RawResultQueryInterface;
-use App\Utils\Utils;
+use App\Formatter\Global\FileSizeFormatter;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RawResultMysqlQuery implements RawResultQueryInterface
@@ -43,14 +43,14 @@ class RawResultMysqlQuery implements RawResultQueryInterface
                 );
             }
             $sizeBite += intval($row['size']);
-            $row['size'] = Utils::getSizeName($row['size']);
+            $row['size'] = FileSizeFormatter::format($row['size']);
             $nbTable++;
         }
 
         $result['header'] = $newHeader;
         $result['stat'] = [
             'nbElement' => $nbElement,
-            'sizeBite' => Utils::getSizeName($sizeBite),
+            'sizeBite' => FileSizeFormatter::format($sizeBite),
             'nbTable' => $nbTable,
         ];
 
