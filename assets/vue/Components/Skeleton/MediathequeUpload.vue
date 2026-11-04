@@ -14,8 +14,8 @@ export default defineComponent({
   <div class="animate-pulse">
     <!-- Zone de dépôt -->
     <div
-      class="relative flex flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed mb-4"
-      style="border-color: var(--border-color); background-color: var(--bg-main); padding: 1.5rem 1rem"
+      class="relative flex flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed mb-4 border-line bg-surface"
+      style="padding: 1.5rem 1rem"
     >
       <!-- Icône -->
       <div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700"></div>

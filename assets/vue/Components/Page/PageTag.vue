@@ -193,15 +193,13 @@ export default defineComponent({
 
           <div
             v-if="suggestionsVisible"
-            class="absolute left-0 right-0 z-10 rounded-lg shadow-lg border mt-1"
-            style="background-color: var(--bg-card); border-color: var(--border-color)"
+            class="absolute left-0 right-0 z-10 rounded-lg shadow-lg border mt-1 bg-card border-line"
           >
             <ul class="py-1">
               <li
                 v-for="tag in suggestions"
                 :key="tag.id"
-                class="flex items-center gap-2 px-4 py-2 cursor-pointer text-sm"
-                style="color: var(--text-primary)"
+                class="flex items-center gap-2 px-4 py-2 cursor-pointer text-sm text-fg"
                 @mousedown="selectSuggestion(tag)"
                 @mouseenter="($event.currentTarget as HTMLElement).style.backgroundColor = 'var(--bg-hover)'"
                 @mouseleave="($event.currentTarget as HTMLElement).style.backgroundColor = ''"
@@ -213,13 +211,7 @@ export default defineComponent({
           </div>
 
           <div v-if="isSearching" class="absolute right-3 top-1/2 -translate-y-1/2">
-            <svg
-              class="w-4 h-4 animate-spin"
-              style="color: var(--text-secondary)"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
+            <svg class="w-4 h-4 animate-spin text-fg-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 stroke-linecap="round"
                 stroke-linejoin="round"

@@ -7,13 +7,13 @@
     {{ breadcrumb(breadcrumb) }}
 
     <h1 class="head-title">
-        <svg class="w-7 h-7 text-[var(--primary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="w-7 h-7 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"></path>
         </svg>
         {{ 'info.page.title.h1' | trans({}, 'info') }}</h1>
 
-    <p class="text-sm text-[var(--text-secondary)] mb-3">{{ 'info.description' | trans({}, 'info') }}</p>
+    <p class="text-sm text-fg-muted mb-3">{{ 'info.description' | trans({}, 'info') }}</p>
 
     <div class="card mb-4">
         <div class="card-header">
@@ -42,39 +42,39 @@
             </div>
         </div>
         <div class="space-y-3 p-5">
-            <div class="flex flex-col sm:flex-row sm:items-center py-3 border-b border-b-[var(--border-color)]">
-                    <span class="text-sm font-semibold mb-1 sm:mb-0 sm:w-48 text-[var(--text-secondary)]">
+            <div class="flex flex-col sm:flex-row sm:items-center py-3 border-b border-b-line">
+                    <span class="text-sm font-semibold mb-1 sm:mb-0 sm:w-48 text-fg-muted">
                          {{ 'info.server.software.version' | trans({}, 'info') }}
                     </span>
-                <span class="text-sm font-mono text-[var(--text-primary)]">
+                <span class="text-sm font-mono text-fg">
                         {{ tabInfo.serveur.server_software_version }}
                     </span>
             </div>
-            <div class="flex flex-col sm:flex-row sm:items-center py-3 border-b border-b-[var(--border-color)]">
-                    <span class="text-sm font-semibold mb-1 sm:mb-0 sm:w-48 text-[var(--text-secondary)]">
+            <div class="flex flex-col sm:flex-row sm:items-center py-3 border-b border-b-line">
+                    <span class="text-sm font-semibold mb-1 sm:mb-0 sm:w-48 text-fg-muted">
                         {{ 'info.php.version' | trans({}, 'info') }}
                     </span>
                 <span class="text-sm">
                         <a href="{{ path('admin_info_phpinfo') }}"
                            target="_blank"
-                           class="text-sm hover:underline text-[var(--primary)]"> {{ tabInfo.serveur.php_version }}</a>
+                           class="text-sm hover:underline text-primary"> {{ tabInfo.serveur.php_version }}</a>
                     </span>
             </div>
 
-            <div class="flex flex-col sm:flex-row sm:items-center py-3 border-b border-b-[var(--border-color)]">
-                    <span class="text-sm font-semibold mb-1 sm:mb-0 sm:w-48 text-[var(--text-secondary)]">
+            <div class="flex flex-col sm:flex-row sm:items-center py-3 border-b border-b-line">
+                    <span class="text-sm font-semibold mb-1 sm:mb-0 sm:w-48 text-fg-muted">
                          {{ 'info.memory.limit' | trans({}, 'info') }}
                     </span>
-                <span class="text-sm text-[var(--text-primary)]">
+                <span class="text-sm text-fg">
                         {{ tabInfo.serveur.memory_limit }}
                     </span>
             </div>
 
             <div class="flex flex-col sm:flex-row sm:items-center py-3">
-                    <span class="text-sm font-semibold mb-1 sm:mb-0 sm:w-48 text-[var(--text-secondary)]">
+                    <span class="text-sm font-semibold mb-1 sm:mb-0 sm:w-48 text-fg-muted">
                          {{ 'info.upload.max.file' | trans({}, 'info') }}
                     </span>
-                <span class="text-sm text-[var(--text-primary)]">
+                <span class="text-sm text-fg">
                         {{ tabInfo.serveur.upload_max_file_size }} -
                     </span>
             </div>
@@ -112,22 +112,22 @@
         </div>
 
         <div class="space-y-3 p-5">
-            <div class="flex flex-col sm:flex-row sm:items-center py-3 border-b border-b-[var(--border-color)]">
-                <span class="text-sm font-semibold mb-1 sm:mb-0 sm:w-48 text-[var(--text-secondary)]">
+            <div class="flex flex-col sm:flex-row sm:items-center py-3 border-b border-b-line">
+                <span class="text-sm font-semibold mb-1 sm:mb-0 sm:w-48 text-fg-muted">
                      {{ 'info.website.version' | trans({}, 'info') }}
                 </span>
-                <span class="text-sm text-[var(--text-primary)]">
+                <span class="text-sm text-fg">
                     {{ tabInfo.website.website_version }}
                 </span>
             </div>
 
             <div class="flex flex-col sm:flex-row sm:items-center py-3">
-                <span class="text-sm font-semibold mb-1 sm:mb-0 sm:w-48 text-[var(--text-secondary)]">
+                <span class="text-sm font-semibold mb-1 sm:mb-0 sm:w-48 text-fg-muted">
                      {{ 'info.website.url' | trans({}, 'info') }}
                 </span>
-                <span class="text-sm text-[var(--text-primary)]">
+                <span class="text-sm text-fg">
                    <a target="_blank"
-                      class="text-sm hover:underline text-[var(--primary)]"
+                      class="text-sm hover:underline text-primary"
                       href="{{ tabInfo.website.website_url }}">{{ tabInfo.website.website_url }}</a>
                 </span>
             </div>
@@ -162,38 +162,38 @@
             </div>
         </div>
         <div class="space-y-3 p-5">
-            <div class="flex flex-col sm:flex-row sm:items-center py-3 border-b border-b-[var(--border-color)]">
-                    <span class="text-sm font-semibold mb-1 sm:mb-0 sm:w-48 text-[var(--text-secondary)]">
+            <div class="flex flex-col sm:flex-row sm:items-center py-3 border-b border-b-line">
+                    <span class="text-sm font-semibold mb-1 sm:mb-0 sm:w-48 text-fg-muted">
                         {{ 'info.database.type' | trans({}, 'info') }}
                     </span>
-                <span class="text-sm text-[var(--text-primary)]">
+                <span class="text-sm text-fg">
                         {{ tabInfo.database.database_type | raw }}
                     </span>
             </div>
 
-            <div class="flex flex-col sm:flex-row sm:items-center py-3 border-b border-b-[var(--border-color)]">
-                    <span class="text-sm font-semibold mb-1 sm:mb-0 sm:w-48 text-[var(--text-secondary)]">
+            <div class="flex flex-col sm:flex-row sm:items-center py-3 border-b border-b-line">
+                    <span class="text-sm font-semibold mb-1 sm:mb-0 sm:w-48 text-fg-muted">
                          {{ 'info.database.server' | trans({}, 'info') }}
                     </span>
-                <span class="text-sm font-mono text-[var(--text-primary)]">
+                <span class="text-sm font-mono text-fg">
                        {{ tabInfo.database.database_server | raw }}
                     </span>
             </div>
 
-            <div class="flex flex-col sm:flex-row sm:items-center py-3 border-b border-b-[var(--border-color)]">
-                    <span class="text-sm font-semibold mb-1 sm:mb-0 sm:w-48 text-[var(--text-secondary)]">
+            <div class="flex flex-col sm:flex-row sm:items-center py-3 border-b border-b-line">
+                    <span class="text-sm font-semibold mb-1 sm:mb-0 sm:w-48 text-fg-muted">
                          {{ 'info.database.user' | trans({}, 'info') }}
                     </span>
-                <span class="text-sm text-[var(--text-primary)]">
+                <span class="text-sm text-fg">
                         {{ tabInfo.database.database_user | raw }}
                     </span>
             </div>
 
             <div class="flex flex-col sm:flex-row sm:items-center py-3">
-                    <span class="text-sm font-semibold mb-1 sm:mb-0 sm:w-48 text-[var(--text-secondary)]">
+                    <span class="text-sm font-semibold mb-1 sm:mb-0 sm:w-48 text-fg-muted">
                           {{ 'info.database.name' | trans({}, 'info') }}
                     </span>
-                <span class="text-sm text-[var(--text-primary)]">
+                <span class="text-sm text-fg">
                         {{ tabInfo.database.database_name | raw }}
                     </span>
             </div>
@@ -229,10 +229,10 @@
         </div>
         <div class="space-y-3 p-5">
             <div class="flex flex-col sm:flex-row sm:items-center py-3">
-                    <span class="text-sm font-semibold mb-1 sm:mb-0 sm:w-48 text-[var(--text-secondary)]">
+                    <span class="text-sm font-semibold mb-1 sm:mb-0 sm:w-48 text-fg-muted">
                          {{ 'info.navigateur.info' | trans({}, 'info') }}
                     </span>
-                <span class="text-sm font-mono text-[var(--text-primary)]">
+                <span class="text-sm font-mono text-fg">
                        {{ tabInfo.navigateur.navigateur_info | raw }}
                     </span>
             </div>

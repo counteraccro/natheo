@@ -15,7 +15,7 @@ export default defineComponent({
 <template>
   <div role="status" class="animate-pulse card rounded-lg mb-6">
     <!-- Filters -->
-    <div class="border-b" style="border-color: var(--border-color)">
+    <div class="border-b border-line">
       <div class="flex flex-wrap gap-4 px-4 sm:px-6 py-4">
         <div class="h-6 bg-gray-200 rounded-full dark:bg-gray-700 w-16"></div>
         <div class="h-6 bg-gray-200 rounded-full dark:bg-gray-700 w-24"></div>
@@ -28,7 +28,7 @@ export default defineComponent({
     <!-- Liste des notifications - Skeleton -->
     <div>
       <!-- Notification Skeleton 1 -->
-      <div class="p-4 sm:p-6 border-b" style="border-color: var(--border-color)">
+      <div class="p-4 sm:p-6 border-b border-line">
         <div class="flex items-start gap-3">
           <div class="w-4 h-4 bg-gray-200 rounded dark:bg-gray-700 mt-1"></div>
           <div class="w-10 h-10 bg-gray-200 rounded-full dark:bg-gray-700 flex-shrink-0"></div>
@@ -52,7 +52,7 @@ export default defineComponent({
       </div>
 
       <!-- Notification Skeleton 2 -->
-      <div class="p-4 sm:p-6 border-b" style="border-color: var(--border-color)">
+      <div class="p-4 sm:p-6 border-b border-line">
         <div class="flex items-start gap-3">
           <div class="w-4 h-4 bg-gray-200 rounded dark:bg-gray-700 mt-1"></div>
           <div class="w-10 h-10 bg-gray-200 rounded-full dark:bg-gray-700 flex-shrink-0"></div>
@@ -76,7 +76,7 @@ export default defineComponent({
       </div>
 
       <!-- Notification Skeleton 3 -->
-      <div class="p-4 sm:p-6 border-b" style="border-color: var(--border-color)">
+      <div class="p-4 sm:p-6 border-b border-line">
         <div class="flex items-start gap-3">
           <div class="w-4 h-4 bg-gray-200 rounded dark:bg-gray-700 mt-1"></div>
           <div class="w-10 h-10 bg-gray-200 rounded-full dark:bg-gray-700 flex-shrink-0"></div>
@@ -100,7 +100,7 @@ export default defineComponent({
       </div>
 
       <!-- Notification Skeleton 4 -->
-      <div class="p-4 sm:p-6 border-b" style="border-color: var(--border-color)">
+      <div class="p-4 sm:p-6 border-b border-line">
         <div class="flex items-start gap-3">
           <div class="w-4 h-4 bg-gray-200 rounded dark:bg-gray-700 mt-1"></div>
           <div class="w-10 h-10 bg-gray-200 rounded-full dark:bg-gray-700 flex-shrink-0"></div>
@@ -124,7 +124,7 @@ export default defineComponent({
       </div>
 
       <!-- Notification Skeleton 5 -->
-      <div class="p-4 sm:p-6 border-b" style="border-color: var(--border-color)">
+      <div class="p-4 sm:p-6 border-b border-line">
         <div class="flex items-start gap-3">
           <div class="w-4 h-4 bg-gray-200 rounded dark:bg-gray-700 mt-1"></div>
           <div class="w-10 h-10 bg-gray-200 rounded-full dark:bg-gray-700 flex-shrink-0"></div>
@@ -148,7 +148,7 @@ export default defineComponent({
       </div>
 
       <!-- Notification Skeleton 6 (read) -->
-      <div class="p-4 sm:p-6 border-b" style="border-color: var(--border-color)">
+      <div class="p-4 sm:p-6 border-b border-line">
         <div class="flex items-start gap-3">
           <div class="w-4 h-4 bg-gray-200 rounded dark:bg-gray-700 mt-1"></div>
           <div class="w-10 h-10 bg-gray-200 rounded-full dark:bg-gray-700 flex-shrink-0"></div>
@@ -170,7 +170,7 @@ export default defineComponent({
       </div>
 
       <!-- Notification Skeleton 7 (read) -->
-      <div class="p-4 sm:p-6 border-b" style="border-color: var(--border-color)">
+      <div class="p-4 sm:p-6 border-b border-line">
         <div class="flex items-start gap-3">
           <div class="w-4 h-4 bg-gray-200 rounded dark:bg-gray-700 mt-1"></div>
           <div class="w-10 h-10 bg-gray-200 rounded-full dark:bg-gray-700 flex-shrink-0"></div>

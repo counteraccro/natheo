@@ -140,15 +140,9 @@ export default defineComponent({
   <div class="info-drawer-inner">
     <!-- Header du panneau -->
     <div class="flex items-center justify-between mb-4">
-      <h3 class="font-semibold text-sm" style="color: var(--text-primary)">
+      <h3 class="font-semibold text-sm text-fg">
         <span class="flex gap-1 items-center" v-if="data.id !== 0">
-          <svg
-            class="w-4 h-4 flex-shrink-0"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            style="color: var(--text-secondary)"
-          >
+          <svg class="w-4 h-4 flex-shrink-0 text-fg-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -159,13 +153,7 @@ export default defineComponent({
           {{ translate.title }}
         </span>
         <span class="flex gap-1 items-center" v-else>
-          <svg
-            class="w-4 h-4 flex-shrink-0"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            style="color: var(--text-secondary)"
-          >
+          <svg class="w-4 h-4 flex-shrink-0 text-fg-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -178,8 +166,7 @@ export default defineComponent({
       </h3>
       <button
         @click="$emit('close')"
-        class="p-1.5 rounded-lg transition"
-        style="color: var(--text-secondary)"
+        class="p-1.5 rounded-lg transition text-fg-muted"
         onmouseover="this.style.backgroundColor = 'var(--bg-hover)'"
         onmouseout="this.style.backgroundColor = ''"
       >
@@ -190,7 +177,7 @@ export default defineComponent({
     </div>
 
     <!-- Aperçu miniature -->
-    <div class="relative rounded-xl overflow-hidden mb-4" style="border: 1px solid var(--border-color)">
+    <div class="relative rounded-xl overflow-hidden mb-4 border border-line">
       <img :src="data.thumbnail" alt="" class="w-full object-cover" style="max-height: 130px" />
       <span class="type-badge" :class="data.type === 'folder' ? 'folder' : ''">
         {{ data.type === 'folder' ? translate.folder_tag : data.extension }}

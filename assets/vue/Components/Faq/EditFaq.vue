@@ -534,7 +534,7 @@ export default defineComponent({
 
           {{ translate.text_change_no_save }}</span
         >
-        <span class="text-sm text-[var(--text-secondary)] italic flex items-center gap-1" v-else>
+        <span class="text-sm text-fg-muted italic flex items-center gap-1" v-else>
           <svg
             class="w-5 h-5"
             aria-hidden="true"
@@ -591,10 +591,7 @@ export default defineComponent({
       <SkeletonFaq :is-new="false" />
     </div>
     <div v-else>
-      <div
-        class="card mb-4"
-        :class="faq.disabled ? 'border-2 border-[var(--alert-warning-border)]' : 'border-[var(--border-color)]'"
-      >
+      <div class="card mb-4" :class="faq.disabled ? 'border-2 border-alert-warning-border' : 'border-line'">
         <div class="card-header">
           <div>
             <div class="card-title">
@@ -740,15 +737,15 @@ export default defineComponent({
           class="border rounded-lg mb-4 mt-4"
           :class="
             category.faqQuestions.length === 0
-              ? 'border-2 border-[var(--alert-danger-border)]'
+              ? 'border-2 border-alert-danger-border'
               : category.disabled
-                ? 'border-2 border-[var(--alert-warning-border)]'
-                : 'border-[var(--border-color)]'
+                ? 'border-2 border-alert-warning-border'
+                : 'border-line'
           "
           style="box-shadow: var(--shadow-sm)"
         >
           <div
-            class="flex items-center gap-2 px-4 py-3 border-b border-[var(--border-color)] rounded-t-lg"
+            class="flex items-center gap-2 px-4 py-3 border-b border-line rounded-t-lg"
             :style="
               category.faqQuestions.length === 0
                 ? 'background: linear-gradient(90deg, var(--alert-danger-bg) 0%, transparent 60%)'
@@ -757,21 +754,21 @@ export default defineComponent({
                   : 'background: linear-gradient(90deg, var(--primary-lighter) 0%, transparent 60%)'
             "
           >
-            <span class="handle text-[var(--text-light)] hover:text-[var(--primary)] cursor-grab p-0.5 rounded">
+            <span class="handle text-fg-subtle hover:text-primary cursor-grab p-0.5 rounded">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M4 8h16M4 12h16M4 16h16"></path>
               </svg>
             </span>
 
             <span
-              class="text-[0.65rem] font-mono text-[var(--text-light)] w-5 flex-shrink-0"
+              class="text-[0.65rem] font-mono text-fg-subtle w-5 flex-shrink-0"
               v-html="category.renderOrder > 9 ? category.renderOrder : '0' + category.renderOrder"
             ></span>
 
             <span
               v-if="category.disabled"
-              class="inline-flex items-center gap-1 text-[0.6rem] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full flex-shrink-0"
-              style="background-color: var(--btn-warning); color: white"
+              class="inline-flex items-center gap-1 text-[0.6rem] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full flex-shrink-0 bg-btn-warning"
+              style="color: white"
             >
               <svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                 <path
@@ -788,9 +785,9 @@ export default defineComponent({
               :class="
                 getValueByLocale(category.faqCategoryTranslations, 'title') === ''
                   ? 'border border-[var(--error)] placeholder:text-[var(--error)] focus:border-[var(--error)]'
-                  : 'border-b border-transparent focus:border-[var(--primary)]'
+                  : 'border-b border-transparent focus:border-primary'
               "
-              class="flex-1 bg-transparent outline-none py-0.5 min-w-0 text-sm font-bold text-[var(--text-primary)]"
+              class="flex-1 bg-transparent outline-none py-0.5 min-w-0 text-sm font-bold text-fg"
               :value="getValueByLocale(category.faqCategoryTranslations, 'title')"
               :placeholder="translate.input_faq_title_error.toString()"
               @change="
@@ -802,14 +799,13 @@ export default defineComponent({
             />
 
             <span
-              class="text-[0.65rem] font-bold font-mono rounded-full px-2.5 py-0.5 flex-shrink-0"
-              style="background: var(--primary-lighter); color: var(--primary)"
+              class="text-[0.65rem] font-bold font-mono rounded-full px-2.5 py-0.5 flex-shrink-0 bg-primary-lighter text-primary"
               v-html="getNbQuestion(category.faqQuestions)"
             ></span>
 
             <button
               @click="deleteElement('category', category.id, false)"
-              class="p-1.5 rounded-md text-[var(--text-light)] hover:text-[var(--btn-danger)] hover:bg-red-50"
+              class="p-1.5 rounded-md text-fg-subtle hover:text-btn-danger hover:bg-red-50"
             >
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path
@@ -822,7 +818,7 @@ export default defineComponent({
             <button
               v-if="category.disabled"
               @click="disabled('category', category.id)"
-              class="p-1 rounded text-[var(--text-light)] hover:text-[var(--primary)] hover:bg-[var(--primary-lighter)]"
+              class="p-1 rounded text-fg-subtle hover:text-primary hover:bg-primary-lighter"
             >
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path
@@ -836,7 +832,7 @@ export default defineComponent({
             <button
               v-else
               @click="disabled('category', category.id)"
-              class="p-1 rounded text-[var(--text-light)] hover:text-[var(--primary)] hover:bg-[var(--primary-lighter)]"
+              class="p-1 rounded text-fg-subtle hover:text-primary hover:bg-primary-lighter"
             >
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path
@@ -850,7 +846,7 @@ export default defineComponent({
 
           <div class="questions-list p-3 space-y-2" :data-cat-id="category.id">
             <div v-if="category.faqQuestions.length === 0">
-              <div class="text-center py-2 text-[var(--text-light)]">
+              <div class="text-center py-2 text-fg-subtle">
                 <svg
                   class="w-8 h-8 mx-auto mb-2 opacity-30"
                   fill="none"
@@ -875,10 +871,10 @@ export default defineComponent({
               :class="
                 getValueByLocale(question.faqQuestionTranslations, 'title') === '' ||
                 getValueByLocale(question.faqQuestionTranslations, 'answer') === ''
-                  ? 'border-2 border-[var(--alert-danger-border)]'
+                  ? 'border-2 border-alert-danger-border'
                   : question.disabled
-                    ? 'border-2 border-[var(--alert-warning-border)]'
-                    : 'border-[var(--border-color)]'
+                    ? 'border-2 border-alert-warning-border'
+                    : 'border-line'
               "
             >
               <div
@@ -886,30 +882,27 @@ export default defineComponent({
                 :class="
                   getValueByLocale(question.faqQuestionTranslations, 'title') === '' ||
                   getValueByLocale(question.faqQuestionTranslations, 'answer') === ''
-                    ? 'bg-[var(--alert-danger-bg)]'
+                    ? 'bg-alert-danger-bg'
                     : question.disabled
-                      ? 'bg-[var(--alert-warning-bg)]'
-                      : 'bg-[var(--bg-card)]'
+                      ? 'bg-alert-warning-bg'
+                      : 'bg-card'
                 "
               >
-                <span
-                  class="handle-question cursor-grab text-[var(--text-light)] hover:text-[var(--primary)] flex-shrink-0"
-                  @click.stop
-                >
+                <span class="handle-question cursor-grab text-fg-subtle hover:text-primary flex-shrink-0" @click.stop>
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M4 8h16M4 12h16M4 16h16" />
                   </svg>
                 </span>
 
                 <span
-                  class="text-[0.65rem] font-mono text-[var(--text-light)] w-5 flex-shrink-0"
+                  class="text-[0.65rem] font-mono text-fg-subtle w-5 flex-shrink-0"
                   v-html="question.renderOrder > 9 ? question.renderOrder : '0' + question.renderOrder"
                 ></span>
 
                 <span
                   v-if="question.disabled"
-                  class="inline-flex items-center gap-1 text-[0.6rem] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full flex-shrink-0"
-                  style="background-color: var(--btn-warning); color: white"
+                  class="inline-flex items-center gap-1 text-[0.6rem] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full flex-shrink-0 bg-btn-warning"
+                  style="color: white"
                 >
                   <svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                     <path
@@ -931,8 +924,8 @@ export default defineComponent({
                     :class="
                       getValueByLocale(question.faqQuestionTranslations, 'title') === '' ||
                       getValueByLocale(question.faqQuestionTranslations, 'answer') === ''
-                        ? 'text-[var(--alert-danger-text)]'
-                        : 'text-[var(--text-primary)]'
+                        ? 'text-alert-danger-text'
+                        : 'text-fg'
                     "
                     v-html="
                       getValueByLocale(question.faqQuestionTranslations, 'title') === '' ||
@@ -945,7 +938,7 @@ export default defineComponent({
 
                   <!-- Chevron -->
                   <svg
-                    class="w-4 h-4 flex-shrink-0 text-[var(--text-light)] transition-transform duration-200"
+                    class="w-4 h-4 flex-shrink-0 text-fg-subtle transition-transform duration-200"
                     :class="openQuestions.has(question.id) ? 'rotate-180' : ''"
                     fill="none"
                     stroke="currentColor"
@@ -957,7 +950,7 @@ export default defineComponent({
                 </div>
                 <button
                   @click="deleteElement('question', question.id, false)"
-                  class="p-1 rounded text-[var(--text-light)] hover:text-[var(--btn-danger)] hover:bg-red-50"
+                  class="p-1 rounded text-fg-subtle hover:text-btn-danger hover:bg-red-50"
                 >
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path
@@ -970,7 +963,7 @@ export default defineComponent({
                 <button
                   v-if="question.disabled"
                   @click="disabled('question', question.id)"
-                  class="p-1 rounded text-[var(--text-light)] hover:text-[var(--primary)] hover:bg-[var(--primary-lighter)]"
+                  class="p-1 rounded text-fg-subtle hover:text-primary hover:bg-primary-lighter"
                 >
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path
@@ -984,7 +977,7 @@ export default defineComponent({
                 <button
                   v-else
                   @click="disabled('question', question.id)"
-                  class="p-1 rounded text-[var(--text-light)] hover:text-[var(--primary)] hover:bg-[var(--primary-lighter)]"
+                  class="p-1 rounded text-fg-subtle hover:text-primary hover:bg-primary-lighter"
                 >
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path
@@ -999,15 +992,14 @@ export default defineComponent({
               <!-- Contenu accordéon -->
               <div
                 v-if="openQuestions.has(question.id)"
-                class="border-t border-[var(--border-color)] bg-[var(--bg-hover)] px-4 py-4 space-y-3"
+                class="border-t border-line bg-surface-hover px-4 py-4 space-y-3"
               >
                 <div>
                   <label
-                    class="flex items-center gap-1.5 text-[0.65rem] font-bold uppercase tracking-widest text-[var(--text-secondary)] mb-1.5"
+                    class="flex items-center gap-1.5 text-[0.65rem] font-bold uppercase tracking-widest text-fg-muted mb-1.5"
                   >
                     <svg
-                      class="w-3 h-3"
-                      style="color: var(--primary)"
+                      class="w-3 h-3 text-primary"
                       fill="none"
                       stroke="currentColor"
                       stroke-width="2.5"
@@ -1036,11 +1028,10 @@ export default defineComponent({
                 </div>
                 <div>
                   <label
-                    class="flex items-center gap-1.5 text-[0.65rem] font-bold uppercase tracking-widest text-[var(--text-secondary)] mb-1.5"
+                    class="flex items-center gap-1.5 text-[0.65rem] font-bold uppercase tracking-widest text-fg-muted mb-1.5"
                   >
                     <svg
-                      class="w-3 h-3"
-                      style="color: var(--primary)"
+                      class="w-3 h-3 text-primary"
                       fill="none"
                       stroke="currentColor"
                       stroke-width="2.5"
@@ -1075,7 +1066,7 @@ export default defineComponent({
           <div class="p-3 pt-0 space-y-2">
             <button
               @click="addQuestion(category.id)"
-              class="w-full flex items-center gap-2 px-3 py-2 border-2 border-dashed border-[var(--border-color)] rounded-lg text-xs font-medium text-[var(--text-light)] hover:border-[var(--primary)] hover:text-[var(--primary)] hover:bg-[var(--primary-lighter)] cursor-pointer"
+              class="w-full flex items-center gap-2 px-3 py-2 border-2 border-dashed border-line rounded-lg text-xs font-medium text-fg-subtle hover:border-primary hover:text-primary hover:bg-primary-lighter cursor-pointer"
             >
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path>
@@ -1089,8 +1080,8 @@ export default defineComponent({
         @click="addCategory()"
         :class="
           !faq.faqCategories || faq.faqCategories.length === 0
-            ? 'border-[var(--alert-danger-border)] text-[var(--alert-danger-text)] bg-[var(--alert-danger-bg)]'
-            : 'border-[var(--border-color)] text-[var(--text-secondary)] hover:border-[var(--primary)] hover:text-[var(--primary)] hover:bg-[var(--primary-lighter)]'
+            ? 'border-alert-danger-border text-alert-danger-text bg-alert-danger-bg'
+            : 'border-line text-fg-muted hover:border-primary hover:text-primary hover:bg-primary-lighter'
         "
         class="w-full flex items-center justify-center gap-2 px-4 py-4 border-2 border-dashed rounded-xl text-sm font-semibold cursor-pointer"
       >

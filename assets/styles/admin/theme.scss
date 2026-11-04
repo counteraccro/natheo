@@ -1,0 +1,57 @@
+/* ============================================
+   VARIABLES DU THÈME EXPOSÉES À TAILWIND
+   `inline` : les utilitaires référencent directement les variables,
+   le thème de couleur et le mode sombre s'appliquent donc sans recompilation
+   ============================================ */
+@theme inline {
+  /* Couleur principale du thème */
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-light: var(--primary-light);
+  --color-primary-lighter: var(--primary-lighter);
+  --color-secondary: var(--secondary);
+
+  /* Textes : text-fg, text-fg-muted, text-fg-subtle */
+  --color-fg: var(--text-primary);
+  --color-fg-muted: var(--text-secondary);
+  --color-fg-subtle: var(--text-light);
+
+  /* Bordures : border-line, border-line-dark */
+  --color-line: var(--border-color);
+  --color-line-dark: var(--border-dark);
+
+  /* Fonds : bg-surface (page), bg-card, bg-surface-hover */
+  --color-surface: var(--bg-main);
+  --color-surface-hover: var(--bg-hover);
+  --color-card: var(--bg-card);
+
+  /* Boutons */
+  --color-btn-dark: var(--btn-dark);
+  --color-btn-danger: var(--btn-danger);
+  --color-btn-success: var(--btn-success);
+  --color-btn-warning: var(--btn-warning);
+  --color-btn-info: var(--btn-info);
+
+  /* Alertes */
+  --color-alert-danger: var(--alert-danger);
+  --color-alert-danger-bg: var(--alert-danger-bg);
+  --color-alert-danger-border: var(--alert-danger-border);
+  --color-alert-danger-text: var(--alert-danger-text);
+  --color-alert-success: var(--alert-success);
+  --color-alert-success-bg: var(--alert-success-bg);
+  --color-alert-success-border: var(--alert-success-border);
+  --color-alert-success-text: var(--alert-success-text);
+  --color-alert-warning: var(--alert-warning);
+  --color-alert-warning-bg: var(--alert-warning-bg);
+  --color-alert-warning-border: var(--alert-warning-border);
+  --color-alert-warning-text: var(--alert-warning-text);
+  --color-alert-info: var(--alert-info);
+  --color-alert-info-bg: var(--alert-info-bg);
+  --color-alert-info-border: var(--alert-info-border);
+  --color-alert-info-text: var(--alert-info-text);
+
+  /* Statuts des commentaires */
+  --color-status-validated: var(--status-validated);
+  --color-status-pending: var(--status-pending);
+  --color-status-moderated: var(--status-moderated);
+}

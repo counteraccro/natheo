@@ -66,7 +66,7 @@ export default defineComponent({
 <template>
   <div
     class="notification-item p-4 sm:p-6"
-    :class="!notification.read ? 'unread border-b border-[var(--border-color)]' : ''"
+    :class="!notification.read ? 'unread border-b border-line' : ''"
     style="display: block"
     data-type="comments"
     data-read="false"
@@ -104,7 +104,7 @@ export default defineComponent({
           </div>
 
           <div class="flex justify-items-end gap-2 mb-0 items-center">
-            <span class="text-xs whitespace-nowrap" style="color: var(--text-light)">{{
+            <span class="text-xs whitespace-nowrap text-fg-subtle">{{
               relativeTime(notification.createdAt.timestamp)
             }}</span>
             <button class="btn-ghost p-1.5 rounded cursor-pointer" @click="remove">
@@ -119,27 +119,22 @@ export default defineComponent({
             </button>
           </div>
         </div>
-        <p class="text-sm mb-2" style="color: var(--text-secondary)" v-html="notification.content"></p>
+        <p class="text-sm mb-2 text-fg-muted" v-html="notification.content"></p>
         <div class="flex flex-wrap items-center gap-2">
           <a
             v-if="notification.category === 'comment'"
             :href="notification.tmpObjectId ?? undefined"
             target="_blank"
-            class="text-xs font-semibold hover:underline cursor-pointer"
-            style="color: var(--primary)"
+            class="text-xs font-semibold hover:underline cursor-pointer text-primary"
           >
             {{ translation.seeComment }}
           </a>
-          <span
-            v-if="notification.category === 'comment' && notification.read === false"
-            class="text-xs"
-            style="color: var(--text-light)"
+          <span v-if="notification.category === 'comment' && notification.read === false" class="text-xs text-fg-subtle"
             >•</span
           >
           <button
             v-if="notification.read === false"
-            class="text-xs hover:underline cursor-pointer"
-            style="color: var(--text-secondary)"
+            class="text-xs hover:underline cursor-pointer text-fg-muted"
             @click="markAsRead()"
           >
             {{ translation.read }}

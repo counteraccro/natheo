@@ -21,11 +21,11 @@ export default defineComponent({
 </script>
 
 <template>
-  <footer class="w-full rounded-xl border" style="background-color: var(--bg-card); border-color: var(--border-color)">
+  <footer class="w-full rounded-xl border bg-card border-line">
     <div class="px-6 py-8">
       <div class="grid gap-8" :class="`grid-cols-1 sm:grid-cols-${Math.min(menu.menuElements.length, 4)}`">
         <div v-for="column in menu.menuElements" :key="column.id" v-show="!column.disabled">
-          <h3 class="mb-4 text-sm font-semibold uppercase tracking-wider" style="color: var(--text-primary)">
+          <h3 class="mb-4 text-sm font-semibold uppercase tracking-wider text-fg">
             {{ getLabel(column) }}
           </h3>
 
@@ -42,8 +42,8 @@ export default defineComponent({
       </div>
     </div>
 
-    <div class="px-6 py-4 border-t flex items-center justify-between" style="border-color: var(--border-color)">
-      <span class="text-xs" style="color: var(--text-light)"> © {{ new Date().getFullYear() }} {{ data.name }} </span>
+    <div class="px-6 py-4 border-t flex items-center justify-between border-line">
+      <span class="text-xs text-fg-subtle"> © {{ new Date().getFullYear() }} {{ data.name }} </span>
     </div>
   </footer>
 </template>

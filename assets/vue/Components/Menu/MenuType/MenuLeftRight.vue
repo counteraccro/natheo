@@ -34,10 +34,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <nav
-    class="w-full rounded-xl overflow-hidden border"
-    style="border-color: var(--border-color); background-color: var(--bg-card)"
-  >
+  <nav class="w-full rounded-xl overflow-hidden border border-line bg-card">
     <ul>
       <MenuLeftRightItem
         v-for="element in menu.menuElements"

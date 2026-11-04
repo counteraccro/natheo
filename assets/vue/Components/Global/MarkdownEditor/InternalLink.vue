@@ -204,9 +204,7 @@ export default defineComponent({
     </template>
 
     <template #footer>
-      <span class="text-sm text-[var(--text-secondary)]">
-        {{ filteredPages.length }} {{ translate.statistique }}
-      </span></template
+      <span class="text-sm text-fg-muted"> {{ filteredPages.length }} {{ translate.statistique }} </span></template
     >
   </modal>
 </template>

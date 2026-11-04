@@ -372,7 +372,7 @@ export default defineComponent({
       </div>
 
       <div v-if="selectFile === ''">
-        <p class="text-center text-[var(--text-secondary)] text-sm italic flex justify-center gap-1 p-4 pt-0">
+        <p class="text-center text-fg-muted text-sm italic flex justify-center gap-1 p-4 pt-0">
           <svg
             class="icon"
             aria-hidden="true"

@@ -382,13 +382,7 @@ export default defineComponent({
           <div class="flex-1">
             <div class="relative">
               <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                <svg
-                  class="w-5 h-5"
-                  style="color: var(--text-light)"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
+                <svg class="w-5 h-5 text-fg-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     stroke-linecap="round"
                     stroke-linejoin="round"
@@ -512,7 +506,7 @@ export default defineComponent({
             >
               <div class="px-4 py-2 text-sm flex items-center">
                 <svg
-                  class="w-5 h-5 mr-3 text-[var(--primary)]"
+                  class="w-5 h-5 mr-3 text-primary"
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -537,7 +531,7 @@ export default defineComponent({
                     @click="changeSearchMode('table')"
                   >
                     <svg
-                      class="w-5 h-5 mr-3 text-[var(--primary)]"
+                      class="w-5 h-5 mr-3 text-primary"
                       aria-hidden="true"
                       xmlns="http://www.w3.org/2000/svg"
                       width="24"
@@ -562,7 +556,7 @@ export default defineComponent({
                     @click="changeSearchMode('bdd')"
                   >
                     <svg
-                      class="w-5 h-5 mr-3 text-[var(--primary)]"
+                      class="w-5 h-5 mr-3 text-primary"
                       aria-hidden="true"
                       xmlns="http://www.w3.org/2000/svg"
                       width="24"
@@ -590,7 +584,7 @@ export default defineComponent({
                   @click="showQuery ? showQueryRun(false) : showQueryRun(true)"
                 >
                   <svg
-                    class="w-5 h-5 mr-3 text-[var(--primary)]"
+                    class="w-5 h-5 mr-3 text-primary"
                     aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -617,7 +611,7 @@ export default defineComponent({
                     @click="changeFilter('me')"
                   >
                     <svg
-                      class="w-5 h-5 mr-3 text-[var(--primary)]"
+                      class="w-5 h-5 mr-3 text-primary"
                       aria-hidden="true"
                       xmlns="http://www.w3.org/2000/svg"
                       width="24"
@@ -641,7 +635,7 @@ export default defineComponent({
                     @click="changeFilter('all')"
                   >
                     <svg
-                      class="w-5 h-5 mr-3 text-[var(--primary)]"
+                      class="w-5 h-5 mr-3 text-primary"
                       aria-hidden="true"
                       xmlns="http://www.w3.org/2000/svg"
                       width="24"
@@ -668,7 +662,7 @@ export default defineComponent({
                   @click="showMoreOption ? showMoreOptionBloc(false) : showMoreOptionBloc(true)"
                 >
                   <svg
-                    class="w-5 h-5 mr-3 text-[var(--primary)]"
+                    class="w-5 h-5 mr-3 text-primary"
                     aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -707,11 +701,8 @@ export default defineComponent({
         >
         </SqlHighLight>
 
-        <div
-          v-if="showMoreOption"
-          class="bg-[var(--bg-card)] rounded-xl shadow-sm border border-[var(--border-color)] mt-3"
-        >
-          <div class="flex items-center justify-between px-4 py-3 bg-[var(--bg-main)] rounded-xl">
+        <div v-if="showMoreOption" class="bg-card rounded-xl shadow-sm border border-line mt-3">
+          <div class="flex items-center justify-between px-4 py-3 bg-surface rounded-xl">
             <span class="text-sm text-slate-400 flex items-center">
               <svg
                 class="h-4 w-4 me-2"
@@ -754,7 +745,7 @@ export default defineComponent({
           </div>
           <div class="p-5">
             <div>
-              <h3 class="text-[var(--primary)] font-bold">{{ translate.titleTrieOptionSubMenu }}</h3>
+              <h3 class="text-primary font-bold">{{ translate.titleTrieOptionSubMenu }}</h3>
               <div class="flex justify-items-center">
                 <div class="form-group me-3">
                   <label class="form-label">{{ translate.trieOptionListeField }}</label>

@@ -84,7 +84,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <li v-show="!element.disabled" class="border-b last:border-b-0" style="border-color: var(--border-color)">
+  <li v-show="!element.disabled" class="border-b last:border-b-0 border-line">
     <!-- Élément avec enfants -->
     <template v-if="hasChildren && type === 12">
       <button
@@ -107,7 +107,7 @@ export default defineComponent({
       </button>
 
       <!-- Sous-menu récursif -->
-      <ul v-show="isOpen" class="border-t" style="border-color: var(--border-color); background-color: var(--bg-hover)">
+      <ul v-show="isOpen" class="border-t border-line bg-surface-hover">
         <MenuLeftRightItem
           v-for="child in element.children"
           :key="child.id"
@@ -132,11 +132,10 @@ export default defineComponent({
       >
         <span
           v-if="depth > 0"
-          class="rounded-full shrink-0"
+          class="rounded-full shrink-0 bg-primary-light"
           :class="[isRight ? 'ml-2' : 'mr-2', depth === 1 ? 'w-1.5 h-1.5' : 'w-1 h-1']"
-          style="background-color: var(--primary-light)"
         ></span>
-        <span class="group-hover:underline" style="text-decoration-color: var(--primary)">
+        <span class="group-hover:underline decoration-primary">
           {{ label }}
         </span>
       </a>

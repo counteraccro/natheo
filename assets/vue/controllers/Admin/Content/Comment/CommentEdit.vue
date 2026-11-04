@@ -135,11 +135,8 @@ export default defineComponent({
   <div v-if="!comment">
     <div class="flex flex-col items-center justify-center py-16 px-6 text-center">
       <!-- Icône -->
-      <div
-        class="w-16 h-16 rounded-2xl flex items-center justify-center mb-5"
-        style="background-color: var(--primary-lighter)"
-      >
-        <svg class="w-8 h-8" style="color: var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-5 bg-primary-lighter">
+        <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
@@ -150,12 +147,12 @@ export default defineComponent({
       </div>
 
       <!-- Titre -->
-      <p class="text-lg font-bold mb-2" style="color: var(--text-primary)">
+      <p class="text-lg font-bold mb-2 text-fg">
         {{ translate.error_no_comment_title }}
       </p>
 
       <!-- Description -->
-      <p class="text-sm max-w-xs mb-6" style="color: var(--text-secondary)">
+      <p class="text-sm max-w-xs mb-6 text-fg-muted">
         {{ translate.error_no_comment_text }}
       </p>
 
@@ -259,7 +256,7 @@ export default defineComponent({
           <div class="p-5">
             <div class="flex items-center gap-2 mb-4">
               <span v-html="comment.statusStr"></span>
-              <span class="text-xs" style="color: var(--text-light)">{{ translate.status_actuel }}</span>
+              <span class="text-xs text-fg-subtle">{{ translate.status_actuel }}</span>
             </div>
 
             <div v-if="comment.status == datas.statusModerate" class="mt-2 form-group">
@@ -274,7 +271,7 @@ export default defineComponent({
                 rows="3"
                 v-model="comment.moderationComment"
               ></textarea>
-              <div v-if="comment.userModeration" class="float-end text-xs mt-1" style="color: var(--text-secondary)">
+              <div v-if="comment.userModeration" class="float-end text-xs mt-1 text-fg-muted">
                 {{ translate.moderationAuthor }} : {{ comment.userModeration.login }}
               </div>
             </div>
@@ -321,20 +318,11 @@ export default defineComponent({
               </div>
             </div>
           </div>
-          <ul class="divide-y divide-[var(--border-color)]">
+          <ul class="divide-y divide-line">
             <!-- Auteur -->
             <li class="flex items-center gap-3 px-5 py-4">
-              <div
-                class="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center"
-                style="background-color: var(--primary-lighter)"
-              >
-                <svg
-                  class="w-4 h-4"
-                  style="color: var(--primary)"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
+              <div class="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center bg-primary-lighter">
+                <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     stroke-linecap="round"
                     stroke-linejoin="round"
@@ -344,24 +332,15 @@ export default defineComponent({
                 </svg>
               </div>
               <div class="min-w-0">
-                <p class="text-xs font-medium mb-0.5" style="color: var(--text-secondary)">{{ translate.author }}</p>
-                <p class="text-xs font-semibold truncate" style="color: var(--text-primary)">{{ comment.author }}</p>
-                <p class="text-xs truncate" style="color: var(--text-light)">{{ comment.email }}</p>
+                <p class="text-xs font-medium mb-0.5 text-fg-muted">{{ translate.author }}</p>
+                <p class="text-xs font-semibold truncate text-fg">{{ comment.author }}</p>
+                <p class="text-xs truncate text-fg-subtle">{{ comment.email }}</p>
               </div>
             </li>
             <!-- Date -->
             <li class="flex items-center gap-3 px-5 py-4">
-              <div
-                class="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center"
-                style="background-color: var(--primary-lighter)"
-              >
-                <svg
-                  class="w-4 h-4"
-                  style="color: var(--primary)"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
+              <div class="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center bg-primary-lighter">
+                <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     stroke-linecap="round"
                     stroke-linejoin="round"
@@ -371,23 +350,14 @@ export default defineComponent({
                 </svg>
               </div>
               <div>
-                <p class="text-xs font-medium mb-0.5" style="color: var(--text-secondary)">{{ translate.created }}</p>
-                <p class="text-xs font-semibold" style="color: var(--text-primary)">{{ comment.createdAt }}</p>
+                <p class="text-xs font-medium mb-0.5 text-fg-muted">{{ translate.created }}</p>
+                <p class="text-xs font-semibold text-fg">{{ comment.createdAt }}</p>
               </div>
             </li>
             <!-- IP -->
             <li class="flex items-center gap-3 px-5 py-4">
-              <div
-                class="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center"
-                style="background-color: var(--primary-lighter)"
-              >
-                <svg
-                  class="w-4 h-4"
-                  style="color: var(--primary)"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
+              <div class="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center bg-primary-lighter">
+                <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     stroke-linecap="round"
                     stroke-linejoin="round"
@@ -397,23 +367,14 @@ export default defineComponent({
                 </svg>
               </div>
               <div>
-                <p class="text-xs font-medium mb-0.5" style="color: var(--text-secondary)">{{ translate.ip }}</p>
-                <p class="text-xs font-semibold font-mono" style="color: var(--text-primary)">{{ comment.ip }}</p>
+                <p class="text-xs font-medium mb-0.5 text-fg-muted">{{ translate.ip }}</p>
+                <p class="text-xs font-semibold font-mono text-fg">{{ comment.ip }}</p>
               </div>
             </li>
             <!-- Autres infos -->
             <li class="flex items-center gap-3 px-5 py-4">
-              <div
-                class="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center"
-                style="background-color: var(--primary-lighter)"
-              >
-                <svg
-                  class="w-4 h-4"
-                  style="color: var(--primary)"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
+              <div class="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center bg-primary-lighter">
+                <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     stroke-linecap="round"
                     stroke-linejoin="round"
@@ -423,8 +384,8 @@ export default defineComponent({
                 </svg>
               </div>
               <div>
-                <p class="text-xs font-medium mb-0.5" style="color: var(--text-secondary)">{{ translate.userAgent }}</p>
-                <p class="text-xs font-semibold capitalize" style="color: var(--text-primary)">
+                <p class="text-xs font-medium mb-0.5 text-fg-muted">{{ translate.userAgent }}</p>
+                <p class="text-xs font-semibold capitalize text-fg">
                   {{ comment.userAgent }}
                 </p>
               </div>
@@ -456,17 +417,8 @@ export default defineComponent({
           </div>
           <div class="p-5">
             <div class="flex items-start gap-3">
-              <div
-                class="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center mt-0.5"
-                style="background-color: var(--primary-lighter)"
-              >
-                <svg
-                  class="w-4 h-4"
-                  style="color: var(--primary)"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
+              <div class="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center mt-0.5 bg-primary-lighter">
+                <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     stroke-linecap="round"
                     stroke-linejoin="round"
@@ -476,16 +428,13 @@ export default defineComponent({
                 </svg>
               </div>
               <div class="min-w-0">
-                <p class="text-xs font-semibold leading-snug" style="color: var(--text-primary)">
+                <p class="text-xs font-semibold leading-snug text-fg">
                   {{ comment.page.title }}
                 </p>
-                <p class="text-xs mt-1" style="color: var(--text-light)">
-                  {{ translate.page_created }} {{ comment.createdAt }}
-                </p>
+                <p class="text-xs mt-1 text-fg-subtle">{{ translate.page_created }} {{ comment.createdAt }}</p>
                 <a
                   :href="comment.page.url"
-                  class="inline-flex items-center gap-1 text-xs font-medium mt-2 hover:underline"
-                  style="color: var(--primary)"
+                  class="inline-flex items-center gap-1 text-xs font-medium mt-2 hover:underline text-primary"
                 >
                   {{ translate.page_link }}
                   <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">

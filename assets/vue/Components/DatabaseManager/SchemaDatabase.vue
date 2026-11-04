@@ -28,29 +28,25 @@ export default defineComponent({
 <template>
   <div class="overflow-x-auto">
     <table class="w-full" aria-describedby="table">
-      <thead class="bg-[var(--bg-main)]">
+      <thead class="bg-surface">
         <tr>
           <th
             v-for="(header, key) in data.header"
             :key="key"
-            class="px-6 py-3 text-xs font-medium uppercase tracking-wider text-[var(--text-secondary)] text-center"
+            class="px-6 py-3 text-xs font-medium uppercase tracking-wider text-fg-muted text-center"
           >
             {{ header }}
           </th>
         </tr>
       </thead>
-      <tbody class="divide-y divide-[var(--border-color)]">
+      <tbody class="divide-y divide-line">
         <tr
           v-for="row in data.result"
           :key="String(row['table_name'])"
-          class="hover:bg-[var(--bg-hover)]"
+          class="hover:bg-surface-hover"
           :style="row['table_name'] === tableName ? 'background : var(--primary-lighter)' : ''"
         >
-          <td
-            v-for="key in Object.keys(data.header)"
-            :key="key"
-            class="px-3 py-1 text-sm text-[var(--text-secondary)] text-center"
-          >
+          <td v-for="key in Object.keys(data.header)" :key="key" class="px-3 py-1 text-sm text-fg-muted text-center">
             <button
               v-if="key === 'action'"
               class="btn btn-icon m-1 btn-xs btn-ghost-primary"

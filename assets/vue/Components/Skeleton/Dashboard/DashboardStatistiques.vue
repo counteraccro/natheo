@@ -15,8 +15,8 @@ export default defineComponent({
           <div class="h-8 w-16 rounded bg-gray-200 dark:bg-gray-700 mt-2"></div>
           <div class="h-3 w-20 rounded bg-gray-200 dark:bg-gray-700 mt-2"></div>
         </div>
-        <div class="p-3 rounded-lg" style="background-color: var(--primary); opacity: 0.1">
-          <svg class="w-8 h-8" style="color: var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="p-3 rounded-lg bg-primary" style="opacity: 0.1">
+          <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -35,14 +35,8 @@ export default defineComponent({
           <div class="h-8 w-16 rounded bg-gray-200 dark:bg-gray-700 mt-2"></div>
           <div class="h-3 w-20 rounded bg-gray-200 dark:bg-gray-700 mt-2"></div>
         </div>
-        <div class="p-3 rounded-lg" style="background-color: var(--status-validated); opacity: 0.1">
-          <svg
-            class="w-8 h-8"
-            style="color: var(--status-validated)"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
+        <div class="p-3 rounded-lg bg-status-validated" style="opacity: 0.1">
+          <svg class="w-8 h-8 text-status-validated" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -61,8 +55,8 @@ export default defineComponent({
           <div class="h-8 w-16 rounded bg-gray-200 dark:bg-gray-700 mt-2"></div>
           <div class="h-3 w-20 rounded bg-gray-200 dark:bg-gray-700 mt-2"></div>
         </div>
-        <div class="p-3 rounded-lg" style="background-color: var(--secondary); opacity: 0.1">
-          <svg class="w-8 h-8" style="color: var(--secondary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="p-3 rounded-lg bg-secondary" style="opacity: 0.1">
+          <svg class="w-8 h-8 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -81,14 +75,8 @@ export default defineComponent({
           <div class="h-8 w-16 rounded bg-gray-200 dark:bg-gray-700 mt-2"></div>
           <div class="h-3 w-20 rounded bg-gray-200 dark:bg-gray-700 mt-2"></div>
         </div>
-        <div class="p-3 rounded-lg" style="background-color: var(--status-pending); opacity: 0.1">
-          <svg
-            class="w-8 h-8"
-            style="color: var(--status-pending)"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
+        <div class="p-3 rounded-lg bg-status-pending" style="opacity: 0.1">
+          <svg class="w-8 h-8 text-status-pending" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"

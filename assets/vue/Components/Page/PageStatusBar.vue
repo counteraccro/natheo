@@ -222,32 +222,23 @@ export default defineComponent({
         </p>
         <p
           v-else-if="restoreStatus === 'restored'"
-          class="text-xs flex items-center gap-2 shrink-0"
-          style="color: var(--alert-success-text)"
+          class="text-xs flex items-center gap-2 shrink-0 text-alert-success-text"
         >
-          <span
-            class="w-2 h-2 rounded-full inline-block shrink-0"
-            style="background-color: var(--alert-success-text)"
-          ></span>
+          <span class="w-2 h-2 rounded-full inline-block shrink-0 bg-alert-success-text"></span>
           {{ translate.msg_titre_restore_history }} {{ restoreTime }}
         </p>
         <p
           v-else-if="autoSaveStatus === 'saved'"
-          class="text-xs flex items-center gap-2 shrink-0"
-          style="color: var(--alert-success-text)"
+          class="text-xs flex items-center gap-2 shrink-0 text-alert-success-text"
         >
-          <span
-            class="w-2 h-2 rounded-full inline-block shrink-0"
-            style="background-color: var(--alert-success-text)"
-          ></span>
+          <span class="w-2 h-2 rounded-full inline-block shrink-0 bg-alert-success-text"></span>
           {{ translate.auto_save_success }} {{ autoSaveTime }}
         </p>
         <p
           v-else-if="autoSaveStatus === 'error'"
-          class="text-xs flex items-center gap-2 shrink-0"
-          style="color: var(--alert-danger-text)"
+          class="text-xs flex items-center gap-2 shrink-0 text-alert-danger-text"
         >
-          <span class="w-2 h-2 rounded-full inline-block shrink-0" style="background-color: var(--btn-danger)"></span>
+          <span class="w-2 h-2 rounded-full inline-block shrink-0 bg-btn-danger"></span>
           {{ translate.auto_save_error }}
         </p>
         <p v-else class="text-xs flex items-center gap-2 text-gray-500 dark:text-gray-400 shrink-0">
@@ -256,8 +247,8 @@ export default defineComponent({
         </p>
       </template>
 
-      <div v-else class="text-xs flex items-center gap-2 min-w-0" style="color: var(--alert-danger-text)">
-        <span class="w-2 h-2 rounded-full inline-block shrink-0" style="background-color: var(--btn-danger)"></span>
+      <div v-else class="text-xs flex items-center gap-2 min-w-0 text-alert-danger-text">
+        <span class="w-2 h-2 rounded-full inline-block shrink-0 bg-btn-danger"></span>
         <button type="button" class="truncate text-left hover:underline" @click="goToError(allErrors[0])">
           {{ allErrorMessages[0] }}
         </button>
@@ -282,10 +273,7 @@ export default defineComponent({
                 class="w-full flex items-start gap-2 px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
                 @click="goToError(error)"
               >
-                <span
-                  class="w-1.5 h-1.5 rounded-full inline-block shrink-0 mt-1"
-                  style="background-color: var(--btn-danger)"
-                ></span>
+                <span class="w-1.5 h-1.5 rounded-full inline-block shrink-0 mt-1 bg-btn-danger"></span>
                 <span class="text-gray-700 dark:text-gray-300">{{ error.message }}</span>
               </button>
             </li>

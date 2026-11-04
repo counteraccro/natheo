@@ -202,10 +202,10 @@ export default defineComponent({
 
       <div class="p-5 sm:p-6">
         <!-- Section : identifiants -->
-        <p class="text-xs font-semibold uppercase tracking-wide mb-3" style="color: var(--text-light)">
+        <p class="text-xs font-semibold uppercase tracking-wide mb-3 text-fg-subtle">
           {{ translate.create_bdd_sub_title_identifiant }}
         </p>
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-6 pb-6 border-b" style="border-color: var(--border-color)">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-6 pb-6 border-b border-line">
           <div class="form-group">
             <label class="form-label" for="bdd-type">{{ translate.config_bdd_input_type_label }}</label>
             <input id="bdd-type" type="text" class="form-input form-input-sm" v-model="dataBaseConfig.type" disabled />
@@ -239,10 +239,10 @@ export default defineComponent({
         </div>
 
         <!-- Section : serveur -->
-        <p class="text-xs font-semibold uppercase tracking-wide mb-3" style="color: var(--text-light)">
+        <p class="text-xs font-semibold uppercase tracking-wide mb-3 text-fg-subtle">
           {{ translate.create_bdd_sub_title_server }}
         </p>
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-6 pb-6 border-b" style="border-color: var(--border-color)">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-6 pb-6 border-b border-line">
           <div class="form-group">
             <label class="form-label" for="bdd-ip">{{ translate.config_bdd_input_ip_label }}</label>
             <input
@@ -271,7 +271,7 @@ export default defineComponent({
         </div>
 
         <!-- Section : options avancées -->
-        <p class="text-xs font-semibold uppercase tracking-wide mb-3" style="color: var(--text-light)">
+        <p class="text-xs font-semibold uppercase tracking-wide mb-3 text-fg-subtle">
           {{ translate.create_bdd_sub_title_options }}
         </p>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
@@ -304,11 +304,7 @@ export default defineComponent({
 
         <!-- Résultat : ligne compacte verte si connexion OK, alerte complète en cas d'erreur -->
         <div v-if="tested" class="mt-6 flex flex-col gap-2">
-          <div
-            v-if="check.success"
-            class="flex items-center gap-1.5 text-sm font-medium"
-            style="color: var(--btn-success)"
-          >
+          <div v-if="check.success" class="flex items-center gap-1.5 text-sm font-medium text-btn-success">
             <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
             </svg>
@@ -317,12 +313,7 @@ export default defineComponent({
 
           <div
             v-else
-            class="px-4 py-3 rounded-lg flex items-start gap-2 text-sm"
-            style="
-              background-color: var(--alert-danger-bg);
-              border: 1px solid var(--alert-danger-border);
-              color: var(--alert-danger-text);
-            "
+            class="px-4 py-3 rounded-lg flex items-start gap-2 text-sm bg-alert-danger-bg border border-alert-danger-border text-alert-danger-text"
           >
             <svg class="w-4 h-4 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"></path>
@@ -332,10 +323,7 @@ export default defineComponent({
         </div>
       </div>
 
-      <div
-        class="px-5 sm:px-6 py-4 flex items-center justify-between border-t"
-        style="border-color: var(--border-color); background-color: var(--bg-hover)"
-      >
+      <div class="px-5 sm:px-6 py-4 flex items-center justify-between border-t border-line bg-surface-hover">
         <a :href="urls.step_0" class="btn btn-outline-dark btn-sm">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l4-4m-4 4 4 4" />

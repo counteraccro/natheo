@@ -127,12 +127,11 @@ export default defineComponent({
 <template>
   <div class="space-y-4">
     <div
-      class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-4 rounded-lg"
-      style="background-color: var(--alert-danger-bg); border: 1px solid var(--alert-danger-border)"
+      class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-4 rounded-lg bg-alert-danger-bg border border-alert-danger-border"
     >
       <div>
-        <h3 class="font-semibold mb-1" style="color: var(--alert-danger-text)">{{ translate.disabled_title }}</h3>
-        <p class="text-sm" style="color: var(--alert-danger-text); opacity: 0.8">
+        <h3 class="font-semibold mb-1 text-alert-danger-text">{{ translate.disabled_title }}</h3>
+        <p class="text-sm text-alert-danger-text" style="opacity: 0.8">
           {{ translate.disabled_description }}
         </p>
       </div>
@@ -142,15 +141,14 @@ export default defineComponent({
     </div>
 
     <div
-      class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-4 rounded-lg"
-      style="background-color: var(--alert-danger-bg); border: 1px solid var(--alert-danger-border)"
+      class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-4 rounded-lg bg-alert-danger-bg border border-alert-danger-border"
     >
       <div>
-        <h3 class="font-semibold mb-1" style="color: var(--alert-danger-text)">
+        <h3 class="font-semibold mb-1 text-alert-danger-text">
           <span v-if="isDelete()">{{ translate.delete_title }}</span>
           <span v-if="isReplace()">{{ translate.replace_title }}</span>
         </h3>
-        <p class="text-sm" style="color: var(--alert-danger-text); opacity: 0.8">
+        <p class="text-sm text-alert-danger-text" style="opacity: 0.8">
           <span v-if="isDelete()">{{ translate.delete_description }}</span>
           <span v-if="isReplace()">{{ translate.replace_description }}</span>
         </p>

@@ -195,11 +195,8 @@ export default defineComponent({
       @drop.prevent="handleDrop"
       @click="($refs.fileInput as HTMLInputElement).click()"
     >
-      <div
-        class="w-10 h-10 rounded-full flex items-center justify-center"
-        style="background-color: var(--primary-lighter)"
-      >
-        <svg class="w-5 h-5" style="color: var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div class="w-10 h-10 rounded-full flex items-center justify-center bg-primary-lighter">
+        <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
@@ -209,13 +206,13 @@ export default defineComponent({
         </svg>
       </div>
       <div class="text-center">
-        <p class="text-xs font-semibold" style="color: var(--text-primary)">{{ translate.help }}</p>
-        <p class="text-xs mt-0.5" style="color: var(--text-light)">
+        <p class="text-xs font-semibold text-fg">{{ translate.help }}</p>
+        <p class="text-xs mt-0.5 text-fg-subtle">
           {{ translate.or }}
-          <span style="color: var(--primary); text-decoration: underline">{{ translate.browse }}</span>
+          <span class="text-primary" style="text-decoration: underline">{{ translate.browse }}</span>
         </p>
       </div>
-      <p class="text-xs" style="color: var(--text-light)">Max {{ maxSize }} MB · {{ accept }}</p>
+      <p class="text-xs text-fg-subtle">Max {{ maxSize }} MB · {{ accept }}</p>
       <input ref="fileInput" type="file" class="hidden" :accept="accept" @change="handleFileChange" />
     </div>
 
@@ -232,14 +229,10 @@ export default defineComponent({
   </template>
 
   <template v-if="file.isUploaded">
-    <div class="relative rounded-xl overflow-hidden mb-4" style="border: 1px solid var(--border-color)">
+    <div class="relative rounded-xl overflow-hidden mb-4 border border-line">
       <img v-if="file.isImage" :src="file.url" class="w-full object-cover" style="max-height: 130px" alt="" />
-      <div
-        v-else
-        class="flex flex-col items-center justify-center gap-2"
-        style="height: 100px; background-color: var(--bg-main)"
-      >
-        <svg class="w-8 h-8" style="color: var(--text-light)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div v-else class="flex flex-col items-center justify-center gap-2 bg-surface" style="height: 100px">
+        <svg class="w-8 h-8 text-fg-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
@@ -247,7 +240,7 @@ export default defineComponent({
             d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
           />
         </svg>
-        <p class="text-xs font-bold uppercase" style="color: var(--text-secondary)">{{ file.fileExtention }}</p>
+        <p class="text-xs font-bold uppercase text-fg-muted">{{ file.fileExtention }}</p>
       </div>
       <span class="type-badge">{{ file.fileExtention }}</span>
     </div>
@@ -262,14 +255,13 @@ export default defineComponent({
     </div>
 
     <div class="mb-3">
-      <label class="block text-xs font-semibold mb-1" style="color: var(--text-secondary)">
+      <label class="block text-xs font-semibold mb-1 text-fg-muted">
         {{ translate.input_title }}
       </label>
       <input
         type="text"
         v-model="file.title"
-        class="w-full text-sm px-3 py-2 rounded-lg outline-none transition"
-        style="background-color: var(--bg-main); border: 1px solid var(--border-color); color: var(--text-primary)"
+        class="w-full text-sm px-3 py-2 rounded-lg outline-none transition bg-surface border border-line text-fg"
         @focus="
           ($event.target as HTMLInputElement).style.borderColor = 'var(--primary)';
           ($event.target as HTMLInputElement).style.boxShadow = '0 0 0 3px var(--primary-lighter)';
@@ -279,18 +271,17 @@ export default defineComponent({
           ($event.target as HTMLInputElement).style.boxShadow = 'none';
         "
       />
-      <p class="text-xs mt-1" style="color: var(--text-light)">{{ translate.input_title_help }}</p>
+      <p class="text-xs mt-1 text-fg-subtle">{{ translate.input_title_help }}</p>
     </div>
 
     <div class="mb-4">
-      <label class="block text-xs font-semibold mb-1" style="color: var(--text-secondary)">
+      <label class="block text-xs font-semibold mb-1 text-fg-muted">
         {{ translate.input_description }}
       </label>
       <input
         type="text"
         v-model="file.description"
-        class="w-full text-sm px-3 py-2 rounded-lg outline-none transition"
-        style="background-color: var(--bg-main); border: 1px solid var(--border-color); color: var(--text-primary)"
+        class="w-full text-sm px-3 py-2 rounded-lg outline-none transition bg-surface border border-line text-fg"
         @focus="
           ($event.target as HTMLInputElement).style.borderColor = 'var(--primary)';
           ($event.target as HTMLInputElement).style.boxShadow = '0 0 0 3px var(--primary-lighter)';
@@ -300,7 +291,7 @@ export default defineComponent({
           ($event.target as HTMLInputElement).style.boxShadow = 'none';
         "
       />
-      <p class="text-xs mt-1" style="color: var(--text-light)">{{ translate.input_description_help }}</p>
+      <p class="text-xs mt-1 text-fg-subtle">{{ translate.input_description_help }}</p>
     </div>
   </template>
 

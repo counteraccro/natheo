@@ -7,44 +7,44 @@
     {{ breadcrumb(breadcrumb) }}
 
     <h1 class="head-title">
-        <svg class="w-7 h-7 text-[var(--primary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="w-7 h-7 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M15.041 13.862A4.999 4.999 0 0 1 17 17.831V21M7 3v3.169a5 5 0 0 0 1.891 3.916M17 3v3.169a5 5 0 0 1-2.428 4.288l-5.144 3.086A5 5 0 0 0 7 17.831V21M7 5h10M7.399 8h9.252M8 16h8.652M7 19h10"></path>
         </svg>
         {{ 'demo_overwrite.page_title_h1' | trans({}, 'demo_overwrite') }}</h1>
 
-    <p class="text-sm text-[var(--text-secondary)] mb-3">
+    <p class="text-sm text-fg-muted mb-3">
         {{ 'demo_overwrite.description' | trans({}, 'demo_overwrite') }}
     </p>
 
-    <h2 class="text-3xl font-semibold mt-3 mb-3 pb-3 border-b-2 border-b-[var(--border-color)] text-[var(--primary)]"> {{ 'demo_overwrite.guide.introduction.title' | trans({}, 'demo_overwrite') }}</h2>
+    <h2 class="text-3xl font-semibold mt-3 mb-3 pb-3 border-b-2 border-b-line text-primary"> {{ 'demo_overwrite.guide.introduction.title' | trans({}, 'demo_overwrite') }}</h2>
 
-    <p class="text-[var(--text-secondary)] text-base text-wrap mb-3"> {{ 'demo_overwrite.guide.introduction.text-1' | trans({}, 'demo_overwrite') | raw }}</p>
+    <p class="text-fg-muted text-base text-wrap mb-3"> {{ 'demo_overwrite.guide.introduction.text-1' | trans({}, 'demo_overwrite') | raw }}</p>
 
     <h3 class="text-xl font-medium mb-3"> {{ 'demo_overwrite.guide.introduction.sub-title-1' | trans({}, 'demo_overwrite') | raw }}</h3>
 
-    <p class="text-[var(--text-secondary)] text-base text-wrap mb-3"> {{ 'demo_overwrite.guide.introduction.text-2' | trans({
+    <p class="text-fg-muted text-base text-wrap mb-3"> {{ 'demo_overwrite.guide.introduction.text-2' | trans({
             'controller' : '<code>App\\Controller\\Admin\\DashboardController::pageDemo</code>',
             'vue' : '<code>templates/admin/dashboard/page_demo.html.twig</code>',
             'controller2' : '<code>App\\Overwrite\\Controller\\Admin\\Tools\\DemoOverwriteController::pageDemo</code>',
             'vue2' : '<code>templates/overwrite/admin/tools/page_demo.html.twig</code>'
         }, 'demo_overwrite') | raw }}</p>
-    <p class="text-[var(--text-secondary)] text-base text-wrap mb-3"> {{ 'demo_overwrite.guide.introduction.text-3' | trans({
+    <p class="text-fg-muted text-base text-wrap mb-3"> {{ 'demo_overwrite.guide.introduction.text-3' | trans({
             'url' : '<code>/admin/fr/dashboard/page-demo</code>',
             'url2' : '<code>/admin/fr/overwrite/action-surcharge/5</code>'
         }, 'demo_overwrite') | raw }}</p>
 
-    <p class="text-[var(--text-secondary)] text-base text-wrap mb-3"> {{ 'demo_overwrite.guide.introduction.text-4' | trans({
+    <p class="text-fg-muted text-base text-wrap mb-3"> {{ 'demo_overwrite.guide.introduction.text-4' | trans({
             'url' : path('admin_dashboard_page_demo'),
             'url2' : path('admin_overwrite_page_demo', {'id' : 100})
         }, 'demo_overwrite') | raw }}</p>
 
 
-    <h2 class="text-3xl font-semibold mt-3 mb-3 pb-3 border-b-2 border-b-[var(--border-color)] text-[var(--primary)]"> {{ 'demo_overwrite.guide.prerequis.title' | trans({}, 'demo_overwrite') }}</h2>
-    <p class="text-[var(--text-secondary)] text-base text-wrap">
+    <h2 class="text-3xl font-semibold mt-3 mb-3 pb-3 border-b-2 border-b-line text-primary"> {{ 'demo_overwrite.guide.prerequis.title' | trans({}, 'demo_overwrite') }}</h2>
+    <p class="text-fg-muted text-base text-wrap">
         {{ 'demo_overwrite.guide.prerequis.text-1' | trans({}, 'demo_overwrite') }}
     </p>
-    <ul class="text-[var(--text-secondary)] text-base text-wrap list-disc list-inside mb-6">
+    <ul class="text-fg-muted text-base text-wrap list-disc list-inside mb-6">
         <li>
             {{ 'demo_overwrite.guide.prerequis.requis-1' | trans({}, 'demo_overwrite') }}
         </li>
@@ -69,25 +69,25 @@
         </div>
     </div>
 
-    <p class="text-[var(--text-secondary)] text-base text-wrap mb-3">
+    <p class="text-fg-muted text-base text-wrap mb-3">
         {{ 'demo_overwrite.guide.prerequis.requis-4' | trans({}, 'demo_overwrite') }}
     </p>
 
-    <h2 class="text-3xl font-semibold mt-3 mb-3 pb-3 border-b-2 border-b-[var(--border-color)] text-[var(--primary)]"> {{ 'demo_overwrite.guide.step-1.title' | trans({}, 'demo_overwrite') }}</h2>
+    <h2 class="text-3xl font-semibold mt-3 mb-3 pb-3 border-b-2 border-b-line text-primary"> {{ 'demo_overwrite.guide.step-1.title' | trans({}, 'demo_overwrite') }}</h2>
 
-    <p class="text-[var(--text-secondary)] text-base text-wrap mb-3">
+    <p class="text-fg-muted text-base text-wrap mb-3">
         {{ 'demo_overwrite.guide.step-1.text-1' | trans({}, 'demo_overwrite') }}
     </p>
-    <p class="text-[var(--text-secondary)] text-base text-wrap mb-3">
+    <p class="text-fg-muted text-base text-wrap mb-3">
         {{ 'demo_overwrite.guide.step-1.text-2' | trans({
             'controller' : '<code>src/Overwrite/Controller/Admin/Tools/DemoOverwriteController.php</code>'
         }, 'demo_overwrite') | raw }}
     </p>
-    <p class="text-[var(--text-secondary)] text-base text-wrap mb-3">
+    <p class="text-fg-muted text-base text-wrap mb-3">
         {{ 'demo_overwrite.guide.step-1.text-3' | trans({}, 'demo_overwrite') }}
     </p>
 
-    <p class="text-[var(--text-secondary)] text-base text-wrap mb-3">
+    <p class="text-fg-muted text-base text-wrap mb-3">
         {{ 'demo_overwrite.guide.step-1.text-4' | trans({}, 'demo_overwrite') | raw }}
     </p>
 
@@ -146,9 +146,9 @@ class DemoOverwriteController extends AppAdminController
         </div>
     </div>
 
-    <h2 class="text-3xl font-semibold mt-3 mb-3 pb-3 border-b-2 border-b-[var(--border-color)] text-[var(--primary)]"> {{ 'demo_overwrite.guide.step-2.title' | trans({}, 'demo_overwrite') }}</h2>
+    <h2 class="text-3xl font-semibold mt-3 mb-3 pb-3 border-b-2 border-b-line text-primary"> {{ 'demo_overwrite.guide.step-2.title' | trans({}, 'demo_overwrite') }}</h2>
 
-    <p class="text-[var(--text-secondary)] text-base text-wrap mb-3">
+    <p class="text-fg-muted text-base text-wrap mb-3">
         {{ 'demo_overwrite.guide.step-2.text-1' | trans({'dossier' : '<code>templates/overwrite</code>'}, 'demo_overwrite') | raw }}
     </p>
 
@@ -161,29 +161,29 @@ class DemoOverwriteController extends AppAdminController
             <code>&#123;% extends 'admin/admin_base.html.twig' %&#125;<br />&#123;% block title %}Elements HTML disponibles&#123;% endblock %&#125;<br />&#123;% block body %&#125;<br />&#123;&#123; breadcrumb(breadcrumb) &#125;&#125;
 
     &lsaquo;h1 class="head-title">
-        &lsaquo;svg class="w-7 h-7 text-[var(--primary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        &lsaquo;svg class="w-7 h-7 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             &lsaquo;path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M15.041 13.862A4.999 4.999 0 0 1 17 17.831V21M7 3v3.169a5 5 0 0 0 1.891 3.916M17 3v3.169a5 5 0 0 1-2.428 4.288l-5.144 3.086A5 5 0 0 0 7 17.831V21M7 5h10M7.399 8h9.252M8 16h8.652M7 19h10">&lsaquo;/path>
         &lsaquo;/svg>
         &#123;&#123; 'demo_overwrite.page_title_h1' | trans({}, 'demo_overwrite') &#125;&#125;&lsaquo;/h1>
 
-    &lsaquo;p class="text-sm text-[var(--text-secondary)] mb-3">
+    &lsaquo;p class="text-sm text-fg-muted mb-3">
         &#123;&#123; 'demo_overwrite.description' | trans({}, 'demo_overwrite') &#125;
     &lsaquo;/p><br />&#123;% endblock %&#125;
             </code></pre>
     </div>
 
-    <p class="text-[var(--text-secondary)] text-base text-wrap mb-3">
+    <p class="text-fg-muted text-base text-wrap mb-3">
         {{ 'demo_overwrite.guide.step-2.text-2' | trans({'dossier' : '<code>templates/overwrite</code>'}, 'demo_overwrite') | raw }}
     </p>
 
-    <h2 class="text-3xl font-semibold mt-3 mb-3 pb-3 border-b-2 border-b-[var(--border-color)] text-[var(--primary)]"> {{ 'demo_overwrite.guide.step-3.title' | trans({}, 'demo_overwrite') }}</h2>
+    <h2 class="text-3xl font-semibold mt-3 mb-3 pb-3 border-b-2 border-b-line text-primary"> {{ 'demo_overwrite.guide.step-3.title' | trans({}, 'demo_overwrite') }}</h2>
 
-    <p class="text-[var(--text-secondary)] text-base text-wrap mb-3">
+    <p class="text-fg-muted text-base text-wrap mb-3">
         {{ 'demo_overwrite.guide.step-3.text-1' | trans({'dossier' : '<code>config/cms/overwrite.yaml</code>'}, 'demo_overwrite') | raw }}
     </p>
 
-    <p class="text-[var(--text-secondary)] text-base text-wrap mb-3">
+    <p class="text-fg-muted text-base text-wrap mb-3">
         {{ 'demo_overwrite.guide.step-3.text-2' | trans({}, 'demo_overwrite') | raw }}
     </p>
 
@@ -203,12 +203,12 @@ overwrite:
               param: id</code></pre>
     </div>
 
-    <p class="text-[var(--text-secondary)] text-base text-wrap mb-3">
+    <p class="text-fg-muted text-base text-wrap mb-3">
         {{ 'demo_overwrite.guide.step-3.text-3' | trans({}, 'demo_overwrite') | raw }}
     </p>
 
-    <p class="text-[var(--text-secondary)] text-base text-wrap mb-3">
-        <ul class="text-[var(--text-secondary)] text-base text-wrap list-disc list-inside mb-6">
+    <p class="text-fg-muted text-base text-wrap mb-3">
+        <ul class="text-fg-muted text-base text-wrap list-disc list-inside mb-6">
             <li>
                 {{ 'demo_overwrite.guide.step-3.text-4' | trans({'controller' : '<code>App\\Controller\\Admin\\DashboardController</code>'}, 'demo_overwrite') | raw }}
             </li>
@@ -217,7 +217,7 @@ overwrite:
             </li>
             <li>
                 {{ 'demo_overwrite.guide.step-3.text-6' | trans({}, 'demo_overwrite') | raw }}
-                <ul class="text-[var(--text-secondary)] text-base text-wrap list-disc list-inside mb-6 ms-6">
+                <ul class="text-fg-muted text-base text-wrap list-disc list-inside mb-6 ms-6">
                     <li>
                         {{ 'demo_overwrite.guide.step-3.text-7' | trans({}, 'demo_overwrite') | raw }}
                     </li>
@@ -229,9 +229,9 @@ overwrite:
         </ul>
     </p>
 
-    <h2 class="text-3xl font-semibold mt-3 mb-3 pb-3 border-b-2 border-b-[var(--border-color)] text-[var(--primary)]"> {{ 'demo_overwrite.guide.step-4.title' | trans({}, 'demo_overwrite') }}</h2>
+    <h2 class="text-3xl font-semibold mt-3 mb-3 pb-3 border-b-2 border-b-line text-primary"> {{ 'demo_overwrite.guide.step-4.title' | trans({}, 'demo_overwrite') }}</h2>
 
-    <p class="text-[var(--text-secondary)] text-base text-wrap mb-3">
+    <p class="text-fg-muted text-base text-wrap mb-3">
         {{ 'demo_overwrite.guide.step-4.text-1' | trans({'dossier' : '<code>templates/overwrite</code>'}, 'demo_overwrite') | raw }}
     </p>
 

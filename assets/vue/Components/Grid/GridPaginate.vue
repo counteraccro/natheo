@@ -76,7 +76,7 @@ export default defineComponent({
 
 <template>
   <nav class="flex items-center justify-between mt-6">
-    <div class="text-sm text-[var(--text-secondary)]">
+    <div class="text-sm text-fg-muted">
       {{ translate.page }} <strong>{{ cPage }}</strong> {{ translate.on }} <strong>{{ nbPages }}</strong> -
       {{ nbElementsTotal }} {{ translate.row }}
     </div>
@@ -86,7 +86,7 @@ export default defineComponent({
         <a
           href="#"
           @click.prevent="[$emit('change-page-event', 1, cLimit), updateCurrentPage(1)]"
-          class="no-control flex items-center justify-center px-3 h-8 ms-0 leading-tight text-[var(--primary)] bg-white border border-e-0 border-[var(--primary-hover)] rounded-s-lg hover:bg-[var(--primary-hover)] hover:text-white dark:bg-[var(--btn-dark)]"
+          class="no-control flex items-center justify-center px-3 h-8 ms-0 leading-tight text-primary bg-white border border-e-0 border-primary-hover rounded-s-lg hover:bg-primary-hover hover:text-white dark:bg-btn-dark"
           :class="{ 'opacity-50 pointer-events-none': cPage === 1 }"
         >
           <span class="sr-only">{{ uiTrans('first') }}</span>
@@ -107,7 +107,7 @@ export default defineComponent({
         <a
           href="#"
           @click.prevent="[$emit('change-page-event', cPage - 1, cLimit), updateCurrentPage(cPage - 1)]"
-          class="no-control flex items-center justify-center px-3 h-8 leading-tight text-[var(--primary)] bg-white border border-[var(--primary-hover)] hover:bg-[var(--primary-hover)] hover:text-white dark:bg-[var(--btn-dark)]"
+          class="no-control flex items-center justify-center px-3 h-8 leading-tight text-primary bg-white border border-primary-hover hover:bg-primary-hover hover:text-white dark:bg-btn-dark"
           :class="{ 'opacity-50 pointer-events-none': cPage === 1 }"
         >
           <span class="sr-only">{{ uiTrans('previous') }}</span>
@@ -134,7 +134,7 @@ export default defineComponent({
         <a
           v-if="page === '...'"
           href="#"
-          class="no-control flex items-center justify-center px-3 h-8 leading-tight text-[var(--primary)] bg-white border border-[var(--primary-hover)] cursor-default dark:bg-[var(--btn-dark)]"
+          class="no-control flex items-center justify-center px-3 h-8 leading-tight text-primary bg-white border border-primary-hover cursor-default dark:bg-btn-dark"
         >
           ...
         </a>
@@ -143,8 +143,8 @@ export default defineComponent({
           v-else
           href="#"
           @click.prevent="[$emit('change-page-event', page, cLimit), updateCurrentPage(page)]"
-          class="no-control flex items-center justify-center px-3 h-8 leading-tight border border-[var(--primary-hover)] hover:bg-[var(--primary-hover)] hover:text-white dark:bg-[var(--btn-dark)]"
-          :class="cPage === page ? 'bg-[var(--primary-hover)] text-white' : 'bg-white text-[var(--primary)]'"
+          class="no-control flex items-center justify-center px-3 h-8 leading-tight border border-primary-hover hover:bg-primary-hover hover:text-white dark:bg-btn-dark"
+          :class="cPage === page ? 'bg-primary-hover text-white' : 'bg-white text-primary'"
         >
           {{ page }}
         </a>
@@ -155,7 +155,7 @@ export default defineComponent({
         <a
           href="#"
           @click.prevent="[$emit('change-page-event', cPage + 1, cLimit), updateCurrentPage(cPage + 1)]"
-          class="no-control flex items-center justify-center px-3 h-8 leading-tight text-[var(--primary)] bg-white border border-[var(--primary-hover)] hover:bg-[var(--primary-hover)] hover:text-white dark:bg-[var(--btn-dark)]"
+          class="no-control flex items-center justify-center px-3 h-8 leading-tight text-primary bg-white border border-primary-hover hover:bg-primary-hover hover:text-white dark:bg-btn-dark"
           :class="{ 'opacity-50 pointer-events-none': cPage === nbPages }"
         >
           <span class="sr-only">{{ uiTrans('next') }}</span>
@@ -182,7 +182,7 @@ export default defineComponent({
         <a
           href="#"
           @click.prevent="[$emit('change-page-event', nbPages, cLimit), updateCurrentPage(nbPages)]"
-          class="no-control flex items-center justify-center px-3 h-8 leading-tight rounded-e-lg text-[var(--primary)] bg-white border border-[var(--primary-hover)] hover:bg-[var(--primary-hover)] hover:text-white dark:bg-[var(--btn-dark)]"
+          class="no-control flex items-center justify-center px-3 h-8 leading-tight rounded-e-lg text-primary bg-white border border-primary-hover hover:bg-primary-hover hover:text-white dark:bg-btn-dark"
           :class="{ 'opacity-50 pointer-events-none': cPage === nbPages }"
         >
           <span class="sr-only">{{ uiTrans('last') }}</span>

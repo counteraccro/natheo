@@ -22,7 +22,7 @@ export default defineComponent({
   <div class="flex items-center gap-0 text-sm">
     <button
       href="#"
-      class="flex items-center gap-1.5 px-2 py-1 rounded-md font-medium transition text-[var(--primary)] bg-[var(--primary-lighter)] cursor-pointer"
+      class="flex items-center gap-1.5 px-2 py-1 rounded-md font-medium transition text-primary bg-primary-lighter cursor-pointer"
       @click="$emit('load-folder', 0)"
     >
       <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
@@ -34,8 +34,7 @@ export default defineComponent({
     </button>
     <svg
       v-if="Object.keys(paths ?? {}).length !== 0"
-      class="w-4 h-4"
-      style="color: var(--text-light)"
+      class="w-4 h-4 text-fg-subtle"
       fill="none"
       stroke="currentColor"
       viewBox="0 0 24 24"
@@ -45,23 +44,22 @@ export default defineComponent({
     <div v-if="paths !== null" v-for="item in paths" class="flex items-center gap-1">
       <button
         @click="paths.indexOf(item) !== Object.keys(paths).length - 1 ? $emit('load-folder', item.id) : ''"
-        class="flex items-center gap-1.5 px-2 py-1 rounded-md font-medium transition hover:text-[var(--primary)]"
+        class="flex items-center gap-1.5 px-2 py-1 rounded-md font-medium transition hover:text-primary"
         :class="
           paths.indexOf(item) !== Object.keys(paths).length - 1
-            ? 'hover:bg-[var(--primary-lighter)] text-[var(--text-secondary)] cursor-pointer'
+            ? 'hover:bg-primary-lighter text-fg-muted cursor-pointer'
             : ''
         "
         style="color: var(--text-secondary)"
       >
-        <svg style="color: var(--primary)" class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+        <svg class="w-4 h-4 text-primary" fill="currentColor" viewBox="0 0 24 24">
           <path d="M10 4H4c-1.11 0-2 .89-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.11-.9-2-2-2h-8l-2-2z"></path>
         </svg>
         {{ item.name }}
       </button>
       <svg
         v-if="paths.indexOf(item) !== Object.keys(paths).length - 1"
-        class="w-4 h-4"
-        style="color: var(--text-light)"
+        class="w-4 h-4 text-fg-subtle"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"

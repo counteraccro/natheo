@@ -175,7 +175,7 @@ export default defineComponent({
           @mousedown.prevent="selectOption(option)"
         >
           <slot name="option" :option="option">
-            <span class="text-sm" style="color: var(--text-primary)">{{ option.label }}</span>
+            <span class="text-sm text-fg">{{ option.label }}</span>
           </slot>
         </li>
       </ul>
@@ -186,7 +186,7 @@ export default defineComponent({
       v-if="isOpen && searchQuery.length > 0 && filteredOptions.length === 0"
       class="absolute z-50 w-full mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg"
     >
-      <p class="px-3 py-3 text-sm text-center" style="color: var(--text-light)">
+      <p class="px-3 py-3 text-sm text-center text-fg-subtle">
         {{ emptyLabel }}
       </p>
     </div>

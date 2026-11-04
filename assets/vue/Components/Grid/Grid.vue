@@ -101,7 +101,7 @@ export default defineComponent({
       }
       const pattern = this.filterKey.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
       return String(text).replace(new RegExp(pattern, 'gi'), (match) => {
-        return '<span class="bg-[var(--primary)] text-white p-1 ps-3 pe-3 rounded ">' + match + '</span>';
+        return '<span class="bg-primary text-white p-1 ps-3 pe-3 rounded ">' + match + '</span>';
       });
     },
   },
@@ -112,10 +112,10 @@ export default defineComponent({
   <div class="card rounded-lg overflow-hidden">
     <div class="overflow-x-auto">
       <table class="w-full" v-if="filteredData.length">
-        <thead class="bg-[var(--bg-main)]">
+        <thead class="bg-surface">
           <tr>
             <th
-              class="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider text-[var(--text-secondary)]"
+              class="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider text-fg-muted"
               v-for="key in columns"
               @click="key !== 'action' ? sortBy(key) : ''"
             >
@@ -144,10 +144,10 @@ export default defineComponent({
             </th>
           </tr>
         </thead>
-        <tbody class="divide-y divide-[var(--border-color)]">
-          <tr class="bg-[var(--bg-card)] hover:bg-[var(--bg-hover)]" v-for="entry in filteredData">
+        <tbody class="divide-y divide-line">
+          <tr class="bg-card hover:bg-surface-hover" v-for="entry in filteredData">
             <td
-              class="px-3 py-1 text-sm text-[var(--text-secondary)] text-center"
+              class="px-3 py-1 text-sm text-fg-muted text-center"
               v-for="key in columns"
               :class="entry.isDisabled && key !== 'action' ? 'opacity-25' : ''"
             >
@@ -187,7 +187,7 @@ export default defineComponent({
           </tr>
         </tbody>
       </table>
-      <div v-else class="flex items-center justify-center p-4 text-[var(--text-primary)]">
+      <div v-else class="flex items-center justify-center p-4 text-fg">
         <svg
           class="w-6 h-6 me-2"
           aria-hidden="true"

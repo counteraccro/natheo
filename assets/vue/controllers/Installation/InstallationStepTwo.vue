@@ -255,18 +255,13 @@ export default defineComponent({
 
   <div v-else>
     <h2 class="text-2xl font-bold mb-2">{{ translate.create_bdd_h1 }}</h2>
-    <p class="text-sm mb-6" style="color: var(--text-secondary)">
+    <p class="text-sm mb-6 text-fg-muted">
       {{ translate.create_bdd_description_1 }}<br />
       {{ translate.create_bdd_description_2 }}
     </p>
 
     <div
-      class="mb-6 px-4 py-3 rounded-lg text-sm"
-      style="
-        background-color: var(--alert-info-bg);
-        border: 1px solid var(--alert-info-border);
-        color: var(--alert-info-text);
-      "
+      class="mb-6 px-4 py-3 rounded-lg text-sm bg-alert-info-bg border border-alert-info-border text-alert-info-text"
     >
       <p class="font-semibold flex items-center gap-2 mb-2">
         <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -375,11 +370,7 @@ export default defineComponent({
         <!-- Progression de la création -->
         <div v-if="running || finished" class="mt-6 flex flex-col gap-2">
           <div v-for="key in ['updateEnv', 'updateSecret', 'createBdd', 'createTable']" :key="key">
-            <div
-              v-if="createStep[key].success"
-              class="flex items-center gap-1.5 text-sm font-medium"
-              style="color: var(--btn-success)"
-            >
+            <div v-if="createStep[key].success" class="flex items-center gap-1.5 text-sm font-medium text-btn-success">
               <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
               </svg>
@@ -387,12 +378,7 @@ export default defineComponent({
             </div>
             <div
               v-else-if="createStep[key].message"
-              class="px-4 py-3 rounded-lg flex items-start gap-2 text-sm"
-              style="
-                background-color: var(--alert-danger-bg);
-                border: 1px solid var(--alert-danger-border);
-                color: var(--alert-danger-text);
-              "
+              class="px-4 py-3 rounded-lg flex items-start gap-2 text-sm bg-alert-danger-bg border border-alert-danger-border text-alert-danger-text"
             >
               <svg class="w-4 h-4 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12" />
@@ -401,7 +387,7 @@ export default defineComponent({
             </div>
           </div>
 
-          <div v-if="finished" class="flex items-center gap-1.5 text-sm font-medium" style="color: var(--btn-success)">
+          <div v-if="finished" class="flex items-center gap-1.5 text-sm font-medium text-btn-success">
             <svg class="w-4 h-4 flex-shrink-0 animate-spin" fill="none" viewBox="0 0 24 24">
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
               <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
@@ -411,10 +397,7 @@ export default defineComponent({
         </div>
       </div>
 
-      <div
-        class="px-5 sm:px-6 py-4 flex items-center justify-between border-t"
-        style="border-color: var(--border-color); background-color: var(--bg-hover)"
-      >
+      <div class="px-5 sm:px-6 py-4 flex items-center justify-between border-t border-line bg-surface-hover">
         <a :href="urls.step_1" class="btn btn-outline-dark btn-sm">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l4-4m-4 4 4 4" />

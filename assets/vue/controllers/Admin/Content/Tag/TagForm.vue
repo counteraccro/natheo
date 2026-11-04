@@ -326,7 +326,7 @@ export default defineComponent({
             <label for="tagColor" class="form-label">{{ translate.renduTitle }} </label>
             <div v-for="key in locales.locales">
               <div v-for="translation in tag.tagTranslations">
-                <div v-if="translation.locale === key" class="text-[var(--text-primary)] text-sm mb-1">
+                <div v-if="translation.locale === key" class="text-fg text-sm mb-1">
                   {{ locales.localesTranslate[key] }} :
                   <span class="badge rounded-pill badge-nat" :style="'background-color: ' + tag.color">{{
                     translation.label

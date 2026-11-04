@@ -213,15 +213,13 @@ export default defineComponent({
         <div class="flex items-center gap-3">
           <span
             id="selectionCount"
-            class="text-sm font-semibold px-2.5 py-1 rounded-full"
-            style="background-color: var(--primary-lighter); color: var(--primary)"
+            class="text-sm font-semibold px-2.5 py-1 rounded-full bg-primary-lighter text-primary"
           >
             {{ moderation.selected.length }} {{ translate.selection_comment }}</span
           >
           <button
             @click="resetSelected"
-            class="text-sm font-medium hover:underline transition-colors cursor-pointer"
-            style="color: var(--text-secondary)"
+            class="text-sm font-medium hover:underline transition-colors cursor-pointer text-fg-muted"
           >
             {{ translate.comment_unselect_all }}
           </button>
@@ -236,7 +234,7 @@ export default defineComponent({
           :data-id="comment.id"
         >
           <!-- Header -->
-          <div class="flex items-center gap-3 px-5 py-3.5" style="border-bottom: 1px solid var(--border-color)">
+          <div class="flex items-center gap-3 px-5 py-3.5 border-b border-line">
             <div class="form-check" style="margin-bottom: 0">
               <input
                 type="checkbox"
@@ -247,13 +245,13 @@ export default defineComponent({
               />
             </div>
             <div class="flex-1 min-w-0">
-              <p class="text-sm font-semibold truncate" style="color: var(--text-primary)">
-                Commentaire <span style="color: var(--primary)">#{{ comment.id }}</span>
-                <span class="font-normal" style="color: var(--text-secondary)">
+              <p class="text-sm font-semibold truncate text-fg">
+                Commentaire <span class="text-primary">#{{ comment.id }}</span>
+                <span class="font-normal text-fg-muted">
                   — {{ translate.comment_date }} {{ comment.date }} {{ translate.comment_author }}
                 </span>
                 {{ comment.author }}
-                <span class="font-normal" style="color: var(--text-secondary)"> ({{ comment.email }})</span>
+                <span class="font-normal text-fg-muted"> ({{ comment.email }})</span>
               </p>
             </div>
             <div v-html="comment.status"></div>
@@ -262,10 +260,10 @@ export default defineComponent({
           <div class="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-(--border-color)">
             <!-- Contenu -->
             <div class="p-5">
-              <p class="text-xs font-semibold uppercase tracking-wider mb-3" style="color: var(--text-light)">
+              <p class="text-xs font-semibold uppercase tracking-wider mb-3 text-fg-subtle">
                 {{ translate.comment_comment }}
               </p>
-              <p class="text-xs mb-3 flex items-center gap-1.5" style="color: var(--text-secondary)">
+              <p class="text-xs mb-3 flex items-center gap-1.5 text-fg-muted">
                 <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     stroke-linecap="round"
@@ -278,20 +276,16 @@ export default defineComponent({
                   >{{ translate.comment_page }} <strong>{{ comment.page }}</strong></span
                 >
               </p>
-              <p
-                class="text-sm leading-relaxed"
-                style="color: var(--text-primary)"
-                v-html="renderHtml(comment.comment)"
-              ></p>
+              <p class="text-sm leading-relaxed text-fg" v-html="renderHtml(comment.comment)"></p>
             </div>
             <!-- Informations -->
 
             <div class="p-5">
-              <p class="text-xs font-semibold uppercase tracking-wider mb-3" style="color: var(--text-light)">
+              <p class="text-xs font-semibold uppercase tracking-wider mb-3 text-fg-subtle">
                 {{ translate.comment_info }}
               </p>
               <ul class="space-y-2 text-xs mb-4">
-                <li class="flex items-center gap-2" style="color: var(--text-secondary)">
+                <li class="flex items-center gap-2 text-fg-muted">
                   <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
                       stroke-linecap="round"
@@ -300,12 +294,10 @@ export default defineComponent({
                       d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"
                     ></path>
                   </svg>
-                  <span class="font-medium text-xs" style="color: var(--text-primary)"
-                    >{{ translate.comment_ip }} :</span
-                  >
+                  <span class="font-medium text-xs text-fg">{{ translate.comment_ip }} :</span>
                   <span class="font-mono">{{ comment.ip }}</span>
                 </li>
-                <li class="flex items-center gap-2" style="color: var(--text-secondary)">
+                <li class="flex items-center gap-2 text-fg-muted">
                   <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
                       stroke-linecap="round"
@@ -314,19 +306,13 @@ export default defineComponent({
                       d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17H4a2 2 0 01-2-2V5a2 2 0 012-2h16a2 2 0 012 2v10a2 2 0 01-2 2h-1"
                     ></path>
                   </svg>
-                  <span class="font-medium text-xs" style="color: var(--text-primary)"
-                    >{{ translate.comment_user_agent }} :</span
-                  >
+                  <span class="font-medium text-xs text-fg">{{ translate.comment_user_agent }} :</span>
                   {{ comment.userAgent }}
                 </li>
               </ul>
               <!-- Bloc modération -->
-              <div
-                v-if="comment.moderator !== null"
-                class="rounded-lg p-3 mt-3"
-                style="border: 1px solid var(--border-color); background-color: var(--bg-hover)"
-              >
-                <p class="text-xs font-semibold mb-1.5 flex items-center gap-1.5" style="color: var(--text-secondary)">
+              <div v-if="comment.moderator !== null" class="rounded-lg p-3 mt-3 border border-line bg-surface-hover">
+                <p class="text-xs font-semibold mb-1.5 flex items-center gap-1.5 text-fg-muted">
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
                       stroke-linecap="round"
@@ -337,10 +323,8 @@ export default defineComponent({
                   </svg>
                   {{ translate.comment_moderator }} : <span class="font-normal">{{ comment.moderator }}</span>
                 </p>
-                <p class="text-xs leading-relaxed" style="color: var(--text-secondary)">
-                  <span class="font-medium" style="color: var(--text-primary)"
-                    >{{ translate.comment_update }} {{ comment.update }}</span
-                  >
+                <p class="text-xs leading-relaxed text-fg-muted">
+                  <span class="font-medium text-fg">{{ translate.comment_update }} {{ comment.update }}</span>
                   <br />
                   {{ comment.commentModeration }}
                 </p>
@@ -391,32 +375,17 @@ export default defineComponent({
           </div>
         </div>
         <div class="p-5 grid grid-cols-3 gap-3">
-          <div
-            class="flex flex-col items-center justify-center py-3 rounded-xl"
-            style="background-color: var(--bg-hover)"
-          >
-            <span class="text-xl font-bold" style="color: var(--status-validated)">{{ result?.statStatus[2] }}</span>
-            <span class="text-xs mt-0.5 text-center" style="color: var(--text-secondary)">{{
-              translate.status_short_validate
-            }}</span>
+          <div class="flex flex-col items-center justify-center py-3 rounded-xl bg-surface-hover">
+            <span class="text-xl font-bold text-status-validated">{{ result?.statStatus[2] }}</span>
+            <span class="text-xs mt-0.5 text-center text-fg-muted">{{ translate.status_short_validate }}</span>
           </div>
-          <div
-            class="flex flex-col items-center justify-center py-3 rounded-xl"
-            style="background-color: var(--bg-hover)"
-          >
-            <span class="text-xl font-bold" style="color: var(--status-pending)">{{ result?.statStatus[1] }}</span>
-            <span class="text-xs mt-0.5 text-center" style="color: var(--text-secondary)">{{
-              translate.status_short_waiting
-            }}</span>
+          <div class="flex flex-col items-center justify-center py-3 rounded-xl bg-surface-hover">
+            <span class="text-xl font-bold text-status-pending">{{ result?.statStatus[1] }}</span>
+            <span class="text-xs mt-0.5 text-center text-fg-muted">{{ translate.status_short_waiting }}</span>
           </div>
-          <div
-            class="flex flex-col items-center justify-center py-3 rounded-xl"
-            style="background-color: var(--bg-hover)"
-          >
-            <span class="text-xl font-bold" style="color: var(--status-moderated)">{{ result?.statStatus[3] }}</span>
-            <span class="text-xs mt-0.5 text-center" style="color: var(--text-secondary)">{{
-              translate.status_short_moderate
-            }}</span>
+          <div class="flex flex-col items-center justify-center py-3 rounded-xl bg-surface-hover">
+            <span class="text-xl font-bold text-status-moderated">{{ result?.statStatus[3] }}</span>
+            <span class="text-xs mt-0.5 text-center text-fg-muted">{{ translate.status_short_moderate }}</span>
           </div>
         </div>
       </div>
@@ -494,16 +463,13 @@ export default defineComponent({
           </div>
         </div>
         <div class="p-5 flex flex-col gap-4">
-          <div
-            class="rounded-lg p-3.5"
-            style="background-color: var(--primary-lighter); border: 1px solid var(--primary-light)"
-          >
-            <p class="text-xs font-semibold mb-1" style="color: var(--primary)">{{ translate.comment_selected }}</p>
-            <p id="selectedList" class="text-sm font-bold" style="color: var(--text-primary)">
+          <div class="rounded-lg p-3.5 bg-primary-lighter border border-primary-light">
+            <p class="text-xs font-semibold mb-1 text-primary">{{ translate.comment_selected }}</p>
+            <p id="selectedList" class="text-sm font-bold text-fg">
               <span v-if="moderation.selected.length === 0">---</span>
               <span v-else v-for="id in moderation.selected"> #{{ id }},</span>
             </p>
-            <p id="selectedSummary" class="text-xs mt-0.5" style="color: var(--text-secondary)">
+            <p id="selectedSummary" class="text-xs mt-0.5 text-fg-muted">
               {{ moderation.selected.length }} {{ translate.selection_comment }}
             </p>
           </div>

@@ -56,16 +56,15 @@ export default defineComponent({
       <div class="flex items-center gap-2" :class="depth > 0 ? 'ml-3' : ''">
         <span
           v-if="depth > 0"
-          class="rounded-full flex-shrink-0"
+          class="rounded-full flex-shrink-0 bg-primary-light"
           :class="depth === 1 ? 'w-1.5 h-1.5' : 'w-1 h-1'"
-          style="background-color: var(--primary-light)"
         ></span>
 
         <a
           :href="url"
-          class="transition-colors hover:underline"
+          class="transition-colors hover:underline decoration-primary"
           :class="depth === 0 ? 'text-sm' : 'text-xs'"
-          style="color: var(--text-secondary); text-decoration-color: var(--primary)"
+          style="color: var(--text-secondary)"
           @click.prevent
         >
           {{ label }}

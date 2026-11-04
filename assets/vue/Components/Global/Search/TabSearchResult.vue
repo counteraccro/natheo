@@ -37,13 +37,9 @@ export default defineComponent({
   <div v-for="row in result.elements" class="card rounded-lg flex mb-3 p-6 gap-2.5">
     <div class="w-32">
       <img v-if="row.img" :src="row.img" class="max-w-xs h-20 aspect-3/2 object-cover rounded" alt="" />
-      <div
-        v-else
-        class="m-auto w-[7.5rem] h-20 flex items-center justify-center bg-[var(--primary-lighter)] rounded-lg"
-      >
+      <div v-else class="m-auto w-[7.5rem] h-20 flex items-center justify-center bg-primary-lighter rounded-lg">
         <svg
-          class="w-10 h-10"
-          style="color: var(--primary)"
+          class="w-10 h-10 text-primary"
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -61,15 +57,11 @@ export default defineComponent({
       </div>
     </div>
     <div>
-      <h3 class="text-lg font-semibold mb-0.5 text-[var(--text-primary)]" v-html="row.label"></h3>
-      <p v-if="row.contents[0]" class="text-sm text-[var(--text-secondary)] font-bold">
+      <h3 class="text-lg font-semibold mb-0.5 text-fg" v-html="row.label"></h3>
+      <p v-if="row.contents[0]" class="text-sm text-fg-muted font-bold">
         {{ translate.content }}
       </p>
-      <p
-        v-if="row.contents[0]"
-        class="text-[var(--text-secondary)] flex items-center gap-1 text-sm"
-        v-for="content in row.contents"
-      >
+      <p v-if="row.contents[0]" class="text-fg-muted flex items-center gap-1 text-sm" v-for="content in row.contents">
         <svg
           class="icon-sm"
           aria-hidden="true"
@@ -89,11 +81,11 @@ export default defineComponent({
         </svg>
         <span v-html="content"></span>
       </p>
-      <p v-else-if="translate.noResultContent" class="text-sm text-[var(--text-secondary)]">
+      <p v-else-if="translate.noResultContent" class="text-sm text-fg-muted">
         {{ translate.noResultContent }}
       </p>
 
-      <p class="text-[var(--text-light)] flex gap-2.5 mt-4 text-xs">
+      <p class="text-fg-subtle flex gap-2.5 mt-4 text-xs">
         <span>{{ translate.create }} {{ row.date.create }} </span>
         <span>{{ translate.update }} {{ row.date.update }}</span>
         <span v-if="row.author"> {{ translate.author }} <span v-html="row.author"></span></span>

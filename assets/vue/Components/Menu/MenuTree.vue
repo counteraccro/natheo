@@ -174,8 +174,8 @@ export default defineComponent({
 
       <span
         v-if="menuElement.disabled"
-        class="inline-flex items-center gap-1 text-[0.5rem] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full flex-shrink-0"
-        style="background-color: var(--btn-warning); color: white"
+        class="inline-flex items-center gap-1 text-[0.5rem] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full flex-shrink-0 bg-btn-warning"
+        style="color: white"
         ><svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
           <path
             stroke-linecap="round"
@@ -188,8 +188,8 @@ export default defineComponent({
 
       <span
         v-if="noSaveIds.includes(menuElement.id)"
-        class="inline-flex items-center gap-1 text-[0.5rem] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full flex-shrink-0"
-        style="background-color: var(--alert-warning); color: white"
+        class="inline-flex items-center gap-1 text-[0.5rem] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full flex-shrink-0 bg-alert-warning"
+        style="color: white"
       >
         <svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
