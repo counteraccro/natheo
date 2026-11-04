@@ -20,7 +20,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                     </svg>
                 </div>
-                <form id="form-global-search" class="d-flex" role="search" action="{{ path('admin_search_index') }}" method="post">
+                <form id="form-global-search" class="flex" role="search" action="{{ path('admin_search_index') }}" method="post">
                 <input type="search" name="global-search-input" class="search-input w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary)] no-control" placeholder="{{ 'global.header.search.input' | trans({}, 'global') }}">
                 </form>
             </div>

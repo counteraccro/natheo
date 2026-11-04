@@ -499,7 +499,7 @@ export default defineComponent({
             <p class="text-sm text-[var(--text-secondary)]">{{ translate.dump_option.sub_title_1 }}</p>
           </div>
 
-          <div class="form-control">
+          <div>
             <label class="form-label">{{ translate.dump_option.filename_label }}</label>
             <input class="form-input" v-model="optionData.filename" />
             <span class="form-text">{{ translate.dump_option.filename_help }}</span>
@@ -542,7 +542,7 @@ export default defineComponent({
                 </label>
               </div>
 
-              <div class="form-control">
+              <div>
                 <select
                   id="select-multi-table"
                   class="form-input"
@@ -559,7 +559,7 @@ export default defineComponent({
             </div>
           </div>
 
-          <div class="form-control mt-6">
+          <div class="mt-6">
             <label class="form-label">{{ translate.dump_option.option_data_label }}</label>
             <select class="form-input" v-model="optionData.data">
               <option value="table">{{ translate.dump_option.option_table }}</option>

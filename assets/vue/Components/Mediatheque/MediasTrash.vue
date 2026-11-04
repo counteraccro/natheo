@@ -259,59 +259,6 @@ export default {
     <p class="text-sm font-semibold" style="color: var(--text-primary)">{{ translate.empty_trash_title }}</p>
     <p class="text-xs" style="color: var(--text-secondary)">{{ translate.empty_trash_sub }}</p>
   </div>
-
-  <!--<div v-if="this.medias.length > 0" class="media col-auto mb-4" v-for="media in this.medias">
-      <img
-        v-if="media.type === 'media'"
-        height="200"
-        width="200"
-        class="rounded-3"
-        :src="media.thumbnail"
-        style="cursor: pointer"
-        :alt="media.name"
-        @click="this.openMedia(media.webPath)"
-      />
-      <div v-else class="folder" alt="media.name"></div>
-      <div class="info-media rounded-bottom-3">
-        <div class="btn-group">
-          <button
-            type="button"
-            class="btn btn-link btn-sm dropdown-toggle pt-2"
-            style="color: #ffffff; margin-top: -5px"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            <i class="bi bi-justify"></i>
-          </button>
-          <ul class="dropdown-menu">
-            <li>
-
-              <a class="dropdown-item" @click="$emit('revert-trash', media.type, media.id)">
-                <i class="bi bi-arrow-counterclockwise"></i> {{ this.translate.link_revert }}
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider" />
-            </li>
-            <li>
-              <a class="dropdown-item text-danger" @click="$emit('delete', media.type, media.id, media.name, false)">
-                <i class="bi bi-trash-fill"></i> {{ this.translate.link_delete }}
-              </a>
-            </li>
-          </ul>
-        </div>
-        <span class="d-inline-block text-truncate" style="max-width: 140px; vertical-align: middle">
-          {{ media.name }}
-        </span>
-      </div>
-    </div>
-    <div v-else class="text-center mt-3">
-      <i class="bi bi-folder-x"></i>
-      <i>
-        {{ this.translate.no_media }}
-      </i>
-    </div>
-  </div>-->
 </template>
 
 <style scoped></style>
