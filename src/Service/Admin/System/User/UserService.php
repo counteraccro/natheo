@@ -13,8 +13,8 @@ namespace App\Service\Admin\System\User;
 use App\Entity\Admin\System\User;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
-use App\Utils\System\User\Anonymous;
-use App\Utils\System\User\Role;
+use App\Service\Admin\System\User\Anonymous;
+use App\Enum\Admin\System\User\Role;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Exception;
 use Psr\Container\ContainerExceptionInterface;
@@ -263,8 +263,8 @@ class UserService extends AppAdminService
             return false;
         }
 
-        $role = new Role($user);
-        return !$role->isSuperAdmin() || $currentUser->isFounder();
+        $isSuperAdmin = Role::SUPER_ADMIN->isGrantedTo($user);
+        return !$isSuperAdmin || $currentUser->isFounder();
     }
 
     /**

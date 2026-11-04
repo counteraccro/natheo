@@ -11,7 +11,7 @@ namespace App\Tests\Helper\Fixtures\System;
 use App\Entity\Admin\System\Mail;
 use App\Entity\Admin\System\MailTranslation;
 use App\Tests\Helper\FakerTrait;
-use App\Utils\System\Mail\KeyWord;
+use App\Service\Admin\System\Mail\KeyWord;
 use Symfony\Component\Yaml\Yaml;
 
 trait MailFixturesTrait

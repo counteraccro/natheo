@@ -7,9 +7,10 @@ declare(strict_types=1);
  * Permet d'anonymiser un utilisateur
  */
 
-namespace App\Utils\System\User;
+namespace App\Service\Admin\System\User;
 
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\System\User\Role;
 use Exception;
 
 class Anonymous
@@ -52,7 +53,7 @@ class Anonymous
         $this->user->setFirstname(self::FIRST_NAME);
         $this->user->setLastname(self::LAST_NAME);
         $this->user->setLogin(self::LOGIN);
-        $this->user->setRoles([Role::ROLE_USER]);
+        $this->user->setRoles([Role::USER->value]);
         $email = $this->randomStr(24) . '@' . $this->randomStr(6) . '.com';
         $this->user->setEmail($email);
         $this->user->setPassword($this->randomStr(40));

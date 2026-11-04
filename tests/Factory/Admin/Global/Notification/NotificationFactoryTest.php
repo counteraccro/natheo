@@ -6,12 +6,12 @@ declare(strict_types=1);
  * @version 1.0
  * Test NotificationFactory
  */
-namespace App\Tests\Utils\Notification;
+namespace App\Tests\Factory\Admin\Global\Notification;
 
 use App\Entity\Admin\System\User;
 use App\Enum\Admin\Global\Notification\Notification;
 use App\Tests\AppWebTestCase;
-use App\Utils\Notification\NotificationFactory;
+use App\Factory\Admin\Global\Notification\NotificationFactory;
 
 class NotificationFactoryTest extends AppWebTestCase
 {

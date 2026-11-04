@@ -224,7 +224,7 @@
     </div>
 
 
-    {% if not is_granted(constant('App\\Utils\\System\\User\\Role::ROLE_SUPER_ADMIN')) %}
+    {% if not is_granted(constant('App\\Enum\\Admin\\System\\User\\Role::SUPER_ADMIN').value) %}
         <div class="card mb-4" style="border-color: var(--btn-danger);">
             <div class="card-header">
                 <div>
@@ -251,7 +251,7 @@
         </div>
     {% endif %}
 
-    {% if is_granted(constant('App\\Utils\\System\\User\\Role::ROLE_SUPER_ADMIN')) %}
+    {% if is_granted(constant('App\\Enum\\Admin\\System\\User\\Role::SUPER_ADMIN').value) %}
         <div class="card mb-4">
             <div class="card-header">
                 <div>

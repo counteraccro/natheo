@@ -27,7 +27,7 @@ use App\Repository\Admin\Content\Page\PageRepository;
 use App\Service\Api\AppApiService;
 use App\Service\Api\Content\ApiMenuService;
 use App\Formatter\Api\Content\ApiPageFormater;
-use App\Utils\System\User\PersonalData;
+use App\Service\Admin\System\User\PersonalData;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Psr\Container\ContainerExceptionInterface;

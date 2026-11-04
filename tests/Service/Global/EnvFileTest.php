@@ -6,10 +6,10 @@ declare(strict_types=1);
  * @version 1.0
  * Test EnvFile
  */
-namespace App\Tests\Utils\Global;
+namespace App\Tests\Service\Global;
 
 use App\Tests\AppWebTestCase;
-use App\Utils\Global\EnvFile;
+use App\Service\Global\EnvFile;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\Container;

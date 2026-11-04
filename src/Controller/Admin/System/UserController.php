@@ -25,8 +25,8 @@ use App\Service\Admin\System\OptionSystemService;
 use App\Service\Admin\System\OptionUserService;
 use App\Service\Admin\System\User\UserDataService;
 use App\Service\Admin\System\User\UserService;
-use App\Utils\System\Mail\KeyWord;
-use App\Utils\System\User\Role;
+use App\Service\Admin\System\Mail\KeyWord;
+use App\Enum\Admin\System\User\Role;
 use App\Enum\Admin\System\User\UserDataKey;
 use App\Translate\Admin\System\UserTranslate;
 use Exception;
@@ -506,8 +506,8 @@ class UserController extends AppAdminController
     ): JsonResponse {
         /** @var User $user */
         $user = $this->getUser();
-        $role = new Role($user);
-        if ($role->isSuperAdmin()) {
+        $isSuperAdmin = Role::SUPER_ADMIN->isGrantedTo($user);
+        if ($isSuperAdmin) {
             $msg = $translator->trans('user.error_not_disabled', domain: 'user');
             $url = '';
         } else {
@@ -517,12 +517,12 @@ class UserController extends AppAdminController
             $url = $this->generateUrl('auth_logout');
         }
 
-        if ($optionSystemService->canSendMailNotification() && !$role->isSuperAdmin()) {
+        if ($optionSystemService->canSendMailNotification() && !$isSuperAdmin) {
             $mail = $mailService->getByKey(MailKey::SELF_DISABLED_ACCOUNT->value);
             $keyWord = new KeyWord($mail->getKey());
             $tabKeyWord = $keyWord->getTabMailSelfDisabled($user, $optionSystemService);
             $params = $mailService->getDefaultParams($mail, $tabKeyWord);
-            $tabTo = $userService->getTabMailByListeUser($userService->getByRole(Role::ROLE_SUPER_ADMIN));
+            $tabTo = $userService->getTabMailByListeUser($userService->getByRole(Role::SUPER_ADMIN->value));
 
             try {
                 foreach ($tabTo as $to) {
@@ -535,8 +535,8 @@ class UserController extends AppAdminController
         }
 
         // Notifications
-        if ($optionSystemService->canNotification() && !$role->isSuperAdmin()) {
-            $users = $userService->getByRole(Role::ROLE_SUPER_ADMIN);
+        if ($optionSystemService->canNotification() && !$isSuperAdmin) {
+            $users = $userService->getByRole(Role::SUPER_ADMIN->value);
 
             foreach ($users as $user_notification) {
                 $notificationService->add($user_notification, Notification::SELF_DISABLED->value, [
@@ -581,9 +581,9 @@ class UserController extends AppAdminController
         /** @var User $user */
         $user = $this->getUser();
         $user2 = clone $user;
-        $role = new Role($user);
+        $isSuperAdmin = Role::SUPER_ADMIN->isGrantedTo($user);
         $url = '';
-        if ($role->isSuperAdmin()) {
+        if ($isSuperAdmin) {
             $msg = $translator->trans('user.error_not_disabled', domain: 'user');
         } else {
             if ($optionSystemService->canDelete()) {
@@ -612,7 +612,7 @@ class UserController extends AppAdminController
         // Envoi emails
         if (
             $optionSystemService->canSendMailNotification() &&
-            !$role->isSuperAdmin() &&
+            !$isSuperAdmin &&
             $optionSystemService->canDelete()
         ) {
             if ($status === 1) {
@@ -627,7 +627,7 @@ class UserController extends AppAdminController
                 $tabKeyWord = $keyWord->getTabMailSelfDelete($user2, $optionSystemService);
             }
             $params = $mailService->getDefaultParams($mail, $tabKeyWord);
-            $tabTo = $userService->getTabMailByListeUser($userService->getByRole(Role::ROLE_SUPER_ADMIN));
+            $tabTo = $userService->getTabMailByListeUser($userService->getByRole(Role::SUPER_ADMIN->value));
 
             foreach ($tabTo as $to) {
                 $params[MailService::TO] = $to;
@@ -636,8 +636,8 @@ class UserController extends AppAdminController
         }
 
         // Notifications
-        if ($optionSystemService->canNotification() && !$role->isSuperAdmin() && $optionSystemService->canDelete()) {
-            $users = $userService->getByRole(Role::ROLE_SUPER_ADMIN);
+        if ($optionSystemService->canNotification() && !$isSuperAdmin && $optionSystemService->canDelete()) {
+            $users = $userService->getByRole(Role::SUPER_ADMIN->value);
             if ($status === 1) {
                 $key = Notification::SELF_ANONYMOUS->value;
             } else {

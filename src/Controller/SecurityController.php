@@ -16,7 +16,7 @@ use App\Service\Admin\System\User\UserDataService;
 use App\Service\Admin\System\User\UserService;
 use App\Service\Installation\InstallationService;
 use App\Service\SecurityService;
-use App\Utils\System\Mail\KeyWord;
+use App\Service\Admin\System\Mail\KeyWord;
 use App\Translate\Admin\System\UserTranslate;
 use League\CommonMark\Exception\CommonMarkException;
 use Psr\Container\ContainerExceptionInterface;

@@ -20,7 +20,7 @@ use App\Enum\Admin\System\Options\OptionUser;
 use App\Repository\Admin\Content\Page\PageRepository;
 use App\Service\Api\AppApiService;
 use App\Service\Global\MarkdownService;
-use App\Utils\System\User\PersonalData;
+use App\Service\Admin\System\User\PersonalData;
 use League\CommonMark\Exception\CommonMarkException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;

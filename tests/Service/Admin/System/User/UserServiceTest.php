@@ -14,8 +14,8 @@ use App\Enum\Admin\System\User\UserDataKey;
 use App\Service\Admin\System\User\UserDataService;
 use App\Service\Admin\System\User\UserService;
 use App\Tests\AppWebTestCase;
-use App\Utils\System\User\Anonymous;
-use App\Utils\System\User\Role;
+use App\Service\Admin\System\User\Anonymous;
+use App\Enum\Admin\System\User\Role;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactory;
@@ -138,12 +138,12 @@ class UserServiceTest extends AppWebTestCase
         $this->createUserSuperAdmin(['disabled' => true]);
         $contributeur = $this->createUserContributeur();
 
-        $result = $this->userService->getByRole(Role::ROLE_SUPER_ADMIN);
+        $result = $this->userService->getByRole(Role::SUPER_ADMIN->value);
         $this->assertCount(2, $result);
         $this->assertEquals($founder->getId(), $result[0]->getId());
         $this->assertEquals($superAdmin->getId(), $result[1]->getId());
 
-        $result = $this->userService->getByRole(Role::ROLE_CONTRIBUTEUR);
+        $result = $this->userService->getByRole(Role::CONTRIBUTEUR->value);
         $this->assertCount(1, $result);
         $this->assertEquals($contributeur->getId(), $result[0]->getId());
     }

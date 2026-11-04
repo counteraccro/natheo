@@ -13,7 +13,7 @@ namespace App\Service\Admin\Content\Page;
 
 use App\Entity\Admin\System\User;
 use App\Enum\Admin\System\Options\OptionUser;
-use App\Utils\System\User\PersonalData;
+use App\Service\Admin\System\User\PersonalData;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\Attribute\Exclude;

@@ -12,7 +12,7 @@ namespace App\Service\Admin;
 use App\Entity\Admin\Notification;
 use App\Entity\Admin\System\User;
 use App\Repository\Admin\NotificationRepository;
-use App\Utils\Notification\NotificationFactory;
+use App\Factory\Admin\Global\Notification\NotificationFactory;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
