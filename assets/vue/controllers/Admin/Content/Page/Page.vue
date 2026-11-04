@@ -37,7 +37,6 @@ import { emitter } from '@/vue/Composables/Global/useEvent';
 import AlertSuccess from '@/vue/Components/Alert/Success.vue';
 import AlertWarning from '@/vue/Components/Alert/Warning.vue';
 import AlertInfo from '@/vue/Components/Alert/Info.vue';
-import translate from '@/vue/controllers/Admin/System/Translate.vue';
 import AlertPrimary from '@/vue/Components/Alert/Primary.vue';
 
 export default defineComponent({
@@ -119,9 +118,6 @@ export default defineComponent({
     this.currentLocale = this.locales.current;
   },
   computed: {
-    translate() {
-      return translate;
-    },
     /**
      * Erreur onglet Informations
      */
