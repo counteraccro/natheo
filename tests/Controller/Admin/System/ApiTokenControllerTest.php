@@ -12,8 +12,8 @@ namespace App\Tests\Controller\Admin\System;
 use App\Entity\Admin\System\ApiToken;
 use App\Repository\Admin\System\ApiTokenRepository;
 use App\Tests\AppWebTestCase;
-use App\Utils\System\ApiToken\ApiTokenConst;
-use App\Utils\System\ApiToken\TokenHasher;
+use App\Service\Global\Token\TokenHasher;
+use App\Enum\Admin\System\ApiToken\ApiTokenRole;
 
 class ApiTokenControllerTest extends AppWebTestCase
 {
@@ -214,7 +214,7 @@ class ApiTokenControllerTest extends AppWebTestCase
                 'id' => null,
                 'name' => self::getFaker()->text(),
                 'token' => 'token-impose-par-le-client',
-                'roles' => [ApiTokenConst::API_TOKEN_ROLE_ADMIN],
+                'roles' => [ApiTokenRole::ADMIN->value],
                 'comment' => self::getFaker()->text(),
                 'expiresAt' => '2099-12-31',
                 'disabled' => false,

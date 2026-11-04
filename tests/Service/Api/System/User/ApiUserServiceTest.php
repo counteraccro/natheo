@@ -13,10 +13,10 @@ use App\Entity\Admin\System\User;
 use App\Service\Api\System\User\ApiUserService;
 use App\Tests\AppWebTestCase;
 use App\Enum\Admin\System\User\UserDataKey;
-use App\Utils\System\ApiToken\TokenHasher;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\Container;
+use App\Service\Global\Token\TokenHasher;
 
 class ApiUserServiceTest extends AppWebTestCase
 {

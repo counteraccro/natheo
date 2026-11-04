@@ -14,10 +14,10 @@ use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Admin\DashboardService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Tests\AppWebTestCase;
-use App\Utils\System\ApiToken\ApiTokenConst;
-use App\Utils\System\ApiToken\TokenHasher;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use App\Service\Global\Token\TokenHasher;
+use App\Enum\Admin\System\ApiToken\ApiTokenDefault;
 
 class DashboardServiceTest extends AppWebTestCase
 {
@@ -49,7 +49,7 @@ class DashboardServiceTest extends AppWebTestCase
      */
     public function testGetBlockHelpConfig(): void
     {
-        $apiToken = $this->createApiToken(['token' => TokenHasher::hash(ApiTokenConst::API_TOKEN_READ)]);
+        $apiToken = $this->createApiToken(['token' => TokenHasher::hash(ApiTokenDefault::READ->value)]);
 
         $this->optionSystemService->saveValueByKee(OptionSystem::OS_OPEN_SITE->value, '0');
 

@@ -12,7 +12,6 @@ namespace App\Controller\Api\v1\System;
 use App\Controller\Api\v1\AppApiController;
 use App\Dto\Api\Authentication\ApiAuthUserDto;
 use App\Resolver\Api\ApiAuthUserResolver;
-use App\Utils\Api\ApiConst;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -23,6 +22,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\RateLimiter\RateLimiterFactoryInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use App\Enum\Api\ApiMessage;
 
 #[
     Route(
@@ -52,7 +52,7 @@ class ApiAuthenticationController extends AppApiController
     ]
     public function auth(): JsonResponse
     {
-        return $this->apiResponse(ApiConst::API_MSG_SUCCESS, [
+        return $this->apiResponse(ApiMessage::SUCCESS->value, [
             'roles' => $this->getUser()->getRoles(),
         ]);
     }
@@ -98,6 +98,6 @@ class ApiAuthenticationController extends AppApiController
         }
         $limiter->reset();
         $token = $userDataService->generateUserToken($user);
-        return $this->apiResponse(ApiConst::API_MSG_SUCCESS, ['token' => $token]);
+        return $this->apiResponse(ApiMessage::SUCCESS->value, ['token' => $token]);
     }
 }

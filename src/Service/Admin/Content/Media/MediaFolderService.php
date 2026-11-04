@@ -18,7 +18,6 @@ use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
 use App\Service\Admin\MarkdownEditorService;
 use App\Service\Admin\System\OptionSystemService;
-use App\Utils\Content\Media\MediaFolderConst;
 use App\Translate\Admin\Content\MediaTranslate;
 use App\Utils\Utils;
 use Doctrine\ORM\EntityManagerInterface;
@@ -35,6 +34,7 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use App\Enum\Admin\Content\Media\MediaFolderPath;
 
 class MediaFolderService extends AppAdminService
 {
@@ -117,24 +117,24 @@ class MediaFolderService extends AppAdminService
         $rootWebPath = $optionSystemService->getValueByKey(OptionSystem::OS_MEDIA_URL->value);
 
         if ($mediaFolder === null || $mediaFolder === '') {
-            $mediaFolder = MediaFolderConst::NAME_DEFAULT_FOLDER_MEDIATHEQUE;
+            $mediaFolder = MediaFolderPath::NAME_DEFAULT_FOLDER_MEDIATHEQUE->value;
         }
 
         $env = $containerBag->get('kernel.environment');
-        $this->rootPathThumbnail = $this->rootPath . DIRECTORY_SEPARATOR . MediaFolderConst::ROOT_THUMBNAILS;
+        $this->rootPathThumbnail = $this->rootPath . DIRECTORY_SEPARATOR . MediaFolderPath::ROOT_THUMBNAILS->value;
         if ($env === 'test') {
-            $mediaFolder = MediaFolderConst::NAME_DEFAULT_FOLDER_MEDIATHEQUE_TEST;
+            $mediaFolder = MediaFolderPath::NAME_DEFAULT_FOLDER_MEDIATHEQUE_TEST->value;
             $this->rootPathThumbnail =
-                $this->rootPath . DIRECTORY_SEPARATOR . MediaFolderConst::ROOT_THUMBNAILS . '-test';
+                $this->rootPath . DIRECTORY_SEPARATOR . MediaFolderPath::ROOT_THUMBNAILS->value . '-test';
         }
 
         //TODO gérer cas url externe
         $this->rootPathMedia =
-            $this->rootPath . DIRECTORY_SEPARATOR . MediaFolderConst::ROOT_FOLDER_NAME . $mediaFolder;
+            $this->rootPath . DIRECTORY_SEPARATOR . MediaFolderPath::ROOT_FOLDER_NAME->value . $mediaFolder;
 
-        $this->webPathMedia = $rootWebPath . MediaFolderConst::PATH_WEB_PATH . $mediaFolder;
+        $this->webPathMedia = $rootWebPath . MediaFolderPath::PATH_WEB_PATH->value . $mediaFolder;
 
-        $this->webPathThumbnail = $rootWebPath . MediaFolderConst::PATH_WEB_THUMBNAILS;
+        $this->webPathThumbnail = $rootWebPath . MediaFolderPath::PATH_WEB_THUMBNAILS->value;
 
         $optCanCreatePhysicalFolder = $optionSystemService->getValueByKey(
             OptionSystem::OS_MEDIA_CREATE_PHYSICAL_FOLDER->value,

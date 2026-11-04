@@ -16,7 +16,6 @@ use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
 use App\Service\Global\MarkdownService;
 use App\Utils\System\Mail\KeyWord;
-use App\Utils\System\Mail\MailKey;
 use App\Utils\System\Mail\MailTemplate;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use League\CommonMark\Exception\CommonMarkException;
@@ -25,6 +24,7 @@ use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use App\Enum\Admin\Global\SvgIcon;
+use App\Enum\Admin\System\Mail\MailKey;
 
 class MailService extends AppAdminService
 {
@@ -415,27 +415,27 @@ class MailService extends AppAdminService
         $keyWord = new KeyWord($mail->getKey());
 
         return match ($mail->getKey()) {
-            MailKey::MAIL_CHANGE_PASSWORD => $keyWord->getMailChangePassword($user, $url, $optionSystemService),
-            MailKey::MAIL_ACCOUNT_ADM_DISABLE => $keyWord->getTabMailAccountAdmDisabled(
+            MailKey::CHANGE_PASSWORD->value => $keyWord->getMailChangePassword($user, $url, $optionSystemService),
+            MailKey::ACCOUNT_ADM_DISABLE->value => $keyWord->getTabMailAccountAdmDisabled(
                 $user,
                 $user,
                 $optionSystemService,
             ),
-            MailKey::MAIL_ACCOUNT_ADM_ENABLE => $keyWord->getTabMailAccountAdmEnabled(
+            MailKey::ACCOUNT_ADM_ENABLE->value => $keyWord->getTabMailAccountAdmEnabled(
                 $user,
                 $user,
                 $optionSystemService,
             ),
-            MailKey::MAIL_CREATE_ACCOUNT_ADM => $keyWord->getTabMailCreateAccountAdm(
+            MailKey::CREATE_ACCOUNT_ADM->value => $keyWord->getTabMailCreateAccountAdm(
                 $user,
                 $user,
                 $url,
                 $optionSystemService,
             ),
-            MailKey::MAIL_SELF_DISABLED_ACCOUNT => $keyWord->getTabMailSelfDisabled($user, $optionSystemService),
-            MailKey::MAIL_SELF_DELETE_ACCOUNT => $keyWord->getTabMailSelfDelete($user, $optionSystemService),
-            MailKey::MAIL_SELF_ANONYMOUS_ACCOUNT => $keyWord->getTabMailSelfAnonymous($user, $optionSystemService),
-            MailKey::MAIL_RESET_PASSWORD => $keyWord->getTabMailResetPassword($user, $user, $url, $optionSystemService),
+            MailKey::SELF_DISABLED_ACCOUNT->value => $keyWord->getTabMailSelfDisabled($user, $optionSystemService),
+            MailKey::SELF_DELETE_ACCOUNT->value => $keyWord->getTabMailSelfDelete($user, $optionSystemService),
+            MailKey::SELF_ANONYMOUS_ACCOUNT->value => $keyWord->getTabMailSelfAnonymous($user, $optionSystemService),
+            MailKey::RESET_PASSWORD->value => $keyWord->getTabMailResetPassword($user, $user, $url, $optionSystemService),
             default => [
                 KeyWord::KEY_SEARCH => [],
                 KeyWord::KEY_REPLACE => [],

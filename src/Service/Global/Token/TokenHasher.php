@@ -6,7 +6,7 @@ declare(strict_types=1);
  * @version 1.0
  * Hash des tokens d'accès (ApiToken, token utilisateur API) avant stockage
  */
-namespace App\Utils\System\ApiToken;
+namespace App\Service\Global\Token;
 
 class TokenHasher
 {

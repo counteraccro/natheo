@@ -17,7 +17,6 @@ use App\Entity\Admin\Content\Comment\Comment;
 use App\Resolver\Api\Content\Comment\ApiAddCommentResolver;
 use App\Resolver\Api\Content\Comment\ApiCommentByPageResolver;
 use App\Resolver\Api\Content\Comment\ApiModerateCommentResolver;
-use App\Utils\Api\ApiConst;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
@@ -30,6 +29,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\RateLimiter\RateLimiterFactoryInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use App\Enum\Api\ApiMessage;
 
 #[Route('/api/{api_version}/comment', name: 'api_comment_', requirements: ['api_version' => '%app.api_version%'])]
 #[IsGranted('ROLE_READ_API')]
@@ -53,7 +53,7 @@ class ApiCommentController extends AppApiController
         $apiCommentService = $this->getApiCommentService();
         $result = $apiCommentService->getCommentByPageIdOrSlug($apiCommentByPageDto, $user);
 
-        return $this->apiResponse(ApiConst::API_MSG_SUCCESS, $result);
+        return $this->apiResponse(ApiMessage::SUCCESS->value, $result);
     }
 
     /**
@@ -103,7 +103,7 @@ class ApiCommentController extends AppApiController
         }
 
         return $this->apiResponse(
-            ApiConst::API_MSG_SUCCESS,
+            ApiMessage::SUCCESS->value,
             ['id' => $comment->getId()],
             status: Response::HTTP_CREATED,
         );
@@ -135,7 +135,7 @@ class ApiCommentController extends AppApiController
         $apiCommentService->moderateComment($apiModerateCommentDto, $comment, $user);
 
         return $this->apiResponse(
-            ApiConst::API_MSG_SUCCESS,
+            ApiMessage::SUCCESS->value,
             [$translator->trans('api_errors.comment.moderate', domain: 'api_errors')],
             status: Response::HTTP_ACCEPTED,
         );

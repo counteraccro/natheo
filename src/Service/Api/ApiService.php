@@ -11,9 +11,9 @@ namespace App\Service\Api;
 
 use App\Entity\Admin\System\ApiToken;
 use App\Entity\Admin\System\User;
-use App\Utils\System\ApiToken\TokenHasher;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use App\Service\Global\Token\TokenHasher;
 
 class ApiService extends AppApiService
 {

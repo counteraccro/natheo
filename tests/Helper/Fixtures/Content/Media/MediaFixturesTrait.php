@@ -13,7 +13,7 @@ use App\Entity\Admin\Content\Media\Media;
 use App\Entity\Admin\Content\Media\MediaFolder;
 use App\Entity\Admin\System\User;
 use App\Tests\Helper\FakerTrait;
-use App\Utils\Content\Media\MediaConst;
+use App\Enum\Admin\Content\Media\MediaType;
 
 trait MediaFixturesTrait
 {
@@ -49,7 +49,7 @@ trait MediaFixturesTrait
             $user = $this->createUserContributeur();
         }
 
-        $types = [MediaConst::MEDIA_TYPE_IMG, MediaConst::MEDIA_TYPE_FILE];
+        $types = [MediaType::IMG->value, MediaType::FILE->value];
 
         $data = [
             'name' => $name,

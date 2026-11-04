@@ -11,7 +11,7 @@ namespace App\Tests\Helper\Fixtures\System;
 
 use App\Entity\Admin\System\ApiToken;
 use App\Tests\Helper\FakerTrait;
-use App\Utils\System\ApiToken\TokenHasher;
+use App\Service\Global\Token\TokenHasher;
 
 trait ApiTokenFixturesTrait
 {

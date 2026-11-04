@@ -18,12 +18,12 @@ use App\Repository\Admin\Content\Comment\CommentRepository;
 use App\Repository\Admin\Content\Page\PageRepository;
 use App\Repository\Admin\Content\Page\PageStatistiqueRepository;
 use App\Repository\Admin\System\ApiTokenRepository;
-use App\Utils\System\ApiToken\ApiTokenConst;
-use App\Utils\System\ApiToken\TokenHasher;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
+use App\Service\Global\Token\TokenHasher;
+use App\Enum\Admin\System\ApiToken\ApiTokenDefault;
 
 class DashboardService extends AppAdminService
 {
@@ -53,7 +53,7 @@ class DashboardService extends AppAdminService
         $apiTokensDefault = $this->findBy(ApiToken::class, [
             'token' => array_map(
                 [TokenHasher::class, 'hash'],
-                [ApiTokenConst::API_TOKEN_READ, ApiTokenConst::API_TOKEN_WRITE, ApiTokenConst::API_TOKEN_ADMIN],
+                [ApiTokenDefault::READ->value, ApiTokenDefault::WRITE->value, ApiTokenDefault::ADMIN->value],
             ),
         ]);
         $nbApiToken = $this->apiTokenRepo->count([]);

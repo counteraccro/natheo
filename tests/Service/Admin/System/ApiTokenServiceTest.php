@@ -11,8 +11,6 @@ namespace App\Tests\Service\Admin\System;
 use App\Entity\Admin\System\ApiToken;
 use App\Service\Admin\System\ApiTokenService;
 use App\Tests\AppWebTestCase;
-use App\Utils\System\ApiToken\ApiTokenConst;
-use App\Utils\System\ApiToken\TokenHasher;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -21,6 +19,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
+use App\Service\Global\Token\TokenHasher;
+use App\Enum\Admin\System\ApiToken\ApiTokenRole;
 
 class ApiTokenServiceTest extends AppWebTestCase
 {
@@ -103,9 +103,9 @@ class ApiTokenServiceTest extends AppWebTestCase
     {
         $result = $this->apiTokenService->getRolesApi();
         $this->assertIsArray($result);
-        $this->assertArrayHasKey(ApiTokenConst::API_TOKEN_ROLE_READ, $result);
-        $this->assertArrayHasKey(ApiTokenConst::API_TOKEN_ROLE_WRITE, $result);
-        $this->assertArrayHasKey(ApiTokenConst::API_TOKEN_ROLE_ADMIN, $result);
+        $this->assertArrayHasKey(ApiTokenRole::READ->value, $result);
+        $this->assertArrayHasKey(ApiTokenRole::WRITE->value, $result);
+        $this->assertArrayHasKey(ApiTokenRole::ADMIN->value, $result);
     }
 
     /**
@@ -118,7 +118,7 @@ class ApiTokenServiceTest extends AppWebTestCase
     {
         $data = [
             'name' => 'test',
-            'roles' => ['ROLE_SUPER_ADMIN', ApiTokenConst::API_TOKEN_ROLE_WRITE],
+            'roles' => ['ROLE_SUPER_ADMIN', ApiTokenRole::WRITE->value],
             'comment' => 'test comment',
             'token' => 'un-token',
             'expiresAt' => '2099-01-15',
@@ -134,11 +134,11 @@ class ApiTokenServiceTest extends AppWebTestCase
         $this->assertFalse($apiToken->isDisabled());
         $this->assertEquals(TokenHasher::hash($result['token']), $apiToken->getToken());
         $this->assertNotEquals(TokenHasher::hash($data['token']), $apiToken->getToken());
-        $this->assertEquals([ApiTokenConst::API_TOKEN_ROLE_WRITE, ApiTokenConst::API_TOKEN_ROLE_READ], $apiToken->getRoles());
+        $this->assertEquals([ApiTokenRole::WRITE->value, ApiTokenRole::READ->value], $apiToken->getRoles());
         $this->assertEquals('2099-01-15 23:59:59', $apiToken->getExpiresAt()->format('Y-m-d H:i:s'));
 
         $result = $this->apiTokenService->createApiToken(['name' => 'sans role', 'roles' => ['ROLE_INCONNU']]);
-        $this->assertEquals([ApiTokenConst::API_TOKEN_ROLE_READ], $result['apiToken']->getRoles());
+        $this->assertEquals([ApiTokenRole::READ->value], $result['apiToken']->getRoles());
         $this->assertNull($result['apiToken']->getExpiresAt());
     }
 
@@ -155,7 +155,7 @@ class ApiTokenServiceTest extends AppWebTestCase
 
         $this->apiTokenService->updateApiToken($apiToken, [
             'name' => 'edit',
-            'roles' => [ApiTokenConst::API_TOKEN_ROLE_ADMIN],
+            'roles' => [ApiTokenRole::ADMIN->value],
             'comment' => 'edit comment',
             'token' => 'un-token-edit',
             'expiresAt' => 'date-invalide',
@@ -166,7 +166,7 @@ class ApiTokenServiceTest extends AppWebTestCase
         $this->assertEquals($hash, $apiToken->getToken());
         $this->assertTrue($apiToken->isDisabled());
         $this->assertNull($apiToken->getExpiresAt());
-        $this->assertContains(ApiTokenConst::API_TOKEN_ROLE_ADMIN, $apiToken->getRoles());
+        $this->assertContains(ApiTokenRole::ADMIN->value, $apiToken->getRoles());
     }
 
     /**
@@ -194,13 +194,13 @@ class ApiTokenServiceTest extends AppWebTestCase
     public function testGetApiTokenFormData(): void
     {
         $apiToken = $this->createApiToken([
-            'roles' => [ApiTokenConst::API_TOKEN_ROLE_WRITE],
+            'roles' => [ApiTokenRole::WRITE->value],
             'expiresAt' => new \DateTime('2099-06-01 23:59:59'),
         ]);
         $result = $this->apiTokenService->getApiTokenFormData($apiToken);
         $this->assertArrayNotHasKey('token', $result);
         $this->assertEquals($apiToken->getId(), $result['id']);
-        $this->assertEquals([ApiTokenConst::API_TOKEN_ROLE_WRITE], $result['roles']);
+        $this->assertEquals([ApiTokenRole::WRITE->value], $result['roles']);
         $this->assertEquals('2099-06-01', $result['expiresAt']);
         $this->assertNull($result['lastUsedAt']);
     }

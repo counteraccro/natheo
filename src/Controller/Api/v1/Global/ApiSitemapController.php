@@ -10,12 +10,12 @@ declare(strict_types=1);
 namespace App\Controller\Api\v1\Global;
 
 use App\Controller\Api\v1\AppApiController;
-use App\Utils\Api\ApiConst;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use App\Enum\Api\ApiMessage;
 
 #[Route('/api/{api_version}/sitemap', name: 'api_sitemap_', requirements: ['api_version' => '%app.api_version%'])]
 #[IsGranted('ROLE_READ_API')]
@@ -39,6 +39,6 @@ class ApiSitemapController extends AppApiController
     public function getSitemap(): jsonResponse
     {
         $apiSitemapService = $this->getApiSitemapService();
-        return $this->apiResponse(ApiConst::API_MSG_SUCCESS, $apiSitemapService->getSitemap());
+        return $this->apiResponse(ApiMessage::SUCCESS->value, $apiSitemapService->getSitemap());
     }
 }

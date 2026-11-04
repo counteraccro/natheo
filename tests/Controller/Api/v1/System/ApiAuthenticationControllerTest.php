@@ -13,8 +13,8 @@ use App\Entity\Admin\System\ApiToken;
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Admin\System\OptionSystemService;
 use App\Tests\Controller\Api\AppApiTestCase;
-use App\Utils\System\ApiToken\TokenHasher;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use App\Service\Global\Token\TokenHasher;
 
 class ApiAuthenticationControllerTest extends AppApiTestCase
 {

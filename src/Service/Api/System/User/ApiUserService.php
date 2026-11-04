@@ -13,9 +13,9 @@ use App\Entity\Admin\System\UserData;
 use App\Repository\Admin\System\UserRepository;
 use App\Service\Api\AppApiService;
 use App\Enum\Admin\System\User\UserDataKey;
-use App\Utils\System\ApiToken\TokenHasher;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use App\Service\Global\Token\TokenHasher;
 
 class ApiUserService extends AppApiService
 {

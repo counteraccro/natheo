@@ -13,9 +13,11 @@ use App\Entity\Admin\System\ApiToken;
 use App\Entity\Admin\System\OptionSystem;
 use App\Enum\Admin\System\Options\OptionSystem as OptionSystemEnum;
 use App\Tests\AppWebTestCase;
-use App\Utils\System\ApiToken\ApiTokenConst;
-use App\Utils\System\ApiToken\TokenHasher;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
+use App\Service\Global\Token\TokenHasher;
+use App\Enum\Admin\System\ApiToken\ApiTokenRole;
+use App\Enum\Admin\System\ApiToken\ApiTokenDefault;
+use App\Service\Global\Token\TokenGenerator;
 
 class ApiTokenFixtureTest extends AppWebTestCase
 {
@@ -42,20 +44,20 @@ class ApiTokenFixtureTest extends AppWebTestCase
         $this->assertMatchesRegularExpression(
             sprintf(
                 '/^[A-Za-z0-9]{%1$d}(\.[A-Za-z0-9]{%1$d}){%2$d}$/',
-                ApiTokenConst::API_TOKEN_LENGTH,
-                ApiTokenConst::API_TOKEN_SEGMENT - 1,
+                TokenGenerator::SEGMENT_LENGTH,
+                TokenGenerator::SEGMENT_COUNT - 1,
             ),
             $token,
         );
         $this->assertNotContains($token, [
-            ApiTokenConst::API_TOKEN_READ,
-            ApiTokenConst::API_TOKEN_WRITE,
-            ApiTokenConst::API_TOKEN_ADMIN,
+            ApiTokenDefault::READ->value,
+            ApiTokenDefault::WRITE->value,
+            ApiTokenDefault::ADMIN->value,
         ]);
 
         $apiToken = $this->em->getRepository(ApiToken::class)->findOneBy(['token' => TokenHasher::hash($token)]);
         $this->assertInstanceOf(ApiToken::class, $apiToken);
         $this->assertFalse($apiToken->isDisabled());
-        $this->assertContains(ApiTokenConst::API_TOKEN_ROLE_WRITE, $apiToken->getRoles());
+        $this->assertContains(ApiTokenRole::WRITE->value, $apiToken->getRoles());
     }
 }

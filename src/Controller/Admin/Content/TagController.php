@@ -18,7 +18,6 @@ use App\Enum\Admin\System\Options\OptionUser;
 use App\Security\Voter\ContentVoter;
 use App\Service\Admin\Content\Tag\TagService;
 use App\Translate\Admin\Content\TagTranslate;
-use App\Utils\Flash\FlashKey;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
@@ -29,6 +28,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use App\Enum\Admin\Global\FlashKey;
 
 #[Route('/admin/{_locale}/tag', name: 'admin_tag_', requirements: ['_locale' => '%app.supported_locales%'])]
 #[IsGranted('ROLE_CONTRIBUTEUR')]
@@ -285,9 +285,9 @@ class TagController extends AppAdminController
         $tab = $tagService->getResponseAjax($msg);
 
         if ($tab['success']) {
-            $this->addFlash(FlashKey::FLASH_SUCCESS, $msg);
+            $this->addFlash(FlashKey::SUCCESS->value, $msg);
         } else {
-            $this->addFlash(FlashKey::FLASH_DANGER, $tab['msg']);
+            $this->addFlash(FlashKey::DANGER->value, $tab['msg']);
         }
         return $this->json(['etat' => $status, 'success' => $tab['success'], 'msg' => $tab['msg']]);
     }
