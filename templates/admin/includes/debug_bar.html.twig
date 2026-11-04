@@ -18,7 +18,7 @@
     <div class="debug-toolbar-panel">
         <div class="debug-toolbar-header">
             <div class="flex items-center gap-2">
-                <svg class="w-4 h-4" style="color: var(--primary-light);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-4 h-4 text-primary-light" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
                 </svg>
                 <span class="text-sm font-bold text-gray-300">{{ 'dev.debug.bar.title' | trans({}, 'dev') }}</span>
@@ -173,7 +173,7 @@
                         {% if user['avatar'] is not null %}
                         <img src="{{  user['avatar'] }}" class="avatar w-6 h-6 text-xs text-white mr-3" alt="img-{{ user['login'] }}">
                         {% else %}
-                            <div class="avatar w-6 h-6 text-xs text-white mr-3" style="background-color: var(--primary);">{{ user['firstLetter'] }}</div>
+                            <div class="avatar w-6 h-6 text-xs text-white mr-3 bg-primary">{{ user['firstLetter'] }}</div>
                         {% endif %}
                         <div>
                             <div class="font-semibold text-gray-900">{{ user['login'] }}</div>

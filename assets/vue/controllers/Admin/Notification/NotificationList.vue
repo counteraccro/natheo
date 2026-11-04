@@ -318,14 +318,14 @@ export default defineComponent({
     <div class="card rounded-lg p-4">
       <div class="flex items-center justify-between">
         <div>
-          <p class="text-sm font-medium" style="color: var(--text-secondary)">{{ translation.statNonLu }}</p>
+          <p class="text-sm font-medium text-fg-muted">{{ translation.statNonLu }}</p>
           <p class="text-2xl font-bold mt-1" id="unreadCount">{{ stats.nb_noRead }}</p>
         </div>
         <div
           class="w-12 h-12 rounded-lg flex items-center justify-center"
           style="background-color: rgba(139, 92, 246, 0.1)"
         >
-          <svg class="w-6 h-6" style="color: var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -340,20 +340,14 @@ export default defineComponent({
     <div class="card rounded-lg p-4">
       <div class="flex items-center justify-between">
         <div>
-          <p class="text-sm font-medium" style="color: var(--text-secondary)">{{ translation.statToday }}</p>
+          <p class="text-sm font-medium text-fg-muted">{{ translation.statToday }}</p>
           <p class="text-2xl font-bold mt-1" id="todayCount">{{ stats.nb_today }}</p>
         </div>
         <div
           class="w-12 h-12 rounded-lg flex items-center justify-center"
           style="background-color: rgba(16, 185, 129, 0.1)"
         >
-          <svg
-            class="w-6 h-6"
-            style="color: var(--status-validated)"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
+          <svg class="w-6 h-6 text-status-validated" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -368,14 +362,14 @@ export default defineComponent({
     <div class="card rounded-lg p-4">
       <div class="flex items-center justify-between">
         <div>
-          <p class="text-sm font-medium" style="color: var(--text-secondary)">{{ translation.statAll }}</p>
+          <p class="text-sm font-medium text-fg-muted">{{ translation.statAll }}</p>
           <p class="text-2xl font-bold mt-1" id="totalCount">{{ stats.nb_total }}</p>
         </div>
         <div
           class="w-12 h-12 rounded-lg flex items-center justify-center"
           style="background-color: rgba(59, 130, 246, 0.1)"
         >
-          <svg class="w-6 h-6" style="color: var(--btn-info)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-6 h-6 text-btn-info" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -478,12 +472,12 @@ export default defineComponent({
   </div>
 
   <div v-show="!loading" class="card rounded-lg mb-6 mt-3">
-    <div class="border-b border-default" style="border-color: var(--border-color)">
+    <div class="border-b border-default border-line">
       <ul
         class="flex flex-wrap -mb-px text-sm font-medium text-center px-4 sm:px-6"
         id="default-tab"
         data-tabs-toggle="#default-tab-content"
-        data-tabs-active-classes="text-[var(--primary)] border-[var(--primary)]"
+        data-tabs-active-classes="text-primary border-primary"
         role="tablist"
       >
         <li class="me-2" role="presentation">
@@ -494,7 +488,7 @@ export default defineComponent({
             @change="checkedAllNotification"
           />
           <button
-            class="inline-block p-3 border-b-2 hover:text-fg-brand hover:border-brand border-[var(--primary)] cursor-pointer"
+            class="inline-block p-3 border-b-2 hover:text-fg-brand hover:border-brand border-primary cursor-pointer"
             id="all-tab"
             style="margin-bottom: -1px"
             data-tabs-target="#all"
@@ -508,7 +502,7 @@ export default defineComponent({
         </li>
         <li class="me-2" role="presentation">
           <button
-            class="inline-block border-b-2 hover:text-fg-brand hover:border-brand border-[var(--primary)] cursor-pointer"
+            class="inline-block border-b-2 hover:text-fg-brand hover:border-brand border-primary cursor-pointer"
             :class="stats.nb_noRead ? 'p-[0.67em]' : 'p-3'"
             id="not-read-tab"
             style="margin-bottom: -1px"
@@ -552,7 +546,7 @@ export default defineComponent({
           :checked="checkedAll"
         />
 
-        <div v-else class="text-sm text-[var(--text-secondary)] p-4 sm:p-6 flex gap-1">
+        <div v-else class="text-sm text-fg-muted p-4 sm:p-6 flex gap-1">
           <svg
             class="w-5 h-5"
             aria-hidden="true"
@@ -583,7 +577,7 @@ export default defineComponent({
           @mark-as-read="markAsRead"
           @delete="deleteNotif"
         />
-        <div v-else class="text-sm text-[var(--text-secondary)] p-4 sm:p-6 flex gap-1">
+        <div v-else class="text-sm text-fg-muted p-4 sm:p-6 flex gap-1">
           <svg
             class="w-5 h-5"
             aria-hidden="true"
@@ -620,7 +614,7 @@ export default defineComponent({
           @mark-as-read="markAsRead"
           @delete="deleteNotif"
         />
-        <div v-else class="text-sm text-[var(--text-secondary)] p-4 sm:p-6 flex gap-1">
+        <div v-else class="text-sm text-fg-muted p-4 sm:p-6 flex gap-1">
           <svg
             class="w-5 h-5"
             aria-hidden="true"

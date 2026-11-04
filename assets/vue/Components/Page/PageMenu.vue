@@ -127,12 +127,10 @@ export default defineComponent({
     <div class="p-5 flex flex-col gap-3">
       <div class="card rounded-lg p-4" style="border-color: var(--border-color)">
         <div class="flex items-center gap-2 mb-3">
-          <svg class="icon-sm" style="color: var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="icon-sm text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
           </svg>
-          <span class="text-sm font-semibold" style="color: var(--text-primary)">{{
-            translate.page_menu.list_menu_header
-          }}</span>
+          <span class="text-sm font-semibold text-fg">{{ translate.page_menu.list_menu_header }}</span>
         </div>
         <select id="menu-header" class="form-input" v-model.number="selectedHeader">
           <option :value="0">{{ translate.page_menu.list_menu_empty }}</option>
@@ -145,12 +143,10 @@ export default defineComponent({
       <div class="grid grid-cols-2 gap-3">
         <div class="card rounded-lg p-4" style="border-color: var(--border-color)">
           <div class="flex items-center gap-2 mb-3">
-            <svg class="icon-sm" style="color: var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="icon-sm text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
             </svg>
-            <span class="text-sm font-semibold" style="color: var(--text-primary)">{{
-              translate.page_menu.list_menu_left
-            }}</span>
+            <span class="text-sm font-semibold text-fg">{{ translate.page_menu.list_menu_left }}</span>
           </div>
           <select id="menu-left" class="form-input" v-model.number="selectedLeft">
             <option :value="0">{{ translate.page_menu.list_menu_empty }}</option>
@@ -162,12 +158,10 @@ export default defineComponent({
 
         <div class="card rounded-lg p-4" style="border-color: var(--border-color)">
           <div class="flex items-center gap-2 mb-3">
-            <svg class="icon-sm" style="color: var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="icon-sm text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
             </svg>
-            <span class="text-sm font-semibold" style="color: var(--text-primary)">{{
-              translate.page_menu.list_menu_right
-            }}</span>
+            <span class="text-sm font-semibold text-fg">{{ translate.page_menu.list_menu_right }}</span>
           </div>
           <select id="menu-right" class="form-input" v-model.number="selectedRight">
             <option :value="0">{{ translate.page_menu.list_menu_empty }}</option>
@@ -180,12 +174,10 @@ export default defineComponent({
 
       <div class="card rounded-lg p-4" style="border-color: var(--border-color)">
         <div class="flex items-center gap-2 mb-3">
-          <svg class="icon-sm" style="color: var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="icon-sm text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
           </svg>
-          <span class="text-sm font-semibold" style="color: var(--text-primary)">{{
-            translate.page_menu.list_menu_footer
-          }}</span>
+          <span class="text-sm font-semibold text-fg">{{ translate.page_menu.list_menu_footer }}</span>
         </div>
         <select id="menu-footer" class="form-input" v-model.number="selectedFooter">
           <option :value="0">{{ translate.page_menu.list_menu_empty }}</option>
@@ -195,14 +187,8 @@ export default defineComponent({
         </select>
       </div>
 
-      <div class="flex items-start gap-2 p-3 rounded-lg" style="background-color: var(--primary-lighter)">
-        <svg
-          class="icon-sm shrink-0 mt-0.5"
-          style="color: var(--primary)"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
+      <div class="flex items-start gap-2 p-3 rounded-lg bg-primary-lighter">
+        <svg class="icon-sm shrink-0 mt-0.5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
@@ -210,7 +196,7 @@ export default defineComponent({
             d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
           />
         </svg>
-        <span class="text-xs" style="color: var(--primary)">{{ translate.page_menu.list_menu_help }}</span>
+        <span class="text-xs text-primary">{{ translate.page_menu.list_menu_help }}</span>
       </div>
     </div>
   </div>

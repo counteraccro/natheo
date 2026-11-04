@@ -419,7 +419,7 @@ export default defineComponent({
 <template>
   <div
     class="md-editor-wrap"
-    :class="showRequiredError ? 'border-2 border-[var(--input-invalid)]' : 'border-1 border-[var(--border-color)]'"
+    :class="showRequiredError ? 'border-2 border-[var(--input-invalid)]' : 'border-1 border-line'"
   >
     <!-- ── TOOLBAR ─────────────────────────────────────── -->
     <div ref="toolbarRef" class="md-toolbar" role="toolbar" @keydown="onDropdownKeydown">
@@ -602,7 +602,7 @@ export default defineComponent({
     >
       <svg
         style="width: 0.875rem; height: 0.875rem; flex-shrink: 0"
-        :class="showRequiredError ? 'text-[var(--error-text)]' : 'text-[var(--text-light)]'"
+        :class="showRequiredError ? 'text-[var(--error-text)]' : 'text-fg-subtle'"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"

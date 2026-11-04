@@ -279,7 +279,7 @@ export default defineComponent({
             <p class="text-3xl font-bold">{{ result.stat.nbTable }}</p>
             <p class="text-sm font-medium mt-1">{{ translate.stat_nb_table }}</p>
           </div>
-          <div class="p-3 rounded-lg bg-[var(--primary)] opacity-60">
+          <div class="p-3 rounded-lg bg-primary opacity-60">
             <svg
               class="w-8 h-8 text-white opacity-100"
               aria-hidden="true"
@@ -309,7 +309,7 @@ export default defineComponent({
             <p class="text-3xl font-bold">{{ result.stat.nbElement }}</p>
             <p class="text-sm font-medium mt-1">{{ translate.stat_nb_row }}</p>
           </div>
-          <div class="p-3 rounded-lg bg-[var(--primary)] opacity-60">
+          <div class="p-3 rounded-lg bg-primary opacity-60">
             <svg
               class="w-8 h-8 text-white opacity-100"
               aria-hidden="true"
@@ -337,7 +337,7 @@ export default defineComponent({
             <p class="text-3xl font-bold">{{ result.stat.sizeBite }}</p>
             <p class="text-sm font-medium mt-1">{{ translate.stat_size }}</p>
           </div>
-          <div class="p-3 rounded-lg bg-[var(--primary)] opacity-60">
+          <div class="p-3 rounded-lg bg-primary opacity-60">
             <svg
               class="w-8 h-8 text-white opacity-100"
               aria-hidden="true"
@@ -361,17 +361,17 @@ export default defineComponent({
   </div>
 
   <div class="card rounded-lg mb-6 mt-6">
-    <div class="border-b border-default" style="border-color: var(--border-color)">
+    <div class="border-b border-default border-line">
       <ul
         class="flex flex-wrap -mb-px text-sm font-medium text-center"
         id="default-styled-tab"
         data-tabs-toggle="#nav-tab-database-manager"
-        data-tabs-active-classes="text-[var(--primary)] border-[var(--primary)]"
+        data-tabs-active-classes="text-primary border-primary"
         role="tablist"
       >
         <li class="me-2" role="presentation">
           <button
-            class="inline-block p-3 border-b-2 rounded-t-base text-[var(--primary)] border-[var(--primary)] cursor-pointer"
+            class="inline-block p-3 border-b-2 rounded-t-base text-primary border-primary cursor-pointer"
             id="nav-0-tab"
             data-tabs-target="#tab-0"
             type="button"
@@ -493,10 +493,10 @@ export default defineComponent({
       <div class="hidden" id="tab-2" role="tabpanel" aria-labelledby="profile-tab">
         <div class="max-w-2xl mx-auto mt-6 mb-6">
           <div class="mb-6">
-            <h3 class="text-lg font-semibold mb-2 text-[var(--text-primary)]">
+            <h3 class="text-lg font-semibold mb-2 text-fg">
               {{ translate.dump_option.title }}
             </h3>
-            <p class="text-sm text-[var(--text-secondary)]">{{ translate.dump_option.sub_title_1 }}</p>
+            <p class="text-sm text-fg-muted">{{ translate.dump_option.sub_title_1 }}</p>
           </div>
 
           <div>
@@ -506,17 +506,11 @@ export default defineComponent({
           </div>
 
           <div>
-            <label class="block text-sm font-medium mb-2 mt-6" style="color: var(--text-primary)">{{
-              translate.dump_option.sub_title_2
-            }}</label>
-            <div
-              class="space-y-2 p-4 rounded-lg border"
-              style="border-color: var(--border-color); background-color: var(--bg-hover)"
-            >
+            <label class="block text-sm font-medium mb-2 mt-6 text-fg">{{ translate.dump_option.sub_title_2 }}</label>
+            <div class="space-y-2 p-4 rounded-lg border border-line bg-surface-hover">
               <div class="form-check">
                 <input
-                  class="form-check-input"
-                  style="color: var(--primary)"
+                  class="form-check-input text-primary"
                   type="radio"
                   value="1"
                   id="all-data"
@@ -529,8 +523,7 @@ export default defineComponent({
               </div>
               <div class="form-check">
                 <input
-                  class="form-check-input"
-                  style="color: var(--primary)"
+                  class="form-check-input text-primary"
                   type="radio"
                   value="0"
                   id="select-data"
@@ -605,7 +598,7 @@ export default defineComponent({
   >
     <template #title> {{ translate.list_dump.title_modale_confirm }} </template>
     <template #body>
-      <p class="text-sm text-[var(--text-secondary)]">{{ translate.list_dump.text_modale_confirm }}</p>
+      <p class="text-sm text-fg-muted">{{ translate.list_dump.text_modale_confirm }}</p>
     </template>
     <template #footer>
       <button type="button" class="btn btn-primary btn-sm me-2" @click="deleteDumpFile(deleteFileName, true)">

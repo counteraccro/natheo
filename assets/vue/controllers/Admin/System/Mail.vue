@@ -184,8 +184,8 @@ export default defineComponent({
   </div>
   <div v-else-if="mail">
     <div class="card rounded-lg p-5 mb-5 flex flex-wrap gap-4">
-      <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center bg-[var(--primary-lighter)]">
-        <svg class="w-5 h-5 text-[var(--primary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center bg-primary-lighter">
+        <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
@@ -196,8 +196,8 @@ export default defineComponent({
       </div>
 
       <div class="flex-1 min-w-0">
-        <p class="font-semibold text-sm text-[var(--text-primary)]">{{ mail.title }}</p>
-        <p class="text-sm mt-0.5 text-[var(--text-secondary)]">
+        <p class="font-semibold text-sm text-fg">{{ mail.title }}</p>
+        <p class="text-sm mt-0.5 text-fg-muted">
           {{ mail.description }}
         </p>
       </div>

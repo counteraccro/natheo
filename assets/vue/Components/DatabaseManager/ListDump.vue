@@ -28,9 +28,9 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="p-4 sm:p-6 border-b" style="border-color: var(--border-color)">
+  <div class="p-4 sm:p-6 border-b border-line">
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-      <p class="text-sm" style="color: var(--text-secondary)">{{ translate.title }}</p>
+      <p class="text-sm text-fg-muted">{{ translate.title }}</p>
       <button type="button" class="btn btn-outline-dark btn-md" @click="$emit('refresh-dump')">
         <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
@@ -45,17 +45,17 @@ export default defineComponent({
     </div>
   </div>
 
-  <div class="divide-y divide-[var(--border-color)]">
-    <div class="p-4 sm:p-6 hover:bg-opacity-50 transition-colors" style="background-color: var(--bg-card)">
+  <div class="divide-y divide-line">
+    <div class="p-4 sm:p-6 hover:bg-opacity-50 transition-colors bg-card">
       <template v-if="data.length">
         <div
           v-for="row in data"
           :key="row.name"
-          class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-4 hover:bg-[var(--bg-hover)]"
+          class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-4 hover:bg-surface-hover"
         >
           <div class="flex items-start gap-4">
-            <div class="p-3 rounded-lg" style="background-color: var(--primary-lighter)">
-              <svg class="w-6 h-6" style="color: var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="p-3 rounded-lg bg-primary-lighter">
+              <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
@@ -65,8 +65,8 @@ export default defineComponent({
               </svg>
             </div>
             <div>
-              <h4 class="font-semibold" style="color: var(--text-primary)">{{ row.name }}</h4>
-              <div class="flex flex-wrap items-center gap-3 mt-1 text-xs" style="color: var(--text-secondary)">
+              <h4 class="font-semibold text-fg">{{ row.name }}</h4>
+              <div class="flex flex-wrap items-center gap-3 mt-1 text-xs text-fg-muted">
                 <span class="flex items-center gap-1">
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
@@ -89,11 +89,9 @@ export default defineComponent({
                   </svg>
                   {{ row.size }}
                 </span>
-                <span
-                  class="px-2 py-0.5 rounded-full text-xs font-medium"
-                  style="background-color: var(--primary-lighter); color: var(--primary)"
-                  >{{ row.extension }}</span
-                >
+                <span class="px-2 py-0.5 rounded-full text-xs font-medium bg-primary-lighter text-primary">{{
+                  row.extension
+                }}</span>
               </div>
             </div>
           </div>
@@ -131,7 +129,7 @@ export default defineComponent({
         </div>
       </template>
       <div v-else>
-        <div class="text-center py-6 text-[var(--text-secondary)]">
+        <div class="text-center py-6 text-fg-muted">
           <svg
             class="w-16 h-16 mx-auto mb-4 text-[var(-text-light)]"
             fill="none"

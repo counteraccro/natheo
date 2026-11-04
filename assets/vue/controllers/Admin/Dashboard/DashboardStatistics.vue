@@ -67,9 +67,9 @@ export default defineComponent({
     <div class="card rounded-lg p-6">
       <div class="flex items-center justify-between">
         <div>
-          <p class="text-sm font-medium" style="color: var(--text-secondary)">{{ translate.total_article }}</p>
+          <p class="text-sm font-medium text-fg-muted">{{ translate.total_article }}</p>
           <p class="text-3xl font-bold mt-2">{{ stats.nbPage }}</p>
-          <p class="text-xs mt-1" style="color: var(--text-light)">
+          <p class="text-xs mt-1 text-fg-subtle">
             <a :href="urls.page" class="flex gap-0.5 items-center"
               >{{ translate.link_pages }}
               <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -78,7 +78,7 @@ export default defineComponent({
           </p>
         </div>
         <div class="p-3 rounded-lg" style="background-color: color-mix(in srgb, var(--primary) 10%, transparent)">
-          <svg class="w-8 h-8" style="color: var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -93,9 +93,9 @@ export default defineComponent({
     <div class="card rounded-lg p-6">
       <div class="flex items-center justify-between">
         <div>
-          <p class="text-sm font-medium" style="color: var(--text-secondary)">{{ translate.comments }}</p>
+          <p class="text-sm font-medium text-fg-muted">{{ translate.comments }}</p>
           <p class="text-3xl font-bold mt-2">{{ stats.nbComments }}</p>
-          <p class="text-xs mt-1" style="color: var(--text-light)">
+          <p class="text-xs mt-1 text-fg-subtle">
             <a :href="urls.comment" class="flex gap-0.5 items-center"
               >{{ stats.nbWaitComments }} {{ translate.comments_waiting }}
               <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -107,13 +107,7 @@ export default defineComponent({
           class="p-3 rounded-lg"
           style="background-color: color-mix(in srgb, var(--status-validated) 10%, transparent)"
         >
-          <svg
-            class="w-8 h-8"
-            style="color: var(--status-validated)"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
+          <svg class="w-8 h-8 text-status-validated" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -128,9 +122,9 @@ export default defineComponent({
     <div class="card rounded-lg p-6">
       <div class="flex items-center justify-between">
         <div>
-          <p class="text-sm font-medium" style="color: var(--text-secondary)">{{ translate.users }}</p>
+          <p class="text-sm font-medium text-fg-muted">{{ translate.users }}</p>
           <p class="text-3xl font-bold mt-2">{{ stats.nbUsers }}</p>
-          <p v-if="roles.isSuperAdmin" class="text-xs mt-1" style="color: var(--text-light)">
+          <p v-if="roles.isSuperAdmin" class="text-xs mt-1 text-fg-subtle">
             <a :href="urls.user" class="flex gap-0.5 items-center"
               >{{ translate.link_users }}
               <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -139,7 +133,7 @@ export default defineComponent({
           </p>
         </div>
         <div class="p-3 rounded-lg" style="background-color: color-mix(in srgb, var(--secondary) 10%, transparent)">
-          <svg class="w-8 h-8" style="color: var(--secondary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-8 h-8 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -154,21 +148,15 @@ export default defineComponent({
     <div class="card rounded-lg p-6">
       <div class="flex items-center justify-between">
         <div>
-          <p class="text-sm font-medium" style="color: var(--text-secondary)">{{ translate.views }}</p>
+          <p class="text-sm font-medium text-fg-muted">{{ translate.views }}</p>
           <p class="text-3xl font-bold mt-2">{{ stats.nbViews }}</p>
-          <p class="text-xs mt-1" style="color: var(--text-light)">{{ translate.info_cache }}</p>
+          <p class="text-xs mt-1 text-fg-subtle">{{ translate.info_cache }}</p>
         </div>
         <div
           class="p-3 rounded-lg"
           style="background-color: color-mix(in srgb, var(--status-pending) 10%, transparent)"
         >
-          <svg
-            class="w-8 h-8"
-            style="color: var(--status-pending)"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
+          <svg class="w-8 h-8 text-status-pending" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"

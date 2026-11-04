@@ -49,9 +49,8 @@ export default defineComponent({
     <!-- Élément avec enfants -->
     <template v-if="hasChildren">
       <button
-        class="w-full flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors hover:bg-gray-100 dark:hover:bg-gray-700"
+        class="w-full flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors hover:bg-gray-100 dark:hover:bg-gray-700 text-fg"
         :class="depth > 0 ? 'justify-between w-full' : ''"
-        style="color: var(--text-primary)"
       >
         {{ label }}
         <svg
@@ -69,9 +68,8 @@ export default defineComponent({
       <!-- Dropdown récursif -->
       <ul
         v-show="isOpen"
-        class="absolute z-50 min-w-44 py-1 rounded-xl border shadow-lg"
+        class="absolute z-50 min-w-44 py-1 rounded-xl border shadow-lg bg-card border-line"
         :class="depth === 0 ? 'top-full left-0 mt-1' : 'top-0 left-full ml-1'"
-        style="background-color: var(--bg-card); border-color: var(--border-color)"
       >
         <MenuHeaderDropdownItem
           v-for="child in element.children"
@@ -87,8 +85,7 @@ export default defineComponent({
     <template v-else>
       <a
         :href="url"
-        class="flex items-center px-3 py-2 rounded-lg text-sm transition-colors hover:bg-gray-100 dark:hover:bg-gray-700"
-        style="color: var(--text-primary)"
+        class="flex items-center px-3 py-2 rounded-lg text-sm transition-colors hover:bg-gray-100 dark:hover:bg-gray-700 text-fg"
         @click.prevent
       >
         {{ label }}

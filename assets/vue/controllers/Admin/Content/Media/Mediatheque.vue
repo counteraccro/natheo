@@ -326,14 +326,11 @@ export default defineComponent({
   <SkeletonMediatheque v-if="loading" />
 
   <div v-else id="block-mediatheque" class="card rounded-xl overflow-hidden">
-    <div
-      class="flex items-center justify-between px-4 py-3 border-b"
-      style="border-color: var(--border-color); background-color: var(--bg-main)"
-    >
+    <div class="flex items-center justify-between px-4 py-3 border-b border-line bg-surface">
       <MediasBreadcrumb v-if="render !== 'trash'" :paths="currentFolder.root" @load-folder="loadDataInFolder" />
       <div v-else class="flex items-center gap-0 text-sm">
         <button
-          class="flex items-center gap-1.5 px-2 py-1 rounded-md font-medium transition text-[var(--primary)] bg-[var(--primary-lighter)] cursor-pointer"
+          class="flex items-center gap-1.5 px-2 py-1 rounded-md font-medium transition text-primary bg-primary-lighter cursor-pointer"
         >
           <svg
             class="w-4 h-4"
@@ -359,10 +356,7 @@ export default defineComponent({
 
       <!-- Storage info -->
       <div class="flex items-center gap-2">
-        <div
-          class="hidden sm:flex items-center gap-2 text-xs px-3 py-1.5 rounded-full"
-          style="background-color: var(--bg-hover); color: var(--text-secondary)"
-        >
+        <div class="hidden sm:flex items-center gap-2 text-xs px-3 py-1.5 rounded-full bg-surface-hover text-fg-muted">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
@@ -373,7 +367,7 @@ export default defineComponent({
           </svg>
           <span class="font-semibold" v-html="render === 'trash' ? nbTrash : currentFolder.size"> </span>
           <span
-            style="color: var(--text-light)"
+            class="text-fg-subtle"
             v-html="render === 'trash' ? translate.nb_file_trash : translate.disque_size"
           ></span>
         </div>
@@ -382,7 +376,7 @@ export default defineComponent({
 
     <div
       v-if="render !== 'trash'"
-      class="flex flex-wrap items-center justify-between gap-3 px-4 py-3 border-b border-[var(--border-color)]"
+      class="flex flex-wrap items-center justify-between gap-3 px-4 py-3 border-b border-line"
     >
       <div class="flex items-center gap-2">
         <button class="btn btn-xs btn-primary inline-flex items-center gap-2 px-3 py-2" @click="newFolder">
@@ -414,13 +408,12 @@ export default defineComponent({
         <!--<div class="relative md:hidden">
           <input
             type="search"
-            class="search-input pl-8 pr-3 py-2 rounded-lg border text-sm w-40"
-            style="border-color: var(--border-color); background-color: var(--bg-card); color: var(--text-primary)"
+            class="search-input pl-8 pr-3 py-2 rounded-lg border text-sm w-40 bg-card text-fg"
+            style="border-color: var(--border-color)"
             placeholder="Rechercher…"
           />
           <svg
-            class="w-4 h-4 absolute left-2 top-2.5 pointer-events-none"
-            style="color: var(--text-light)"
+            class="w-4 h-4 absolute left-2 top-2.5 pointer-events-none text-fg-subtle"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -455,11 +448,9 @@ export default defineComponent({
           </button>
           <div
             id="sortDropdown"
-            class="z-50 rounded-lg shadow-lg w-48 hidden"
+            class="z-50 rounded-lg shadow-lg w-48 hidden bg-card border border-line"
             data-popper-placement="bottom"
             style="
-              background-color: var(--bg-card);
-              border: 1px solid var(--border-color);
               box-shadow: var(--shadow-md);
               position: absolute;
               inset: 0px auto auto 0px;
@@ -476,8 +467,7 @@ export default defineComponent({
             >
               <svg
                 v-if="filter === 'created_at'"
-                class="w-4 h-4"
-                style="color: var(--primary)"
+                class="w-4 h-4 text-primary"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -495,8 +485,7 @@ export default defineComponent({
             >
               <svg
                 v-if="filter === 'name'"
-                class="w-4 h-4"
-                style="color: var(--primary)"
+                class="w-4 h-4 text-primary"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -514,8 +503,7 @@ export default defineComponent({
             >
               <svg
                 v-if="filter === 'type'"
-                class="w-4 h-4"
-                style="color: var(--primary)"
+                class="w-4 h-4 text-primary"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -566,8 +554,8 @@ export default defineComponent({
           </svg>
           <span
             v-if="nbTrash > 0"
-            class="absolute -top-1.5 -right-1.5 min-w-4.5 h-4.5 flex items-center justify-center rounded-full text-white font-bold px-1"
-            style="font-size: 0.6rem; background-color: var(--btn-danger)"
+            class="absolute -top-1.5 -right-1.5 min-w-4.5 h-4.5 flex items-center justify-center rounded-full text-white font-bold px-1 bg-btn-danger"
+            style="font-size: 0.6rem"
           >
             {{ nbTrash > 99 ? '99+' : nbTrash }}
           </span>
@@ -613,10 +601,7 @@ export default defineComponent({
         </div>
       </div>
     </div>
-    <div
-      v-else
-      class="flex flex-wrap items-center justify-between gap-3 px-4 py-3 border-b border-[var(--border-color)]"
-    >
+    <div v-else class="flex flex-wrap items-center justify-between gap-3 px-4 py-3 border-b border-line">
       <div class="flex items-center gap-2"></div>
       <div class="flex items-center gap-2"></div>
       <div class="relative">
@@ -716,9 +701,7 @@ export default defineComponent({
         />
       </div>
     </div>
-    <div
-      class="px-4 py-3 border-t flex items-center justify-between text-xs border-[var(--border-color)] text-[var(--text-secondary)] bg-[var(--bg-main)]"
-    >
+    <div class="px-4 py-3 border-t flex items-center justify-between text-xs border-line text-fg-muted bg-surface">
       <div>
         <span v-html="render === 'trash' ? translate.header_trash : ''"></span>
       </div>

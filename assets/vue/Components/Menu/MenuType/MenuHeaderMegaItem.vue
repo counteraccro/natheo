@@ -32,10 +32,7 @@ export default defineComponent({
 <template>
   <li v-show="!element.disabled">
     <template v-if="hasChildren">
-      <span
-        class="block font-semibold mb-2 pb-2 border-b text-xs uppercase tracking-widest"
-        style="color: var(--primary); border-color: var(--border-color)"
-      >
+      <span class="block font-semibold mb-2 pb-2 border-b text-xs uppercase tracking-widest text-primary border-line">
         {{ label }}
       </span>
       <ul class="space-y-1" :class="depth > 0 ? 'ml-3 mt-2' : 'mt-2'">
@@ -54,12 +51,8 @@ export default defineComponent({
         class="flex items-center gap-2.5 group rounded-lg px-2 py-1.5 transition-colors hover:bg-gray-100 dark:hover:bg-gray-700"
         :class="depth > 0 ? 'ml-2' : ''"
       >
-        <div
-          v-if="depth === 0"
-          class="w-7 h-7 rounded-md flex items-center justify-center shrink-0"
-          style="background-color: var(--primary-lighter)"
-        >
-          <svg class="w-3.5 h-3.5" style="color: var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div v-if="depth === 0" class="w-7 h-7 rounded-md flex items-center justify-center shrink-0 bg-primary-lighter">
+          <svg class="w-3.5 h-3.5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -71,9 +64,8 @@ export default defineComponent({
 
         <span
           v-else
-          class="rounded-full shrink-0 transition-colors"
+          class="rounded-full shrink-0 transition-colors bg-primary-light"
           :class="depth === 1 ? 'w-1.5 h-1.5' : 'w-1 h-1'"
-          style="background-color: var(--primary-light)"
         ></span>
 
         <a

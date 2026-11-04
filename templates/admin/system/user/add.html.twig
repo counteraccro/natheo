@@ -6,13 +6,13 @@
 
     {{ breadcrumb(breadcrumb) }}
     <h1 class="head-title">
-        <svg class="w-7 h-7" style="color: var(--primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="w-7 h-7 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
         </svg>
         {{ 'user.page_add_title_h1' | trans({}, 'user') }}</h1>
 
-    <p class="text-sm text-[var(--text-secondary)] mb-3">
+    <p class="text-sm text-fg-muted mb-3">
         {{ 'user.page_add.description' | trans({}, 'user') }}
     </p>
 
@@ -149,7 +149,7 @@
             </div>
         </div>
         <div class="p-5">
-            <div class="text-sm text-[var(--text-secondary)]">
+            <div class="text-sm text-fg-muted">
 
                 <p class="mb-2">{{ 'user.page_add.information.role.info' | trans({}, 'user') }}</p>
 

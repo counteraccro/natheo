@@ -86,20 +86,12 @@ export default {
       <template v-if="confirmDeleteId === media.id">
         <div class="media-thumb">
           <div
-            class="absolute inset-0 flex flex-col items-center justify-center gap-3 p-4 text-center"
-            style="background-color: var(--alert-danger-bg)"
+            class="absolute inset-0 flex flex-col items-center justify-center gap-3 p-4 text-center bg-alert-danger-bg"
           >
             <div
-              class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
-              style="background-color: var(--alert-danger-bg); border: 1px solid var(--alert-danger-border)"
+              class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 bg-alert-danger-bg border border-alert-danger-border"
             >
-              <svg
-                class="w-5 h-5"
-                style="color: var(--btn-danger)"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
+              <svg class="w-5 h-5 text-btn-danger" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
@@ -108,16 +100,13 @@ export default {
                 />
               </svg>
             </div>
-            <p class="text-xs font-semibold" style="color: var(--alert-danger-text)">
+            <p class="text-xs font-semibold text-alert-danger-text">
               {{ translate.confirm_trash_title }}
             </p>
           </div>
         </div>
 
-        <div
-          class="media-meta gap-2"
-          style="background-color: var(--alert-danger-bg); border-top: 1px solid var(--alert-danger-border)"
-        >
+        <div class="media-meta gap-2 bg-alert-danger-bg" style="border-top: 1px solid var(--alert-danger-border)">
           <button
             @click.stop="confirmDelete(media.id, media.type)"
             class="flex-1 flex items-center justify-center gap-1 btn btn-xs btn-danger"
@@ -149,8 +138,8 @@ export default {
             >
               <span
                 v-if="media.nb_elements === 0"
-                class="text-sm font-semibold mt-5"
-                style="color: var(--primary); opacity: 0.9"
+                class="text-sm font-semibold mt-5 text-primary"
+                style="opacity: 0.9"
                 >{{ translate.folder_empty }}</span
               >
             </div>
@@ -181,26 +170,20 @@ export default {
           <Teleport to="body">
             <div
               :id="`dropdownTrash-${media.id}`"
-              class="z-50 hidden rounded-xl shadow-xl w-44 py-0 text-sm overflow-hidden"
-              style="
-                background-color: var(--bg-card);
-                border: 1px solid var(--border-color);
-                box-shadow: var(--shadow-md);
-              "
+              class="z-50 hidden rounded-xl shadow-xl w-44 py-0 text-sm overflow-hidden bg-card border border-line"
+              style="box-shadow: var(--shadow-md)"
             >
               <ul :aria-labelledby="`dropdownBtnTrash-${media.id}`">
                 <li>
                   <a
                     href="#"
                     @click="$emit('revert-trash', false, media.id, media.type)"
-                    class="no-control flex items-center gap-2.5 px-3 py-2.5 transition-colors duration-150"
-                    style="color: var(--text-primary)"
+                    class="no-control flex items-center gap-2.5 px-3 py-2.5 transition-colors duration-150 text-fg"
                     @mouseover="onMenuHover($event, 'var(--bg-hover)')"
                     @mouseleave="onMenuHover($event, '')"
                   >
                     <svg
-                      class="w-4 h-4 flex-shrink-0"
-                      style="color: var(--text-secondary)"
+                      class="w-4 h-4 flex-shrink-0 text-fg-muted"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -215,7 +198,7 @@ export default {
                     {{ translate.link_revert }}
                   </a>
                 </li>
-                <li v-if="canDelete" style="border-top: 1px solid var(--border-color)">
+                <li class="border-t border-line" v-if="canDelete">
                   <a
                     href="#"
                     @click="askDelete(media.id)"
@@ -243,11 +226,8 @@ export default {
   </div>
 
   <div v-if="medias.length === 0" class="flex flex-col items-center justify-center gap-3 py-16 text-center">
-    <div
-      class="w-14 h-14 rounded-2xl flex items-center justify-center"
-      style="background-color: var(--bg-hover); border: 1px solid var(--border-color)"
-    >
-      <svg class="w-6 h-6" style="color: var(--text-light)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div class="w-14 h-14 rounded-2xl flex items-center justify-center bg-surface-hover border border-line">
+      <svg class="w-6 h-6 text-fg-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path
           stroke-linecap="round"
           stroke-linejoin="round"
@@ -256,8 +236,8 @@ export default {
         />
       </svg>
     </div>
-    <p class="text-sm font-semibold" style="color: var(--text-primary)">{{ translate.empty_trash_title }}</p>
-    <p class="text-xs" style="color: var(--text-secondary)">{{ translate.empty_trash_sub }}</p>
+    <p class="text-sm font-semibold text-fg">{{ translate.empty_trash_title }}</p>
+    <p class="text-xs text-fg-muted">{{ translate.empty_trash_sub }}</p>
   </div>
 </template>
 

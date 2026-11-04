@@ -65,14 +65,8 @@ export default defineComponent({
     </div>
 
     <div class="p-5 flex flex-col gap-3">
-      <div class="flex items-start gap-2 p-3 rounded-lg" style="background-color: var(--primary-lighter)">
-        <svg
-          class="icon-sm shrink-0 mt-0.5"
-          style="color: var(--primary)"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
+      <div class="flex items-start gap-2 p-3 rounded-lg bg-primary-lighter">
+        <svg class="icon-sm shrink-0 mt-0.5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
@@ -80,7 +74,7 @@ export default defineComponent({
             d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
           />
         </svg>
-        <div class="text-xs" style="color: var(--primary)">
+        <div class="text-xs text-primary">
           <div class="font-semibold mb-1">{{ translate.page_comment.info }}</div>
           <span v-if="isGlobalOpen">
             {{ translate.page_comment.comment_open }}
@@ -101,7 +95,9 @@ export default defineComponent({
             @change="updateComment('openComment', ($event.target as HTMLInputElement).checked)"
           />
           <label class="switch-toggle" for="page-open-comment"></label>
-          <label class="form-check-label" for="page-open-comment">{{ translate.page_comment.input_open_comment }}</label>
+          <label class="form-check-label" for="page-open-comment">{{
+            translate.page_comment.input_open_comment
+          }}</label>
         </div>
       </div>
 

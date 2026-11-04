@@ -393,11 +393,8 @@ export default defineComponent({
 
   <div v-else-if="Object.keys(page).length === 0">
     <div class="flex flex-col items-center justify-center py-16 px-6 text-center">
-      <div
-        class="w-16 h-16 rounded-2xl flex items-center justify-center mb-5"
-        style="background-color: var(--primary-lighter)"
-      >
-        <svg class="w-8 h-8" style="color: var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-5 bg-primary-lighter">
+        <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
@@ -406,8 +403,8 @@ export default defineComponent({
           />
         </svg>
       </div>
-      <p class="text-lg font-bold mb-2" style="color: var(--text-primary)">{{ translate.page_no_exist_title }}</p>
-      <p class="text-sm max-w-xs mb-6" style="color: var(--text-secondary)">{{ translate.page_no_exist_text }}</p>
+      <p class="text-lg font-bold mb-2 text-fg">{{ translate.page_no_exist_title }}</p>
+      <p class="text-sm max-w-xs mb-6 text-fg-muted">{{ translate.page_no_exist_text }}</p>
       <div class="flex items-center gap-3">
         <a :href="urls.listing" class="btn btn-sm btn-outline-dark flex items-center gap-2">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -496,7 +493,7 @@ export default defineComponent({
         class="flex items-center flex-wrap mb-px text-sm font-medium text-center"
         id="default-styled-tab"
         data-tabs-toggle="#nav-tab-page"
-        data-tabs-active-classes="text-[var(--primary)] hover:text-[var(--primary-hover)] border-[var(--primary)] bg-[var(--primary-lighter)]"
+        data-tabs-active-classes="text-primary hover:text-primary-hover border-primary bg-primary-lighter"
         data-tabs-inactive-classes="dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300"
         role="tablist"
       >
@@ -520,11 +517,7 @@ export default defineComponent({
               />
             </svg>
             {{ translate.onglet_information }}
-            <span
-              v-if="hasInformationError"
-              class="w-2 h-2 rounded-full"
-              style="background-color: var(--btn-danger)"
-            ></span>
+            <span v-if="hasInformationError" class="w-2 h-2 rounded-full bg-btn-danger"></span>
           </button>
         </li>
         <li class="me-2" role="presentation">
@@ -547,11 +540,7 @@ export default defineComponent({
               />
             </svg>
             {{ translate.onglet_content }}
-            <span
-              v-if="hasContentError"
-              class="w-2 h-2 rounded-full"
-              style="background-color: var(--btn-danger)"
-            ></span>
+            <span v-if="hasContentError" class="w-2 h-2 rounded-full bg-btn-danger"></span>
           </button>
         </li>
         <li class="me-2" role="presentation">
@@ -574,7 +563,7 @@ export default defineComponent({
               />
             </svg>
             {{ translate.onglet_seo }}
-            <span v-if="hasSeoError" class="w-2 h-2 rounded-full" style="background-color: var(--btn-danger)"></span>
+            <span v-if="hasSeoError" class="w-2 h-2 rounded-full bg-btn-danger"></span>
           </button>
         </li>
         <li class="me-2" role="presentation">

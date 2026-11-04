@@ -351,7 +351,7 @@ export default defineComponent({
                 />
               </svg>
 
-              <span style="color: var(--btn-danger)">
+              <span class="text-btn-danger">
                 {{ translate.title_danger_zone }}
               </span>
             </div>

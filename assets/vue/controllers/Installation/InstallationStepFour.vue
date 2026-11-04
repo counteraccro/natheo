@@ -39,68 +39,41 @@ export default defineComponent({
 <template>
   <div class="card rounded-xl overflow-hidden">
     <div class="px-6 pt-10 pb-8 text-center">
-      <div
-        class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5"
-        style="background-color: var(--alert-success-bg)"
-      >
-        <svg class="w-8 h-8" style="color: var(--btn-success)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5 bg-alert-success-bg">
+        <svg class="w-8 h-8 text-btn-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
         </svg>
       </div>
 
       <h2 class="text-2xl font-bold mb-2">{{ translate.title_h1 }}</h2>
-      <p class="text-sm max-w-md mx-auto" style="color: var(--text-secondary)">{{ translate.description }}</p>
+      <p class="text-sm max-w-md mx-auto text-fg-muted">{{ translate.description }}</p>
     </div>
 
     <div class="px-6 sm:px-10 pb-8">
       <div class="flex flex-col gap-2 max-w-md mx-auto">
-        <div class="flex items-center gap-2.5 px-4 py-3 rounded-lg" style="background-color: var(--bg-hover)">
-          <svg
-            class="w-4 h-4 flex-shrink-0"
-            style="color: var(--btn-success)"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
+        <div class="flex items-center gap-2.5 px-4 py-3 rounded-lg bg-surface-hover">
+          <svg class="w-4 h-4 flex-shrink-0 text-btn-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
           </svg>
           <span class="text-sm">{{ translate.summary_database }}</span>
         </div>
 
-        <div class="flex items-center gap-2.5 px-4 py-3 rounded-lg" style="background-color: var(--bg-hover)">
-          <svg
-            class="w-4 h-4 flex-shrink-0"
-            style="color: var(--btn-success)"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
+        <div class="flex items-center gap-2.5 px-4 py-3 rounded-lg bg-surface-hover">
+          <svg class="w-4 h-4 flex-shrink-0 text-btn-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
           </svg>
           <span class="text-sm">{{ translate.summary_user }}</span>
         </div>
 
-        <div class="flex items-center gap-2.5 px-4 py-3 rounded-lg" style="background-color: var(--bg-hover)">
-          <svg
-            class="w-4 h-4 flex-shrink-0"
-            style="color: var(--btn-success)"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
+        <div class="flex items-center gap-2.5 px-4 py-3 rounded-lg bg-surface-hover">
+          <svg class="w-4 h-4 flex-shrink-0 text-btn-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
           </svg>
           <span class="text-sm">{{ translate.summary_data }}</span>
         </div>
 
-        <div class="flex items-center gap-2.5 px-4 py-3 rounded-lg" style="background-color: var(--bg-hover)">
-          <svg
-            class="w-4 h-4 flex-shrink-0"
-            style="color: var(--btn-success)"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
+        <div class="flex items-center gap-2.5 px-4 py-3 rounded-lg bg-surface-hover">
+          <svg class="w-4 h-4 flex-shrink-0 text-btn-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
           </svg>
           <span class="text-sm">{{ translate.summary_cache }}</span>

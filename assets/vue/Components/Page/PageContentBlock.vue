@@ -214,8 +214,8 @@ export default defineComponent({
 
 <template>
   <div class="card rounded-lg overflow-visible" style="border-color: var(--border-color)">
-    <div class="px-4 py-3 border-b flex items-center justify-between" style="border-color: var(--border-color)">
-      <span class="text-xs font-semibold" style="color: var(--text-secondary)">
+    <div class="px-4 py-3 border-b flex items-center justify-between border-line">
+      <span class="text-xs font-semibold text-fg-muted">
         {{ translate.page_content.page_content_block.bloc }} {{ renderBlockId }}
       </span>
       <div class="flex items-center gap-1">
@@ -251,8 +251,8 @@ export default defineComponent({
     <div class="p-4">
       <div
         v-if="isEmpty"
-        class="flex flex-col items-center justify-center gap-3 rounded-lg border-2 border-dashed py-10 cursor-pointer transition-all"
-        style="border-color: var(--border-dark); color: var(--text-secondary); min-height: 120px"
+        class="flex flex-col items-center justify-center gap-3 rounded-lg border-2 border-dashed py-10 cursor-pointer transition-all border-line-dark text-fg-muted"
+        style="min-height: 120px"
         @mouseenter="
           ($event.currentTarget as HTMLElement).style.borderColor = 'var(--primary)';
           ($event.currentTarget as HTMLElement).style.backgroundColor = 'var(--primary-lighter)';
@@ -285,7 +285,7 @@ export default defineComponent({
         </div>
 
         <div v-else-if="isTypeFaq" class="flex items-center gap-3 py-6 justify-center">
-          <svg class="w-8 h-8" style="color: var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -294,17 +294,17 @@ export default defineComponent({
             />
           </svg>
           <div>
-            <p class="text-sm font-semibold" style="color: var(--text-primary)">
+            <p class="text-sm font-semibold text-fg">
               {{ translate.page_content.page_content_block.type_faq }}
             </p>
-            <p class="text-xs" style="color: var(--text-secondary)">
+            <p class="text-xs text-fg-muted">
               {{ translate.page_content.page_content_block.faq_id }} : {{ blockContent!.typeId }}
             </p>
           </div>
         </div>
 
         <div v-else-if="isTypeListing" class="flex items-center gap-3 py-6 justify-center">
-          <svg class="w-8 h-8" style="color: var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -313,10 +313,10 @@ export default defineComponent({
             />
           </svg>
           <div>
-            <p class="text-sm font-semibold" style="color: var(--text-primary)">
+            <p class="text-sm font-semibold text-fg">
               {{ translate.page_content.page_content_block.type_listing }}
             </p>
-            <p class="text-xs" style="color: var(--text-secondary)">
+            <p class="text-xs text-fg-muted">
               {{ translate.page_content.page_content_block.listing_id }} : {{ blockContent!.typeId }}
             </p>
           </div>
@@ -346,13 +346,7 @@ export default defineComponent({
         </div>
 
         <div v-if="loading" class="flex justify-center py-4">
-          <svg
-            class="w-6 h-6 animate-spin"
-            style="color: var(--primary)"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
+          <svg class="w-6 h-6 animate-spin text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -387,7 +381,7 @@ export default defineComponent({
     <Modal :id="modalRemoveId" :show="showModalRemove" @close-modal="closeModalRemove">
       <template #title>{{ translate.page_content.page_content_block.modale_remove_title }}</template>
       <template #body>
-        <p class="text-sm" style="color: var(--text-secondary)">
+        <p class="text-sm text-fg-muted">
           {{ translate.page_content.page_content_block.modale_remove_body }}
         </p>
       </template>

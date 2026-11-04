@@ -253,8 +253,7 @@ export default defineComponent({
         <div class="flex items-center gap-2 text-sm flex-1 min-w-0 flex-wrap">
           <button
             type="button"
-            class="flex items-center gap-1.5 px-3 py-1 rounded-lg font-medium transition-opacity hover:opacity-75"
-            style="background-color: var(--primary-lighter); color: var(--primary)"
+            class="flex items-center gap-1.5 px-3 py-1 rounded-lg font-medium transition-opacity hover:opacity-75 bg-primary-lighter text-primary"
             @click="goToRoot"
           >
             <svg class="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
@@ -264,19 +263,12 @@ export default defineComponent({
           </button>
 
           <template v-for="(crumb, index) in breadcrumb" :key="crumb.id">
-            <svg
-              class="w-4 h-4 flex-shrink-0"
-              style="color: var(--text-light)"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
+            <svg class="w-4 h-4 flex-shrink-0 text-fg-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
             </svg>
             <button
               type="button"
-              class="flex items-center gap-1.5 px-3 py-1 rounded-lg font-medium transition-opacity hover:opacity-75"
-              style="background-color: var(--primary-lighter); color: var(--primary)"
+              class="flex items-center gap-1.5 px-3 py-1 rounded-lg font-medium transition-opacity hover:opacity-75 bg-primary-lighter text-primary"
               @click="goToBreadcrumb(index)"
             >
               <svg class="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
@@ -290,7 +282,7 @@ export default defineComponent({
         <!-- Recherche -->
         <div class="relative flex-shrink-0 w-full sm:w-56">
           <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-            <svg class="w-4 h-4" style="color: var(--text-light)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-4 h-4 text-fg-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 stroke-linecap="round"
                 stroke-linejoin="round"
@@ -303,8 +295,7 @@ export default defineComponent({
             v-model="search"
             type="search"
             :placeholder="translate.search_placeholder"
-            class="w-full pl-9 pr-4 py-2 text-sm rounded-lg border focus:outline-none focus:ring-2 transition-all"
-            style="background-color: var(--bg-card); color: var(--text-primary); border-color: var(--border-color)"
+            class="w-full pl-9 pr-4 py-2 text-sm rounded-lg border focus:outline-none focus:ring-2 transition-all bg-card text-fg border-line"
           />
         </div>
       </div>
@@ -312,19 +303,14 @@ export default defineComponent({
       <!-- Loading skeleton -->
       <template v-if="loading">
         <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2">
-          <div
-            v-for="i in 12"
-            :key="i"
-            class="h-20 rounded-lg animate-pulse"
-            style="background-color: var(--bg-hover)"
-          />
+          <div v-for="i in 12" :key="i" class="h-20 rounded-lg animate-pulse bg-surface-hover" />
         </div>
       </template>
 
       <template v-else>
         <!-- Dossiers -->
         <div v-if="folders.length > 0" class="mb-6">
-          <h4 class="text-xs font-semibold uppercase tracking-wider mb-3" style="color: var(--text-light)">
+          <h4 class="text-xs font-semibold uppercase tracking-wider mb-3 text-fg-subtle">
             {{ translate.folder }}
           </h4>
           <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
@@ -332,23 +318,16 @@ export default defineComponent({
               type="button"
               v-for="folder in folders"
               :key="folder.id"
-              class="flex items-center gap-3 px-4 py-3 rounded-lg border-2 border-dashed transition-all text-left"
-              style="border-color: var(--border-dark); background-color: var(--bg-main); color: var(--text-primary)"
+              class="flex items-center gap-3 px-4 py-3 rounded-lg border-2 border-dashed transition-all text-left border-line-dark bg-surface text-fg"
               @mouseenter="($event.currentTarget as HTMLElement).style.borderColor = 'var(--primary)'"
               @mouseleave="($event.currentTarget as HTMLElement).style.borderColor = 'var(--border-dark)'"
               @click="openFolder(folder)"
             >
-              <svg class="w-5 h-5 flex-shrink-0" style="color: var(--primary)" fill="currentColor" viewBox="0 0 24 24">
+              <svg class="w-5 h-5 flex-shrink-0 text-primary" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M10 4H4c-1.11 0-2 .89-2 2v12c0 1.1.89 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z" />
               </svg>
               <span class="text-sm font-medium truncate flex-1">{{ folder.name }}</span>
-              <svg
-                class="w-4 h-4 flex-shrink-0"
-                style="color: var(--text-light)"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
+              <svg class="w-4 h-4 flex-shrink-0 text-fg-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </button>
@@ -357,7 +336,7 @@ export default defineComponent({
 
         <!-- Images -->
         <div v-if="imageMedias.length > 0" class="mb-6">
-          <h4 class="text-xs font-semibold uppercase tracking-wider mb-3" style="color: var(--text-light)">
+          <h4 class="text-xs font-semibold uppercase tracking-wider mb-3 text-fg-subtle">
             {{ translate.img }}
           </h4>
           <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2">
@@ -365,8 +344,8 @@ export default defineComponent({
               type="button"
               v-for="media in imageMedias"
               :key="media.id"
-              class="group relative h-20 rounded-lg overflow-hidden border transition-all hover:opacity-90 focus:outline-none focus:ring-2"
-              style="border-color: var(--border-color); --tw-ring-color: var(--primary)"
+              class="group relative h-20 rounded-lg overflow-hidden border transition-all hover:opacity-90 focus:outline-none focus:ring-2 border-line"
+              style="--tw-ring-color: var(--primary)"
               :title="media.name"
               @click="selectMedia(media)"
             >
@@ -388,7 +367,7 @@ export default defineComponent({
 
         <!-- Fichiers (non-images) -->
         <div v-if="fileMedias.length > 0">
-          <h4 class="text-xs font-semibold uppercase tracking-wider mb-3" style="color: var(--text-light)">
+          <h4 class="text-xs font-semibold uppercase tracking-wider mb-3 text-fg-subtle">
             {{ translate.file }}
           </h4>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -396,23 +375,12 @@ export default defineComponent({
               type="button"
               v-for="media in fileMedias"
               :key="media.id"
-              class="flex items-center gap-3 px-4 py-3 rounded-lg border transition-all text-left hover:opacity-80 focus:outline-none focus:ring-2"
-              style="
-                border-color: var(--border-color);
-                background-color: var(--bg-main);
-                color: var(--text-primary);
-                --tw-ring-color: var(--primary);
-              "
+              class="flex items-center gap-3 px-4 py-3 rounded-lg border transition-all text-left hover:opacity-80 focus:outline-none focus:ring-2 border-line bg-surface text-fg"
+              style="--tw-ring-color: var(--primary)"
               :title="media.name"
               @click="selectMedia(media)"
             >
-              <svg
-                class="w-5 h-5 flex-shrink-0"
-                style="color: var(--text-secondary)"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
+              <svg class="w-5 h-5 flex-shrink-0 text-fg-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
@@ -422,8 +390,7 @@ export default defineComponent({
               </svg>
               <span class="text-sm truncate">{{ media.name }}</span>
               <svg
-                class="w-4 h-4 flex-shrink-0 ml-auto"
-                style="color: var(--primary)"
+                class="w-4 h-4 flex-shrink-0 ml-auto text-primary"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -439,12 +406,12 @@ export default defineComponent({
           v-if="folders.length === 0 && filteredMedias.length === 0"
           class="flex flex-col items-center justify-center py-16 gap-4"
         >
-          <svg class="w-14 h-14" style="color: var(--text-light)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-14 h-14 text-fg-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <rect x="3" y="3" width="18" height="18" rx="2" ry="2" stroke-width="1.5" />
             <circle cx="8.5" cy="8.5" r="1.5" stroke-width="1.5" />
             <polyline points="21 15 16 10 5 21" stroke-width="1.5" />
           </svg>
-          <p class="text-sm font-medium" style="color: var(--text-secondary)">
+          <p class="text-sm font-medium text-fg-muted">
             {{ emptyMessage }}
           </p>
         </div>
@@ -453,7 +420,7 @@ export default defineComponent({
 
     <!-- Footer -->
     <template #footer>
-      <span class="text-sm" style="color: var(--text-secondary)">
+      <span class="text-sm text-fg-muted">
         {{ filteredMedias.length }} {{ filteredMedias.length > 1 ? translate.files : translate.file }}
       </span>
     </template>

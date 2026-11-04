@@ -13,7 +13,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="rounded-xl p-5 mb-7 animate-pulse border border-[var(--border-color)] bg-gray-50" style="">
+  <div class="rounded-xl p-5 mb-7 animate-pulse border border-line bg-gray-50" style="">
     <div class="h-2.5 w-24 rounded bg-gray-200 mb-3"></div>
     <div class="h-11 w-full rounded-lg bg-gray-300"></div>
     <div class="h-2.5 w-64 rounded bg-gray-300 mt-3"></div>
@@ -21,11 +21,11 @@ export default defineComponent({
 
   <div
     v-if="!isNew"
-    class="rounded-xl border border-[var(--border-color)] bg-[var(--bg-card)] mb-4 overflow-hidden"
+    class="rounded-xl border border-line bg-card mb-4 overflow-hidden"
     style="box-shadow: var(--shadow-sm)"
   >
     <!-- Header -->
-    <div class="flex items-center gap-3 px-4 py-3 border-b border-[var(--border-color)] bg-gray-50 animate-pulse">
+    <div class="flex items-center gap-3 px-4 py-3 border-b border-line bg-gray-50 animate-pulse">
       <div class="w-4 h-4 rounded bg-gray-200 flex-shrink-0"></div>
       <div class="w-2 h-2 rounded-full bg-gray-300 flex-shrink-0"></div>
       <div class="flex-1 h-4 w-20 rounded bg-gray-200"></div>
@@ -35,7 +35,7 @@ export default defineComponent({
     <!-- Questions -->
     <div class="p-3 space-y-2">
       <!-- Q1 skeleton -->
-      <div class="border border-[var(--border-color)] rounded-lg p-3 animate-pulse">
+      <div class="border border-line rounded-lg p-3 animate-pulse">
         <div class="flex items-center gap-2.5">
           <div class="w-3.5 h-3.5 rounded bg-gray-200 flex-shrink-0"></div>
           <div class="w-5 h-3 rounded bg-gray-200 flex-shrink-0"></div>

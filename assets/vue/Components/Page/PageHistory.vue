@@ -148,10 +148,10 @@ export default defineComponent({
 
       <div class="p-5">
         <div v-if="history.length === 0" class="flex flex-col items-center justify-center py-10 text-center">
-          <p class="text-sm" style="color: var(--text-secondary)">{{ translate.empty }}</p>
+          <p class="text-sm text-fg-muted">{{ translate.empty }}</p>
         </div>
 
-        <div v-else class="divide-y" style="border-color: var(--border-color)">
+        <div v-else class="divide-y border-line">
           <div
             v-for="(entry, index) in visibleHistory"
             :key="entry.id"
@@ -183,24 +183,18 @@ export default defineComponent({
               v-html="entry.time"
             ></span>
 
-            <span class="text-xs shrink-0" style="color: var(--text-light)">{{ entry.user }}</span>
+            <span class="text-xs shrink-0 text-fg-subtle">{{ entry.user }}</span>
 
             <span
               v-if="index === 0"
-              class="text-xs font-semibold px-2 py-0.5 rounded-full shrink-0"
-              style="background-color: var(--primary-lighter); color: var(--primary)"
+              class="text-xs font-semibold px-2 py-0.5 rounded-full shrink-0 bg-primary-lighter text-primary"
             >
               {{ translate.action }}
             </span>
 
             <span
               v-if="entry.id === 0"
-              class="text-xs font-semibold px-2 py-0.5 rounded-full shrink-0"
-              style="
-                background-color: var(--bg-hover);
-                color: var(--text-secondary);
-                border: 1px solid var(--border-color);
-              "
+              class="text-xs font-semibold px-2 py-0.5 rounded-full shrink-0 bg-surface-hover text-fg-muted border border-line"
             >
               {{ translate.user }}
             </span>

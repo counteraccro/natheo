@@ -95,7 +95,7 @@ export default defineComponent({
     <div class="relative p-4 w-full max-w-2xl max-h-full">
       <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
         <div
-          class="flex p-4 md:p-5 rounded-t border-b text-white dark:border-b-[var(--primary)]"
+          class="flex p-4 md:p-5 rounded-t border-b text-white dark:border-b-primary"
           style="background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%)"
         >
           <slot name="icon"></slot>

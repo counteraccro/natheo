@@ -135,7 +135,7 @@ export default defineComponent({
     <div v-else>
       <!-- Header du panneau -->
       <div class="flex items-center justify-between mb-4">
-        <h3 class="flex gap-1 items-center font-semibold text-sm" style="color: var(--text-primary)">
+        <h3 class="flex gap-1 items-center font-semibold text-sm text-fg">
           <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
@@ -148,8 +148,7 @@ export default defineComponent({
         </h3>
         <button
           @click="$emit('close')"
-          class="p-1.5 rounded-lg transition"
-          style="color: var(--text-secondary)"
+          class="p-1.5 rounded-lg transition text-fg-muted"
           onmouseover="this.style.backgroundColor = 'var(--bg-hover)'"
           onmouseout="this.style.backgroundColor = ''"
         >
@@ -159,7 +158,7 @@ export default defineComponent({
         </button>
       </div>
 
-      <p class="text-xs mb-3" style="color: var(--text-secondary)">
+      <p class="text-xs mb-3 text-fg-muted">
         <span v-if="data.type === 'media'">
           {{ translate.sub_title_media }}
         </span>
@@ -226,7 +225,7 @@ export default defineComponent({
             </svg>
           </div>
           <div v-else class="flex flex-col items-center justify-center py-6 gap-2">
-            <svg class="w-8 h-8" style="color: var(--text-light)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-8 h-8 text-fg-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 stroke-linecap="round"
                 stroke-linejoin="round"
@@ -234,8 +233,8 @@ export default defineComponent({
                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
               />
             </svg>
-            <p class="text-xs font-medium" style="color: var(--text-secondary)">{{ translate.msg_no_search }}</p>
-            <p class="text-xs" style="color: var(--text-light)">{{ translate.msg_no_search_sub }}</p>
+            <p class="text-xs font-medium text-fg-muted">{{ translate.msg_no_search }}</p>
+            <p class="text-xs text-fg-subtle">{{ translate.msg_no_search_sub }}</p>
           </div>
         </div>
       </template>

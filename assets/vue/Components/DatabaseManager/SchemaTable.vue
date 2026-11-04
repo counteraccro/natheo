@@ -21,23 +21,23 @@ export default defineComponent({
 <template>
   <div class="overflow-x-auto">
     <table class="w-full" aria-describedby="table">
-      <thead class="bg-[var(--bg-main)]">
+      <thead class="bg-surface">
         <tr>
           <th
             v-for="(header, key) in data.header"
             :key="key"
-            class="px-6 py-3 text-xs font-medium uppercase tracking-wider text-[var(--text-secondary)] text-center"
+            class="px-6 py-3 text-xs font-medium uppercase tracking-wider text-fg-muted text-center"
           >
             {{ header }}
           </th>
         </tr>
       </thead>
-      <tbody class="divide-y divide-[var(--border-color)]">
-        <tr v-for="(row, index) in data.result" :key="index" class="hover:bg-[var(--bg-hover)]">
+      <tbody class="divide-y divide-line">
+        <tr v-for="(row, index) in data.result" :key="index" class="hover:bg-surface-hover">
           <td
             v-for="key in Object.keys(data.header)"
             :key="key"
-            class="px-3 py-1 text-sm text-[var(--text-secondary)] text-center h-[3.4rem]"
+            class="px-3 py-1 text-sm text-fg-muted text-center h-[3.4rem]"
           >
             {{ row[key] }}
           </td>

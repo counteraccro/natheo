@@ -11,14 +11,14 @@ import { uiTrans } from '@/vue/Composables/Global/uiTranslate';
 
 const CSS: Record<ToastType, { bg: string; text: string; border: string }> = {
   success: {
-    bg: 'bg-[var(--alert-success-bg)]',
-    text: 'text-[var(--alert-success-text)]',
-    border: 'border-[var(--alert-success-border)]',
+    bg: 'bg-alert-success-bg',
+    text: 'text-alert-success-text',
+    border: 'border-alert-success-border',
   },
   danger: {
-    bg: 'bg-[var(--alert-danger-bg)]',
-    text: 'text-[var(--alert-danger-text)]',
-    border: 'border-[var(--alert-danger-border)]',
+    bg: 'bg-alert-danger-bg',
+    text: 'text-alert-danger-text',
+    border: 'border-alert-danger-border',
   },
 };
 

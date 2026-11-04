@@ -102,20 +102,12 @@ export default defineComponent({
       <template v-if="confirmTrashId === media.id">
         <div class="media-thumb">
           <div
-            class="absolute inset-0 flex flex-col items-center justify-center gap-3 p-4 text-center"
-            style="background-color: var(--alert-danger-bg)"
+            class="absolute inset-0 flex flex-col items-center justify-center gap-3 p-4 text-center bg-alert-danger-bg"
           >
             <div
-              class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
-              style="background-color: var(--alert-danger-bg); border: 1px solid var(--alert-danger-border)"
+              class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 bg-alert-danger-bg border border-alert-danger-border"
             >
-              <svg
-                class="w-5 h-5"
-                style="color: var(--btn-danger)"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
+              <svg class="w-5 h-5 text-btn-danger" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
@@ -124,16 +116,13 @@ export default defineComponent({
                 />
               </svg>
             </div>
-            <p class="text-xs font-semibold" style="color: var(--alert-danger-text)">
+            <p class="text-xs font-semibold text-alert-danger-text">
               {{ translate.confirm_trash_title }}
             </p>
           </div>
         </div>
 
-        <div
-          class="media-meta gap-2"
-          style="background-color: var(--alert-danger-bg); border-top: 1px solid var(--alert-danger-border)"
-        >
+        <div class="media-meta gap-2 bg-alert-danger-bg" style="border-top: 1px solid var(--alert-danger-border)">
           <button
             @click.stop="confirmTrash(media.id, media.type)"
             class="flex-1 flex items-center justify-center gap-1 btn btn-xs btn-danger"
@@ -164,8 +153,8 @@ export default defineComponent({
             >
               <span
                 v-if="media.nb_elements === 0"
-                class="text-sm font-semibold mt-5"
-                style="color: var(--primary); opacity: 0.9"
+                class="text-sm font-semibold mt-5 text-primary"
+                style="opacity: 0.9"
                 >{{ translate.folder_empty }}</span
               >
               <div
@@ -183,8 +172,8 @@ export default defineComponent({
                   />
                 </span>
                 <div
-                  class="flex items-center justify-center text-xs font-bold"
-                  style="background-color: var(--primary); color: white; width: 100%"
+                  class="flex items-center justify-center text-xs font-bold bg-primary"
+                  style="color: white; width: 100%"
                   v-html="
                     media.nb_elements > 2
                       ? '+' + (media.nb_elements - media.children.filter((child) => child.type === 'media').length)
@@ -240,26 +229,20 @@ export default defineComponent({
           <Teleport to="body">
             <div
               :id="`dropdown-${media.id}`"
-              class="z-50 hidden rounded-xl shadow-xl w-44 py-0 text-sm overflow-hidden"
-              style="
-                background-color: var(--bg-card);
-                border: 1px solid var(--border-color);
-                box-shadow: var(--shadow-md);
-              "
+              class="z-50 hidden rounded-xl shadow-xl w-44 py-0 text-sm overflow-hidden bg-card border border-line"
+              style="box-shadow: var(--shadow-md)"
             >
               <ul :aria-labelledby="`dropdownBtn-${media.id}`">
                 <li>
                   <a
                     href="#"
-                    class="no-control flex items-center gap-2.5 px-3 py-2.5 transition-colors duration-150"
-                    style="color: var(--text-primary)"
+                    class="no-control flex items-center gap-2.5 px-3 py-2.5 transition-colors duration-150 text-fg"
                     @click="$emit('show-info', media, 'show')"
                     @mouseover="onMenuHover($event, 'var(--bg-hover)')"
                     @mouseleave="onMenuHover($event, '')"
                   >
                     <svg
-                      class="w-4 h-4 flex-shrink-0"
-                      style="color: var(--primary)"
+                      class="w-4 h-4 flex-shrink-0 text-primary"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -277,15 +260,13 @@ export default defineComponent({
                 <li>
                   <a
                     href="#"
-                    class="no-control flex items-center gap-2.5 px-3 py-2.5 transition-colors duration-150"
-                    style="color: var(--text-primary)"
+                    class="no-control flex items-center gap-2.5 px-3 py-2.5 transition-colors duration-150 text-fg"
                     @click="$emit('edit', media, 'edit')"
                     @mouseover="onMenuHover($event, 'var(--bg-hover)')"
                     @mouseleave="onMenuHover($event, '')"
                   >
                     <svg
-                      class="w-4 h-4 flex-shrink-0"
-                      style="color: var(--text-secondary)"
+                      class="w-4 h-4 flex-shrink-0 text-fg-muted"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -303,15 +284,13 @@ export default defineComponent({
                 <li>
                   <a
                     href="#"
-                    class="no-control flex items-center gap-2.5 px-3 py-2.5 transition-colors duration-150"
-                    style="color: var(--text-primary)"
+                    class="no-control flex items-center gap-2.5 px-3 py-2.5 transition-colors duration-150 text-fg"
                     @click="$emit('move', media, 'move')"
                     @mouseover="onMenuHover($event, 'var(--bg-hover)')"
                     @mouseleave="onMenuHover($event, '')"
                   >
                     <svg
-                      class="w-4 h-4 flex-shrink-0"
-                      style="color: var(--text-secondary)"
+                      class="w-4 h-4 flex-shrink-0 text-fg-muted"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -326,7 +305,7 @@ export default defineComponent({
                     {{ translate.link_move }}
                   </a>
                 </li>
-                <li v-if="canDelete" style="border-top: 1px solid var(--border-color)">
+                <li class="border-t border-line" v-if="canDelete">
                   <a
                     href="#"
                     @click="askTrash(media.id)"
@@ -355,40 +334,28 @@ export default defineComponent({
 
   <div v-if="render === 'list'">
     <table class="w-full text-sm">
-      <thead style="background-color: var(--bg-main)">
+      <thead class="bg-surface">
         <tr>
-          <th
-            class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider w-8"
-            style="color: var(--text-secondary)"
-          ></th>
-          <th
-            class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider"
-            style="color: var(--text-secondary)"
-          >
+          <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider w-8 text-fg-muted"></th>
+          <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-fg-muted">
             {{ translate.table_name }}
           </th>
           <th
-            class="hidden sm:table-cell px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider"
-            style="color: var(--text-secondary)"
+            class="hidden sm:table-cell px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-fg-muted"
           >
             {{ translate.table_type }}
           </th>
           <th
-            class="hidden md:table-cell px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider"
-            style="color: var(--text-secondary)"
+            class="hidden md:table-cell px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-fg-muted"
           >
             {{ translate.table_size }}
           </th>
           <th
-            class="hidden lg:table-cell px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider"
-            style="color: var(--text-secondary)"
+            class="hidden lg:table-cell px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-fg-muted"
           >
             {{ translate.table_date }}
           </th>
-          <th
-            class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider"
-            style="color: var(--text-secondary)"
-          >
+          <th class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-fg-muted">
             {{ translate.table_action }}
           </th>
         </tr>
@@ -407,7 +374,7 @@ export default defineComponent({
               <img :src="media.thumbnail" class="w-full h-full object-cover" alt="" />
             </div>
           </td>
-          <td class="px-4 py-3 font-medium text-[var(--text-primary)]">
+          <td class="px-4 py-3 font-medium text-fg">
             <a
               class="link text-sm"
               style="cursor: pointer"
@@ -415,9 +382,9 @@ export default defineComponent({
               >{{ media.name }}</a
             >
           </td>
-          <td class="hidden sm:table-cell px-4 py-3 text-[var(--text-secondary)]">{{ media.type }}</td>
-          <td class="hidden sm:table-cell px-4 py-3 text-[var(--text-secondary)]">{{ media.size }}</td>
-          <td class="hidden sm:table-cell px-4 py-3 text-[var(--text-secondary)]">{{ media.date }}</td>
+          <td class="hidden sm:table-cell px-4 py-3 text-fg-muted">{{ media.type }}</td>
+          <td class="hidden sm:table-cell px-4 py-3 text-fg-muted">{{ media.size }}</td>
+          <td class="hidden sm:table-cell px-4 py-3 text-fg-muted">{{ media.date }}</td>
           <td class="px-4 py-3 text-right">
             <button
               class="no-control no-control btn btn-ghost-primary btn-icon"
@@ -426,13 +393,7 @@ export default defineComponent({
               @mouseover="onMenuHover($event, 'var(--bg-hover)')"
               @mouseleave="onMenuHover($event, '')"
             >
-              <svg
-                class="w-4 h-4 flex-shrink-0"
-                style="color: var(--primary)"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
+              <svg class="w-4 h-4 flex-shrink-0 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
@@ -449,13 +410,7 @@ export default defineComponent({
               @mouseover="onMenuHover($event, 'var(--bg-hover)')"
               @mouseleave="onMenuHover($event, '')"
             >
-              <svg
-                class="w-4 h-4 flex-shrink-0"
-                style="color: var(--text-secondary)"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
+              <svg class="w-4 h-4 flex-shrink-0 text-fg-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
@@ -472,13 +427,7 @@ export default defineComponent({
               @mouseover="onMenuHover($event, 'var(--bg-hover)')"
               @mouseleave="onMenuHover($event, '')"
             >
-              <svg
-                class="w-4 h-4 flex-shrink-0"
-                style="color: var(--text-secondary)"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
+              <svg class="w-4 h-4 flex-shrink-0 text-fg-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
@@ -511,11 +460,8 @@ export default defineComponent({
   </div>
 
   <div v-if="medias.length === 0" class="flex flex-col items-center justify-center gap-3 py-16 text-center">
-    <div
-      class="w-14 h-14 rounded-2xl flex items-center justify-center"
-      style="background-color: var(--bg-hover); border: 1px solid var(--border-color)"
-    >
-      <svg class="w-6 h-6" style="color: var(--text-light)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div class="w-14 h-14 rounded-2xl flex items-center justify-center bg-surface-hover border border-line">
+      <svg class="w-6 h-6 text-fg-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path
           stroke-linecap="round"
           stroke-linejoin="round"
@@ -524,8 +470,8 @@ export default defineComponent({
         />
       </svg>
     </div>
-    <p class="text-sm font-semibold" style="color: var(--text-primary)">{{ translate.empty_folder_title }}</p>
-    <p class="text-xs" style="color: var(--text-secondary)">{{ translate.empty_folder_sub }}</p>
+    <p class="text-sm font-semibold text-fg">{{ translate.empty_folder_title }}</p>
+    <p class="text-xs text-fg-muted">{{ translate.empty_folder_sub }}</p>
   </div>
 </template>
 

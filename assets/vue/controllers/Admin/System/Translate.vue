@@ -345,7 +345,7 @@ export default defineComponent({
       <SkeletonTable :full="true" />
     </div>
     <div v-else>
-      <div class="card-header sticky top-0 z-10 bg-white p-6 border-b-1 border-b-[var(--border-color)]">
+      <div class="card-header sticky top-0 z-10 bg-white p-6 border-b-1 border-b-line">
         <div>
           <div class="card-title">
             <svg
@@ -397,7 +397,7 @@ export default defineComponent({
       </div>
 
       <div v-if="!hasFile">
-        <p class="text-center text-[var(--text-secondary)] text-sm italic flex justify-center gap-1 p-4">
+        <p class="text-center text-fg-muted text-sm italic flex justify-center gap-1 p-4">
           <svg
             class="icon"
             aria-hidden="true"
@@ -420,7 +420,7 @@ export default defineComponent({
         </p>
       </div>
       <div v-else>
-        <div class="flex flex-col md:flex-row md:items-center gap-4 p-5 border-b-1 border-b-[var(--border-color)]">
+        <div class="flex flex-col md:flex-row md:items-center gap-4 p-5 border-b-1 border-b-line">
           <input
             type="search"
             class="form-input no-control md:max-w-md"
@@ -443,19 +443,16 @@ export default defineComponent({
           </div>
         </div>
 
-        <p
-          v-if="Object.keys(filteredFile).length === 0"
-          class="text-center text-[var(--text-secondary)] text-sm italic p-4"
-        >
+        <p v-if="Object.keys(filteredFile).length === 0" class="text-center text-fg-muted text-sm italic p-4">
           {{ translate.translate_search_empty }}
         </p>
 
         <div
           v-for="(value, key) in filteredFile"
-          class="grid grid-cols-1 lg:grid-cols-[30%_1fr] gap-6 p-5 hover:bg-[var(--bg-hover)] transition border-b-1 border-b-[var(--border-color)]"
+          class="grid grid-cols-1 lg:grid-cols-[30%_1fr] gap-6 p-5 hover:bg-surface-hover transition border-b-1 border-b-line"
         >
           <div class="flex items-center">
-            <label :for="key" class="font-monospace text-[var(--text-secondary)] text-sm font-medium">{{ key }}</label>
+            <label :for="key" class="font-monospace text-fg-muted text-sm font-medium">{{ key }}</label>
           </div>
 
           <div>

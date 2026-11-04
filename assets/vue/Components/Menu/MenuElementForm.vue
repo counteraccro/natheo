@@ -251,17 +251,8 @@ export default defineComponent({
         <template #option="{ option }">
           <div class="flex items-center gap-3 w-full min-w-0">
             <!-- Icône -->
-            <div
-              class="shrink-0 w-7 h-7 rounded-md flex items-center justify-center"
-              style="background-color: var(--primary-lighter)"
-            >
-              <svg
-                class="w-3.5 h-3.5"
-                style="color: var(--primary)"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
+            <div class="shrink-0 w-7 h-7 rounded-md flex items-center justify-center bg-primary-lighter">
+              <svg class="w-3.5 h-3.5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
@@ -272,13 +263,11 @@ export default defineComponent({
             </div>
             <!-- Label + URL -->
             <div class="flex flex-col min-w-0 flex-1">
-              <span class="text-sm font-medium truncate" style="color: var(--text-primary)">{{ option.label }}</span>
-              <span class="text-xs truncate" style="color: var(--text-light)">{{ option.hint }}</span>
+              <span class="text-sm font-medium truncate text-fg">{{ option.label }}</span>
+              <span class="text-xs truncate text-fg-subtle">{{ option.hint }}</span>
             </div>
             <!-- ID badge -->
-            <span
-              class="shrink-0 text-xs font-semibold px-1.5 py-0.5 rounded"
-              style="background-color: var(--primary-lighter); color: var(--primary)"
+            <span class="shrink-0 text-xs font-semibold px-1.5 py-0.5 rounded bg-primary-lighter text-primary"
               >#{{ option.value }}</span
             >
           </div>
@@ -362,7 +351,7 @@ export default defineComponent({
       </div>
     </div>
 
-    <div class="flex items-center justify-between pt-3 border-t" style="border-color: var(--border-color)">
+    <div class="flex items-center justify-between pt-3 border-t border-line">
       <button class="btn btn-sm btn-outline-danger" @click="$emit('delete', menuElement.id)">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path

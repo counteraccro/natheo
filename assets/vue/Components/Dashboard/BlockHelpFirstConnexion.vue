@@ -157,7 +157,7 @@ export default defineComponent({
         </div>
       </div>
       <div class="flex gap-2">
-        <a href="#" @click="load()" class="text-sm font-medium hover:underline text-[var(--primary)]">
+        <a href="#" @click="load()" class="text-sm font-medium hover:underline text-primary">
           <svg
             class="card-icon"
             aria-hidden="true"
@@ -178,7 +178,7 @@ export default defineComponent({
         </a>
         <a
           href="#"
-          class="text-sm font-medium hover:underline text-[var(--primary)]"
+          class="text-sm font-medium hover:underline text-primary"
           @click="!complete ? showModal() : hideConfig()"
         >
           {{ translate.btn_def_hide }}
@@ -191,8 +191,8 @@ export default defineComponent({
 
         <AlertSuccess v-if="hideMsgSuccess" :text="translate.msg_hide_success" />
         <div v-else>
-          <h4 class="font-semibold mb-2 text-[var(--text-primary)]">{{ translate.sub_title }}</h4>
-          <p class="text-sm mb-4 text-[var(--text-secondary)]">{{ translate.text_1 }}</p>
+          <h4 class="font-semibold mb-2 text-fg">{{ translate.sub_title }}</h4>
+          <p class="text-sm mb-4 text-fg-muted">{{ translate.text_1 }}</p>
 
           <div class="space-y-1">
             <div v-for="(item, index) in result" :key="index">
@@ -251,7 +251,7 @@ export default defineComponent({
             </div>
           </div>
 
-          <div v-if="links.link_options" class="flex flex-wrap gap-4 mt-4 pt-4 border-t border-[var(--border-color)]">
+          <div v-if="links.link_options" class="flex flex-wrap gap-4 mt-4 pt-4 border-t border-line">
             <a
               :href="links.link_options.link"
               class="text-sm font-medium hover:underline flex items-center gap-1.5 text-[color:var(--primary)]"

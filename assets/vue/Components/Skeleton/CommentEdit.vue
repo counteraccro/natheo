@@ -16,11 +16,11 @@ export default defineComponent({
     <div class="xl:col-span-2 flex flex-col gap-6">
       <!-- Carte éditeur -->
       <div
-        class="rounded-lg overflow-hidden animate-pulse"
-        style="background-color: var(--bg-card); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm)"
+        class="rounded-lg overflow-hidden animate-pulse bg-card border border-line"
+        style="box-shadow: var(--shadow-sm)"
       >
         <!-- Header carte -->
-        <div class="flex items-center justify-between px-6 py-4" style="border-bottom: 1px solid var(--border-color)">
+        <div class="flex items-center justify-between px-6 py-4 border-b border-line">
           <div class="flex items-center gap-2">
             <div class="w-4 h-4 rounded bg-gray-200 dark:bg-gray-700"></div>
             <div class="h-4 w-40 rounded-md bg-gray-200 dark:bg-gray-700"></div>
@@ -28,10 +28,7 @@ export default defineComponent({
           <div class="h-6 w-20 rounded-full bg-gray-200 dark:bg-gray-700"></div>
         </div>
         <!-- Toolbar skeleton -->
-        <div
-          class="flex items-center gap-2 px-4 py-3"
-          style="background-color: var(--bg-hover); border-bottom: 1px solid var(--border-color)"
-        >
+        <div class="flex items-center gap-2 px-4 py-3 bg-surface-hover border-b border-line">
           <div class="h-7 w-14 rounded-lg bg-gray-200 dark:bg-gray-700"></div>
           <div class="w-px h-5 bg-gray-200 dark:bg-gray-700"></div>
           <div class="h-7 w-7 rounded-lg bg-gray-200 dark:bg-gray-700"></div>
@@ -64,7 +61,7 @@ export default defineComponent({
           <div class="h-4 w-2/6 rounded-md bg-gray-200 dark:bg-gray-700"></div>
         </div>
         <!-- Footer éditeur skeleton -->
-        <div class="flex items-center justify-between px-5 py-3" style="border-top: 1px solid var(--border-color)">
+        <div class="flex items-center justify-between px-5 py-3 border-t border-line">
           <div class="h-3 w-52 rounded-md bg-gray-200 dark:bg-gray-700"></div>
           <div class="h-3 w-32 rounded-md bg-gray-200 dark:bg-gray-700"></div>
         </div>
@@ -72,8 +69,8 @@ export default defineComponent({
 
       <!-- Barre d'actions skeleton -->
       <div
-        class="flex items-center justify-between px-6 py-4 rounded-lg animate-pulse"
-        style="background-color: var(--bg-card); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm)"
+        class="flex items-center justify-between px-6 py-4 rounded-lg animate-pulse bg-card border border-line"
+        style="box-shadow: var(--shadow-sm)"
       >
         <div class="h-9 w-28 rounded-lg bg-gray-200 dark:bg-gray-700"></div>
         <div class="h-9 w-52 rounded-lg bg-gray-200 dark:bg-gray-700"></div>
@@ -84,10 +81,10 @@ export default defineComponent({
     <div class="flex flex-col gap-6">
       <!-- Carte Statut skeleton -->
       <div
-        class="rounded-lg overflow-hidden animate-pulse"
-        style="background-color: var(--bg-card); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm)"
+        class="rounded-lg overflow-hidden animate-pulse bg-card border border-line"
+        style="box-shadow: var(--shadow-sm)"
       >
-        <div class="px-5 py-4" style="border-bottom: 1px solid var(--border-color)">
+        <div class="px-5 py-4 border-b border-line">
           <div class="h-4 w-20 rounded-md bg-gray-200 dark:bg-gray-700"></div>
         </div>
         <div class="p-5 flex flex-col gap-4">
@@ -102,14 +99,14 @@ export default defineComponent({
 
       <!-- Carte Informations skeleton -->
       <div
-        class="rounded-lg overflow-hidden animate-pulse"
-        style="background-color: var(--bg-card); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm)"
+        class="rounded-lg overflow-hidden animate-pulse bg-card border border-line"
+        style="box-shadow: var(--shadow-sm)"
       >
-        <div class="px-5 py-4" style="border-bottom: 1px solid var(--border-color)">
+        <div class="px-5 py-4 border-b border-line">
           <div class="h-4 w-28 rounded-md bg-gray-200 dark:bg-gray-700"></div>
         </div>
         <!-- 4 lignes d'info -->
-        <div class="divide-y divide-[var(--border-color)]">
+        <div class="divide-y divide-line">
           <div v-for="i in 4" :key="i" class="flex items-center gap-3 px-5 py-4">
             <div class="w-8 h-8 rounded-lg flex-shrink-0 bg-gray-200 dark:bg-gray-700"></div>
             <div class="flex flex-col gap-1.5 flex-1">
@@ -150,10 +147,10 @@ export default defineComponent({
 
       <!-- Carte Article associé skeleton -->
       <div
-        class="rounded-lg overflow-hidden animate-pulse"
-        style="background-color: var(--bg-card); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm)"
+        class="rounded-lg overflow-hidden animate-pulse bg-card border border-line"
+        style="box-shadow: var(--shadow-sm)"
       >
-        <div class="px-5 py-4" style="border-bottom: 1px solid var(--border-color)">
+        <div class="px-5 py-4 border-b border-line">
           <div class="h-4 w-32 rounded-md bg-gray-200 dark:bg-gray-700"></div>
         </div>
         <div class="p-5 flex items-start gap-3">

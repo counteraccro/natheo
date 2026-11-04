@@ -14,11 +14,11 @@ export default defineComponent({
 
 <template>
   <div
-    class="rounded-2xl overflow-hidden animate-pulse"
-    style="background-color: var(--bg-card); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm)"
+    class="rounded-2xl overflow-hidden animate-pulse bg-card border border-line"
+    style="box-shadow: var(--shadow-sm)"
   >
     <!-- Header -->
-    <div class="flex items-center gap-3 px-5 py-3.5" style="border-bottom: 1px solid var(--border-color)">
+    <div class="flex items-center gap-3 px-5 py-3.5 border-b border-line">
       <div class="w-4 h-4 rounded flex-shrink-0 bg-gray-200 dark:bg-gray-700"></div>
       <div class="h-4 flex-1 rounded-md bg-gray-200 dark:bg-gray-700"></div>
       <div class="h-6 w-20 rounded-full flex-shrink-0 bg-gray-200 dark:bg-gray-700"></div>
@@ -41,11 +41,11 @@ export default defineComponent({
   </div>
 
   <div
-    class="rounded-2xl overflow-hidden animate-pulse mt-2"
-    style="background-color: var(--bg-card); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm)"
+    class="rounded-2xl overflow-hidden animate-pulse mt-2 bg-card border border-line"
+    style="box-shadow: var(--shadow-sm)"
   >
     <!-- Header -->
-    <div class="flex items-center gap-3 px-5 py-3.5" style="border-bottom: 1px solid var(--border-color)">
+    <div class="flex items-center gap-3 px-5 py-3.5 border-b border-line">
       <div class="w-4 h-4 rounded flex-shrink-0 bg-gray-200 dark:bg-gray-700"></div>
       <div class="h-4 flex-1 rounded-md bg-gray-200 dark:bg-gray-700"></div>
       <div class="h-6 w-20 rounded-full flex-shrink-0 bg-gray-200 dark:bg-gray-700"></div>

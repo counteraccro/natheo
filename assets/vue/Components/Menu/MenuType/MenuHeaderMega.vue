@@ -45,17 +45,10 @@ export default defineComponent({
 </script>
 
 <template>
-  <nav
-    class="w-full rounded-xl border relative"
-    style="background-color: var(--bg-card); border-color: var(--border-color)"
-    @mouseleave="close"
-  >
+  <nav class="w-full rounded-xl border relative bg-card border-line" @mouseleave="close">
     <div class="px-4 py-3 flex items-center justify-between">
-      <div class="flex items-center gap-2 font-bold text-sm" style="color: var(--text-primary)">
-        <div
-          class="w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold"
-          style="background-color: var(--primary)"
-        >
+      <div class="flex items-center gap-2 font-bold text-sm text-fg">
+        <div class="w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold bg-primary">
           N
         </div>
         {{ data.name }}
@@ -90,8 +83,7 @@ export default defineComponent({
           <template v-else>
             <a
               :href="getUrl(element)"
-              class="flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors hover:bg-gray-100 dark:hover:bg-gray-700"
-              style="color: var(--text-primary)"
+              class="flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors hover:bg-gray-100 dark:hover:bg-gray-700 text-fg"
               @click.prevent
             >
               {{ getLabel(element) }}
@@ -100,7 +92,7 @@ export default defineComponent({
         </li>
       </ul>
 
-      <button class="md:hidden p-2 rounded-lg" style="color: var(--text-secondary)">
+      <button class="md:hidden p-2 rounded-lg text-fg-muted">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
         </svg>
@@ -111,15 +103,10 @@ export default defineComponent({
       <div
         v-if="hasChildren(element)"
         v-show="openItem === element.id"
-        class="absolute left-0 right-0 top-full z-50 border-x border-b shadow-xl"
-        style="
-          background-color: var(--bg-card);
-          border-color: var(--border-color);
-          border-bottom-left-radius: 0.75rem;
-          border-bottom-right-radius: 0.75rem;
-        "
+        class="absolute left-0 right-0 top-full z-50 border-x border-b shadow-xl bg-card border-line"
+        style="border-bottom-left-radius: 0.75rem; border-bottom-right-radius: 0.75rem"
       >
-        <div class="h-px" style="background-color: var(--border-color)"></div>
+        <div class="h-px bg-line"></div>
         <div class="p-6">
           <div class="grid gap-8" :class="gridClass(element)">
             <div v-for="child in element.children" :key="child.id" v-show="!child.disabled">

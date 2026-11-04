@@ -90,7 +90,7 @@ export default defineComponent({
       ];
       keywords.forEach((keyword) => {
         const regex = new RegExp(`\\b(${keyword})\\b`, 'gi');
-        html = html.replace(regex, '<span class="text-[var(--primary)]">$1</span>');
+        html = html.replace(regex, '<span class="text-primary">$1</span>');
       });
 
       const functions = [
@@ -129,10 +129,10 @@ export default defineComponent({
       ];
       functions.forEach((func) => {
         const regex = new RegExp(`\\b(${func})\\s*\\(`, 'gi');
-        html = html.replace(regex, '<span class="text-[var(--primary)]">$1</span>(');
+        html = html.replace(regex, '<span class="text-primary">$1</span>(');
       });
-      html = html.replace(/('(?:[^'\\]|\\.)*')/g, '<span class="text-[var(--alert-info)]">$1</span>');
-      html = html.replace(/\b(\d+\.?\d*)\b/g, '<span class="text-[var(--alert-success)]">$1</span>');
+      html = html.replace(/('(?:[^'\\]|\\.)*')/g, '<span class="text-alert-info">$1</span>');
+      html = html.replace(/\b(\d+\.?\d*)\b/g, '<span class="text-alert-success">$1</span>');
 
       return html;
     },
@@ -146,8 +146,8 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="bg-[var(--bg-card)] rounded-xl shadow-sm border border-[var(--border-color)] mt-3">
-    <div class="flex items-center justify-between px-4 py-3 bg-[var(--bg-main)] rounded-xl">
+  <div class="bg-card rounded-xl shadow-sm border border-line mt-3">
+    <div class="flex items-center justify-between px-4 py-3 bg-surface rounded-xl">
       <span class="text-sm font-mono text-slate-400">$ {{ label }}</span>
       <div>
         <button @click="$emit('save-sql')" class="btn-icon btn btn-ghost-primary">
@@ -183,7 +183,7 @@ export default defineComponent({
       </div>
     </div>
     <div class="p-5">
-      <pre><code class="whitespace-pre-wrap break-words text-[var(--text-primary)]" v-html="highlightedSql"></code></pre>
+      <pre><code class="whitespace-pre-wrap break-words text-fg" v-html="highlightedSql"></code></pre>
     </div>
   </div>
 </template>

@@ -318,8 +318,7 @@ export default defineComponent({
         <div v-else>
           <button
             type="button"
-            class="w-full flex flex-col items-center justify-center gap-2 py-8 rounded-lg border-2 border-dashed transition-all cursor-pointer"
-            style="border-color: var(--border-dark); color: var(--text-secondary)"
+            class="w-full flex flex-col items-center justify-center gap-2 py-8 rounded-lg border-2 border-dashed transition-all cursor-pointer border-line-dark text-fg-muted"
             @mouseenter="($event.currentTarget as HTMLElement).style.borderColor = 'var(--primary)'"
             @mouseleave="($event.currentTarget as HTMLElement).style.borderColor = 'var(--border-dark)'"
             @click="openMediaPicker"
@@ -349,7 +348,7 @@ export default defineComponent({
       <div class="form-group">
         <div class="flex items-center justify-between">
           <label for="page-title" class="form-label">{{ translate.page_content_form.input_titre_label }}</label>
-          <div class="flex items-center gap-1.5 text-xs cursor-pointer" style="color: var(--text-secondary)">
+          <div class="flex items-center gap-1.5 text-xs cursor-pointer text-fg-muted">
             <div class="form-check">
               <input type="checkbox" id="check-auto-slug" v-model="currentAutoSlugEnabled" class="form-check-input" />
               <label class="form-check-label" for="check-auto-slug">{{
@@ -397,8 +396,7 @@ export default defineComponent({
 
           <svg
             v-if="isCheckingUrl"
-            class="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 animate-spin"
-            style="color: var(--text-secondary)"
+            class="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 animate-spin text-fg-muted"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"

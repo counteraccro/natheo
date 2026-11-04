@@ -543,22 +543,19 @@ export default defineComponent({
   <div v-else-if="Object.keys(menu).length === 0">
     <div class="flex flex-col items-center justify-center py-16 px-6 text-center">
       <!-- Icône -->
-      <div
-        class="w-16 h-16 rounded-2xl flex items-center justify-center mb-5"
-        style="background-color: var(--primary-lighter)"
-      >
-        <svg class="w-8 h-8" style="color: var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-5 bg-primary-lighter">
+        <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 7h14M5 12h14M5 17h14" />
         </svg>
       </div>
 
       <!-- Titre -->
-      <p class="text-lg font-bold mb-2" style="color: var(--text-primary)">
+      <p class="text-lg font-bold mb-2 text-fg">
         {{ translate.menu_no_exist_title }}
       </p>
 
       <!-- Description -->
-      <p class="text-sm max-w-xs mb-6" style="color: var(--text-secondary)">
+      <p class="text-sm max-w-xs mb-6 text-fg-muted">
         {{ translate.menu_no_exist_text }}
       </p>
 
@@ -604,7 +601,7 @@ export default defineComponent({
           :locale="currentLocale"
           :data="dataMenu"
         />
-        <p class="text-xs mt-2 flex items-center gap-1.5" style="color: var(--text-light)">
+        <p class="text-xs mt-2 flex items-center gap-1.5 text-fg-subtle">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
@@ -997,8 +994,8 @@ export default defineComponent({
             ></path>
           </svg>
 
-          <p class="font-semibold" style="color: var(--text-secondary)">{{ translate.no_select_menu_form_msg }}</p>
-          <p class="text-sm mt-1" style="color: var(--text-light)">{{ translate.no_select_menu_form_msg_2 }}</p>
+          <p class="font-semibold text-fg-muted">{{ translate.no_select_menu_form_msg }}</p>
+          <p class="text-sm mt-1 text-fg-subtle">{{ translate.no_select_menu_form_msg_2 }}</p>
 
           <div class="help-list">
             <div class="help-item">
@@ -1006,7 +1003,7 @@ export default defineComponent({
               {{ translate.no_select_menu_form_msg_3 }}
             </div>
             <div class="help-item">
-              <span class="help-icon" style="background-color: var(--primary-lighter); color: var(--primary)">✎</span>
+              <span class="help-icon bg-primary-lighter text-primary">✎</span>
               {{ translate.no_select_menu_form_msg_4 }}
             </div>
             <div class="help-item">

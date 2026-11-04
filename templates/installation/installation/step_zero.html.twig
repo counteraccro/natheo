@@ -13,12 +13,12 @@
     <h2 class="text-2xl font-bold mb-2">
         {{ 'installation.step.0.h2.title' | trans({}, 'installation') }}
     </h2>
-    <p class="text-sm mb-6" style="color: var(--text-secondary);">
+    <p class="text-sm mb-6 text-fg-muted">
         {{ 'installation.step.0.h2.sub.title' | trans({}, 'installation') }}
     </p>
 
     <div class="card mb-4">
-        <div class="card-header" style="background-color: var(--primary);">
+        <div class="card-header bg-primary">
             <div class="card-title" style="color: #FFFFFF">
                 <svg class="card-icon" style="color: #FFFFFF" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
@@ -112,11 +112,11 @@
                         </div>
 
                         {% if writable %}
-                            <svg class="w-4 h-4 shrink-0" style="color: var(--btn-success);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-4 h-4 shrink-0 text-btn-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
                             </svg>
                         {% else %}
-                            <svg class="w-4 h-4 shrink-0" style="color: var(--btn-danger);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-4 h-4 shrink-0 text-btn-danger" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"></path>
                             </svg>
                         {% endif %}
@@ -149,7 +149,7 @@
 
         </div>
 
-        <div class="px-5 sm:px-6 py-4 flex items-center gap-2 justify-end border-t" style="border-color: var(--border-color); background-color: var(--bg-hover);">
+        <div class="px-5 sm:px-6 py-4 flex items-center gap-2 justify-end border-t border-line bg-surface-hover">
 
             {% if not requirement.next %}
             <div class="alert alert-danger-solid alert-sm">

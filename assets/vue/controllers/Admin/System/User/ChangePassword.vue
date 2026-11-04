@@ -86,12 +86,12 @@ export default defineComponent({
       switch (this.progress) {
         case 20:
         case 40:
-          return 'bg-[var(--btn-danger)]';
+          return 'bg-btn-danger';
         case 60:
         case 80:
-          return 'bg-[var(--btn-warning)]';
+          return 'bg-btn-warning';
         case 100:
-          return 'bg-[var(--btn-success)]';
+          return 'bg-btn-success';
         default:
           return '';
       }
@@ -336,7 +336,7 @@ export default defineComponent({
             v-model="passwordConfirm"
             @keyup="validatePasswordFinal"
           />
-          <div v-if="classPasswordConfirm === 'is-invalid'" class="text-[var(--text-secondary)] text-sm mt-1">
+          <div v-if="classPasswordConfirm === 'is-invalid'" class="text-fg-muted text-sm mt-1">
             {{ translate.error_password_2 }}
           </div>
         </div>
@@ -362,7 +362,7 @@ export default defineComponent({
         class="mt-4 max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 text-sm"
         :class="fullScreen ? 'ms-auto' : ''"
       >
-        <p class="text-[var(--text-secondary)]">{{ translate.force }}</p>
+        <p class="text-fg-muted">{{ translate.force }}</p>
         <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700 mt-2 mb-2">
           <div
             class="h-2.5 rounded-full"

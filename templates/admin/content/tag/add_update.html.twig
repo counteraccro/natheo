@@ -29,12 +29,12 @@
     {{ breadcrumb(breadcrumb) }}
 
     <h1 class="head-title">
-        <svg class="w-7 h-7" style="color: var(--primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="w-7 h-7 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.2 6H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11.2a1 1 0 0 0 .747-.334l4.46-5a1 1 0 0 0 0-1.332l-4.46-5A1 1 0 0 0 15.2 6Z"></path>
         </svg>
         {{ titleH1 }}</h1>
 
-    <p class="text-sm text-[var(--text-secondary)] mb-3">
+    <p class="text-sm text-fg-muted mb-3">
         {{ description }}
     </p>
 
@@ -43,21 +43,20 @@
         <div class="flex flex-col items-center justify-center py-16 px-6 text-center">
             <!-- Icône -->
             <div
-                class="w-16 h-16 rounded-2xl flex items-center justify-center mb-5"
-                style="background-color: var(--primary-lighter);"
+                class="w-16 h-16 rounded-2xl flex items-center justify-center mb-5 bg-primary-lighter"
             >
-                <svg class="w-8 h-8" style="color: var(--primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.2 6H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11.2a1 1 0 0 0 .747-.334l4.46-5a1 1 0 0 0 0-1.332l-4.46-5A1 1 0 0 0 15.2 6Z"/>
                 </svg>
             </div>
 
             <!-- Titre -->
-            <p class="text-lg font-bold mb-2" style="color: var(--text-primary);">
+            <p class="text-lg font-bold mb-2 text-fg">
                 {{ 'tag.update.page.no.tag.title' | trans({}, 'tag') }}
             </p>
 
             <!-- Description -->
-            <p class="text-sm max-w-xs mb-6" style="color: var(--text-secondary);">
+            <p class="text-sm max-w-xs mb-6 text-fg-muted">
                 {{ 'tag.update.page.no.tag.text' | trans({}, 'tag') }}
             </p>
 

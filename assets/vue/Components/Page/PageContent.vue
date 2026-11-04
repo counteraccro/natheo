@@ -157,12 +157,10 @@ export default defineComponent({
     <div class="p-4 flex flex-col gap-4">
       <div
         v-if="!hasAtLeastOneContent"
-        class="flex items-start gap-2 p-3 rounded-lg"
-        style="background-color: var(--alert-danger-bg); border: 1px solid var(--alert-danger-border)"
+        class="flex items-start gap-2 p-3 rounded-lg bg-alert-danger-bg border border-alert-danger-border"
       >
         <svg
-          class="icon-sm shrink-0 mt-0.5"
-          style="color: var(--alert-danger-text)"
+          class="icon-sm shrink-0 mt-0.5 text-alert-danger-text"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -174,9 +172,7 @@ export default defineComponent({
             d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
           />
         </svg>
-        <span class="text-xs" style="color: var(--alert-danger-text)">{{
-          translate.page_content.warning_empty_content
-        }}</span>
+        <span class="text-xs text-alert-danger-text">{{ translate.page_content.warning_empty_content }}</span>
       </div>
 
       <div class="form-group">

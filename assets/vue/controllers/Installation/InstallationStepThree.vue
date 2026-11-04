@@ -230,16 +230,11 @@ export default defineComponent({
 
   <div v-else>
     <h2 class="text-2xl font-bold mb-2">{{ translate.title_h1 }}</h2>
-    <p class="text-sm mb-6" style="color: var(--text-secondary)">{{ translate.fondateur_description }}</p>
+    <p class="text-sm mb-6 text-fg-muted">{{ translate.fondateur_description }}</p>
 
     <div
       v-if="datas.debug_mode"
-      class="mb-6 px-4 py-3 rounded-lg text-sm"
-      style="
-        background-color: var(--alert-danger-bg);
-        border: 1px solid var(--alert-danger-border);
-        color: var(--alert-danger-text);
-      "
+      class="mb-6 px-4 py-3 rounded-lg text-sm bg-alert-danger-bg border border-alert-danger-border text-alert-danger-text"
     >
       <p class="font-semibold flex items-center gap-2 mb-2">
         <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -345,8 +340,7 @@ export default defineComponent({
               />
               <button
                 type="button"
-                class="absolute right-2 top-1/2 -translate-y-1/2"
-                style="color: var(--text-light)"
+                class="absolute right-2 top-1/2 -translate-y-1/2 text-fg-subtle"
                 @click="showPassword = !showPassword"
               >
                 <svg v-if="showPassword" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -376,12 +370,8 @@ export default defineComponent({
             <span v-if="valid.password === false && passwordStrength !== null" class="form-text text-error"
               >✗ {{ translate.fondateur_password_error }}</span
             >
-            <p class="text-xs mt-1.5" style="color: var(--text-light)">{{ translate.fondateur_password_help }}</p>
-            <p
-              v-if="passwordStrength === 'weak'"
-              class="text-xs mt-1 flex items-center gap-1"
-              style="color: var(--btn-danger)"
-            >
+            <p class="text-xs mt-1.5 text-fg-subtle">{{ translate.fondateur_password_help }}</p>
+            <p v-if="passwordStrength === 'weak'" class="text-xs mt-1 flex items-center gap-1 text-btn-danger">
               <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12" />
               </svg>
@@ -402,11 +392,7 @@ export default defineComponent({
               </svg>
               {{ translate.fondateur_password_normal }}
             </p>
-            <p
-              v-else-if="passwordStrength === 'strong'"
-              class="text-xs mt-1 flex items-center gap-1"
-              style="color: var(--btn-success)"
-            >
+            <p v-else-if="passwordStrength === 'strong'" class="text-xs mt-1 flex items-center gap-1 text-btn-success">
               <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
               </svg>
@@ -416,10 +402,7 @@ export default defineComponent({
         </div>
       </div>
 
-      <div
-        class="px-5 sm:px-6 py-4 flex items-center justify-end border-t"
-        style="border-color: var(--border-color); background-color: var(--bg-hover)"
-      >
+      <div class="px-5 sm:px-6 py-4 flex items-center justify-end border-t border-line bg-surface-hover">
         <button
           v-if="!userSuccess"
           type="button"
@@ -443,7 +426,7 @@ export default defineComponent({
           <template v-else>{{ translate.fondateur_btn_create }}</template>
         </button>
 
-        <span v-else class="flex items-center gap-1.5 text-sm font-medium" style="color: var(--btn-success)">
+        <span v-else class="flex items-center gap-1.5 text-sm font-medium text-btn-success">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
           </svg>
@@ -465,16 +448,12 @@ export default defineComponent({
       </div>
 
       <div class="p-5 sm:p-6">
-        <p class="text-sm mb-1" style="color: var(--text-secondary)">{{ translate.finish_installation_text_1 }}</p>
-        <p class="text-sm" style="color: var(--text-secondary)">{{ translate.finish_installation_text_2 }}</p>
+        <p class="text-sm mb-1 text-fg-muted">{{ translate.finish_installation_text_1 }}</p>
+        <p class="text-sm text-fg-muted">{{ translate.finish_installation_text_2 }}</p>
 
         <div v-if="finishing || finished" class="mt-6 flex flex-col gap-2">
           <div v-for="key in ['config', 'installData', 'cache']" :key="key">
-            <div
-              v-if="finishStep[key].success"
-              class="flex items-center gap-1.5 text-sm font-medium"
-              style="color: var(--btn-success)"
-            >
+            <div v-if="finishStep[key].success" class="flex items-center gap-1.5 text-sm font-medium text-btn-success">
               <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
               </svg>
@@ -482,12 +461,7 @@ export default defineComponent({
             </div>
             <div
               v-else-if="finishStep[key].message"
-              class="px-4 py-3 rounded-lg flex items-start gap-2 text-sm"
-              style="
-                background-color: var(--alert-danger-bg);
-                border: 1px solid var(--alert-danger-border);
-                color: var(--alert-danger-text);
-              "
+              class="px-4 py-3 rounded-lg flex items-start gap-2 text-sm bg-alert-danger-bg border border-alert-danger-border text-alert-danger-text"
             >
               <svg class="w-4 h-4 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12" />
@@ -496,7 +470,7 @@ export default defineComponent({
             </div>
           </div>
 
-          <div v-if="finished" class="flex items-center gap-1.5 text-sm font-medium" style="color: var(--btn-success)">
+          <div v-if="finished" class="flex items-center gap-1.5 text-sm font-medium text-btn-success">
             <svg class="w-4 h-4 flex-shrink-0 animate-spin" fill="none" viewBox="0 0 24 24">
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
               <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
@@ -508,8 +482,7 @@ export default defineComponent({
 
       <div
         v-if="!finished"
-        class="px-5 sm:px-6 py-4 flex items-center justify-end border-t"
-        style="border-color: var(--border-color); background-color: var(--bg-hover)"
+        class="px-5 sm:px-6 py-4 flex items-center justify-end border-t border-line bg-surface-hover"
       >
         <button type="button" class="btn btn-primary btn-sm" :disabled="finishing" @click="finishInstallation()">
           <svg v-if="finishing" class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
