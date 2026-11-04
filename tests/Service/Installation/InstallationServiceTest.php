@@ -15,7 +15,6 @@ use App\Enum\Installation\OptionInstallation;
 use App\Service\Installation\InstallationService;
 use App\Tests\AppWebTestCase;
 use App\Service\Global\EnvFile;
-use App\Utils\Installation\InstallationConst;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\Container;
