@@ -10,7 +10,6 @@ import AlertWarning from '@/vue/Components/Alert/Warning.vue';
 import { Toasts } from '@/ts/Toast/Toast.type';
 import Toast from '@/vue/Components/Global/Toast.vue';
 import axios from 'axios';
-import translate from '@/vue/controllers/Admin/System/Translate.vue';
 
 type TranslateRecord = { [key: string]: string | TranslateRecord };
 

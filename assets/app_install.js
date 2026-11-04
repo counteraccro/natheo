@@ -7,11 +7,7 @@
 // Import du CSS install
 import './styles/app_install.scss';
 
-// Import Bootstrap JS
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-
-// Import Bootstrap Icons
-import 'bootstrap-icons/font/bootstrap-icons.css';
+import 'flowbite';
 
 import { startVueControllers } from './bootstrap';
 
