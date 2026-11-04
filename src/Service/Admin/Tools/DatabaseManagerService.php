@@ -11,7 +11,7 @@ namespace App\Service\Admin\Tools;
 
 use App\Enum\Admin\Tools\DatabaseManager\DatabaseManagerData;
 use App\Service\Admin\AppAdminService;
-use App\Utils\Utils;
+use App\Formatter\Global\FileSizeFormatter;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Schema\Name\OptionallyQualifiedName;
 use Psr\Container\ContainerExceptionInterface;
@@ -105,7 +105,7 @@ class DatabaseManagerService extends AppAdminService
                 'url' => $router->generate('admin_database_manager_download_dump_file', [
                     'filename' => $file->getFilename(),
                 ]),
-                'size' => Utils::getSizeName($file->getSize()),
+                'size' => FileSizeFormatter::format($file->getSize()),
                 'extension' => strtoupper($file->getExtension()),
             ];
         }

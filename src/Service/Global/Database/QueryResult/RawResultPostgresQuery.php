@@ -9,7 +9,7 @@ declare(strict_types=1);
 namespace App\Service\Global\Database\QueryResult;
 
 use App\Service\Global\Database\QueryResult\RawResultQueryInterface;
-use App\Utils\Utils;
+use App\Formatter\Global\FileSizeFormatter;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RawResultPostgresQuery implements RawResultQueryInterface
@@ -50,7 +50,7 @@ class RawResultPostgresQuery implements RawResultQueryInterface
         $result['header'] = $newHeader;
         $result['stat'] = [
             'nbElement' => $nbElement,
-            'sizeBite' => Utils::getSizeName($sizeBite),
+            'sizeBite' => FileSizeFormatter::format($sizeBite),
             'nbTable' => $nbTable,
         ];
 

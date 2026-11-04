@@ -14,7 +14,7 @@ use App\Entity\Admin\System\User;
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Admin\GridService;
 use App\Service\Admin\System\OptionSystemService;
-use App\Utils\Utils;
+use App\Formatter\Global\FileSizeFormatter;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -296,7 +296,7 @@ class LoggerService extends AppService
             'nb' => $total,
             'data' => array_reverse($tab),
             'column' => array_values($columns),
-            'taille' => Utils::getSizeName((int) filesize($path)),
+            'taille' => FileSizeFormatter::format((int) filesize($path)),
         ];
         return $this->getGridService()->addAllDataRequiredGrid($tabReturn);
     }

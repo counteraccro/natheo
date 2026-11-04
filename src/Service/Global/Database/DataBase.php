@@ -12,7 +12,6 @@ namespace App\Service\Global\Database;
 use App\Enum\Installation\DoctrineStrategy;
 use App\Enum\Installation\OptionInstallation;
 use App\Service\Installation\InstallationService;
-use App\Utils\Utils;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception;
@@ -301,7 +300,7 @@ class DataBase
     {
         foreach ($tables as &$table) {
             foreach ($table['columns'] as $key => $column) {
-                $table['columns'][$key] = Utils::convertCamelCaseToSnakeCase($column);
+                $table['columns'][$key] = self::convertCamelCaseToSnakeCase($column);
             }
         }
         return $tables;
@@ -372,5 +371,20 @@ class DataBase
             'header' => $header,
             'error' => '',
         ];
+    }
+
+    /**
+     * Convertit un nom camelCase en snake_case
+     * @param string $camelCase
+     * @return string
+     */
+    private static function convertCamelCaseToSnakeCase(string $camelCase): string
+    {
+        $result = '';
+        for ($i = 0; $i < strlen($camelCase); $i++) {
+            $char = $camelCase[$i];
+            $result .= ctype_upper($char) ? '_' . strtolower($char) : $char;
+        }
+        return ltrim($result, '_');
     }
 }
