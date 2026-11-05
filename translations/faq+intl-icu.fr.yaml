@@ -1,7 +1,7 @@
 faq.add.page_title: 'Nouvelle Faq'
 faq.add.page_title_h1: 'Nouvelle Faq'
 faq.add.description: 'Créer une nouvelle Faq pour votre site web'
-faq.update.page_title: 'Edition de la Faq'
+faq.update.page_title: 'Edition de la Faq #{id}'
 faq.update.page_title_h1: 'Edition de la Faq'
 faq.update.description: 'Depuis cette page, éditer votre FAQ, réordonner la ou ajouter/supprimer de nouvelles questions/réponses'
 faq.index.popin.help.title: Aide

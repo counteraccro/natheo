@@ -137,6 +137,7 @@ class FaqControllerTest extends AppWebTestCase
         $this->client->request('GET', $this->router->generate('admin_faq_update', ['id' => $faq->getId()]));
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains('h1', $this->translator->trans('faq.update.page_title_h1', domain: 'faq'));
+        $this->assertPageTitleContains('#' . $faq->getId());
 
         // FAQ d'un autre contributeur
         $faqOther = $this->createFaqAllDataDefault();
