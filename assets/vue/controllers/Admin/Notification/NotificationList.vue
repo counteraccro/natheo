@@ -13,11 +13,13 @@ import type { NotificationItem } from '@/ts/Notification/Notification.type';
 import type {
   NotificationCategory,
   NotificationChecked,
+  NotificationListCsrfTokens,
   NotificationListTranslate,
   NotificationListUrls,
 } from '@/ts/Notification/NotificationList.type';
 import Modal from '@/vue/Components/Global/Modal.vue';
 import { toastSuccess, toastError, toastRequestError } from '@/vue/Composables/Global/toast';
+import { withCsrf } from '@/vue/Composables/Admin/csrf';
 
 export default defineComponent({
   name: 'NotificationList',
@@ -28,6 +30,7 @@ export default defineComponent({
     limit: { type: Number, required: true },
     translation: { type: Object as PropType<NotificationListTranslate>, required: true },
     categories: { type: Object as PropType<Record<string, NotificationCategory>>, required: true },
+    csrf_tokens: { type: Object as PropType<NotificationListCsrfTokens>, required: true },
   },
   data() {
     return {
@@ -152,7 +155,11 @@ export default defineComponent({
     updateNotification(read: boolean): void {
       this.loading = true;
       axios
-        .post(this.urls.update, { notifications: this.notificationsChecked, read: read })
+        .post(
+          this.urls.update,
+          { notifications: this.notificationsChecked, read: read },
+          withCsrf(this.csrf_tokens.update)
+        )
         .then((response) => {
           if (response.data.success === true) {
             toastSuccess(response.data.msg);
@@ -184,7 +191,7 @@ export default defineComponent({
         this.loading = true;
         this.modale.showModale = false;
         axios
-          .post(this.urls.delete, { notifications: this.notificationsChecked })
+          .post(this.urls.delete, { notifications: this.notificationsChecked }, withCsrf(this.csrf_tokens.delete))
           .then((response) => {
             if (response.data.success === true) {
               toastSuccess(response.data.msg);
@@ -208,7 +215,7 @@ export default defineComponent({
     readAll(): void {
       this.loading = true;
       axios
-        .get(this.urls.readAll, {})
+        .post(this.urls.readAll, {}, withCsrf(this.csrf_tokens.readAll))
         .then((response) => {
           if (response.data.success === true) {
             toastSuccess(response.data.msg);
@@ -230,7 +237,7 @@ export default defineComponent({
      */
     purge(): void {
       axios
-        .post(this.urls.purge, {})
+        .post(this.urls.purge, {}, withCsrf(this.csrf_tokens.purge))
         .catch((error) => {
           toastRequestError(error);
         })
@@ -280,7 +287,7 @@ export default defineComponent({
       const tab: Record<string, NotificationChecked> = { [id]: { id: id, isRead: false } };
 
       axios
-        .post(this.urls.update, { notifications: tab, read: true })
+        .post(this.urls.update, { notifications: tab, read: true }, withCsrf(this.csrf_tokens.update))
         .then((response) => {
           if (response.data.success === true) {
             toastSuccess(response.data.msg);

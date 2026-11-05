@@ -27,6 +27,11 @@ export interface DashboardDatas {
   dashboard_help_first_connexion: BlockHelpFirstConnexionDatas;
 }
 
+/** Jetons CSRF des actions des blocs du dashboard */
+export interface DashboardCsrfTokens {
+  update_user_data: string;
+}
+
 export interface DashboardRoles {
   isUser: boolean;
   isContributeur: boolean;

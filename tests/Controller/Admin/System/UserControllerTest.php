@@ -23,6 +23,7 @@ use App\Service\Admin\System\OptionSystemService;
 use App\Service\Admin\System\User\UserDataService;
 use App\Tests\AppWebTestCase;
 use App\Service\Admin\System\User\Anonymous;
+use App\Enum\Admin\System\User\UserCsrfToken;
 use App\Enum\Admin\System\User\UserDataKey;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
@@ -165,6 +166,56 @@ class UserControllerTest extends AppWebTestCase
             ->attr('data-symfony--ux-vue--vue-props-value');
 
         return json_decode($props, true)['csrf_token'];
+    }
+
+    /**
+     * Retourne l'entête portant un jeton CSRF transmis au composant Vue MyAccountDangerZone
+     * @param string $key clé du jeton (disabled, delete)
+     * @return array
+     */
+    private function getDangerZoneCsrfHeader(string $key): array
+    {
+        $crawler = $this->client->request('GET', $this->router->generate('admin_user_my_account'));
+        $props = $crawler
+            ->filter('[data-symfony--ux-vue--vue-component-value="Admin/System/User/MyAccountDangerZone"]')
+            ->attr('data-symfony--ux-vue--vue-props-value');
+
+        return ['HTTP_X-CSRF-TOKEN' => json_decode($props, true)['csrf_tokens'][$key]];
+    }
+
+    /**
+     * Retourne l'entête portant le jeton CSRF de mise à jour des UserData transmis au composant Vue Dashboard
+     * @return array
+     */
+    private function getDashboardCsrfHeader(): array
+    {
+        $crawler = $this->client->request('GET', $this->router->generate('admin_dashboard_index'));
+        $props = $crawler
+            ->filter('[data-symfony--ux-vue--vue-component-value="Admin/Dashboard/Dashboard"]')
+            ->attr('data-symfony--ux-vue--vue-props-value');
+
+        return ['HTTP_X-CSRF-TOKEN' => json_decode($props, true)['csrf_tokens']['update_user_data']];
+    }
+
+    /**
+     * Génère un jeton CSRF dans la session du client, pour les actions dont le composant
+     * n'est pas affiché à l'utilisateur connecté (danger zone d'un super admin)
+     * @param string $tokenId
+     * @return array
+     */
+    private function generateCsrfHeader(string $tokenId): array
+    {
+        $this->client->request('GET', $this->router->generate('admin_user_my_account'));
+        $request = $this->client->getRequest();
+        $container = static::getContainer();
+
+        $requestStack = $container->get('request_stack');
+        $requestStack->push($request);
+        $token = $container->get('security.csrf.token_manager')->getToken($tokenId)->getValue();
+        $requestStack->pop();
+        $request->getSession()->save();
+
+        return ['HTTP_X-CSRF-TOKEN' => $token];
     }
 
     /**
@@ -517,7 +568,11 @@ class UserControllerTest extends AppWebTestCase
 
         // Tentative désactivation superadmin
         $this->client->loginUser($userSuperAdminToDisable, 'admin');
-        $this->client->request('POST', $this->router->generate('admin_user_self_disabled'));
+        $this->client->request(
+            'POST',
+            $this->router->generate('admin_user_self_disabled'),
+            server: $this->generateCsrfHeader(UserCsrfToken::SELF_DISABLED->value),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -530,7 +585,15 @@ class UserControllerTest extends AppWebTestCase
         $optionSystemService->saveValueByKee(OptionSystem::OS_MAIL_NOTIFICATION->value, '1');
         $optionSystemService->saveValueByKee(OptionSystem::OS_NOTIFICATION->value, '1');
         $this->client->loginUser($userToDisable, 'admin');
-        $this->client->request('POST', $this->router->generate('admin_user_self_disabled'));
+        $url = $this->router->generate('admin_user_self_disabled');
+
+        $this->client->request('POST', $url);
+        $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
+        $this->em->clear();
+        $this->assertFalse($this->em->getRepository(User::class)->find($userToDisable->getId())->isDisabled());
+        $this->em->clear();
+
+        $this->client->request('POST', $url, server: $this->getDangerZoneCsrfHeader('disabled'));
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -572,7 +635,11 @@ class UserControllerTest extends AppWebTestCase
 
         // Delete superadmin
         $this->client->loginUser($userSuperAdminToDelete, 'admin');
-        $this->client->request('POST', $this->router->generate('admin_user_self_delete'));
+        $this->client->request(
+            'POST',
+            $this->router->generate('admin_user_self_delete'),
+            server: $this->generateCsrfHeader(UserCsrfToken::SELF_DELETE->value),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -587,7 +654,18 @@ class UserControllerTest extends AppWebTestCase
         $optionSystemService->saveValueByKee(OptionSystem::OS_ALLOW_DELETE_DATA->value, '1');
         $optionSystemService->saveValueByKee(OptionSystem::OS_REPLACE_DELETE_USER->value, '1');
         $this->client->loginUser($userToDelete, 'admin');
-        $this->client->request('POST', $this->router->generate('admin_user_self_delete'));
+        $url = $this->router->generate('admin_user_self_delete');
+
+        $this->client->request('POST', $url, server: ['HTTP_X-CSRF-TOKEN' => 'jeton-invalide']);
+        $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
+        $this->em->clear();
+        $this->assertEquals(
+            $userToDelete->getLogin(),
+            $this->em->getRepository(User::class)->find($userToDelete->getId())->getLogin(),
+        );
+        $this->em->clear();
+
+        $this->client->request('POST', $url, server: $this->getDangerZoneCsrfHeader('delete'));
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -623,7 +701,11 @@ class UserControllerTest extends AppWebTestCase
         $optionSystemService->saveValueByKee(OptionSystem::OS_ALLOW_DELETE_DATA->value, '1');
         $optionSystemService->saveValueByKee(OptionSystem::OS_REPLACE_DELETE_USER->value, '0');
         $this->client->loginUser($userToDelete, 'admin');
-        $this->client->request('POST', $this->router->generate('admin_user_self_delete'));
+        $this->client->request(
+            'POST',
+            $this->router->generate('admin_user_self_delete'),
+            server: $this->getDangerZoneCsrfHeader('delete'),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -743,24 +825,37 @@ class UserControllerTest extends AppWebTestCase
     {
         $user = $this->createUser();
         $this->client->loginUser($user, 'admin');
+        $url = $this->router->generate('admin_user_update_user_data');
+
+        /** @var UserDataService $userDataService */
+        $userDataService = $this->container->get(UserDataService::class);
+
+        // Sans jeton CSRF
+        $this->client->request(
+            'POST',
+            $url,
+            content: json_encode(['key' => UserDataKey::RESET_PASSWORD->value, 'value' => 'test']),
+        );
+        $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
+
+        $server = $this->getDashboardCsrfHeader();
 
         // Clé non modifiable par l'utilisateur
         $this->client->request(
             'POST',
-            $this->router->generate('admin_user_update_user_data'),
+            $url,
+            server: $server,
             content: json_encode(['key' => UserDataKey::RESET_PASSWORD->value, 'value' => 'test']),
         );
         $this->assertResponseStatusCodeSame(400);
-
-        /** @var UserDataService $userDataService */
-        $userDataService = $this->container->get(UserDataService::class);
         $this->assertNull($userDataService->findKeyAndUser(UserDataKey::RESET_PASSWORD->value, $user));
 
         // Création puis mise à jour
         foreach (['1', '0'] as $value) {
             $this->client->request(
                 'POST',
-                $this->router->generate('admin_user_update_user_data'),
+                $url,
+                server: $server,
                 content: json_encode(['key' => UserDataKey::HELP_FIRST_CONNEXION->value, 'value' => $value]),
             );
             $this->assertResponseIsSuccessful();

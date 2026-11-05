@@ -245,7 +245,8 @@
                 <div {{ vue_component('Admin/System/User/MyAccountDangerZone', {'url_disabled' : path('admin_user_self_disabled'),
                     'url_delete' : path('admin_user_self_delete'),
                     'translate' : dangerZoneTranslate,
-                    'can_delete' : canDelete, 'can_replace' : canReplace
+                    'can_delete' : canDelete, 'can_replace' : canReplace,
+                    'csrf_tokens' : {'disabled' : csrf_token(csrfTokenSelfDisabled), 'delete' : csrf_token(csrfTokenSelfDelete)}
                 }) }}></div>
             </div>
         </div>
@@ -271,7 +272,8 @@
             <div class="p-5">
                 <div {{ vue_component('Admin/System/User/MyAccountMoreOptions', {'url' : path('admin_user_update_user_data'),
                     'translate' : moreOptionsTranslate,
-                    'datas' : moreOptionsDatas
+                    'datas' : moreOptionsDatas,
+                    'csrf_token' : csrf_token(csrfTokenUpdateUserData)
                 }) }}></div>
             </div>
         </div>

@@ -9,7 +9,13 @@ import BlockHelpFirstConnexion from '../../../Components/Dashboard/BlockHelpFirs
 import BlockLastComment from '../../../Components/Dashboard/BlockLastComment.vue';
 import BlockLastPage from '../../../Components/Dashboard/BlockLastPage.vue';
 import BlockPageMostViewed from '@/vue/Components/Dashboard/BlockPageMostViewed.vue';
-import type { DashboardUrls, DashboardTranslate, DashboardDatas, DashboardRoles } from '@/ts/Dashboard/Dashboard.type';
+import type {
+  DashboardUrls,
+  DashboardTranslate,
+  DashboardDatas,
+  DashboardRoles,
+  DashboardCsrfTokens,
+} from '@/ts/Dashboard/Dashboard.type';
 
 export default defineComponent({
   name: 'Dashboard',
@@ -29,6 +35,10 @@ export default defineComponent({
     },
     roles: {
       type: Object as PropType<DashboardRoles>,
+      required: true,
+    },
+    csrf_tokens: {
+      type: Object as PropType<DashboardCsrfTokens>,
       required: true,
     },
   },
@@ -60,6 +70,7 @@ export default defineComponent({
         :translate="translate.dashboard_help_first_connexion"
         :datas="datas.dashboard_help_first_connexion"
         :urls="urls.dashboard_help_first_connexion"
+        :csrf_token="csrf_tokens.update_user_data"
         @hide-block="hideBlockFirstConnexion"
       />
     </div>

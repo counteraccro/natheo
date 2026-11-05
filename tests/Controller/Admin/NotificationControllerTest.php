@@ -17,6 +17,7 @@ use App\Service\Admin\System\OptionSystemService;
 use App\Tests\AppWebTestCase;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 class NotificationControllerTest extends AppWebTestCase
 {
@@ -124,11 +125,16 @@ class NotificationControllerTest extends AppWebTestCase
         ];
 
         $this->client->loginUser($user, 'admin');
-        $this->client->request(
-            'POST',
-            $this->router->generate('admin_notification_update'),
-            content: json_encode(['notifications' => [$tab], 'read' => true]),
-        );
+        $content = json_encode(['notifications' => [$tab], 'read' => true]);
+        $url = $this->router->generate('admin_notification_update');
+
+        $this->client->request('POST', $url, content: $content);
+        $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
+        $this->em->clear();
+        $this->assertFalse($this->em->getRepository(Notification::class)->find($notification->getId())->isRead());
+        $this->em->clear();
+
+        $this->client->request('POST', $url, server: $this->getCsrfHeader('update'), content: $content);
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -158,11 +164,16 @@ class NotificationControllerTest extends AppWebTestCase
         }
 
         $this->client->loginUser($user, 'admin');
-        $this->client->request(
-            'POST',
-            $this->router->generate('admin_notification_delete'),
-            content: json_encode(['notifications' => $tab]),
-        );
+        $content = json_encode(['notifications' => $tab]);
+        $url = $this->router->generate('admin_notification_delete');
+
+        /** @var NotificationRepository $notificationRepository */
+        $notificationRepository = $this->em->getRepository(Notification::class);
+        $this->client->request('POST', $url, server: ['HTTP_X-CSRF-TOKEN' => 'jeton-invalide'], content: $content);
+        $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
+        $this->assertEquals(10, $notificationRepository->count(['user' => $user->getId()]));
+
+        $this->client->request('POST', $url, server: $this->getCsrfHeader('delete'), content: $content);
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -198,7 +209,13 @@ class NotificationControllerTest extends AppWebTestCase
         $this->em->flush();
 
         $this->client->loginUser($user, 'admin');
-        $this->client->request('POST', $this->router->generate('admin_notification_purge'));
+        $url = $this->router->generate('admin_notification_purge');
+
+        $this->client->request('POST', $url);
+        $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
+        $this->assertEquals(15, $this->em->getRepository(Notification::class)->count(['user' => $user->getId()]));
+
+        $this->client->request('POST', $url, server: $this->getCsrfHeader('purge'));
         $this->em->clear();
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
@@ -216,7 +233,19 @@ class NotificationControllerTest extends AppWebTestCase
         }
 
         $this->client->loginUser($user, 'admin');
-        $this->client->request('GET', $this->router->generate('admin_notification_read_all'));
+        $url = $this->router->generate('admin_notification_read_all');
+
+        $this->client->request('GET', $url);
+        $this->assertResponseStatusCodeSame(Response::HTTP_METHOD_NOT_ALLOWED);
+
+        $this->client->request('POST', $url);
+        $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
+        $this->assertEquals(
+            5,
+            $this->em->getRepository(Notification::class)->count(['user' => $user->getId(), 'read' => false]),
+        );
+
+        $this->client->request('POST', $url, server: $this->getCsrfHeader('readAll'));
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -257,5 +286,20 @@ class NotificationControllerTest extends AppWebTestCase
         $this->assertEquals(5, $content['nb_noRead']);
         $this->assertEquals(10, $content['nb_today']);
         $this->assertEquals(10, $content['nb_total']);
+    }
+
+    /**
+     * Retourne l'entête portant le jeton CSRF transmis au composant Vue NotificationList
+     * @param string $key clé du jeton (update, delete, purge, readAll)
+     * @return array
+     */
+    private function getCsrfHeader(string $key): array
+    {
+        $crawler = $this->client->request('GET', $this->router->generate('admin_notification_index'));
+        $props = $crawler
+            ->filter('[data-symfony--ux-vue--vue-component-value="Admin/Notification/NotificationList"]')
+            ->attr('data-symfony--ux-vue--vue-props-value');
+
+        return ['HTTP_X-CSRF-TOKEN' => json_decode($props, true)['csrf_tokens'][$key]];
     }
 }

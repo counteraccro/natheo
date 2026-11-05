@@ -15,6 +15,7 @@ use App\Enum\Admin\Global\Breadcrumb;
 use App\Service\Admin\DashboardService;
 use App\Service\Admin\StatisticsService;
 use App\Service\Admin\System\User\UserDataService;
+use App\Enum\Admin\System\User\UserCsrfToken;
 use App\Enum\Admin\System\User\UserDataKey;
 use App\Translate\Admin\Global\DashboardTranslate;
 use Psr\Cache\InvalidArgumentException;
@@ -75,6 +76,7 @@ class DashboardController extends AppAdminController
                     'user_data_key_first_connexion' => UserDataKey::HELP_FIRST_CONNEXION->value,
                 ],
             ],
+            'csrfTokenUpdateUserData' => UserCsrfToken::UPDATE_USER_DATA->value,
             'roles' => [
                 'isUser' => $this->isGranted('ROLE_USER'),
                 'isContributeur' => $this->isGranted('ROLE_CONTRIBUTEUR'),

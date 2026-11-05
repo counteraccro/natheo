@@ -20,6 +20,7 @@ import type {
   UpdateUserDataResponse,
 } from '@/ts/Dashboard/BlockHelpFirstConnexion.type';
 import { toastRequestError } from '@/vue/Composables/Global/toast';
+import { withCsrf } from '@/vue/Composables/Admin/csrf';
 
 export default defineComponent({
   name: 'BlockHelpFirstConnexion',
@@ -35,6 +36,10 @@ export default defineComponent({
     },
     datas: {
       type: Object as PropType<BlockHelpFirstConnexionDatas>,
+      required: true,
+    },
+    csrf_token: {
+      type: String,
       required: true,
     },
   },
@@ -87,10 +92,14 @@ export default defineComponent({
       this.hideModal();
 
       axios
-        .post<UpdateUserDataResponse>(this.urls.update_user_data, {
-          key: this.datas.user_data_key_first_connexion,
-          value: 0,
-        })
+        .post<UpdateUserDataResponse>(
+          this.urls.update_user_data,
+          {
+            key: this.datas.user_data_key_first_connexion,
+            value: 0,
+          },
+          withCsrf(this.csrf_token)
+        )
         .then((response) => {
           if (response.data.success) {
             this.hideMsgSuccess = true;

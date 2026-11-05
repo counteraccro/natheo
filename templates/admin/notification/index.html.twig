@@ -19,7 +19,13 @@
 
     <div id="notifications">
         <div {{ vue_component('Admin/Notification/NotificationList', {
-            'urls' : urls , 'page' : page, 'limit' : limit, 'translation' : translation, 'categories' : categories
+            'urls' : urls , 'page' : page, 'limit' : limit, 'translation' : translation, 'categories' : categories,
+            'csrf_tokens' : {
+                'update' : csrf_token(csrfTokenUpdate),
+                'delete' : csrf_token(csrfTokenDelete),
+                'purge' : csrf_token(csrfTokenPurge),
+                'readAll' : csrf_token(csrfTokenReadAll)
+            }
         }) }}></div>
     </div>
 
