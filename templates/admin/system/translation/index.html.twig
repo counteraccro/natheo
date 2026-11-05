@@ -4,18 +4,14 @@
 
 {% block body %}
 
-    {{ breadcrumb(breadcrumb) }}
-
-    <h1 class="head-title">
-        <svg class="w-7 h-7 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="m13 19 3.5-9 3.5 9m-6.125-2h5.25M3 7h7m0 0h2m-2 0c0 1.63-.793 3.926-2.239 5.655M7.5 6.818V5m.261 7.655C6.79 13.82 5.521 14.725 4 15m3.761-2.345L5 10m2.761 2.655L10.2 15"></path>
-        </svg>
-        {{ 'translate.page_title_h1' | trans({}, 'translate') }}</h1>
-
-    <p class="text-sm text-fg-muted mb-3">
-        {{ 'translate.description' | trans({}, 'translate') }}
-    </p>
+    <twig:Admin:PageHeaderComponent :breadcrumb="breadcrumb" :title="'translate.page_title_h1' | trans({}, 'translate')" :description="'translate.description' | trans({}, 'translate')">
+        <twig:block name="icon">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="m13 19 3.5-9 3.5 9m-6.125-2h5.25M3 7h7m0 0h2m-2 0c0 1.63-.793 3.926-2.239 5.655M7.5 6.818V5m.261 7.655C6.79 13.82 5.521 14.725 4 15m3.761-2.345L5 10m2.761 2.655L10.2 15"></path>
+            </svg>
+        </twig:block>
+    </twig:Admin:PageHeaderComponent>
 
     <div {{ vue_component('Admin/System/Translate', {'url_langue' : path('admin_translation_list_languages'),
         'url_translates_files' : path('admin_translation_files_translate'), 'url_translate_file' : path('admin_translation_file_translate'),

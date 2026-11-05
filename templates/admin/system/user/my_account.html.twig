@@ -35,17 +35,14 @@
         }
     </style>
 
-    {{ breadcrumb(breadcrumb) }}
-    <h1 class="head-title">
-        <svg class="w-7 h-7 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-        </svg>
-        {{ 'user.page_my_account.title_h1' | trans({}, 'user') }}</h1>
-
-    <p class="text-sm text-fg-muted mb-3">
-        {{ 'user.page_my_account.description' | trans({}, 'user') }}
-    </p>
+    <twig:Admin:PageHeaderComponent :breadcrumb="breadcrumb" :title="'user.page_my_account.title_h1' | trans({}, 'user')" :description="'user.page_my_account.description' | trans({}, 'user')">
+        <twig:block name="icon">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+            </svg>
+        </twig:block>
+    </twig:Admin:PageHeaderComponent>
 
     {{ form_start(form) }}
 

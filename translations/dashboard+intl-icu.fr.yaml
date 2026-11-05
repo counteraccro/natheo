@@ -1,4 +1,5 @@
 dashboard.index: Dashboard
+dashboard.index.description: "Vue d'ensemble de l'activité du site."
 dashboard.flux.activity: "Mon flux d'actualité"
 dashboard.last.comment: 'Derniers commentaires'
 dashboard.block.help.first.connexion.title: 'Aide pour la configuration'

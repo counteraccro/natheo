@@ -66,6 +66,9 @@ Reusable Stimulus glue lives in `assets/controllers/` (currently just `vue_contr
 ### Admin styling (theme colors)
 The admin theme (color theme + dark mode) is driven by CSS variables in `assets/styles/admin/variables.scss`, exposed to Tailwind in `assets/styles/admin/theme.scss` (`@theme inline`). Use the theme utilities — `text-primary`, `text-fg` / `text-fg-muted` / `text-fg-subtle`, `border-line`, `bg-card` / `bg-surface` / `bg-surface-hover`, `bg-btn-danger`, `text-alert-danger-text`… — instead of `style="color: var(--…)"` or arbitrary values like `text-[var(--…)]`. Keep an inline style only when a custom class on the same element sets the same property: custom SCSS classes (`.card-icon`, `.btn-*`…) are unlayered and win over Tailwind utilities.
 
+### Admin page header
+Every admin page starts with `<twig:Admin:PageHeaderComponent>` (`templates/components/Admin/PageHeaderComponent.html.twig`): props `breadcrumb`, `title`, `description`, blocks `icon` (the page's sidebar icon, without size/color classes), `description` (when it contains HTML) and `actions` (buttons on the right; "New" buttons use the plus icon). Do not hand-write `h1.head-title` or `{{ breadcrumb() }}` in page templates.
+
 ### Tests
 `tests/AppWebTestCase` (extends Symfony's `WebTestCase`, uses `FixturesTrait`) is the base class for controller/service tests and provides helpers such as `checkNoAccess()`, `createUser*()`, and domain fixture factories (e.g. `createPage()`) from `tests/Helper/Fixtures/`. It boots the client against locale `fr` and seeds default system options in `setUp()`. Test structure under `tests/` mirrors `src/` (`Controller/Admin/Content/...`, `Service/Admin/...`, etc.).
 

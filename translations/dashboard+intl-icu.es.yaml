@@ -1,4 +1,5 @@
 dashboard.index: __dashboard.index
+dashboard.index.description: "Vista general de la actividad del sitio."
 dashboard.flux.activity: __dashboard.index.flux.activity
 dashboard.last.comment: __dashboard.index.last.comment
 dashboard.block.help.first.connexion.title: __dashboard.block.help.first.connexion.title

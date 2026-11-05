@@ -394,6 +394,27 @@ h1.head-title{
   @apply text-2xl font-bold mb-2 border-b-2 border-[var(--primary)] w-full inline-flex items-center gap-1
 }
 
+/* En-tête commun des pages (composant Admin:PageHeaderComponent) */
+.page-header {
+  @apply mb-4;
+
+  h1.head-title svg {
+    @apply w-7 h-7 shrink-0 text-primary;
+  }
+}
+
+.page-header-meta {
+  @apply flex flex-wrap items-start justify-between gap-4;
+}
+
+.page-header-description {
+  @apply text-sm text-fg-muted flex-1 min-w-0;
+}
+
+.page-header-actions {
+  @apply flex items-center gap-2 shrink-0;
+}
+
 /* Page Authentification */
 
 #auth-form {

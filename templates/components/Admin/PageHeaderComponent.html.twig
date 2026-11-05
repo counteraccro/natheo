@@ -1,0 +1,22 @@
+{% if breadcrumb is not empty %}
+    {{ breadcrumb(breadcrumb) }}
+{% endif %}
+
+{% set descriptionHtml %}{% block description %}{{ description }}{% endblock %}{% endset %}
+{% set actionsHtml %}{% block actions %}{% endblock %}{% endset %}
+
+<div class="page-header">
+    <h1 class="head-title">
+        {% block icon %}{% endblock %}
+        {{ title }}
+    </h1>
+
+    {% if descriptionHtml|trim is not empty or actionsHtml|trim is not empty %}
+        <div class="page-header-meta">
+            <p class="page-header-description">{{ descriptionHtml }}</p>
+            {% if actionsHtml|trim is not empty %}
+                <div class="page-header-actions">{{ actionsHtml }}</div>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>

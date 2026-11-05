@@ -4,40 +4,36 @@
 
 {% block body %}
 
-    {{ breadcrumb(breadcrumb) }}
-
-    <h1 class="head-title">
-        <svg class="w-7 h-7 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M16 19h4a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-2m-2.236-4a3 3 0 1 0 0-4M3 18v-1a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1Zm8-10a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>
-        </svg>
-        {{ 'user.page_title_h1' | trans({}, 'user') }}</h1>
-
-    <div class="float-end">
-        <a href="{{ path('admin_user_add') }}" class="btn btn-primary btn-sm">
-            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                 fill="none" viewBox="0 0 24 24">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M16 12h4m-2 2v-4M4 18v-1a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v1a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1Zm8-10a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+    <twig:Admin:PageHeaderComponent :breadcrumb="breadcrumb" :title="'user.page_title_h1' | trans({}, 'user')">
+        <twig:block name="icon">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M16 19h4a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-2m-2.236-4a3 3 0 1 0 0-4M3 18v-1a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1Zm8-10a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>
             </svg>
+        </twig:block>
+        <twig:block name="description">
+            {{ 'user.description' | trans({}, 'user') }} <br />
+            {{ 'user.info' | trans({}, 'user') | raw }}
+        </twig:block>
+        <twig:block name="actions">
+            <a href="{{ path('admin_user_add') }}" class="btn btn-primary btn-sm">
+                <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
+                </svg>
 
-            {{ 'user.btn.new' | trans({}, 'user') }}</a>
+                {{ 'user.btn.new' | trans({}, 'user') }}</a>
 
-        <button data-modal-target="help-grid-user" data-modal-toggle="help-grid-user"
-                class="btn btn-primary btn-icon ms-2">
-            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                 fill="none"
-                 viewBox="0 0 24 24">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M9.529 9.988a2.502 2.502 0 1 1 5 .191A2.441 2.441 0 0 1 12 12.582V14m-.01 3.008H12M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-            </svg>
-        </button>
-    </div>
-
-    <p class="text-sm text-fg-muted mb-3">
-        {{ 'user.description' | trans({}, 'user') }} <br />
-        {{ 'user.info' | trans({}, 'user') | raw }}
-    </p>
+            <button data-modal-target="help-grid-user" data-modal-toggle="help-grid-user"
+                    class="btn btn-primary btn-icon">
+                <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                     fill="none"
+                     viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M9.529 9.988a2.502 2.502 0 1 1 5 .191A2.441 2.441 0 0 1 12 12.582V14m-.01 3.008H12M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                </svg>
+            </button>
+        </twig:block>
+    </twig:Admin:PageHeaderComponent>
 
     <div {{ vue_component('Admin/GenericGrid', {'url' : path('admin_user_load_grid_data', {'page' : page, 'limit' : limit}), 'page' : page, 'limit' : limit, 'activeSearchData' : true}) }}></div>
 
