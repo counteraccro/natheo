@@ -12,6 +12,7 @@ namespace App\Controller\Admin;
 use App\Entity\Admin\System\User;
 use App\Enum\Admin\Global\Breadcrumb;
 use App\Enum\Admin\Global\Notification\NotificationCategory;
+use App\Enum\Admin\Global\Notification\NotificationCsrfToken;
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Admin\GridService;
 use App\Service\Admin\NotificationService;
@@ -92,6 +93,10 @@ class NotificationController extends AppAdminController
                 'delete' => $this->generateUrl('admin_notification_delete'),
             ],
             'categories' => $catNotifications,
+            'csrfTokenUpdate' => NotificationCsrfToken::UPDATE->value,
+            'csrfTokenDelete' => NotificationCsrfToken::DELETE->value,
+            'csrfTokenPurge' => NotificationCsrfToken::PURGE->value,
+            'csrfTokenReadAll' => NotificationCsrfToken::READ_ALL->value,
         ]);
     }
 
@@ -164,6 +169,11 @@ class NotificationController extends AppAdminController
         NotificationService $notificationService,
         TranslatorInterface $translator,
     ): JsonResponse {
+        $csrfError = $this->checkCsrf(NotificationCsrfToken::UPDATE->value, $request);
+        if ($csrfError !== null) {
+            return $csrfError;
+        }
+
         $data = json_decode($request->getContent(), true);
         $notificationService->updateRead($data['notifications'], $data['read']);
 
@@ -190,8 +200,12 @@ class NotificationController extends AppAdminController
         NotificationService $notificationService,
         TranslatorInterface $translator,
     ): JsonResponse {
-        $data = json_decode($request->getContent(), true);
+        $csrfError = $this->checkCsrf(NotificationCsrfToken::DELETE->value, $request);
+        if ($csrfError !== null) {
+            return $csrfError;
+        }
 
+        $data = json_decode($request->getContent(), true);
         $notificationService->removeArrayNotifications($data['notifications']);
         $msg = $translator->trans('notification.delete.success', domain: 'notification');
         return $this->json($notificationService->getResponseAjax($msg));
@@ -199,6 +213,7 @@ class NotificationController extends AppAdminController
 
     /**
      * Permet de purger les notifications
+     * @param Request $request
      * @param OptionSystemService $optionSystemService
      * @param NotificationService $notificationService
      * @return Response
@@ -206,8 +221,16 @@ class NotificationController extends AppAdminController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/purge', name: 'purge', methods: ['POST'])]
-    public function purge(OptionSystemService $optionSystemService, NotificationService $notificationService): Response
-    {
+    public function purge(
+        Request $request,
+        OptionSystemService $optionSystemService,
+        NotificationService $notificationService,
+    ): Response {
+        $csrfError = $this->checkCsrf(NotificationCsrfToken::PURGE->value, $request);
+        if ($csrfError !== null) {
+            return $csrfError;
+        }
+
         $nbDay = $optionSystemService->getValueByKey(OptionSystem::OS_PURGE_NOTIFICATION->value);
         $notificationService->purge(intval($nbDay), $this->getUser()->getId());
         return $this->json(['success' => true]);
@@ -215,15 +238,24 @@ class NotificationController extends AppAdminController
 
     /**
      * Permet de marquer toutes les notifications non lu, en lu en fonction de l'utilisateur
+     * @param Request $request
      * @param NotificationService $notificationService
      * @param TranslatorInterface $translator
      * @return JsonResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/ajax/readAll', name: 'read_all', methods: ['GET'])]
-    public function readAll(NotificationService $notificationService, TranslatorInterface $translator): JsonResponse
-    {
+    #[Route('/ajax/readAll', name: 'read_all', methods: ['POST'])]
+    public function readAll(
+        Request $request,
+        NotificationService $notificationService,
+        TranslatorInterface $translator,
+    ): JsonResponse {
+        $csrfError = $this->checkCsrf(NotificationCsrfToken::READ_ALL->value, $request);
+        if ($csrfError !== null) {
+            return $csrfError;
+        }
+
         /** @var User $user */
         $user = $this->getUser();
         $notificationService->readAll($user);

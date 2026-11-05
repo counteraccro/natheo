@@ -14,6 +14,14 @@ export interface NotificationListUrls {
   delete: string;
 }
 
+/** Jetons CSRF des actions d'écriture sur les notifications */
+export interface NotificationListCsrfTokens {
+  update: string;
+  delete: string;
+  purge: string;
+  readAll: string;
+}
+
 export interface NotificationListTranslate {
   loading: string;
   empty: string;

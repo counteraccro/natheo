@@ -6,9 +6,14 @@
  */
 import { defineComponent, type PropType } from 'vue';
 import axios from 'axios';
-import type { MyAccountDangerZoneModal, MyAccountDangerZoneTranslate } from '@/ts/User/MyAccountDangerZone.type';
+import type {
+  MyAccountDangerZoneCsrfTokens,
+  MyAccountDangerZoneModal,
+  MyAccountDangerZoneTranslate,
+} from '@/ts/User/MyAccountDangerZone.type';
 import Modal from '@/vue/Components/Global/Modal.vue';
 import { toastRequestError } from '@/vue/Composables/Global/toast';
+import { withCsrf } from '@/vue/Composables/Admin/csrf';
 
 export default defineComponent({
   name: 'MyAccountDangerZone',
@@ -22,6 +27,7 @@ export default defineComponent({
     // Valeurs des options système OS_ALLOW_DELETE_DATA et OS_REPLACE_DELETE_USER ('1' / '0')
     can_delete: { type: String, required: true },
     can_replace: { type: String, required: true },
+    csrf_tokens: { type: Object as PropType<MyAccountDangerZoneCsrfTokens>, required: true },
   },
   data() {
     return {
@@ -46,7 +52,7 @@ export default defineComponent({
         this.showModal('delete');
       } else {
         axios
-          .post(this.url_delete, {})
+          .post(this.url_delete, {}, withCsrf(this.csrf_tokens.delete))
           .then((response) => {
             this.msg_return = response.data.msg;
             this.url_reload = response.data.redirect;
@@ -73,7 +79,7 @@ export default defineComponent({
         this.showModal('disabled');
       } else {
         axios
-          .post(this.url_disabled, {})
+          .post(this.url_disabled, {}, withCsrf(this.csrf_tokens.disabled))
           .then((response) => {
             this.msg_return = response.data.msg;
             this.url_reload = response.data.redirect;

@@ -29,4 +29,10 @@ export interface MyAccountDangerZoneTranslate {
   replace_title: string;
 }
 
+/** Jetons CSRF des actions de la danger zone */
+export interface MyAccountDangerZoneCsrfTokens {
+  disabled: string;
+  delete: string;
+}
+
 export type MyAccountDangerZoneModal = 'disabled' | 'delete';

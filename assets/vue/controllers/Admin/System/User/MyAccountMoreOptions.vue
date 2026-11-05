@@ -8,6 +8,7 @@ import { defineComponent, type PropType } from 'vue';
 import axios from 'axios';
 import type { MyAccountMoreOptionsDatas, MyAccountMoreOptionsTranslate } from '@/ts/User/MyAccountMoreOptions.type';
 import { toastSuccess, toastError, toastRequestError } from '@/vue/Composables/Global/toast';
+import { withCsrf } from '@/vue/Composables/Admin/csrf';
 
 export default defineComponent({
   name: 'MyAccountMoreOptions',
@@ -15,6 +16,7 @@ export default defineComponent({
     translate: { type: Object as PropType<MyAccountMoreOptionsTranslate>, required: true },
     datas: { type: Object as PropType<MyAccountMoreOptionsDatas>, required: true },
     url: { type: String, required: true },
+    csrf_token: { type: String, required: true },
   },
   data() {
     return {
@@ -32,10 +34,14 @@ export default defineComponent({
     update(key: string, value: number): void {
       this.loading = true;
       axios
-        .post(this.url, {
-          key: key,
-          value: value,
-        })
+        .post(
+          this.url,
+          {
+            key: key,
+            value: value,
+          },
+          withCsrf(this.csrf_token)
+        )
         .then((response) => {
           if (response.data.success === true) {
             this.btnHelpBlock = value === 1;

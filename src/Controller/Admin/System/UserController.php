@@ -27,6 +27,7 @@ use App\Service\Admin\System\User\UserDataService;
 use App\Service\Admin\System\User\UserService;
 use App\Service\Admin\System\Mail\KeyWord;
 use App\Enum\Admin\System\User\Role;
+use App\Enum\Admin\System\User\UserCsrfToken;
 use App\Enum\Admin\System\User\UserDataKey;
 use App\Translate\Admin\System\UserTranslate;
 use Exception;
@@ -55,8 +56,6 @@ use App\Enum\Admin\System\Mail\MailKey;
 #[Route('/admin/{_locale}/user', name: 'admin_user_', requirements: ['_locale' => '%app.supported_locales%'])]
 class UserController extends AppAdminController
 {
-    const CSRF_TOKEN_UPDATE_MY_OPTION = 'user_update_my_option';
-
     /**
      * Clés de UserData modifiables par l'utilisateur lui-même
      */
@@ -103,27 +102,24 @@ class UserController extends AppAdminController
 
         return $this->render('admin/system/user/my_options.html.twig', [
             'breadcrumb' => $breadcrumb,
-            'csrfTokenId' => self::CSRF_TOKEN_UPDATE_MY_OPTION,
+            'csrfTokenId' => UserCsrfToken::UPDATE_MY_OPTION->value,
         ]);
     }
 
     /**
      * Met à jour une option
      * @param Request $request
-     * @param TranslatorInterface $translator
      * @return JsonResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/update', name: 'ajax_update_my_option', methods: ['POST'])]
     #[IsGranted('ROLE_USER')]
-    public function updateMyOption(Request $request, TranslatorInterface $translator): JsonResponse
+    public function updateMyOption(Request $request): JsonResponse
     {
-        if (!$this->isCsrfTokenValid(self::CSRF_TOKEN_UPDATE_MY_OPTION, $request->headers->get('X-CSRF-TOKEN'))) {
-            return $this->json(
-                ['success' => false, 'msg' => $translator->trans('user.error.csrf', domain: 'user')],
-                Response::HTTP_FORBIDDEN,
-            );
+        $csrfError = $this->checkCsrf(UserCsrfToken::UPDATE_MY_OPTION->value, $request);
+        if ($csrfError !== null) {
+            return $csrfError;
         }
 
         $data = json_decode($request->getContent(), true);
@@ -388,6 +384,9 @@ class UserController extends AppAdminController
             ],
             'canDelete' => $canDelete,
             'canReplace' => $canReplace,
+            'csrfTokenSelfDisabled' => UserCsrfToken::SELF_DISABLED->value,
+            'csrfTokenSelfDelete' => UserCsrfToken::SELF_DELETE->value,
+            'csrfTokenUpdateUserData' => UserCsrfToken::UPDATE_USER_DATA->value,
         ]);
     }
 
@@ -486,6 +485,7 @@ class UserController extends AppAdminController
 
     /**
      * Permet à l'utilisateur de s'auto désactivé
+     * @param Request $request
      * @param TranslatorInterface $translator
      * @param UserService $userService
      * @param MailService $mailService
@@ -498,12 +498,18 @@ class UserController extends AppAdminController
     #[Route('/ajax/self-disabled', name: 'self_disabled', methods: ['POST'])]
     #[IsGranted('ROLE_USER')]
     public function selfDisabled(
+        Request $request,
         TranslatorInterface $translator,
         UserService $userService,
         MailService $mailService,
         OptionSystemService $optionSystemService,
         NotificationService $notificationService,
     ): JsonResponse {
+        $csrfError = $this->checkCsrf(UserCsrfToken::SELF_DISABLED->value, $request);
+        if ($csrfError !== null) {
+            return $csrfError;
+        }
+
         /** @var User $user */
         $user = $this->getUser();
         $isSuperAdmin = Role::SUPER_ADMIN->isGrantedTo($user);
@@ -554,6 +560,7 @@ class UserController extends AppAdminController
 
     /**
      * Permet à l'utilisateur de s'auto supprimer
+     * @param Request $request
      * @param TranslatorInterface $translator
      * @param UserService $userService
      * @param MailService $mailService
@@ -569,6 +576,7 @@ class UserController extends AppAdminController
     #[Route('/ajax/self-delete', name: 'self_delete', methods: ['POST'])]
     #[IsGranted('ROLE_USER')]
     public function selfDelete(
+        Request $request,
         TranslatorInterface $translator,
         UserService $userService,
         MailService $mailService,
@@ -576,6 +584,11 @@ class UserController extends AppAdminController
         NotificationService $notificationService,
         #[Autowire('%app.folder.upload.avatar%')] string $avatarDirectory,
     ): JsonResponse {
+        $csrfError = $this->checkCsrf(UserCsrfToken::SELF_DELETE->value, $request);
+        if ($csrfError !== null) {
+            return $csrfError;
+        }
+
         $status = 0;
 
         /** @var User $user */
@@ -817,6 +830,11 @@ class UserController extends AppAdminController
     #[IsGranted('ROLE_USER')]
     public function updateUserdata(Request $request, UserDataService $userDataService): Response
     {
+        $csrfError = $this->checkCsrf(UserCsrfToken::UPDATE_USER_DATA->value, $request);
+        if ($csrfError !== null) {
+            return $csrfError;
+        }
+
         $data = json_decode($request->getContent(), true);
         if (!is_array($data) || !in_array($data['key'] ?? null, self::USER_DATA_KEYS_EDITABLE, true)) {
             return $this->json(['success' => false, 'msg' => ''], Response::HTTP_BAD_REQUEST);
