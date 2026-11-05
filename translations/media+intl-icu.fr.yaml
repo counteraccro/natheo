@@ -1,5 +1,4 @@
-media.index.page_title: Médiathèque
-media.index.page_title_h1: 'La médiathèque'
+media.index.page_title_h1: 'Médiathèque'
 media.mediatheque.loading: 'Chargement de la médiatheque'
 media.mediatheque.generique.error: 'Une erreur est survenue, veuillez réessayer.'
 media.mediatheque.btn.new.folder: 'Nouveau dossier'
@@ -25,7 +24,7 @@ media.mediatheque.folder.btn.cancel: Annuler
 media.mediatheque.folder.error.exist_name: 'Ce nom est déjà utilisé comme dossier dans la médiathèque'
 media.mediatheque.folder.success: 'Le dossier {name} à été créé avec succès.'
 media.mediatheque.folder.msg.wait.create: 'Création du dossier en cours...'
-media.mediatheque.folder.msg.wait.edit: 'Edition du dossier en cours...'
+media.mediatheque.folder.msg.wait.edit: 'Édition du dossier en cours...'
 media.mediatheque.folder.edit.success: 'Le dossier {name} renommé en {new_name} à été fait avec succès.'
 media.mediatheque.upload.title: 'Nouveau média'
 media.mediatheque.upload.help: 'Glisser un fichier ici'
@@ -95,7 +94,7 @@ media.mediatheque.media.folder.empty: Vide
 media.mediatheque.info.content: Contenu
 media.mediatheque.info.content.file: fichier(s)
 media.mediatheque.info.content.folder: dossier(s)
-media.mediatheque.edit.title: Edition
+media.mediatheque.edit.title: Édition
 media.mediatheque.edit.input.label.file: 'Nom du fichier *'
 media.mediatheque.edit.input.placeholder: 'Le nouveau nom de votre fichier'
 media.mediatheque.edit.btn.save: Modifier

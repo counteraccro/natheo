@@ -11,14 +11,11 @@ user.confirm.disabled.msg: __user.confirm.disabled.msg
 user.confirm.delete.msg: __user.confirm.delete.msg
 user.confirm.replace.msg: __user.confirm.replace.msg
 user.login.title: __user.login.title
-user.page_title: __user.page_title
 user.page_title_h1: __user.page_title_h1
 user.description: __user.description
 user.info: __user.info
-user.my_option_title: __user.my_option_title
 user.my_option_title_h1: __user.my_option_title_h1
 user.my_option_description: __user.my_option_description
-user.page_update_title: __user.page_update_title
 user.page_update_title_h1: __user.page_update_title_h1
 user.login_user.title: __user.login_user.title
 user.login.always_log: __user.login.always_log
@@ -28,7 +25,6 @@ user.login_user.password: __user.login_user.password
 user.login_user.forgot_password: __user.login_user.forgot_password
 user.login_user.remember_me: __user.login_user.remember_me
 user.login_user.btn_login: __user.login_user.btn_login
-user.page_my_account.title: __user.page_my_account.title
 user.page_my_account.title_h1: __user.page_my_account.title_h1
 user.page_my_account.description: __user.page_my_account.description
 user.page_my_account.statistique: __user.page_my_account.statistique
@@ -88,7 +84,6 @@ user.success_remove: __user.success_remove
 user.error_not_allowed: __user.error_not_allowed
 user.danger_zone.success_anonymous: __user.danger_zone.success_anonymous
 user.danger_zone.success_remove: __user.danger_zone.success_remove
-user.page_add_title: __user.page_add_title
 user.page_add_title_h1: __user.page_add_title_h1
 user.page_add.description: __user.page_add.description
 user.btn.new: __user.btn.new

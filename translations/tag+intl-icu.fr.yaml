@@ -11,10 +11,9 @@ tag.confirm.disabled.msg: "La désactivation du tag <strong>{label}</strong> ent
 tag.success.no.disabled: 'Le tag <strong>{label}</strong> est maintenant activé'
 tag.success.disabled: 'Le tag <strong>{label}</strong> est maintenant désactivé'
 tag.confirm.delete.msg: 'La suppression du tag <strong>{label}</strong> est définitif. Seul le tag est supprimé et non les données associées'
-tag.add.page_title: 'Nouveau tag'
-tag.add.page_title_h1: 'Créer un nouveau tag'
-tag.update.page_title: 'Edition du tag #{id}'
-tag.update.page_title_h1: "Edition d'un tag"
+tag.add.page_title_h1: 'Nouveau tag'
+tag.update.page_title: 'Édition du tag #{id}'
+tag.update.page_title_h1: 'Édition du tag'
 tag.index.popin.help.title: Aide
 tag.index.popin.help.disabled_user: 'Désactiver un tag'
 tag.index.popin.help.enable_user: 'Activer un tag'
@@ -23,7 +22,7 @@ tag.index.popin.help.edit: 'Modifier un tag'
 tag.remove.success: 'Le tag <strong>{label}</strong> à été correctement supprimé'
 tag.form.loading: 'Chargement des données...'
 tag.form.title.create: 'Nouveau tag'
-tag.form.title.update: 'Edition du tag'
+tag.form.title.update: 'Édition du tag'
 tag.add.description: 'Aouter un nouveau tag pour organiser votre contenu'
 tag.update.description: "L'édition du tag ne modifie pas les contenus associés à celui-ci"
 tag.form.input.color.label: 'Couleur du tag'

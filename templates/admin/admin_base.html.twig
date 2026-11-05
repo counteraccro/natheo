@@ -2,7 +2,9 @@
 <html lang="{{ app.request.locale }}" class="">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}{{ get_option_system_value_by_key(os_site_name) }}{% endblock %}</title>
+    {# Le bloc title est déjà échappé par la page : |raw évite un double échappement après |trim #}
+    {% set pageTitle = block('title') is defined ? block('title')|trim : '' %}
+    <title>{{ pageTitle|raw }}{{ pageTitle is not empty ? ' – ' }}{{ get_option_system_value_by_key(os_site_name) }}</title>
     <link rel="icon" type="image/jpg" href="{{ asset('assets/natheo/favico/favicon.ico') }}">
     {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
     {% block stylesheets %}

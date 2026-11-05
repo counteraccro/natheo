@@ -27,7 +27,7 @@ global_search.onglet.menu.create: 'Créé le'
 global_search.onglet.menu.update: 'éditer le'
 global_search.onglet.menu.author: par
 global_search.onglet.menu.no.result.content: 'Aucun résultat trouvé dans les liens du menu'
-global_search.onglet.faq.onglet: Faq
+global_search.onglet.faq.onglet: FAQ
 global_search.onglet.faq.title: 'résultat(s) pour les faqs'
 global_search.onglet.faq.description: 'Liste des faqs trouvées'
 global_search.onglet.faq.content: 'Contenu de la faq'
