@@ -130,7 +130,6 @@ media.mediatheque.folder.success: __media.mediatheque.folder.success
 media.mediatheque.folder.edit.success: __media.mediatheque.folder.edit.success
 media.mediatheque.move.label.media: 'Move the media {name} to'
 media.mediatheque.move.label.folder: 'Move the folder {name} to'
-media.index.page_title: __media.index.page_title
 media.index.page_title_h1: __media.index.page_title_h1
 media.index.description: __media.index.description
 media.mediatheque.upload.or: 'or'

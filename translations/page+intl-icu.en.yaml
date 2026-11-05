@@ -137,7 +137,6 @@ page.content.listing.title: __page.content.listing.title
 page.template.btn.show: __page.template.btn.show
 page.template.btn.hide: __page.template.btn.hide
 page.template.btn.extern: __page.template.btn.extern
-page.add.page_title: __page.add.page_title
 page.add.page_title_h1: __page.add.page_title_h1
 page.add.description: __page.add.description
 page.update.page_title: __page.update.page_title

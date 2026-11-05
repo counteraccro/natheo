@@ -1,14 +1,14 @@
-global.dashboard: Dashboard
+global.dashboard: 'Tableau de bord'
 global.membre: Membres
 global.user: Utilisateurs
 global.system: Système
 global.sidebar: Sidebar
-global.system_options: Options
-global.devtools: Tools
+global.system_options: 'Options système'
+global.devtools: Outils
 global.dev_options: 'Options avancées'
 global.database: 'Base de données'
-global.translate: Traduction
-global.html_element: 'Exemple Surcharge'
+global.translate: Traductions
+global.html_element: 'Exemple de surcharge'
 global.logs: Logs
 global.mail: Emails
 global.oui: Oui
@@ -147,7 +147,7 @@ mail.reset.password.title: 'Reset mot de passe'
 mail.reset.password.description: "Mail envoyé si un super administrateur fait un reset du mot de passe d'un utilisateur"
 options_system.time_reset_password: 'Délais de validité du lien de changement de mot de passe'
 options_system.time_reset_password_help: 'Temps en minutes avant que le lien généré pour le changement de mot de passe soit invalide'
-global.content: Content
+global.content: Contenus
 sidebar.global.content.description: "Regroupe l'ensemble des modules de contenus du site "
 global.tag: Tags
 sidebar.tag.description: 'Gestion des tags'
@@ -191,7 +191,7 @@ global.info: Information
 sidebar.info.description: 'Information sur le CMS'
 global.sql: 'Gestionnaire SQL'
 sidebar.sql.description: 'Créer / Executer des requêtes SQL (uniquement SELECT)'
-global.api_token: 'API Token'
+global.api_token: 'Tokens API'
 sidebar.api_token.description: "Gérer les tokens d'accès aux API de natheo CMS"
 options_system.api: API
 options_system.api.title: 'Gestion des APIs'

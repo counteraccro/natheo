@@ -12,7 +12,6 @@ notification.msg.dump_sql_error.title: __notification.msg.dump_sql_error.title
 notification.msg.dump_sql_error.content: __notification.msg.dump_sql_error.content
 notification.msg.new_fondateur.title: 'Welcome!'
 notification.msg.new_fondateur.content: 'Hello <b>{login}</b>, you have just completed the installation of Natheo CMS. A few more settings and your site will be up and running. <br /> To help you put your site online, you can read the site <a href="{url_aide}" target="_blank">help</a>'
-notification.page_title: __notification.page_title
 notification.page_title_h1: __notification.page_title_h1
 notification.description: __notification.description
 notification.nb.show.start: __notification.nb.show.start

@@ -10,6 +10,8 @@ namespace App\Tests\Controller\Admin;
 
 use App\Controller\Admin\DashboardController;
 use App\Enum\Admin\DashboardBlock;
+use App\Enum\Admin\System\Options\OptionSystem;
+use App\Service\Admin\System\OptionSystemService;
 use App\Tests\AppWebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
 
@@ -29,6 +31,10 @@ class DashboardControllerTest extends AppWebTestCase
         $this->client->request('GET', $this->router->generate('admin_dashboard_index'));
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains('h1', $this->translator->trans('dashboard.index', domain: 'dashboard'));
+        $siteName = $this->container->get(OptionSystemService::class)->getValueByKey(OptionSystem::OS_SITE_NAME->value);
+        $this->assertPageTitleSame(
+            $this->translator->trans('dashboard.index', domain: 'dashboard') . ' – ' . $siteName,
+        );
         $this->assertStringNotContainsString(
             'Admin/Dashboard/DashboardStatistics',
             $this->client->getResponse()->getContent(),

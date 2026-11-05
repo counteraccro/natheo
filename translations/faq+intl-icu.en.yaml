@@ -60,7 +60,6 @@ faq.category.disabled.ok: __faq.category.disabled.ok
 faq.category.enabled.all.questions.ok: __faq.category.enabled.all.questions.ok
 faq.category.enabled.ok: __faq.category.enabled.ok
 faq.position: __faq.position
-faq.add.page_title: __faq.add.page_title
 faq.add.page_title_h1: __faq.add.page_title_h1
 faq.add.description: __faq.add.description
 faq.update.page_title: __faq.update.page_title

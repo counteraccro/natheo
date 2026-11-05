@@ -6,7 +6,7 @@ global.profil: 'Mon profil'
 global.logout: Déconnexion
 global.user.option: 'Mes options'
 global.licence: 'Copyright &copy; 2023-{year} &mdash; Propulsé par Nathéo CMS'
-global.dashboard: Dashboard
+global.dashboard: 'Tableau de bord'
 global.notification: 'Mes notifications'
 global.user.impersonation: 'Reprendre mon profil'
 global.citation: 'À vaincre sans péril, on triomphe sans gloire.'

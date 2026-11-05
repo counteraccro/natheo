@@ -2,18 +2,15 @@
 
 {% if tag is same as null %}
     {% set title = 'tag.update.page_title' | trans({'id' : '-'}, 'tag') %}
-    {% set titleH1 = 'tag.update.page_title_h1' | trans({}, 'tag') %}
     {% set description = 'tag.update.description' | trans({}, 'tag') %}
 {% elseif tag.id is same as null %}
-    {% set title = 'tag.add.page_title' | trans({}, 'tag') %}
-    {% set titleH1 = 'tag.add.page_title_h1' | trans({}, 'tag') %}
+    {% set title = 'tag.add.page_title_h1' | trans({}, 'tag') %}
     {% set description = 'tag.add.description' | trans({}, 'tag') %}
     {% set url_stats = '' %}
     {% set url_update = '' %}
     {% set url_delete = ''%}
 {% else %}
     {% set title = 'tag.update.page_title' | trans({'id' : tag.id}, 'tag') %}
-    {% set titleH1 = 'tag.update.page_title_h1' | trans({}, 'tag') %}
     {% set description = 'tag.update.description' | trans({}, 'tag') %}
     {% set url_stats =  path('admin_tag_stats', {'id' : tag.id}) %}
     {% set url_update =  path('admin_tag_update', {'id' : tag.id}) %}
@@ -26,7 +23,7 @@
 
 {% block body %}
 
-    <twig:Admin:PageHeaderComponent :breadcrumb="breadcrumb" :title="titleH1" :description="description">
+    <twig:Admin:PageHeaderComponent :breadcrumb="breadcrumb" :title="title" :description="description">
         <twig:block name="icon">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.2 6H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11.2a1 1 0 0 0 .747-.334l4.46-5a1 1 0 0 0 0-1.332l-4.46-5A1 1 0 0 0 15.2 6Z"></path>

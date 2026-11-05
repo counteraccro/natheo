@@ -1,4 +1,3 @@
-user.page_title: 'Gestion des utilisateurs'
 user.page_title_h1: 'Gestion des utilisateurs'
 user.description: 'Gérer des utilisateurs qui peuvent se connecter au CMS et gérer son contenu'
 user.success.no.disabled: "Le compte de l'utilisateur <strong>{login}</strong> à été activé"
@@ -12,13 +11,11 @@ user.grid.update_at: 'Mise à jour'
 user.confirm.disabled.msg: "Le compte de l'utilisateur <strong>{login}</strong> sera désactivé et il ne pourra plus ce connecter à l'administration <br /> Confirmez-vous cette action ?"
 user.confirm.delete.msg: "Le compte de l'utilisateur <strong>{login}</strong> sera supprimé, cette action est définitive <br /> Confirmez-vous cette action ?"
 user.confirm.replace.msg: "Le compte de l'utilisateur <strong>{login}</strong> sera remplacé par un compte John Doe, cette action est définitive <br /> Confirmez-vous cette action ?"
-user.page_update_title: 'Edition du compte {login}'
-user.page_update_title_h1: 'Edition du compte {login}'
-user.page_update_title_h1_2: 'Edition du compte'
+user.page_update_title_h1: 'Édition du compte {login}'
+user.page_update_title_h1_2: 'Édition du compte'
 user.info: 'Les utilisateurs [John Doe] sont anonymisés et verrouillés | les utilisateurs affiché de façon pâle sont désactivés'
 user.grid.role: Role
-user.my_option_title: 'Mes options'
-user.my_option_title_h1: 'Gestion de mes options'
+user.my_option_title_h1: 'Mes options'
 user.my_option_description: "Personaliser l'interface ainsi que la langue et d'autres détails de l'administration"
 user.login_user.title: Authentification
 user.login_user.email: 'Adresse email'
@@ -30,7 +27,6 @@ user.login.always_log.title: 'Information importante'
 user.login.always_log: 'Vous êtes déjà connecté en tant que {login}, souhaitez vous, vous '
 user.login.logout: 'déconnecter ?'
 user.login.title: Authentification
-user.page_my_account.title: 'Mon compte'
 user.page_my_account.title_h1: 'Mon compte'
 user.page_my_account.description: 'Gérer vos données personnelles, votre mot de passe et consulter vos statistiques'
 user.page_my_account.statistique: 'Mes statistiques'
@@ -90,8 +86,7 @@ user.success_remove: 'Le compte à été supprimé avec succès'
 user.error_not_allowed: "Cette action n'est pas autorisée"
 user.danger_zone.success_anonymous: 'Votre compte à été anonymiser avec succès, déconnexion dans 3 secondes...'
 user.danger_zone.success_remove: 'Votre compte à été supprimé avec succès, déconnexion dans 3 secondes...'
-user.page_add_title: 'Nouvel utilisateur'
-user.page_add_title_h1: "Formulaire de création d'un nouvel utilisateur"
+user.page_add_title_h1: 'Nouvel utilisateur'
 user.btn.new: 'Nouvel utilisateur'
 user.page_add.description: 'Créer un nouvel utilisateur qui pourra contribuer au contenu de votre site'
 user.index.popin.help.title: Aide

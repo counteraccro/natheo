@@ -1,4 +1,4 @@
-dashboard.index: Dashboard
+dashboard.index: 'Tableau de bord'
 dashboard.index.description: "Vue d'ensemble de l'activité du site."
 dashboard.flux.activity: "Mon flux d'actualité"
 dashboard.last.comment: 'Derniers commentaires'
@@ -36,7 +36,7 @@ dashboard.last.page: 'Dernière page'
 dashboard.block.last.comments.link.comment: 'Gestion des commentaires'
 dashboard.block.last.pages.title: 'Dernières pages'
 dashboard.block.last.pages.loading: 'Chargement des dernières pages...'
-dashboard.block.help.first.connexion.link.options: 'Options systèmes'
+dashboard.block.help.first.connexion.link.options: 'Options système'
 dashboard.block.help.first.connexion.link.tokens: 'Gérer les tokens'
 dashboard.statistics.total.article: 'Pages publiées'
 dashboard.statistics.total.comments: 'Commentaires validés'

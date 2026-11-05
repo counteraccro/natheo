@@ -16,7 +16,6 @@ api_token.grid.created_at: __api_token.grid.created_at
 api_token.grid.update_at: __api_token.grid.update_at
 api_token.confirm.disabled.msg: __api_token.confirm.disabled.msg
 api_token.confirm.delete.msg: __api_token.confirm.delete.msg
-api_token.add.page_title: __api_token.add.page_title
 api_token.add.page_title_h1: __api_token.add.page_title_h1
 api_token.add.description: __api_token.add.description
 api_token.update.page_title: __api_token.update.page_title

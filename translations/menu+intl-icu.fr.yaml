@@ -11,11 +11,10 @@ menu.index.description2: 'Vous pouvez attribué un menu à une page unique, ou �
 menu.success.no.disabled: 'Menu activé avec succès'
 menu.success.disabled: 'Menu désactivé avec succès'
 menu.remove.success: 'Menu supprimé avec succès'
-menu.add.menu_title: "Création d'un nouveau menu"
 menu.add.menu_title_h1: 'Nouveau menu'
 menu.add.description: 'Créer un nouveau menu pour votre site web'
-menu.update.menu_title: 'Edition du menu #{id}'
-menu.update.menu_title_h1: Edition
+menu.update.menu_title: 'Édition du menu #{id}'
+menu.update.menu_title_h1: 'Édition du menu'
 menu.update.description: 'Modifier le menu de votre site web'
 menu.grid.id: '#'
 menu.grid.name: Nom
@@ -46,7 +45,7 @@ menu.error.empty.value: 'Cette valeur ne peut pas être vide'
 menu.msg.wait.loading: 'Préparation de vos données...'
 menu.btn.save: Sauvegarder
 menu.btn.new: 'Nouveau menu'
-menu.form.title.edit: 'Edition du menuElement'
+menu.form.title.edit: 'Édition du menuElement'
 menu.form.title.new: 'Nouveau menuElement'
 menu.form.input.search.page: "Associer une page à l'élément de votre menu"
 menu.form.input.search.page.placeholder: 'Rechercher une page'
@@ -59,7 +58,7 @@ menu.form.input.link.external.url: 'Url externe'
 menu.form.radio.label.url.interne: 'Lien interne'
 menu.form.radio.label.url.externe: 'Lien externe'
 menu.form.title.position: Positionnement
-menu.no_select.menu.form: 'Edition du menuElement'
+menu.no_select.menu.form: 'Édition du menuElement'
 menu.no_select.menu.form.msg: 'Sélectionnez un élément'
 menu.help.edition: 'Editer un menuElement'
 menu.help.delete: 'Supprime un menuElement'

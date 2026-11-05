@@ -69,6 +69,8 @@ The admin theme (color theme + dark mode) is driven by CSS variables in `assets/
 ### Admin page header
 Every admin page starts with `<twig:Admin:PageHeaderComponent>` (`templates/components/Admin/PageHeaderComponent.html.twig`): props `breadcrumb`, `title`, `description`, blocks `icon` (the page's sidebar icon, without size/color classes), `description` (when it contains HTML) and `actions` (buttons on the right; "New" buttons use the plus icon). Do not hand-write `h1.head-title` or `{{ breadcrumb() }}` in page templates.
 
+Page titles: the `{% block title %}` uses the same expression as the header `title` (`admin_base.html.twig` appends ` – <site name>`). French wording: grid pages « Gestion des X », creation « Nouveau X » / « Nouvelle X », edition « Édition du X #{id} », tool pages a plain noun (« Médiathèque », « Options système »). Breadcrumb labels are translated without parameters, so the edit title key with `#{id}` stays separate from the `_h1` key used in the breadcrumb.
+
 ### Tests
 `tests/AppWebTestCase` (extends Symfony's `WebTestCase`, uses `FixturesTrait`) is the base class for controller/service tests and provides helpers such as `checkNoAccess()`, `createUser*()`, and domain fixture factories (e.g. `createPage()`) from `tests/Helper/Fixtures/`. It boots the client against locale `fr` and seeds default system options in `setUp()`. Test structure under `tests/` mirrors `src/` (`Controller/Admin/Content/...`, `Service/Admin/...`, etc.).
 

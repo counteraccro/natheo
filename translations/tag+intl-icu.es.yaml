@@ -12,7 +12,6 @@ tag.grid.update_at: __tag.grid.update_at
 tag.confirm.disabled.msg: __tag.confirm.disabled.msg
 tag.remove.success: __tag.remove.success
 tag.confirm.delete.msg: __tag.confirm.delete.msg
-tag.add.page_title: __tag.add.page_title
 tag.add.page_title_h1: __tag.add.page_title_h1
 tag.index.popin.help.title: __tag.index.popin.help.title
 tag.index.popin.help.disabled_user: __tag.index.popin.help.disabled_user

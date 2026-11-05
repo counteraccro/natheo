@@ -2,12 +2,10 @@
 
 
 {% if id is same as null %}
-    {% set title = 'faq.add.page_title' | trans({}, 'faq') %}
-    {% set titleH1 = 'faq.add.page_title_h1' | trans({}, 'faq') %}
+    {% set title = 'faq.add.page_title_h1' | trans({}, 'faq') %}
     {% set description = 'faq.add.description' | trans({}, 'faq') %}
 {% else %}
     {% set title = 'faq.update.page_title' | trans({'id' : id}, 'faq') %}
-    {% set titleH1 = 'faq.update.page_title_h1' | trans({}, 'faq') %}
     {% set description = 'faq.update.description' | trans({}, 'faq') %}
 {% endif %}
 
@@ -57,7 +55,7 @@
         </main>
     {% else %}
 
-        <twig:Admin:PageHeaderComponent :title="titleH1" :description="description">
+        <twig:Admin:PageHeaderComponent :title="title" :description="description">
             <twig:block name="icon">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
