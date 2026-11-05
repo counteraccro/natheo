@@ -8,8 +8,10 @@ declare(strict_types=1);
  */
 namespace App\Tests\Controller\Admin;
 
+use App\Controller\Admin\DashboardController;
 use App\Enum\Admin\DashboardBlock;
 use App\Tests\AppWebTestCase;
+use Symfony\Component\DomCrawler\Crawler;
 
 class DashboardControllerTest extends AppWebTestCase
 {
@@ -135,5 +137,26 @@ class DashboardControllerTest extends AppWebTestCase
         $this->assertEquals(0, $content['nbWaitComments']);
         $this->assertEquals(2, $content['nbUsers']);
         $this->assertEquals(0, $content['nbViews']);
+    }
+
+    /**
+     * Test méthode pageDemo() : fil d'Ariane traduit
+     * La route est redirigée par OverwriteListener (config/cms/overwrite.yaml), le contrôleur est donc appelé directement
+     * @return void
+     */
+    public function testPageDemo(): void
+    {
+        $this->client->loginUser($this->createUserSuperAdmin(), 'admin');
+        $this->client->request('GET', $this->router->generate('admin_dashboard_index'));
+
+        $container = static::getContainer();
+        $container->get('request_stack')->push($this->client->getRequest());
+        $content = $container->get(DashboardController::class)->pageDemo()->getContent();
+        $container->get('request_stack')->pop();
+
+        $crawler = new Crawler($content);
+        $label = $this->translator->trans('pagedemo.page_title_h1');
+        $this->assertStringContainsString($label, $crawler->filter('nav[aria-label="Breadcrumb"]')->text());
+        $this->assertStringNotContainsString('pagedemo.page_title_h1', $content);
     }
 }
