@@ -3,14 +3,12 @@
 {% block title %}{{ 'option_system.page_title' | trans({}, 'option_system') }}{% endblock %}
 
 {% block body %}
-    {{ breadcrumb(breadcrumb) }}
-    <h1 class="head-title">
-        <svg class="w-7 h-7 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5Zm16 14a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2ZM4 13a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-6Zm16-2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v6Z"></path></svg>
-        {{ 'option_system.page_title_h1' | trans({}, 'option_system') }}</h1>
-
-    <p class="text-sm text-fg-muted">
-        {{ 'option_system.description' | trans({}, 'option_system') }}</p>
+    <twig:Admin:PageHeaderComponent :breadcrumb="breadcrumb" :title="'option_system.page_title_h1' | trans({}, 'option_system')" :description="'option_system.description' | trans({}, 'option_system')">
+        <twig:block name="icon">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5Zm16 14a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2ZM4 13a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-6Zm16-2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v6Z"></path></svg>
+        </twig:block>
+    </twig:Admin:PageHeaderComponent>
 
     {{ option_system_form() }}
 

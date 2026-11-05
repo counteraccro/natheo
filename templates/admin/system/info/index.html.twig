@@ -4,16 +4,14 @@
 
 {% block body %}
 
-    {{ breadcrumb(breadcrumb) }}
-
-    <h1 class="head-title">
-        <svg class="w-7 h-7 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"></path>
-        </svg>
-        {{ 'info.page.title.h1' | trans({}, 'info') }}</h1>
-
-    <p class="text-sm text-fg-muted mb-3">{{ 'info.description' | trans({}, 'info') }}</p>
+    <twig:Admin:PageHeaderComponent :breadcrumb="breadcrumb" :title="'info.page.title.h1' | trans({}, 'info')" :description="'info.description' | trans({}, 'info')">
+        <twig:block name="icon">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"></path>
+            </svg>
+        </twig:block>
+    </twig:Admin:PageHeaderComponent>
 
     <div class="card mb-4">
         <div class="card-header">

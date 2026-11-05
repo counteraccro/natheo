@@ -26,17 +26,13 @@
 
 {% block body %}
 
-    {{ breadcrumb(breadcrumb) }}
-
-    <h1 class="head-title">
-        <svg class="w-7 h-7 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.2 6H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11.2a1 1 0 0 0 .747-.334l4.46-5a1 1 0 0 0 0-1.332l-4.46-5A1 1 0 0 0 15.2 6Z"></path>
-        </svg>
-        {{ titleH1 }}</h1>
-
-    <p class="text-sm text-fg-muted mb-3">
-        {{ description }}
-    </p>
+    <twig:Admin:PageHeaderComponent :breadcrumb="breadcrumb" :title="titleH1" :description="description">
+        <twig:block name="icon">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.2 6H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11.2a1 1 0 0 0 .747-.334l4.46-5a1 1 0 0 0 0-1.332l-4.46-5A1 1 0 0 0 15.2 6Z"></path>
+            </svg>
+        </twig:block>
+    </twig:Admin:PageHeaderComponent>
 
 
     {% if tag is same as null %}
