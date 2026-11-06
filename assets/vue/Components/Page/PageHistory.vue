@@ -220,7 +220,7 @@ export default defineComponent({
 
         <div v-if="hasMore" class="flex justify-center pt-4">
           <button type="button" class="btn btn-sm btn-outline-dark" @click="loadMore">
-            <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
             </svg>
             {{ translate.load_more }}

@@ -124,7 +124,9 @@ export default defineComponent({
         <div class="p-4 md:p-5 space-y-4">
           <slot name="body"></slot>
         </div>
-        <div class="flex items-end justify-end p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+        <div
+          class="flex items-end justify-end gap-2 p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600"
+        >
           <slot name="footer"></slot>
         </div>
       </div>

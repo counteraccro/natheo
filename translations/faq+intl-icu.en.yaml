@@ -3,7 +3,7 @@ faq.new.sub_title: __faq.new.sub_title
 faq.new.input.title: __faq.new.input.title
 faq.new.help: __faq.new.help
 faq.new.btn: __faq.new.btn
-faq.new.btn.cancel: __faq.new.btn.cancel
+faq.new.btn.cancel: Back
 faq.new.input.error.empty: __faq.new.input.error.empty
 faq.edit.title: __faq.edit.title
 faq.edit.sub_title: __faq.edit.sub_title
@@ -12,7 +12,7 @@ faq.edit.input.title.help: __faq.edit.input.title.help
 faq.edit.input.title.error: __faq.edit.input.title.error
 faq.select.locale: __faq.select.locale
 faq.edit.btn.save: __faq.edit.btn.save
-faq.edit.btn.cancel: __faq.edit.btn.cancel
+faq.edit.btn.cancel: Back
 faq.edit.text.no_change: __faq.edit.text.no_change
 faq.edit.text.change_no_save: __faq.edit.text.change_no_save
 faq.edit.text.error: __faq.edit.text.error

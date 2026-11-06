@@ -123,23 +123,17 @@ export default defineComponent({
         </div>
 
         <div class="media-meta gap-2 bg-alert-danger-bg" style="border-top: 1px solid var(--alert-danger-border)">
-          <button
-            @click.stop="confirmTrash(media.id, media.type)"
-            class="flex-1 flex items-center justify-center gap-1 btn btn-xs btn-danger"
-          >
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
-            </svg>
-            {{ translate.confirm_trash_yes }}
-          </button>
-          <button
-            @click.stop="cancelTrash()"
-            class="flex-1 flex items-center justify-center gap-1 btn btn-xs btn-outline-dark"
-          >
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <button @click.stop="cancelTrash()" class="flex-1 btn btn-xs btn-outline-dark">
+            <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
             </svg>
             {{ translate.confirm_trash_no }}
+          </button>
+          <button @click.stop="confirmTrash(media.id, media.type)" class="flex-1 btn btn-xs btn-danger">
+            <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+            </svg>
+            {{ translate.confirm_trash_yes }}
           </button>
         </div>
       </template>
@@ -387,13 +381,13 @@ export default defineComponent({
           <td class="hidden sm:table-cell px-4 py-3 text-fg-muted">{{ media.date }}</td>
           <td class="px-4 py-3 text-right">
             <button
-              class="no-control no-control btn btn-ghost-primary btn-icon"
+              class="no-control btn btn-ghost-primary btn-icon"
               style="color: var(--text-primary)"
               @click="$emit('show-info', media, 'show')"
               @mouseover="onMenuHover($event, 'var(--bg-hover)')"
               @mouseleave="onMenuHover($event, '')"
             >
-              <svg class="w-4 h-4 flex-shrink-0 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="icon-sm flex-shrink-0 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
@@ -404,13 +398,13 @@ export default defineComponent({
             </button>
 
             <button
-              class="no-control no-control btn btn-ghost-primary btn-icon"
+              class="no-control btn btn-ghost-primary btn-icon"
               style="color: var(--text-primary)"
               @click="$emit('edit', media, 'edit')"
               @mouseover="onMenuHover($event, 'var(--bg-hover)')"
               @mouseleave="onMenuHover($event, '')"
             >
-              <svg class="w-4 h-4 flex-shrink-0 text-fg-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="icon-sm flex-shrink-0 text-fg-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
@@ -421,13 +415,13 @@ export default defineComponent({
             </button>
 
             <button
-              class="no-control no-control btn btn-ghost-primary btn-icon"
+              class="no-control btn btn-ghost-primary btn-icon"
               style="color: var(--text-primary)"
               @click="$emit('move', media, 'move')"
               @mouseover="onMenuHover($event, 'var(--bg-hover)')"
               @mouseleave="onMenuHover($event, '')"
             >
-              <svg class="w-4 h-4 flex-shrink-0 text-fg-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="icon-sm flex-shrink-0 text-fg-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
@@ -444,7 +438,7 @@ export default defineComponent({
               @mouseover="onMenuHover($event, '#fef2f2')"
               @mouseleave="onMenuHover($event, '')"
             >
-              <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="icon-sm flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"

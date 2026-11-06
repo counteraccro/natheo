@@ -124,8 +124,8 @@
                                 </label>
 
                                 {% if user.avatar is not null %}
-                                    <button type="submit" form="form-delete-avatar" class="btn btn-danger btn-md">
-                                        <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <button type="submit" form="form-delete-avatar" class="btn btn-danger btn-sm">
+                                        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                   d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                                         </svg>
@@ -157,7 +157,7 @@
                 </p>
             </div>
         </div>
-        <div class="p-5 pb-13">
+        <div class="p-5">
             <div class="form-group">
                 <label class="form-label">{{ field_label(form.email) }}</label>
                 <input type="text" class="form-input" value="{{ field_value(form.email) }}" placeholder="{{ 'user.page_my_account.email.placeholder' | trans({}, 'user') }}"
@@ -193,6 +193,15 @@
                 <span class="form-text">{{ field_help(form.description) }}</span>
             </div>
 
+            <div class="flex items-center justify-end gap-2 mt-5">
+                <a href="{{ path('admin_dashboard_index') }}" class="btn btn-sm btn-outline-dark">
+                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                    </svg>
+                    {{ 'user.form.back' | trans({}, 'user') }}
+                </a>
+                {{ form_widget(form.save) }}
+            </div>
             {{ form_end(form) }}
             <form id="form-delete-avatar" method="POST" action="{{ path('admin_user_delete_avatar') }}">
                 <input type="hidden" name="_token" value="{{ csrf_token('delete_avatar') }}">

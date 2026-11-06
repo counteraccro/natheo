@@ -283,9 +283,14 @@ export default defineComponent({
     </div>
 
     <div class="flex items-center gap-3 shrink-0">
-      <a :href="urls.listing" class="btn btn-outline-dark btn-sm">{{ translate.btn_back }}</a>
+      <a :href="urls.listing" class="btn btn-outline-dark btn-sm">
+        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        {{ translate.btn_back }}
+      </a>
       <button class="btn btn-success btn-sm" @click="$emit('page-preview')" :disabled="page.id === null">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
@@ -296,7 +301,7 @@ export default defineComponent({
         {{ translate.page_save.btn_see_ext }}
       </button>
       <button class="btn btn-primary btn-sm" :disabled="hasAnyError" @click="$emit('save-page')">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
         </svg>
         {{ translate.page_save.btn_save }}

@@ -410,11 +410,11 @@ export default defineComponent({
           :disabled="!isUserFormValid || userCreating"
           @click="createUser()"
         >
-          <svg v-if="userCreating" class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+          <svg v-if="userCreating" class="icon animate-spin" fill="none" viewBox="0 0 24 24">
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
           </svg>
-          <svg v-else class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg v-else class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -485,11 +485,11 @@ export default defineComponent({
         class="px-5 sm:px-6 py-4 flex items-center justify-end border-t border-line bg-surface-hover"
       >
         <button type="button" class="btn btn-primary btn-sm" :disabled="finishing" @click="finishInstallation()">
-          <svg v-if="finishing" class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+          <svg v-if="finishing" class="icon animate-spin" fill="none" viewBox="0 0 24 24">
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
           </svg>
-          <svg v-else class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg v-else class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"

@@ -158,7 +158,16 @@ export default defineComponent({
                   :class="'btn-ghost-' + data.color"
                   v-for="data in entry.action"
                   @click="
-                    $emit('redirect-action', data.url, data.ajax, data.confirm, data.msgConfirm, data.type, data.csrf)
+                    $emit(
+                      'redirect-action',
+                      data.url,
+                      data.ajax,
+                      data.confirm,
+                      data.msgConfirm,
+                      data.type,
+                      data.csrf,
+                      data.color
+                    )
                   "
                 >
                   <svg

@@ -31,7 +31,7 @@ export default defineComponent({
   <div class="p-4 sm:p-6 border-b border-line">
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
       <p class="text-sm text-fg-muted">{{ translate.title }}</p>
-      <button type="button" class="btn btn-outline-dark btn-md" @click="$emit('refresh-dump')">
+      <button type="button" class="btn btn-outline-dark btn-sm" @click="$emit('refresh-dump')">
         <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             stroke-linecap="round"

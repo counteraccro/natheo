@@ -44,7 +44,7 @@ tag.page_date_update.created: __tag.page_date_update.created
 tag.page_date_update.last_update: __tag.page_date_update.last_update
 tag.page.error.tag.disabled: __tag.page.error.tag.disabled
 tag.form.input.label.placeholder: __tag.form.input.label.placeholder
-tag.form.button.cancel: __tag.form.button.cancel
+tag.form.button.cancel: Volver
 tag.form.button.delete: __tag.form.button.delete
 tag.form.success.save: __tag.form.success.save
 tag.form.error.save: __tag.form.error.save

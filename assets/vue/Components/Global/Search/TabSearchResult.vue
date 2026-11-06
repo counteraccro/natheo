@@ -92,7 +92,7 @@ export default defineComponent({
       </p>
     </div>
     <div class="ml-auto">
-      <a v-for="(url, key) in row.urls" :href="url" target="_blank" class="btn btn-secondary btn-icon btn-sm me-2">
+      <a v-for="(url, key) in row.urls" :href="url" target="_blank" class="btn btn-icon btn-sm btn-ghost-primary">
         <svg
           v-if="key === 'edit'"
           class="icon-sm"

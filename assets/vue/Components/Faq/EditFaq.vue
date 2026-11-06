@@ -559,22 +559,8 @@ export default defineComponent({
 
       <div class="flex justify-end gap-2">
         <button type="button" class="btn btn-outline-dark btn-sm" onclick="window.history.back()">
-          <svg
-            class="icon"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-            ></path>
+          <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
           </svg>
           {{ translate.btn_cancel }}
         </button>
@@ -803,11 +789,8 @@ export default defineComponent({
               v-html="getNbQuestion(category.faqQuestions)"
             ></span>
 
-            <button
-              @click="deleteElement('category', category.id, false)"
-              class="p-1.5 rounded-md text-fg-subtle hover:text-btn-danger hover:bg-red-50"
-            >
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <button @click="deleteElement('category', category.id, false)" class="btn btn-icon btn-xs btn-ghost-danger">
+              <svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
@@ -950,9 +933,9 @@ export default defineComponent({
                 </div>
                 <button
                   @click="deleteElement('question', question.id, false)"
-                  class="p-1 rounded text-fg-subtle hover:text-btn-danger hover:bg-red-50"
+                  class="btn btn-icon btn-xs btn-ghost-danger"
                 >
-                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path
                       stroke-linecap="round"
                       stroke-linejoin="round"
@@ -1103,30 +1086,6 @@ export default defineComponent({
         <div v-html="modale.body"></div>
       </template>
       <template #footer>
-        <button
-          type="button"
-          class="btn btn-primary btn-sm me-2"
-          @click="deleteElement(modale.params.type, modale.params.id, modale.params.isConfirm)"
-        >
-          <svg
-            class="icon"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-            />
-          </svg>
-          {{ translate.btn_confirm_ok }}
-        </button>
         <button type="button" class="btn btn-outline-dark btn-sm" @click="hideModal()">
           <svg
             class="icon"
@@ -1147,6 +1106,30 @@ export default defineComponent({
           </svg>
 
           {{ translate.btn_confirm_ko }}
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger btn-sm"
+          @click="deleteElement(modale.params.type, modale.params.id, modale.params.isConfirm)"
+        >
+          <svg
+            class="icon"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+            />
+          </svg>
+          {{ translate.btn_confirm_ok }}
         </button>
       </template>
     </modal>

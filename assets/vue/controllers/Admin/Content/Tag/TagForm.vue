@@ -424,7 +424,7 @@ export default defineComponent({
           </div>
         </div>
 
-        <div class="flex flex-wrap gap-3 pt-4 mt-5 flex-row-reverse">
+        <div class="flex flex-wrap items-center gap-2 pt-4 mt-5">
           <button
             v-if="tag.id !== null && can_delete"
             type="button"
@@ -441,33 +441,21 @@ export default defineComponent({
             </svg>
             {{ translate.btnDelete }}
           </button>
-          <button type="button" class="btn btn-outline-dark btn-sm" onclick="window.history.back()">
-            <svg
-              class="icon"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-              />
-            </svg>
+          <div class="flex flex-wrap gap-2 ml-auto">
+            <button type="button" class="btn btn-outline-dark btn-sm" onclick="window.history.back()">
+              <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
 
-            {{ translate.btnCancel }}
-          </button>
-          <button
-            class="btn btn-sm btn-primary"
-            @click="save()"
-            :disabled="canSubmit()"
-            v-html="getLabelSubmit()"
-          ></button>
+              {{ translate.btnCancel }}
+            </button>
+            <button
+              class="btn btn-sm btn-primary"
+              @click="save()"
+              :disabled="canSubmit()"
+              v-html="getLabelSubmit()"
+            ></button>
+          </div>
         </div>
       </div>
     </div>
@@ -532,26 +520,6 @@ export default defineComponent({
       <div v-html="translate.modaleConfirmDeleteMessage"></div>
     </template>
     <template #footer>
-      <button type="button" class="btn btn-primary btn-sm me-2" @click="ajaxDelete">
-        <svg
-          class="icon"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          fill="none"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-          />
-        </svg>
-        {{ translate.modaleConfirmDeleteBtnOK }}
-      </button>
       <button type="button" class="btn btn-outline-dark btn-sm" @click="hideModal()">
         <svg
           class="icon"
@@ -572,6 +540,26 @@ export default defineComponent({
         </svg>
 
         {{ translate.modaleConfirmDeleteBtnKo }}
+      </button>
+      <button type="button" class="btn btn-danger btn-sm" @click="ajaxDelete">
+        <svg
+          class="icon"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+        {{ translate.modaleConfirmDeleteBtnOK }}
       </button>
     </template>
   </modal>

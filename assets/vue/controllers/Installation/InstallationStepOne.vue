@@ -325,7 +325,7 @@ export default defineComponent({
 
       <div class="px-5 sm:px-6 py-4 flex items-center justify-between border-t border-line bg-surface-hover">
         <a :href="urls.step_0" class="btn btn-outline-dark btn-sm">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l4-4m-4 4 4 4" />
           </svg>
           {{ translate.btn_return }}
@@ -338,7 +338,7 @@ export default defineComponent({
             :disabled="!isValid || loading"
             @click="updateConfigBddEnv(datas.option_check.database_exist)"
           >
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 stroke-linecap="round"
                 stroke-linejoin="round"
@@ -352,7 +352,7 @@ export default defineComponent({
           <!-- Une fois la connexion validée, ce bouton devient le passage à l'étape suivante -->
           <a v-if="tested && check.success" :href="urls.step_2" class="btn btn-primary btn-sm">
             {{ translate.btn_step_two }}
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
             </svg>
           </a>
@@ -364,11 +364,11 @@ export default defineComponent({
             :disabled="!isValid || loading"
             @click="checkConnexion()"
           >
-            <svg v-if="checking" class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+            <svg v-if="checking" class="icon animate-spin" fill="none" viewBox="0 0 24 24">
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
               <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
             </svg>
-            <svg v-else class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg v-else class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 stroke-linecap="round"
                 stroke-linejoin="round"

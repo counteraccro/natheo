@@ -561,14 +561,14 @@ export default defineComponent({
 
       <!-- Boutons -->
       <div class="flex items-center gap-3">
-        <a :href="urls.listing" class="btn btn-sm btn-outline-dark flex items-center gap-2">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <a :href="urls.listing" class="btn btn-sm btn-outline-dark">
+          <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
           </svg>
           {{ translate.btn_back }}
         </a>
-        <a :href="urls.new_menu" class="btn btn-sm btn-primary flex items-center gap-2">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <a :href="urls.new_menu" class="btn btn-sm btn-primary">
+          <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
           </svg>
           {{ translate.btn_new }}
@@ -744,13 +744,13 @@ export default defineComponent({
           </div>
 
           <button
-            class="btn btn-sm btn-primary flex items-center gap-2"
+            class="btn btn-sm btn-primary"
             :disabled="
               invalidElementIds.length > 0 || errors.name || menu.menuElements?.length === 0 || menu.name === ''
             "
             @click="saveMenu"
           >
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 stroke-linecap="round"
                 stroke-linejoin="round"
@@ -1045,30 +1045,6 @@ export default defineComponent({
       <div v-html="modaleConfirmDelete.body"></div>
     </template>
     <template #footer>
-      <button
-        type="button"
-        class="btn btn-primary btn-sm me-2"
-        @click="onDelete(modaleConfirmDelete.params.id, modaleConfirmDelete.params.isConfirm)"
-      >
-        <svg
-          class="icon"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          fill="none"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-          />
-        </svg>
-        {{ translate.menu_element_confirm_delete_btn_ok }}
-      </button>
       <button type="button" class="btn btn-outline-dark btn-sm" @click="hideModalConfirmDelete()">
         <svg
           class="icon"
@@ -1089,6 +1065,30 @@ export default defineComponent({
         </svg>
 
         {{ translate.menu_element_confirm_delete_btn_ko }}
+      </button>
+      <button
+        type="button"
+        class="btn btn-danger btn-sm"
+        @click="onDelete(modaleConfirmDelete.params.id, modaleConfirmDelete.params.isConfirm)"
+      >
+        <svg
+          class="icon"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+        {{ translate.menu_element_confirm_delete_btn_ok }}
       </button>
     </template>
   </modal>

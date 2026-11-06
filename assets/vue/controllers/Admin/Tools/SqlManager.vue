@@ -328,14 +328,14 @@ export default defineComponent({
       </p>
 
       <div class="flex items-center gap-3">
-        <a :href="urls.index" class="btn btn-sm btn-outline-dark flex items-center gap-2">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <a :href="urls.index" class="btn btn-sm btn-outline-dark">
+          <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
           </svg>
           {{ translate.btn_back }}
         </a>
-        <a :href="urls.new" class="btn btn-sm btn-primary flex items-center gap-2">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <a :href="urls.new" class="btn btn-sm btn-primary">
+          <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
           </svg>
           {{ translate.btn_new }}
@@ -501,7 +501,7 @@ export default defineComponent({
             </select>
           </div>
           <div class="mb-3">
-            <button type="button" class="btn btn-secondary btn-sm w-full" @click="addTable">
+            <button type="button" class="btn btn-outline-dark btn-sm w-full" @click="addTable">
               <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
               </svg>
@@ -540,7 +540,7 @@ export default defineComponent({
             <button
               type="button"
               :disabled="selectColumns.length === 0"
-              class="btn btn-secondary btn-sm w-full"
+              class="btn btn-outline-dark btn-sm w-full"
               @click="addField"
             >
               <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">

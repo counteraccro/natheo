@@ -110,7 +110,6 @@
                        id="{{ field_id(form.lastname) }}" name="{{ field_name(form.lastname) }}">
                 <span class="form-text">{{ field_help(form.lastname) }}</span>
             </div>
-            {{ form(form) }}
         </div>
     </div>
 
@@ -165,6 +164,15 @@
         </div>
     </div>
 
+    <div class="flex items-center justify-end gap-2 mt-5">
+        <a href="{{ path('admin_user_index') }}" class="btn btn-sm btn-outline-dark">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+            </svg>
+            {{ 'user.form.back' | trans({}, 'user') }}
+        </a>
+        {{ form_widget(form.save) }}
+    </div>
     {{ form_end(form) }}
 
 {% endblock %}
