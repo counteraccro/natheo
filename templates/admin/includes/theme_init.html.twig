@@ -1,0 +1,18 @@
+{# Thème et mode sombre appliqués dans le <head>, avant le premier rendu, pour éviter le flash du mode clair #}
+<script id="theme-init">
+    (function () {
+        const root = document.documentElement;
+        try {
+            const theme = localStorage.getItem('theme') || 'violet';
+            if (theme !== 'violet') {
+                root.setAttribute('data-theme', theme);
+            }
+            if (localStorage.getItem('darkMode') === 'dark') {
+                root.setAttribute('data-theme-mode', 'dark');
+                root.classList.add('dark');
+            }
+        } catch (e) {
+            // localStorage indisponible : thème par défaut
+        }
+    })();
+</script>

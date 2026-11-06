@@ -2,6 +2,7 @@
 <html lang="{{ app.request.locale }}" class="">
 <head>
     <meta charset="UTF-8">
+    {% include "/admin/includes/theme_init.html.twig" %}
     {# Le bloc title est déjà échappé par la page : |raw évite un double échappement après |trim #}
     {% set pageTitle = block('title') is defined ? block('title')|trim : '' %}
     <title>{{ pageTitle|raw }}{{ pageTitle is not empty ? ' – ' }}{{ get_option_system_value_by_key(os_site_name) }}</title>
