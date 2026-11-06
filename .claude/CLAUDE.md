@@ -71,6 +71,8 @@ Every admin page starts with `<twig:Admin:PageHeaderComponent>` (`templates/comp
 
 Page titles: the `{% block title %}` uses the same expression as the header `title` (`admin_base.html.twig` appends ` – <site name>`). French wording: grid pages « Gestion des X », creation « Nouveau X » / « Nouvelle X », edition « Édition du X #{id} », tool pages a plain noun (« Médiathèque », « Options système »). Breadcrumb labels are translated without parameters, so the edit title key with `#{id}` stays separate from the `_h1` key used in the breadcrumb.
 
+The sidebar (`SidebarExtension::getSidebar()`) also reads the page's `breadcrumb`: a link is active, and its submenu open, when its route is the current route or one of the breadcrumb routes. A child page (add, edit, detail) must therefore list its grid route in its breadcrumb (e.g. `'menu.index.page_title' => 'admin_menu_index'`).
+
 ### Admin buttons
 Buttons use the classes of `assets/styles/admin/global/button.scss` (`btn` + a size + a variant), without extra padding or font-size utilities.
 - **Form footer**: right-aligned, « Retour » (`btn-outline-dark`, a link or `history.back()`) then the main action (`btn-primary`) at the far right; « Supprimer » (`btn-danger`) on the left when present (`justify-between`). Never `flex-row-reverse`.
