@@ -297,12 +297,8 @@ export default defineComponent({
 
   <!-- ── Actions ── -->
   <div class="flex flex-col gap-2">
-    <button
-      v-if="file.isUploaded"
-      @click="sendDataToParent"
-      class="btn btn-sm btn-primary w-full"
-    >
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <button v-if="file.isUploaded" @click="sendDataToParent" class="btn btn-sm btn-primary w-full">
+      <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path
           stroke-linecap="round"
           stroke-linejoin="round"
@@ -312,12 +308,8 @@ export default defineComponent({
       </svg>
       {{ translate.btn_upload }}
     </button>
-    <button
-      v-if="file.isUploaded"
-      @click="resetFileInput"
-      class="btn btn-sm btn-outline-dark w-full"
-    >
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <button v-if="file.isUploaded" @click="resetFileInput" class="btn btn-sm btn-outline-dark w-full">
+      <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
       </svg>
       {{ translate.btn_cancel }}

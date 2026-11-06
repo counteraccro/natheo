@@ -301,7 +301,7 @@ export default defineComponent({
             @click="loadContentFile(1, cLimit)"
           >
             <svg
-              class="icon"
+              class="icon-sm"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -326,7 +326,7 @@ export default defineComponent({
             @click="download"
           >
             <svg
-              class="icon"
+              class="icon-sm"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -351,7 +351,7 @@ export default defineComponent({
             @click="confirmDelete"
           >
             <svg
-              class="icon"
+              class="icon-sm"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               width="24"

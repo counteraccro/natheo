@@ -353,7 +353,7 @@ export default defineComponent({
 
     <div class="flex items-center justify-between pt-3 border-t border-line">
       <button class="btn btn-sm btn-outline-danger" @click="$emit('delete', menuElement.id)">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
@@ -365,10 +365,18 @@ export default defineComponent({
       </button>
       <div class="flex gap-2">
         <button @click="$emit('cancel', menuElementNoEdit, 'cancel')" class="btn btn-sm btn-outline-dark">
+          <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+            />
+          </svg>
           {{ translate.btn_cancel }}
         </button>
         <button class="btn btn-sm btn-primary" @click="onSave" :disabled="!isValid">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
           </svg>
           {{ translate.btn_save }}

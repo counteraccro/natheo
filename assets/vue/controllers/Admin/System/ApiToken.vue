@@ -408,6 +408,9 @@ export default defineComponent({
             :href="urls.index_api_token"
             class="btn btn-sm btn-primary"
           >
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
             {{ translate.btn_back_list }}
           </a>
           <button

@@ -142,6 +142,14 @@ export default defineComponent({
         </p>
       </div>
       <button class="btn btn-outline-dark btn-sm whitespace-nowrap" @click="disabled(false)">
+        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"
+          />
+        </svg>
         {{ translate.btn_disabled }}
       </button>
     </div>
@@ -160,7 +168,7 @@ export default defineComponent({
         </p>
       </div>
       <button v-if="isDelete()" @click="deleteAccount(false)" class="btn btn-danger btn-sm whitespace-nowrap">
-        <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
@@ -172,7 +180,7 @@ export default defineComponent({
       </button>
       <button v-if="isReplace()" @click="deleteAccount(false)" class="btn btn-danger btn-sm whitespace-nowrap">
         <svg
-          class="icon-sm"
+          class="icon"
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
           width="24"

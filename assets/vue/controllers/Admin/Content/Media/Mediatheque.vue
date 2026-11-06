@@ -380,7 +380,7 @@ export default defineComponent({
     >
       <div class="flex items-center gap-2">
         <button class="btn btn-xs btn-primary" @click="newFolder">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -391,7 +391,7 @@ export default defineComponent({
           {{ translate.btn_new_folder }}
         </button>
         <button class="btn btn-xs btn-outline-dark" @click="newMedia">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -428,12 +428,8 @@ export default defineComponent({
         </div> -->
 
         <div class="relative">
-          <button
-            id="sortBtn"
-            data-dropdown-toggle="sortDropdown"
-            class="btn btn-xs btn-outline-dark"
-          >
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <button id="sortBtn" data-dropdown-toggle="sortDropdown" class="btn btn-xs btn-outline-dark">
+            <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 stroke-linecap="round"
                 stroke-linejoin="round"
@@ -521,7 +517,7 @@ export default defineComponent({
           title="Inverser l'ordre"
           @click="changeOrder(order === 'asc' ? 'desc' : 'asc')"
         >
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -544,7 +540,7 @@ export default defineComponent({
             loadInTrash();
           "
         >
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -571,7 +567,7 @@ export default defineComponent({
                 : ''
             "
           >
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 stroke-linecap="round"
                 stroke-linejoin="round"
@@ -589,7 +585,7 @@ export default defineComponent({
                 : ''
             "
           >
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 stroke-linecap="round"
                 stroke-linejoin="round"
@@ -614,7 +610,7 @@ export default defineComponent({
           "
         >
           <svg
-            class="w-4 h-4"
+            class="icon-sm"
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             width="24"

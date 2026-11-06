@@ -83,7 +83,7 @@ export default defineComponent({
 
     <div class="px-6 sm:px-10 pb-10 flex justify-center">
       <a :href="urls.auth" class="btn btn-primary btn-lg">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
