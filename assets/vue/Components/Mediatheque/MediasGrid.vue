@@ -125,7 +125,7 @@ export default defineComponent({
         <div class="media-meta gap-2 bg-alert-danger-bg" style="border-top: 1px solid var(--alert-danger-border)">
           <button
             @click.stop="cancelTrash()"
-            class="flex-1 flex items-center justify-center gap-1 btn btn-xs btn-outline-dark"
+            class="flex-1 btn btn-xs btn-outline-dark"
           >
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -134,7 +134,7 @@ export default defineComponent({
           </button>
           <button
             @click.stop="confirmTrash(media.id, media.type)"
-            class="flex-1 flex items-center justify-center gap-1 btn btn-xs btn-danger"
+            class="flex-1 btn btn-xs btn-danger"
           >
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />

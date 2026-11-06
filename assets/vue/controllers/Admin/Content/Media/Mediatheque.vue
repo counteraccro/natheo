@@ -379,7 +379,7 @@ export default defineComponent({
       class="flex flex-wrap items-center justify-between gap-3 px-4 py-3 border-b border-line"
     >
       <div class="flex items-center gap-2">
-        <button class="btn btn-xs btn-primary inline-flex items-center gap-2 px-3 py-2" @click="newFolder">
+        <button class="btn btn-xs btn-primary" @click="newFolder">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
@@ -390,7 +390,7 @@ export default defineComponent({
           </svg>
           {{ translate.btn_new_folder }}
         </button>
-        <button class="btn btn-xs btn-outline-dark inline-flex items-center gap-2 px-3 py-2" @click="newMedia">
+        <button class="btn btn-xs btn-outline-dark" @click="newMedia">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
@@ -431,7 +431,7 @@ export default defineComponent({
           <button
             id="sortBtn"
             data-dropdown-toggle="sortDropdown"
-            class="btn btn-xs btn-outline-dark inline-flex items-center gap-2 px-3 py-2"
+            class="btn btn-xs btn-outline-dark"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
@@ -517,7 +517,7 @@ export default defineComponent({
 
         <!-- Sort direction -->
         <button
-          class="btn btn-xs btn-outline-dark p-2"
+          class="btn btn-xs btn-outline-dark"
           title="Inverser l'ordre"
           @click="changeOrder(order === 'asc' ? 'desc' : 'asc')"
         >
@@ -537,7 +537,7 @@ export default defineComponent({
 
         <!-- Delete selected -->
         <button
-          class="btn btn-xs btn-outline-danger p-2 relative"
+          class="btn btn-xs btn-outline-danger relative"
           :title="translate.header_trash as string"
           @click="
             switchRender('trash');
@@ -606,7 +606,7 @@ export default defineComponent({
       <div class="flex items-center gap-2"></div>
       <div class="relative">
         <button
-          class="btn btn-xs btn-outline-dark p-2"
+          class="btn btn-xs btn-outline-dark"
           title="Inverser l'ordre"
           @click="
             switchRender('grid');

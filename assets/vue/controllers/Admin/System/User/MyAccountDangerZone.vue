@@ -141,7 +141,7 @@ export default defineComponent({
           {{ translate.disabled_description }}
         </p>
       </div>
-      <button class="btn btn-outline-dark btn-md whitespace-nowrap" @click="disabled(false)">
+      <button class="btn btn-outline-dark btn-sm whitespace-nowrap" @click="disabled(false)">
         {{ translate.btn_disabled }}
       </button>
     </div>
@@ -159,7 +159,7 @@ export default defineComponent({
           <span v-if="isReplace()">{{ translate.replace_description }}</span>
         </p>
       </div>
-      <button v-if="isDelete()" @click="deleteAccount(false)" class="btn btn-danger btn-md whitespace-nowrap">
+      <button v-if="isDelete()" @click="deleteAccount(false)" class="btn btn-danger btn-sm whitespace-nowrap">
         <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             stroke-linecap="round"
@@ -170,7 +170,7 @@ export default defineComponent({
         </svg>
         {{ translate.btn_delete }}
       </button>
-      <button v-if="isReplace()" @click="deleteAccount(false)" class="btn btn-danger btn-md whitespace-nowrap">
+      <button v-if="isReplace()" @click="deleteAccount(false)" class="btn btn-danger btn-sm whitespace-nowrap">
         <svg
           class="icon-sm"
           aria-hidden="true"

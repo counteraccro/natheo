@@ -158,7 +158,7 @@ export default defineComponent({
 
       <!-- Boutons -->
       <div class="flex items-center gap-3">
-        <a :href="urls.index" class="btn btn-sm btn-outline-dark flex items-center gap-2">
+        <a :href="urls.index" class="btn btn-sm btn-outline-dark">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
           </svg>
@@ -206,7 +206,7 @@ export default defineComponent({
           </div>
         </div>
         <div class="flex items-center justify-end gap-2 px-6 py-4 rounded-lg card">
-          <a :href="urls.index" class="inline-flex items-center gap-2 btn btn-sm btn-outline-dark">
+          <a :href="urls.index" class="btn btn-sm btn-outline-dark">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 stroke-linecap="round"
@@ -219,7 +219,7 @@ export default defineComponent({
           </a>
           <button
             @click="save"
-            class="inline-flex items-center gap-2 px-6 py-2 btn btn-sm btn-primary"
+            class="btn btn-sm btn-primary"
             style="background-color: var(--primary)"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

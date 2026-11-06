@@ -128,7 +128,7 @@ export default defineComponent({
       <p v-html="translate.corps"></p>
     </template>
     <template #footer>
-      <button type="button" class="btn btn-outline-dark btn-md" @click="confirmModal = false">
+      <button type="button" class="btn btn-outline-dark btn-sm" @click="confirmModal = false">
         <svg
           class="icon"
           aria-hidden="true"
@@ -149,7 +149,7 @@ export default defineComponent({
 
         {{ translate.non }}
       </button>
-      <button type="button" class="btn btn-primary btn-md" @click="redirect">
+      <button type="button" class="btn btn-primary btn-sm" @click="redirect">
         <svg
           class="icon"
           aria-hidden="true"

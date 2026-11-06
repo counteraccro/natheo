@@ -394,7 +394,7 @@ export default defineComponent({
   </div>
   <div v-else>
     <div class="flex items-end gap-2 flex-row-reverse">
-      <button class="btn btn-outline-dark px-4 py-2 text-sm" @click="readAll" :disabled="stats.nb_noRead === 0">
+      <button class="btn btn-sm btn-outline-dark" @click="readAll" :disabled="stats.nb_noRead === 0">
         <svg
           class="icon"
           aria-hidden="true"
@@ -419,7 +419,7 @@ export default defineComponent({
       <div v-if="hasNotificationsChecked">
         <button
           v-if="!hasAtLeastOneRead"
-          class="btn btn-outline-dark px-4 py-2 text-sm me-2"
+          class="btn btn-sm btn-outline-dark me-2"
           @click="updateNotification(true)"
         >
           <svg
@@ -441,7 +441,7 @@ export default defineComponent({
 
           {{ translation.read }}
         </button>
-        <button v-else class="btn btn-outline-dark px-4 py-2 text-sm me-2" @click="updateNotification(false)">
+        <button v-else class="btn btn-sm btn-outline-dark me-2" @click="updateNotification(false)">
           <svg
             class="icon"
             aria-hidden="true"
@@ -463,7 +463,7 @@ export default defineComponent({
           {{ translation.noRead }}
         </button>
 
-        <button class="btn btn-outline-dark px-4 py-2 text-sm" @click="deleteNotification(true)">
+        <button class="btn btn-sm btn-outline-dark" @click="deleteNotification(true)">
           <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"

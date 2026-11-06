@@ -300,7 +300,7 @@ export default defineComponent({
     <button
       v-if="file.isUploaded"
       @click="sendDataToParent"
-      class="btn btn-sm btn-primary w-full flex items-center justify-center gap-2 px-3 py-2"
+      class="btn btn-sm btn-primary w-full"
     >
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path
@@ -315,7 +315,7 @@ export default defineComponent({
     <button
       v-if="file.isUploaded"
       @click="resetFileInput"
-      class="btn btn-sm btn-outline-dark w-full flex items-center justify-center gap-2 px-3 py-2"
+      class="btn btn-sm btn-outline-dark w-full"
     >
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
