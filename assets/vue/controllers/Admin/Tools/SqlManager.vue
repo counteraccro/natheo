@@ -501,7 +501,7 @@ export default defineComponent({
             </select>
           </div>
           <div class="mb-3">
-            <button type="button" class="btn btn-secondary btn-sm w-full" @click="addTable">
+            <button type="button" class="btn btn-outline-dark btn-sm w-full" @click="addTable">
               <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
               </svg>
@@ -540,7 +540,7 @@ export default defineComponent({
             <button
               type="button"
               :disabled="selectColumns.length === 0"
-              class="btn btn-secondary btn-sm w-full"
+              class="btn btn-outline-dark btn-sm w-full"
               @click="addField"
             >
               <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">

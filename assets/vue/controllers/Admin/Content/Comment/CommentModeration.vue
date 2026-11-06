@@ -506,8 +506,7 @@ export default defineComponent({
           <button
             @click="moderateComment()"
             :disabled="moderation.selected.length === 0"
-            class="w-full btn btn-success btn-sm"
-            style="background-color: var(--btn-success)"
+            class="w-full btn btn-primary btn-sm"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path

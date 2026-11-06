@@ -288,7 +288,7 @@ export default defineComponent({
       <div v-if="plainToken !== ''">
         <div class="input-button-group">
           <input type="text" class="form-input" id="token" :value="plainToken" readonly />
-          <button class="btn btn-dark btn-sm" type="button" @click="copyToken()">
+          <button class="btn btn-outline-dark btn-sm" type="button" @click="copyToken()">
             <svg
               class="icon"
               aria-hidden="true"

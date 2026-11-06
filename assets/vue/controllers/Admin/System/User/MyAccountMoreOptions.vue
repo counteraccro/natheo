@@ -81,7 +81,7 @@ export default defineComponent({
   <div v-else>
     <button
       v-if="!btnHelpBlock"
-      class="btn btn-sm btn-secondary"
+      class="btn btn-sm btn-outline-dark"
       :disabled="loading"
       @click="update(datas.user_data_key_first_connexion, 1)"
     >
@@ -106,7 +106,7 @@ export default defineComponent({
     </button>
     <button
       v-else
-      class="btn btn-sm btn-secondary"
+      class="btn btn-sm btn-outline-dark"
       :disabled="loading"
       @click="update(datas.user_data_key_first_connexion, 0)"
     >

@@ -342,7 +342,7 @@ export default defineComponent({
         </div>
 
         <button
-          class="btn btn-secondary btn-sm mt-4"
+          class="btn btn-primary btn-sm mt-4"
           :class="fullScreen ? 'float-end' : 'w-full'"
           :disabled="btnSubmit || (needCurrentPassword && currentPassword === '')"
           @click="savePassword"

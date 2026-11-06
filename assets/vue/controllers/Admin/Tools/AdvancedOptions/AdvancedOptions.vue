@@ -373,7 +373,7 @@ export default defineComponent({
             </p>
 
             <div class="flex flex-row-reverse">
-              <div class="btn btn-primary btn-sm" @click="openConfirmModale('resetData', false)">
+              <div class="btn btn-danger btn-sm" @click="openConfirmModale('resetData', false)">
                 <svg
                   class="icon"
                   aria-hidden="true"
@@ -407,7 +407,7 @@ export default defineComponent({
             </p>
 
             <div class="flex flex-row-reverse">
-              <div class="btn btn-primary btn-sm" @click="openConfirmModale('resetDatabase', false)">
+              <div class="btn btn-danger btn-sm" @click="openConfirmModale('resetDatabase', false)">
                 <svg
                   class="icon"
                   aria-hidden="true"

@@ -76,7 +76,7 @@ Buttons use the classes of `assets/styles/admin/global/button.scss` (`btn` + a s
 - **Form footer**: right-aligned, « Retour » (`btn-outline-dark`, a link or `history.back()`) then the main action (`btn-primary`) at the far right; « Supprimer » (`btn-danger`) on the left when present (`justify-between`). Never `flex-row-reverse`.
 - **Confirmation modals**: « Annuler » (`btn-outline-dark`) then « Confirmer » at the right, in `btn-danger` when the action is destructive (delete, purge, reset), `btn-primary` otherwise. Grid confirmations take the color of the action (`'color' => 'danger'` → `btn-danger`).
 - **Size**: `btn-sm` in the admin, `btn-xs` for compact toolbars and grid actions; `btn-md` only on login pages and for buttons placed next to a form input (grid search bar). Custom SCSS classes are unlayered, so Tailwind padding/flex utilities on a `.btn` have no effect: don't add them.
-- **Colors**: `btn-primary` for the main action, `btn-outline-dark` for secondary actions, `btn-success` only for a positive action that does not save (preview, run, send a test), `btn-ghost-*` for icon-only buttons.
+- **Colors**: `btn-primary` for the main action, `btn-outline-dark` for secondary actions, `btn-success` only for a positive action that does not save (preview, run, send a test), `btn-ghost-*` for icon-only action buttons in grids and lists. No `btn-secondary`.
 - **Icons**: every text button of an action has an icon, `icon` in `btn-sm` buttons, `icon-sm` in `btn-xs` and icon-only (`btn-icon`) buttons.
 
 ### Tests

@@ -347,7 +347,7 @@ export default defineComponent({
           <button
             :disabled="selectFile === ''"
             :title="translate.log_btn_delete_file"
-            class="btn btn-sm btn-dark btn-icon"
+            class="btn btn-sm btn-danger btn-icon"
             @click="confirmDelete"
           >
             <svg
