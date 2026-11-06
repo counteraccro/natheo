@@ -487,7 +487,7 @@ export default defineComponent({
   </div>
 
   <div v-show="!loading" class="card rounded-lg mb-6 mt-3">
-    <div class="border-b border-default border-line">
+    <div class="border-b border-line">
       <ul class="flex flex-wrap -mb-px text-sm font-medium text-center px-4 sm:px-6" id="default-tab" role="tablist">
         <li class="me-2" role="presentation">
           <input
