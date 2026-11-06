@@ -31,6 +31,7 @@ class DashboardControllerTest extends AppWebTestCase
         $this->client->request('GET', $this->router->generate('admin_dashboard_index'));
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains('h1', $this->translator->trans('dashboard.index', domain: 'dashboard'));
+        $this->assertThemeInitBeforeStylesheets();
         $siteName = $this->container->get(OptionSystemService::class)->getValueByKey(OptionSystem::OS_SITE_NAME->value);
         $this->assertPageTitleSame(
             $this->translator->trans('dashboard.index', domain: 'dashboard') . ' – ' . $siteName,

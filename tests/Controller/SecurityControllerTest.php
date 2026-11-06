@@ -33,6 +33,7 @@ class SecurityControllerTest extends AppWebTestCase
         $this->client->request('GET', $this->router->generate('auth_user_login'));
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains('p', $this->translator->trans('user.login_user.title', domain: 'user'));
+        $this->assertThemeInitBeforeStylesheets();
 
         $this->client->loginUser($user, 'admin');
         $this->client->request('GET', $this->router->generate('auth_user_login'));

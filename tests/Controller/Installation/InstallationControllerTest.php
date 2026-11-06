@@ -59,6 +59,7 @@ class InstallationControllerTest extends AppWebTestCase
     {
         $this->client->request('GET', $this->router->generate('installation_step_3'));
         $this->assertResponseIsSuccessful();
+        $this->assertThemeInitBeforeStylesheets();
 
         $this->createUser();
         $this->client->request('GET', $this->router->generate('installation_step_2'));
