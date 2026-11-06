@@ -41,11 +41,6 @@
   font-size: 1rem;
 }
 
-.btn-xl {
-  padding: 1rem 2rem;
-  font-size: 1.125rem;
-}
-
 /* Variants - Solid */
 .btn-primary {
   background-color: var(--primary);
@@ -80,17 +75,6 @@
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
-.btn-warning {
-  background-color: var(--btn-warning);
-  color: white;
-}
-
-.btn-warning:hover:not(:disabled) {
-  background-color: var(--btn-warning-hover);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
-
 .btn-danger {
   background-color: var(--btn-danger);
   color: white;
@@ -98,17 +82,6 @@
 
 .btn-danger:hover:not(:disabled) {
   background-color: var(--btn-danger-hover);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
-
-.btn-info {
-  background-color: var(--btn-info);
-  color: white;
-}
-
-.btn-info:hover:not(:disabled) {
-  background-color: var(--btn-info-hover);
   transform: translateY(-1px);
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
@@ -136,39 +109,6 @@
   color: white;
 }
 
-.btn-outline-secondary {
-  background-color: transparent;
-  color: var(--secondary);
-  border: 2px solid var(--secondary);
-}
-
-.btn-outline-secondary:hover:not(:disabled) {
-  background-color: var(--secondary);
-  color: white;
-}
-
-.btn-outline-success {
-  background-color: transparent;
-  color: var(--btn-success);
-  border: 2px solid var(--btn-success);
-}
-
-.btn-outline-success:hover:not(:disabled) {
-  background-color: var(--btn-success);
-  color: white;
-}
-
-.btn-outline-warning {
-  background-color: transparent;
-  color: var(--btn-warning);
-  border: 2px solid var(--btn-warning);
-}
-
-.btn-outline-warning:hover:not(:disabled) {
-  background-color: var(--btn-warning);
-  color: white;
-}
-
 .btn-outline-danger {
   background-color: transparent;
   color: var(--btn-danger);
@@ -177,17 +117,6 @@
 
 .btn-outline-danger:hover:not(:disabled) {
   background-color: var(--btn-danger);
-  color: white;
-}
-
-.btn-outline-info {
-  background-color: transparent;
-  color: var(--btn-info);
-  border: 2px solid var(--btn-info);
-}
-
-.btn-outline-info:hover:not(:disabled) {
-  background-color: var(--btn-info);
   color: white;
 }
 

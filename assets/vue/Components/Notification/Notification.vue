@@ -107,8 +107,8 @@ export default defineComponent({
             <span class="text-xs whitespace-nowrap text-fg-subtle">{{
               relativeTime(notification.createdAt.timestamp)
             }}</span>
-            <button class="btn-ghost p-1.5 rounded cursor-pointer" @click="remove">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button class="btn btn-icon btn-xs btn-ghost-danger" @click="remove">
+              <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
