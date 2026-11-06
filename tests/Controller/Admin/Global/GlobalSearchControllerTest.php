@@ -29,7 +29,7 @@ class GlobalSearchControllerTest extends AppWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains(
             'h1',
-            $this->translator->trans('global_search.index.page_title_h1', domain: 'global_search'),
+            $this->translator->trans('global_search.index.title', domain: 'global_search'),
         );
     }
 

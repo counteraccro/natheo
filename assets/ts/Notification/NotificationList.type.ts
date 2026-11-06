@@ -32,7 +32,6 @@ export interface NotificationListTranslate {
   deleteSelected: string;
   deleteAll: string;
   all: string;
-  allSuccess: string;
   statNonLu: string;
   statToday: string;
   statAll: string;

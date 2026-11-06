@@ -20,9 +20,6 @@ class DashboardTranslate extends AppTranslate
     public function getTranslate(): array
     {
         return [
-            'dashboard_flux_activity' => $this->translator->trans('dashboard.flux.activity', domain: 'dashboard'),
-            'dashboard_last_comment' => $this->translator->trans('dashboard.last.comment', domain: 'dashboard'),
-            'dashboard_last_page' => $this->translator->trans('dashboard.last.page', domain: 'dashboard'),
             'dashboard_help_first_connexion' => $this->getBlockHelpFirstConnexionTranslate(),
             'dashboard_last_comments' => $this->getBlockLastCommentsTranslate(),
             'dashboard_last_pages' => $this->getBlockLastPagesTranslate(),
@@ -37,47 +34,47 @@ class DashboardTranslate extends AppTranslate
     public function getBlockHelpFirstConnexionTranslate(): array
     {
         return [
-            'title' => $this->translator->trans('dashboard.block.help.first.connexion.title', domain: 'dashboard'),
-            'loading' => $this->translator->trans('dashboard.block.help.first.connexion.loading', domain: 'dashboard'),
+            'title' => $this->translator->trans('dashboard.help_first_connection.title', domain: 'dashboard'),
+            'loading' => $this->translator->trans('dashboard.help_first_connection.loading', domain: 'dashboard'),
             'sub_title' => $this->translator->trans(
-                'dashboard.block.help.first.connexion.sub_title',
+                'dashboard.help_first_connection.sub_title',
                 domain: 'dashboard',
             ),
-            'text_1' => $this->translator->trans('dashboard.block.help.first.connexion.text_1', domain: 'dashboard'),
+            'text_1' => $this->translator->trans('dashboard.help_first_connection.text_1', domain: 'dashboard'),
             'text_end_success' => $this->translator->trans(
-                'dashboard.block.help.first.connexion.text.end.success',
+                'dashboard.help_first_connection.text_end_success',
                 domain: 'dashboard',
             ),
             'text_end' => $this->translator->trans(
-                'dashboard.block.help.first.connexion.text.end',
+                'dashboard.help_first_connection.text_end',
                 domain: 'dashboard',
             ),
             'btn_def_hide' => $this->translator->trans(
-                'dashboard.block.help.first.connexion.btn.hide',
+                'dashboard.help_first_connection.button_hide',
                 domain: 'dashboard',
             ),
             'modal_confirm_title' => $this->translator->trans(
-                'dashboard.block.help.first.connexion.modal.confirm.title',
+                'dashboard.help_first_connection.modal.title',
                 domain: 'dashboard',
             ),
             'modal_confirm_body_1' => $this->translator->trans(
-                'dashboard.block.help.first.connexion.modal.confirm.body.1',
+                'dashboard.help_first_connection.modal.body_1',
                 domain: 'dashboard',
             ),
             'modal_confirm_body_2' => $this->translator->trans(
-                'dashboard.block.help.first.connexion.modal.confirm.body.2',
+                'dashboard.help_first_connection.modal.body_2',
                 domain: 'dashboard',
             ),
             'modal_confirm_btn_ok' => $this->translator->trans(
-                'dashboard.block.help.first.connexion.modal.confirm.btn_ok',
+                'dashboard.help_first_connection.modal.button_ok',
                 domain: 'dashboard',
             ),
             'modal_confirm_btn_ko' => $this->translator->trans(
-                'dashboard.block.help.first.connexion.modal.confirm.btn_ko',
+                'dashboard.help_first_connection.modal.button_ko',
                 domain: 'dashboard',
             ),
             'msg_hide_success' => $this->translator->trans(
-                'dashboard.block.help.first.connexion.msg.hide.success',
+                'dashboard.help_first_connection.hide_success',
                 domain: 'dashboard',
             ),
         ];
@@ -90,20 +87,20 @@ class DashboardTranslate extends AppTranslate
     public function getBlockLastCommentsTranslate(): array
     {
         return [
-            'title' => $this->translator->trans('dashboard.block.last.comments.title', domain: 'dashboard'),
-            'loading' => $this->translator->trans('dashboard.block.last.comments.loading', domain: 'dashboard'),
-            'table_id' => $this->translator->trans('dashboard.block.last.comments.table.id', domain: 'dashboard'),
+            'title' => $this->translator->trans('dashboard.last_comments.title', domain: 'dashboard'),
+            'loading' => $this->translator->trans('dashboard.last_comments.loading', domain: 'dashboard'),
+            'table_id' => $this->translator->trans('dashboard.last_comments.column_id', domain: 'dashboard'),
             'table_author' => $this->translator->trans(
-                'dashboard.block.last.comments.table.author',
+                'dashboard.last_comments.column_author',
                 domain: 'dashboard',
             ),
             'table_status' => $this->translator->trans(
-                'dashboard.block.last.comments.table.status',
+                'dashboard.last_comments.column_status',
                 domain: 'dashboard',
             ),
-            'table_date' => $this->translator->trans('dashboard.block.last.comments.table.date', domain: 'dashboard'),
+            'table_date' => $this->translator->trans('dashboard.last_comments.column_date', domain: 'dashboard'),
             'link_comment' => $this->translator->trans(
-                'dashboard.block.last.comments.link.comment',
+                'dashboard.last_comments.link_comment',
                 domain: 'dashboard',
             ),
         ];
@@ -116,13 +113,13 @@ class DashboardTranslate extends AppTranslate
     public function getBlockLastPagesTranslate(): array
     {
         return [
-            'title' => $this->translator->trans('dashboard.block.last.pages.title', domain: 'dashboard'),
-            'loading' => $this->translator->trans('dashboard.block.last.pages.loading', domain: 'dashboard'),
-            'link_page' => $this->translator->trans('dashboard.block.last.pages.link.page', domain: 'dashboard'),
-            'table_id' => $this->translator->trans('dashboard.block.last.pages.table.id', domain: 'dashboard'),
-            'table_title' => $this->translator->trans('dashboard.block.last.pages.table.title', domain: 'dashboard'),
-            'table_status' => $this->translator->trans('dashboard.block.last.pages.table.status', domain: 'dashboard'),
-            'table_date' => $this->translator->trans('dashboard.block.last.pages.table.date', domain: 'dashboard'),
+            'title' => $this->translator->trans('dashboard.last_pages.title', domain: 'dashboard'),
+            'loading' => $this->translator->trans('dashboard.last_pages.loading', domain: 'dashboard'),
+            'link_page' => $this->translator->trans('dashboard.last_pages.link_page', domain: 'dashboard'),
+            'table_id' => $this->translator->trans('dashboard.last_pages.column_id', domain: 'dashboard'),
+            'table_title' => $this->translator->trans('dashboard.last_pages.column_title', domain: 'dashboard'),
+            'table_status' => $this->translator->trans('dashboard.last_pages.column_status', domain: 'dashboard'),
+            'table_date' => $this->translator->trans('dashboard.last_pages.column_date', domain: 'dashboard'),
         ];
     }
 
@@ -133,19 +130,19 @@ class DashboardTranslate extends AppTranslate
     public function getBlockPagesMostViewedTranslate(): array
     {
         return [
-            'title' => $this->translator->trans('dashboard.block.pages.most.viewed.title', domain: 'dashboard'),
-            'link_page' => $this->translator->trans('dashboard.block.pages.most.viewed.link.page', domain: 'dashboard'),
-            'table_id' => $this->translator->trans('dashboard.block.pages.most.viewed.table.id', domain: 'dashboard'),
+            'title' => $this->translator->trans('dashboard.most_viewed_pages.title', domain: 'dashboard'),
+            'link_page' => $this->translator->trans('dashboard.most_viewed_pages.link_page', domain: 'dashboard'),
+            'table_id' => $this->translator->trans('dashboard.most_viewed_pages.column_id', domain: 'dashboard'),
             'table_title' => $this->translator->trans(
-                'dashboard.block.pages.most.viewed.table.title',
+                'dashboard.most_viewed_pages.column_title',
                 domain: 'dashboard',
             ),
             'table_view' => $this->translator->trans(
-                'dashboard.block.pages.most.viewed.table.view',
+                'dashboard.most_viewed_pages.column_views',
                 domain: 'dashboard',
             ),
             'table_date' => $this->translator->trans(
-                'dashboard.block.pages.most.viewed.table.date',
+                'dashboard.most_viewed_pages.column_date',
                 domain: 'dashboard',
             ),
         ];
@@ -158,17 +155,17 @@ class DashboardTranslate extends AppTranslate
     public function getDashboardStatisticsTranslate(): array
     {
         return [
-            'total_article' => $this->translator->trans('dashboard.statistics.total.article', domain: 'dashboard'),
-            'comments' => $this->translator->trans('dashboard.statistics.total.comments', domain: 'dashboard'),
+            'total_article' => $this->translator->trans('dashboard.statistics.total_pages', domain: 'dashboard'),
+            'comments' => $this->translator->trans('dashboard.statistics.total_comments', domain: 'dashboard'),
             'comments_waiting' => $this->translator->trans(
-                'dashboard.statistics.total.comments.waiting',
+                'dashboard.statistics.total_comments_waiting',
                 domain: 'dashboard',
             ),
-            'users' => $this->translator->trans('dashboard.statistics.total.users', domain: 'dashboard'),
-            'views' => $this->translator->trans('dashboard.statistics.total.views', domain: 'dashboard'),
-            'link_pages' => $this->translator->trans('dashboard.statistics.link.pages', domain: 'dashboard'),
-            'link_users' => $this->translator->trans('dashboard.statistics.link.users', domain: 'dashboard'),
-            'info_cache' => $this->translator->trans('dashboard.statistics.info.cache', domain: 'dashboard'),
+            'users' => $this->translator->trans('dashboard.statistics.total_users', domain: 'dashboard'),
+            'views' => $this->translator->trans('dashboard.statistics.total_views', domain: 'dashboard'),
+            'link_pages' => $this->translator->trans('dashboard.statistics.link_pages', domain: 'dashboard'),
+            'link_users' => $this->translator->trans('dashboard.statistics.link_users', domain: 'dashboard'),
+            'info_cache' => $this->translator->trans('dashboard.statistics.info_cache', domain: 'dashboard'),
         ];
     }
 }

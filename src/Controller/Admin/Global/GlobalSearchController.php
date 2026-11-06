@@ -38,7 +38,7 @@ class GlobalSearchController extends AppAdminController
         $breadcrumb = [
             Breadcrumb::DOMAIN->value => 'global_search',
             Breadcrumb::BREADCRUMB->value => [
-                'global_search.index.page_title_h1' => '#',
+                'global_search.index.title' => '#',
             ],
         ];
 

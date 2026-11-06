@@ -30,6 +30,6 @@ class InfoControllerTest extends AppWebTestCase
         $this->client->loginUser($user, 'admin');
         $this->client->request('GET', $this->router->generate('admin_info_index'));
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', $this->translator->trans('info.page.title.h1', domain: 'info'));
+        $this->assertSelectorTextContains('h1', $this->translator->trans('info.index.title', domain: 'info'));
     }
 }

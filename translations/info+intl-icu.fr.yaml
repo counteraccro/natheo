@@ -1,18 +1,17 @@
-info.page.title: Information
-info.page.title.h1: Information
-info.description: "Informations sur l'environnement web de votre application"
-info.serveur.title: 'Le serveur'
+info.index.title: Information
+info.index.description: "Informations sur l'environnement web de votre application"
+info.server.title: 'Le serveur'
 info.cms.title: 'Mon site'
 info.database.title: 'La base de données'
-info.info.title: 'Mon navigateur'
-info.server.software.version: Serveur
-info.php.version: 'Version PHP'
-info.memory.limit: 'Limite mémoire'
-info.upload.max.file: 'Taille max upload'
-info.website.version: Version
-info.website.url: Url
+info.browser.title: 'Mon navigateur'
+info.server.software_version: Serveur
+info.server.php_version: 'Version PHP'
+info.server.memory_limit: 'Limite mémoire'
+info.server.upload_max_file: 'Taille max upload'
+info.cms.version: Version
+info.cms.url: Url
 info.database.type: Type
 info.database.server: Serveur
 info.database.user: Utilisateur
 info.database.name: 'Base de données'
-info.navigateur.info: Navigateur
+info.browser.info: Navigateur

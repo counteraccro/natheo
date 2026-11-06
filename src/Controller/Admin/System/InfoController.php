@@ -25,7 +25,7 @@ class InfoController extends AbstractController
         $breadcrumb = [
             Breadcrumb::DOMAIN->value => 'info',
             Breadcrumb::BREADCRUMB->value => [
-                'info.page.title.h1' => '#',
+                'info.index.title' => '#',
             ],
         ];
 

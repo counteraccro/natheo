@@ -128,9 +128,9 @@ class GridService extends AppAdminService
 
         $tabRole = [
             'ROLE_USER' => $translator->trans('global.role.user', domain: 'global'),
-            'ROLE_CONTRIBUTEUR' => $translator->trans('global.role.contributeur', domain: 'global'),
+            'ROLE_CONTRIBUTEUR' => $translator->trans('global.role.contributor', domain: 'global'),
             'ROLE_ADMIN' => $translator->trans('global.role.admin', domain: 'global'),
-            'ROLE_SUPER_ADMIN' => $translator->trans('global.role.superadmin', domain: 'global'),
+            'ROLE_SUPER_ADMIN' => $translator->trans('global.role.super_admin', domain: 'global'),
         ];
         return $tabRole[$role];
     }

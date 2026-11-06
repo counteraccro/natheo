@@ -44,7 +44,7 @@ class GlobalSearchService extends AppAdminService
             return [
                 'elements' => [],
                 'total' => 0,
-                'error' => $translate->trans('global_search.error.notFound', domain: 'global_search'),
+                'error' => $translate->trans('global_search.index.error_not_found', domain: 'global_search'),
             ];
         }
 
