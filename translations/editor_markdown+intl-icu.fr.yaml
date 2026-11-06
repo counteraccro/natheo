@@ -1,52 +1,52 @@
-editor.button.bold: Gras
-editor.button.italic: Italic
-editor.button.strike: Barré
-editor.button.quote: Citation
-editor.button.list: Liste
-editor.button.list.number: 'Liste numérotée'
-editor.button.table: Tableau
-editor.button.link: Lien
-editor.button.image: Image
-editor.button.code: Code
-editor.titre.h1: 'Titre H1'
-editor.titre.h2: 'Titre H2'
-editor.titre.h3: 'Titre H3'
-editor.titre.h4: 'Titre H4'
-editor.titre.h5: 'Titre H5'
-editor.titre.h6: 'Titre H6'
-editor.button.save: Sauvegarder
-editor.help: 'La mise en forme de votre contenu se fait avec le langage de balisage '
-editor.button.keyword: 'Mots clés'
-editor.input.empty: 'Le champ ne peut pas être vide'
-editor.btn.mediatheque: Médiathèque
-editor.mediatheque.title: Médiathèque
-editor.mediatheque.no_media: 'Ce dossier est vide'
-editor.button.link.interne: 'Lien interne'
-editor.button.preview: Preview
-editor.loading: Chargement...
-editor.modale.internal.link.title: 'Ajouter un lien interne'
-editor.modale.internal.link.label.search: 'Rechercher une page'
-editor.modale.internal.link.noResult: 'Aucune page trouvée'
-editor.modale.internal.link.stats: 'pages disponibles'
-editor.textarea.placeholder: 'Rédigez votre contenu en Markdown…'
-editor.words: mots
-editor.caracteres: car.
-editor.emptyPreview: 'Commencez à écrire...'
-editor.mediatheque.no_search: 'Aucun résultat pour'
-editor.mediatheque.search.placeholder: Rechercher
-editor.mediatheque.folder: dossier
-editor.mediatheque.img: images
-editor.mediatheque.file: fichier
-editor.button.heading: Titres
-editor.placeholder.bold: 'texte en gras'
-editor.placeholder.italic: 'texte en italique'
-editor.placeholder.strike: 'texte barré'
-editor.placeholder.code: code
-editor.placeholder.link: 'Texte du lien'
-editor.placeholder.image: description
-editor.placeholder.table.column: Colonne
-editor.placeholder.table.cell: Cellule
-editor.modale.internal.link.error: 'Impossible de charger la liste des pages'
-editor.mediatheque.files: fichiers
-editor.mediatheque.root: Racine
-editor.mediatheque.error: 'Impossible de charger la médiathèque'
+editor_markdown.toolbar.bold: Gras
+editor_markdown.toolbar.italic: Italic
+editor_markdown.toolbar.strike: Barré
+editor_markdown.toolbar.quote: Citation
+editor_markdown.toolbar.list: Liste
+editor_markdown.toolbar.list_number: 'Liste numérotée'
+editor_markdown.toolbar.table: Tableau
+editor_markdown.toolbar.link: Lien
+editor_markdown.toolbar.image: Image
+editor_markdown.toolbar.code: Code
+editor_markdown.heading.h1: 'Titre H1'
+editor_markdown.heading.h2: 'Titre H2'
+editor_markdown.heading.h3: 'Titre H3'
+editor_markdown.heading.h4: 'Titre H4'
+editor_markdown.heading.h5: 'Titre H5'
+editor_markdown.heading.h6: 'Titre H6'
+editor_markdown.toolbar.save: Sauvegarder
+editor_markdown.toolbar.help: 'La mise en forme de votre contenu se fait avec le langage de balisage '
+editor_markdown.toolbar.keyword: 'Mots clés'
+editor_markdown.editor.empty_content: 'Le champ ne peut pas être vide'
+editor_markdown.toolbar.media: Médiathèque
+editor_markdown.media.title: Médiathèque
+editor_markdown.media.no_media: 'Ce dossier est vide'
+editor_markdown.toolbar.link_internal: 'Lien interne'
+editor_markdown.toolbar.preview: Preview
+editor_markdown.editor.loading: Chargement...
+editor_markdown.internal_link.title: 'Ajouter un lien interne'
+editor_markdown.internal_link.search_label: 'Rechercher une page'
+editor_markdown.internal_link.no_result: 'Aucune page trouvée'
+editor_markdown.internal_link.stats: 'pages disponibles'
+editor_markdown.editor.placeholder: 'Rédigez votre contenu en Markdown…'
+editor_markdown.editor.words: mots
+editor_markdown.editor.characters: car.
+editor_markdown.editor.empty_preview: 'Commencez à écrire...'
+editor_markdown.media.no_search: 'Aucun résultat pour'
+editor_markdown.media.search_placeholder: Rechercher
+editor_markdown.media.folder: dossier
+editor_markdown.media.image: images
+editor_markdown.media.file: fichier
+editor_markdown.toolbar.heading: Titres
+editor_markdown.placeholder.bold: 'texte en gras'
+editor_markdown.placeholder.italic: 'texte en italique'
+editor_markdown.placeholder.strike: 'texte barré'
+editor_markdown.placeholder.code: code
+editor_markdown.placeholder.link: 'Texte du lien'
+editor_markdown.placeholder.image: description
+editor_markdown.placeholder.table_column: Colonne
+editor_markdown.placeholder.table_cell: Cellule
+editor_markdown.internal_link.error: 'Impossible de charger la liste des pages'
+editor_markdown.media.files: fichiers
+editor_markdown.media.root: Racine
+editor_markdown.media.error: 'Impossible de charger la médiathèque'

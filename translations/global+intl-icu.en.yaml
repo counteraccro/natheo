@@ -1,32 +1,23 @@
 global.role.user: 'Utilisateur [en]'
-global.role.contributeur: 'Contributeur [en]'
+global.role.contributor: 'Contributeur [en]'
 global.role.admin: 'Administrateur [en]'
-global.role.superadmin: 'Super Administrateur [en]'
-global.profil: 'Profil [en]'
-global.logout: 'Déconnexion [en]'
-global.user.option: 'Mes options [en]'
-global.licence: 'Copyright &copy; 2023-{year} &mdash; Propulsé par Nathéo CMS [en]'
-global.dashboard: 'Dashboard [en]'
-global.notification: __global.notification
-global.user.impersonation: __global.user.impersonation
-global.citation: __global.citation
-global.citation.auteur: __global.citation.auteur
-global.search.placeholder: __global.search.placeholder
-global.display: __global.display
-global.header.btn.nouveau: __global.header.btn.nouveau
-global.header.btn.nouveau.page: __global.header.btn.nouveau.page
-global.header.btn.menu: __global.header.btn.menu
-global.header.btn.faq: __global.header.btn.faq
-global.header.btn.tag: __global.header.btn.tag
+global.role.super_admin: 'Super Administrateur [en]'
+global.footer.licence: 'Copyright &copy; 2023-{year} &mdash; Propulsé par Nathéo CMS [en]'
+global.breadcrumb.dashboard: 'Dashboard [en]'
+global.header.new.button: __global.header.btn.nouveau
+global.header.new.page: __global.header.btn.nouveau.page
+global.header.new.menu: __global.header.btn.menu
+global.header.new.faq: __global.header.btn.faq
+global.header.new.tag: __global.header.btn.tag
 global.header.menu.impersonation: __global.header.menu.impersonation
-global.header.search.input: __global.header.search.input
-global.header.menu.my.account: __global.header.menu.my.account
-global.header.menu.my.options: __global.header.menu.my.options
+global.header.search.placeholder: __global.header.search.input
+global.header.menu.my_account: __global.header.menu.my.account
+global.header.menu.my_options: __global.header.menu.my.options
 global.header.menu.website: __global.header.menu.website
 global.header.menu.logout: __global.header.menu.logout
-global.header.theme: __global.header.theme
-global.header.dark.mode: __global.header.dark.mode
-global.modale.help.close: __global.modale.help.close
+global.header.theme.title: __global.header.theme
+global.header.theme.dark_mode: __global.header.dark.mode
+global.modal.help.close: __global.modale.help.close
 global.error.csrf: __global.error.csrf
 global.a11y.close: 'Close'
 global.a11y.loading: 'Loading…'

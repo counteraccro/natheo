@@ -1,33 +1,33 @@
 grid.search.placeholder: 'Rechercher dans le tableau'
-grid.loading: 'Chargement des données'
-grid.success.titre: 'Succès !'
-grid.confirm.titre: 'Confirmation demandée'
-grid.confirm.texte: 'Êtes vous sur de vouloir faire cela ?'
-grid.confirm.btn.ok: Oui
-grid.confirm.btn.no: Non
-grid.page: Page
-grid.on: sur
-grid.row: lignes
-grid.no.result: 'Aucun résultat pour votre recherche'
+grid.list.loading: 'Chargement des données'
+grid.toast.success_title: 'Succès !'
+grid.confirm.title: 'Confirmation demandée'
+grid.confirm.text: 'Êtes vous sur de vouloir faire cela ?'
+grid.confirm.button_ok: Oui
+grid.confirm.button_no: Non
+grid.pagination.page: Page
+grid.pagination.on: sur
+grid.pagination.row: lignes
+grid.list.no_result: 'Aucun résultat pour votre recherche'
 grid.toast.time: "A l'instant"
-grid.error.titre: 'Erreur !'
-grid.search.placeholder.bdd.search: 'Rechercher dans la base de données'
-grid.btn.search: Rechercher
-grid.copy.success: 'Donnée copiée dans le presse papier'
-grid.copy.error: 'Une erreur est survenue lors de la copie'
+grid.toast.error_title: 'Erreur !'
+grid.search.placeholder_database: 'Rechercher dans la base de données'
+grid.search.button: Rechercher
+grid.query.copy_success: 'Donnée copiée dans le presse papier'
+grid.query.copy_error: 'Une erreur est survenue lors de la copie'
 grid.query.title: 'Requête SQL'
-grid.filter.only.me: 'Afficher mes données'
+grid.filter.only_me: 'Afficher mes données'
 grid.filter.all: 'Afficher toutes les données'
-grid.search.placeholder.table.search: 'Rechercher dans le tableau'
-grid.search.text.bdd.search: 'Dans la base de données'
-grid.search.title.search: Rechercher
-grid.search.text.table.search: 'Dans le tableau'
-grid.text.show.query: 'Afficher le SQL'
-grid.text.hide.query: 'Masquer le SQL'
-grid.trie.title.option: 'Autres options'
-grid.text.show.trie.option: "Plus d'options"
-grid.text.hide.trie.option: 'Masquer les options'
-grid.trie.option.liste.field: Colonnes
-grid.trie.option.liste.order: Ordre
-grid.trie.option.btn: Trier
-grid.trie.title.option.sub: 'Options de trie'
+grid.search.placeholder_table: 'Rechercher dans le tableau'
+grid.search.text_database: 'Dans la base de données'
+grid.search.title: Rechercher
+grid.search.text_table: 'Dans le tableau'
+grid.query.show: 'Afficher le SQL'
+grid.query.hide: 'Masquer le SQL'
+grid.sort.title: 'Autres options'
+grid.sort.show: "Plus d'options"
+grid.sort.hide: 'Masquer les options'
+grid.sort.field: Colonnes
+grid.sort.order: Ordre
+grid.sort.button: Trier
+grid.sort.sub_title: 'Options de trie'

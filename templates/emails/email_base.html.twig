@@ -27,7 +27,7 @@
                 <tr>
                     <td class="email-footer">
                         <p>{{ 'mail.template.footer'|trans({'site': '<a href="' ~ site_url|e('html_attr') ~ '">' ~ site_name|e ~ '</a>'}, 'mail')|raw }}</p>
-                        <p>{{ 'global.licence'|trans({'year': 'now'|date('Y')}, 'global')|raw }}</p>
+                        <p>{{ 'global.footer.licence'|trans({'year': 'now'|date('Y')}, 'global')|raw }}</p>
                     </td>
                 </tr>
             </table>

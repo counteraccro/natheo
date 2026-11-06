@@ -61,7 +61,7 @@ class NotificationController extends AppAdminController
         $breadcrumb = [
             Breadcrumb::DOMAIN->value => 'notification',
             Breadcrumb::BREADCRUMB->value => [
-                'notification.page_title_h1' => '#',
+                'notification.index.title' => '#',
             ],
         ];
         $limit = 100; //$this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT);
@@ -70,7 +70,10 @@ class NotificationController extends AppAdminController
         foreach (NotificationCategory::cases() as $category) {
             $catNotifications[$category->value] = [
                 'id' => $category->value,
-                'name' => $translator->trans('notification.category.' . $category->value, domain: 'notification'),
+                'name' => $translator->trans(
+                    'notification.category.' . strtolower($category->value),
+                    domain: 'notification',
+                ),
             ];
         }
 
@@ -177,9 +180,9 @@ class NotificationController extends AppAdminController
         $data = json_decode($request->getContent(), true);
         $notificationService->updateRead($data['notifications'], $data['read']);
 
-        $msg = $translator->trans('notification.update.unread.success', domain: 'notification');
+        $msg = $translator->trans('notification.list.unread_success', domain: 'notification');
         if ($data['read']) {
-            $msg = $translator->trans('notification.update.read.success', domain: 'notification');
+            $msg = $translator->trans('notification.list.read_success', domain: 'notification');
         }
 
         return $this->json($notificationService->getResponseAjax($msg));
@@ -207,7 +210,7 @@ class NotificationController extends AppAdminController
 
         $data = json_decode($request->getContent(), true);
         $notificationService->removeArrayNotifications($data['notifications']);
-        $msg = $translator->trans('notification.delete.success', domain: 'notification');
+        $msg = $translator->trans('notification.list.delete_success', domain: 'notification');
         return $this->json($notificationService->getResponseAjax($msg));
     }
 
@@ -261,7 +264,7 @@ class NotificationController extends AppAdminController
         $notificationService->readAll($user);
         return $this->json([
             'success' => true,
-            'msg' => $translator->trans('notification.read.all.success', domain: 'notification'),
+            'msg' => $translator->trans('notification.list.read_all_success', domain: 'notification'),
         ]);
     }
 

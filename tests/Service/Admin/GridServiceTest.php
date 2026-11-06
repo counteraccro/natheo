@@ -96,7 +96,7 @@ class GridServiceTest extends AppWebTestCase
         $result = $this->gridService->renderRole('ROLE_CONTRIBUTEUR');
         $this->assertIsString($result);
         $this->assertStringContainsString(
-            $this->translator->trans('global.role.contributeur', domain: 'global'),
+            $this->translator->trans('global.role.contributor', domain: 'global'),
             $result,
         );
 
@@ -107,7 +107,7 @@ class GridServiceTest extends AppWebTestCase
         $result = $this->gridService->renderRole('ROLE_SUPER_ADMIN');
         $this->assertIsString($result);
         $this->assertStringContainsString(
-            $this->translator->trans('global.role.superadmin', domain: 'global'),
+            $this->translator->trans('global.role.super_admin', domain: 'global'),
             $result,
         );
     }

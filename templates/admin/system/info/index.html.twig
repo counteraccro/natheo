@@ -1,10 +1,10 @@
 {% extends 'admin/admin_base.html.twig' %}
 
-{% block title %}{{ 'info.page.title.h1' | trans({}, 'info') }}{% endblock %}
+{% block title %}{{ 'info.index.title' | trans({}, 'info') }}{% endblock %}
 
 {% block body %}
 
-    <twig:Admin:PageHeaderComponent :breadcrumb="breadcrumb" :title="'info.page.title.h1' | trans({}, 'info')" :description="'info.description' | trans({}, 'info')">
+    <twig:Admin:PageHeaderComponent :breadcrumb="breadcrumb" :title="'info.index.title' | trans({}, 'info')" :description="'info.index.description' | trans({}, 'info')">
         <twig:block name="icon">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -35,14 +35,14 @@
                             d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"
                         />
                     </svg>
-                    {{ 'info.serveur.title' | trans({}, 'info') }}
+                    {{ 'info.server.title' | trans({}, 'info') }}
                 </div>
             </div>
         </div>
         <div class="space-y-3 p-5">
             <div class="flex flex-col sm:flex-row sm:items-center py-3 border-b border-b-line">
                     <span class="text-sm font-semibold mb-1 sm:mb-0 sm:w-48 text-fg-muted">
-                         {{ 'info.server.software.version' | trans({}, 'info') }}
+                         {{ 'info.server.software_version' | trans({}, 'info') }}
                     </span>
                 <span class="text-sm font-mono text-fg">
                         {{ tabInfo.serveur.server_software_version }}
@@ -50,7 +50,7 @@
             </div>
             <div class="flex flex-col sm:flex-row sm:items-center py-3 border-b border-b-line">
                     <span class="text-sm font-semibold mb-1 sm:mb-0 sm:w-48 text-fg-muted">
-                        {{ 'info.php.version' | trans({}, 'info') }}
+                        {{ 'info.server.php_version' | trans({}, 'info') }}
                     </span>
                 <span class="text-sm">
                         <a href="{{ path('admin_info_phpinfo') }}"
@@ -61,7 +61,7 @@
 
             <div class="flex flex-col sm:flex-row sm:items-center py-3 border-b border-b-line">
                     <span class="text-sm font-semibold mb-1 sm:mb-0 sm:w-48 text-fg-muted">
-                         {{ 'info.memory.limit' | trans({}, 'info') }}
+                         {{ 'info.server.memory_limit' | trans({}, 'info') }}
                     </span>
                 <span class="text-sm text-fg">
                         {{ tabInfo.serveur.memory_limit }}
@@ -70,7 +70,7 @@
 
             <div class="flex flex-col sm:flex-row sm:items-center py-3">
                     <span class="text-sm font-semibold mb-1 sm:mb-0 sm:w-48 text-fg-muted">
-                         {{ 'info.upload.max.file' | trans({}, 'info') }}
+                         {{ 'info.server.upload_max_file' | trans({}, 'info') }}
                     </span>
                 <span class="text-sm text-fg">
                         {{ tabInfo.serveur.upload_max_file_size }} -
@@ -112,7 +112,7 @@
         <div class="space-y-3 p-5">
             <div class="flex flex-col sm:flex-row sm:items-center py-3 border-b border-b-line">
                 <span class="text-sm font-semibold mb-1 sm:mb-0 sm:w-48 text-fg-muted">
-                     {{ 'info.website.version' | trans({}, 'info') }}
+                     {{ 'info.cms.version' | trans({}, 'info') }}
                 </span>
                 <span class="text-sm text-fg">
                     {{ tabInfo.website.website_version }}
@@ -121,7 +121,7 @@
 
             <div class="flex flex-col sm:flex-row sm:items-center py-3">
                 <span class="text-sm font-semibold mb-1 sm:mb-0 sm:w-48 text-fg-muted">
-                     {{ 'info.website.url' | trans({}, 'info') }}
+                     {{ 'info.cms.url' | trans({}, 'info') }}
                 </span>
                 <span class="text-sm text-fg">
                    <a target="_blank"
@@ -221,14 +221,14 @@
                         />
                     </svg>
 
-                    {{ 'info.info.title' | trans({}, 'info') }}
+                    {{ 'info.browser.title' | trans({}, 'info') }}
                 </div>
             </div>
         </div>
         <div class="space-y-3 p-5">
             <div class="flex flex-col sm:flex-row sm:items-center py-3">
                     <span class="text-sm font-semibold mb-1 sm:mb-0 sm:w-48 text-fg-muted">
-                         {{ 'info.navigateur.info' | trans({}, 'info') }}
+                         {{ 'info.browser.info' | trans({}, 'info') }}
                     </span>
                 <span class="text-sm font-mono text-fg">
                        {{ tabInfo.navigateur.navigateur_info | raw }}

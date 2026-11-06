@@ -1,59 +1,56 @@
-dashboard.index: 'Tableau de bord'
+dashboard.index.title: 'Tableau de bord'
 dashboard.index.description: "Vue d'ensemble de l'activité du site."
-dashboard.flux.activity: "Mon flux d'actualité"
-dashboard.last.comment: 'Derniers commentaires'
-dashboard.block.help.first.connexion.title: 'Aide pour la configuration'
-dashboard.block.help.first.connexion.loading: "Chargement de l'aide"
-dashboard.block.help.first.connexion.sub_title: 'Configurations manquantes'
-dashboard.block.help.first.connexion.text_1: 'Certaines options sont encore configurée avec des valeurs par défaut, il est recommandé de les modifier.'
-dashboard.block.help.first.connexion.text.end.success: 'Félicitation, vous avez terminé la configuration de votre site'
-dashboard.block.help.first.connexion.btn.hide: Masquer
-dashboard.error.load.block: 'Une erreur est survenue lors du chargement du block'
-dashboard.block.last.comments.title: 'Derniers commentaires'
-dashboard.block.last.comments.loading: 'Chargement des derniers commentaires'
-dashboard.block.help.first.connexion.site.name.success: 'Le nom de votre site à été changé'
-dashboard.block.help.first.connexion.site.adresse.success: "L'url front à été saisie"
-dashboard.block.help.first.connexion.site.open.success: 'Votre site est ouvert au public'
-dashboard.block.help.first.connexion.site.name.warning: "Le nom de votre site est celui défini lors de l'installation"
-dashboard.block.help.first.connexion.site.adresse.warning: 'Aucune url pour le front est actuellement définie '
-dashboard.block.help.first.connexion.site.open.warning: 'Votre site est fermé au public'
-dashboard.block.help.first.connexion.text.end: 'Encore un petit effort et la configuration de votre site sera terminé.'
-dashboard.block.help.first.connexion.modal.confirm.title: 'Confirmez vous cette action ?'
-dashboard.block.help.first.connexion.modal.confirm.body.1: "Vous êtes sur le point de masquer l'aide à l'installation du CMS, confirmez vous cette action ? "
-dashboard.block.help.first.connexion.modal.confirm.body.2: 'Il sera possible de faire réapparaitre ce block depuis votre profil'
-dashboard.block.help.first.connexion.modal.confirm.btn_ok: Oui
-dashboard.block.help.first.connexion.modal.confirm.btn_ko: Non
-dashboard.block.help.first.connexion.msg.hide.success: 'Block masqué avec succès'
-dashboard.block.help.first.connexion.api_token.status.success: 'Token présent et correctement configuré'
-dashboard.block.help.first.connexion.api_token.default.warning: 'Token(s) de test détecté(s) :'
-dashboard.block.help.first.connexion.api_token.default.warning.submsg: 'Le token {name} est présent, supprimer le !'
-dashboard.block.help.first.connexion.api_token.empty.warning: "Aucun token n'est configuré"
-dashboard.block.last.comments.table.id: '#'
-dashboard.block.last.comments.table.author: Auteur
-dashboard.block.last.comments.table.status: Status
-dashboard.block.last.comments.table.date: Date
-dashboard.last.page: 'Dernière page'
-dashboard.block.last.comments.link.comment: 'Gestion des commentaires'
-dashboard.block.last.pages.title: 'Dernières pages'
-dashboard.block.last.pages.loading: 'Chargement des dernières pages...'
-dashboard.block.help.first.connexion.link.options: 'Options système'
-dashboard.block.help.first.connexion.link.tokens: 'Gérer les tokens'
-dashboard.statistics.total.article: 'Pages publiées'
-dashboard.statistics.total.comments: 'Commentaires validés'
-dashboard.statistics.total.comments.waiting: 'en attente'
-dashboard.statistics.total.users: Utilisateurs
-dashboard.statistics.total.views: 'Vues des pages'
-dashboard.statistics.link.pages: Gérer
-dashboard.statistics.link.users: Gérer
-dashboard.statistics.info.cache: 'Données en cache (5 minutes)'
-dashboard.block.last.pages.link.page: 'Gestion des pages'
-dashboard.block.last.pages.table.id: '#'
-dashboard.block.last.pages.table.status: Status
-dashboard.block.last.pages.table.title: Titre
-dashboard.block.last.pages.table.date: Date
-dashboard.block.pages.most.viewed.title: 'Pages les plus vues'
-dashboard.block.pages.most.viewed.link.page: 'Gestion des pages'
-dashboard.block.pages.most.viewed.table.id: '#'
-dashboard.block.pages.most.viewed.table.title: Titre
-dashboard.block.pages.most.viewed.table.view: Vues
-dashboard.block.pages.most.viewed.table.date: Date
+dashboard.help_first_connection.title: 'Aide pour la configuration'
+dashboard.help_first_connection.loading: "Chargement de l'aide"
+dashboard.help_first_connection.sub_title: 'Configurations manquantes'
+dashboard.help_first_connection.text_1: 'Certaines options sont encore configurée avec des valeurs par défaut, il est recommandé de les modifier.'
+dashboard.help_first_connection.text_end_success: 'Félicitation, vous avez terminé la configuration de votre site'
+dashboard.help_first_connection.button_hide: Masquer
+dashboard.index.error_load_block: 'Une erreur est survenue lors du chargement du block'
+dashboard.last_comments.title: 'Derniers commentaires'
+dashboard.last_comments.loading: 'Chargement des derniers commentaires'
+dashboard.help_first_connection.site_name_success: 'Le nom de votre site à été changé'
+dashboard.help_first_connection.site_address_success: "L'url front à été saisie"
+dashboard.help_first_connection.site_open_success: 'Votre site est ouvert au public'
+dashboard.help_first_connection.site_name_warning: "Le nom de votre site est celui défini lors de l'installation"
+dashboard.help_first_connection.site_address_warning: 'Aucune url pour le front est actuellement définie '
+dashboard.help_first_connection.site_open_warning: 'Votre site est fermé au public'
+dashboard.help_first_connection.text_end: 'Encore un petit effort et la configuration de votre site sera terminé.'
+dashboard.help_first_connection.modal.title: 'Confirmez vous cette action ?'
+dashboard.help_first_connection.modal.body_1: "Vous êtes sur le point de masquer l'aide à l'installation du CMS, confirmez vous cette action ? "
+dashboard.help_first_connection.modal.body_2: 'Il sera possible de faire réapparaitre ce block depuis votre profil'
+dashboard.help_first_connection.modal.button_ok: Oui
+dashboard.help_first_connection.modal.button_ko: Non
+dashboard.help_first_connection.hide_success: 'Block masqué avec succès'
+dashboard.help_first_connection.api_token_success: 'Token présent et correctement configuré'
+dashboard.help_first_connection.api_token_default_warning: 'Token(s) de test détecté(s) :'
+dashboard.help_first_connection.api_token_default_warning_detail: 'Le token {name} est présent, supprimer le !'
+dashboard.help_first_connection.api_token_empty_warning: "Aucun token n'est configuré"
+dashboard.last_comments.column_id: '#'
+dashboard.last_comments.column_author: Auteur
+dashboard.last_comments.column_status: Status
+dashboard.last_comments.column_date: Date
+dashboard.last_comments.link_comment: 'Gestion des commentaires'
+dashboard.last_pages.title: 'Dernières pages'
+dashboard.last_pages.loading: 'Chargement des dernières pages...'
+dashboard.help_first_connection.link_options: 'Options système'
+dashboard.help_first_connection.link_tokens: 'Gérer les tokens'
+dashboard.statistics.total_pages: 'Pages publiées'
+dashboard.statistics.total_comments: 'Commentaires validés'
+dashboard.statistics.total_comments_waiting: 'en attente'
+dashboard.statistics.total_users: Utilisateurs
+dashboard.statistics.total_views: 'Vues des pages'
+dashboard.statistics.link_pages: Gérer
+dashboard.statistics.link_users: Gérer
+dashboard.statistics.info_cache: 'Données en cache (5 minutes)'
+dashboard.last_pages.link_page: 'Gestion des pages'
+dashboard.last_pages.column_id: '#'
+dashboard.last_pages.column_status: Status
+dashboard.last_pages.column_title: Titre
+dashboard.last_pages.column_date: Date
+dashboard.most_viewed_pages.title: 'Pages les plus vues'
+dashboard.most_viewed_pages.link_page: 'Gestion des pages'
+dashboard.most_viewed_pages.column_id: '#'
+dashboard.most_viewed_pages.column_title: Titre
+dashboard.most_viewed_pages.column_views: Vues
+dashboard.most_viewed_pages.column_date: Date

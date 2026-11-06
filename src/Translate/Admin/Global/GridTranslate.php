@@ -34,37 +34,37 @@ class GridTranslate extends AppTranslate
     {
         return [
             'placeholder' => $this->translator->trans('grid.search.placeholder', domain: 'grid'),
-            'placeholderBddSearch' => $this->translator->trans('grid.search.placeholder.bdd.search', domain: 'grid'),
+            'placeholderBddSearch' => $this->translator->trans('grid.search.placeholder_database', domain: 'grid'),
             'placeholderTableSearch' => $this->translator->trans(
-                'grid.search.placeholder.table.search',
+                'grid.search.placeholder_table',
                 domain: 'grid',
             ),
-            'textBddSearch' => $this->translator->trans('grid.search.text.bdd.search', domain: 'grid'),
-            'titleSearch' => $this->translator->trans('grid.search.title.search', domain: 'grid'),
-            'textTableSearch' => $this->translator->trans('grid.search.text.table.search', domain: 'grid'),
-            'textShowQuery' => $this->translator->trans('grid.text.show.query', domain: 'grid'),
-            'textHideQuery' => $this->translator->trans('grid.text.hide.query', domain: 'grid'),
-            'textShowTrieOption' => $this->translator->trans('grid.text.show.trie.option', domain: 'grid'),
-            'textHideTrieOption' => $this->translator->trans('grid.text.hide.trie.option', domain: 'grid'),
-            'btnSearch' => $this->translator->trans('grid.btn.search', domain: 'grid'),
-            'loading' => $this->translator->trans('grid.loading', domain: 'grid'),
-            'titleSuccess' => $this->translator->trans('grid.success.titre', domain: 'grid'),
-            'titleError' => $this->translator->trans('grid.error.titre', domain: 'grid'),
+            'textBddSearch' => $this->translator->trans('grid.search.text_database', domain: 'grid'),
+            'titleSearch' => $this->translator->trans('grid.search.title', domain: 'grid'),
+            'textTableSearch' => $this->translator->trans('grid.search.text_table', domain: 'grid'),
+            'textShowQuery' => $this->translator->trans('grid.query.show', domain: 'grid'),
+            'textHideQuery' => $this->translator->trans('grid.query.hide', domain: 'grid'),
+            'textShowTrieOption' => $this->translator->trans('grid.sort.show', domain: 'grid'),
+            'textHideTrieOption' => $this->translator->trans('grid.sort.hide', domain: 'grid'),
+            'btnSearch' => $this->translator->trans('grid.search.button', domain: 'grid'),
+            'loading' => $this->translator->trans('grid.list.loading', domain: 'grid'),
+            'titleSuccess' => $this->translator->trans('grid.toast.success_title', domain: 'grid'),
+            'titleError' => $this->translator->trans('grid.toast.error_title', domain: 'grid'),
             'time' => $this->translator->trans('grid.toast.time', domain: 'grid'),
-            'confirmTitle' => $this->translator->trans('grid.confirm.titre', domain: 'grid'),
-            'confirmText' => $this->translator->trans('grid.confirm.texte', domain: 'grid'),
-            'confirmBtnOK' => $this->translator->trans('grid.confirm.btn.ok', domain: 'grid'),
-            'confirmBtnNo' => $this->translator->trans('grid.confirm.btn.no', domain: 'grid'),
-            'copySuccess' => $this->translator->trans('grid.copy.success', domain: 'grid'),
-            'copyError' => $this->translator->trans('grid.copy.error', domain: 'grid'),
+            'confirmTitle' => $this->translator->trans('grid.confirm.title', domain: 'grid'),
+            'confirmText' => $this->translator->trans('grid.confirm.text', domain: 'grid'),
+            'confirmBtnOK' => $this->translator->trans('grid.confirm.button_ok', domain: 'grid'),
+            'confirmBtnNo' => $this->translator->trans('grid.confirm.button_no', domain: 'grid'),
+            'copySuccess' => $this->translator->trans('grid.query.copy_success', domain: 'grid'),
+            'copyError' => $this->translator->trans('grid.query.copy_error', domain: 'grid'),
             'queryTitle' => $this->translator->trans('grid.query.title', domain: 'grid'),
-            'filterOnlyMe' => $this->translator->trans('grid.filter.only.me', domain: 'grid'),
+            'filterOnlyMe' => $this->translator->trans('grid.filter.only_me', domain: 'grid'),
             'filterAll' => $this->translator->trans('grid.filter.all', domain: 'grid'),
-            'titleTrieOption' => $this->translator->trans('grid.trie.title.option', domain: 'grid'),
-            'titleTrieOptionSubMenu' => $this->translator->trans('grid.trie.title.option.sub', domain: 'grid'),
-            'trieOptionListeField' => $this->translator->trans('grid.trie.option.liste.field', domain: 'grid'),
-            'trieOptionListeOrder' => $this->translator->trans('grid.trie.option.liste.order', domain: 'grid'),
-            'trieOptionBtn' => $this->translator->trans('grid.trie.option.btn', domain: 'grid'),
+            'titleTrieOption' => $this->translator->trans('grid.sort.title', domain: 'grid'),
+            'titleTrieOptionSubMenu' => $this->translator->trans('grid.sort.sub_title', domain: 'grid'),
+            'trieOptionListeField' => $this->translator->trans('grid.sort.field', domain: 'grid'),
+            'trieOptionListeOrder' => $this->translator->trans('grid.sort.order', domain: 'grid'),
+            'trieOptionBtn' => $this->translator->trans('grid.sort.button', domain: 'grid'),
         ];
     }
 
@@ -75,9 +75,9 @@ class GridTranslate extends AppTranslate
     private function getTranslateGridPaginate(): array
     {
         return [
-            'page' => $this->translator->trans('grid.page', [], domain: 'grid'),
-            'on' => $this->translator->trans('grid.on', [], domain: 'grid'),
-            'row' => $this->translator->trans('grid.row', [], domain: 'grid'),
+            'page' => $this->translator->trans('grid.pagination.page', [], domain: 'grid'),
+            'on' => $this->translator->trans('grid.pagination.on', [], domain: 'grid'),
+            'row' => $this->translator->trans('grid.pagination.row', [], domain: 'grid'),
         ];
     }
 
@@ -88,7 +88,7 @@ class GridTranslate extends AppTranslate
     private function getTranslateGrid(): array
     {
         return [
-            'noresult' => $this->translator->trans('grid.no.result', [], domain: 'grid'),
+            'noresult' => $this->translator->trans('grid.list.no_result', [], domain: 'grid'),
         ];
     }
 }

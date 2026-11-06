@@ -113,7 +113,7 @@ class DashboardController extends AppAdminController
             return $this->json([
                 'success' => false,
                 'body' => null,
-                'error' => $translator->trans('dashboard.error.load.block', domain: 'dashboard'),
+                'error' => $translator->trans('dashboard.index.error_load_block', domain: 'dashboard'),
             ]);
         }
         $this->denyAccessUnlessGranted($block->getRole());

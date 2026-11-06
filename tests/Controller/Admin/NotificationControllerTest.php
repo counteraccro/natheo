@@ -34,7 +34,7 @@ class NotificationControllerTest extends AppWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains(
             'h1',
-            $this->translator->trans('notification.page_title_h1', domain: 'notification'),
+            $this->translator->trans('notification.index.title', domain: 'notification'),
         );
     }
 

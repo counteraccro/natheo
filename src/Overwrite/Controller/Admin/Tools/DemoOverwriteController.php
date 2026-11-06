@@ -34,7 +34,7 @@ class DemoOverwriteController extends AppAdminController
         $breadcrumb = [
             Breadcrumb::DOMAIN->value => 'demo_overwrite',
             Breadcrumb::BREADCRUMB->value => [
-                'demo_overwrite.page_title_h1' => '#',
+                'demo_overwrite.index.title' => '#',
             ],
         ];
 

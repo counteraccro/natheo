@@ -63,28 +63,28 @@ class DashboardService extends AppAdminService
             OptionSystem::OS_SITE_NAME->value => [
                 'success' => true,
                 'msg' => $translator->trans(
-                    'dashboard.block.help.first.connexion.site.name.success',
+                    'dashboard.help_first_connection.site_name_success',
                     domain: 'dashboard',
                 ),
             ],
             OptionSystem::OS_ADRESSE_SITE->value => [
                 'success' => true,
                 'msg' => $translator->trans(
-                    'dashboard.block.help.first.connexion.site.adresse.success',
+                    'dashboard.help_first_connection.site_address_success',
                     domain: 'dashboard',
                 ),
             ],
             OptionSystem::OS_OPEN_SITE->value => [
                 'success' => true,
                 'msg' => $translator->trans(
-                    'dashboard.block.help.first.connexion.site.open.success',
+                    'dashboard.help_first_connection.site_open_success',
                     domain: 'dashboard',
                 ),
             ],
             'API_TOKEN_STATUS' => [
                 'success' => true,
                 'msg' => $translator->trans(
-                    'dashboard.block.help.first.connexion.api_token.status.success',
+                    'dashboard.help_first_connection.api_token_success',
                     domain: 'dashboard',
                 ),
             ],
@@ -93,7 +93,7 @@ class DashboardService extends AppAdminService
             $body[OptionSystem::OS_SITE_NAME->value] = [
                 'success' => false,
                 'msg' => $translator->trans(
-                    'dashboard.block.help.first.connexion.site.name.warning',
+                    'dashboard.help_first_connection.site_name_warning',
                     domain: 'dashboard',
                 ),
             ];
@@ -104,7 +104,7 @@ class DashboardService extends AppAdminService
             $body[OptionSystem::OS_ADRESSE_SITE->value] = [
                 'success' => false,
                 'msg' => $translator->trans(
-                    'dashboard.block.help.first.connexion.site.adresse.warning',
+                    'dashboard.help_first_connection.site_address_warning',
                     domain: 'dashboard',
                 ),
             ];
@@ -115,7 +115,7 @@ class DashboardService extends AppAdminService
             $body[OptionSystem::OS_OPEN_SITE->value] = [
                 'success' => false,
                 'msg' => $translator->trans(
-                    'dashboard.block.help.first.connexion.site.open.warning',
+                    'dashboard.help_first_connection.site_open_warning',
                     domain: 'dashboard',
                 ),
             ];
@@ -125,7 +125,7 @@ class DashboardService extends AppAdminService
         if (!empty($apiTokensDefault)) {
             $body['API_TOKEN_STATUS']['success'] = false;
             $body['API_TOKEN_STATUS']['msgTitle'] = $translator->trans(
-                'dashboard.block.help.first.connexion.api_token.default.warning',
+                'dashboard.help_first_connection.api_token_default_warning',
                 domain: 'dashboard',
             );
             $configComplete = false;
@@ -133,7 +133,7 @@ class DashboardService extends AppAdminService
             foreach ($apiTokensDefault as $apiToken) {
                 /** @var ApiToken $apiToken */
                 $arrayMsg[] = $translator->trans(
-                    'dashboard.block.help.first.connexion.api_token.default.warning.submsg',
+                    'dashboard.help_first_connection.api_token_default_warning_detail',
                     ['name' => $apiToken->getName()],
                     domain: 'dashboard',
                 );
@@ -144,7 +144,7 @@ class DashboardService extends AppAdminService
                 $body['API_TOKEN_STATUS'] = [
                     'success' => false,
                     'msg' => $translator->trans(
-                        'dashboard.block.help.first.connexion.api_token.empty.warning',
+                        'dashboard.help_first_connection.api_token_empty_warning',
                         domain: 'dashboard',
                     ),
                 ];
@@ -156,11 +156,11 @@ class DashboardService extends AppAdminService
 
         $links = [
             'link_options' => [
-                'label' => $translator->trans('dashboard.block.help.first.connexion.link.options', domain: 'dashboard'),
+                'label' => $translator->trans('dashboard.help_first_connection.link_options', domain: 'dashboard'),
                 'link' => $router->generate('admin_option-system_change'),
             ],
             'link_tokens' => [
-                'label' => $translator->trans('dashboard.block.help.first.connexion.link.tokens', domain: 'dashboard'),
+                'label' => $translator->trans('dashboard.help_first_connection.link_tokens', domain: 'dashboard'),
                 'link' => $router->generate('admin_api_token_index'),
             ],
         ];

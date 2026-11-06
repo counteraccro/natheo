@@ -1,32 +1,23 @@
 global.role.user: Utilisateur
-global.role.contributeur: Contributeur
+global.role.contributor: Contributeur
 global.role.admin: Administrateur
-global.role.superadmin: 'Super Administrateur'
-global.profil: 'Mon profil'
-global.logout: Déconnexion
-global.user.option: 'Mes options'
-global.licence: 'Copyright &copy; 2023-{year} &mdash; Propulsé par Nathéo CMS'
-global.dashboard: 'Tableau de bord'
-global.notification: 'Mes notifications'
-global.user.impersonation: 'Reprendre mon profil'
-global.citation: 'À vaincre sans péril, on triomphe sans gloire.'
-global.citation.auteur: 'Pierre corneille <cite title="Le Cid, p.207">Le cid</cite>'
-global.search.placeholder: 'Rechercher une page, un tag....'
-global.display: 'Mon site web'
-global.header.btn.nouveau: Nouveau
-global.header.btn.nouveau.page: 'Nouvelle page'
-global.header.btn.menu: 'Nouveau menu'
-global.header.btn.faq: 'Nouvelle FAQ'
-global.header.btn.tag: 'Nouveau tag'
+global.role.super_admin: 'Super Administrateur'
+global.footer.licence: 'Copyright &copy; 2023-{year} &mdash; Propulsé par Nathéo CMS'
+global.breadcrumb.dashboard: 'Tableau de bord'
+global.header.new.button: Nouveau
+global.header.new.page: 'Nouvelle page'
+global.header.new.menu: 'Nouveau menu'
+global.header.new.faq: 'Nouvelle FAQ'
+global.header.new.tag: 'Nouveau tag'
 global.header.menu.impersonation: 'Retour mon compte'
-global.header.menu.my.account: 'Mon compte'
-global.header.menu.my.options: 'Mes options'
+global.header.menu.my_account: 'Mon compte'
+global.header.menu.my_options: 'Mes options'
 global.header.menu.website: 'Mon site web'
 global.header.menu.logout: Déconnexion
-global.header.search.input: 'Rechercher une page, un tag, un menu...'
-global.header.theme: 'Thèmes disponibles'
-global.header.dark.mode: 'Mode sombre'
-global.modale.help.close: "Fermer l'aide"
+global.header.search.placeholder: 'Rechercher une page, un tag, un menu...'
+global.header.theme.title: 'Thèmes disponibles'
+global.header.theme.dark_mode: 'Mode sombre'
+global.modal.help.close: "Fermer l'aide"
 global.error.csrf: 'Jeton de sécurité invalide, rechargez la page puis réessayez.'
 global.a11y.close: 'Fermer'
 global.a11y.loading: 'Chargement…'
