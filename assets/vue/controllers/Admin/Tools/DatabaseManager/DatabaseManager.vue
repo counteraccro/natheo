@@ -57,6 +57,7 @@ export default defineComponent({
   data() {
     return {
       loading: true,
+      activeTab: 'tab-0',
       result: {
         result: [],
         header: {},
@@ -103,6 +104,16 @@ export default defineComponent({
     });
   },
   methods: {
+    /**
+     * Classes d'un onglet selon qu'il est actif ou non
+     * @param tab
+     */
+    tabClass(tab: string): string {
+      return this.activeTab === tab
+        ? 'text-primary border-primary'
+        : 'border-transparent hover:text-fg hover:border-line';
+    },
+
     /**
      * Chargement du schema de la base de donnée
      */
@@ -361,23 +372,18 @@ export default defineComponent({
   </div>
 
   <div class="card rounded-lg mb-6 mt-6">
-    <div class="border-b border-default border-line">
-      <ul
-        class="flex flex-wrap -mb-px text-sm font-medium text-center"
-        id="default-styled-tab"
-        data-tabs-toggle="#nav-tab-database-manager"
-        data-tabs-active-classes="text-primary border-primary"
-        role="tablist"
-      >
+    <div class="border-b border-line">
+      <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-styled-tab" role="tablist">
         <li class="me-2" role="presentation">
           <button
-            class="inline-block p-3 border-b-2 rounded-t-base text-primary border-primary cursor-pointer"
+            class="inline-block p-3 border-b-2 cursor-pointer"
+            :class="tabClass('tab-0')"
             id="nav-0-tab"
-            data-tabs-target="#tab-0"
             type="button"
             role="tab"
             aria-controls="Site web"
-            aria-selected="true"
+            :aria-selected="activeTab === 'tab-0'"
+            @click="activeTab = 'tab-0'"
           >
             <span class="flex items-center gap-2">
               <svg
@@ -403,14 +409,17 @@ export default defineComponent({
         </li>
         <li class="me-2" role="presentation">
           <button
-            class="inline-block p-3 border-b-2 rounded-t-sm text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300"
-            :class="schemaTableName === '' ? 'opacity-40 cursor-not-allowed' : 'opacity-100 cursor-pointer'"
+            class="inline-block p-3 border-b-2"
+            :class="[
+              schemaTableName === '' ? 'opacity-40 cursor-not-allowed' : 'opacity-100 cursor-pointer',
+              tabClass('tab-1'),
+            ]"
             id="nav-1-tab"
-            data-tabs-target="#tab-1"
             type="button"
             role="tab"
             aria-controls="SEO"
-            aria-selected="false"
+            :aria-selected="activeTab === 'tab-1'"
+            @click="activeTab = 'tab-1'"
             :disabled="schemaTableName === ''"
           >
             <span class="flex items-center gap-2">
@@ -437,13 +446,14 @@ export default defineComponent({
         </li>
         <li class="me-2" role="presentation">
           <button
-            class="inline-block p-3 border-b-2 rounded-t-sm text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300 cursor-pointer"
+            class="inline-block p-3 border-b-2 cursor-pointer"
+            :class="tabClass('tab-2')"
             id="nav-2-tab"
-            data-tabs-target="#tab-2"
             type="button"
             role="tab"
             aria-controls="Administration"
-            aria-selected="false"
+            :aria-selected="activeTab === 'tab-2'"
+            @click="activeTab = 'tab-2'"
           >
             <span class="flex items-center gap-2">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -455,13 +465,14 @@ export default defineComponent({
         </li>
         <li class="me-2" role="presentation">
           <button
-            class="inline-block p-3 border-b-2 rounded-t-sm text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300 cursor-pointer"
+            class="inline-block p-3 border-b-2 cursor-pointer"
+            :class="tabClass('tab-3')"
             id="nav-3-tab"
-            data-tabs-target="#tab-3"
             type="button"
             role="tab"
             aria-controls="Logs"
-            aria-selected="false"
+            :aria-selected="activeTab === 'tab-3'"
+            @click="activeTab = 'tab-3'"
           >
             <span class="flex items-center gap-2">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -480,17 +491,17 @@ export default defineComponent({
     </div>
 
     <div id="nav-tab-database-manager">
-      <div class="" id="tab-0" role="tabpanel" aria-labelledby="profile-tab">
+      <div v-show="activeTab === 'tab-0'" id="tab-0" role="tabpanel" aria-labelledby="nav-0-tab">
         <SchemaDatabase
           :data="result"
           :table-name="schemaTableName"
           @load-schema-table="loadSchemaTable"
         ></SchemaDatabase>
       </div>
-      <div class="hidden" id="tab-1" role="tabpanel" aria-labelledby="profile-tab">
+      <div v-show="activeTab === 'tab-1'" id="tab-1" role="tabpanel" aria-labelledby="nav-1-tab">
         <SchemaTable :data="schemaTable" />
       </div>
-      <div class="hidden" id="tab-2" role="tabpanel" aria-labelledby="profile-tab">
+      <div v-show="activeTab === 'tab-2'" id="tab-2" role="tabpanel" aria-labelledby="nav-2-tab">
         <div class="max-w-2xl mx-auto mt-6 mb-6">
           <div class="mb-6">
             <h3 class="text-lg font-semibold mb-2 text-fg">
@@ -577,7 +588,7 @@ export default defineComponent({
           </button>
         </div>
       </div>
-      <div class="hidden" id="tab-3" role="tabpanel" aria-labelledby="profile-tab">
+      <div v-show="activeTab === 'tab-3'" id="tab-3" role="tabpanel" aria-labelledby="nav-3-tab">
         <ListDump
           :data="listDump"
           :translate="translate.list_dump"
