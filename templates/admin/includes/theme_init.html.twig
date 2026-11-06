@@ -2,6 +2,7 @@
 <script id="theme-init">
     (function () {
         const root = document.documentElement;
+        root.classList.add('no-transition');
         try {
             const theme = localStorage.getItem('theme') || 'violet';
             if (theme !== 'violet') {
@@ -14,5 +15,11 @@
         } catch (e) {
             // localStorage indisponible : thème par défaut
         }
+        // Transitions réactivées après le premier rendu, pour les seuls changements faits par l'utilisateur
+        window.addEventListener('load', function () {
+            requestAnimationFrame(function () {
+                root.classList.remove('no-transition');
+            });
+        });
     })();
 </script>
