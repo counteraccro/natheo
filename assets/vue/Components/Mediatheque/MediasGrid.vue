@@ -381,7 +381,7 @@ export default defineComponent({
           <td class="hidden sm:table-cell px-4 py-3 text-fg-muted">{{ media.date }}</td>
           <td class="px-4 py-3 text-right">
             <button
-              class="no-control no-control btn btn-ghost-primary btn-icon"
+              class="no-control btn btn-ghost-primary btn-icon"
               style="color: var(--text-primary)"
               @click="$emit('show-info', media, 'show')"
               @mouseover="onMenuHover($event, 'var(--bg-hover)')"
@@ -398,7 +398,7 @@ export default defineComponent({
             </button>
 
             <button
-              class="no-control no-control btn btn-ghost-primary btn-icon"
+              class="no-control btn btn-ghost-primary btn-icon"
               style="color: var(--text-primary)"
               @click="$emit('edit', media, 'edit')"
               @mouseover="onMenuHover($event, 'var(--bg-hover)')"
@@ -415,7 +415,7 @@ export default defineComponent({
             </button>
 
             <button
-              class="no-control no-control btn btn-ghost-primary btn-icon"
+              class="no-control btn btn-ghost-primary btn-icon"
               style="color: var(--text-primary)"
               @click="$emit('move', media, 'move')"
               @mouseover="onMenuHover($event, 'var(--bg-hover)')"

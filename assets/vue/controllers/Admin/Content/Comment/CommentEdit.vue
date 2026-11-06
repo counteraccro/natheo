@@ -208,12 +208,7 @@ export default defineComponent({
         <div class="flex items-center justify-end gap-2 px-6 py-4 rounded-lg card">
           <a :href="urls.index" class="btn btn-sm btn-outline-dark">
             <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M10 19l-7-7m0 0l7-7m-7 7h18"
-              ></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
             {{ translate.cancel }}
           </a>
