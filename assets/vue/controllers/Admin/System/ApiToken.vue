@@ -364,7 +364,7 @@ export default defineComponent({
         </div>
       </div>
 
-      <div class="flex flex-wrap gap-3 pt-4 mt-5 flex-row-reverse">
+      <div class="flex flex-wrap items-center gap-2 pt-4 mt-5">
         <button
           v-if="apiToken.id !== null"
           type="button"
@@ -381,60 +381,66 @@ export default defineComponent({
           </svg>
           {{ translate.btn_delete_token }}
         </button>
-        <button type="button" class="btn btn-outline-dark btn-sm" onclick="window.history.back()">
-          <svg
-            class="icon"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-            />
-          </svg>
+        <div class="flex flex-wrap gap-2 ml-auto">
+          <button type="button" class="btn btn-outline-dark btn-sm" onclick="window.history.back()">
+            <svg
+              class="icon"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+              />
+            </svg>
 
-          {{ translate.btn_cancel_edit_token }}
-        </button>
-        <a v-if="apiToken.id === null && plainToken !== ''" :href="urls.index_api_token" class="btn btn-sm btn-primary">
-          {{ translate.btn_back_list }}
-        </a>
-        <button
-          v-else
-          class="btn btn-sm btn-primary"
-          :disabled="!canSave"
-          @click="apiToken.id === null ? saveToken(true) : saveToken(false)"
-        >
-          <svg v-if="apiToken.id === null" class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-          </svg>
-          <svg
-            v-else
-            class="icon"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
+            {{ translate.btn_cancel_edit_token }}
+          </button>
+          <a
+            v-if="apiToken.id === null && plainToken !== ''"
+            :href="urls.index_api_token"
+            class="btn btn-sm btn-primary"
           >
-            <path
-              stroke="currentColor"
-              stroke-width="2"
-              d="M10.779 17.779 4.36 19.918 6.5 13.5m4.279 4.279 8.364-8.643a3.027 3.027 0 0 0-2.14-5.165 3.03 3.03 0 0 0-2.14.886L6.5 13.5m4.279 4.279L6.499 13.5m2.14 2.14 6.213-6.504M12.75 7.04 17 11.28"
-            ></path>
-          </svg>
-          <span v-if="apiToken.id === null">
-            {{ translate.btn_save_token_api }}
-          </span>
-          <span v-else>
-            {{ translate.btn_edit_token_api }}
-          </span>
-        </button>
+            {{ translate.btn_back_list }}
+          </a>
+          <button
+            v-else
+            class="btn btn-sm btn-primary"
+            :disabled="!canSave"
+            @click="apiToken.id === null ? saveToken(true) : saveToken(false)"
+          >
+            <svg v-if="apiToken.id === null" class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            <svg
+              v-else
+              class="icon"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-width="2"
+                d="M10.779 17.779 4.36 19.918 6.5 13.5m4.279 4.279 8.364-8.643a3.027 3.027 0 0 0-2.14-5.165 3.03 3.03 0 0 0-2.14.886L6.5 13.5m4.279 4.279L6.499 13.5m2.14 2.14 6.213-6.504M12.75 7.04 17 11.28"
+              ></path>
+            </svg>
+            <span v-if="apiToken.id === null">
+              {{ translate.btn_save_token_api }}
+            </span>
+            <span v-else>
+              {{ translate.btn_edit_token_api }}
+            </span>
+          </button>
+        </div>
       </div>
     </div>
   </div>

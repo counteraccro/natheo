@@ -146,7 +146,7 @@ export default defineComponent({
           <span v-else class="form-text">{{ translate.new_faq_help }}</span>
         </div>
 
-        <div class="flex flex-wrap gap-3 pt-4 mt-5 flex-row-reverse">
+        <div class="flex flex-wrap justify-end gap-2 pt-4 mt-5">
           <button type="button" class="btn btn-outline-dark btn-sm" onclick="window.history.back()">
             <svg
               class="icon"

@@ -205,7 +205,7 @@ export default defineComponent({
             />
           </div>
         </div>
-        <div class="flex items-center justify-between px-6 py-4 rounded-lg card">
+        <div class="flex items-center justify-end gap-2 px-6 py-4 rounded-lg card">
           <a :href="urls.index" class="inline-flex items-center gap-2 btn btn-sm btn-outline-dark">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path

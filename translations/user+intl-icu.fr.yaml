@@ -40,6 +40,7 @@ user.form.firstname.help: 'Identifiant qui apparait à la fin de vos articles si
 user.form.lastname.label: Nom
 user.form.lastname.help: 'Identifiant qui apparait à la fin de vos articles si vous souhaitez faire apparaitre votre vrai identité'
 user.form.submit: 'Modifier mon profil'
+user.form.back: Retour
 user.form.login.placeholder: 'Votre login'
 user.form.firstname.placeholder: 'Votre prénom'
 user.form.lastname.placeholder: 'Votre nom'

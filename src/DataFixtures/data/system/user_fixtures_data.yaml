@@ -1,8 +1,8 @@
 user:
   User:
-    email: mathieu.marcel@free.fr
-    password: $2y$04$U8/1h22m1RYw6uSfhFeK6.ndy3SdNHUHbzWwWOkzFinxS9NvnbBmW
-    login: william28
+    email: tcarpentier@teixeira.com
+    password: $2y$04$85zpO5c/N9H07SmGkUGNme0M0WeZ91X7CenLrqNOnMVai3/V1v6cK
+    login: julien40
     firstname: ''
     lastname: ''
     roles: ROLE_SUPER_ADMIN

@@ -84,7 +84,7 @@ class UserAddType extends AppFormType
             'label_html' => true,
             'label' => $icon . $this->translator->trans('user.form_add.submit', domain: 'user'),
             'attr' => [
-                'class' => 'btn btn-primary btn-sm float-end',
+                'class' => 'btn btn-primary btn-sm',
                 'div' => false,
             ],
         ]);
