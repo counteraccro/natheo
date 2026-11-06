@@ -39,6 +39,8 @@ export default defineComponent({
       checkedAll: false,
       loading: true,
       loadingStat: true,
+      // Onglet affiché, conservé lors des rechargements de la liste
+      activeTab: 'not-read',
       modale: {
         showModale: false,
         msgConfirm: '',
@@ -70,6 +72,16 @@ export default defineComponent({
     },
   },
   methods: {
+    /**
+     * Classes d'un onglet selon qu'il est actif ou non
+     * @param tab
+     */
+    tabClass(tab: string): string {
+      return this.activeTab === tab
+        ? 'text-primary border-primary'
+        : 'border-transparent hover:text-fg hover:border-line';
+    },
+
     /**
      * Chargement des statistiques
      */
@@ -417,11 +429,7 @@ export default defineComponent({
       </button>
 
       <div v-if="hasNotificationsChecked">
-        <button
-          v-if="!hasAtLeastOneRead"
-          class="btn btn-sm btn-outline-dark me-2"
-          @click="updateNotification(true)"
-        >
+        <button v-if="!hasAtLeastOneRead" class="btn btn-sm btn-outline-dark me-2" @click="updateNotification(true)">
           <svg
             class="icon"
             aria-hidden="true"
@@ -480,13 +488,7 @@ export default defineComponent({
 
   <div v-show="!loading" class="card rounded-lg mb-6 mt-3">
     <div class="border-b border-default border-line">
-      <ul
-        class="flex flex-wrap -mb-px text-sm font-medium text-center px-4 sm:px-6"
-        id="default-tab"
-        data-tabs-toggle="#default-tab-content"
-        data-tabs-active-classes="text-primary border-primary"
-        role="tablist"
-      >
+      <ul class="flex flex-wrap -mb-px text-sm font-medium text-center px-4 sm:px-6" id="default-tab" role="tablist">
         <li class="me-2" role="presentation">
           <input
             type="checkbox"
@@ -495,29 +497,30 @@ export default defineComponent({
             @change="checkedAllNotification"
           />
           <button
-            class="inline-block p-3 border-b-2 hover:text-fg-brand hover:border-brand border-primary cursor-pointer"
+            class="inline-block p-3 border-b-2 cursor-pointer"
+            :class="tabClass('all')"
             id="all-tab"
             style="margin-bottom: -1px"
-            data-tabs-target="#all"
             type="button"
             role="tab"
             aria-controls="all"
-            aria-selected="false"
+            :aria-selected="activeTab === 'all'"
+            @click="activeTab = 'all'"
           >
             {{ translation.all }}
           </button>
         </li>
         <li class="me-2" role="presentation">
           <button
-            class="inline-block border-b-2 hover:text-fg-brand hover:border-brand border-primary cursor-pointer"
-            :class="stats.nb_noRead ? 'p-[0.67em]' : 'p-3'"
+            class="inline-block border-b-2 cursor-pointer"
+            :class="[stats.nb_noRead ? 'p-[0.67em]' : 'p-3', tabClass('not-read')]"
             id="not-read-tab"
             style="margin-bottom: -1px"
-            data-tabs-target="#not-read"
             type="button"
             role="tab"
             aria-controls="not-read"
-            aria-selected="true"
+            :aria-selected="activeTab === 'not-read'"
+            @click="activeTab = 'not-read'"
           >
             {{ translation.onlyNotRead }}
             <span v-if="stats.nb_noRead > 0" class="ms-3 badge badge-primary"> {{ stats.nb_noRead }} </span>
@@ -525,14 +528,15 @@ export default defineComponent({
         </li>
         <li v-for="category in categories" role="presentation" class="me-2">
           <button
-            class="inline-block p-3 border-b-2 hover:text-fg-brand hover:border-brand cursor-pointer"
+            class="inline-block p-3 border-b-2 cursor-pointer"
+            :class="tabClass(category.id)"
             :id="category.id + '-tab'"
             style="margin-bottom: -1px"
-            :data-tabs-target="'#' + category.id"
             type="button"
             role="tab"
             :aria-controls="category.id"
-            aria-selected="false"
+            :aria-selected="activeTab === category.id"
+            @click="activeTab = category.id"
           >
             {{ category.name }}
           </button>
@@ -540,7 +544,7 @@ export default defineComponent({
       </ul>
     </div>
     <div id="default-tab-content">
-      <div class="hidden rounded-base bg-neutral-secondary-soft" id="all" role="tabpanel" aria-labelledby="all-tab">
+      <div v-show="activeTab === 'all'" id="all" role="tabpanel" aria-labelledby="all-tab">
         <notification
           v-if="notifications.length > 0"
           v-for="notification in notifications"
@@ -575,7 +579,7 @@ export default defineComponent({
           {{ translation.empty }}
         </div>
       </div>
-      <div class="rounded-base bg-neutral-secondary-soft" id="not-read" role="tabpanel" aria-labelledby="not-read-tab">
+      <div v-show="activeTab === 'not-read'" id="not-read" role="tabpanel" aria-labelledby="not-read-tab">
         <notification
           v-if="getNotifByIsRead(false).length > 0"
           v-for="notification in getNotifByIsRead(false)"
@@ -608,7 +612,7 @@ export default defineComponent({
       </div>
       <div
         v-for="category in categories"
-        class="hidden rounded-base bg-neutral-secondary-soft"
+        v-show="activeTab === category.id"
         :id="category.id"
         role="tabpanel"
         :aria-labelledby="category.id + '-tab'"
