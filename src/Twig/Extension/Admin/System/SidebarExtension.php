@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace App\Twig\Extension\Admin\System;
 
 use App\Entity\Admin\System\SidebarElement;
+use App\Enum\Admin\Global\Breadcrumb;
 use App\Service\Admin\System\SidebarElementService;
 use App\Twig\Extension\Admin\AppAdminExtension;
 use App\Enum\Admin\Global\SvgIcon;
@@ -31,6 +32,12 @@ class SidebarExtension extends AppAdminExtension
     private SidebarElementService $sidebarElementService;
 
     private string $currentRoute = '';
+
+    /**
+     * Routes parentes de la page courante, issues de son fil d'Ariane
+     * @var string[]
+     */
+    private array $parentRoutes = [];
 
     /**
      * @var Security
@@ -63,14 +70,21 @@ class SidebarExtension extends AppAdminExtension
     /**
      * Point d'entrée pour générer le menu sidebar
      * @param string $currentRoute
+     * @param array $breadcrumb fil d'Ariane de la page, ses routes gardent actif le lien de la page parente
      * @return string
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
     #[AsTwigFunction('getSidebar', isSafe: ['html'])]
-    public function getSidebar(string $currentRoute): string
+    public function getSidebar(string $currentRoute, array $breadcrumb = []): string
     {
         $this->currentRoute = $currentRoute;
+        $this->parentRoutes = array_values(
+            array_filter(
+                $breadcrumb[Breadcrumb::BREADCRUMB->value] ?? [],
+                fn($route) => is_string($route) && $route !== '#',
+            ),
+        );
         $sidebarElements = $this->sidebarElementService->getAllParent();
         $this->getNbNotification();
 
@@ -98,7 +112,7 @@ class SidebarExtension extends AppAdminExtension
         }
 
         $url = $this->generateRealUrl($sidebarElement->getRoute());
-        $active = $this->isClassActive($sidebarElement->getRoute(), false);
+        $active = $this->isClassActive($sidebarElement->getRoute());
 
         return '<a href="' .
             $url .
@@ -131,7 +145,7 @@ class SidebarExtension extends AppAdminExtension
                 continue;
             }
 
-            $active = $this->isClassActive($child->getRoute(), true);
+            $active = $this->isClassActive($child->getRoute());
             if ($active !== '') {
                 $open = 'open';
             }
@@ -232,20 +246,15 @@ class SidebarExtension extends AppAdminExtension
     }
 
     /**
-     * Génère la class active si le lien est la route courante
+     * Génère la class active si le lien est la route courante ou une page parente de celle-ci
      * @param $route
-     * @param bool $child
      * @return string
      */
-    private function isClassActive($route, bool $child = false): string
+    private function isClassActive($route): string
     {
-        $return = '';
-        if ($route === $this->currentRoute) {
-            $return = 'active';
-            if ($child) {
-                $return = 'active';
-            }
+        if ($route === $this->currentRoute || in_array($route, $this->parentRoutes, true)) {
+            return 'active';
         }
-        return $return;
+        return '';
     }
 }

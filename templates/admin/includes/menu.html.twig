@@ -12,7 +12,7 @@
 
         <!-- Menu Navigation -->
         <nav class="space-y-1">
-            {{ getSidebar(app.current_route) }}
+            {{ getSidebar(app.current_route, breadcrumb ?? []) }}
         </nav>
     </div>
 </aside>
