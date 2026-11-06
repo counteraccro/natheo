@@ -238,26 +238,6 @@ export default defineComponent({
       </div>
     </template>
     <template #footer>
-      <button type="button" class="btn btn-danger btn-sm me-2" @click="disabled(true)">
-        <svg
-          class="icon"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          fill="none"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-          />
-        </svg>
-        {{ translate.disabled_btn_confirm }}
-      </button>
       <button v-if="!confirm_disabled" type="button" class="btn btn-outline-dark btn-sm" @click="hideModal('disabled')">
         <svg
           class="icon"
@@ -277,6 +257,26 @@ export default defineComponent({
           />
         </svg>
         {{ translate.disabled_btn_cancel }}
+      </button>
+      <button type="button" class="btn btn-danger btn-sm" @click="disabled(true)">
+        <svg
+          class="icon"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+        {{ translate.disabled_btn_confirm }}
       </button>
     </template>
   </modal>
@@ -345,29 +345,6 @@ export default defineComponent({
       </div>
     </template>
     <template #footer>
-      <button type="button" class="btn btn-danger btn-sm me-2" @click="deleteAccount(true)">
-        <svg
-          class="icon"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          fill="none"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-          />
-        </svg>
-
-        <span v-if="isDelete()"> {{ translate.delete_btn_confirm }}</span>
-        <span v-if="isReplace()"> {{ translate.replace_btn_confirm }}</span>
-      </button>
-
       <button type="button" class="btn btn-outline-dark btn-sm" @click="hideModal('delete')">
         <svg
           class="icon"
@@ -393,6 +370,29 @@ export default defineComponent({
         <span v-if="!confirm_delete && isReplace()">
           {{ translate.replace_btn_cancel }}
         </span>
+      </button>
+
+      <button type="button" class="btn btn-danger btn-sm" @click="deleteAccount(true)">
+        <svg
+          class="icon"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+
+        <span v-if="isDelete()"> {{ translate.delete_btn_confirm }}</span>
+        <span v-if="isReplace()"> {{ translate.replace_btn_confirm }}</span>
       </button>
     </template>
   </modal>

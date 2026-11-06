@@ -369,7 +369,7 @@ export default defineComponent({
         </div>
       </template>
       <template #footer>
-        <button type="button" class="btn btn-sm btn-outline-dark me-2" @click="closeModalNew">
+        <button type="button" class="btn btn-sm btn-outline-dark" @click="closeModalNew">
           {{ translate.page_content.page_content_block.modale_new_btn_cancel }}
         </button>
         <button type="button" class="btn btn-sm btn-primary" :disabled="idSelectContent <= 0" @click="addContent">
@@ -386,7 +386,7 @@ export default defineComponent({
         </p>
       </template>
       <template #footer>
-        <button type="button" class="btn btn-sm btn-outline-dark me-2" @click="closeModalRemove">
+        <button type="button" class="btn btn-sm btn-outline-dark" @click="closeModalRemove">
           {{ translate.page_content.page_content_block.modale_remove_btn_cancel }}
         </button>
         <button type="button" class="btn btn-sm btn-danger" @click="removeContent">

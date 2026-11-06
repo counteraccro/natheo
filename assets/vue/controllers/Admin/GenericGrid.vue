@@ -69,6 +69,7 @@ export default defineComponent({
       translateGrid: {} as GridTranslate,
       showModalGenericGrid: false as boolean,
       msgConfirm: '' as string,
+      confirmColor: 'primary' as string,
       searchMode: 'table' as GridSearchMode,
       searchPlaceholder: '' as string,
       cQuery: '' as string,
@@ -189,6 +190,7 @@ export default defineComponent({
      * @param msg_confirm
      * @param type
      * @param csrf jeton CSRF optionnel, envoyé dans le header X-CSRF-TOKEN
+     * @param color couleur de l'action, reprise par le bouton de confirmation
      */
     redirectAction(
       url: string,
@@ -196,7 +198,8 @@ export default defineComponent({
       is_confirm?: boolean,
       msg_confirm?: string,
       type?: GenericGridHttpType,
-      csrf?: string
+      csrf?: string,
+      color?: string
     ): void {
       this.cUrl = url;
       this.isAjax = is_ajax;
@@ -207,6 +210,7 @@ export default defineComponent({
 
       if (is_confirm) {
         this.msgConfirm = msg_confirm ?? '';
+        this.confirmColor = color === 'danger' ? 'danger' : 'primary';
         this.showModal();
         return;
       }
@@ -822,30 +826,6 @@ export default defineComponent({
       <div v-html="msgConfirm"></div>
     </template>
     <template #footer>
-      <button
-        type="button"
-        class="btn btn-primary btn-sm me-2"
-        @click="redirectAction(cUrl, isAjax, false, '', httpType, csrfToken)"
-      >
-        <svg
-          class="icon"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          fill="none"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-          />
-        </svg>
-        {{ translate.confirmBtnOK }}
-      </button>
       <button type="button" class="btn btn-outline-dark btn-sm" @click="hideModal()">
         <svg
           class="icon"
@@ -866,6 +846,31 @@ export default defineComponent({
         </svg>
 
         {{ translate.confirmBtnNo }}
+      </button>
+      <button
+        type="button"
+        class="btn btn-sm"
+        :class="'btn-' + confirmColor"
+        @click="redirectAction(cUrl, isAjax, false, '', httpType, csrfToken)"
+      >
+        <svg
+          class="icon"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+        {{ translate.confirmBtnOK }}
       </button>
     </template>
   </modal>
