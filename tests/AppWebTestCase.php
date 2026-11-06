@@ -91,4 +91,20 @@ class AppWebTestCase extends WebTestCase
         $cache = $this->getContainer()->get(CacheInterface::class);
         $cache->delete($key);
     }
+
+    /**
+     * Vérifie que le <head> de la page courante restaure le thème (theme_init.html.twig) avant les feuilles de style
+     * @return void
+     */
+    public function assertThemeInitBeforeStylesheets(): void
+    {
+        $head = $this->client->getCrawler()->filter('head');
+        $this->assertCount(1, $head->filter('script#theme-init'));
+
+        $html = $head->html();
+        $stylesheet = strpos($html, 'rel="stylesheet"');
+        if ($stylesheet !== false) {
+            $this->assertLessThan($stylesheet, strpos($html, 'id="theme-init"'));
+        }
+    }
 }
