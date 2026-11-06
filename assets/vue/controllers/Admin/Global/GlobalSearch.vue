@@ -50,6 +50,7 @@ export default defineComponent({
 
   data() {
     return {
+      activeTab: 'page' as GlobalSearchEntity,
       total: 0 as number,
       loading: {
         page: false,
@@ -78,6 +79,16 @@ export default defineComponent({
   },
 
   methods: {
+    /**
+     * Classes d'un onglet selon qu'il est actif ou non
+     * @param tab
+     */
+    tabClass(tab: GlobalSearchEntity): string {
+      return this.activeTab === tab
+        ? 'text-primary hover:text-primary-hover border-primary bg-primary-lighter'
+        : 'border-transparent text-fg-muted hover:text-fg hover:border-line';
+    },
+
     /**
      * Changement de page pour une entité
      * @param entity
@@ -134,24 +145,17 @@ export default defineComponent({
   </div>
 
   <div class="mb-4 mt-4 border-b border-gray-200 dark:border-gray-700" id="tab-search">
-    <ul
-      class="flex flex-wrap -mb-px text-sm font-medium text-center"
-      id="default-styled-tab"
-      data-tabs-toggle="#tab-search-content"
-      data-tabs-active-classes="text-(--primary) hover:text-(--primary-hover) border-(--primary) bg-(--primary-lighter)"
-      data-tabs-inactive-classes="dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300"
-      role="tablist"
-    >
+    <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-styled-tab" role="tablist">
       <li class="me-2" role="presentation">
         <button
-          class="inline-block ps-4 pt-2 pe-4 border-b-2 rounded-t-sm text-(--primary) hover:text-(--primary-hover) border-(--primary) bg-(--primary-lighter) cursor-pointer"
-          :class="results.page === null ? 'pb-3' : 'pb-2'"
+          class="inline-block ps-4 pt-2 pe-4 border-b-2 rounded-t-sm cursor-pointer"
+          :class="[results.page === null ? 'pb-3' : 'pb-2', tabClass('page')]"
           id="nav-0-tab"
-          data-tabs-target="#tab-page"
           type="button"
           role="tab"
           :aria-controls="translate.ongletPage.onglet"
-          aria-selected="true"
+          :aria-selected="activeTab === 'page'"
+          @click="activeTab = 'page'"
         >
           {{ translate.ongletPage.onglet }}
           <svg
@@ -178,14 +182,14 @@ export default defineComponent({
       </li>
       <li class="me-2" role="presentation">
         <button
-          class="inline-block ps-4 pt-2 pe-4 border-b-2 rounded-t-sm text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300 cursor-pointer"
-          :class="results.menu === null ? 'pb-3' : 'pb-2'"
+          class="inline-block ps-4 pt-2 pe-4 border-b-2 rounded-t-sm cursor-pointer"
+          :class="[results.menu === null ? 'pb-3' : 'pb-2', tabClass('menu')]"
           id="nav-1-tab"
-          data-tabs-target="#tab-menu"
           type="button"
           role="tab"
           :aria-controls="translate.ongletMenu.onglet"
-          aria-selected="false"
+          :aria-selected="activeTab === 'menu'"
+          @click="activeTab = 'menu'"
         >
           {{ translate.ongletMenu.onglet }}
           <svg
@@ -212,14 +216,14 @@ export default defineComponent({
       </li>
       <li class="me-2" role="presentation">
         <button
-          class="inline-block ps-4 pt-2 pe-4 border-b-2 rounded-t-sm text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300 cursor-pointer"
-          :class="results.faq === null ? 'pb-3' : 'pb-2'"
+          class="inline-block ps-4 pt-2 pe-4 border-b-2 rounded-t-sm cursor-pointer"
+          :class="[results.faq === null ? 'pb-3' : 'pb-2', tabClass('faq')]"
           id="nav-2-tab"
-          data-tabs-target="#tab-faq"
           type="button"
           role="tab"
           :aria-controls="translate.ongletFaq.onglet"
-          aria-selected="false"
+          :aria-selected="activeTab === 'faq'"
+          @click="activeTab = 'faq'"
         >
           {{ translate.ongletFaq.onglet }}
           <svg
@@ -246,14 +250,14 @@ export default defineComponent({
       </li>
       <li class="me-2" role="presentation">
         <button
-          class="inline-block ps-4 pt-2 pe-4 border-b-2 rounded-t-sm text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300 cursor-pointer"
-          :class="results.tag === null ? 'pb-3' : 'pb-2'"
+          class="inline-block ps-4 pt-2 pe-4 border-b-2 rounded-t-sm cursor-pointer"
+          :class="[results.tag === null ? 'pb-3' : 'pb-2', tabClass('tag')]"
           id="nav-3-tab"
-          data-tabs-target="#tab-tag"
           type="button"
           role="tab"
           :aria-controls="translate.ongletTag.onglet"
-          aria-selected="false"
+          :aria-selected="activeTab === 'tag'"
+          @click="activeTab = 'tag'"
         >
           {{ translate.ongletTag.onglet }}
           <svg
@@ -280,14 +284,14 @@ export default defineComponent({
       </li>
       <li class="me-2" role="presentation">
         <button
-          class="inline-block ps-4 pt-2 pe-4 border-b-2 rounded-t-sm text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300 cursor-pointer"
-          :class="results.user === null ? 'pb-3' : 'pb-2'"
+          class="inline-block ps-4 pt-2 pe-4 border-b-2 rounded-t-sm cursor-pointer"
+          :class="[results.user === null ? 'pb-3' : 'pb-2', tabClass('user')]"
           id="nav-4-tab"
-          data-tabs-target="#tab-user"
           type="button"
           role="tab"
           :aria-controls="translate.ongletUser.onglet"
-          aria-selected="false"
+          :aria-selected="activeTab === 'user'"
+          @click="activeTab = 'user'"
         >
           {{ translate.ongletUser.onglet }}
           <svg
@@ -316,7 +320,7 @@ export default defineComponent({
   </div>
 
   <div id="tab-search-content">
-    <div class="hidden" id="tab-page" role="tabpanel">
+    <div v-show="activeTab === 'page'" id="tab-page" role="tabpanel" aria-labelledby="nav-0-tab">
       <div v-if="loading.page">
         <SkeletonSearchResult :rows="limit" />
       </div>
@@ -349,7 +353,7 @@ export default defineComponent({
       </div>
     </div>
 
-    <div class="hidden" id="tab-menu" role="tabpanel">
+    <div v-show="activeTab === 'menu'" id="tab-menu" role="tabpanel" aria-labelledby="nav-1-tab">
       <div v-if="loading.menu">
         <SkeletonSearchResult :rows="limit" />
       </div>
@@ -381,7 +385,7 @@ export default defineComponent({
       </div>
     </div>
 
-    <div class="hidden" id="tab-faq" role="tabpanel">
+    <div v-show="activeTab === 'faq'" id="tab-faq" role="tabpanel" aria-labelledby="nav-2-tab">
       <div v-if="loading.faq">
         <SkeletonSearchResult :rows="limit" />
       </div>
@@ -413,7 +417,7 @@ export default defineComponent({
       </div>
     </div>
 
-    <div class="hidden" id="tab-tag" role="tabpanel">
+    <div v-show="activeTab === 'tag'" id="tab-tag" role="tabpanel" aria-labelledby="nav-3-tab">
       <div v-if="loading.tag">
         <SkeletonSearchResult :rows="limit" />
       </div>
@@ -446,7 +450,7 @@ export default defineComponent({
       </div>
     </div>
 
-    <div class="hidden" id="tab-user" role="tabpanel">
+    <div v-show="activeTab === 'user'" id="tab-user" role="tabpanel" aria-labelledby="nav-4-tab">
       <div v-if="loading.user">
         <SkeletonSearchResult :rows="limit" />
       </div>
