@@ -185,7 +185,7 @@ class FrontTranslate extends AppTranslate
         return [
             'edit' => $this->translator->trans('front.article.footer.edit', domain: 'front', locale: $this->locale),
             'statPublication' => $this->translator->trans(
-                'front.article.footer.statPublication',
+                'front.article.footer.stat_publication',
                 domain: 'front',
                 locale: $this->locale,
             ),
@@ -203,11 +203,11 @@ class FrontTranslate extends AppTranslate
         return [
             'title' => $this->translator->trans('front.comment.title', domain: 'front', locale: $this->locale),
             'nbComments' => $this->translator->trans(
-                'front.comment.nbComments',
+                'front.comment.nb_comments',
                 domain: 'front',
                 locale: $this->locale,
             ),
-            'timeAgo' => $this->translator->trans('front.comment.timeAgo', domain: 'front', locale: $this->locale),
+            'timeAgo' => $this->translator->trans('front.comment.time_ago', domain: 'front', locale: $this->locale),
             'validate' => $this->translator->trans('front.comment.validate', domain: 'front', locale: $this->locale),
             'moderate' => $this->translator->trans('front.comment.moderate', domain: 'front', locale: $this->locale),
             'waiting' => $this->translator->trans('front.comment.waiting', domain: 'front', locale: $this->locale),
@@ -247,17 +247,17 @@ class FrontTranslate extends AppTranslate
                 locale: $this->locale,
             ),
             'btnNewComment' => $this->translator->trans(
-                'front.comment.btn.new.comment',
+                'front.comment.button.new.comment',
                 domain: 'front',
                 locale: $this->locale,
             ),
             'btnNewCommentCancel' => $this->translator->trans(
-                'front.comment.btn.new.comment.cancel',
+                'front.comment.button.new.comment_cancel',
                 domain: 'front',
                 locale: $this->locale,
             ),
             'btnNewCommentSubmit' => $this->translator->trans(
-                'front.comment.btn.new.comment.submit',
+                'front.comment.button.new.comment_submit',
                 domain: 'front',
                 locale: $this->locale,
             ),

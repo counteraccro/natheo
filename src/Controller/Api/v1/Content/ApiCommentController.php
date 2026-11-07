@@ -129,7 +129,7 @@ class ApiCommentController extends AppApiController
         if (!$apiCommentService->canModerate($user)) {
             throw new HttpException(
                 Response::HTTP_FORBIDDEN,
-                $translator->trans('api_errors.comment.moderate.forbidden', domain: 'api_errors'),
+                $translator->trans('api_errors.comment.moderate_forbidden', domain: 'api_errors'),
             );
         }
         $apiCommentService->moderateComment($apiModerateCommentDto, $comment, $user);

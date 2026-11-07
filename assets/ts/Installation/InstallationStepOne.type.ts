@@ -11,11 +11,7 @@ export interface InstallationStepOneUrls {
 export interface InstallationStepOneTranslate {
   loading: string;
   title: string;
-  title_thx_h1: string;
-  description_thx_1: string;
   title_h1: string;
-  description_1: string;
-  description_2: string;
   config_bdd_title: string;
   config_bdd_input_type_label: string;
   config_bdd_input_login_label: string;
@@ -27,9 +23,7 @@ export interface InstallationStepOneTranslate {
   config_bdd_btn_test_config: string;
   config_bdd_btn_save_config: string;
   config_bdd_btn_test_config_loading: string;
-  config_bdd_loading_msg_test_connexion: string;
   config_bdd_loading_msg_test_connexion_success: string;
-  config_bdd_loading_msg_test_connexion_ko: string;
   config_bdd_loading_msg_update_file: string;
   create_bdd_sub_title_identifiant: string;
   create_bdd_sub_title_server: string;
@@ -45,19 +39,14 @@ export interface InstallationStepOneTranslate {
   create_bdd_alert_text_5: string;
   create_bdd_title: string;
   create_bdd_input_bdd_name_label: string;
-  create_bdd_input_bdd_name_error: string;
   create_bdd_input_version_label: string;
-  create_bdd_input_version_error: string;
   create_bdd_input_charset_label: string;
   create_bdd_btn_create: string;
   create_bdd_loading_msg_update_file: string;
-  create_bdd_loading_msg_update_secret: string;
   create_bdd_loading_msg_update_secret_success: string;
   create_bdd_loading_msg_update_secret_ko: string;
-  create_bdd_loading_msg_create_bdd: string;
   create_bdd_loading_msg_create_bdd_success: string;
   create_bdd_loading_msg_create_bdd_ko: string;
-  create_bdd_loading_msg_create_table: string;
   create_bdd_loading_msg_create_table_success: string;
   create_bdd_loading_msg_create_table_ko: string;
   create_bdd_loading_msg_success: string;

@@ -12,11 +12,11 @@ front.footer.en.link: __front.footer.en.link
 front.error.api.modal.error.401: __front.error.api.modal.error.401
 front.error.api.modal.error.403: __front.error.api.modal.error.403
 front.article.footer.edit: __front.article.footer.edit
-front.article.footer.statPublication: __front.article.footer.statPublication
+front.article.footer.stat_publication: __front.article.footer.statPublication
 front.article.footer.info.draft: __front.article.footer.info.draft
 front.comment.title: __front.comment.title
-front.comment.nbComments: __front.comment.nbComments
-front.comment.timeAgo: __front.comment.timeAgo
+front.comment.nb_comments: __front.comment.nbComments
+front.comment.time_ago: __front.comment.timeAgo
 front.comment.validate: __front.comment.validate
 front.comment.moderate: __front.comment.moderate
 front.comment.waiting: __front.comment.waiting
@@ -27,9 +27,9 @@ front.comment.form.moderate.submit: __front.comment.form.moderate.submit
 front.comment.success.validate: __front.comment.success.validate
 front.comment.success.moderate: __front.comment.success.moderate
 front.comment.success.waiting: __front.comment.success.waiting
-front.comment.btn.new.comment: __front.comment.btn.new.comment
-front.comment.btn.new.comment.cancel: __front.comment.btn.new.comment.cancel
-front.comment.btn.new.comment.submit: __front.comment.btn.new.comment.submit
+front.comment.button.new.comment: __front.comment.btn.new.comment
+front.comment.button.new.comment_cancel: __front.comment.btn.new.comment.cancel
+front.comment.button.new.comment_submit: __front.comment.btn.new.comment.submit
 front.comment.form.new.comment.pseudo.label: __front.comment.form.new.comment.pseudo.label
 front.comment.form.new.comment.pseudo.placeholder: __front.comment.form.new.comment.pseudo.placeholder
 front.comment.form.new.comment.email.label: __front.comment.form.new.comment.email.label

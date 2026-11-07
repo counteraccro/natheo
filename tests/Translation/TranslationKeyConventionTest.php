@@ -20,7 +20,9 @@ class TranslationKeyConventionTest extends TestCase
      */
     private const DOMAINS = [
         'advanced_options',
+        'api_errors',
         'api_token',
+        'command',
         'comment',
         'dashboard',
         'database_manager',
@@ -28,10 +30,13 @@ class TranslationKeyConventionTest extends TestCase
         'dev',
         'editor_markdown',
         'faq',
+        'front',
+        'front_error',
         'global',
         'global_search',
         'grid',
         'info',
+        'installation',
         'log',
         'mail',
         'media',

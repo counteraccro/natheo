@@ -33,7 +33,7 @@ class AppFrontService extends AppFrontHandlerService
         if (!in_array($template, Template::toArray())) {
             throw new HttpException(
                 Response::HTTP_INTERNAL_SERVER_ERROR,
-                $translator->trans('front.error.not.template', ['template' => $template], domain: 'front_error'),
+                $translator->trans('front_error.index.no_template', ['template' => $template], domain: 'front_error'),
             );
         }
         return 'front/' . $template;
@@ -54,7 +54,7 @@ class AppFrontService extends AppFrontHandlerService
         if (!in_array($template, Template::toArray())) {
             throw new HttpException(
                 Response::HTTP_INTERNAL_SERVER_ERROR,
-                $translator->trans('front.error.not.scriptTag', ['template' => $template], domain: 'front_error'),
+                $translator->trans('front_error.index.no_script_tag', ['template' => $template], domain: 'front_error'),
             );
         }
         return 'front_' . $template;

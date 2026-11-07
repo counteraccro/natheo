@@ -281,7 +281,7 @@ class ApiCommentServiceTest extends AppWebTestCase
 
         $result = $this->apiCommentService->getCommentByPageIdOrSlug($dto);
         $this->assertEquals(
-            $translator->trans('api_errors.comment.wait.validation.author', domain: 'api_errors'),
+            $translator->trans('api_errors.comment.wait.validation_author', domain: 'api_errors'),
             $result['comments'][0]['author'],
         );
 

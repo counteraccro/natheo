@@ -34,55 +34,55 @@ class InstallBddTestCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         if ($this->kernel->getEnvironment() !== 'test') {
-            $io->warning($this->translator->trans('install.test.warning.change.env', domain: 'command'));
+            $io->warning($this->translator->trans('command.install_test.warning.change.env', domain: 'command'));
             passthru('APP_ENV=test php bin/console natheo:install-bdd-test --ansi', $code);
             return $code === 0 ? Command::SUCCESS : Command::FAILURE;
         }
 
-        $io->title($this->translator->trans('install.test.title', domain: 'command'));
+        $io->title($this->translator->trans('command.install_test.title', domain: 'command'));
 
-        $io->note($this->translator->trans('install.test.note', domain: 'command'));
+        $io->note($this->translator->trans('command.install_test.note', domain: 'command'));
 
-        if (!$io->confirm($this->translator->trans('install.test.confirm', domain: 'command'), false)) {
-            $io->text($this->translator->trans('install.test.confirm.cancel', domain: 'command'));
+        if (!$io->confirm($this->translator->trans('command.install_test.confirm', domain: 'command'), false)) {
+            $io->text($this->translator->trans('command.install_test.confirm_cancel', domain: 'command'));
 
             return Command::SUCCESS;
         }
 
         $io->listing([
-            $this->translator->trans('install.test.summary.drop_database', domain: 'command'),
-            $this->translator->trans('install.test.summary.create_database', domain: 'command'),
-            $this->translator->trans('install.test.summary.create_schema', domain: 'command'),
+            $this->translator->trans('command.install_test.summary.drop_database', domain: 'command'),
+            $this->translator->trans('command.install_test.summary.create_database', domain: 'command'),
+            $this->translator->trans('command.install_test.summary.create_schema', domain: 'command'),
         ]);
 
-        $io->section($this->translator->trans('install.test.step.drop_database', domain: 'command'));
+        $io->section($this->translator->trans('command.install_test.step.drop_database', domain: 'command'));
 
         $returnCode = $this->runConsoleCommand(['doctrine:database:drop', '--force', '--if-exists'], $io);
         if ($returnCode === 0) {
-            $io->text($this->translator->trans('install.test.drop_database.success', domain: 'command'));
+            $io->text($this->translator->trans('command.install_test.drop_database.success', domain: 'command'));
         } else {
-            $io->text($this->translator->trans('install.test.error', domain: 'command'));
+            $io->text($this->translator->trans('command.install_test.error', domain: 'command'));
 
             return Command::FAILURE;
         }
 
-        $io->section($this->translator->trans('install.test.step.create_database', domain: 'command'));
+        $io->section($this->translator->trans('command.install_test.step.create_database', domain: 'command'));
 
         $returnCode = $this->runConsoleCommand(['doctrine:database:create'], $io);
         if ($returnCode === 0) {
-            $io->text($this->translator->trans('install.test.create_database.success', domain: 'command'));
+            $io->text($this->translator->trans('command.install_test.create_database.success', domain: 'command'));
         } else {
-            $io->text($this->translator->trans('install.test.error', domain: 'command'));
+            $io->text($this->translator->trans('command.install_test.error', domain: 'command'));
 
             return Command::FAILURE;
         }
 
-        $io->section($this->translator->trans('install.test.step.create_schema', domain: 'command'));
+        $io->section($this->translator->trans('command.install_test.step.create_schema', domain: 'command'));
 
         // Sync metadata storage (create doctrine_migration_versions table if missing)
         $returnCode = $this->runConsoleCommand(['doctrine:migrations:sync-metadata-storage'], $io);
         if ($returnCode !== 0) {
-            $io->text($this->translator->trans('install.test.error', domain: 'command'));
+            $io->text($this->translator->trans('command.install_test.error', domain: 'command'));
 
             return Command::FAILURE;
         }
@@ -93,15 +93,15 @@ class InstallBddTestCommand extends Command
             $io,
         );
         if ($returnCode === 0) {
-            $io->text($this->translator->trans('install.test.create_schema.success', domain: 'command'));
+            $io->text($this->translator->trans('command.install_test.create_schema.success', domain: 'command'));
         } else {
-            $io->text($this->translator->trans('install.test.error', domain: 'command'));
+            $io->text($this->translator->trans('command.install_test.error', domain: 'command'));
 
             return Command::FAILURE;
         }
 
-        $io->success($this->translator->trans('install.test.success', domain: 'command'));
-        $io->note($this->translator->trans('install.test.help.phpunit', domain: 'command'));
+        $io->success($this->translator->trans('command.install_test.success', domain: 'command'));
+        $io->note($this->translator->trans('command.install_test.help.phpunit', domain: 'command'));
         $io->text('php bin/phpunit');
 
         return Command::SUCCESS;

@@ -181,11 +181,11 @@ class InstallationService extends AppAdminService
         $translator = $this->getTranslator();
 
         return [
-            ['id' => 'step-0', 'label' => $translator->trans('installation.step.0.step-label', domain: 'installation')],
-            ['id' => 'step-1', 'label' => $translator->trans('installation.step.1.step-label', domain: 'installation')],
-            ['id' => 'step-2', 'label' => $translator->trans('installation.step.2.step-label', domain: 'installation')],
-            ['id' => 'step-3', 'label' => $translator->trans('installation.step.3.step-label', domain: 'installation')],
-            ['id' => 'step-4', 'label' => $translator->trans('installation.step.4.step-label', domain: 'installation')],
+            ['id' => 'step-0', 'label' => $translator->trans('installation.step_0.step_label', domain: 'installation')],
+            ['id' => 'step-1', 'label' => $translator->trans('installation.step_1.step_label', domain: 'installation')],
+            ['id' => 'step-2', 'label' => $translator->trans('installation.step_2.step_label', domain: 'installation')],
+            ['id' => 'step-3', 'label' => $translator->trans('installation.step_3.step_label', domain: 'installation')],
+            ['id' => 'step-4', 'label' => $translator->trans('installation.step_4.step_label', domain: 'installation')],
         ];
     }
 
