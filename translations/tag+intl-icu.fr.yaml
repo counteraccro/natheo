@@ -1,15 +1,15 @@
 tag.index.title: 'Gestion des tags'
 tag.index.button.new: 'Nouveau tag'
 tag.index.description: 'Gérer les tags associés au contenu de votre site'
-tag.grid.id: Id
-tag.grid.label: Label
+tag.grid.id: ID
+tag.grid.label: Libellé
 tag.grid.color: Couleur
-tag.grid.created_at: 'Date création'
-tag.grid.update_at: 'Date mise à jour'
-tag.confirm.disabled.message: "La désactivation du tag <strong>{label}</strong> entraine sa désactivation et son invisibilité sur le site. Aucune donnée n'est supprimés. Par contre les contenus liés à ce tag peuvent être masqués"
+tag.grid.created_at: Date de création
+tag.grid.update_at: Date de mise à jour
+tag.confirm.disabled.message: La désactivation du tag <strong>{label}</strong> le rend invisible sur le site. Aucune donnée n'est supprimée, mais les contenus liés à ce tag peuvent être masqués
 tag.success.no.disabled: 'Le tag <strong>{label}</strong> est maintenant activé'
 tag.success.disabled: 'Le tag <strong>{label}</strong> est maintenant désactivé'
-tag.confirm.delete.message: 'La suppression du tag <strong>{label}</strong> est définitif. Seul le tag est supprimé et non les données associées'
+tag.confirm.delete.message: La suppression du tag <strong>{label}</strong> est définitive. Seul le tag est supprimé, pas les données associées
 tag.add.title: 'Nouveau tag'
 tag.update.title_id: 'Édition du tag #{id}'
 tag.update.title: 'Édition du tag'
@@ -18,39 +18,39 @@ tag.index.modal.help.disabled_user: 'Désactiver un tag'
 tag.index.modal.help.enable_user: 'Activer un tag'
 tag.index.modal.help.delete: 'Supprimer un tag'
 tag.index.modal.help.edit: 'Modifier un tag'
-tag.remove.success: 'Le tag <strong>{label}</strong> à été correctement supprimé'
+tag.remove.success: Le tag <strong>{label}</strong> a été supprimé avec succès
 tag.form.loading: 'Chargement des données...'
-tag.add.description: 'Aouter un nouveau tag pour organiser votre contenu'
-tag.update.description: "L'édition du tag ne modifie pas les contenus associés à celui-ci"
-tag.form.input.label.label: 'Label en'
-tag.form.input.color.error: 'le format attendu est "#rrggbb" ou rr, gg, bb sont 2 valeurs hexadecimal.'
+tag.add.description: Ajouter un nouveau tag pour organiser votre contenu
+tag.update.description: La modification du tag ne modifie pas les contenus qui lui sont associés
+tag.form.input.label.label: Libellé en
+tag.form.input.color.error: 'Le format attendu est « #rrggbb », où rr, gg et bb sont deux valeurs hexadécimales.'
 tag.form.color.title: 'Couleur du tag'
-tag.form.check.auto.copy: 'dupliquer le label pour les autres langues'
-tag.form.input.label.error: 'Le label du tag ne peux pas être vide'
+tag.form.check.auto.copy: Dupliquer le libellé pour les autres langues
+tag.form.input.label.error: Le libellé du tag ne peut pas être vide
 tag.form.render.title: 'Aperçu du tag'
 tag.form.submit.update: Modifier
 tag.form.submit.create: 'Créer le tag'
-tag.save.new: 'Le tag <strong>{label}</strong> à été créé avec succès'
-tag.save.edit: 'Le tag <strong>{label}</strong> à été modifié avec succès'
+tag.save.new: Le tag <strong>{label}</strong> a été créé avec succès
+tag.save.edit: Le tag <strong>{label}</strong> a été modifié avec succès
 tag.form.stat.title: Statistiques
 tag.page_date_update.created: 'Date de création'
 tag.page_date_update.last_update: 'Dernière modification'
 tag.page.error.tag.disabled: "Ce tag est désactivé, son ajout n'est pas possible"
-tag.form.input.label.placeholder: 'Label du tag'
+tag.form.input.label.placeholder: Libellé du tag
 tag.form.button.cancel: Retour
 tag.form.button.delete: Supprimer
 tag.form.success.save: 'Tag sauvegardé avec succès'
 tag.form.error.save: 'Une erreur est survenue lors de la sauvegarde du tag'
-tag.form.modal.confirm.delete.message: 'La suppression de ce tag est définitif et sans possibilité de retour, votre contenu ne sera pas impacté par cette action'
-tag.form.modal.confirm.delete.button.ok: 'Oui je confirme'
+tag.form.modal.confirm.delete.message: La suppression de ce tag est définitive et irréversible, votre contenu ne sera pas impacté par cette action
+tag.form.modal.confirm.delete.button.ok: Oui, je confirme
 tag.form.modal.confirm.delete.button.ko: Non
-tag.form.modal.confirm.delete.title: 'Confirmez vous la suppression de ce tag ?'
+tag.form.modal.confirm.delete.title: Confirmez-vous la suppression de ce tag ?
 tag.form.style.title: 'Style du tag'
 tag.form.style.description: 'Définition de la couleur'
 tag.form.text.title: 'Autres informations'
-tag.form.text.description: 'Définition du label'
+tag.form.text.description: Définition du libellé
 tag.update.page.no.tag.title: 'Aucun tag trouvé'
-tag.update.page.no.tag.text: "Ce tag n'existe pas ou à été supprimé. Vous pouvez retourner à la liste ou en créer un nouveau"
+tag.update.page.no.tag.text: Ce tag n'existe pas ou a été supprimé. Vous pouvez retourner à la liste ou en créer un nouveau
 tag.update.page.back: Retour
 tag.update.page.new: 'Nouveau tag'
 tag.error.forbidden: 'Vous n''avez pas les droits pour effectuer cette action sur ce tag.'

@@ -1,55 +1,55 @@
-database_manager.schema.all.bdd.error_row: __database_manager.schema.all.bdd.error_row
-database_manager.schema.all.bdd.row.schema: __database_manager.schema.all.bdd.row.schema
-database_manager.schema.all.bdd.row.table_name: __database_manager.schema.all.bdd.row.table_name
-database_manager.schema.all.bdd.row.row: __database_manager.schema.all.bdd.row.row
-database_manager.schema.all.bdd.row.size: __database_manager.schema.all.bdd.row.size
-database_manager.schema.table.row.column_name: __database_manager.schema.table.row.column_name
-database_manager.schema.table.row.data_type: __database_manager.schema.table.row.data_type
-database_manager.schema.table.row.character_maximum_length: __database_manager.schema.table.row.character_maximum_length
-database_manager.schema.table.row.is_nullable: __database_manager.schema.table.row.is_nullable
-database_manager.schema.table.row.column_default: __database_manager.schema.table.row.column_default
-database_manager.index.loading: __database_manager.loading
-database_manager.index.button_generate_dump: __database_manager.btn_generate_dump
-database_manager.index.button_schema_database: __database_manager.btn_schema_bdd
-database_manager.index.button_schema_table: __database_manager.btn_schema_table
-database_manager.index.button_list_dump: __database_manager.btn_liste_dump
-database_manager.stat.nb.table: __database_manager.stat.nb.table
-database_manager.stat.nb.row: __database_manager.stat.nb.row
-database_manager.stat.size: __database_manager.stat.size
-database_manager.index.action: __database_manager.action
-database_manager.dump.title: __database_manager.dump.title
-database_manager.dump.sub_title_1: __database_manager.dump.sub_title_1
-database_manager.dump.sub_title_2: __database_manager.dump.sub_title_2
-database_manager.dump.select_all: __database_manager.dump.select_all
-database_manager.dump.select_tables: __database_manager.dump.select_tables
-database_manager.dump.option_data: __database_manager.dump.option_data
-database_manager.dump.option_table: __database_manager.dump.option_table
-database_manager.dump.option_table_data: __database_manager.dump.option_table_data
-database_manager.dump.help.body: __database_manager.dump.help.body
-database_manager.dump.warning.body: __database_manager.dump.warning.body
-database_manager.dump.button.generate: __database_manager.dump.btn.generate
-database_manager.list.dump.title: __database_manager.list.dump.title
-database_manager.list.dump.no.data: __database_manager.list.dump.no.data
-database_manager.list.dump.button.refresh: __database_manager.list.dump.btn.refresh
-database_manager.list.dump.button.download: __database_manager.list.dump.btn.download
-database_manager.success.dump: __database_manager.success.dump
-database_manager.index.title: __database_manager.index.page_title_h1
-database_manager.index.description: __database_manager.index.description
-database_manager.dump.filename.label: __database_manager.dump.filename.label
-database_manager.dump.filename.help: __database_manager.dump.filename.help
-database_manager.index.modal.help.title: __database_manager.index.popin.help.title
-database_manager.index.modal.help.delete: __database_manager.index.popin.help.delete
-database_manager.index.modal.help.enable: __database_manager.index.popin.help.enable
-database_manager.index.modal.help.download: __database_manager.index.popin.help.download
-database_manager.dump.option_data_label: __database_manager.dump.option_data.label
-database_manager.list.dump.confirm.delete.title: __database_manager.list.dump.confirm.delete.title
-database_manager.list.dump.confirm.delete.texte: __database_manager.list.dump.confirm.delete.texte
-database_manager.list.dump.confirm.button.ok: __database_manager.list.dump.confirm.btn.ok
-database_manager.list.dump.confirm.button.ko: __database_manager.list.dump.confirm.btn.ko
-database_manager.success.delete.file.dump: __database_manager.success.delete.file.dump
-database_manager.error.table.not.found: __database_manager.error.table.not.found
-database_manager.error.delete.file.dump: __database_manager.error.delete.file.dump
-database_manager.error.dump.options: __database_manager.error.dump.options
-database_manager.error.dump.filename: __database_manager.error.dump.filename
-database_manager.error.dump.filename_exist: __database_manager.error.dump.filename.exist
-database_manager.error.generic: __database_manager.error.generic
+database_manager.schema.all.bdd.error_row: datos no disponibles
+database_manager.schema.all.bdd.row.schema: Esquema
+database_manager.schema.all.bdd.row.table_name: Tabla
+database_manager.schema.all.bdd.row.row: Número de elementos
+database_manager.schema.all.bdd.row.size: Tamaño
+database_manager.schema.table.row.column_name: Nombre
+database_manager.schema.table.row.data_type: Tipo
+database_manager.schema.table.row.character_maximum_length: Longitud máxima
+database_manager.schema.table.row.is_nullable: Admite nulo
+database_manager.schema.table.row.column_default: Valor por defecto
+database_manager.index.loading: Cargando
+database_manager.index.button_generate_dump: Nueva copia de seguridad
+database_manager.index.button_schema_database: Esquema de la base de datos
+database_manager.index.button_schema_table: Esquema de la tabla
+database_manager.index.button_list_dump: Lista de copias de seguridad
+database_manager.stat.nb.table: Tablas en total
+database_manager.stat.nb.row: Elementos en total
+database_manager.stat.size: Tamaño de la base
+database_manager.index.action: Acción
+database_manager.dump.title: Crear una nueva copia de seguridad
+database_manager.dump.sub_title_1: Genere una copia de seguridad completa de su base de datos
+database_manager.dump.sub_title_2: Opciones sobre los datos
+database_manager.dump.select_all: Todas las tablas
+database_manager.dump.select_tables: O solo las tablas
+database_manager.dump.option_data: Solo los datos
+database_manager.dump.option_table: Solo los esquemas SQL
+database_manager.dump.option_table_data: Esquema SQL y datos
+database_manager.dump.help.body: La generación de un volcado SQL puede tardar, esta acción se realizará en segundo plano. <br />Recibirá una notificación cuando haya terminado
+database_manager.dump.warning.body: Utilice herramientas adecuadas en cuanto su sitio crezca. Una copia de seguridad de una base de datos demasiado grande puede bloquear su aplicación, ¡o incluso su servidor!
+database_manager.dump.button.generate: Generar la copia de seguridad
+database_manager.list.dump.title: Lista de sus copias de seguridad disponibles
+database_manager.list.dump.no.data: Ninguna copia de seguridad por el momento
+database_manager.list.dump.button.refresh: Actualizar
+database_manager.list.dump.button.download: Descargar
+database_manager.success.dump: Generación de la copia de seguridad registrada
+database_manager.index.title: Gestor de base de datos
+database_manager.index.description: Gestione / restaure / guarde su base de datos
+database_manager.dump.filename.label: Nombre de la copia de seguridad
+database_manager.dump.filename.help: Déjelo vacío o con el valor por defecto para generarlo automáticamente con la fecha
+database_manager.index.modal.help.title: Ayuda
+database_manager.index.modal.help.delete: Eliminar una copia de seguridad
+database_manager.index.modal.help.enable: Ver el esquema de una tabla
+database_manager.index.modal.help.download: Descargar una copia de seguridad
+database_manager.dump.option_data_label: Datos que se van a guardar
+database_manager.list.dump.confirm.delete.title: Confirmación de eliminación de la copia de seguridad SQL
+database_manager.list.dump.confirm.delete.texte: ¿Confirma la eliminación de la copia de seguridad SQL? Esta acción es definitiva e irreversible
+database_manager.list.dump.confirm.button.ok: Sí
+database_manager.list.dump.confirm.button.ko: 'No'
+database_manager.success.delete.file.dump: Archivo {fichier} eliminado correctamente
+database_manager.error.table.not.found: La tabla {table} no existe
+database_manager.error.delete.file.dump: No se puede eliminar el archivo {fichier}
+database_manager.error.dump.options: Las opciones de copia de seguridad no son válidas
+database_manager.error.dump.filename: El nombre de la copia de seguridad solo puede contener letras, cifras, guiones y guiones bajos (100 caracteres como máximo)
+database_manager.error.dump.filename_exist: Ya existe una copia de seguridad llamada {fichier}
+database_manager.error.generic: Se ha producido un error, inténtelo de nuevo.

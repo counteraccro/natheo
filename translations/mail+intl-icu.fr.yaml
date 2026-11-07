@@ -1,16 +1,16 @@
 mail.index.title: 'Gestion des emails'
-mail.index.description: 'Gestion du contenu et du titre des emails qui sont envoyés depuis le CMS'
+mail.index.description: Gestion du contenu et du titre des emails envoyés depuis le CMS
 mail.list.language: 'Sélection de la langue'
-mail.grid.id: Id
+mail.grid.id: ID
 mail.grid.title: Titre
 mail.grid.description: Description
 mail.grid.created_at: Création
 mail.grid.update_at: 'Mise à jour'
 mail.edit.title: "Édition d'un email"
-mail.edit.description: "Modification de l'email '<strong>{email}</strong>'"
+mail.edit.description: Modification de l'email « <strong>{email}</strong> »
 mail.index.info: 'Vous pouvez tester les emails en cliquant sur le bouton {icon}, vous les recevrez dans la boîte mail définie dans votre compte'
-mail.message.success: 'Mail <strong>{email}</strong> sauvegardé avec succès'
-mail.input.trans.title: 'Objet du mail'
+mail.message.success: Email <strong>{email}</strong> sauvegardé avec succès
+mail.input.trans.title: Objet de l'email
 mail.input.trans.title_empty: "L'objet de l'email ne peut pas être vide"
 mail.index.modal.help.title: Aide
 mail.index.modal.help.send: "Recevoir l'email en démo"
@@ -19,8 +19,8 @@ mail.link.save: Sauvegarder
 mail.link.send: "Tester l'email"
 mail.link.cant.save: "La sauvegarde n'est pas possible pour le moment"
 mail.content.title: "Contenu de l'email"
-mail.content.subtitle: "N'oubliez pas que vous pouvez éditer l'email dans toutes les langues gérées par le CMS"
-mail.edit.not_found_title: 'Aucun mail trouvé'
+mail.content.subtitle: N'oubliez pas que vous pouvez modifier l'email dans toutes les langues gérées par le CMS
+mail.edit.not_found_title: Aucun email trouvé
 mail.edit.not_found_text: "Cet email n'existe pas ou a été supprimé. Vous pouvez retourner à la liste des emails"
 mail.edit.not_found_back: Retour
 mail.error.csrf: 'Jeton de sécurité invalide, veuillez recharger la page'

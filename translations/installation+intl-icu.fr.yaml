@@ -1,4 +1,4 @@
-installation.step_1.title: 'Etape 1 - Installation de Natheo CMS'
+installation.step_1.title: Étape 1 - Installation de Nathéo CMS
 installation.step_1.title_h1: 'Connexion de la base de données'
 installation.global.loading: Chargement
 installation.step_1.config.database.title: 'Configuration / Connexion SGBD'
@@ -12,30 +12,30 @@ installation.step_1.config.database.button.test.config_loading: 'Tentative de co
 installation.step_1.config.database.loading.message.update.file: 'Mise à jour de la configuration'
 installation.step_1.config.database.loading.message.test.connection.success: 'Connexion établie avec succès'
 installation.step_1.create.database.h1: 'Création de la base de données'
-installation.step_1.create.database.description.1: 'Maintenant que la connexion est établie, nous allons créer la base de données de NatheoCMS '
-installation.step_1.create.database.description.2: 'Remplissez les champs suivant pour définir le nom de la table, la version du SGBD et le charset de la base'
-installation.step_1.create.database.alert.title: 'Information de configuration'
+installation.step_1.create.database.description.1: Maintenant que la connexion est établie, nous allons créer la base de données de Nathéo CMS
+installation.step_1.create.database.description.2: Remplissez les champs suivants pour définir le nom de la base, la version du SGBD et le charset de la base
+installation.step_1.create.database.alert.title: Informations de configuration
 installation.step_1.create.database.alert.text.1: 'La base de données sera créée avec les options suivantes : '
-installation.step_1.create.database.alert.text.2: 'Le schema par défaut de la base de données est '
-installation.step_1.create.database.alert.text.3: 'Les tables seront préfixé avec la valeur '
-installation.step_1.create.database.alert.text.4: 'aucun prefix défini'
-installation.step_1.create.database.alert.text.5: 'Si vous souhaitez modifier ces options, modifier la valeur de  <b>app.default_database_prefix</b> dans <b>config/services.yaml</b>'
+installation.step_1.create.database.alert.text.2: 'Le schéma par défaut de la base de données est '
+installation.step_1.create.database.alert.text.3: 'Les tables seront préfixées avec la valeur '
+installation.step_1.create.database.alert.text.4: aucun préfixe défini
+installation.step_1.create.database.alert.text.5: Si vous souhaitez modifier ces options, modifiez la valeur de <b>app.default_database_prefix</b> dans <b>config/services.yaml</b>
 installation.step_1.create.database.title: 'Installation de la base de données'
 installation.step_1.create.database.input.database.name.label: 'Nom de la base de données'
 installation.step_1.create.database.input.version.label: Version
 installation.step_1.create.database.input.charset.label: Charset
-installation.step_1.create.database.button.create: 'Créer la base de donnée'
+installation.step_1.create.database.button.create: Créer la base de données
 installation.step_1.create.database.message.update.file: 'Mise à jour de la configuration'
 installation.step_1.create.database.message.create.database.success: 'Base de données créée avec succès'
 installation.step_1.create.database.message.create.database.ko: 'Une erreur est survenue lors de la création de la base de données'
 installation.step_1.create.database.message.create.table.success: 'Tables créées avec succès'
 installation.step_1.create.database.message.create.table.ko: 'Une erreur est survenue lors de la création des tables'
-installation.step_1.create.database.message.success: "Félicitation l'étape 2 est terminée, redirection vers l'étape 3..."
-installation.step_1.create.database.message.update.secret_success: 'APP_SECRET mit à jour avec succès'
+installation.step_1.create.database.message.success: Félicitations, l'étape 2 est terminée, redirection vers l'étape 3...
+installation.step_1.create.database.message.update.secret_success: APP_SECRET mis à jour avec succès
 installation.step_1.create.database.message.update.secret_ko: 'Une erreur est survenue lors de la mise à jour de APP_SECRET'
-installation.step_2.title: 'Etape 2 - Configuration de NatheoCMS'
+installation.step_2.title: Étape 2 - Configuration de Nathéo CMS
 installation.step_2.title_h1: 'Création du compte fondateur'
-installation.step_2.founder.description: 'Nous allons maintenant créer le compte fondateur, ce compte vous permettra de vous connecter au back-office de Natheo'
+installation.step_2.founder.description: Nous allons maintenant créer le compte fondateur, ce compte vous permettra de vous connecter au back-office de Nathéo
 installation.step_2.founder.title.card: 'Compte fondateur'
 installation.step_2.founder.login.label: Login
 installation.step_2.founder.login.placeholder: Login
@@ -49,20 +49,20 @@ installation.step_2.founder.password.weak: 'Mot de passe faible'
 installation.step_2.founder.password.normal: 'Mot de passe normal'
 installation.step_2.founder.password.strong: 'Mot de passe fort'
 installation.step_2.founder.button.create: 'Créer votre compte'
-installation.step_2.founder.password.help: 'Votre mot de passe doit contenir entre 8 et 20 caractères, au moins 1 majuscule, lettres, chiffres, caractères spéciaux, sans espaces'
+installation.step_2.founder.password.help: Votre mot de passe doit contenir entre 8 et 20 caractères, dont au moins une majuscule, des lettres, des chiffres et des caractères spéciaux, sans espace
 installation.step_2.founder.loading.message: 'Création de votre compte en cours...'
 installation.step_2.founder.success: 'Compte créé avec succès'
-installation.step_2.debug.title: 'Débug mode activé'
-installation.step_2.debug.text.1: 'Attention, le mode débug du CMS est activé, cela va avoir un impact sur les données installées !'
-installation.step_2.debug.text.2: 'Les comptes de démonstrations vont être installés à la place du compte que vous allez créer. Vous ne devez pas utiliser ce mode pour une utilisation en production'
+installation.step_2.debug.title: Mode débogage activé
+installation.step_2.debug.text.1: Attention, le mode débogage du CMS est activé, cela aura un impact sur les données installées !
+installation.step_2.debug.text.2: Les comptes de démonstration seront installés à la place du compte que vous allez créer. Vous ne devez pas utiliser ce mode en production
 installation.step_2.debug.text.3: 'Pour modifier cette valeur :'
 installation.step_2.debug.text.4: 'Ouvrez le fichier <b>.env</b>'
-installation.step_2.debug.text.5: 'Modifier la valeur de <b><i>NATHEO_DEBUG</i></b> à <b>false</b>'
-installation.step_2.debug.text.6: 'Faite F5 pour rafraichir la page'
+installation.step_2.debug.text.5: Passez la valeur de <b><i>NATHEO_DEBUG</i></b> à <b>false</b>
+installation.step_2.debug.text.6: Appuyez sur F5 pour rafraîchir la page
 installation.step_2.finish.title: 'Création du jeu de données'
-installation.step_2.finish.text.1: "Dernière étape de l'installation de Natheo CMS, nous allons maintenant ajouter un jeu de données pour vous aider dans la prise en main du CMS"
+installation.step_2.finish.text.1: 'Dernière étape de l''installation de Nathéo CMS : nous allons maintenant ajouter un jeu de données pour vous aider à prendre en main le CMS'
 installation.step_2.finish.button: "Finaliser l'installation"
-installation.step_2.finish.text.2: "Une fois l'installation des données terminés, vous serez redirigé vers l'authentification du panel admin. Vous pourrez vous connecter avec votre compte fondateur fraîchement créé"
+installation.step_2.finish.text.2: Une fois l'installation des données terminée, vous serez redirigé vers l'authentification de l'administration. Vous pourrez vous connecter avec votre compte fondateur fraîchement créé
 installation.step_2.finish.loading.message.success: "Installation terminée avec succès, redirection vers l'étape finale"
 installation.step_2.finish.loading.message.config.success: 'Configuration chargée avec succès'
 installation.step_2.finish.loading.message.config.ko: 'Une erreur est survenue lors du chargement de la configuration'
@@ -72,7 +72,7 @@ installation.step_2.finish.loading.message.cache.success: 'Cache nettoyé avec s
 installation.step_2.finish.loading.message.cache.ko: 'Une erreur est survenue lors du nettoyage du cache'
 installation.step_0.step_label: Bienvenue
 installation.step_1.step_label: 'Connexion SGBD'
-installation.step_2.step_label: 'Base de donnée'
+installation.step_2.step_label: Base de données
 installation.step_3.step_label: 'Installation des données'
 installation.step_4.step_label: Résumé
 installation.step_0.title: Bienvenue
@@ -84,16 +84,16 @@ installation.step_0.php.version: 'Version de PHP'
 installation.step_0.gd: 'Extension GD'
 installation.step_0.ok: OK
 installation.step_0.ko: KO
-installation.step_0.pdo_mysql: 'Extension PDO (Mysql)'
+installation.step_0.pdo_mysql: Extension PDO (MySQL)
 installation.step_0.intl: 'Extension Intl'
 installation.step_0.folder.permission: 'Permissions des dossiers'
 installation.step_0.folders_summary_ok: "{count, plural,\n    =0 {Aucun dossier à vérifier}\n    one {# dossier sur # est accessible en écriture}\n    other {# dossiers sur # sont accessibles en écriture}\n}"
 installation.step_0.folders_summary_error_single: '<code class="folder-path" style="color: inherit;">{path}</code> n''est pas accessible en écriture — vérifiez les permissions (chmod 775) avant de continuer.'
 installation.step_0.folders_summary_error_multiple: '{count} dossiers ne sont pas accessibles en écriture : <code class="folder-path" style="color: inherit;">{paths}</code> — vérifiez les permissions (chmod 775) avant de continuer.'
-installation.step_0.folders_button_disabled_title: '1 ou plusieurs erreurs empêche de continuer'
+installation.step_0.folders_button_disabled_title: Une ou plusieurs erreurs empêchent de continuer
 installation.step_0.button.start: "Commencer l'installation"
 installation.step_1.h2.title: 'Connexion SGBD'
-installation.step_1.h2.sub.title: 'Afin de pouvoir installer les données nécessaire au bon fonctionnement du CMS, nous allons configurer la connexion au SGBD'
+installation.step_1.h2.sub.title: Afin d'installer les données nécessaires au bon fonctionnement du CMS, nous allons configurer la connexion au SGBD
 installation.step_1.field.required: 'Ce champ est obligatoire'
 installation.step_1.button.return: Retour
 installation.step_1.config.database.button.save.config: Sauvegarder
@@ -103,11 +103,11 @@ installation.step_1.sub_title.options: 'Options avancées'
 installation.step_1.button.step.2: 'Créer la base de données'
 installation.step_3.title: 'Installation des données'
 installation.step_4.head_title: Finalisation
-installation.step_4.title: 'Installation réussi avec succès'
-installation.step_4.description: 'Félicitation Natheo CMS à été installé avec succès'
-installation.step_4.summary.database: 'Base de données créé'
+installation.step_4.title: Installation réussie
+installation.step_4.description: Félicitations, Nathéo CMS a été installé avec succès
+installation.step_4.summary.database: Base de données créée
 installation.step_4.summary.data: 'Données installées'
 installation.step_4.summary.cache: 'Cache nettoyé'
 installation.step_4.button.login: 'Me connecter avec mon compte fondateur'
-installation.step_4.summary.user: 'Compte Fondateur créé'
-installation.step_1.message.database.already_exist: 'la base de données existe déjà'
+installation.step_4.summary.user: Compte fondateur créé
+installation.step_1.message.database.already_exist: La base de données existe déjà

@@ -1,6 +1,6 @@
 'An authentication exception occurred.': "Une exception d'authentification s'est produite."
 'Authentication credentials could not be found.': "Les identifiants d'authentification n'ont pas pu être trouvés."
-'Authentication request could not be processed due to a system problem.': "La requête d'authentification n'a pas pu être executée à cause d'un problème système."
+Authentication request could not be processed due to a system problem.: La requête d'authentification n'a pas pu être exécutée à cause d'un problème système.
 'Invalid credentials.': 'Identifiants invalides.'
 'Cookie has already been used by someone else.': "Le cookie a déjà été utilisé par quelqu'un d'autre."
 'Not privileged to request the resource.': 'Privilèges insuffisants pour accéder à la ressource.'

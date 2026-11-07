@@ -1,12 +1,12 @@
-dev.debug_bar.title: __dev.debug.bar.title
-dev.debug_bar.system: __dev.debug.bar.system
-dev.debug_bar.environment: __dev.debug.bar.environnement
-dev.debug_bar.database: __dev.debug.bar.database
-dev.debug_bar.git: __dev.debug.bar.git
-dev.debug_bar.branch: __dev.debug.bar.branche
-dev.debug_bar.commit: __dev.debug.bar.commit
-dev.debug_bar.commit_date: __dev.debug.bar.commit.date
-dev.debug_bar.application: __dev.debug.bar.application
-dev.debug_bar.version: __dev.debug.bar.version
-dev.debug_bar.login_with: __dev.debug.bar.login.with
-dev.debug_bar.switch_user: __dev.debug.bar.switch.user
+dev.debug_bar.title: Nathéo CMS
+dev.debug_bar.system: Sistema
+dev.debug_bar.environment: Entorno
+dev.debug_bar.database: Base de datos
+dev.debug_bar.git: Git
+dev.debug_bar.branch: Rama
+dev.debug_bar.commit: Commit
+dev.debug_bar.commit_date: Fecha
+dev.debug_bar.application: Aplicación
+dev.debug_bar.version: Versión
+dev.debug_bar.login_with: Conectarse con
+dev.debug_bar.switch_user: Elegir la cuenta

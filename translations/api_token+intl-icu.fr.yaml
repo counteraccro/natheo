@@ -1,25 +1,25 @@
 api_token.index.modal.help.title: Aide
 api_token.index.modal.help.delete: Supprimer
-api_token.index.modal.help.edit: Editer
+api_token.index.modal.help.edit: Modifier
 api_token.index.title: 'Gestion des tokens API'
 api_token.index.description: "Gérer les tokens d'accès aux API de votre site web ainsi que les droits associés"
 api_token.success.enabled: 'Le token <strong>{label}</strong> est maintenant actif'
 api_token.success.disabled: 'Le token <strong>{label}</strong> est maintenant désactivé'
-api_token.remove.success: 'Le token <strong>{label}</strong> à été supprimé avec succès'
-api_token.grid.id: id
-api_token.grid.name: label
-api_token.grid.token: token
-api_token.grid.roles: roles
-api_token.grid.comment: commentaire
-api_token.grid.created_at: création
-api_token.grid.update_at: 'mise à jour'
-api_token.confirm.disabled.message: "La désactivation du token <strong>{label}</strong> entrainera le refus d'accès de tout client utilisant ce token"
-api_token.confirm.delete.message: 'La suppression du token <strong>{label}</strong> est définitive et sans possibilité de retour'
+api_token.remove.success: Le token <strong>{label}</strong> a été supprimé avec succès
+api_token.grid.id: ID
+api_token.grid.name: Libellé
+api_token.grid.token: Token
+api_token.grid.roles: Rôles
+api_token.grid.comment: Commentaire
+api_token.grid.created_at: Création
+api_token.grid.update_at: Mise à jour
+api_token.confirm.disabled.message: La désactivation du token <strong>{label}</strong> entraînera le refus d'accès de tout client utilisant ce token
+api_token.confirm.delete.message: La suppression du token <strong>{label}</strong> est définitive et irréversible
 api_token.add.title: 'Nouveau token API'
-api_token.add.description: 'Créer un nouveau token pour gérer les accès aux APIs de votre site'
+api_token.add.description: Créer un nouveau token pour gérer les accès aux API de votre site
 api_token.update.title_id: 'Édition du token API #{id}'
 api_token.update.title: 'Édition du token API'
-api_token.update.description: 'Editer les données de mon token'
+api_token.update.description: Modifier les données de mon token
 api_token.index.button.new: 'Nouveau token'
 api_token.index.modal.help.enable: 'Activer le token'
 api_token.index.modal.help.disabled: 'Désactiver le token'
@@ -29,18 +29,18 @@ api_token.card.button.copy_past: Copier
 api_token.role.read: Lecture
 api_token.role.write: 'Lecture + Écriture'
 api_token.role.admin: Admin
-api_token.card.select.label.role: 'Role associé au token'
+api_token.card.select.label.role: Rôle associé au token
 api_token.card.copy.success: 'Token copié avec succès'
-api_token.card.help.role: 'Liste des roles disponible pour le token'
-api_token.card.help.role_read: "Lecture : Ne donne accès qu'aux APIs de lecture"
-api_token.card.help.role_write: 'Lecture + Écriture : Donne accès aux APIs de lecture et écriture'
-api_token.card.help.role_admin: 'Admin : Donne accès à toutes les APIs'
+api_token.card.help.role: Liste des rôles disponibles pour le token
+api_token.card.help.role_read: 'Lecture : ne donne accès qu''aux API de lecture'
+api_token.card.help.role_write: 'Lecture + Écriture : donne accès aux API de lecture et d''écriture'
+api_token.card.help.role_admin: 'Admin : donne accès à toutes les API'
 api_token.card.title.label: 'Nom global'
-api_token.card.title.help: 'Nom de votre Token'
+api_token.card.title.help: Nom de votre token
 api_token.card.title.placeholder: Libellé
-api_token.card.button.edit: Editer
-api_token.modal.confirm.edit.title: "Confirmez vous l'édition"
-api_token.modal.confirm.edit.text: 'Attention, la modification de ce token ou son rôle, impactera les applications qui utilise ce token. <br /> Confirmez-vous cette action ?'
+api_token.card.button.edit: Modifier
+api_token.modal.confirm.edit.title: Confirmez-vous la modification ?
+api_token.modal.confirm.edit.text: Attention, la modification de ce token ou de son rôle impactera les applications qui l'utilisent. <br /> Confirmez-vous cette action ?
 api_token.modal.confirm.edit.button_ok: Oui
 api_token.modal.confirm.edit.button_ko: Non
 api_token.card.comment.label: Commentaire
@@ -52,25 +52,25 @@ api_token.save.success: 'Token sauvegardé avec succès'
 api_token.save.new_success: 'Token créé avec succès'
 api_token.card.loading: 'Chargement en cours...'
 api_token.card.description.add: "Créer une nouvelle clé d'accès à vos données"
-api_token.card.description.edit: "Editer la clé d'accès à vos données"
+api_token.card.description.edit: Modifier la clé d'accès à vos données
 api_token.card.input.token.help.add: 'Le token sera généré lors de la création et affiché une seule fois'
 api_token.card.token.label: Token
 api_token.card.button.cancel: Retour
 api_token.card.button.delete: Supprimer
 api_token.modal.confirm.delete.title: 'Confirmer la suppression du token'
-api_token.modal.confirm.delete.text: "La suppression du token est définitive et sans possibilité de retour. <br /> Toutes applications l'utilisant verra ses accès instantanément coupés."
+api_token.modal.confirm.delete.text: La suppression du token est définitive et irréversible. <br /> Toutes les applications qui l'utilisent verront leurs accès instantanément coupés.
 api_token.update.not_found_title: 'Aucun token trouvé'
-api_token.update.not_found_text: "Ce token n'existe pas ou à été supprimé. Vous pouvez retourner à la liste ou en créer une nouvelle"
+api_token.update.not_found_text: Ce token n'existe pas ou a été supprimé. Vous pouvez retourner à la liste ou en créer un nouveau
 api_token.update.not_found_back: Retour
 api_token.update.not_found_new: 'Nouveau token'
-api_token.grid.expires_at: expiration
-api_token.grid.last_used_at: 'dernière utilisation'
+api_token.grid.expires_at: Expiration
+api_token.grid.last_used_at: Dernière utilisation
 api_token.grid.never: Jamais
 api_token.grid.no_expiration: Aucune
 api_token.grid.expired: 'Expiré le {date}'
 api_token.regenerate.success: 'Nouveau token généré avec succès'
 api_token.card.expires_at.label: "Date d'expiration"
-api_token.card.expires_at.help: 'Optionnelle. Passé cette date, le token sera refusé. Laisser vide pour aucune expiration'
+api_token.card.expires_at.help: Optionnelle. Passé cette date, le token sera refusé. Laissez vide pour ne pas définir d'expiration
 api_token.card.last_used_at.label: 'Dernière utilisation'
 api_token.card.last_used_at.never: 'Jamais utilisé'
 api_token.card.token.once.warning: 'Copiez ce token maintenant : pour des raisons de sécurité, il ne sera plus jamais affiché.'

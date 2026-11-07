@@ -1,7 +1,7 @@
 global.role.user: Utilisateur
 global.role.contributor: Contributeur
 global.role.admin: Administrateur
-global.role.super_admin: 'Super Administrateur'
+global.role.super_admin: Super administrateur
 global.footer.licence: 'Copyright &copy; 2023-{year} &mdash; Propulsé par Nathéo CMS'
 global.breadcrumb.dashboard: 'Tableau de bord'
 global.header.new.button: Nouveau
@@ -9,7 +9,7 @@ global.header.new.page: 'Nouvelle page'
 global.header.new.menu: 'Nouveau menu'
 global.header.new.faq: 'Nouvelle FAQ'
 global.header.new.tag: 'Nouveau tag'
-global.header.menu.impersonation: 'Retour mon compte'
+global.header.menu.impersonation: Retour à mon compte
 global.header.menu.my_account: 'Mon compte'
 global.header.menu.my_options: 'Mes options'
 global.header.menu.website: 'Mon site web'

@@ -1,28 +1,28 @@
 notification.msg.welcome.title: 'Bienvenue sur le site'
-notification.msg.welcome.content: "Bienvenue {login} , Vous pouvez dès à présent contribuer au site. Votre compte possède les droits <strong>{role}</strong> sur le site <br /> Pour toute question vous avez <a href='{url_aide}'>l'aide</a> du site"
+notification.msg.welcome.content: Bienvenue {login}, vous pouvez dès à présent contribuer au site. Votre compte possède les droits <strong>{role}</strong> sur le site. <br /> Pour toute question, consultez <a href="{url_aide}">l'aide</a> du site
 notification.msg.self_disabled.title: 'Désactivation de compte'
-notification.msg.self_disabled.content: '{login} à décidé de désactiver son compte'
+notification.msg.self_disabled.content: '{login} a décidé de désactiver son compte'
 notification.msg.self_delete.title: 'Suppression de compte'
-notification.msg.self_delete.content: '{login} à décidé de supprimer son compte'
+notification.msg.self_delete.content: '{login} a décidé de supprimer son compte'
 notification.msg.self_anonymous.title: 'Anonymisation de compte'
-notification.msg.self_anonymous.content: "{login} à décidé d'anonymiser son compte"
+notification.msg.self_anonymous.content: '{login} a décidé d''anonymiser son compte'
 notification.msg.dump_sql.title: 'Dump SQL disponible'
-notification.msg.dump_sql.content: 'Le dump SQL {file} est disponible, vous pouvez le télécharger <a href="{url}">ici</a> ou directement depuis l interface de sauvegarde'
+notification.msg.dump_sql.content: Le dump SQL {file} est disponible, vous pouvez le télécharger <a href="{url}">ici</a> ou directement depuis l'interface de sauvegarde
 notification.msg.dump_sql_error.title: 'Échec du dump SQL'
 notification.msg.dump_sql_error.content: "La génération du dump SQL {file} a échoué. Consultez les logs de l'application pour plus de détails"
 notification.index.title: 'Centre de notifications'
-notification.index.description: 'Liste de mes notifications, passez votre souris {mouse} dessus pour les considérez comme lu.'
+notification.index.description: Liste de mes notifications, passez votre souris {mouse} dessus pour les marquer comme lues.
 notification.list.loading: 'Chargement des données'
 notification.index.purge_info: 'Les notifications lues seront automatiquement supprimées au bout de <b>{nb_day}</b> jours'
-notification.list.empty: 'Aucune notifications pour le moment...'
-notification.filter.unread: 'Non lu'
+notification.list.empty: Aucune notification pour le moment...
+notification.filter.unread: Non lues
 notification.list.read_all: 'Marquer tout comme lu'
 notification.filter.all: Toutes
 notification.msg.new_fondateur.title: 'Bienvenue !'
-notification.msg.new_fondateur.content: "Bonjour <b>{login}</b>, Vous venez de finalisez l'installation de Natheo CMS. Encore quelques paramétrages et votre site sera opérationnel. <br /> Pour vous accompagner dans la mise en ligne de votre site, vous pouvez consulter <a href=\"{url_aide}\" target='_blank'>l'aide</a> du site"
+notification.msg.new_fondateur.content: Bonjour <b>{login}</b>, vous venez de finaliser l'installation de Nathéo CMS. Encore quelques paramétrages et votre site sera opérationnel. <br /> Pour vous accompagner dans la mise en ligne de votre site, vous pouvez consulter <a href="{url_aide}" target='_blank'>l'aide</a> du site
 notification.msg.new_comment.title: 'Nouveau commentaire'
-notification.msg.new_comment.content: 'Bonjour, un nouveau commentaire à été ajouté par <b>{author}</b> sur la page <b>{page}</b>, son status est <b>{status}</b>'
-notification.stats.unread: 'Non lu'
+notification.msg.new_comment.content: Bonjour, un nouveau commentaire a été ajouté par <b>{author}</b> sur la page <b>{page}</b>, son statut est <b>{status}</b>
+notification.stats.unread: Non lues
 notification.stats.today: "Aujourd'hui"
 notification.stats.all: Total
 notification.category.comment: Commentaire
@@ -34,13 +34,13 @@ notification.list.read_success: 'Notifications marquées comme lues'
 notification.list.unread_success: 'Notifications marquées comme non lues'
 notification.list.mark_unread: 'Marquer comme non lu'
 notification.list.mark_read: 'Marquer comme lu'
-notification.list.read_all_success: 'Toutes les notifications ont été marquées comme lu'
-notification.confirm.title: 'Confirmez vous cette action ?'
-notification.confirm.button_ok: 'Oui je confirme'
+notification.list.read_all_success: Toutes les notifications ont été marquées comme lues
+notification.confirm.title: Confirmez-vous cette action ?
+notification.confirm.button_ok: Oui, je confirme
 notification.confirm.button_no: Non
-notification.confirm.message: 'Vous êtes sur le point de supprimer {total} notification(s) dont {noRead} non lu(s)'
+notification.confirm.message: Vous êtes sur le point de supprimer {total} notification(s), dont {noRead} non lue(s)
 notification.list.delete_success: 'Notification(s) supprimée(s) avec succès'
 notification.item.see_comment: 'Voir le commentaire'
 notification.item.mark_read: 'Marquer comme lu'
-notification.item.time: 'il y à '
+notification.item.time: 'il y a '
 notification.confirm.message_single: 'Vous êtes sur le point de supprimer cette notification'

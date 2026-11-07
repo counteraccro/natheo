@@ -177,46 +177,46 @@ Error: Error
 'Please enter a valid week.': 'Por favor, ingrese una semana válida.'
 'Please enter a valid UUID.': 'Por favor, ingrese un UUID válido.'
 'This value is not a valid slug.': 'Este valor no es un slug válido.'
-'The username field must be of type string': '__The username field must be of type string'
-'Username field cannot be empty': '__Username field cannot be empty'
-'The password field must be of type string': '__The password field must be of type string'
-'Password field cannot be empty': '__Password field cannot be empty'
-'Choose a position between 1 (top), 2 (right), 3 (bottom), 4 (left)': '__Choose a position between 1 (top), 2 (right), 3 (bottom), 4 (left)'
-'The id parameter must be a integer': '__The id parameter must be a integer'
-'The pageSlug parameter must be a string': '__The pageSlug parameter must be a string'
-'The pageSlug parameter cannot be empty': '__The pageSlug parameter cannot be empty'
-'The position parameter must be a integer': '__The position parameter must be a integer'
-'The locale parameter must be a string': '__The locale parameter must be a string'
-'Choose a locale between en or es or fr': '__Choose a locale between en or es or fr'
-'The user_token parameter must be a string': '__The user_token parameter must be a string'
-'The page parameter must be a integer': '__The page parameter must be a integer'
-'The limit parameter must be a integer': '__The limit parameter must be a integer'
-'The show_menus parameter must be a boolean': '__The show_menus parameter must be a boolean'
-'Choose a position between 0, (all), 1 (top), 2 (right), 3 (bottom), 4 (left)': '__Choose a position between 0, (all), 1 (top), 2 (right), 3 (bottom), 4 (left)'
-'The show_tags parameter must be a boolean': '__The show_tags parameter must be a boolean'
-'The show_statistiques parameter must be a boolean': '__The show_statistiques parameter must be a boolean'
-'The category parameter must be a string': '__The category parameter must be a string'
-'The tag parameter must be a string': '__The tag parameter must be a string'
-'The idPage parameter must be a integer': '__The idPage parameter must be a integer'
-'The author parameter must be a string': '__The author parameter must be a string'
-'The author parameter cannot be empty': '__The author parameter cannot be empty'
-'The email parameter must be a valid email': '__The email parameter must be a valid email'
-'The comment parameter must be a string': '__The comment parameter must be a string'
-'The comment parameter cannot be empty': '__The comment parameter cannot be empty'
-'The ip parameter must be a valid ip': '__The ip parameter must be a valid ip'
-'The userAgent parameter must be a valid ip': '__The userAgent parameter must be a valid ip'
-'The orderBy parameter must be a string': '__The orderBy parameter must be a string'
-'Choose a orderBy between id or createdAt': '__Choose a orderBy between id or createdAt'
-'The order parameter must be a string': '__The order parameter must be a string'
-'Choose a order between desc or asc': '__Choose a order between desc or asc'
-'The status parameter must be a string': '__The status parameter must be a string'
-'The status parameter cannot be empty': '__The status parameter cannot be empty'
-'The moderation_comment parameter must be a string': '__The moderation_comment parameter must be a string'
-'The limit parameter must be between {{ min }} and {{ max }}': '__The limit parameter must be between {{ min }} and {{ max }}'
-'The page parameter must be greater than 0': '__The page parameter must be greater than 0'
-'The author parameter cannot exceed {{ limit }} characters': '__The author parameter cannot exceed {{ limit }} characters'
-'The email parameter cannot exceed {{ limit }} characters': '__The email parameter cannot exceed {{ limit }} characters'
-'The comment parameter cannot exceed {{ limit }} characters': '__The comment parameter cannot exceed {{ limit }} characters'
-'The userAgent parameter cannot exceed {{ limit }} characters': '__The userAgent parameter cannot exceed {{ limit }} characters'
-'The moderation_comment parameter cannot exceed {{ limit }} characters': '__The moderation_comment parameter cannot exceed {{ limit }} characters'
-'The menu_positions parameter must be an array': '__The menu_positions parameter must be an array'
+The username field must be of type string: El campo username debe ser de tipo string
+Username field cannot be empty: El campo username no puede estar vacío
+The password field must be of type string: El campo password debe ser de tipo string
+Password field cannot be empty: El campo password no puede estar vacío
+Choose a position between 1 (top), 2 (right), 3 (bottom), 4 (left): Elija una posición entre 1 (arriba) - 2 (derecha) - 3 (abajo) - 4 (izquierda)
+The id parameter must be a integer: El parámetro id debe ser de tipo integer
+The pageSlug parameter must be a string: El parámetro pageSlug debe ser de tipo string
+The pageSlug parameter cannot be empty: El parámetro pageSlug no puede estar vacío
+The position parameter must be a integer: El parámetro position debe ser de tipo integer
+The locale parameter must be a string: El parámetro locale debe ser de tipo string
+Choose a locale between en or es or fr: Elija una locale entre fr (francés), es (español) o en (inglés)
+The user_token parameter must be a string: El parámetro user_token debe ser de tipo string
+The page parameter must be a integer: El parámetro page debe ser de tipo integer
+The limit parameter must be a integer: El parámetro limit debe ser de tipo integer
+The show_menus parameter must be a boolean: El parámetro show_menus debe ser de tipo boolean
+Choose a position between 0, (all), 1 (top), 2 (right), 3 (bottom), 4 (left): Elija una posición entre 0 (todas) - 1 (arriba) - 2 (derecha) - 3 (abajo) - 4 (izquierda). Se admiten varias opciones
+The show_tags parameter must be a boolean: El parámetro show_tags debe ser de tipo boolean
+The show_statistiques parameter must be a boolean: El parámetro show_statistiques debe ser de tipo boolean
+The category parameter must be a string: El parámetro category debe ser de tipo string
+The tag parameter must be a string: El parámetro tag debe ser de tipo string
+The idPage parameter must be a integer: El parámetro idPage debe ser de tipo integer
+The author parameter must be a string: El parámetro author debe ser de tipo string
+The author parameter cannot be empty: El parámetro author no puede estar vacío
+The email parameter must be a valid email: El parámetro email debe ser un correo electrónico válido
+The comment parameter must be a string: El parámetro comment debe ser de tipo string
+The comment parameter cannot be empty: El parámetro comment no puede estar vacío
+The ip parameter must be a valid ip: El parámetro ip debe ser una dirección IP válida
+The userAgent parameter must be a valid ip: El parámetro userAgent debe ser de tipo string
+The orderBy parameter must be a string: El parámetro orderBy debe ser de tipo string
+Choose a orderBy between id or createdAt: Elija un orderBy entre id o createdAt
+The order parameter must be a string: El parámetro order debe ser de tipo string
+Choose a order between desc or asc: Elija un order entre desc o asc
+The status parameter must be a string: El parámetro status debe ser de tipo string
+The status parameter cannot be empty: El parámetro status no puede estar vacío
+The moderation_comment parameter must be a string: El parámetro moderation_comment debe ser de tipo string
+The limit parameter must be between {{ min }} and {{ max }}: El parámetro limit debe estar comprendido entre {{ min }} y {{ max }}
+The page parameter must be greater than 0: El parámetro page debe ser mayor que 0
+The author parameter cannot exceed {{ limit }} characters: El parámetro author no puede superar los {{ limit }} caracteres
+The email parameter cannot exceed {{ limit }} characters: El parámetro email no puede superar los {{ limit }} caracteres
+The comment parameter cannot exceed {{ limit }} characters: El parámetro comment no puede superar los {{ limit }} caracteres
+The userAgent parameter cannot exceed {{ limit }} characters: El parámetro userAgent no puede superar los {{ limit }} caracteres
+The moderation_comment parameter cannot exceed {{ limit }} characters: El parámetro moderation_comment no puede superar los {{ limit }} caracteres
+The menu_positions parameter must be an array: El parámetro menu_positions debe ser de tipo array

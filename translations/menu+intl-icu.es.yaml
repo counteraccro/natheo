@@ -1,133 +1,133 @@
-menu.index.modal.help.title: __menu.index.popin.help.title
-menu.index.modal.help.disabled_menu: __menu.index.popin.help.disabled_menu
-menu.index.modal.help.enable_menu: __menu.index.popin.help.enable_menu
-menu.index.modal.help.delete: __menu.index.popin.help.delete
-menu.index.modal.help.edit: __menu.index.popin.help.edit
-menu.index.title: __menu.index.page_title
-menu.index.button.new: __menu.index.btn.new
-menu.index.description: __menu.index.description
-menu.index.description_2: __menu.index.description2
-menu.success.no.disabled: __menu.success.no.disabled
-menu.success.disabled: __menu.success.disabled
-menu.remove.success: __menu.remove.success
-menu.grid.id: __menu.grid.id
-menu.grid.name: __menu.grid.name
-menu.grid.type: __menu.grid.type
-menu.grid.create_at: __menu.grid.create_at
-menu.grid.update_at: __menu.grid.update_at
-menu.confirm.disabled.message: __menu.confirm.disabled.msg
-menu.confirm.delete.message: __menu.confirm.delete.msg
-menu.add.title: __menu.add.menu_title_h1
-menu.add.description: __menu.add.description
-menu.update.menu_title: __menu.update.menu_title
-menu.update.title: __menu.update.menu_title_h1
-menu.update.description: __menu.update.description
-menu.position.header: __menu.position.header
-menu.position.right: __menu.position.right
-menu.position.footer: __menu.position.footer
-menu.position.left: __menu.position.left
-menu.select.locale: __menu.select.locale
-menu.header.type.sidebar: __menu.header.type.side-bar
-menu.header.type.dropdown: __menu.header.type.deroulant
-menu.header.type.dropdown_big_menu: '__Menu déroulant géant'
-menu.header.type.dropdown_big_menu_2col: '__Menu déroulant géant, 2 colonnes'
-menu.header.type.dropdown_big_menu_3col: '__Menu déroulant géant, 3 colonnes'
-menu.header.type.dropdown_big_menu_4col: '__Menu déroulant géant, 4 colonnes'
-menu.left.right.type.sidebar: __menu.left.right.type.side-bar
-menu.left.right.type.sidebar_accordion: __menu.left.right.type.side-bar.accordeon
-menu.footer.type.col: __menu.footer.type.col
-menu.title.demo: __menu.title.demo
-menu.title.demo_warning: __menu.title.demo_warning
-menu.title.architecture: __menu.title.architecture
-menu.button.save: __menu.btn.save
-menu.button.new: __menu.btn.new
-menu.form.title.edit: __menu.form.title.edit
-menu.form.input.search.page.placeholder: __menu.form.input.search.page.placeholder
-menu.form.input.link.text: __menu.form.input.link.text
-menu.form.input.link.url: __menu.form.input.link.url
-menu.form.input.link.external.url: __menu.form.input.link.external.url
-menu.form.radio.label.url.internal: __menu.form.radio.label.url.interne
-menu.form.radio.label.url.external: __menu.form.radio.label.url.externe
-menu.no_select.menu.form: __menu.no_select.menu.form
-menu.no_select.menu.form_message: __menu.no_select.menu.form.msg
-menu.title.global_form: __menu.title.global_form
-menu.input.name.label: __menu.input.name.label
-menu.input.name.placeholder: __menu.input.name.placeholder
-menu.input.name.error: __menu.input.name.error
-menu.select.position.label: __menu.select.position.label
-menu.select.type.label: __menu.select.type.label
-menu.checkbox.disabled.label: __menu.checkbox.disabled.label
-menu.form.url.type.label: __menu.form.url.type.label
-menu.element.confirm.delete.title: __menu.element.confirm.delete.title
-menu.element.confirm.delete.body: __menu.element.confirm.delete.body
-menu.element.confirm.delete.body_2: __menu.element.confirm.delete.body.2
-menu.element.confirm.delete.button.ok: __menu.element.confirm.delete.btn.ok
-menu.element.confirm.delete.button.ko: __menu.element.confirm.delete.btn.ko
-menu.button.new_menu_element: __menu.btn.new.menu.element
-menu.tree.button.new.menu.element: __menu.tree.btn.new.menu.element
-menu.form.radio.label.disabled.element: __menu.form.radio.label.disabled.element
-menu.form.radio.label.enabled.element: __menu.form.radio.label.enabled.element
-menu.form.text.info.disabled.element: __menu.form.text.info.disabled.element
-menu.form.text.info.enabled.element: __menu.form.text.info.enabled.element
-menu.new.success.save: __menu.new.success.save
-menu.edit.success.save: __menu.edit.success.save
-menu.checkbox.disabled.label_message: __menu.checkbox.disabled.label.msg
-menu.checkbox.enabled.label.message: __menu.checkbox.enabled.label.msg
-menu.form.link.target.label: __menu.form.link.target.label
-menu.form.link.target.label_self: __menu.form.link.target.label.self
-menu.form.link.target.label_blank: __menu.form.link.target.label.blank
-menu.footer.type.row1.right: __menu.footer.type.row1.right
-menu.footer.type.row1.center: __menu.footer.type.row1.center
-menu.grid.default: __menu.grid.default
-menu.grid.default_no: __menu.grid.default.no
-menu.grid.default_yes: __menu.grid.default.yes
-menu.checkbox.default.menu.true.label: __menu.checkbox.default.menu.true.label
-menu.checkbox.default.menu.false.label.message: __menu.checkbox.default.menu.false.label.msg
-menu.checkbox.default.menu.true.label_message: __menu.checkbox.default.menu.true.label.msg
-menu.success.switch.default: __menu.success.switch.default
-menu.confirm.switch.default.message: __menu.confirm.switch.default.msg
-menu.index.modal.help.default: __menu.index.popin.help.default
-menu.grid.author: __menu.grid.author
-menu.no_select.menu.form_message_2: __menu.no_select.menu.form.msg.2
-menu.no_select.menu.form_message_3: __menu.no_select.menu.form.msg.3
-menu.no_select.menu.form_message_4: __menu.no_select.menu.form.msg.4
-menu.no_select.menu.form_message_5: __menu.no_select.menu.form.msg.5
-menu.no_select.menu.form_message_6: __menu.no_select.menu.form.msg.6
-menu.tree.tag.page: __menu.tree.tag.page
-menu.tree.tag.link: __menu.tree.tag.link
-menu.tree.element.disabled: __menu.tree.element.disabled
-menu.form.button.save: __menu.form.btn.save
-menu.form.button.cancel: __menu.form.btn.cancel
-menu.form.button.delete: __menu.form.btn.delete
-menu.form.input.search.page.placeholder_no_result: __menu.form.input.search.page.placeholder.no.result
-menu.form.empty.text.link.error: __menu.form.empty.text.link.error
-menu.form.empty.internal.link.error: __menu.form.empty.internal.link.error
-menu.label.error: __menu.label.error
-menu.tree.element.no.save: __menu.tree.element.no.save
-menu.label.error_info_label: __menu.label.error.info.label
-menu.label.error_info_sub_label: __menu.label.error.info.sub.label
-menu.no.save.label: __menu.no.save.label
-menu.no.save.sub.label: __menu.no.save.sub.label
-menu.label.error_no_menu_element_label: __menu.label.error.no.menu.element.label
-menu.label.error_no_menu_element_sub_label: __menu.label.error.no.menu.element.sub.label
-menu.new.error.no.name: __menu.new.error.no.name
-menu.new.error.no.menu.element: __menu.new.error.no.menu.element
-menu.error.no.default.footer: __menu.error.no.default.footer
-menu.error.no.default.header: __menu.error.no.default.header
-menu.error.no.default.left: __menu.error.no.default.left
-menu.error.more.one.default.footer: __menu.error.more.one.default.footer
-menu.error.more.one.default.header: __menu.error.more.one.default.header
-menu.error.more.one.default.left: __menu.error.more.one.default.left
-menu.index.page_title.error.default.title: __menu.index.page_title.error.default.title
-menu.index.page_title.error.default.info: __menu.index.page_title.error.default.info
-menu.button.back: __menu.btn.back
-menu.no.exist.title: __menu.no.exist.title
-menu.no.exist.text: __menu.no.exist.text
-menu.error.forbidden: __menu.error.forbidden
-menu.error.not_found: __menu.error.not_found
-menu.error.default.disabled: __menu.error.default.disabled
-menu.error.default.delete: __menu.error.default.delete
-menu.error.switch.default.disabled: __menu.error.switch.default.disabled
-menu.error.delete.used: __menu.error.delete.used
-menu.error.external_link: __menu.error.external_link
-menu.form.invalid.external.link.error: __menu.form.invalid.external.link.error
+menu.index.modal.help.title: Ayuda
+menu.index.modal.help.disabled_menu: Desactivar el menú
+menu.index.modal.help.enable_menu: Activar el menú
+menu.index.modal.help.delete: Eliminar
+menu.index.modal.help.edit: Modificar
+menu.index.title: Gestión de los menús
+menu.index.button.new: Nuevo menú
+menu.index.description: Gestione los menús de su sitio web
+menu.index.description_2: Puede asignar un menú a una sola página o a un conjunto de páginas
+menu.success.no.disabled: Menú activado correctamente
+menu.success.disabled: Menú desactivado correctamente
+menu.remove.success: Menú eliminado correctamente
+menu.grid.id: '#'
+menu.grid.name: Nombre
+menu.grid.type: Tipo
+menu.grid.create_at: Fecha de creación
+menu.grid.update_at: Fecha de modificación
+menu.confirm.disabled.message: ¿Confirma la desactivación del menú <b>{label}</b>? Ya no se mostrará en el sitio
+menu.confirm.delete.message: ¿Confirma la eliminación del menú <b>{label}</b>? Esta acción es definitiva
+menu.add.title: Nuevo menú
+menu.add.description: Cree un nuevo menú para su sitio web
+menu.update.menu_title: 'Edición del menú #{id}'
+menu.update.title: Edición del menú
+menu.update.description: Modifique el menú de su sitio web
+menu.position.header: Cabecera
+menu.position.right: A la derecha
+menu.position.footer: Pie de página
+menu.position.left: A la izquierda
+menu.select.locale: Elección del idioma
+menu.header.type.sidebar: Menú lateral
+menu.header.type.dropdown: Menú desplegable clásico
+menu.header.type.dropdown_big_menu: Megamenú
+menu.header.type.dropdown_big_menu_2col: Megamenú, 2 columnas
+menu.header.type.dropdown_big_menu_3col: Megamenú, 3 columnas
+menu.header.type.dropdown_big_menu_4col: Megamenú, 4 columnas
+menu.left.right.type.sidebar: Menú lateral
+menu.left.right.type.sidebar_accordion: Menú lateral con acordeones
+menu.footer.type.col: Pie de página en columnas
+menu.title.demo: Vista previa del menú
+menu.title.demo_warning: Esta vista previa muestra la estructura y puede diferir de cómo se ve en su sitio
+menu.title.architecture: Estructura del menú
+menu.button.save: Guardar
+menu.button.new: Nuevo menú
+menu.form.title.edit: Edición del elemento del menú
+menu.form.input.search.page.placeholder: Buscar una página
+menu.form.input.link.text: Etiqueta
+menu.form.input.link.url: URL interna
+menu.form.input.link.external.url: URL externa
+menu.form.radio.label.url.internal: Enlace interno
+menu.form.radio.label.url.external: Enlace externo
+menu.no_select.menu.form: Edición del elemento del menú
+menu.no_select.menu.form_message: Seleccione un elemento
+menu.title.global_form: Gestión del menú
+menu.input.name.label: Nombre del menú
+menu.input.name.placeholder: Nombre del menú
+menu.input.name.error: El nombre del menú no puede estar vacío
+menu.select.position.label: Posición del menú
+menu.select.type.label: Tipo de menú
+menu.checkbox.disabled.label: Menú desactivado
+menu.form.url.type.label: Tipo de URL
+menu.element.confirm.delete.title: Eliminación de un elemento del menú
+menu.element.confirm.delete.body: ¿Confirma la eliminación de este elemento de su menú?
+menu.element.confirm.delete.body_2: Atención, si este elemento tiene hijos, también se eliminarán
+menu.element.confirm.delete.button.ok: Sí
+menu.element.confirm.delete.button.ko: 'No'
+menu.button.new_menu_element: Nuevo
+menu.tree.button.new.menu.element: Nuevo
+menu.form.radio.label.disabled.element: Elemento oculto
+menu.form.radio.label.enabled.element: Elemento visible
+menu.form.text.info.disabled.element: Este elemento está oculto, no será visible en su menú
+menu.form.text.info.enabled.element: Este elemento es visible, se mostrará en su menú
+menu.new.success.save: Menú creado correctamente, redirigiendo al modo edición...
+menu.edit.success.save: ¡Menú modificado correctamente!
+menu.checkbox.disabled.label_message: El menú está desactivado actualmente, no aparecerá en el sitio
+menu.checkbox.enabled.label.message: El menú es visible en el sitio
+menu.form.link.target.label: Destino del enlace
+menu.form.link.target.label_self: Misma página
+menu.form.link.target.label_blank: Nueva pestaña
+menu.footer.type.row1.right: Pie de página en 1 línea, a la derecha
+menu.footer.type.row1.center: Pie de página en 1 línea, centrado
+menu.grid.default: Visualización por defecto
+menu.grid.default_no: 'No'
+menu.grid.default_yes: Sí
+menu.checkbox.default.menu.true.label: Menú por defecto
+menu.checkbox.default.menu.false.label.message: Este menú debe estar vinculado a una página para aparecer
+menu.checkbox.default.menu.true.label_message: Este menú aparecerá por defecto si la página mostrada no tiene un menú definido; solo puede haber un menú por defecto por posición
+menu.success.switch.default: El menú {label} es ahora el menú por defecto
+menu.confirm.switch.default.message: Está a punto de definir el menú <b>{label}</b> como menú por defecto. Los demás menús de la misma posición dejarán de serlo. <br />¿Confirma esta acción?
+menu.index.modal.help.default: Menú por defecto
+menu.grid.author: Autor
+menu.no_select.menu.form_message_2: Haga clic en un elemento del menú para modificarlo
+menu.no_select.menu.form_message_3: Añadir un elemento hijo
+menu.no_select.menu.form_message_4: Modificar un elemento
+menu.no_select.menu.form_message_5: Ocultar / mostrar un elemento
+menu.no_select.menu.form_message_6: Eliminar un elemento
+menu.tree.tag.page: Página
+menu.tree.tag.link: URL
+menu.tree.element.disabled: Desactivado
+menu.form.button.save: Guardar
+menu.form.button.cancel: Cancelar
+menu.form.button.delete: Eliminar
+menu.form.input.search.page.placeholder_no_result: No se ha encontrado ninguna página
+menu.form.empty.text.link.error: Este campo no puede estar vacío
+menu.form.empty.internal.link.error: Debe elegir una página
+menu.label.error: error(es)
+menu.tree.element.no.save: modificado
+menu.label.error_info_label: elemento(s) con al menos un error de validación
+menu.label.error_info_sub_label: Corrija los errores antes de guardar
+menu.no.save.label: Cambios sin guardar
+menu.no.save.sub.label: No olvide guardar sus cambios
+menu.label.error_no_menu_element_label: Ningún elemento en el menú
+menu.label.error_no_menu_element_sub_label: El menú debe tener al menos un elemento para ser válido
+menu.new.error.no.name: El menú debe tener un nombre
+menu.new.error.no.menu.element: El menú debe tener al menos un elemento para ser válido
+menu.error.no.default.footer: No hay ningún pie de página definido por defecto
+menu.error.no.default.header: No hay ninguna cabecera definida por defecto
+menu.error.no.default.left: No hay ningún menú definido por defecto
+menu.error.more.one.default.footer: Tiene más de un pie de página por defecto, ¡esto no es normal!
+menu.error.more.one.default.header: Tiene más de una cabecera por defecto, ¡esto no es normal!
+menu.error.more.one.default.left: Tiene más de un menú por defecto, ¡esto no es normal!
+menu.index.page_title.error.default.title: Se han detectado una o varias alertas
+menu.index.page_title.error.default.info: Esta alerta se actualizará la próxima vez que se actualice esta página
+menu.button.back: Volver
+menu.no.exist.title: No se ha encontrado ningún menú
+menu.no.exist.text: Este menú no existe o ha sido eliminado. Puede volver a la lista o crear uno nuevo
+menu.error.forbidden: No tiene permisos para realizar esta acción en este menú.
+menu.error.not_found: Este menú no existe o ha sido eliminado.
+menu.error.default.disabled: 'El menú por defecto no se puede desactivar: defina primero otro menú por defecto para esta posición.'
+menu.error.default.delete: 'El menú por defecto no se puede eliminar: defina primero otro menú por defecto para esta posición.'
+menu.error.switch.default.disabled: Un menú desactivado no puede convertirse en el menú por defecto.
+menu.error.delete.used: Este menú se utiliza en {nb, plural, one {# página} other {# páginas}}, no se puede eliminar.
+menu.error.external_link: 'Enlace externo no válido: solo se aceptan enlaces http://, https://, mailto:, tel: o una ruta que empiece por /.'
+menu.form.invalid.external.link.error: 'Enlace no válido: utilice http://, https://, mailto:, tel: o una ruta que empiece por /'

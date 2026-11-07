@@ -1,273 +1,273 @@
-date.diff.and: __et
-date.diff.day: "{days, plural,\n    =1    {__jour}\n    other {__jours}\n}"
-date.diff.hour: "{hours, plural,\n    =1    {__heure}\n    other {__heures}\n}"
-date.diff.instant: "__A l'instant"
-date.diff.minute: "{minutes, plural,\n    =1    {__minute}\n    other {__minutes}\n}"
-date.diff.month: __mois
-date.diff.no_data: __date.diff.no_data
-date.diff.second: "{secondes, plural,\n    =1    {__seconde}\n    other {__secondes}\n}"
-date.diff.start: "__Il y'a"
-date.diff.start_short: __date.diff.start.short
-date.diff.year: "{years, plural,\n    =1    {__année}\n    other {__années}\n}"
-global.color.blue: __Bleu
-global.color.green: __Vert
-global.color.purple: __Violet
-global.color.red: __Rouge
-global.leave_form.body: __message.global.modal.confirm.corps
-global.leave_form.button_no: __message.global.modal.confirm.non
-global.leave_form.button_yes: __message.global.modal.confirm.oui
-global.leave_form.title: __message.global.modal.confirm.titre
-global.locale.en: __Anglais
-global.locale.es: __Espagnol
-global.locale.fr: __Français
-global.options.loading_save: '__Sauvegarde en cours'
-mail.account_adm_disable.description: '__Email envoyé quand un compte user est désactivé (accès administratif)'
-mail.account_adm_disable.title: '__Email information désactivation compte'
-mail.account_adm_enable.description: '__Email envoyé quand un compte user est réactivé (accès administratif)'
-mail.account_adm_enable.title: '__Email information réactivation compte'
-mail.change_password.description: "__Email envoyé lorsqu'un utilisateur fait une demande de mot de passe"
-mail.change_password.title: '__Email de changement de mot de passe'
-mail.create_account_adm.description: "__Email envoyé quand un administrateur créé un compte pour accéder à l'administration"
-mail.create_account_adm.title: '__Email information création de compte'
-mail.keyword.admin.login: '__login administrateur'
-mail.keyword.global.site_name: '__Nom du site'
-mail.keyword.global.url: '__Url du site'
-mail.keyword.global.url_change_psw: '__Url changement mot de passe'
-mail.keyword.url.time: '__délais lien'
-mail.keyword.user.email: '__Adresse email'
-mail.keyword.user.firstname: __Prénom
-mail.keyword.user.lastname: __Nom
-mail.keyword.user.login: __Login
-mail.reset_password.description: "__Mail envoyé si un super administrateur fait un reset du mot de passe d'un utilisateur"
-mail.reset_password.title: '__Reset mot de passe'
-mail.self_anonymous.description: "__Email envoyé quand un utilisateur décide d'anonymiser son compte de lui même"
-mail.self_anonymous.title: '__Utilisateur qui anonymise son compte de lui même'
-mail.self_delete.description: '__Email envoyé quand un utilisateur décide de supprimer son compte de lui même'
-mail.self_delete.title: '__Utilisateur qui supprime son compte de lui même'
-mail.self_disabled.description: '__Email envoyé quand un utilisateur décide de désactiver son compte de lui même'
-mail.self_disabled.title: '__Utilisateur qui désactive son compte de lui même'
-options_system.allow_delete_data.help: '__Si la valeur choisi est non, alors les données seront masquées'
-options_system.allow_delete_data.label: '__Autoriser la suppression des données'
-options_system.category.admin.description: "__Options concernant l'administration du site web"
-options_system.category.admin.label: __Administration
-options_system.category.admin.title: "__Options de l'administration"
-options_system.category.api.description: '__Options concernant les API de votre site'
-options_system.category.api.label: __API
-options_system.category.api.title: '__Gestion des APIs'
-options_system.category.comment.description: '__Options concernant les commentaires de votre site'
-options_system.category.comment.label: __Commentaire
-options_system.category.comment.title: '__Gestion des commentaires'
-options_system.category.log.description: "__Gérer le niveau de log et suivi que vous voulez avoir sur l'application. Attention, un haut niveau de log peut générer des fichiers volumineux"
-options_system.category.log.label: __Logs
-options_system.category.log.title: '__Gestion des logs'
-options_system.category.mail.description: "__Paramétrage des emails envoyés depuis l'application"
+date.diff.and: and
+date.diff.day: "{days, plural,\n    =1    {day}\n    other {days}\n}"
+date.diff.hour: "{hours, plural,\n    =1    {hour}\n    other {hours}\n}"
+date.diff.instant: a few moments
+date.diff.minute: "{minutes, plural,\n    =1    {minute}\n    other {minutes}\n}"
+date.diff.month: month(s)
+date.diff.no_data: No data
+date.diff.second: "{secondes, plural,\n    =1    {second}\n    other {seconds}\n}"
+date.diff.start: 'Elapsed:'
+date.diff.start_short: About
+date.diff.year: "{years, plural,\n    =1    {year}\n    other {years}\n}"
+global.color.blue: Blue
+global.color.green: Green
+global.color.purple: Purple
+global.color.red: Red
+global.leave_form.body: <b>Unsaved changes</b> have been detected, do you confirm you want to <b>leave the page</b>? All unsaved changes will be lost
+global.leave_form.button_no: No, I want to stay
+global.leave_form.button_yes: Yes, I want to leave the page
+global.leave_form.title: Unsaved changes detected
+global.locale.en: English
+global.locale.es: Spanish
+global.locale.fr: French
+global.options.loading_save: Saving
+mail.account_adm_disable.description: Email sent when a user account (administration access) is disabled by an administrator
+mail.account_adm_disable.title: Account deactivation
+mail.account_adm_enable.description: Email sent when a user account (administration access) is enabled again by an administrator
+mail.account_adm_enable.title: Account reactivation
+mail.change_password.description: Email sent when a user requests a password change
+mail.change_password.title: Password change
+mail.create_account_adm.description: Email sent to the user when an administrator creates their account to access the administration
+mail.create_account_adm.title: Account creation
+mail.keyword.admin.login: Administrator login
+mail.keyword.global.site_name: Site name
+mail.keyword.global.url: Site URL
+mail.keyword.global.url_change_psw: Password change URL
+mail.keyword.url.time: Link validity period
+mail.keyword.user.email: Email address
+mail.keyword.user.firstname: First name
+mail.keyword.user.lastname: Last name
+mail.keyword.user.login: Login
+mail.reset_password.description: Email sent when a super administrator resets a user's password
+mail.reset_password.title: Password reset
+mail.self_anonymous.description: Email sent when a user anonymizes their own account
+mail.self_anonymous.title: User anonymizing their own account
+mail.self_delete.description: Email sent when a user deletes their own account
+mail.self_delete.title: User deleting their own account
+mail.self_disabled.description: Email sent when a user disables their own account
+mail.self_disabled.title: User disabling their own account
+options_system.allow_delete_data.help: If the chosen value is no, the data will just be hidden
+options_system.allow_delete_data.label: Allow data deletion
+options_system.category.admin.description: Options about the administration of the website
+options_system.category.admin.label: Administration
+options_system.category.admin.title: Administration options
+options_system.category.api.description: Options about the APIs of your site
+options_system.category.api.label: API
+options_system.category.api.title: API management
+options_system.category.comment.description: Options about the comments of your site
+options_system.category.comment.label: Comments
+options_system.category.comment.title: Comment management
+options_system.category.log.description: Manage the log level and the tracking you want on the application. Warning, a high log level can generate large files
+options_system.category.log.label: Logs
+options_system.category.log.title: Log management
+options_system.category.mail.description: Settings of the emails sent from the application
 options_system.category.mail.label: Emails
-options_system.category.mail.title: '__Gestion des emails'
-options_system.category.media.description: '__Gérer les options de la médiathèque'
-options_system.category.media.label: __Médiathèque
-options_system.category.media.title: '__Gestion de la Médiathèque'
-options_system.category.notification.description: '__Gérer les notifications sur le CMS'
-options_system.category.notification.label: __Notification
-options_system.category.notification.title: '__Gestion des notifications'
-options_system.category.seo.description: '__Gérer de façon globale le SEO de votre site'
-options_system.category.seo.label: __SEO
-options_system.category.seo.title: '__SEO globale de votre site'
-options_system.category.web_site.description: '__Options concernant le site web public'
-options_system.category.web_site.label: '__Site web'
-options_system.category.web_site.title: '__Options du site web'
-options_system.confirm_leave_form.help: '__Une confirmation vous sera demandé à chaque fois que vous voudrez quitter une page contenant un formulaire si cette option est activé'
-options_system.confirm_leave_form.label: '__Demander une confirmation avant de quitter une page contenant un formulaire'
-options_system.default.error: '__Erreur de validation, vérifiez votre saisie'
-options_system.default.success: '__Modification enregistrée avec succès'
-options_system.default_language.help: '__La langue choisi sera utilisée sur le site ainsi que défini pour chaque nouvel utilisateur créé'
-options_system.default_language.label: '__Langue par défaut du site'
-options_system.front_api_token.help: "__Token envoyé par le front pour appeler l'API, généré à l'installation avec le rôle écriture (nécessaire pour l'ajout et la modération de commentaires). Il est visible publiquement dans le navigateur des visiteurs. Sans token, le front ne peut pas s'afficher."
-options_system.front_api_token.label: "__Token API utilisé par le front du site"
+options_system.category.mail.title: Email management
+options_system.category.media.description: Manage the media library options
+options_system.category.media.label: Media library
+options_system.category.media.title: Media library management
+options_system.category.notification.description: Manage the notifications of the CMS
+options_system.category.notification.label: Notifications
+options_system.category.notification.title: Notification management
+options_system.category.seo.description: Manage the SEO of your site globally
+options_system.category.seo.label: SEO
+options_system.category.seo.title: Global SEO of your site
+options_system.category.web_site.description: Options about the management of your public website
+options_system.category.web_site.label: Website
+options_system.category.web_site.title: Website management options
+options_system.confirm_leave_form.help: If this option is enabled, you will be asked for confirmation every time you want to leave a page containing a form
+options_system.confirm_leave_form.label: Ask for confirmation before leaving a page containing a form
+options_system.default.error: Validation error, check your input
+options_system.default.success: Change saved successfully
+options_system.default_language.help: The chosen language will be used on the site and set for every new user created
+options_system.default_language.label: Default language of the site
+options_system.front_api_token.help: Token sent by the front to call the API, generated during installation with the write role (needed to add and moderate comments). It is publicly visible in visitors' browsers. Without a token, the front cannot be displayed.
+options_system.front_api_token.label: API token used by the site front
 options_system.front_api_token.placeholder: "xxxxxxxx.xxxxxxxx.xxxxxxxx.xxxxxxxx"
-options_system.front_api_token.success: "__Le token API du front a bien été mis à jour"
-options_system.front_footer_social_facebook_url.help: '__Laisser vide pour ne rien afficher sinon apparaitra dans le footer'
-options_system.front_footer_social_facebook_url.label: '__Url de votre compte Facebook'
-options_system.front_footer_social_facebook_url.placeholder: '__Url de votre compte Facebook'
-options_system.front_footer_social_facebook_url.success: '__Url de votre compte Facebook mis à jour'
-options_system.front_footer_social_github_url.help: '__Laisser vide pour ne rien afficher sinon apparaitra dans le footer'
-options_system.front_footer_social_github_url.label: '__Url de votre repo Github'
-options_system.front_footer_social_github_url.placeholder: '__Url de votre repo Github'
-options_system.front_footer_social_github_url.success: '__Url de votre repo Github mis à jour'
-options_system.front_footer_social_instagram_url.help: '__Laisser vide pour ne rien afficher sinon apparaitra dans le footer'
-options_system.front_footer_social_instagram_url.label: '__Url de votre compte Instagram'
-options_system.front_footer_social_instagram_url.placeholder: '__Url de votre compte Instagram'
-options_system.front_footer_social_instagram_url.success: '__Url de votre compte Instagram mis à jour'
-options_system.front_footer_social_linkedin_url.help: '__Laisser vide pour ne rien afficher sinon apparaitra dans le footer'
-options_system.front_footer_social_linkedin_url.label: '__Url de votre profil Linkedin'
-options_system.front_footer_social_linkedin_url.placeholder: '__Url de votre profil Linkedin'
-options_system.front_footer_social_linkedin_url.success: '__Url de votre profil Linkedin mis à jour'
-options_system.front_footer_social_tiktok_url.help: '__Laisser vide pour ne rien afficher sinon apparaitra dans le footer'
-options_system.front_footer_social_tiktok_url.label: '__Url de votre compte Tiktok'
-options_system.front_footer_social_tiktok_url.placeholder: '__Url de votre compte Tiktok'
-options_system.front_footer_social_tiktok_url.success: '__Url de votre compte Tiktok mis à jour'
-options_system.front_footer_social_x_url.help: '__Laisser vide pour ne rien afficher sinon apparaitra dans le footer'
-options_system.front_footer_social_x_url.label: '__Url de votre compte X'
-options_system.front_footer_social_x_url.placeholder: '__Url de votre compte X'
-options_system.front_footer_social_x_url.success: '__Url de votre compte X mis à jour'
-options_system.front_footer_social_youtube_url.help: '__Laisser vide pour ne rien afficher sinon apparaitra dans le footer'
-options_system.front_footer_social_youtube_url.label: '__Url de votre chaine Youtube'
-options_system.front_footer_social_youtube_url.placeholder: '__Url de votre chaine Youtube'
-options_system.front_footer_social_youtube_url.success: '__Url de votre chaine Youtube mis à jour'
-options_system.front_footer_text.help: '__Texte affiché en bas du footer pour résumer votre site.'
-options_system.front_footer_text.label: '__Texte en bas du footer'
-options_system.front_footer_text.placeholder: '__Texte en bas du footer'
-options_system.front_robot_no_follow.help: '__Si cette option est activé, les moteurs de recherches ne suivrons pas les liens dans les pages de votre site'
-options_system.front_robot_no_follow.label: '__Bloquer le suivi des liens de votre site pour les moteurs de recherches'
-options_system.front_robot_no_index.help: "__Si cette option est activé, les moteurs de recherches n'indexerons pas les pages de votre site"
-options_system.front_robot_no_index.label: "__Bloquer l'indexation de votre site pour les moteurs de recherches"
-options_system.front_script_end_body.help: '__Ajouter vos scripts qui doivent être exécutés à la fermeture de la balise BODY.'
-options_system.front_script_end_body.label: '__Script juste avant la fermeture de la balise BODY'
-options_system.front_script_end_body.placeholder: '__Tous type de scripts est autorisé'
-options_system.front_script_start_body.help: "__Ajouter vos scripts qui doivent être exécutés à l'ouverture de la balise BODY."
-options_system.front_script_start_body.label: "__Script juste après l'ouverture de la balise BODY"
-options_system.front_script_start_body.placeholder: '__Tous type de scripts est autorisé'
-options_system.front_script_top.help: '__Ajouter vos scripts qui doivent être exécutés dans la balise HEAD.'
-options_system.front_script_top.label: '__Script dans la balise HEAD'
-options_system.front_script_top.placeholder: '__Tous type de scripts est autorisé'
-options_system.log_doctrine.help: '__Permet de tracer toutes modifications de donnée (ajout/édition/suppression) sur le site, peut générer des fichiers volumineux'
-options_system.log_doctrine.label: '__Enregistrer tout changement dans la base de donnée'
-options_system.mail_from.error: '__Ce champs ne peux pas être vide'
-options_system.mail_from.help: "__Adresse email qui apparaitra en tant qu'expéditeur dans les emails envoyés"
-options_system.mail_from.label: '__Email envoyé en tant que'
-options_system.mail_from.placeholder: '__Adresse email'
-options_system.mail_from.success: '__Adresse email enregistrée avec succès'
-options_system.mail_notification.help: "__Si oui, tous les SUPER_ADMIN recevrons un email de notification dans le cas de certaines actions comme la désactivation / suppression / anonymisation d'un utilisateur par lui même"
-options_system.mail_notification.label: '__Recevoir un email de notification ?'
-options_system.mail_reply_to.error: '__Ce champs ne peux pas être vide'
-options_system.mail_reply_to.help: "__Adresse email qui apparaitra lorsque l'on souhaite répondre à un email du CMS"
-options_system.mail_reply_to.label: '__Adresse email de réponse'
-options_system.mail_reply_to.placeholder: '__Adresse email'
-options_system.mail_reply_to.success: '__Adresse email enregistrée avec succès'
-options_system.mail_signature.help: '__Texte présent au pied de chaque email qui sera envoyé depuis le CMS, HTML autorisé'
-options_system.mail_signature.label: '__Signature email'
-options_system.mail_signature.placeholder: '__Saisissez une signature'
-options_system.media_path.error: '__Vous devez saisir un path pour le média'
-options_system.media_path.help: "__Vous pouvez stockez vos média sur un outils externe, précisez simplement l'url de votre serveur - valeur par défaut : public"
-options_system.media_path.label: '__Path du dossier média'
-options_system.media_path.placeholder: '__ath ou url du dossier média'
-options_system.media_path.success: '__Dossier média changé avec succès'
-options_system.media_physical_folder.help: "__si l'option est activé, pour chaque dossier créer virtuellement un dossier physique sera créé dans la médiathèque"
-options_system.media_physical_folder.label: '__Création de dossiers physiques'
-options_system.media_url.error: '__Vous devez saisir une url'
-options_system.media_url.help: '__A ne changer que si vous utilisez un stockage externe pour vos médias'
-options_system.media_url.label: '__URL public pour accéder au images sockées'
-options_system.media_url.placeholder: '__URL public au format http://'
-options_system.media_url.success: '__Dossier média changé avec succès'
-options_system.nb_element.help: '__La valeur choisie sera défini pour chaque nouvel utilisateur créé'
-options_system.nb_element.label: "__Nombre d'éléments par page sur les tableaux de données"
-options_system.new_comment_wait_validation.help: '__Si oui, tout nouveau commentaire devra être validé manuellement pour être visible sur le site'
-options_system.new_comment_wait_validation.label: '__Forcer la validation des nouveaux commentaires'
-options_system.notification.help: '__Activer les notifications sur le site'
-options_system.notification.label: '__Activer les notifications ?'
-options_system.open_api.help: "__Si l'API est fermée, toutes les routes /api renvoient une erreur 403. Indépendant de l'ouverture du site au public."
-options_system.open_api.label: "__Ouvrir l'API ?"
-options_system.open_comment.help: '__Si oui, les commentaires seront ouvert sous les pages qui autorisent les commentaires'
-options_system.open_comment.label: '__Ouvrir les commentaires ?'
-options_system.open_site.help: "__Même si le site est fermé au public, l'administration restera toujours accessible."
-options_system.open_site.label: '__Ouvrir le site au public ?'
-options_system.purge_notification.help: '__Uniquement les notifications lues seront purgées même si le délai est dépassé'
-options_system.purge_notification.label: '__Temps en jour avant suppression des notifications'
-options_system.purge_notification.value.3_months: '__3 mois'
-options_system.purge_notification.value.6_months: '__6 mois'
-options_system.purge_notification.value.month: '__1 mois'
-options_system.purge_notification.value.week: '__1 semaine'
-options_system.purge_notification.value.year: '__1 an'
-options_system.replace_delete_user.help: "__Dans le cas contraire, l'ensemble des données de l'utilisateur seront supprimées."
-options_system.replace_delete_user.label: "__Remplacer l'utilisateur supprimé par l'utilisateur fantôme John Doe"
-options_system.reset_password_time.help: '__Temps en minutes avant que le lien généré pour le changement de mot de passe soit invalide'
-options_system.reset_password_time.label: '__Délais de validité du lien de changement de mot de passe'
-options_system.site_address.error: '__Ce champs ne peux pas être vide'
-options_system.site_address.help: '__URL racine, qui servira de référence pour la génération des liens externes'
-options_system.site_address.label: '__URL du site'
-options_system.site_address.placeholder: __URL
-options_system.site_address.success: '__URL enregistrée avec succès'
-options_system.site_name.error: '__Vous devez saisir un nom pour votre site'
-options_system.site_name.help: "__Uniquement des lettres, sans caractères spéciaux. Le nom du site apparaitra dans le footer, les mails, et dans l'administration"
-options_system.site_name.label: '__Nom de votre site'
-options_system.site_name.placeholder: '__Votre nom'
-options_system.site_name.success: '__Le nom à bien été modifié avec succès'
-options_system.theme_front_site.help: '__Défini le thème que vera vos visiteurs sur le cms'
-options_system.theme_front_site.label: '__Thème de votre site'
-options_system.theme_site.help: "__La couleur choisi sera utilisée sur l'administration ainsi que défini pour chaque nouvel utilisateur créé"
-options_system.theme_site.label: "__Couleur principale de l'administration"
-options_system.user_token_validity.help: '__Passé ce délais, le token devient obsolète et la connexion ne sera plus autorisé avec celui-ci'
-options_system.user_token_validity.label: '__Temps de validation du token de connexion en tant que administrateur sur le front'
-options_system.user_token_validity.value.half_hour: '__Une demi heure'
-options_system.user_token_validity.value.one_day: '__24 heures'
-options_system.user_token_validity.value.one_hour: '__1 heure'
-options_system.user_token_validity.value.three_hours: '__3 heures'
-options_system.user_token_validity.value.twelve_hours: '__12 heures'
-options_system.user_token_validity.value.two_hours: '__2 heures'
-options_user.category.interface.description: "__Personaliser l'administration via ces options"
-options_user.category.interface.label: __Interface
-options_user.category.interface.title: '__Personalisation administration'
-options_user.category.personal_data.description: '__Gestion de mes données personnelles sur le site'
-options_user.category.personal_data.label: '__Données personnelles'
-options_user.category.personal_data.title: '__Mes données personnelles'
-options_user.default_language.help: "__Défini la langue de l'administration par défaut pour votre session"
-options_user.default_language.label: "__Langue de l'administration"
-options_user.default_personal_data_render.help: "__Si les données personnelles n'on pas été saisies, l'option inférieure sera prise en compte"
-options_user.default_personal_data_render.label: '__Affichage de vos données personnelles'
-options_user.default_personal_data_render.value.anonymous: __Anonyme
-options_user.default_personal_data_render.value.email: '__Adresse email'
-options_user.default_personal_data_render.value.login: __Pseudonyme
-options_user.default_personal_data_render.value.name: '__Votre nom et prénom'
-options_user.nb_element.help: "__Défini le nombre d'élément des tableaux par défaut pour votre session"
-options_user.nb_element.label: "__Nombre d'élément par page"
+options_system.front_api_token.success: The front API token has been updated
+options_system.front_footer_social_facebook_url.help: Leave empty to display nothing, otherwise the URL will appear in the footer
+options_system.front_footer_social_facebook_url.label: URL of your Facebook account
+options_system.front_footer_social_facebook_url.placeholder: URL of your Facebook account
+options_system.front_footer_social_facebook_url.success: URL of your Facebook account updated
+options_system.front_footer_social_github_url.help: Leave empty to display nothing, otherwise the URL will appear in the footer
+options_system.front_footer_social_github_url.label: URL of your GitHub repository
+options_system.front_footer_social_github_url.placeholder: URL of your GitHub repository
+options_system.front_footer_social_github_url.success: URL of your GitHub repository updated
+options_system.front_footer_social_instagram_url.help: Leave empty to display nothing, otherwise the URL will appear in the footer
+options_system.front_footer_social_instagram_url.label: URL of your Instagram account
+options_system.front_footer_social_instagram_url.placeholder: URL of your Instagram account
+options_system.front_footer_social_instagram_url.success: URL of your Instagram account updated
+options_system.front_footer_social_linkedin_url.help: Leave empty to display nothing, otherwise the URL will appear in the footer
+options_system.front_footer_social_linkedin_url.label: URL of your LinkedIn profile
+options_system.front_footer_social_linkedin_url.placeholder: URL of your LinkedIn profile
+options_system.front_footer_social_linkedin_url.success: URL of your LinkedIn profile updated
+options_system.front_footer_social_tiktok_url.help: Leave empty to display nothing, otherwise the URL will appear in the footer
+options_system.front_footer_social_tiktok_url.label: URL of your TikTok account
+options_system.front_footer_social_tiktok_url.placeholder: URL of your TikTok account
+options_system.front_footer_social_tiktok_url.success: URL of your TikTok account updated
+options_system.front_footer_social_x_url.help: Leave empty to display nothing, otherwise the URL will appear in the footer
+options_system.front_footer_social_x_url.label: URL of your X account
+options_system.front_footer_social_x_url.placeholder: URL of your X account
+options_system.front_footer_social_x_url.success: URL of your X account updated
+options_system.front_footer_social_youtube_url.help: Leave empty to display nothing, otherwise the URL will appear in the footer
+options_system.front_footer_social_youtube_url.label: URL of your YouTube channel
+options_system.front_footer_social_youtube_url.placeholder: URL of your YouTube channel
+options_system.front_footer_social_youtube_url.success: URL of your YouTube channel updated
+options_system.front_footer_text.help: Text displayed at the bottom of the footer to sum up your site.
+options_system.front_footer_text.label: Footer bottom text
+options_system.front_footer_text.placeholder: Footer bottom text
+options_system.front_robot_no_follow.help: If this option is enabled, search engines will not follow the links of your site's pages
+options_system.front_robot_no_follow.label: Prevent search engines from following the links of your site
+options_system.front_robot_no_index.help: If this option is enabled, search engines will not index the pages of your site
+options_system.front_robot_no_index.label: Prevent search engines from indexing your site
+options_system.front_script_end_body.help: Add the scripts that must run when the BODY tag closes.
+options_system.front_script_end_body.label: Script just before the closing BODY tag
+options_system.front_script_end_body.placeholder: All types of scripts are allowed
+options_system.front_script_start_body.help: Add the scripts that must run when the BODY tag opens.
+options_system.front_script_start_body.label: Script just after the opening BODY tag
+options_system.front_script_start_body.placeholder: All types of scripts are allowed
+options_system.front_script_top.help: Add the scripts that must run in the HEAD tag.
+options_system.front_script_top.label: Script in the HEAD tag
+options_system.front_script_top.placeholder: All types of scripts are allowed
+options_system.log_doctrine.help: Tracks every data change (add / edit / delete) on the site, can generate large files
+options_system.log_doctrine.label: Record every change in the database
+options_system.mail_from.error: This field cannot be empty
+options_system.mail_from.help: Email address shown as the sender of the emails sent
+options_system.mail_from.label: Email sent as
+options_system.mail_from.placeholder: Email address
+options_system.mail_from.success: Email address saved successfully
+options_system.mail_notification.help: If yes, all SUPER_ADMIN users will receive a notification email for some actions, such as a user disabling / deleting / anonymizing their own account
+options_system.mail_notification.label: Receive a notification email?
+options_system.mail_reply_to.error: This field cannot be empty
+options_system.mail_reply_to.help: Email address used when replying to an email from the CMS
+options_system.mail_reply_to.label: Reply-to email address
+options_system.mail_reply_to.placeholder: Email address
+options_system.mail_reply_to.success: Email address saved successfully
+options_system.mail_signature.help: Text at the bottom of every email sent from the CMS, HTML allowed
+options_system.mail_signature.label: Email signature
+options_system.mail_signature.placeholder: Enter a signature
+options_system.media_path.error: You must enter a path for the media
+options_system.media_path.help: 'You can store your media on an external tool, just enter the URL of your server - default value: public'
+options_system.media_path.label: Media folder path
+options_system.media_path.placeholder: Path or URL of the media folder
+options_system.media_path.success: Media folder changed successfully
+options_system.media_physical_folder.help: If the option is enabled, a physical folder will be created in the media library for each virtual folder
+options_system.media_physical_folder.label: Create physical folders
+options_system.media_url.error: You must enter a URL
+options_system.media_url.help: Only change it if you use external storage for your media
+options_system.media_url.label: Public URL to access the stored images
+options_system.media_url.placeholder: Public URL in the http:// format
+options_system.media_url.success: Media URL changed successfully
+options_system.nb_element.help: The chosen value will be set for every new user created
+options_system.nb_element.label: Number of items per page in data tables
+options_system.new_comment_wait_validation.help: If yes, every new comment will have to be approved manually to be visible on the site
+options_system.new_comment_wait_validation.label: Require approval of new comments
+options_system.notification.help: Enable notifications on the site
+options_system.notification.label: Enable notifications?
+options_system.open_api.help: If the API is closed, all /api routes return a 403 error. Independent of whether the site is open to the public.
+options_system.open_api.label: Open the API?
+options_system.open_comment.help: If yes, comments will be open below the pages that allow them
+options_system.open_comment.label: Open comments?
+options_system.open_site.help: Even if the site is closed to the public, the administration always remains accessible.
+options_system.open_site.label: Open the site to the public?
+options_system.purge_notification.help: Only read notifications will be purged, even if the period has passed
+options_system.purge_notification.label: Period before notifications are deleted
+options_system.purge_notification.value.3_months: 3 months
+options_system.purge_notification.value.6_months: 6 months
+options_system.purge_notification.value.month: 1 month
+options_system.purge_notification.value.week: 1 week
+options_system.purge_notification.value.year: 1 year
+options_system.replace_delete_user.help: Replaces the user to delete with a ghost user instead of disabling or deleting them. This option only works if the “Allow data deletion” option is enabled
+options_system.replace_delete_user.label: Replace the deleted user with the ghost user John Doe
+options_system.reset_password_time.help: Time in minutes before the link generated for the password change becomes invalid
+options_system.reset_password_time.label: Validity period of the password change link
+options_system.site_address.error: This field cannot be empty
+options_system.site_address.help: Root URL, used as the reference to generate external links
+options_system.site_address.label: Site URL
+options_system.site_address.placeholder: URL
+options_system.site_address.success: URL saved successfully
+options_system.site_name.error: You must enter a name for your site
+options_system.site_name.help: Letters only, no special characters. The site name will appear in the footer, the emails and the administration
+options_system.site_name.label: Name of your site
+options_system.site_name.placeholder: Name of your site
+options_system.site_name.success: The name has been changed successfully
+options_system.theme_front_site.help: Sets the theme of your site, this is the theme your visitors will see
+options_system.theme_front_site.label: Theme of your site
+options_system.theme_site.help: The chosen color will be used in the administration and set for every new user created
+options_system.theme_site.label: Main color of the administration
+options_system.user_token_validity.help: After this period, the token expires and logging in with it will no longer be allowed
+options_system.user_token_validity.label: Validity period of the administrator login token on the front
+options_system.user_token_validity.value.half_hour: Half an hour
+options_system.user_token_validity.value.one_day: 24 hours
+options_system.user_token_validity.value.one_hour: 1 hour
+options_system.user_token_validity.value.three_hours: 3 hours
+options_system.user_token_validity.value.twelve_hours: 12 hours
+options_system.user_token_validity.value.two_hours: 2 hours
+options_user.category.interface.description: Customize the administration with these options
+options_user.category.interface.label: Interface
+options_user.category.interface.title: Administration customization
+options_user.category.personal_data.description: Management of my personal data on the site
+options_user.category.personal_data.label: Personal data
+options_user.category.personal_data.title: My personal data
+options_user.default_language.help: Sets the default administration language for your session
+options_user.default_language.label: Administration language
+options_user.default_personal_data_render.help: If the personal data has not been entered, the option below will be used
+options_user.default_personal_data_render.label: Display of your personal data
+options_user.default_personal_data_render.value.anonymous: Anonymous
+options_user.default_personal_data_render.value.email: Email address
+options_user.default_personal_data_render.value.login: Nickname
+options_user.default_personal_data_render.value.name: Your first and last name
+options_user.nb_element.help: Sets the default number of items in tables for your session
+options_user.nb_element.label: Number of items per page
 pagedemo.index.description: 'This page is only displayed if the overwrite of the {route} route is disabled in {file}. It is the original page of the overwrite example.'
 pagedemo.index.title: 'Original page of the overwrite demo'
-response.ajax.error: __response.ajax.error
-response.ajax.success: __response.ajax.success
-sidebar.advanced_options.description: '__Permet de gérer les options pour le développement du CMS'
-sidebar.advanced_options.label: '__Dev Options'
-sidebar.api_token.description: "__Gérer les tokens d'accès aux API de natheo CMS"
-sidebar.api_token.label: '__API Token'
-sidebar.comment.description: '__Gestion des commentaires'
-sidebar.comment.label: __Commentaires
-sidebar.content.description: "__Regroupe l'ensemble des modules de contenus du site "
-sidebar.content.label: __Content
-sidebar.dashboard.description: "__Page d'accueil de la partie administration du CMS"
-sidebar.dashboard.label: __Dashboard
-sidebar.database_manager.description: '__Permet de visualisé la base de données + statistiques'
-sidebar.database_manager.label: '__Base de données'
-sidebar.demo_overwrite.description: '__Démo des différents éléments HTML du CMS'
-sidebar.demo_overwrite.label: '__Exemple HTML'
-sidebar.faq.description: '__Gestion des FAQs'
-sidebar.faq.label: __FAQ
-sidebar.info.description: '__Information sur le CMS'
-sidebar.info.label: __Information
-sidebar.log.description: '__Gestion et visualisation des logs applicatifs'
-sidebar.log.label: __Logs
-sidebar.mail.description: '__Gestion des emails envoyés depuis le CMS'
-sidebar.mail.label: __Emails
-sidebar.media.description: '__Gestion des médias'
-sidebar.media.label: __Médiathèque
-sidebar.member.description: '__Gestion des membres inscrit sur le site'
-sidebar.member.label: __Membres
-sidebar.menu.description: '__Gestion des menus'
-sidebar.menu.label: __Menus
-sidebar.option_system.description: '__Configuration du CMS'
-sidebar.option_system.label: __Options
-sidebar.page.description: '__Gestion des pages'
-sidebar.page.label: __Pages
-sidebar.sidebar.description: "__Gestion du menu général de l'administration"
-sidebar.sidebar.label: __Sidebar
-sidebar.sql_manager.description: '__Créer / Executer des requêtes SQL (uniquement SELECT)'
-sidebar.sql_manager.label: '__Gestionnaire SQL'
-sidebar.system.description: "__Regroupe l'ensemble des modules système du CMS"
-sidebar.system.label: __Système
-sidebar.tag.description: '__Gestion des tags'
-sidebar.tag.label: __Tags
-sidebar.tools.description: "__Regroupe l'ensemble des modules pour aider au développement du CMS"
-sidebar.tools.label: '__Dev Tools'
-sidebar.translate.description: '__Gestion des traductions du CMS'
-sidebar.translate.label: __Traduction
-sidebar.update.description: '__Gestion des mises à jour du CMS'
-sidebar.update.label: '__Mise à jour'
-sidebar.user.description: '__Gestion des utilisateurs qui peuvent ce connecter à la partie administration du site'
-sidebar.user.label: __Utilisateurs
+response.ajax.error: An error occurred, check the logs to find out more
+response.ajax.success: Action completed successfully
+sidebar.advanced_options.description: Manage the options for the development of the CMS
+sidebar.advanced_options.label: Advanced options
+sidebar.api_token.description: Manage the access tokens to the Nathéo CMS APIs
+sidebar.api_token.label: API tokens
+sidebar.comment.description: Comment management
+sidebar.comment.label: Comments
+sidebar.content.description: Groups all the content modules of the site
+sidebar.content.label: Content
+sidebar.dashboard.description: Home page of the CMS administration
+sidebar.dashboard.label: Dashboard
+sidebar.database_manager.description: View the database and its statistics
+sidebar.database_manager.label: Database
+sidebar.demo_overwrite.description: Example of overriding a CMS page
+sidebar.demo_overwrite.label: Override example
+sidebar.faq.description: FAQ management
+sidebar.faq.label: FAQ
+sidebar.info.description: Information about the CMS
+sidebar.info.label: Information
+sidebar.log.description: Management and viewing of the application logs
+sidebar.log.label: Logs
+sidebar.mail.description: Management of the emails sent from the CMS
+sidebar.mail.label: Emails
+sidebar.media.description: Media management
+sidebar.media.label: Media library
+sidebar.member.description: Management of the members registered on the site
+sidebar.member.label: Members
+sidebar.menu.description: Menu management
+sidebar.menu.label: Menus
+sidebar.option_system.description: CMS configuration
+sidebar.option_system.label: System options
+sidebar.page.description: Page management
+sidebar.page.label: Pages
+sidebar.sidebar.description: Management of the main administration menu
+sidebar.sidebar.label: Sidebar
+sidebar.sql_manager.description: Create / run SQL queries (SELECT only)
+sidebar.sql_manager.label: SQL manager
+sidebar.system.description: Groups all the system modules of the CMS
+sidebar.system.label: System
+sidebar.tag.description: Tag management
+sidebar.tag.label: Tags
+sidebar.tools.description: Groups all the modules that help develop the CMS
+sidebar.tools.label: Tools
+sidebar.translate.description: Management of the CMS translations
+sidebar.translate.label: Translations
+sidebar.update.description: Management of the CMS updates
+sidebar.update.label: Update
+sidebar.user.description: Management of the users who can log in to the site administration
+sidebar.user.label: Users

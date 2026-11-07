@@ -1,17 +1,17 @@
-info.index.title: __info.page.title.h1
-info.index.description: __info.description
-info.server.title: __info.serveur.title
-info.cms.title: __info.cms.title
-info.database.title: __info.database.title
-info.browser.title: __info.info.title
-info.server.software_version: __info.server.software.version
-info.server.php_version: __info.php.version
-info.server.memory_limit: __info.memory.limit
-info.server.upload_max_file: __info.upload.max.file
-info.cms.version: __info.website.version
-info.cms.url: __info.website.url
-info.database.type: __info.database.type
-info.database.server: __info.database.server
-info.database.user: __info.database.user
-info.database.name: __info.database.name
-info.browser.info: __info.navigateur.info
+info.index.title: Information
+info.index.description: Information about the web environment of your application
+info.server.title: The server
+info.cms.title: My site
+info.database.title: The database
+info.browser.title: My browser
+info.server.software_version: Server
+info.server.php_version: PHP version
+info.server.memory_limit: Memory limit
+info.server.upload_max_file: Max upload size
+info.cms.version: Version
+info.cms.url: URL
+info.database.type: Type
+info.database.server: Server
+info.database.user: User
+info.database.name: Database
+info.browser.info: Browser

@@ -1,78 +1,78 @@
-faq.new.title: __faq.new.title
-faq.new.sub_title: __faq.new.sub_title
-faq.new.input.title: __faq.new.input.title
-faq.new.help: __faq.new.help
-faq.new.button: __faq.new.btn
+faq.new.title: Creating a new FAQ
+faq.new.sub_title: Just enter a title to create your FAQ
+faq.new.input.title: FAQ title
+faq.new.help: When the FAQ is created, the title will be in the default language of the site, you can edit the other texts when editing the FAQ
+faq.new.button: Create the FAQ
 faq.new.button_cancel: Back
-faq.new.input.error.empty: __faq.new.input.error.empty
-faq.edit.title: __faq.edit.title
-faq.edit.sub_title: __faq.edit.sub_title
-faq.edit.input.title: __faq.edit.input.title
-faq.edit.input.title_help: __faq.edit.input.title.help
-faq.edit.input.title_error: __faq.edit.input.title.error
-faq.select.locale: __faq.select.locale
-faq.edit.button.save: __faq.edit.btn.save
+faq.new.input.error.empty: You must enter a title for your new FAQ
+faq.edit.title: General data
+faq.edit.sub_title: The general data of the FAQ
+faq.edit.input.title: FAQ title
+faq.edit.input.title_help: Text shown at the top of your FAQ
+faq.edit.input.title_error: This field cannot be empty
+faq.select.locale: Select the language
+faq.edit.button.save: Save
 faq.edit.button.cancel: Back
-faq.edit.text.no_change: __faq.edit.text.no_change
-faq.edit.text.change_no_save: __faq.edit.text.change_no_save
-faq.edit.text.error: __faq.edit.text.error
-faq.edit.no.questions: __faq.edit.no.questions
-faq.edit.one.question: __faq.edit.one.question
-faq.edit.multiple.questions: __faq.edit.multiple.questions
-faq.edit.question.label: __faq.edit.question.label
-faq.edit.answer.label: __faq.edit.answer.label
-faq.edit.question.error: __faq.edit.question.error
-faq.edit.text.error_not_question: __faq.edit.text.error.not.question
-faq.edit.button.new.question: __faq.edit.btn.new.question
-faq.edit.button.new.category: __faq.edit.btn.new.category
-faq.edit.new.question.fr: __faq.edit.new.question.fr
-faq.edit.new.question.es: __faq.edit.new.question.es
-faq.edit.new.question.en: __faq.edit.new.question.en
-faq.edit.new.answer.fr: __faq.edit.new.answer.fr
-faq.edit.new.answer.en: __faq.edit.new.answer.en
-faq.edit.new.answer.es: __faq.edit.new.answer.es
-faq.edit.new.category.fr: __faq.edit.new.category.fr
-faq.edit.new.category.en: __faq.edit.new.category.en
-faq.edit.new.category.es: __faq.edit.new.category.es
-faq.success.no.disabled: __faq.success.no.disabled
-faq.success.disabled: __faq.success.disabled
-faq.remove.success: __faq.remove.success
-faq.save.success: __faq.save.success
-faq.create.success: __faq.create.success
-faq.grid.id: __faq.grid.id
-faq.grid.title: __faq.grid.title
-faq.grid.nb_categories: __faq.grid.nb_categories
-faq.grid.nb_questions: __faq.grid.nb_questions
-faq.grid.update_at: __faq.grid.update_at
-faq.confirm.disabled.message: __faq.confirm.disabled.msg
-faq.confirm.delete.message: __faq.confirm.delete.msg
-faq.add.title: __faq.add.page_title_h1
-faq.add.description: __faq.add.description
-faq.update.title_id: __faq.update.page_title
-faq.update.title: __faq.update.page_title_h1
-faq.update.description: __faq.update.description
-faq.update.not.found.faq.title: __faq.update.not.found.faq.title
-faq.update.not.found.faq.description: __faq.update.not.found.faq.description
-faq.update.not.found.button.return: __faq.update.not.found.btn.return
-faq.update.not.found.button.new_faq: __faq.update.not.found.btn.new_faq
-faq.index.modal.help.title: __faq.index.popin.help.title
-faq.index.modal.help.disabled: __faq.index.popin.help.disabled
-faq.index.modal.help.enable: __faq.index.popin.help.enable
-faq.index.modal.help.delete: __faq.index.popin.help.delete
-faq.index.modal.help.edit: __faq.index.popin.help.edit
-faq.index.title: __faq.index.page_title
-faq.index.button.new: __faq.index.btn.new
-faq.index.description: __faq.index.description
-faq.edit.disabled.label: __faq.edit.disabled.label
-faq.edit.input.disabled.label: __faq.edit.input.disabled.label
-faq.edit.input.disabled.help: __faq.edit.input.disabled.help
-faq.edit.input.disabled.help_disabled: __faq.edit.input.disabled.help.disabled
-faq.edit.button.confirm_ok: __faq.edit.btn.confirm_ok
-faq.edit.button.confirm_ko: __faq.edit.btn.confirm_ko
-faq.edit.confirm.delete.category.title: __faq.edit.confirm.delete.category.title
-faq.edit.confirm.delete.category.body: __faq.edit.confirm.delete.category.body
-faq.edit.confirm.delete.question.title: __faq.edit.confirm.delete.question.title
-faq.edit.confirm.delete.question.body: __faq.edit.confirm.delete.question.body
-faq.error.forbidden: __faq.error.forbidden
-faq.error.not_found: __faq.error.not_found
-faq.error.delete.used: __faq.error.delete.used
+faq.edit.text.no_change: No changes yet
+faq.edit.text.change_no_save: Changes have been made but not saved yet
+faq.edit.text.error: One or more validation errors have been detected
+faq.edit.no.questions: No questions
+faq.edit.one.question: 1 question
+faq.edit.multiple.questions: questions
+faq.edit.question.label: Question
+faq.edit.answer.label: Answer
+faq.edit.question.error: This question is invalid
+faq.edit.text.error_not_question: No questions — add one or drop one here from another category.
+faq.edit.button.new.question: Add a question
+faq.edit.button.new.category: Add a category
+faq.edit.new.question.fr: Nouvelle question
+faq.edit.new.question.es: Nueva pregunta
+faq.edit.new.question.en: New question
+faq.edit.new.answer.fr: Nouvelle réponse
+faq.edit.new.answer.en: New answer
+faq.edit.new.answer.es: Nueva respuesta
+faq.edit.new.category.fr: Nouvelle catégorie
+faq.edit.new.category.en: New category
+faq.edit.new.category.es: Nueva categoría
+faq.success.no.disabled: The FAQ <b>{label}</b> has been restored successfully
+faq.success.disabled: The FAQ <b>{label}</b> has been disabled successfully
+faq.remove.success: The FAQ <b>{label}</b> has been deleted successfully
+faq.save.success: Your FAQ has been saved successfully
+faq.create.success: Your FAQ has been created successfully, you will be redirected to the editing page
+faq.grid.id: '#'
+faq.grid.title: Title
+faq.grid.nb_categories: Number of categories
+faq.grid.nb_questions: Number of questions
+faq.grid.update_at: Last modified
+faq.confirm.disabled.message: Do you confirm disabling the FAQ <b>{label}</b>? This FAQ will become inaccessible
+faq.confirm.delete.message: Do you confirm deleting the FAQ <b>{label}</b>? This action is permanent
+faq.add.title: New FAQ
+faq.add.description: Create a new FAQ for your website
+faq.update.title_id: 'Editing FAQ #{id}'
+faq.update.title: FAQ editing
+faq.update.description: From this page, edit your FAQ, reorder it or add / delete questions and answers
+faq.update.not.found.faq.title: No FAQ found
+faq.update.not.found.faq.description: This FAQ does not exist or has been deleted. You can go back to the list or create a new one.
+faq.update.not.found.button.return: Back
+faq.update.not.found.button.new_faq: Create an FAQ
+faq.index.modal.help.title: Help
+faq.index.modal.help.disabled: Disable the FAQ
+faq.index.modal.help.enable: Enable the FAQ
+faq.index.modal.help.delete: Delete
+faq.index.modal.help.edit: Edit
+faq.index.title: FAQ management
+faq.index.button.new: New FAQ
+faq.index.description: Manage the FAQs of your website
+faq.edit.disabled.label: Disabled
+faq.edit.input.disabled.label: FAQ visible on the site
+faq.edit.input.disabled.help: Your FAQ is visible to everyone
+faq.edit.input.disabled.help_disabled: Your FAQ is currently disabled
+faq.edit.button.confirm_ok: Yes, I confirm
+faq.edit.button.confirm_ko: 'No'
+faq.edit.confirm.delete.category.title: Deleting a category
+faq.edit.confirm.delete.category.body: You are about to delete this category and all its questions, are you sure?
+faq.edit.confirm.delete.question.title: Deleting a question
+faq.edit.confirm.delete.question.body: You are about to delete this question, are you sure?
+faq.error.forbidden: You are not allowed to perform this action on this FAQ.
+faq.error.not_found: This FAQ does not exist or has been deleted.
+faq.error.delete.used: This FAQ is used by {nb, plural, one {# page} other {# pages}}, it cannot be deleted. Remove it from those pages first.

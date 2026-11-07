@@ -1,5 +1,5 @@
 editor_markdown.toolbar.bold: Gras
-editor_markdown.toolbar.italic: Italic
+editor_markdown.toolbar.italic: Italique
 editor_markdown.toolbar.strike: Barré
 editor_markdown.toolbar.quote: Citation
 editor_markdown.toolbar.list: Liste
@@ -16,13 +16,13 @@ editor_markdown.heading.h5: 'Titre H5'
 editor_markdown.heading.h6: 'Titre H6'
 editor_markdown.toolbar.save: Sauvegarder
 editor_markdown.toolbar.help: 'La mise en forme de votre contenu se fait avec le langage de balisage '
-editor_markdown.toolbar.keyword: 'Mots clés'
+editor_markdown.toolbar.keyword: Mots-clés
 editor_markdown.editor.empty_content: 'Le champ ne peut pas être vide'
 editor_markdown.toolbar.media: Médiathèque
 editor_markdown.media.title: Médiathèque
 editor_markdown.media.no_media: 'Ce dossier est vide'
 editor_markdown.toolbar.link_internal: 'Lien interne'
-editor_markdown.toolbar.preview: Preview
+editor_markdown.toolbar.preview: Aperçu
 editor_markdown.editor.loading: Chargement...
 editor_markdown.internal_link.title: 'Ajouter un lien interne'
 editor_markdown.internal_link.search_label: 'Rechercher une page'

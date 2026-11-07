@@ -1,210 +1,210 @@
-user.success.enabled: __user.success.no.disabled
-user.success.disabled: __user.success.disabled
-user.grid.id: __user.grid.id
-user.grid.login: __user.grid.login
-user.grid.email: __user.grid.email
-user.grid.name: __user.grid.name
-user.grid.role: __user.grid.role
-user.grid.created_at: __user.grid.created_at
-user.grid.update_at: __user.grid.update_at
-user.confirm.disabled.message: __user.confirm.disabled.msg
-user.confirm.delete.message: __user.confirm.delete.msg
-user.confirm.replace.message: __user.confirm.replace.msg
-user.login.title: __user.login.title
-user.index.title: __user.page_title_h1
-user.index.description: __user.description
-user.index.info: __user.info
-user.my_options.title: __user.my_option_title_h1
-user.my_options.description: __user.my_option_description
-user.update.title_login: __user.page_update_title_h1
-user.login_user.title: __user.login_user.title
-user.login.always_log: __user.login.always_log
-user.login.logout: __user.login.logout
-user.login_user.email: __user.login_user.email
-user.login_user.forgot_password: __user.login_user.forgot_password
-user.login_user.remember_me: __user.login_user.remember_me
-user.login_user.button_login: __user.login_user.btn_login
-user.my_account.title: __user.page_my_account.title_h1
-user.my_account.description: __user.page_my_account.description
-user.form.adresse_email.label: __user.form.adresse_email.label
-user.form.adresse_email.help: __user.form.adresse_email.help
-user.form.login.label: __user.form.login.label
-user.form.login.help: __user.form.login.help
-user.form.login.placeholder: __user.form.login.placeholder
-user.form.firstname.label: __user.form.firstname.label
-user.form.firstname.help: __user.form.firstname.help
-user.form.firstname.placeholder: __user.form.firstname.placeholder
-user.form.lastname.label: __user.form.lastname.label
-user.form.lastname.help: __user.form.lastname.help
-user.form.lastname.placeholder: __user.form.lastname.placeholder
-user.form.submit: __user.form.submit
+user.success.enabled: The account of the user <strong>{login}</strong> has been enabled
+user.success.disabled: The account of the user <strong>{login}</strong> has been disabled
+user.grid.id: ID
+user.grid.login: Login
+user.grid.email: Email
+user.grid.name: Name
+user.grid.role: Role
+user.grid.created_at: Created
+user.grid.update_at: Updated
+user.confirm.disabled.message: The account of the user <strong>{login}</strong> will be disabled and they will no longer be able to log in to the administration. <br /> Do you confirm this action?
+user.confirm.delete.message: The account of the user <strong>{login}</strong> will be deleted, this action is permanent. <br /> Do you confirm this action?
+user.confirm.replace.message: The account of the user <strong>{login}</strong> will be replaced by a John Doe account, this action is permanent. <br /> Do you confirm this action?
+user.login.title: Login
+user.index.title: User management
+user.index.description: Manage the users who can log in to the CMS and manage its content
+user.index.info: '[John Doe] users are anonymized and locked | users shown greyed out are disabled'
+user.my_options.title: My options
+user.my_options.description: Customize the interface, the language and other details of the administration
+user.update.title_login: Editing the account {login}
+user.login_user.title: Login
+user.login.always_log: 'You are already logged in as {login}, do you want to '
+user.login.logout: log out?
+user.login_user.email: Email address
+user.login_user.forgot_password: Forgot your password?
+user.login_user.remember_me: Remember me
+user.login_user.button_login: Log in
+user.my_account.title: My account
+user.my_account.description: Manage your personal data and your password, and view your statistics
+user.form.adresse_email.label: Email address
+user.form.adresse_email.help: Identifier used to log in. Ask an administrator to change it
+user.form.login.label: Login
+user.form.login.help: Identifier shown at the end of your articles
+user.form.login.placeholder: Your login
+user.form.firstname.label: First name
+user.form.firstname.help: Identifier shown at the end of your articles if you want to display your real identity
+user.form.firstname.placeholder: Your first name
+user.form.lastname.label: Last name
+user.form.lastname.help: Identifier shown at the end of your articles if you want to display your real identity
+user.form.lastname.placeholder: Your last name
+user.form.submit: Update my profile
 user.form.back: Back
-user.my_account.personal_data: __user.page_my_account.personal_data
-user.my_account.personal_data_description: __user.page_my_account.personal_data.description
-user.my_account.danger: __user.page_my_account.danger
-user.my_account.statistics: __user.page_my_account.statistiques
-user.my_account.password_change: __user.page_my_account.password_change
-user.change_password.input.password_1: __user.change_password.input.password_1
-user.change_password.input.password_2: __user.change_password.input.password_2
-user.change_password.force: __user.change_password.force
-user.change_password.force_nb_character: __user.change_password.force.nb_character
-user.change_password.force_uppercase: __user.change_password.force.majuscule
-user.change_password.force_lowercase: __user.change_password.force.minuscule
-user.change_password.force_digit: __user.change_password.force.chiffre
-user.change_password.force_character_special: __user.change_password.force.character_spe
-user.error.password_2: __user.error.password_2
-user.update_password.success: __user.update_password.success
-user.error.not_disabled: __user.error_not_disabled
-user.success.self_disabled: __user.self_disabled_success
-user.danger_zone.loading: __user.danger_zone.loading
-user.danger_zone.button_disabled: __user.danger_zone.btn_disabled
-user.danger_zone.button_delete: __user.danger_zone.btn_delete
-user.danger_zone.button_replace: __user.danger_zone.btn_replace
-user.danger_zone.title_disabled: __user.danger_zone.title_disabled
-user.danger_zone.content_disabled_1: __user.danger_zone.content_disabled_1
-user.danger_zone.content_disabled_2: __user.danger_zone.content_disabled_2
-user.danger_zone.button_cancel_disabled: __user.danger_zone.btn_cancel_disabled
-user.danger_zone.button_confirm_disabled: __user.danger_zone.btn_confirm_disabled
-user.danger_zone.button_cancel_delete: __user.danger_zone.btn_cancel_delete
-user.danger_zone.button_confirm_delete: __user.danger_zone.btn_confirm_delete
-user.danger_zone.title_delete: __user.danger_zone.title_delete
-user.danger_zone.content_delete_1: __user.danger_zone.content_delete_1
-user.danger_zone.content_delete_2: __user.danger_zone.content_delete_2
-user.danger_zone.button_cancel_replace: __user.danger_zone.btn_cancel_replace
-user.danger_zone.button_confirm_replace: __user.danger_zone.btn_confirm_replace
-user.danger_zone.title_replace: __user.danger_zone.title_replace
-user.danger_zone.content_replace_1: __user.danger_zone.content_replace_1
-user.danger_zone.content_replace_2: __user.danger_zone.content_replace_2
-user.success.anonymous: __user.success_anonymous
-user.success.remove: __user.success_remove
-user.error.not_allowed: __user.error_not_allowed
-user.danger_zone.success_anonymous: __user.danger_zone.success_anonymous
-user.danger_zone.success_remove: __user.danger_zone.success_remove
-user.add.title: __user.page_add_title_h1
-user.add.description: __user.page_add.description
-user.button.new: __user.btn.new
-user.index.modal.help.title: __user.index.popin.help.title
-user.index.modal.help.disabled_user: __user.index.popin.help.disabled_user
-user.index.modal.help.enable_user: __user.index.popin.help.enable_user
-user.index.modal.help.delete: __user.index.popin.help.delete
-user.index.modal.help.anonymous: __user.index.popin.help.anonymous
-user.index.modal.help.edit: __user.index.popin.help.edit
-user.index.modal.help.switch: __user.index.popin.help.switch
-user.update.success: __user.page_update.success
-user.form_update.adresse_email.label: __user.form_update.adresse_email.label
-user.form_update.adresse_email.help: __user.form_update.adresse_email.help
-user.form_update.login.label: __user.form_update.login.label
-user.form_update.login.help: __user.form_update.login.help
-user.form_update.login.placeholder: __user.form_update.login.placeholder
-user.form_update.firstname.label: __user.form_update.firstname.label
-user.form_update.firstname.help: __user.form_update.firstname.help
-user.form_update.firstname.placeholder: __user.form_update.firstname.placeholder
-user.form_update.lastname.label: __user.form_update.lastname.label
-user.form_update.lastname.help: __user.form_update.lastname.help
-user.form_update.lastname.placeholder: __user.form_update.lastname.placeholder
-user.form_update.disabled.label: __user.form_update.disabled.label
-user.form_update.disabled.help: __user.form_update.disabled.help
-user.form_update.submit: __user.form_update.submit
-user.update.description: __user.page_update_description
-user.update.last_update: __user.page_update.last_update
-user.update.information: __user.page_update.information
-user.my_account.success: __user.page_my_account.success
-user.update.created: __user.page_update.created
-user.update.info.user_disabled: __user.page_update.info.user_disabled
-user.update.info.warning: __user.page_update.info.warning
-user.update.reset_password: __user.page_update.reset_password
-user.update.action: __user.page_update.action
-user.update.reset_password_description: __user.page_update.reset_password.description
-user.update.connected_to: __user.page_update.connecte_to
-user.update.connected_to_description: __user.page_update.connecte_to.description
-user.update.connected_to_button: __user.page_update.connecte_to.btn
-user.form_update.role.user: __Utilisateur
-user.form_update.role.contributor: __Contributeur
-user.form_update.role.admin: __Administrateur
-user.form_update.role.super_admin: '__Super Administrateur'
-user.form_update.role.label: __user.form_update.role.label
-user.form_update.role.help: __user.form_update.role.help
-user.update.info_role_super_admin: __user.page_update.info_role_super_admin
-user.form_update.role.founder: __user.form_update.role.founder
-user.update.last_connexion: __user.page_update.last_connexion
-user.update.reset_password_button: __user.page_update.reset_password.btn
-user.reset_password.title: __user.reset_password.title
-user.my_account.reset_password_success: __user.page_my_account.reset_password_success
-user.change_password.error_404: __user.change_password.error_404
-user.change_password.success: __user.change_password.success
-user.change_password.title: __user.change_password.title
-user.change_password.link_login: __user.change_password.link_login
-user.change_password.link_home: __user.change_password.link_home
-user.add.success: __user.page_add.success
-user.form_add.adresse_email.label: __user.form_add.adresse_email.label
-user.form_add.adresse_email.help: __user.form_add.adresse_email.help
-user.form_add.role.label: __user.form_add.role.label
-user.form_add.role.help: __user.form_add.role.help
-user.form_add.login.label: __user.form_add.login.label
-user.form_add.login.help: __user.form_add.login.help
-user.form_add.login.placeholder: __user.form_add.login.placeholder
-user.form_add.firstname.label: __user.form_add.firstname.label
-user.form_add.firstname.help: __user.form_add.firstname.help
-user.form_add.firstname.placeholder: __user.form_add.firstname.placeholder
-user.form_add.lastname.label: __user.form_add.lastname.label
-user.form_add.lastname.help: __user.form_add.lastname.help
-user.form_add.lastname.placeholder: __user.form_add.lastname.placeholder
-user.form_add.submit: __user.form_add.submit
-user.add.profile: __user.page_add.profil
-user.add.personal_data: __user.page_add.personal_data
-user.add.personal_data_description: __user.page_add.personal_data.description
-user.add.information: __user.page_add.information
-user.change_password.new_title: __user.change_password.new_title
-user.add.information_role_info: __user.page_add.information.role.info
-user.add.information_list_role: __user.page_add.information.liste_role
-user.add.information_role_user: __user.page_add.information.role.user
-user.add.information_role_user_info: __user.page_add.information.role.user.info
-user.add.information_role_contributor: __user.page_add.information.role.contributeur
-user.add.information_role_contributor_info: __user.page_add.information.role.contributeur.info
-user.add.information_role_admin: __user.page_add.information.role.admin
-user.add.information_role_admin_info: __user.page_add.information.role.admin.info
-user.add.information_role_super_admin: __user.page_add.information.role.super_admin
-user.add.information_role_super_admin_info: __user.page_add.information.role.super_admin.info
-user.reset_password.success: __user.reset_password.success
-user.reset_password.submit: __user.reset_password.submit
-user.more_options.loading: __user.more_options.loading
-user.more_options.button.show_help: __user.more_options.btn.show_help
-user.more_options.button.hide_help: __user.more_options.btn.hide_help
-user.my_account.options.misc: __user.page_my_account.options.divers
-user.form.avatar.label: __user.form.avatar.label
-user.form.avatar.help: __user.form.avatar.help
-user.form.avatar.placeholder: __user.form.avatar.placeholder
-user.form.avatar.error.upload: __user.form.avatar.error.upload
-user.form.description.label: __user.form.description.label
-user.form.description.help: __user.form.description.help
-user.form.description.placeholder: __user.form.description.placeholder
-user.my_account.upload.avatar.error: __user.page_my_account.upload.avatar.error
-user.login.always_log_title: __user.login.always_log.title
-user.my_account.avatar: __user.page_my_account.avatar
-user.my_account.avatar_subtitle: __user.page_my_account.avatar.subtitle
-user.my_account.avatar_recommendation: __user.page_my_account.avatar.recommandation
-user.my_account.avatar_format: __user.page_my_account.avatar.format
-user.my_account.avatar_weight: __user.page_my_account.avatar.weight
-user.my_account.avatar_size: __user.page_my_account.avatar.size
-user.my_account.avatar_delete: __user.page_my_account.avatar.delete
-user.my_account.statistics_description: __user.page_my_account.statistiques.description
-user.my_account.password_change_description: __user.page_my_account.password_change.description
-user.danger_zone.description_disabled: __user.danger_zone.description_disabled
-user.danger_zone.description_delete: __user.danger_zone.description_delete
-user.danger_zone.description_replace: __user.danger_zone.description_replace
-user.my_account.danger_description: __user.page_my_account.danger.description
-user.change_password.button.submit: __user.change_password.btn.submit
-user.my_account.options.misc_description: __user.page_my_account.options.divers.description
-user.delete_avatar.success: __user.delete_avatar.success
-user.my_account.email.placeholder: __user.page_my_account.email.placeholder
-user.my_account.login.placeholder: __user.page_my_account.login.placeholder
-user.my_account.firstname.placeholder: __user.page_my_account.firstname.placeholder
-user.my_account.lastname.placeholder: __user.page_my_account.lastname.placeholder
-user.my_account.avatar_no_field: __user.page_my_account.avatar.nofield
-user.add.profile_description: __user.page_add.profil.description
-user.add.information_description: __user.page_add.information.description
-user.update.action_description: __user.page_update.action.description
-user.update.information_description: __user.page_update.information.description
+user.my_account.personal_data: My personal data
+user.my_account.personal_data_description: This data is optional. If you leave all the fields empty, your content will not be identified as yours. It is recommended to enter at least a login
+user.my_account.danger: Danger zone
+user.my_account.statistics: My statistics
+user.my_account.password_change: Security
+user.change_password.input.password_1: New password
+user.change_password.input.password_2: Confirm the new password
+user.change_password.force: 'Password strength, your password must have:'
+user.change_password.force_nb_character: At least 8 characters
+user.change_password.force_uppercase: At least one uppercase letter
+user.change_password.force_lowercase: At least one lowercase letter
+user.change_password.force_digit: At least one digit
+user.change_password.force_character_special: At least one special character
+user.error.password_2: The confirmation password is different from the password
+user.update_password.success: The new password has been updated successfully
+user.error.not_disabled: You cannot disable this user
+user.success.self_disabled: Your account is now disabled, you will be logged out in a few seconds...
+user.danger_zone.loading: Action in progress...
+user.danger_zone.button_disabled: Disable
+user.danger_zone.button_delete: Delete
+user.danger_zone.button_replace: Anonymize
+user.danger_zone.title_disabled: Disable my account
+user.danger_zone.content_disabled_1: 'You are about to disable your account: after this action, you will no longer be able to log in to the site'
+user.danger_zone.content_disabled_2: An administrator will have to step in to cancel this action
+user.danger_zone.button_cancel_disabled: Cancel
+user.danger_zone.button_confirm_disabled: I confirm my choice
+user.danger_zone.button_cancel_delete: Cancel
+user.danger_zone.button_confirm_delete: I confirm my choice
+user.danger_zone.title_delete: Delete my account
+user.danger_zone.content_delete_1: 'You are about to delete your account: you will lose all the content you created on this site and you will no longer be able to log in'
+user.danger_zone.content_delete_2: This action is permanent and cannot be undone
+user.danger_zone.button_cancel_replace: Cancel
+user.danger_zone.button_confirm_replace: I confirm my choice
+user.danger_zone.title_replace: Anonymize my account
+user.danger_zone.content_replace_1: 'You are about to anonymize your account: you will lose all the content you created on this site and you will no longer be able to log in'
+user.danger_zone.content_replace_2: This action is permanent and cannot be undone
+user.success.anonymous: The account has been anonymized successfully
+user.success.remove: The account has been deleted successfully
+user.error.not_allowed: This action is not allowed
+user.danger_zone.success_anonymous: Your account has been anonymized successfully, logging out in 3 seconds...
+user.danger_zone.success_remove: Your account has been deleted successfully, logging out in 3 seconds...
+user.add.title: New user
+user.add.description: Create a new user who will be able to contribute to the content of your site
+user.button.new: New user
+user.index.modal.help.title: Help
+user.index.modal.help.disabled_user: Disables a user
+user.index.modal.help.enable_user: Enables a user
+user.index.modal.help.delete: Deletes a user
+user.index.modal.help.anonymous: Anonymizes a user
+user.index.modal.help.edit: Edit a user
+user.index.modal.help.switch: Log in as
+user.update.success: User {email} updated successfully
+user.form_update.adresse_email.label: Email address
+user.form_update.adresse_email.help: Warning, only change it at the user's request or when necessary
+user.form_update.login.label: Login
+user.form_update.login.help: Identifier shown at the end of their articles
+user.form_update.login.placeholder: Their login
+user.form_update.firstname.label: First name
+user.form_update.firstname.help: Identifier shown at the end of their articles if they want to display their real identity
+user.form_update.firstname.placeholder: Their first name
+user.form_update.lastname.label: Last name
+user.form_update.lastname.help: Identifier shown at the end of their articles if they want to display their real identity
+user.form_update.lastname.placeholder: Their last name
+user.form_update.disabled.label: Disable the user
+user.form_update.disabled.help: Allows or prevents the user from logging in to the admin area of the site
+user.form_update.submit: Update
+user.update.description: Edit a user's account and/or view some statistics
+user.update.last_update: Last update
+user.update.information: Information
+user.my_account.success: Your personal data has been updated successfully
+user.update.created: Creation date
+user.update.info.user_disabled: This user is disabled, so some actions are not available.
+user.update.info.warning: Warning
+user.update.reset_password: Password reset
+user.update.action: Available actions
+user.update.reset_password_description: You can start resetting the user's password. An email will be sent to help them reset their password
+user.update.connected_to: Log in as
+user.update.connected_to_description: You can take control of the account of {login} to log in with their account
+user.update.connected_to_button: Log in as {login}
+user.form_update.role.user: User
+user.form_update.role.contributor: Contributor
+user.form_update.role.admin: Administrator
+user.form_update.role.super_admin: Super administrator
+user.form_update.role.label: Role in the application
+user.form_update.role.help: The role determines the rights the user has in the administration of the site
+user.update.info_role_super_admin: 'This account has the <b>SUPER_ADMIN</b> role and is the <b>founder</b>: for security reasons, some data cannot be changed and some actions are not allowed.'
+user.form_update.role.founder: Founder
+user.update.last_connexion: Last login
+user.update.reset_password_button: Reset the password
+user.reset_password.title: Password change
+user.my_account.reset_password_success: An email with the password change instructions has been sent to the user successfully
+user.change_password.error_404: Ah ah ah, you didn't say the magic word!
+user.change_password.success: Your password has been changed successfully, you can now log in with your new password
+user.change_password.title: Change my password
+user.change_password.link_login: Log in
+user.change_password.link_home: Site home
+user.add.success: User {email} added successfully
+user.form_add.adresse_email.label: Email address
+user.form_add.adresse_email.help: Identifier used to log in, the new user will receive an email at this address to complete the creation of their account
+user.form_add.role.label: Role in the application
+user.form_add.role.help: The role determines the rights the user has in the administration of the site
+user.form_add.login.label: Login
+user.form_add.login.help: Identifier shown at the end of their articles
+user.form_add.login.placeholder: Login
+user.form_add.firstname.label: First name
+user.form_add.firstname.help: Identifier shown at the end of their articles if they want to display their real identity
+user.form_add.firstname.placeholder: Their first name
+user.form_add.lastname.label: Last name
+user.form_add.lastname.help: Identifier shown at the end of their articles if they want to display their real identity
+user.form_add.lastname.placeholder: Their last name
+user.form_add.submit: Create the new user
+user.add.profile: Their profile
+user.add.personal_data: Their personal data
+user.add.personal_data_description: The user can change their data directly from their account, this data is optional
+user.add.information: Information
+user.change_password.new_title: Create your password
+user.add.information_role_info: Roles are listed from the weakest to the most powerful. Each role inherits the rights of the role below
+user.add.information_list_role: Available roles
+user.add.information_role_user: User role
+user.add.information_role_user_info: Gives the right to log in to the application (default role)
+user.add.information_role_contributor: Contributor role
+user.add.information_role_contributor_info: Gives the right to add content to the site
+user.add.information_role_admin: Administrator role
+user.add.information_role_admin_info: Gives the right to manage the content of the site (comments, members, etc.)
+user.add.information_role_super_admin: Super administrator role
+user.add.information_role_super_admin_info: Allows managing the whole CMS
+user.reset_password.success: An email has been sent to the address entered
+user.reset_password.submit: Change my password
+user.more_options.loading: Processing...
+user.more_options.button.show_help: Show the configuration help
+user.more_options.button.hide_help: Hide the configuration help
+user.my_account.options.misc: Other options
+user.form.avatar.label: Your avatar
+user.form.avatar.help: No image selected
+user.form.avatar.placeholder: Select an avatar
+user.form.avatar.error.upload: Please upload a valid image in JPG, GIF or PNG format
+user.form.description.label: Personal description
+user.form.description.help: A short description of yourself that will appear at the bottom of your articles
+user.form.description.placeholder: A short description of yourself
+user.my_account.upload.avatar.error: An error occurred while uploading your avatar
+user.login.always_log_title: Important information
+user.my_account.avatar: My avatar
+user.my_account.avatar_subtitle: Avatar shown at the bottom of your articles
+user.my_account.avatar_recommendation: Recommendations
+user.my_account.avatar_format: JPG, PNG or GIF format
+user.my_account.avatar_weight: Maximum size 2 MB
+user.my_account.avatar_size: Square image recommended (500x500px minimum)
+user.my_account.avatar_delete: Delete
+user.my_account.statistics_description: Find the statistics of your account
+user.my_account.password_change_description: Manage the password of your account
+user.danger_zone.description_disabled: Your account will be disabled
+user.danger_zone.description_delete: Your account will be deleted
+user.danger_zone.description_replace: Your account will be anonymized
+user.my_account.danger_description: Irreversible actions on your account
+user.change_password.button.submit: Change my password
+user.my_account.options.misc_description: Other configuration options
+user.delete_avatar.success: Avatar deleted successfully
+user.my_account.email.placeholder: My email
+user.my_account.login.placeholder: My login
+user.my_account.firstname.placeholder: My first name
+user.my_account.lastname.placeholder: My last name
+user.my_account.avatar_no_field: No image selected
+user.add.profile_description: Data used to log in
+user.add.information_description: About roles
+user.update.action_description: Available actions on the account
+user.update.information_description: Account statistics
 user.change_password.input.password_current: 'Current password'
 user.change_password.error.current_password: 'The current password is incorrect'
 user.change_password.error.rule: 'The password does not meet the security rules'

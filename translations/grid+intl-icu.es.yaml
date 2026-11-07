@@ -1,33 +1,33 @@
-grid.search.placeholder: __grid.search.placeholder
-grid.list.loading: __grid.loading
-grid.toast.success_title: __grid.success.titre
-grid.confirm.title: __grid.confirm.titre
-grid.confirm.text: __grid.confirm.texte
-grid.confirm.button_ok: __grid.confirm.btn.ok
-grid.confirm.button_no: __grid.confirm.btn.no
-grid.pagination.page: __grid.page
-grid.pagination.on: __grid.on
-grid.pagination.row: __grid.row
-grid.list.no_result: __grid.no.result
-grid.toast.time: __grid.toast.time
-grid.toast.error_title: __grid.error.titre
-grid.search.placeholder_database: __grid.search.placeholder.bdd.search
-grid.search.button: __grid.btn.search
-grid.query.copy_success: __grid.copy.success
-grid.query.copy_error: __grid.copy.error
-grid.query.title: __grid.query.title
-grid.filter.only_me: __grid.filter.only.me
-grid.filter.all: __grid.filter.all
-grid.search.placeholder_table: __grid.search.placeholder.table.search
-grid.search.text_database: __grid.search.text.bdd.search
-grid.search.title: __grid.search.title.search
-grid.search.text_table: __grid.search.text.table.search
-grid.query.show: __grid.text.show.query
-grid.query.hide: __grid.text.hide.query
-grid.sort.show: __grid.text.show.trie.option
-grid.sort.hide: __grid.text.hide.trie.option
-grid.sort.title: __grid.trie.title.option
-grid.sort.sub_title: __grid.trie.title.option.sub
-grid.sort.field: __grid.trie.option.liste.field
-grid.sort.order: __grid.trie.option.liste.order
-grid.sort.button: __grid.trie.option.btn
+grid.search.placeholder: Buscar en la tabla
+grid.list.loading: Cargando datos
+grid.toast.success_title: ¡Éxito!
+grid.confirm.title: Confirmación requerida
+grid.confirm.text: ¿Está seguro de que desea hacer esto?
+grid.confirm.button_ok: Sí
+grid.confirm.button_no: 'No'
+grid.pagination.page: Página
+grid.pagination.on: de
+grid.pagination.row: filas
+grid.list.no_result: Ningún resultado para su búsqueda
+grid.toast.time: Ahora mismo
+grid.toast.error_title: ¡Error!
+grid.search.placeholder_database: Buscar en la base de datos
+grid.search.button: Buscar
+grid.query.copy_success: Dato copiado en el portapapeles
+grid.query.copy_error: Se ha producido un error al copiar
+grid.query.title: Consulta SQL
+grid.filter.only_me: Mostrar mis datos
+grid.filter.all: Mostrar todos los datos
+grid.search.placeholder_table: Buscar en la tabla
+grid.search.text_database: En la base de datos
+grid.search.title: Buscar
+grid.search.text_table: En la tabla
+grid.query.show: Mostrar el SQL
+grid.query.hide: Ocultar el SQL
+grid.sort.show: Más opciones
+grid.sort.hide: Ocultar las opciones
+grid.sort.title: Otras opciones
+grid.sort.sub_title: Opciones de ordenación
+grid.sort.field: Columnas
+grid.sort.order: Orden
+grid.sort.button: Ordenar

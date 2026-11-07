@@ -1,55 +1,55 @@
 global_search.index.title: 'Recherche globale'
-global_search.index.sub_title: 'Résultat dans les pages'
+global_search.index.sub_title: Résultats dans les pages
 global_search.index.error_not_found: 'Aucun résultat'
 global_search.pagination.page: Page
 global_search.pagination.on: sur
 global_search.pagination.row: résultat(s)
 global_search.page.tab: Pages
 global_search.page.title: 'résultat(s) pour les pages'
-global_search.page.description: 'Listes des pages trouvées'
-global_search.page.no_result: 'Aucune page trouvé avec le critère de votre recherche'
+global_search.page.description: Liste des pages trouvées
+global_search.page.no_result: Aucune page trouvée pour votre recherche
 global_search.index.description: 'Retrouvez le résultat de votre recherche classé par type de données'
 global_search.page.create: 'Créé le'
-global_search.page.update: 'editer le'
+global_search.page.update: modifié le
 global_search.page.author: par
 global_search.page.no_result_content: 'Aucun résultat trouvé dans les contenus de la page'
 global_search.page.loading: 'Recherche dans les pages...'
 global_search.page.content: 'Contenu de la page'
 global_search.index.total_results: 'résultat(s) pour'
 global_search.index.total_no_results: 'Aucun résultat pour'
-global_search.menu.tab: Menu
+global_search.menu.tab: Menus
 global_search.menu.title: 'résultat(s) pour les menus'
 global_search.menu.description: 'Liste des menus trouvés'
-global_search.menu.no_result: 'Aucun menu trouvé avec le critère de votre recherche'
+global_search.menu.no_result: Aucun menu trouvé pour votre recherche
 global_search.menu.loading: 'Recherche dans les menus'
 global_search.menu.content: 'Liens dans le menu'
 global_search.menu.create: 'Créé le'
-global_search.menu.update: 'éditer le'
+global_search.menu.update: modifié le
 global_search.menu.author: par
 global_search.menu.no_result_content: 'Aucun résultat trouvé dans les liens du menu'
 global_search.faq.tab: FAQ
-global_search.faq.title: 'résultat(s) pour les faqs'
-global_search.faq.description: 'Liste des faqs trouvées'
-global_search.faq.content: 'Contenu de la faq'
-global_search.faq.no_result: 'Aucune faq trouvée avec le critère de votre recherche'
-global_search.faq.create: 'Créer le'
-global_search.faq.update: 'éditer le'
+global_search.faq.title: résultat(s) pour les FAQ
+global_search.faq.description: Liste des FAQ trouvées
+global_search.faq.content: Contenu de la FAQ
+global_search.faq.no_result: Aucune FAQ trouvée pour votre recherche
+global_search.faq.create: Créée le
+global_search.faq.update: modifiée le
 global_search.faq.author: par
-global_search.faq.no_result_content: 'Aucun résultat trouvé dans les questions / réponses de la faq'
-global_search.faq.loading: 'Recherche dans les faqs'
-global_search.user.tab: User
+global_search.faq.no_result_content: Aucun résultat trouvé dans les questions / réponses de la FAQ
+global_search.faq.loading: Recherche dans les FAQ
+global_search.user.tab: Utilisateurs
 global_search.user.title: 'résultat(s) pour les utilisateurs'
-global_search.user.description: 'Liste des utilisateurs trouvées'
-global_search.user.no_result: 'Aucun utilisateur trouvé pour le critère de votre recherche'
-global_search.user.create: 'Créer le'
-global_search.user.update: 'éditer le'
+global_search.user.description: Liste des utilisateurs trouvés
+global_search.user.no_result: Aucun utilisateur trouvé pour votre recherche
+global_search.user.create: Créé le
+global_search.user.update: modifié le
 global_search.user.author: par
 global_search.user.loading: 'Recherche dans les utilisateurs'
-global_search.tag.tab: Tag
+global_search.tag.tab: Tags
 global_search.tag.title: 'résultat(s) pour les tags'
 global_search.tag.description: 'Liste des tags trouvés'
-global_search.tag.no_result: 'Aucun tag trouvé avec le critère de votre recherche'
-global_search.tag.create: 'Créer le'
-global_search.tag.update: 'éditer le'
+global_search.tag.no_result: Aucun tag trouvé pour votre recherche
+global_search.tag.create: Créé le
+global_search.tag.update: modifié le
 global_search.tag.author: par
 global_search.tag.loading: 'Recherche dans les tags'

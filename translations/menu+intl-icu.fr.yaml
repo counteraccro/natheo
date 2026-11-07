@@ -2,11 +2,11 @@ menu.index.modal.help.title: Aide
 menu.index.modal.help.disabled_menu: 'Désactiver le menu'
 menu.index.modal.help.enable_menu: 'Activer le menu'
 menu.index.modal.help.delete: Supprimer
-menu.index.modal.help.edit: Editer
+menu.index.modal.help.edit: Modifier
 menu.index.title: 'Gestion des menus'
 menu.index.button.new: 'Nouveau menu'
 menu.index.description: 'Gérer les menus de votre site web'
-menu.index.description_2: 'Vous pouvez attribué un menu à une page unique, ou à un ensemble de page'
+menu.index.description_2: Vous pouvez attribuer un menu à une seule page ou à un ensemble de pages
 menu.success.no.disabled: 'Menu activé avec succès'
 menu.success.disabled: 'Menu désactivé avec succès'
 menu.remove.success: 'Menu supprimé avec succès'
@@ -20,58 +20,58 @@ menu.grid.name: Nom
 menu.grid.type: Type
 menu.grid.create_at: 'Date de création'
 menu.grid.update_at: 'Date de modification'
-menu.confirm.disabled.message: 'Confirmez vous la désactivation du menu <b>{label}</b>, cette action est définitive'
-menu.confirm.delete.message: 'Confirmez vous la suppression du menu <b>{label}</b>, cette action est définitive'
+menu.confirm.disabled.message: Confirmez-vous la désactivation du menu <b>{label}</b> ? Il ne sera plus affiché sur le site
+menu.confirm.delete.message: Confirmez-vous la suppression du menu <b>{label}</b> ? Cette action est définitive
 menu.position.header: 'Haut de page'
-menu.position.right: 'A droite'
+menu.position.right: À droite
 menu.position.footer: 'Pied de page'
-menu.position.left: 'A gauche'
+menu.position.left: À gauche
 menu.select.locale: 'Choix de la langue'
-menu.header.type.sidebar: 'Menu side-bar'
+menu.header.type.sidebar: Menu latéral
 menu.header.type.dropdown: 'Menu déroulant classique'
 menu.header.type.dropdown_big_menu: 'Menu déroulant géant'
 menu.header.type.dropdown_big_menu_2col: 'Menu déroulant géant, 2 colonnes'
 menu.header.type.dropdown_big_menu_3col: 'Menu déroulant géant, 3 colonnes'
 menu.header.type.dropdown_big_menu_4col: 'Menu déroulant géant, 4 colonnes'
-menu.left.right.type.sidebar: 'Menu side-bar'
-menu.left.right.type.sidebar_accordion: 'Menu side-bar avec accordéons'
-menu.footer.type.col: 'Pied de page avec colonne'
+menu.left.right.type.sidebar: Menu latéral
+menu.left.right.type.sidebar_accordion: Menu latéral avec accordéons
+menu.footer.type.col: Pied de page en colonnes
 menu.title.demo: 'Rendu du menu'
 menu.title.demo_warning: 'Ce rendu est un aperçu de la structure et peut être différent du rendu de votre site'
 menu.title.architecture: 'Architecture du menu'
 menu.button.save: Sauvegarder
 menu.button.new: 'Nouveau menu'
-menu.form.title.edit: 'Édition du menuElement'
+menu.form.title.edit: Édition de l'élément du menu
 menu.form.input.search.page.placeholder: 'Rechercher une page'
-menu.form.input.link.text: Label
-menu.form.input.link.url: 'Url interne'
-menu.form.input.link.external.url: 'Url externe'
+menu.form.input.link.text: Libellé
+menu.form.input.link.url: URL interne
+menu.form.input.link.external.url: URL externe
 menu.form.radio.label.url.internal: 'Lien interne'
 menu.form.radio.label.url.external: 'Lien externe'
-menu.no_select.menu.form: 'Édition du menuElement'
+menu.no_select.menu.form: Édition de l'élément du menu
 menu.no_select.menu.form_message: 'Sélectionnez un élément'
 menu.title.global_form: 'Gestion du menu'
 menu.input.name.label: 'Nom du menu'
 menu.input.name.placeholder: 'Nom du menu'
-menu.input.name.error: 'Le nom du menu ne peux pas être vide'
+menu.input.name.error: Le nom du menu ne peut pas être vide
 menu.select.position.label: 'Position du menu'
 menu.select.type.label: 'Type du menu'
-menu.checkbox.disabled.label: 'Menu désactivé '
-menu.form.url.type.label: "Type d'url"
+menu.checkbox.disabled.label: Menu désactivé
+menu.form.url.type.label: Type d'URL
 menu.element.confirm.delete.title: "Suppression d'un élément du menu"
-menu.element.confirm.delete.body: 'Confirmez vous la suppression de cet élément de votre menu ?'
+menu.element.confirm.delete.body: Confirmez-vous la suppression de cet élément de votre menu ?
 menu.element.confirm.delete.body_2: 'Attention, si cet élément possède des enfants, ceux-ci seront aussi supprimés'
 menu.element.confirm.delete.button.ok: Oui
 menu.element.confirm.delete.button.ko: Non
 menu.button.new_menu_element: Nouveau
 menu.tree.button.new.menu.element: Nouveau
-menu.form.radio.label.disabled.element: 'Elément masqué'
-menu.form.radio.label.enabled.element: 'Elément visible'
+menu.form.radio.label.disabled.element: Élément masqué
+menu.form.radio.label.enabled.element: Élément visible
 menu.form.text.info.disabled.element: 'Cet élément est masqué, il ne sera pas visible dans votre menu'
 menu.form.text.info.enabled.element: 'Cet élément est visible, il sera affiché dans votre menu'
-menu.new.success.save: 'Menu Créé avec succès, redirection vers le mode édition...'
-menu.edit.success.save: 'Menu édité avec succès !'
-menu.checkbox.disabled.label_message: "Le menu est actuellement désactivé, il n'apparaitra pas sur le site "
+menu.new.success.save: Menu créé avec succès, redirection vers le mode édition...
+menu.edit.success.save: Menu modifié avec succès !
+menu.checkbox.disabled.label_message: Le menu est actuellement désactivé, il n'apparaîtra pas sur le site
 menu.checkbox.enabled.label.message: 'Le menu est visible sur le site'
 menu.form.link.target.label: 'Cible du lien'
 menu.form.link.target.label_self: 'Même page'
@@ -82,17 +82,17 @@ menu.grid.default: 'Affichage par défaut'
 menu.grid.default_no: Non
 menu.grid.default_yes: Oui
 menu.checkbox.default.menu.true.label: 'Menu par défaut'
-menu.checkbox.default.menu.false.label.message: 'Ce menu doit être rattaché à une page pour apparaitre'
-menu.checkbox.default.menu.true.label_message: "Ce menu apparaitra par défaut si la page affichée n'a pas de menu défini, il ne peut y avoir qu'un seul menu par défaut par position"
+menu.checkbox.default.menu.false.label.message: Ce menu doit être rattaché à une page pour apparaître
+menu.checkbox.default.menu.true.label_message: Ce menu apparaîtra par défaut si la page affichée n'a pas de menu défini, il ne peut y avoir qu'un seul menu par défaut par position
 menu.success.switch.default: 'Le menu {label} est maintenant défini par défaut'
-menu.confirm.switch.default.message: 'Vous êtes sur le point de définir le menu <b>{label}</b> comme celui par défaut. Tout les autres menus de même position <br />Confirmez vous cette action ?'
+menu.confirm.switch.default.message: Vous êtes sur le point de définir le menu <b>{label}</b> comme menu par défaut. Les autres menus de même position ne le seront plus. <br />Confirmez-vous cette action ?
 menu.index.modal.help.default: 'Menu par défaut'
 menu.grid.author: Auteur
-menu.no_select.menu.form_message_2: "Cliquez sur un élément du menu pour l'éditer"
-menu.no_select.menu.form_message_3: 'Ajouter un menuElement enfant'
-menu.no_select.menu.form_message_4: 'Éditer un menuElement'
-menu.no_select.menu.form_message_5: 'Masquer / afficher un menuElement'
-menu.no_select.menu.form_message_6: 'Supprimer un menuElement'
+menu.no_select.menu.form_message_2: Cliquez sur un élément du menu pour le modifier
+menu.no_select.menu.form_message_3: Ajouter un élément enfant
+menu.no_select.menu.form_message_4: Modifier un élément
+menu.no_select.menu.form_message_5: Masquer / afficher un élément
+menu.no_select.menu.form_message_6: Supprimer un élément
 menu.tree.tag.page: Page
 menu.tree.tag.link: URL
 menu.tree.element.disabled: Désactivé
@@ -100,28 +100,28 @@ menu.form.button.save: Sauvegarder
 menu.form.button.cancel: Annuler
 menu.form.button.delete: Supprimer
 menu.form.input.search.page.placeholder_no_result: 'Aucune page trouvée'
-menu.form.empty.text.link.error: 'Ce champ ne peux pas être vide'
+menu.form.empty.text.link.error: Ce champ ne peut pas être vide
 menu.form.empty.internal.link.error: 'Vous devez choisir une page'
 menu.label.error: erreur(s)
-menu.tree.element.no.save: update
-menu.label.error_info_label: 'élément(s) possède au moins 1 erreur de validation'
+menu.tree.element.no.save: modifié
+menu.label.error_info_label: élément(s) avec au moins une erreur de validation
 menu.label.error_info_sub_label: 'Veuillez corriger les erreurs avant de sauvegarder'
 menu.no.save.label: 'Modifications non sauvegardées'
 menu.no.save.sub.label: "N'oubliez pas de sauvegarder vos modifications"
 menu.label.error_no_menu_element_label: 'Aucun élément dans le menu'
-menu.label.error_no_menu_element_sub_label: 'Le menu doit comporter au moins 1 élément pour être valide'
+menu.label.error_no_menu_element_sub_label: Le menu doit comporter au moins un élément pour être valide
 menu.new.error.no.name: 'Le menu doit avoir un nom'
-menu.new.error.no.menu.element: 'Le menu doit comporter au moins 1 élément pour être valide'
+menu.new.error.no.menu.element: Le menu doit comporter au moins un élément pour être valide
 menu.error.no.default.footer: "Aucun pied de page n'est défini par défaut"
 menu.error.no.default.header: "Aucun haut de page n'est défini par défaut"
 menu.error.no.default.left: "Aucun menu n'est défini par défaut"
-menu.error.more.one.default.footer: "Vous avez plus de 1 pied de page par défaut, cela n'est pas normal !"
-menu.error.more.one.default.header: "Vous avez plus de 1 haut de page par défaut, cela n'est pas normal !"
-menu.error.more.one.default.left: "Vous avez plus de 1 menu par défaut, cela n'est pas normal !"
-menu.index.page_title.error.default.title: 'Une ou plusieurs alertes sont remontées'
+menu.error.more.one.default.footer: Vous avez plus d'un pied de page par défaut, ce n'est pas normal !
+menu.error.more.one.default.header: Vous avez plus d'un haut de page par défaut, ce n'est pas normal !
+menu.error.more.one.default.left: Vous avez plus d'un menu par défaut, ce n'est pas normal !
+menu.index.page_title.error.default.title: Une ou plusieurs alertes ont été remontées
 menu.index.page_title.error.default.info: 'Cette alerte sera mise à jour au prochain rafraîchissement de cette page'
 menu.no.exist.title: 'Aucun menu trouvé'
-menu.no.exist.text: "Ce menu n'existe pas ou à été supprimé. Vous pouvez retourner à la liste ou en créer un nouveau"
+menu.no.exist.text: Ce menu n'existe pas ou a été supprimé. Vous pouvez retourner à la liste ou en créer un nouveau
 menu.button.back: Retour
 menu.error.forbidden: 'Vous n''avez pas les droits pour effectuer cette action sur ce menu.'
 menu.error.not_found: 'Ce menu n''existe pas ou a été supprimé.'

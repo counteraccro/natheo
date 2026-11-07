@@ -1,55 +1,55 @@
-database_manager.schema.all.bdd.error_row: __database_manager.schema.all.bdd.error_row
-database_manager.schema.all.bdd.row.schema: __database_manager.schema.all.bdd.row.schema
-database_manager.schema.all.bdd.row.table_name: __database_manager.schema.all.bdd.row.table_name
-database_manager.schema.all.bdd.row.row: __database_manager.schema.all.bdd.row.row
-database_manager.schema.all.bdd.row.size: __database_manager.schema.all.bdd.row.size
-database_manager.schema.table.row.column_name: __database_manager.schema.table.row.column_name
-database_manager.schema.table.row.data_type: __database_manager.schema.table.row.data_type
-database_manager.schema.table.row.character_maximum_length: __database_manager.schema.table.row.character_maximum_length
-database_manager.schema.table.row.is_nullable: __database_manager.schema.table.row.is_nullable
-database_manager.schema.table.row.column_default: __database_manager.schema.table.row.column_default
-database_manager.index.loading: __database_manager.loading
-database_manager.index.button_generate_dump: __database_manager.btn_generate_dump
-database_manager.index.button_schema_database: __database_manager.btn_schema_bdd
-database_manager.index.button_schema_table: __database_manager.btn_schema_table
-database_manager.index.button_list_dump: __database_manager.btn_liste_dump
-database_manager.stat.nb.table: __database_manager.stat.nb.table
-database_manager.stat.nb.row: __database_manager.stat.nb.row
-database_manager.stat.size: __database_manager.stat.size
-database_manager.index.action: __database_manager.action
-database_manager.dump.title: __database_manager.dump.title
-database_manager.dump.sub_title_1: __database_manager.dump.sub_title_1
-database_manager.dump.sub_title_2: __database_manager.dump.sub_title_2
-database_manager.dump.select_all: __database_manager.dump.select_all
-database_manager.dump.select_tables: __database_manager.dump.select_tables
-database_manager.dump.option_data: __database_manager.dump.option_data
-database_manager.dump.option_table: __database_manager.dump.option_table
-database_manager.dump.option_table_data: __database_manager.dump.option_table_data
-database_manager.dump.help.body: __database_manager.dump.help.body
-database_manager.dump.warning.body: __database_manager.dump.warning.body
-database_manager.dump.button.generate: __database_manager.dump.btn.generate
-database_manager.list.dump.title: __database_manager.list.dump.title
-database_manager.list.dump.no.data: __database_manager.list.dump.no.data
-database_manager.list.dump.button.refresh: __database_manager.list.dump.btn.refresh
-database_manager.list.dump.button.download: __database_manager.list.dump.btn.download
-database_manager.success.dump: __database_manager.success.dump
-database_manager.index.title: __database_manager.index.page_title_h1
-database_manager.index.description: __database_manager.index.description
-database_manager.dump.filename.label: __database_manager.dump.filename.label
-database_manager.dump.filename.help: __database_manager.dump.filename.help
-database_manager.index.modal.help.title: __database_manager.index.popin.help.title
-database_manager.index.modal.help.delete: __database_manager.index.popin.help.delete
-database_manager.index.modal.help.enable: __database_manager.index.popin.help.enable
-database_manager.index.modal.help.download: __database_manager.index.popin.help.download
-database_manager.dump.option_data_label: __database_manager.dump.option_data.label
-database_manager.list.dump.confirm.delete.title: __database_manager.list.dump.confirm.delete.title
-database_manager.list.dump.confirm.delete.texte: __database_manager.list.dump.confirm.delete.texte
-database_manager.list.dump.confirm.button.ok: __database_manager.list.dump.confirm.btn.ok
-database_manager.list.dump.confirm.button.ko: __database_manager.list.dump.confirm.btn.ko
-database_manager.success.delete.file.dump: __database_manager.success.delete.file.dump
-database_manager.error.table.not.found: __database_manager.error.table.not.found
-database_manager.error.delete.file.dump: __database_manager.error.delete.file.dump
-database_manager.error.dump.options: __database_manager.error.dump.options
-database_manager.error.dump.filename: __database_manager.error.dump.filename
-database_manager.error.dump.filename_exist: __database_manager.error.dump.filename.exist
-database_manager.error.generic: __database_manager.error.generic
+database_manager.schema.all.bdd.error_row: data unavailable
+database_manager.schema.all.bdd.row.schema: Schema
+database_manager.schema.all.bdd.row.table_name: Table
+database_manager.schema.all.bdd.row.row: Number of rows
+database_manager.schema.all.bdd.row.size: Size
+database_manager.schema.table.row.column_name: Name
+database_manager.schema.table.row.data_type: Type
+database_manager.schema.table.row.character_maximum_length: Maximum length
+database_manager.schema.table.row.is_nullable: Nullable
+database_manager.schema.table.row.column_default: Default value
+database_manager.index.loading: Loading
+database_manager.index.button_generate_dump: New backup
+database_manager.index.button_schema_database: Database schema
+database_manager.index.button_schema_table: Table schema
+database_manager.index.button_list_dump: Backup list
+database_manager.stat.nb.table: Total tables
+database_manager.stat.nb.row: Total rows
+database_manager.stat.size: Database size
+database_manager.index.action: Action
+database_manager.dump.title: Create a new backup
+database_manager.dump.sub_title_1: Generate a full backup of your database
+database_manager.dump.sub_title_2: Data options
+database_manager.dump.select_all: All tables
+database_manager.dump.select_tables: Or only the tables
+database_manager.dump.option_data: Data only
+database_manager.dump.option_table: SQL schemas only
+database_manager.dump.option_table_data: SQL schema and data
+database_manager.dump.help.body: Generating an SQL dump can take time, this action will run in the background. <br />A notification will be sent to you once it is finished
+database_manager.dump.warning.body: Use dedicated tools as soon as your site grows. Backing up a database that is too large can crash your application, or even your server!
+database_manager.dump.button.generate: Generate the backup
+database_manager.list.dump.title: List of your available backups
+database_manager.list.dump.no.data: No backup yet
+database_manager.list.dump.button.refresh: Refresh
+database_manager.list.dump.button.download: Download
+database_manager.success.dump: Backup generation requested
+database_manager.index.title: Database manager
+database_manager.index.description: Manage / restore / back up your database
+database_manager.dump.filename.label: Backup name
+database_manager.dump.filename.help: Leave empty or keep the default value to generate it automatically with the date
+database_manager.index.modal.help.title: Help
+database_manager.index.modal.help.delete: Delete a backup
+database_manager.index.modal.help.enable: See the schema of a table
+database_manager.index.modal.help.download: Download a backup
+database_manager.dump.option_data_label: Data to back up
+database_manager.list.dump.confirm.delete.title: SQL backup deletion confirmation
+database_manager.list.dump.confirm.delete.texte: Do you confirm the deletion of the SQL backup? This action is permanent and cannot be undone
+database_manager.list.dump.confirm.button.ok: 'Yes'
+database_manager.list.dump.confirm.button.ko: 'No'
+database_manager.success.delete.file.dump: File {fichier} deleted successfully
+database_manager.error.table.not.found: The table {table} does not exist
+database_manager.error.delete.file.dump: Unable to delete the file {fichier}
+database_manager.error.dump.options: The backup options are invalid
+database_manager.error.dump.filename: The backup name may only contain letters, digits, hyphens and underscores (100 characters maximum)
+database_manager.error.dump.filename_exist: A backup named {fichier} already exists
+database_manager.error.generic: An error occurred, please try again.

@@ -181,7 +181,7 @@ Error: Erreur
 'Username field cannot be empty': 'Le champ username ne peut pas être vide'
 'The password field must be of type string': 'Le champ password doit être du type string'
 'Password field cannot be empty': 'Le champ password ne peut pas être vide'
-'Choose a position between 1 (top), 2 (right), 3 (bottom), 4 (left)': 'Choisi une position entre 1 (haut) - 2 (droite) - 3 (bas) - 4 (gauche)'
+Choose a position between 1 (top), 2 (right), 3 (bottom), 4 (left): Choisissez une position entre 1 (haut) - 2 (droite) - 3 (bas) - 4 (gauche)
 'The pageSlug parameter must be a string': 'Le paramètre pageSlug doit être du type string'
 'The pageSlug parameter cannot be empty': 'Le paramètre pageSlug ne doit pas être vide'
 'The position parameter must be a integer': 'Le paramètre position doit être du type integer'
@@ -189,13 +189,13 @@ Error: Erreur
 'The locale parameter must be a string': 'Le paramètre locale doit être du type string'
 'Choose a locale between en or es or fr': 'Choisir une locale entre fr (français) ou es (espagnol) ou en (anglais)'
 'The user_token parameter must be a string': 'Le paramètre user_token doit être du type string'
-'The limit parameter must be a integer': 'Le paramètre limit doit être du type Integer'
-'The page parameter must be a integer': 'Le paramètre page doit être du type Integer'
+The limit parameter must be a integer: Le paramètre limit doit être du type integer
+The page parameter must be a integer: Le paramètre page doit être du type integer
 'The show_menus parameter must be a boolean': 'Le paramètre show_menus doit être du type boolean'
-'Choose a position between 0, (all), 1 (top), 2 (right), 3 (bottom), 4 (left)': 'Choisi une position entre 0 (tout) - 1 (haut) - 2 (droite) - 3 (bas) - 4 (gauche). Plusieurs choix possible'
+Choose a position between 0, (all), 1 (top), 2 (right), 3 (bottom), 4 (left): Choisissez une position entre 0 (tout) - 1 (haut) - 2 (droite) - 3 (bas) - 4 (gauche). Plusieurs choix possibles
 'The show_tags parameter must be a boolean': 'Le paramètre show_tags doit être du type boolean'
 'The show_statistiques parameter must be a boolean': 'Le paramètre show_statistiques doit être du type boolean'
-'The category parameter must be a string': 'Le paramètre catégorie doit être du type string'
+The category parameter must be a string: Le paramètre category doit être du type string
 'The tag parameter must be a string': 'Le paramètre tag doit être du type string'
 'The idPage parameter must be a integer': 'Le paramètre idPage doit être du type integer'
 'The author parameter must be a string': 'Le paramètre author doit être du type string'

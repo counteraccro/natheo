@@ -1,80 +1,80 @@
-comment.index.modal.help.title: __comment.index.popin.help.title
-comment.index.modal.help.edit: __comment.index.popin.help.edit
-comment.index.title: __comment.index.page_title_h1
-comment.index.description: __comment.index.description
-comment.grid.id: __comment.grid.id
-comment.grid.comment: __comment.grid.comment
-comment.grid.author: __comment.grid.author
-comment.grid.status: __comment.grid.status
-comment.grid.created_at: __comment.grid.created_at
-comment.grid.page: __comment.grid.page
-comment.status.wait.validation: __comment.status.wait.validation
-comment.status.validate: __comment.status.validate
-comment.status.moderate: __comment.status.moderate
-comment.status.unknown: __comment.status.inconnu
-comment.moderate.comments.title: __comment.moderate.comments.page_title
-comment.see.title: __comment.see.page_title
-comment.see.title_id: __comment.see.page_title_h1
-comment.index.button.moderate: __comment.index.btn.moderate
-comment.see.loading: __comment.see.loading
-comment.see.author: __comment.see.author
-comment.see.created: __comment.see.created
-comment.see.title_info: __comment.see.title.info
-comment.see.ip: __comment.see.ip
-comment.see.user_agent: __comment.see.userAgent
-comment.see.moderation.comment: __comment.see.moderation.comment
-comment.see.moderation.author: __comment.see.moderation.author
-comment.see.button.edit: __comment.see.btn.edit
-comment.see.save.success: __comment.see.save.success
-comment.index.info: __comment.index.info
-comment.index.info_comment_open: __comment.index.info.comment.open
-comment.index.info_comment_moderate: __comment.index.info.comment.moderate
-comment.index.info_comment_close: __comment.index.info.comment.close
-comment.index.info_change_option: __comment.index.info.change.option
-comment.moderation.loading: __comment.moderation.loading
-comment.moderate.comments.description: __comment.moderate.comments.description
-comment.moderation.legend.search: __comment.moderation.legend.search
-comment.moderation.status.label: __comment.moderation.status.label
-comment.moderation.pages.label: __comment.moderation.pages.label
-comment.moderation.pages.default: __comment.moderation.pages.default
-comment.moderation.selection.title: __comment.moderation.selection.title
-comment.moderation.status.default: __comment.moderation.status.default
-comment.index.button.moderate_nb_wait_validation_2: __comment.index.btn.moderate.nb.wait.validation.2
-comment.moderation.paginate.page: __comment.moderation.paginate.page
-comment.moderation.paginate.on: __comment.moderation.paginate.on
-comment.moderation.paginate.row: __comment.moderation.paginate.row
-comment.moderation.comment.date: __comment.moderation.comment.date
-comment.moderation.comment.update: __comment.moderation.comment.update
-comment.moderation.comment.author: __comment.moderation.comment.author
-comment.moderation.comment.comment: __comment.moderation.comment.comment
-comment.moderation.comment.page: __comment.moderation.comment.page
-comment.moderation.comment.info: __comment.moderation.comment.info
-comment.moderation.comment.ip: __comment.moderation.comment.ip
-comment.moderation.comment.user_agent: __comment.moderation.comment.userAgent
-comment.moderation.comment.moderator: __comment.moderation.comment.moderator
-comment.moderation.selection.comment: __comment.moderation.selection.comment
-comment.moderation.selection.status: __comment.moderation.selection.status
-comment.moderation.selection.comment_moderation: __comment.moderation.selection.comment.moderation
-comment.moderation.selection.submit: __comment.moderation.selection.submit
-comment.moderation.update.success: __comment.moderation.update.success
-comment.moderation.no_result: __comment.moderation.noResult
+comment.index.modal.help.title: Ayuda
+comment.index.modal.help.edit: Moderar
+comment.index.title: Gestión de los comentarios
+comment.index.description: Gestione los comentarios de su sitio web
+comment.grid.id: '#'
+comment.grid.comment: Comentario
+comment.grid.author: Autor
+comment.grid.status: Estado
+comment.grid.created_at: Creado el
+comment.grid.page: Página
+comment.status.wait.validation: Pendiente de validación
+comment.status.validate: Validado
+comment.status.moderate: Moderado
+comment.status.unknown: Desconocido
+comment.moderate.comments.title: Moderación de los comentarios
+comment.see.title: Comentario
+comment.see.title_id: 'Comentario #{id}'
+comment.index.button.moderate: Moderación global
+comment.see.loading: Cargando el comentario
+comment.see.author: Autor
+comment.see.created: 'Creado el '
+comment.see.title_info: Información del comentario
+comment.see.ip: IP
+comment.see.user_agent: Otra información
+comment.see.moderation.comment: Comentario de moderación
+comment.see.moderation.author: Moderador
+comment.see.button.edit: Modificar el comentario
+comment.see.save.success: Comentario actualizado correctamente
+comment.index.info: Información
+comment.index.info_comment_open: Los comentarios están abiertos en el sitio
+comment.index.info_comment_moderate: y quedan pendientes de validación por defecto.
+comment.index.info_comment_close: Los comentarios están desactivados en el sitio
+comment.index.info_change_option: Modificar las opciones
+comment.moderation.loading: Cargando la lista de comentarios
+comment.moderate.comments.description: Validar o moderar de una vez una lista de comentarios
+comment.moderation.legend.search: Filtro
+comment.moderation.status.label: Ordenar por estado
+comment.moderation.pages.label: Ordenar por página
+comment.moderation.pages.default: Todas las páginas
+comment.moderation.selection.title: Acción de moderación
+comment.moderation.status.default: Todos los estados
+comment.index.button.moderate_nb_wait_validation_2: ' pendientes de validación'
+comment.moderation.paginate.page: página
+comment.moderation.paginate.on: de
+comment.moderation.paginate.row: comentario(s)
+comment.moderation.comment.date: escrito el
+comment.moderation.comment.update: Moderado el
+comment.moderation.comment.author: por
+comment.moderation.comment.comment: Contenido
+comment.moderation.comment.page: Publicado en la página
+comment.moderation.comment.info: Información
+comment.moderation.comment.ip: IP
+comment.moderation.comment.user_agent: User Agent
+comment.moderation.comment.moderator: Moderado por
+comment.moderation.selection.comment: seleccionado(s)
+comment.moderation.selection.status: Nuevo estado
+comment.moderation.selection.comment_moderation: Comentario de moderación
+comment.moderation.selection.submit: Actualizar
+comment.moderation.update.success: comentario(s) modificado(s) correctamente
+comment.moderation.no_result: No se ha encontrado ningún comentario para el estado seleccionado
 comment.see.cancel: Volver
-comment.see.comment.title: __comment.see.comment.title
-comment.see.comment.status: __comment.see.comment.status
-comment.see.comment.status_current: __comment.see.comment.status.actuel
-comment.see.comment.status_label: __comment.see.comment.status.label
-comment.see.comment.page.associated: __comment.see.comment.page.associated
-comment.see.comment.page.created: __comment.see.comment.page.created
-comment.see.comment.page.link: __comment.see.comment.page.link
-comment.moderation.comment.select.all: __comment.moderation.comment.select.all
-comment.moderation.comment.unselect.all: __comment.moderation.comment.unselect.all
-comment.moderation.statistics: __comment.moderation.statistiques
-comment.moderation.status.short.validate: __comment.moderation.status.short.validate
-comment.moderation.status.short.moderate: __comment.moderation.status.short.moderate
-comment.moderation.status.short.waiting: __comment.moderation.status.short.waiting
-comment.see.comment.error.no.comment.title: __comment.see.comment.error.no.comment.title
-comment.see.comment.error.no.comment.text: __comment.see.comment.error.no.comment.text
-comment.see.comment.button.back: __comment.see.comment.btn.back
-comment.error.not_found: __comment.error.not_found
-comment.error.status_invalid: __comment.error.status_invalid
+comment.see.comment.title: Contenido del comentario
+comment.see.comment.status: Estado
+comment.see.comment.status_current: Estado actual
+comment.see.comment.status_label: Modificar el estado
+comment.see.comment.page.associated: Página asociada
+comment.see.comment.page.created: 'Creada el '
+comment.see.comment.page.link: Ver la página
+comment.moderation.comment.select.all: Seleccionar todo
+comment.moderation.comment.unselect.all: Deseleccionar todo
+comment.moderation.statistics: Estadísticas globales
+comment.moderation.status.short.validate: Validado
+comment.moderation.status.short.moderate: Moderado
+comment.moderation.status.short.waiting: Pendiente
+comment.see.comment.error.no.comment.title: No se ha encontrado ningún comentario
+comment.see.comment.error.no.comment.text: Este comentario no existe o ha sido eliminado. Puede volver a la lista
+comment.see.comment.button.back: Volver
+comment.error.not_found: Este comentario no existe o ha sido eliminado.
+comment.error.status_invalid: Este estado de comentario no existe.
 comment.moderation.selected: 'Comentarios seleccionados'

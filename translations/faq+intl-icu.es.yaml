@@ -1,78 +1,78 @@
-faq.new.title: __faq.new.title
-faq.new.sub_title: __faq.new.sub_title
-faq.new.input.title: __faq.new.input.title
-faq.new.help: __faq.new.help
-faq.new.button: __faq.new.btn
+faq.new.title: Creación de una nueva FAQ
+faq.new.sub_title: Introduzca simplemente un título para crear su FAQ
+faq.new.input.title: Título de la FAQ
+faq.new.help: Al crear la FAQ, el título estará en el idioma por defecto del sitio; podrá modificar los demás textos al editar la FAQ
+faq.new.button: Crear la FAQ
 faq.new.button_cancel: Volver
-faq.new.input.error.empty: __faq.new.input.error.empty
-faq.edit.title: __faq.edit.title
-faq.edit.sub_title: __faq.edit.sub_title
-faq.edit.input.title: __faq.edit.input.title
-faq.edit.input.title_help: __faq.edit.input.title.help
-faq.edit.input.title_error: __faq.edit.input.title.error
-faq.select.locale: __faq.select.locale
-faq.edit.button.save: __faq.edit.btn.save
+faq.new.input.error.empty: Debe introducir un título para su nueva FAQ
+faq.edit.title: Datos generales
+faq.edit.sub_title: Los datos generales de la FAQ
+faq.edit.input.title: Título de la FAQ
+faq.edit.input.title_help: Texto que aparecerá en la parte superior de su FAQ
+faq.edit.input.title_error: Este campo no puede estar vacío
+faq.select.locale: Seleccionar el idioma
+faq.edit.button.save: Guardar
 faq.edit.button.cancel: Volver
-faq.edit.text.no_change: __faq.edit.text.no_change
-faq.edit.text.change_no_save: __faq.edit.text.change_no_save
-faq.edit.text.error: __faq.edit.text.error
-faq.edit.no.questions: __faq.edit.no.questions
-faq.edit.one.question: __faq.edit.one.question
-faq.edit.multiple.questions: __faq.edit.multiple.questions
-faq.edit.question.label: __faq.edit.question.label
-faq.edit.answer.label: __faq.edit.answer.label
-faq.edit.question.error: __faq.edit.question.error
-faq.edit.text.error_not_question: __faq.edit.text.error.not.question
-faq.edit.button.new.question: __faq.edit.btn.new.question
-faq.edit.button.new.category: __faq.edit.btn.new.category
-faq.edit.new.question.fr: __faq.edit.new.question.fr
-faq.edit.new.question.es: __faq.edit.new.question.es
-faq.edit.new.question.en: __faq.edit.new.question.en
-faq.edit.new.answer.fr: __faq.edit.new.answer.fr
-faq.edit.new.answer.en: __faq.edit.new.answer.en
-faq.edit.new.answer.es: __faq.edit.new.answer.es
-faq.edit.new.category.fr: __faq.edit.new.category.fr
-faq.edit.new.category.en: __faq.edit.new.category.en
-faq.edit.new.category.es: __faq.edit.new.category.es
-faq.success.no.disabled: __faq.success.no.disabled
-faq.success.disabled: __faq.success.disabled
-faq.remove.success: __faq.remove.success
-faq.save.success: __faq.save.success
-faq.create.success: __faq.create.success
-faq.grid.id: __faq.grid.id
-faq.grid.title: __faq.grid.title
-faq.grid.nb_categories: __faq.grid.nb_categories
-faq.grid.nb_questions: __faq.grid.nb_questions
-faq.grid.update_at: __faq.grid.update_at
-faq.confirm.disabled.message: __faq.confirm.disabled.msg
-faq.confirm.delete.message: __faq.confirm.delete.msg
-faq.add.title: __faq.add.page_title_h1
-faq.add.description: __faq.add.description
-faq.update.title_id: __faq.update.page_title
-faq.update.title: __faq.update.page_title_h1
-faq.update.description: __faq.update.description
-faq.update.not.found.faq.title: __faq.update.not.found.faq.title
-faq.update.not.found.faq.description: __faq.update.not.found.faq.description
-faq.update.not.found.button.return: __faq.update.not.found.btn.return
-faq.update.not.found.button.new_faq: __faq.update.not.found.btn.new_faq
-faq.index.modal.help.title: __faq.index.popin.help.title
-faq.index.modal.help.disabled: __faq.index.popin.help.disabled
-faq.index.modal.help.enable: __faq.index.popin.help.enable
-faq.index.modal.help.delete: __faq.index.popin.help.delete
-faq.index.modal.help.edit: __faq.index.popin.help.edit
-faq.index.title: __faq.index.page_title
-faq.index.button.new: __faq.index.btn.new
-faq.index.description: __faq.index.description
-faq.edit.disabled.label: __faq.edit.disabled.label
-faq.edit.input.disabled.label: __faq.edit.input.disabled.label
-faq.edit.input.disabled.help: __faq.edit.input.disabled.help
-faq.edit.input.disabled.help_disabled: __faq.edit.input.disabled.help.disabled
-faq.edit.button.confirm_ok: __faq.edit.btn.confirm_ok
-faq.edit.button.confirm_ko: __faq.edit.btn.confirm_ko
-faq.edit.confirm.delete.category.title: __faq.edit.confirm.delete.category.title
-faq.edit.confirm.delete.category.body: __faq.edit.confirm.delete.category.body
-faq.edit.confirm.delete.question.title: __faq.edit.confirm.delete.question.title
-faq.edit.confirm.delete.question.body: __faq.edit.confirm.delete.question.body
-faq.error.forbidden: __faq.error.forbidden
-faq.error.not_found: __faq.error.not_found
-faq.error.delete.used: __faq.error.delete.used
+faq.edit.text.no_change: Ningún cambio por el momento
+faq.edit.text.change_no_save: Se han realizado cambios que aún no se han guardado
+faq.edit.text.error: Se han detectado uno o varios errores de validación
+faq.edit.no.questions: Ninguna pregunta
+faq.edit.one.question: 1 pregunta
+faq.edit.multiple.questions: preguntas
+faq.edit.question.label: Pregunta
+faq.edit.answer.label: Respuesta
+faq.edit.question.error: Esta pregunta no es válida
+faq.edit.text.error_not_question: Ninguna pregunta — añada una o arrastre aquí una desde otra categoría.
+faq.edit.button.new.question: Añadir una pregunta
+faq.edit.button.new.category: Añadir una categoría
+faq.edit.new.question.fr: Nouvelle question
+faq.edit.new.question.es: Nueva pregunta
+faq.edit.new.question.en: New question
+faq.edit.new.answer.fr: Nouvelle réponse
+faq.edit.new.answer.en: New answer
+faq.edit.new.answer.es: Nueva respuesta
+faq.edit.new.category.fr: Nouvelle catégorie
+faq.edit.new.category.en: New category
+faq.edit.new.category.es: Nueva categoría
+faq.success.no.disabled: La FAQ <b>{label}</b> se ha restaurado correctamente
+faq.success.disabled: La FAQ <b>{label}</b> se ha desactivado correctamente
+faq.remove.success: La FAQ <b>{label}</b> se ha eliminado correctamente
+faq.save.success: Su FAQ se ha guardado correctamente
+faq.create.success: Su FAQ se ha creado correctamente, será redirigido a la edición
+faq.grid.id: '#'
+faq.grid.title: Título
+faq.grid.nb_categories: Número de categorías
+faq.grid.nb_questions: Número de preguntas
+faq.grid.update_at: Última modificación
+faq.confirm.disabled.message: ¿Confirma la desactivación de la FAQ <b>{label}</b>? Esta FAQ quedará inaccesible
+faq.confirm.delete.message: ¿Confirma la eliminación de la FAQ <b>{label}</b>? Esta acción es definitiva
+faq.add.title: Nueva FAQ
+faq.add.description: Cree una nueva FAQ para su sitio web
+faq.update.title_id: 'Edición de la FAQ #{id}'
+faq.update.title: Edición de la FAQ
+faq.update.description: Desde esta página, modifique su FAQ, reordénela o añada / elimine preguntas y respuestas
+faq.update.not.found.faq.title: No se ha encontrado ninguna FAQ
+faq.update.not.found.faq.description: Esta FAQ no existe o ha sido eliminada. Puede volver a la lista o crear una nueva.
+faq.update.not.found.button.return: Volver
+faq.update.not.found.button.new_faq: Crear una FAQ
+faq.index.modal.help.title: Ayuda
+faq.index.modal.help.disabled: Desactivar la FAQ
+faq.index.modal.help.enable: Activar la FAQ
+faq.index.modal.help.delete: Eliminar
+faq.index.modal.help.edit: Modificar
+faq.index.title: Gestión de las FAQ
+faq.index.button.new: Nueva FAQ
+faq.index.description: Gestione las FAQ de su sitio web
+faq.edit.disabled.label: Desactivada
+faq.edit.input.disabled.label: FAQ visible en el sitio
+faq.edit.input.disabled.help: Su FAQ es visible para todos
+faq.edit.input.disabled.help_disabled: Su FAQ está desactivada actualmente
+faq.edit.button.confirm_ok: Sí, confirmo
+faq.edit.button.confirm_ko: 'No'
+faq.edit.confirm.delete.category.title: Eliminación de una categoría
+faq.edit.confirm.delete.category.body: Está a punto de eliminar esta categoría y todas sus preguntas, ¿está seguro?
+faq.edit.confirm.delete.question.title: Eliminación de una pregunta
+faq.edit.confirm.delete.question.body: Está a punto de eliminar esta pregunta, ¿está seguro?
+faq.error.forbidden: No tiene permisos para realizar esta acción en esta FAQ.
+faq.error.not_found: Esta FAQ no existe o ha sido eliminada.
+faq.error.delete.used: Esta FAQ se utiliza en {nb, plural, one {# página} other {# páginas}}, no se puede eliminar. Retírela primero de esas páginas.

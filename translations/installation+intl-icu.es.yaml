@@ -1,113 +1,113 @@
-installation.step_1.title: __installation.step.1.titre
-installation.step_1.title_h1: __installation.step.1.titre.h1
-installation.global.loading: __installation.loading
-installation.step_1.config.database.title: __installation.step.1.config.bdd.title
-installation.step_1.config.database.input.type.label: __installation.step.1.config.bdd.input.type.label
-installation.step_1.config.database.input.login.label: __installation.step.1.config.bdd.input.login.label
-installation.step_1.config.database.input.password.label: __installation.step.1.config.bdd.input.password.label
-installation.step_1.config.database.input.ip.label: __installation.step.1.config.bdd.input.ip.label
-installation.step_1.config.database.input.port.label: __installation.step.1.config.bdd.input.port.label
-installation.step_1.config.database.button.test.config: __installation.step.1.config.bdd.btn.test.config
-installation.step_1.config.database.button.test.config_loading: __installation.step.1.config.bdd.btn.test.config.loading
-installation.step_1.config.database.loading.message.update.file: __installation.step.1.config.bdd.loading.msg.update.file
-installation.step_1.config.database.loading.message.test.connection.success: __installation.step.1.config.bdd.loading.msg.test.connexion.success
-installation.step_1.create.database.h1: __installation.step.1.create.bdd.h1
-installation.step_1.create.database.description.1: __installation.step.1.create.bdd.description.1
-installation.step_1.create.database.description.2: __installation.step.1.create.bdd.description.2
-installation.step_1.create.database.alert.title: __installation.step.1.create.bdd.alert.title
-installation.step_1.create.database.alert.text.1: __installation.step.1.create.bdd.alert.text.1
-installation.step_1.create.database.alert.text.2: __installation.step.1.create.bdd.alert.text.2
-installation.step_1.create.database.alert.text.3: __installation.step.1.create.bdd.alert.text.3
-installation.step_1.create.database.alert.text.4: __installation.step.1.create.bdd.alert.text.4
-installation.step_1.create.database.alert.text.5: __installation.step.1.create.bdd.alert.text.5
-installation.step_1.create.database.title: __installation.step.1.create.bdd.title
-installation.step_1.create.database.input.database.name.label: __installation.step.1.create.bdd.input.bdd.name.label
-installation.step_1.create.database.input.version.label: __installation.step.1.create.bdd.input.version.label
-installation.step_1.create.database.input.charset.label: __installation.step.1.create.bdd.input.charset.label
-installation.step_1.create.database.button.create: __installation.step.1.create.bdd.btn.create
-installation.step_1.create.database.message.update.file: __installation.step.1.create.bdd.msg.update.file
-installation.step_1.create.database.message.create.database.success: __installation.step.1.create.bdd.msg.create.bdd.success
-installation.step_1.create.database.message.create.database.ko: __installation.step.1.create.bdd.msg.create.bdd.ko
-installation.step_1.create.database.message.create.table.success: __installation.step.1.create.bdd.msg.create.table.success
-installation.step_1.create.database.message.create.table.ko: __installation.step.1.create.bdd.msg.create.table.ko
-installation.step_1.create.database.message.success: __installation.step.1.create.bdd.msg.success
-installation.step_2.title: __installation.step.2.titre
-installation.step_2.title_h1: __installation.step.2.titre.h1
-installation.step_2.founder.description: __installation.step.2.fondateur.description
-installation.step_2.founder.title.card: __installation.step.2.fondateur.titre.card
-installation.step_2.founder.login.label: __installation.step.2.fondateur.login.label
-installation.step_2.founder.login.placeholder: __installation.step.2.fondateur.login.placeholder
-installation.step_2.founder.login.error: __installation.step.2.fondateur.login.error
-installation.step_2.founder.email.label: __installation.step.2.fondateur.email.label
-installation.step_2.founder.email.placeholder: __installation.step.2.fondateur.email.placeholder
-installation.step_2.founder.email.error: __installation.step.2.fondateur.email.error
-installation.step_2.founder.password.label: __installation.step.2.fondateur.password.label
-installation.step_2.founder.password.error: __installation.step.2.fondateur.password.error
-installation.step_2.founder.password.weak: __installation.step.2.fondateur.password.weak
-installation.step_2.founder.password.normal: __installation.step.2.fondateur.password.normal
-installation.step_2.founder.password.strong: __installation.step.2.fondateur.password.strong
-installation.step_2.founder.password.help: __installation.step.2.fondateur.password.help
-installation.step_2.founder.button.create: __installation.step.2.fondateur.btn.create
-installation.step_2.founder.loading.message: __installation.step.2.fondateur.loading.msg
-installation.step_2.founder.success: __installation.step.2.fondateur.success
-installation.step_1.create.database.message.update.secret_success: __installation.step.1.create.bdd.msg.update.secret_success
-installation.step_1.create.database.message.update.secret_ko: __installation.step.1.create.bdd.msg.update.secret_ko
-installation.step_2.debug.title: __installation.step.2.debug.titre
-installation.step_2.debug.text.1: __installation.step.2.debug.texte.1
-installation.step_2.debug.text.2: __installation.step.2.debug.texte.2
-installation.step_2.debug.text.3: __installation.step.2.debug.texte.3
-installation.step_2.debug.text.4: __installation.step.2.debug.texte.4
-installation.step_2.debug.text.5: __installation.step.2.debug.texte.5
-installation.step_2.debug.text.6: __installation.step.2.debug.texte.6
-installation.step_2.finish.title: __installation.step.2.finish.titre
-installation.step_2.finish.text.1: __installation.step.2.finish.texte.1
-installation.step_2.finish.text.2: __installation.step.2.finish.texte.2
-installation.step_2.finish.button: __installation.step.2.finish.btn
-installation.step_2.finish.loading.message.success: __installation.step.2.finish.loading.msg.success
-installation.step_2.finish.loading.message.config.success: __installation.step.2.finish.loading.msg.config.success
-installation.step_2.finish.loading.message.config.ko: __installation.step.2.finish.loading.msg.config.ko
-installation.step_2.finish.loading.message.installation.data.success: __installation.step.2.finish.loading.msg.installation.data.success
-installation.step_2.finish.loading.message.installation.data.ko: __installation.step.2.finish.loading.msg.installation.data.ko
-installation.step_2.finish.loading.message.cache.success: __installation.step.2.finish.loading.msg.cache.success
-installation.step_2.finish.loading.message.cache.ko: __installation.step.2.finish.loading.msg.cache.ko
-installation.step_0.step_label: __installation.step.0.step-label
-installation.step_1.step_label: __installation.step.1.step-label
-installation.step_2.step_label: __installation.step.2.step-label
-installation.step_3.step_label: __installation.step.3.step-label
-installation.step_4.step_label: __installation.step.4.step-label
-installation.step_0.title: __installation.step.0.titre
-installation.global.title: __installation.titre
-installation.step_0.h2.title: __installation.step.0.h2.title
-installation.step_0.h2.sub.title: __installation.step.0.h2.sub.title
-installation.step_0.card.title: __installation.step.0.card.title
-installation.step_0.php.version: __installation.step.0.php.version
-installation.step_0.pdo_mysql: __installation.step.0.pdo_mysql
-installation.step_0.ok: __installation.ok
-installation.step_0.ko: __installation.ko
-installation.step_0.gd: __installation.step.0.gd
-installation.step_0.intl: __installation.step.0.intl
-installation.step_0.folder.permission: __installation.step.0.folder.permission
-installation.step_0.folders_summary_ok: __installation.step.0.folders_summary_ok
-installation.step_0.folders_summary_error_single: __installation.step.0.folders_summary_error_single
-installation.step_0.folders_summary_error_multiple: __installation.step.0.folders_summary_error_multiple
-installation.step_0.folders_button_disabled_title: __installation.step.0.folders_button_disabled_title
-installation.step_0.button.start: __installation.step.0.btn.start
-installation.step_1.h2.title: __installation.step.1.h2.title
-installation.step_1.h2.sub.title: __installation.step.1.h2.sub.title
-installation.step_1.field.required: __installation.step.1.field.required
-installation.step_1.button.return: __installation.step.1.btn.return
-installation.step_1.config.database.button.save.config: __installation.step.1.config.bdd.btn.save.config
-installation.step_1.sub_title.identifier: __installation.step.1.sub-title.identifiant
-installation.step_1.sub_title.server: __installation.step.1.sub-title.server
-installation.step_1.sub_title.options: __installation.step.1.sub-title.options
-installation.step_1.button.step.2: __installation.step.1.btn.step.2
-installation.step_4.title: __installation.step.4.title
-installation.step_4.description: __installation.step.4.description
-installation.step_4.summary.database: __installation.step.4.summary.database
-installation.step_4.summary.user: __installation.step.4.summary.user
-installation.step_4.summary.data: __installation.step.4.summary.data
-installation.step_4.summary.cache: __installation.step.4.summary.cache
-installation.step_4.button.login: __installation.step.4.btn.login
-installation.step_3.title: __installation.step.3.titre
-installation.step_4.head_title: __installation.step.4.titre
-installation.step_1.message.database.already_exist: __installation.step.1.msg.bdd.already_exist
+installation.step_1.title: Paso 1 - Instalación de Nathéo CMS
+installation.step_1.title_h1: Conexión de la base de datos
+installation.global.loading: Cargando
+installation.step_1.config.database.title: Configuración / conexión del SGBD
+installation.step_1.config.database.input.type.label: Tipo
+installation.step_1.config.database.input.login.label: Usuario
+installation.step_1.config.database.input.password.label: Contraseña
+installation.step_1.config.database.input.ip.label: IP del servidor
+installation.step_1.config.database.input.port.label: Puerto
+installation.step_1.config.database.button.test.config: Probar la conexión
+installation.step_1.config.database.button.test.config_loading: Intentando conectar
+installation.step_1.config.database.loading.message.update.file: Actualizando la configuración
+installation.step_1.config.database.loading.message.test.connection.success: Conexión establecida correctamente
+installation.step_1.create.database.h1: Creación de la base de datos
+installation.step_1.create.database.description.1: Ahora que la conexión está establecida, vamos a crear la base de datos de Nathéo CMS
+installation.step_1.create.database.description.2: Rellene los siguientes campos para definir el nombre de la base, la versión del SGBD y el charset de la base
+installation.step_1.create.database.alert.title: Información de configuración
+installation.step_1.create.database.alert.text.1: 'La base de datos se creará con las siguientes opciones: '
+installation.step_1.create.database.alert.text.2: 'El esquema por defecto de la base de datos es '
+installation.step_1.create.database.alert.text.3: 'Las tablas tendrán el prefijo '
+installation.step_1.create.database.alert.text.4: ningún prefijo definido
+installation.step_1.create.database.alert.text.5: Si desea modificar estas opciones, modifique el valor de <b>app.default_database_prefix</b> en <b>config/services.yaml</b>
+installation.step_1.create.database.title: Instalación de la base de datos
+installation.step_1.create.database.input.database.name.label: Nombre de la base de datos
+installation.step_1.create.database.input.version.label: Versión
+installation.step_1.create.database.input.charset.label: Charset
+installation.step_1.create.database.button.create: Crear la base de datos
+installation.step_1.create.database.message.update.file: Actualizando la configuración
+installation.step_1.create.database.message.create.database.success: Base de datos creada correctamente
+installation.step_1.create.database.message.create.database.ko: Se ha producido un error al crear la base de datos
+installation.step_1.create.database.message.create.table.success: Tablas creadas correctamente
+installation.step_1.create.database.message.create.table.ko: Se ha producido un error al crear las tablas
+installation.step_1.create.database.message.success: Enhorabuena, el paso 2 ha terminado, redirigiendo al paso 3...
+installation.step_2.title: Paso 2 - Configuración de Nathéo CMS
+installation.step_2.title_h1: Creación de la cuenta de fundador
+installation.step_2.founder.description: Ahora vamos a crear la cuenta de fundador, esta cuenta le permitirá conectarse al back office de Nathéo
+installation.step_2.founder.title.card: Cuenta de fundador
+installation.step_2.founder.login.label: Usuario
+installation.step_2.founder.login.placeholder: Usuario
+installation.step_2.founder.login.error: El usuario no puede estar vacío ni contener caracteres especiales
+installation.step_2.founder.email.label: Correo electrónico
+installation.step_2.founder.email.placeholder: Correo electrónico
+installation.step_2.founder.email.error: El correo electrónico no es válido
+installation.step_2.founder.password.label: Contraseña
+installation.step_2.founder.password.error: La contraseña no es válida
+installation.step_2.founder.password.weak: Contraseña débil
+installation.step_2.founder.password.normal: Contraseña normal
+installation.step_2.founder.password.strong: Contraseña fuerte
+installation.step_2.founder.password.help: Su contraseña debe contener entre 8 y 20 caracteres, con al menos una mayúscula, letras, cifras y caracteres especiales, sin espacios
+installation.step_2.founder.button.create: Crear su cuenta
+installation.step_2.founder.loading.message: Creando su cuenta...
+installation.step_2.founder.success: Cuenta creada correctamente
+installation.step_1.create.database.message.update.secret_success: APP_SECRET actualizado correctamente
+installation.step_1.create.database.message.update.secret_ko: Se ha producido un error al actualizar APP_SECRET
+installation.step_2.debug.title: Modo depuración activado
+installation.step_2.debug.text.1: Atención, el modo depuración del CMS está activado, ¡esto afectará a los datos instalados!
+installation.step_2.debug.text.2: Se instalarán las cuentas de demostración en lugar de la cuenta que va a crear. No debe utilizar este modo en producción
+installation.step_2.debug.text.3: 'Para modificar este valor:'
+installation.step_2.debug.text.4: Abra el archivo <b>.env</b>
+installation.step_2.debug.text.5: Cambie el valor de <b><i>NATHEO_DEBUG</i></b> a <b>false</b>
+installation.step_2.debug.text.6: Pulse F5 para actualizar la página
+installation.step_2.finish.title: Creación del conjunto de datos
+installation.step_2.finish.text.1: 'Último paso de la instalación de Nathéo CMS: ahora vamos a añadir un conjunto de datos para ayudarle a familiarizarse con el CMS'
+installation.step_2.finish.text.2: Una vez instalados los datos, será redirigido a la página de conexión de la administración. Podrá conectarse con su cuenta de fundador recién creada
+installation.step_2.finish.button: Finalizar la instalación
+installation.step_2.finish.loading.message.success: Instalación finalizada correctamente, redirigiendo al paso final
+installation.step_2.finish.loading.message.config.success: Configuración cargada correctamente
+installation.step_2.finish.loading.message.config.ko: Se ha producido un error al cargar la configuración
+installation.step_2.finish.loading.message.installation.data.success: Datos instalados correctamente
+installation.step_2.finish.loading.message.installation.data.ko: Se ha producido un error al instalar los datos
+installation.step_2.finish.loading.message.cache.success: Caché vaciada correctamente
+installation.step_2.finish.loading.message.cache.ko: Se ha producido un error al vaciar la caché
+installation.step_0.step_label: Bienvenida
+installation.step_1.step_label: Conexión SGBD
+installation.step_2.step_label: Base de datos
+installation.step_3.step_label: Instalación de los datos
+installation.step_4.step_label: Resumen
+installation.step_0.title: Bienvenida
+installation.global.title: Instalación guiada
+installation.step_0.h2.title: ¡Bienvenido a Nathéo CMS!
+installation.step_0.h2.sub.title: Gracias por elegir Nathéo CMS. Ahora podrá instalar y configurar el CMS en unos pocos pasos rápidos. Solo le llevará unos minutos.
+installation.step_0.card.title: Comprobación de los requisitos
+installation.step_0.php.version: Versión de PHP
+installation.step_0.pdo_mysql: Extensión PDO (MySQL)
+installation.step_0.ok: OK
+installation.step_0.ko: KO
+installation.step_0.gd: Extensión GD
+installation.step_0.intl: Extensión Intl
+installation.step_0.folder.permission: Permisos de las carpetas
+installation.step_0.folders_summary_ok: "{count, plural,\n    =0 {Ninguna carpeta que comprobar}\n    one {# carpeta de # tiene permiso de escritura}\n    other {# carpetas de # tienen permiso de escritura}\n}"
+installation.step_0.folders_summary_error_single: '<code class="folder-path" style="color: inherit;">{path}</code> no tiene permiso de escritura — compruebe los permisos (chmod 775) antes de continuar.'
+installation.step_0.folders_summary_error_multiple: '{count} carpetas no tienen permiso de escritura: <code class="folder-path" style="color: inherit;">{paths}</code> — compruebe los permisos (chmod 775) antes de continuar.'
+installation.step_0.folders_button_disabled_title: Uno o varios errores impiden continuar
+installation.step_0.button.start: Empezar la instalación
+installation.step_1.h2.title: Conexión SGBD
+installation.step_1.h2.sub.title: Para instalar los datos necesarios para el buen funcionamiento del CMS, vamos a configurar la conexión al SGBD
+installation.step_1.field.required: Este campo es obligatorio
+installation.step_1.button.return: Volver
+installation.step_1.config.database.button.save.config: Guardar
+installation.step_1.sub_title.identifier: Credenciales
+installation.step_1.sub_title.server: Servidor
+installation.step_1.sub_title.options: Opciones avanzadas
+installation.step_1.button.step.2: Crear la base de datos
+installation.step_4.title: Instalación realizada correctamente
+installation.step_4.description: Enhorabuena, Nathéo CMS se ha instalado correctamente
+installation.step_4.summary.database: Base de datos creada
+installation.step_4.summary.user: Cuenta de fundador creada
+installation.step_4.summary.data: Datos instalados
+installation.step_4.summary.cache: Caché vaciada
+installation.step_4.button.login: Conectarme con mi cuenta de fundador
+installation.step_3.title: Instalación de los datos
+installation.step_4.head_title: Finalización
+installation.step_1.message.database.already_exist: La base de datos ya existe

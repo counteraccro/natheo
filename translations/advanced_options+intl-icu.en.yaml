@@ -1,60 +1,60 @@
-advanced_options.index.title: __advanced_options.index.page_title_h1
-advanced_options.index.description: __advanced_options.index.description
-advanced_options.success.switch.env: __advanced_options.success.switch.env
-advanced_options.switch.env.title: __advanced_options.switch.env.title
-advanced_options.switch.subtitle.env.prod: __advanced_options.switch.subtitle.env.prod
-advanced_options.switch.subtitle.env.dev: __advanced_options.switch.subtitle.env.dev
-advanced_options.switch.define.env.dev: __advanced_options.switch.define.env.dev
-advanced_options.switch.define.env.dev_1: __advanced_options.switch.define.env.dev.1
-advanced_options.switch.define.env.dev_2: __advanced_options.switch.define.env.dev.2
-advanced_options.switch.define.env.dev_3: __advanced_options.switch.define.env.dev.3
-advanced_options.switch.define.env.dev_4: __advanced_options.switch.define.env.dev.4
-advanced_options.switch.define.env.dev_warning: __advanced_options.switch.define.env.dev.warning
-advanced_options.switch.define.env.prod: __advanced_options.switch.define.env.prod
-advanced_options.switch.define.env.prod_1: __advanced_options.switch.define.env.prod.1
-advanced_options.switch.define.env.prod_2: __advanced_options.switch.define.env.prod.2
-advanced_options.switch.define.env.prod_3: __advanced_options.switch.define.env.prod.3
-advanced_options.switch.define.env.prod_warning: __advanced_options.switch.define.env.prod.warning
-advanced_options.switch.env.button.dev: __advanced_options.switch.env.btn.dev
-advanced_options.switch.env.button.prod: __advanced_options.switch.env.btn.prod
-advanced_options.switch.env.message.info.switch: __advanced_options.switch.env.msg.info.switch
-advanced_options.switch.env.message.info.switch_end: __advanced_options.switch.env.msg.info.switch.end
-advanced_options.modal.confirm.env.title: __advanced_options.modale.confirm.env.title
-advanced_options.modal.confirm.env.body.text.1: __advanced_options.modale.confirm.env.body.text.1
-advanced_options.modal.confirm.env.body.text.2: __advanced_options.modale.confirm.env.body.text.2
-advanced_options.modal.confirm.env.button.confirm: __advanced_options.modale.confirm.env.btn.confirm
-advanced_options.modal.confirm.env.button.undo: __advanced_options.modale.confirm.env.btn.undo
-advanced_options.switch.env.message.info.title: __advanced_options.switch.env.msg.info.title
-advanced_options.title.danger.zone: __advanced_options.title.danger.zone
-advanced_options.warning.danger.zone: __advanced_options.warning.danger.zone
-advanced_options.reload.data.title: __advanced_options.reload.data.title
-advanced_options.reload.data.text_1: __advanced_options.reload.data.text_1
-advanced_options.reload.data.warning: __advanced_options.reload.data.warning
-advanced_options.reload.data.button: __advanced_options.reload.data.btn
-advanced_options.reset.database.title: __advanced_options.reset.database.title
-advanced_options.reset.database.text_1: __advanced_options.reset.database.text_1
-advanced_options.reset.database.warning: __advanced_options.reset.database.warning
-advanced_options.reset.database.button: __advanced_options.reset.database.btn
-advanced_options.modal.confirm.reset.database.title: __advanced_options.modale.confirm.reset.database.title
-advanced_options.modal.confirm.reset.database.body.text.1: __advanced_options.modale.confirm.reset.database.body.text.1
-advanced_options.modal.confirm.reset.database.body.text.2: __advanced_options.modale.confirm.reset.database.body.text.2
-advanced_options.modal.confirm.reset.database.button.confirm: __advanced_options.modale.confirm.reset.database.btn.confirm
-advanced_options.modal.confirm.reset.database.button.undo: __advanced_options.modale.confirm.reset.database.btn.undo
-advanced_options.modal.confirm.reset.data.title: __advanced_options.modale.confirm.reset.data.title
-advanced_options.modal.confirm.reset.data.body.text.1: __advanced_options.modale.confirm.reset.data.body.text.1
-advanced_options.modal.confirm.reset.data.body.text.2: __advanced_options.modale.confirm.reset.data.body.text.2
-advanced_options.modal.confirm.reset.data.button.confirm: __advanced_options.modale.confirm.reset.data.btn.confirm
-advanced_options.modal.confirm.reset.data.button.undo: __advanced_options.modale.confirm.reset.data.btn.undo
-advanced_options.reset.data.message.info.reset: __advanced_options.reset.data.msg.info.reset
-advanced_options.reset.data.message.info.reset_end: __advanced_options.reset.data.msg.info.reset.end
-advanced_options.success.reset.data: __advanced_options.success.reset.data
-advanced_options.success.reset.database: __advanced_options.success.reset.database
-advanced_options.reset.database.message.info.reset: __advanced_options.reset.database.msg.info.reset
-advanced_options.reset.database.message.info.reset_end: __advanced_options.reset.database.msg.info.reset.end
-advanced_options.sub.title.danger.zone: __advanced_options.sub.title.danger.zone
-advanced_options.error.reset.data.not.allowed: __advanced_options.error.reset.data.not.allowed
-advanced_options.error.reset.database.not.allowed: __advanced_options.error.reset.database.not.allowed
-advanced_options.error.csrf: __advanced_options.error.csrf
-advanced_options.error.switch.env.not.editable: __advanced_options.error.switch.env.not.editable
-advanced_options.error.command: __advanced_options.error.command
-advanced_options.error.generic: __advanced_options.error.generic
+advanced_options.index.title: Advanced options
+advanced_options.index.description: Manage the advanced options of the CMS, some options are only available when the CMS runs in a development environment
+advanced_options.success.switch.env: Mode changed successfully, reloading the page...
+advanced_options.switch.env.title: Environment
+advanced_options.switch.subtitle.env.prod: Your site is currently running in PRODUCTION mode
+advanced_options.switch.subtitle.env.dev: Your site is currently running in DEVELOPMENT mode
+advanced_options.switch.define.env.dev: 'In DEVELOPMENT mode, you can:'
+advanced_options.switch.define.env.dev_1: Make debugging the application easier when there is a problem
+advanced_options.switch.define.env.dev_2: Reinstall / reset the site
+advanced_options.switch.define.env.dev_3: Access the internal debugging tools of the CMS
+advanced_options.switch.define.env.dev_4: This mode is used for the development of the CMS
+advanced_options.switch.define.env.dev_warning: 'This mode must only be used for debugging or development: used in production, it can slow the site down and disclose critical information to malicious people'
+advanced_options.switch.define.env.prod: 'In PRODUCTION mode, the site is optimized to run as smoothly as possible thanks to:'
+advanced_options.switch.define.env.prod_1: Fine-grained caching of views and SQL queries
+advanced_options.switch.define.env.prod_2: Only generic errors displayed
+advanced_options.switch.define.env.prod_3: Logs kept to the bare minimum to make the site as smooth as possible
+advanced_options.switch.define.env.prod_warning: This mode is not suited to finding or fixing bugs, since no debugging tool is available apart from the log files
+advanced_options.switch.env.button.dev: Switch to DEVELOPMENT mode
+advanced_options.switch.env.button.prod: Switch to PRODUCTION mode
+advanced_options.switch.env.message.info.switch: Changing mode, this can take some time... Don't touch anything, the site will refresh automatically once the mode has changed
+advanced_options.switch.env.message.info.switch_end: Reloading the page...
+advanced_options.modal.confirm.env.title: Mode change confirmation
+advanced_options.modal.confirm.env.body.text.1: Do you confirm changing the mode of your site? This action is not trivial and can have serious consequences for your site. It can take some time and the page will refresh once the script is finished
+advanced_options.modal.confirm.env.body.text.2: Make sure you have access to the source code of your site in case it crashes after the mode change
+advanced_options.modal.confirm.env.button.confirm: Yes, I confirm
+advanced_options.modal.confirm.env.button.undo: 'No'
+advanced_options.switch.env.message.info.title: Action in progress, please wait...
+advanced_options.title.danger.zone: Danger zone
+advanced_options.warning.danger.zone: Misusing the options found here can make you lose all your data. Make sure you have backed up your database before anything else.
+advanced_options.reload.data.title: Reinstall the pre-installed data
+advanced_options.reload.data.text_1: Reinstalls the site with the data defined during its installation. Only use it if you want to reinstall your site keeping only that data
+advanced_options.reload.data.warning: All the data you created will be deleted and replaced by the pre-installed data, with no way back. SQL dumps will not be deleted
+advanced_options.reload.data.button: Reinstall the pre-installed data
+advanced_options.reset.database.title: Site reset
+advanced_options.reset.database.text_1: Starts a full installation of your site again so you can configure it once more. Only use it to start a site from scratch
+advanced_options.reset.database.warning: This action will cause the total loss of your data, with no way back
+advanced_options.reset.database.button: Reset my site
+advanced_options.modal.confirm.reset.database.title: Site reset confirmation
+advanced_options.modal.confirm.reset.database.body.text.1: Do you confirm the total deletion of your data and the reinstallation of your site from scratch? There will be no way back
+advanced_options.modal.confirm.reset.database.body.text.2: Make sure you have backed up your database so you can go back
+advanced_options.modal.confirm.reset.database.button.confirm: Yes, I confirm
+advanced_options.modal.confirm.reset.database.button.undo: 'No'
+advanced_options.modal.confirm.reset.data.title: Data reinstallation confirmation
+advanced_options.modal.confirm.reset.data.body.text.1: Do you confirm reinstalling your site with the data defined during the installation? There will be no way back
+advanced_options.modal.confirm.reset.data.body.text.2: Make sure you have backed up your database so you can go back
+advanced_options.modal.confirm.reset.data.button.confirm: Yes, I confirm
+advanced_options.modal.confirm.reset.data.button.undo: 'No'
+advanced_options.reset.data.message.info.reset: Reinstalling the data... this can take some time
+advanced_options.reset.data.message.info.reset_end: Data reset, back to the login page...
+advanced_options.success.reset.data: Data reset successfully, redirecting...
+advanced_options.success.reset.database: Database deleted successfully, redirecting...
+advanced_options.reset.database.message.info.reset: Deleting the database...
+advanced_options.reset.database.message.info.reset_end: Database deleted, redirecting to the installation...
+advanced_options.sub.title.danger.zone: Beware of the consequences of your actions
+advanced_options.error.reset.data.not.allowed: Action only available in dev mode.
+advanced_options.error.reset.database.not.allowed: Action only available in dev mode.
+advanced_options.error.csrf: Invalid security token, reload the page and try again.
+advanced_options.error.switch.env.not.editable: APP_ENV is defined outside the .env files (server environment variable or .env.local.php), the mode cannot be changed from this page.
+advanced_options.error.command: 'The action failed: {error}'
+advanced_options.error.generic: An unexpected error occurred.

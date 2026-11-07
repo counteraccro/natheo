@@ -1,107 +1,107 @@
-media.library.loading: __media.mediatheque.loading
-media.library.generic.error: __media.mediatheque.generique.error
-media.library.button.new.folder: __media.mediatheque.btn.new.folder
-media.library.button.new.media: __media.mediatheque.btn.new.media
+media.library.loading: Cargando la mediateca
+media.library.generic.error: Se ha producido un error, inténtelo de nuevo.
+media.library.button.new.folder: Nueva carpeta
+media.library.button.new.media: Nuevo medio
 media.library.header.trash: 'Papelera'
-media.library.nb.files.trash: __media.mediatheque.nb.files.trash
+media.library.nb.files.trash: elemento(s) en la papelera
 media.library.button.filter: 'Ordenar por'
-media.library.filter.date: __media.mediatheque.filtre.date
-media.library.filter.name: __media.mediatheque.filtre.nom
-media.library.filter.type: __media.mediatheque.filtre.type
-media.library.search.placeholder: __media.mediatheque.search.placeholder
-media.library.disk_size: __media.mediatheque.disque_size
-media.library.success.add.trash: __media.mediatheque.success.add.trash
-media.library.success.remove.trash: __media.mediatheque.success.remove.trash
-media.library.remove.title: __media.mediatheque.remove.title
-media.library.remove.loading: __media.mediatheque.remove.loading
-media.library.remove.button.cancel: __media.mediatheque.remove.btn.cancel
-media.library.remove.success: __media.mediatheque.remove.success
-media.library.trash.title: __media.mediatheque.trash.title
-media.library.trash.loading: __media.mediatheque.trash.loading
-media.library.delete.confirm.title: __media.mediatheque.delete.confirm.title
-media.library.delete.button.confirm: __media.mediatheque.delete.btn.confirm
-media.library.delete.button.cancel: __media.mediatheque.delete.btn.cancel
-media.library.trash.link.revert: __media.mediatheque.trash.link.revert
-media.library.trash.link.delete: __media.mediatheque.trash.link.delete
-media.library.trash.empty.media: __media.mediatheque.trash.empty.media
-media.library.media.folder.tag: __media.mediatheque.media.folder.tag
-media.library.media.folder.empty: __media.mediatheque.media.folder.empty
-media.library.trash.empty.title: __media.mediatheque.trash.empty.title
-media.library.trash.empty.title_sub: __media.mediatheque.trash.empty.title_sub
-media.library.move.title: __media.mediatheque.move.title
-media.library.move.button: __media.mediatheque.move.btn
-media.library.move.success: __media.mediatheque.move.success
-media.library.move.button_error: __media.mediatheque.move.btn.error
-media.library.move.search.placeholder: __media.mediatheque.move.search.placeholder
-media.library.move.search.empty.message: __media.mediatheque.move.search.empty.msg
-media.library.move.search.empty.message_sub: __media.mediatheque.move.search.empty.msg.sub
-media.library.move.toast.success: __media.mediatheque.move.toast.success
-media.library.move.sub.title.media: __media.mediatheque.move.sub.title.media
-media.library.move.sub.title.folder: __media.mediatheque.move.sub.title.folder
-media.library.move.sub.title.end: __media.mediatheque.move.sub.title.end
-media.library.media.link.info: __media.mediatheque.media.link.info
-media.library.media.link.edit: __media.mediatheque.media.link.edit
-media.library.media.link.move: __media.mediatheque.media.link.move
-media.library.media.link.remove: __media.mediatheque.media.link.remove
-media.library.media.no.media: __media.mediatheque.media.no.media
-media.library.media.table.name: __media.mediatheque.media.table.name
-media.library.media.table.type: __media.mediatheque.media.table.type
-media.library.media.table.size: __media.mediatheque.media.table.size
-media.library.media.table.action: __media.mediatheque.media.table.action
-media.library.media.table.date: __media.mediatheque.media.table.date
-media.library.media.folder_element: __media.mediatheque.media.folder_element
-media.library.media.folder_elements: __media.mediatheque.media.folder_elements
-media.library.media.other_img: __media.mediatheque.media.other_img
-media.library.trash.confirm.title: __media.mediatheque.trash.confirm.title
-media.library.trash.button.confirm: __media.mediatheque.trash.btn.confirm
-media.library.trash.button.cancel: __media.mediatheque.trash.btn.cancel
-media.library.folder.empty.title: __media.mediatheque.folder.empty.title
-media.library.folder.empty.sub: __media.mediatheque.folder.empty.sub
-media.library.folder.new: __media.mediatheque.folder.new
-media.library.folder.edit: __media.mediatheque.folder.edit
-media.library.folder.button.cancel: __media.mediatheque.folder.btn.cancel
-media.library.info.title: __media.mediatheque.info.title
-media.library.info.size: __media.mediatheque.info.taille
-media.library.info.dimension: __media.mediatheque.info.dimension
-media.library.info.created_at: __media.mediatheque.info.created_at
-media.library.info.folder: __media.mediatheque.info.folder
-media.library.info.url: __media.mediatheque.info.url
-media.library.info.button.copy: __media.mediatheque.info.btn.copy
-media.library.info.copy_ok: __media.mediatheque.info.copy_ok
-media.library.info.content: __media.mediatheque.info.content
-media.library.info.content_file: __media.mediatheque.info.content.file
-media.library.info.content_folder: __media.mediatheque.info.content.folder
-media.library.upload.title: __media.mediatheque.upload.title
-media.library.upload.help: __media.mediatheque.upload.help
-media.library.upload.input.title: __media.mediatheque.upload.input.title
-media.library.upload.input.title_help: __media.mediatheque.upload.input.title.help
-media.library.upload.input.description: __media.mediatheque.upload.input.description
-media.library.upload.input.description_help: __media.mediatheque.upload.input.description.help
-media.library.upload.button.cancel: __media.mediatheque.upload.btn.cancel
-media.library.upload.button.upload: __media.mediatheque.upload.btn.upload
-media.library.upload.error.title: __media.mediatheque.upload.error.title
-media.library.upload.error.size: __media.mediatheque.upload.error.size
-media.library.upload.error.ext: __media.mediatheque.upload.error.ext
-media.library.upload.preview: __media.mediatheque.upload.preview
-media.library.upload.loading.message.success: __media.mediatheque.upload.loading.msg.success
-media.library.edit.title: __media.mediatheque.edit.title
-media.library.edit.title_new_folder: __media.mediatheque.edit.title.new.folder
-media.library.edit.input.label.file: __media.mediatheque.edit.input.label.file
-media.library.edit.input.label.folder: __media.mediatheque.edit.input.label.folder
-media.library.edit.input.description: __media.mediatheque.edit.input.description
-media.library.edit.input.placeholder: __media.mediatheque.edit.input.placeholder
-media.library.edit.input.placeholder_folder: __media.mediatheque.edit.input.placeholder.folder
-media.library.edit.button.save: __media.mediatheque.edit.btn.save
-media.library.edit.button.save_new.folder: __media.mediatheque.edit.btn.save_new.folder
-media.library.edit.button.error: __media.mediatheque.edit.btn.error
-media.library.edit.button.save_ok: __media.mediatheque.edit.btn.save.ok
-media.library.edit.save.media.message.ok: __media.mediatheque.edit.save.media.msg.ok
-media.library.folder.error.exist_name: __media.mediatheque.folder.error.exist_name
-media.library.folder.success: __media.mediatheque.folder.success
-media.library.folder.edit_success: __media.mediatheque.folder.edit.success
+media.library.filter.date: Fecha de creación
+media.library.filter.name: Nombre
+media.library.filter.type: Tipo
+media.library.search.placeholder: Buscar (próximamente)
+media.library.disk_size: utilizados
+media.library.success.add.trash: Enviado a la papelera correctamente
+media.library.success.remove.trash: Retirado de la papelera correctamente
+media.library.remove.title: Eliminación definitiva
+media.library.remove.loading: Eliminando...
+media.library.remove.button.cancel: Cancelar
+media.library.remove.success: La eliminación se ha realizado correctamente, la ventana se cerrará automáticamente en 3 segundos
+media.library.trash.title: Confirmación de envío a la papelera
+media.library.trash.loading: Moviendo a la papelera
+media.library.delete.confirm.title: Eliminar definitivamente
+media.library.delete.button.confirm: Sí
+media.library.delete.button.cancel: 'No'
+media.library.trash.link.revert: Restaurar
+media.library.trash.link.delete: Eliminar
+media.library.trash.empty.media: La papelera está vacía
+media.library.media.folder.tag: Carpeta
+media.library.media.folder.empty: Vacía
+media.library.trash.empty.title: La papelera está vacía
+media.library.trash.empty.title_sub: Los elementos eliminados aparecerán aquí.
+media.library.move.title: Mover a...
+media.library.move.button: Mover
+media.library.move.success: ¡Traslado confirmado!
+media.library.move.button_error: Error de validación
+media.library.move.search.placeholder: Filtrar las carpetas
+media.library.move.search.empty.message: No se ha encontrado ninguna carpeta
+media.library.move.search.empty.message_sub: Pruebe con otro término de búsqueda
+media.library.move.toast.success: Traslado realizado correctamente
+media.library.move.sub.title.media: 'Mover el medio '
+media.library.move.sub.title.folder: 'Mover la carpeta '
+media.library.move.sub.title.end: ' a...'
+media.library.media.link.info: Información
+media.library.media.link.edit: Modificar
+media.library.media.link.move: Mover
+media.library.media.link.remove: Papelera
+media.library.media.no.media: Esta carpeta está vacía por el momento
+media.library.media.table.name: Nombre
+media.library.media.table.type: Tipo
+media.library.media.table.size: Tamaño
+media.library.media.table.action: Acciones
+media.library.media.table.date: Fecha
+media.library.media.folder_element: elemento
+media.library.media.folder_elements: elementos
+media.library.media.other_img: documento
+media.library.trash.confirm.title: Enviar a la papelera
+media.library.trash.button.confirm: Sí
+media.library.trash.button.cancel: 'No'
+media.library.folder.empty.title: Esta carpeta está vacía
+media.library.folder.empty.sub: Añada medios o cree una subcarpeta para empezar.
+media.library.folder.new: Nueva carpeta
+media.library.folder.edit: Cambiar el nombre de la carpeta
+media.library.folder.button.cancel: Cancelar
+media.library.info.title: Información
+media.library.info.size: Tamaño
+media.library.info.dimension: Dimensiones
+media.library.info.created_at: Añadido el
+media.library.info.folder: Carpeta
+media.library.info.url: URL
+media.library.info.button.copy: Copiar la URL
+media.library.info.copy_ok: Copiado
+media.library.info.content: Contenido
+media.library.info.content_file: archivo(s)
+media.library.info.content_folder: carpeta(s)
+media.library.upload.title: Nuevo medio
+media.library.upload.help: Arrastre un archivo aquí
+media.library.upload.input.title: Nombre del medio
+media.library.upload.input.title_help: Si está vacío, se usará el nombre del archivo por defecto
+media.library.upload.input.description: Descripción del medio
+media.library.upload.input.description_help: Descripción breve de su medio
+media.library.upload.button.cancel: Cancelar
+media.library.upload.button.upload: Subir
+media.library.upload.error.title: Error(es) durante la subida
+media.library.upload.error.size: Su archivo no debe superar
+media.library.upload.error.ext: 'Su archivo debe tener una de las siguientes extensiones:'
+media.library.upload.preview: Vista previa
+media.library.upload.loading.message.success: Medio añadido correctamente, esta ventana se cerrará sola en 3 segundos...
+media.library.edit.title: Edición
+media.library.edit.title_new_folder: Nueva carpeta
+media.library.edit.input.label.file: Nombre del archivo *
+media.library.edit.input.label.folder: Nombre de la carpeta *
+media.library.edit.input.description: Descripción
+media.library.edit.input.placeholder: El nuevo nombre de su archivo
+media.library.edit.input.placeholder_folder: El nombre de su carpeta
+media.library.edit.button.save: Modificar
+media.library.edit.button.save_new.folder: Crear
+media.library.edit.button.error: Error de validación
+media.library.edit.button.save_ok: ¡Éxito! - Recargando...
+media.library.edit.save.media.message.ok: ¡Medio modificado correctamente!
+media.library.folder.error.exist_name: Este nombre ya lo utiliza una carpeta de la mediateca
+media.library.folder.success: La carpeta {name} se ha creado correctamente.
+media.library.folder.edit_success: La carpeta {name} se ha renombrado a {new_name} correctamente.
 media.library.move.label.media: 'Mover el medio {name} a'
 media.library.move.label.folder: 'Mover la carpeta {name} a'
-media.index.title: __media.index.page_title_h1
-media.index.description: __media.index.description
+media.index.title: Mediateca
+media.index.description: Gestione los medios de su sitio para mostrarlos después directamente en sus páginas
 media.library.upload.or: 'o'
 media.library.upload.browse: 'examinar'

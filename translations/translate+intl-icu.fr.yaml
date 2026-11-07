@@ -4,15 +4,15 @@ translate.select.language: 'Sélectionnez une langue'
 translate.select.file: 'Sélectionnez un fichier'
 translate.empty.file: 'Sélectionnez un fichier de traduction pour le modifier'
 translate.button.save: Sauvegarder
-translate.info.edit: 'Cette traduction à été éditée'
+translate.info.edit: Cette traduction a été modifiée
 translate.link.revert: Annuler
 translate.nb.edit: 'ligne(s) modifiée(s) (non sauvegardée(s))'
 translate.save.success: 'Traductions sauvegardées avec succès'
-translate.block.search.title: 'Selection du fichier de traduction à éditer'
-translate.block.search.sub.title: 'Choisissez le fichier à éditer en fonction de sa langue'
+translate.block.search.title: Sélection du fichier de traduction à modifier
+translate.block.search.sub.title: Choisissez le fichier à modifier en fonction de sa langue
 translate.select.language_label: Langue
 translate.select.file_label: Fichier
-translate.block.edit.sub.title: 'Editer les traductions du fichier sélectionné'
+translate.block.edit.sub.title: Modifier les traductions du fichier sélectionné
 translate.save.error: 'Traductions non sauvegardées : {nb, plural, one {# erreur détectée} other {# erreurs détectées}}'
 translate.save.error_invalid_payload: 'Les données envoyées sont invalides'
 translate.error.file: 'Fichier de traduction introuvable'

@@ -1,39 +1,39 @@
-demo_overwrite.index.title: __demo_overwrite.page_title_h1
-demo_overwrite.index.description: __demo_overwrite.description
-demo_overwrite.guide.introduction.title: __demo_overwrite.guide.introduction.title
-demo_overwrite.guide.introduction.text_1: __demo_overwrite.guide.introduction.text-1
-demo_overwrite.guide.introduction.sub_title_1: __demo_overwrite.guide.introduction.sub-title-1
-demo_overwrite.guide.introduction.text_2: __demo_overwrite.guide.introduction.text-2
-demo_overwrite.guide.introduction.text_3: __demo_overwrite.guide.introduction.text-3
-demo_overwrite.guide.introduction.text_4: __demo_overwrite.guide.introduction.text-4
-demo_overwrite.guide.prerequisites.title: __demo_overwrite.guide.prerequis.title
-demo_overwrite.guide.prerequisites.text_1: __demo_overwrite.guide.prerequis.text-1
-demo_overwrite.guide.prerequisites.required_1: __demo_overwrite.guide.prerequis.requis-1
-demo_overwrite.guide.prerequisites.required_2: __demo_overwrite.guide.prerequis.requis-2
-demo_overwrite.guide.prerequisites.required_3: __demo_overwrite.guide.prerequis.requis-3
-demo_overwrite.guide.prerequisites.alert.title: __demo_overwrite.guide.prerequis.alert.info.titre
-demo_overwrite.guide.prerequisites.alert.text_1: __demo_overwrite.guide.prerequis.alert.info.text-1
-demo_overwrite.guide.prerequisites.alert.text_2: __demo_overwrite.guide.prerequis.alert.info.text-2
-demo_overwrite.guide.prerequisites.required_4: __demo_overwrite.guide.prerequis.requis-4
-demo_overwrite.guide.step_1.title: __demo_overwrite.guide.step-1.title
-demo_overwrite.guide.step_1.text_1: __demo_overwrite.guide.step-1.text-1
-demo_overwrite.guide.step_1.text_2: __demo_overwrite.guide.step-1.text-2
-demo_overwrite.guide.step_1.text_3: __demo_overwrite.guide.step-1.text-3
-demo_overwrite.guide.step_1.text_4: __demo_overwrite.guide.step-1.text-4
-demo_overwrite.guide.step_1.alert.title: __demo_overwrite.guide.step-1.alert.info.titre
-demo_overwrite.guide.step_1.alert.text_1: __demo_overwrite.guide.step-1.alert.info.text-1
-demo_overwrite.guide.step_2.alert.text_2: __demo_overwrite.guide.step-2.alert.info.text-2
-demo_overwrite.guide.step_2.title: __demo_overwrite.guide.step-2.title
-demo_overwrite.guide.step_2.text_1: __demo_overwrite.guide.step-2.text-1
-demo_overwrite.guide.step_2.text_2: __demo_overwrite.guide.step-2.text-2
-demo_overwrite.guide.step_3.title: __demo_overwrite.guide.step-3.title
-demo_overwrite.guide.step_3.text_1: __demo_overwrite.guide.step-3.text-1
-demo_overwrite.guide.step_3.text_2: __demo_overwrite.guide.step-3.text-2
-demo_overwrite.guide.step_3.text_3: __demo_overwrite.guide.step-3.text-3
-demo_overwrite.guide.step_3.text_4: __demo_overwrite.guide.step-3.text-4
-demo_overwrite.guide.step_3.text_5: __demo_overwrite.guide.step-3.text-5
-demo_overwrite.guide.step_3.text_6: __demo_overwrite.guide.step-3.text-6
-demo_overwrite.guide.step_3.text_7: __demo_overwrite.guide.step-3.text-7
-demo_overwrite.guide.step_3.text_8: __demo_overwrite.guide.step-3.text-8
-demo_overwrite.guide.step_4.title: __demo_overwrite.guide.step-4.title
-demo_overwrite.guide.step_4.text_1: __demo_overwrite.guide.step-4.text-1
+demo_overwrite.index.title: Overriding back-office pages
+demo_overwrite.index.description: Guide to override back-office pages
+demo_overwrite.guide.introduction.title: Introduction
+demo_overwrite.guide.introduction.text_1: You are currently viewing a custom page that overrides an existing page of the CMS. <br />Nathéo CMS lets you very easily override any page of the CMS to add your own code logic
+demo_overwrite.guide.introduction.sub_title_1: How does it work?
+demo_overwrite.guide.introduction.text_2: The original page is called from the controller {controller} and rendered with the Twig view {vue}. However, it is overridden and is therefore called from the controller {controller2} with the associated view {vue2}
+demo_overwrite.guide.introduction.text_3: In the same way, the URL {url} is turned into {url2} to redirect the user to the overridden page.
+demo_overwrite.guide.introduction.text_4: 'Example: <a class="link" href="{url}">the non-overridden page</a> and <a class="link" href="{url2}">the overridden page</a> both point to the same page, the one you are currently viewing.'
+demo_overwrite.guide.prerequisites.title: Prerequisites
+demo_overwrite.guide.prerequisites.text_1: Here are the prerequisites to create a new custom page.
+demo_overwrite.guide.prerequisites.required_1: Have at least some knowledge of PHP and Symfony.
+demo_overwrite.guide.prerequisites.required_2: Have a complete development environment.
+demo_overwrite.guide.prerequisites.required_3: Know the Symfony conventions.
+demo_overwrite.guide.prerequisites.alert.title: Good to know!
+demo_overwrite.guide.prerequisites.alert.text_1: Only create an override to add new code logic or to deeply change the existing logic.
+demo_overwrite.guide.prerequisites.alert.text_2: If you only want to change the design, use the back-office APIs (coming soon).
+demo_overwrite.guide.prerequisites.required_4: Throughout this tutorial, we will use the code that displays this page as an example.
+demo_overwrite.guide.step_1.title: Step 1 - Creating the custom controller
+demo_overwrite.guide.step_1.text_1: The first step is to create a custom controller that will be called instead of the original controller. This is where you will put all your business logic.
+demo_overwrite.guide.step_1.text_2: 'Create your controller in the <code>Overwrite</code> folder: {controller}'
+demo_overwrite.guide.step_1.text_3: From this file, you will have access to all the features of the CMS (enums, services, repositories, etc.)
+demo_overwrite.guide.step_1.text_4: Code example with the <code>DemoOverwriteController.php</code> controller
+demo_overwrite.guide.step_1.alert.title: Warning
+demo_overwrite.guide.step_1.alert.text_1: Why put my code in the <code>Overwrite</code> folder rather than in the <code>Controller</code> folder?
+demo_overwrite.guide.step_2.alert.text_2: As the CMS keeps evolving, putting your custom code in the <code>Controller</code> folder may make you lose your work during an update. The <code>Overwrite</code> folder is reserved for custom code, so its content will never be changed by future CMS updates.
+demo_overwrite.guide.step_2.title: Step 2 - Creating the Twig view
+demo_overwrite.guide.step_2.text_1: Add the view used for rendering and put it in the {dossier} folder.
+demo_overwrite.guide.step_2.text_2: As with the controller, it is recommended to put your code in the {dossier} folder to avoid any risk of loss during an update.
+demo_overwrite.guide.step_3.title: Step 3 - Configuration
+demo_overwrite.guide.step_3.text_1: 'Once your controller and its view are created, all that is left is to tell the CMS which route must be overridden by your new route. Nothing could be simpler: open the {dossier} file.'
+demo_overwrite.guide.step_3.text_2: Here is the configuration to override this page.
+demo_overwrite.guide.step_3.text_3: Quick explanation of this configuration.
+demo_overwrite.guide.step_3.text_4: '<b>controller</b>: the controller to override, in our example {controller}.'
+demo_overwrite.guide.step_3.text_5: '<b>route</b>: the route to override, in our example <code>admin_dashboard_page_demo</code>.'
+demo_overwrite.guide.step_3.text_6: '<b>overwrite</b>: the override configuration.'
+demo_overwrite.guide.step_3.text_7: '<b>route</b>: the new route, in our example <code>admin_overwrite_page_demo</code>.'
+demo_overwrite.guide.step_3.text_8: '<b>parameters</b>: if your route has parameters, list them here as key: value, where key is the parameter name and value its data type.'
+demo_overwrite.guide.step_4.title: Step 4 - All done!
+demo_overwrite.guide.step_4.text_1: Congratulations, you have just overridden an internal URL of the CMS with your own code. Well done!

@@ -1,32 +1,32 @@
-mail.index.title: __mail.page_title_h1
-mail.index.description: __mail.description
-mail.list.language: __mail.list.language
-mail.grid.id: __mail.grid.id
-mail.grid.title: __mail.grid.title
-mail.grid.description: __mail.grid.description
-mail.grid.created_at: __mail.grid.created_at
-mail.grid.update_at: __mail.grid.update_at
-mail.edit.title: __mail.edit_page_title_h1
-mail.edit.description: __mail.edit_page_description
-mail.index.info: __mail.info
-mail.message.success: __mail.message.success
-mail.input.trans.title: __mail.input.trans.title
-mail.input.trans.title_empty: __mail.input.trans.title.empty
-mail.index.modal.help.title: __mail.index.popin.help.title
-mail.index.modal.help.send: __mail.index.popin.help.send
-mail.index.modal.help.edit: __mail.index.popin.help.edit
-mail.link.save: __mail.link.save
-mail.link.send: __mail.link.send
-mail.link.cant.save: __mail.link.cant.save
-mail.content.title: __mail.content.title
-mail.content.subtitle: __mail.content.subtitle
-mail.edit.not_found_title: __mail.edit_page.no.mail.title
-mail.edit.not_found_text: __mail.edit_page.no.mail.text
-mail.edit.not_found_back: __mail.edit_page.no.mail.back
-mail.error.csrf: __mail.error.csrf
-mail.error.save: __mail.error.save
-mail.error.locale: __mail.error.locale
-mail.error.load: __mail.error.load
-mail.demo.success: __mail.demo.success
-mail.demo.error: __mail.demo.error
-mail.template.footer: __mail.template.footer
+mail.index.title: Email management
+mail.index.description: Manage the content and title of the emails sent from the CMS
+mail.list.language: Language selection
+mail.grid.id: ID
+mail.grid.title: Title
+mail.grid.description: Description
+mail.grid.created_at: Created
+mail.grid.update_at: Updated
+mail.edit.title: Email editing
+mail.edit.description: Editing the email “<strong>{email}</strong>”
+mail.index.info: You can test the emails by clicking the {icon} button, you will receive them in the mailbox set in your account
+mail.message.success: Email <strong>{email}</strong> saved successfully
+mail.input.trans.title: Email subject
+mail.input.trans.title_empty: The email subject cannot be empty
+mail.index.modal.help.title: Help
+mail.index.modal.help.send: Receive the email as a demo
+mail.index.modal.help.edit: Edit an email
+mail.link.save: Save
+mail.link.send: Test the email
+mail.link.cant.save: Saving is not possible at the moment
+mail.content.title: Email content
+mail.content.subtitle: Remember that you can edit the email in every language managed by the CMS
+mail.edit.not_found_title: No email found
+mail.edit.not_found_text: This email does not exist or has been deleted. You can go back to the list of emails
+mail.edit.not_found_back: Back
+mail.error.csrf: Invalid security token, please reload the page
+mail.error.save: 'Unable to save the email: the language, subject and content are required'
+mail.error.locale: This email does not exist in the requested language
+mail.error.load: An error occurred while loading the email
+mail.demo.success: Demo email <strong>{email}</strong> sent successfully to your account email address
+mail.demo.error: The demo email <strong>{email}</strong> could not be sent, check the logs for more details
+mail.template.footer: This email was sent automatically from {site}, please do not reply to it directly.

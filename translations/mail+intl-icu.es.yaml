@@ -1,32 +1,32 @@
-mail.index.title: __mail.page_title_h1
-mail.index.description: __mail.description
-mail.list.language: __mail.list.language
-mail.grid.id: __mail.grid.id
-mail.grid.title: __mail.grid.title
-mail.grid.description: __mail.grid.description
-mail.grid.created_at: __mail.grid.created_at
-mail.grid.update_at: __mail.grid.update_at
-mail.edit.title: __mail.edit_page_title_h1
-mail.edit.description: __mail.edit_page_description
-mail.index.info: __mail.info
-mail.message.success: __mail.message.success
-mail.input.trans.title: __mail.input.trans.title
-mail.input.trans.title_empty: __mail.input.trans.title.empty
-mail.index.modal.help.title: __mail.index.popin.help.title
-mail.index.modal.help.send: __mail.index.popin.help.send
-mail.index.modal.help.edit: __mail.index.popin.help.edit
-mail.link.save: __mail.link.save
-mail.link.send: __mail.link.send
-mail.link.cant.save: __mail.link.cant.save
-mail.content.title: __mail.content.title
-mail.content.subtitle: __mail.content.subtitle
-mail.edit.not_found_title: __mail.edit_page.no.mail.title
-mail.edit.not_found_text: __mail.edit_page.no.mail.text
-mail.edit.not_found_back: __mail.edit_page.no.mail.back
-mail.error.csrf: __mail.error.csrf
-mail.error.save: __mail.error.save
-mail.error.locale: __mail.error.locale
-mail.error.load: __mail.error.load
-mail.demo.success: __mail.demo.success
-mail.demo.error: __mail.demo.error
-mail.template.footer: __mail.template.footer
+mail.index.title: Gestión de los correos electrónicos
+mail.index.description: Gestión del contenido y del título de los correos electrónicos enviados desde el CMS
+mail.list.language: Selección del idioma
+mail.grid.id: ID
+mail.grid.title: Título
+mail.grid.description: Descripción
+mail.grid.created_at: Creación
+mail.grid.update_at: Actualización
+mail.edit.title: Edición de un correo electrónico
+mail.edit.description: Modificación del correo electrónico «<strong>{email}</strong>»
+mail.index.info: Puede probar los correos electrónicos haciendo clic en el botón {icon}, los recibirá en el buzón definido en su cuenta
+mail.message.success: Correo electrónico <strong>{email}</strong> guardado correctamente
+mail.input.trans.title: Asunto del correo electrónico
+mail.input.trans.title_empty: El asunto del correo electrónico no puede estar vacío
+mail.index.modal.help.title: Ayuda
+mail.index.modal.help.send: Recibir el correo electrónico de demostración
+mail.index.modal.help.edit: Modificar un correo electrónico
+mail.link.save: Guardar
+mail.link.send: Probar el correo electrónico
+mail.link.cant.save: No es posible guardar por el momento
+mail.content.title: Contenido del correo electrónico
+mail.content.subtitle: Recuerde que puede modificar el correo electrónico en todos los idiomas gestionados por el CMS
+mail.edit.not_found_title: No se ha encontrado ningún correo electrónico
+mail.edit.not_found_text: Este correo electrónico no existe o ha sido eliminado. Puede volver a la lista de correos electrónicos
+mail.edit.not_found_back: Volver
+mail.error.csrf: Token de seguridad no válido, vuelva a cargar la página
+mail.error.save: 'No se puede guardar el correo electrónico: el idioma, el asunto y el contenido son obligatorios'
+mail.error.locale: Este correo electrónico no existe en el idioma solicitado
+mail.error.load: Se ha producido un error al cargar el correo electrónico
+mail.demo.success: Correo electrónico de demostración <strong>{email}</strong> enviado correctamente a la dirección de su cuenta
+mail.demo.error: No se ha podido enviar el correo electrónico de demostración <strong>{email}</strong>, consulte los logs para más detalles
+mail.template.footer: Este correo electrónico se ha enviado automáticamente desde {site}, por favor no responda directamente.

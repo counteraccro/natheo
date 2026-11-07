@@ -1,64 +1,64 @@
-sql_manager.index.modal.help.title: __sql_manager.index.popin.help.title
-sql_manager.index.modal.help.disabled: __sql_manager.index.popin.help.disabled
-sql_manager.index.modal.help.enable: __sql_manager.index.popin.help.enable
-sql_manager.index.modal.help.delete: __sql_manager.index.popin.help.delete
-sql_manager.index.modal.help.edit: __sql_manager.index.popin.help.edit
-sql_manager.index.title: __sql_manager.index.page_title
-sql_manager.index.button.new: __sql_manager.index.btn.new
-sql_manager.index.description: __sql_manager.index.description
-sql_manager.grid.id: __sql_manager.grid.id
-sql_manager.grid.name: __sql_manager.grid.name
-sql_manager.grid.query: __sql_manager.grid.query
-sql_manager.grid.update_at: __sql_manager.grid.update_at
-sql_manager.confirm.disabled.message: __sql_manager.confirm.disabled.msg
-sql_manager.confirm.delete.message: __sql_manager.confirm.delete.msg
-sql_manager.remove.success: __sql_manager.remove.success
-sql_manager.success.no.disabled: __sql_manager.success.no.disabled
-sql_manager.success.disabled: __sql_manager.success.disabled
-sql_manager.add.title: __sql_manager.add.page_title_h1
-sql_manager.add.description: __sql_manager.add.description
-sql_manager.execute.title_id: __sql_manager.execute.page_title
-sql_manager.execute.title: __sql_manager.execute.page_title_h1
-sql_manager.execute.description: __sql_manager.execute.description
-sql_manager.update.title_id: __sql_manager.update.page_title
-sql_manager.update.title: __sql_manager.update.page_title_h1
-sql_manager.update.description: __sql_manager.update.description
-sql_manager.label.textarea.query: __sql_manager.label.textarea.query
-sql_manager.button.execute.query: __sql_manager.btn.execute.query
-sql_manager.button.save.query: __sql_manager.btn.save.query
-sql_manager.block.query: __sql_manager.bloc.query
-sql_manager.label.list.table: __sql_manager.label.liste.table
-sql_manager.button.add.table: __sql_manager.btn.add.table
-sql_manager.label.list.field: __sql_manager.label.liste.field
-sql_manager.placeholder.table: __sql_manager.placeholder.table
-sql_manager.placeholder.field: __sql_manager.placeholder.field
-sql_manager.block.result: __sql_manager.bloc.result
-sql_manager.label.list.field_2: __sql_manager.label.liste.field.2
-sql_manager.toast.message.exec.error: __sql_manager.toast.msg.exec.error
-sql_manager.toast.message.exec.success: __sql_manager.toast.msg.exec.success
-sql_manager.toast.message.save.error: __sql_manager.toast.msg.save.error
-sql_manager.toast.message.load.error: __sql_manager.toast.msg.load.error
-sql_manager.error.not.only.select.query: __sql_manager.error.not.only.select.query
-sql_manager.help.text.1: __sql_manager.help.text.1
-sql_manager.help.select.table: __sql_manager.help.select.table
-sql_manager.help.select.field: __sql_manager.help.select.field
-sql_manager.label.name: __sql_manager.label.name
-sql_manager.label.name_placeholder: __sql_manager.label.name.placeholder
-sql_manager.save.error.validate: __sql_manager.save.error.validate
-sql_manager.save.error.no.select: __sql_manager.save.error.no.select
-sql_manager.save.success: __sql_manager.save.success
-sql_manager.error.query.empty: __sql_manager.error.query.empty
-sql_manager.error.name.empty: __sql_manager.error.name.empty
-sql_manager.index.modal.help.execute: __sql_manager.index.popin.help.execute
-sql_manager.name.generic.query.success: __sql_manager.name.generic.query.success
-sql_manager.save.generic.query.success: __sql_manager.save.generic.query.success
-sql_manager.title.my_query: __sql_manager.title.my_query
-sql_manager.sub.title.my_query: __sql_manager.sub.title.my_query
-sql_manager.block.query_sub_title: __sql_manager.bloc.query.sub.title
-sql_manager.block.result_sub_title: __sql_manager.bloc.result.sub.title
-sql_manager.no_result.query: __sql_manager.no_result.query
-sql_manager.no_result.help: __sql_manager.no_result.help
-sql_manager.no.query.manager.title: __sql_manager.no.query.manager.title
-sql_manager.no.query.manager.text: __sql_manager.no.query.manager.text
-sql_manager.button.back: __sql_manager.btn.back
-sql_manager.button.new: __sql_manager.btn.new
+sql_manager.index.modal.help.title: Help
+sql_manager.index.modal.help.disabled: Disable
+sql_manager.index.modal.help.enable: Enable
+sql_manager.index.modal.help.delete: Delete
+sql_manager.index.modal.help.edit: Edit
+sql_manager.index.title: SQL manager
+sql_manager.index.button.new: New SQL query
+sql_manager.index.description: Create / edit SQL queries to query the database
+sql_manager.grid.id: ID
+sql_manager.grid.name: Name
+sql_manager.grid.query: Query
+sql_manager.grid.update_at: Last modified
+sql_manager.confirm.disabled.message: Do you confirm disabling the SQL query <b>{label}</b>? This query will no longer be usable
+sql_manager.confirm.delete.message: Do you confirm deleting the SQL query <b>{label}</b>? This action is permanent
+sql_manager.remove.success: The query <b>{label}</b> has been deleted successfully
+sql_manager.success.no.disabled: The query <b>{label}</b> has been enabled successfully
+sql_manager.success.disabled: The query <b>{label}</b> has been disabled successfully
+sql_manager.add.title: New query
+sql_manager.add.description: Create a new SQL query with the help of the table and field names.
+sql_manager.execute.title_id: 'Running query #{id}'
+sql_manager.execute.title: Query execution
+sql_manager.execute.description: Test and edit the SQL query to suit your needs
+sql_manager.update.title_id: 'Editing query #{id}'
+sql_manager.update.title: Query editing
+sql_manager.update.description: Edit the SQL query to suit your needs
+sql_manager.label.textarea.query: Query
+sql_manager.button.execute.query: Run
+sql_manager.button.save.query: Save
+sql_manager.block.query: Query builder assistant
+sql_manager.label.list.table: Tables
+sql_manager.button.add.table: Add
+sql_manager.label.list.field: Select a table
+sql_manager.placeholder.table: Search for a table
+sql_manager.placeholder.field: Search for a field
+sql_manager.block.result: Result
+sql_manager.label.list.field_2: Table fields
+sql_manager.toast.message.exec.error: An error occurred in your SQL query
+sql_manager.toast.message.exec.success: SQL query run successfully
+sql_manager.toast.message.save.error: An error occurred while saving
+sql_manager.toast.message.load.error: An error occurred while loading the data
+sql_manager.error.not.only.select.query: The SQL query must be a SELECT query only
+sql_manager.help.text.1: 'Only SELECT queries are run, the following keywords: [UPDATE, DELETE, INSERT, CREATE, ALTER, DROP] are blocked to prevent any malicious attempt on the database'
+sql_manager.help.select.table: Click the “Add” button to add the selected table to the query
+sql_manager.help.select.field: Click the “Add” button to add the selected field to the query
+sql_manager.label.name: Name
+sql_manager.label.name_placeholder: The name of the SQL query
+sql_manager.save.error.validate: Validation error, check your data
+sql_manager.save.error.no.select: The query is not a SELECT query
+sql_manager.save.success: Query saved successfully
+sql_manager.error.query.empty: The SQL field cannot be empty
+sql_manager.error.name.empty: The name cannot be empty
+sql_manager.index.modal.help.execute: Run
+sql_manager.name.generic.query.success: -- Generic query --
+sql_manager.save.generic.query.success: Query saved successfully
+sql_manager.title.my_query: My SQL query
+sql_manager.sub.title.my_query: Build your SQL query to suit your needs
+sql_manager.block.query_sub_title: To help you find your way around the tables and columns
+sql_manager.block.result_sub_title: The data returned by your SQL query
+sql_manager.no_result.query: No results yet
+sql_manager.no_result.help: Run a query to see the results here
+sql_manager.no.query.manager.title: No query found
+sql_manager.no.query.manager.text: This query does not exist or has been deleted. You can go back to the list or create a new one
+sql_manager.button.back: Back
+sql_manager.button.new: Create an SQL query

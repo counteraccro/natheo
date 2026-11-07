@@ -1,24 +1,24 @@
 media.index.title: 'Médiathèque'
-media.library.loading: 'Chargement de la médiatheque'
+media.library.loading: Chargement de la médiathèque
 media.library.generic.error: 'Une erreur est survenue, veuillez réessayer.'
 media.library.button.new.folder: 'Nouveau dossier'
 media.library.button.new.media: 'Nouveau média'
 media.library.button.filter: 'Trier par'
-media.library.filter.date: 'Date création'
+media.library.filter.date: Date de création
 media.library.filter.name: Nom
 media.library.filter.type: Type
 media.library.media.link.info: Information
-media.library.media.link.edit: Editer
+media.library.media.link.edit: Modifier
 media.library.media.link.move: Déplacer
 media.library.media.link.remove: Corbeille
 media.library.folder.new: 'Nouveau dossier'
 media.library.folder.edit: 'Renommer le dossier'
 media.library.folder.button.cancel: Annuler
 media.library.folder.error.exist_name: 'Ce nom est déjà utilisé comme dossier dans la médiathèque'
-media.library.folder.success: 'Le dossier {name} à été créé avec succès.'
-media.library.folder.edit_success: 'Le dossier {name} renommé en {new_name} à été fait avec succès.'
+media.library.folder.success: Le dossier {name} a été créé avec succès.
+media.library.folder.edit_success: Le dossier {name} a été renommé en {new_name} avec succès.
 media.library.upload.title: 'Nouveau média'
-media.library.upload.help: 'Glisser un fichier ici'
+media.library.upload.help: Glissez un fichier ici
 media.library.upload.input.title: 'Nom du média'
 media.library.upload.input.description: 'Description du média'
 media.library.upload.button.cancel: Annuler
@@ -26,13 +26,13 @@ media.library.upload.button.upload: Télécharger
 media.library.upload.error.title: "Erreur(s) survenue(s) lors de l'upload"
 media.library.upload.error.size: 'Votre fichier ne doit pas faire plus de'
 media.library.upload.error.ext: 'Votre fichier doit posséder une des extensions suivantes :'
-media.library.upload.input.title_help: 'Si vide, le nom du fichier sera prit par défaut'
+media.library.upload.input.title_help: Si vide, le nom du fichier sera pris par défaut
 media.library.upload.input.description_help: 'Description rapide de votre média'
 media.library.upload.preview: Prévisualisation
-media.library.upload.loading.message.success: 'Média ajouté avec succès, cette fenêtre ce fermera toute seule dans 3 secondes...'
-media.library.search.placeholder: 'Rechercher (Soon™..)'
+media.library.upload.loading.message.success: Média ajouté avec succès, cette fenêtre se fermera toute seule dans 3 secondes...
+media.library.search.placeholder: Rechercher (bientôt disponible)
 media.library.media.no.media: 'Ce dossier est vide pour le moment'
-media.library.trash.title: 'Confirmation mise à la corbeille'
+media.library.trash.title: Confirmation de mise à la corbeille
 media.library.trash.loading: 'Déplacement vers la corbeille'
 media.library.trash.button.confirm: Oui
 media.library.trash.button.cancel: Non
@@ -42,24 +42,24 @@ media.library.trash.empty.media: 'La corbeille est vide'
 media.library.remove.title: 'Suppression définitive'
 media.library.remove.loading: 'Suppression en cours...'
 media.library.remove.button.cancel: Annuler
-media.library.remove.success: 'La suppression à été réalisé avec succès, La fenêtre ce fermera automatiquement dans 3 secondes'
+media.library.remove.success: La suppression a été réalisée avec succès, la fenêtre se fermera automatiquement dans 3 secondes
 media.library.media.table.name: Nom
 media.library.media.table.size: Taille
 media.library.media.table.action: Actions
 media.library.media.table.date: Date
 media.library.disk_size: utilisés
-media.index.description: 'Gérer vos médias internes de votre site pour ensuite pouvoir les afficher directement dans vos pages'
+media.index.description: Gérez les médias de votre site pour pouvoir ensuite les afficher directement dans vos pages
 media.library.media.folder_element: élément
 media.library.media.folder_elements: éléments
 media.library.media.other_img: document
-media.library.info.title: Information
+media.library.info.title: Informations
 media.library.info.size: Taille
 media.library.info.dimension: Dimension
 media.library.info.created_at: 'Ajouté le'
 media.library.info.folder: Dossier
 media.library.info.url: URL
 media.library.info.button.copy: "Copier l'URL"
-media.library.info.copy_ok: Copier
+media.library.info.copy_ok: Copié
 media.library.media.folder.tag: Dossier
 media.library.media.folder.empty: Vide
 media.library.info.content: Contenu
@@ -73,7 +73,7 @@ media.library.edit.button.save_ok: 'Succès ! - Rechargement...'
 media.library.edit.input.label.folder: 'Nom du dossier *'
 media.library.edit.input.description: Description
 media.library.edit.button.error: 'Erreur de validation'
-media.library.edit.save.media.message.ok: 'Média édité avec succès !'
+media.library.edit.save.media.message.ok: Média modifié avec succès !
 media.library.edit.input.placeholder_folder: 'Le nom de votre dossier'
 media.library.move.title: 'Déplacer vers...'
 media.library.move.button: Déplacer
@@ -81,7 +81,7 @@ media.library.move.success: 'Déplacement validé !'
 media.library.move.label.media: 'Déplacer le média {name} vers'
 media.library.move.label.folder: 'Déplacer le dossier {name} vers'
 media.library.move.button_error: 'Erreur de validation'
-media.library.move.search.placeholder: 'Filtrer les dossier'
+media.library.move.search.placeholder: Filtrer les dossiers
 media.library.move.search.empty.message: 'Aucun dossier trouvé'
 media.library.move.search.empty.message_sub: 'Essayez un autre terme de recherche'
 media.library.move.toast.success: 'Déplacement effectué avec succès'

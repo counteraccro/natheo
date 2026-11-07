@@ -1,39 +1,39 @@
-demo_overwrite.index.title: __demo_overwrite.page_title_h1
-demo_overwrite.index.description: __demo_overwrite.description
-demo_overwrite.guide.introduction.title: __demo_overwrite.guide.introduction.title
-demo_overwrite.guide.introduction.text_1: __demo_overwrite.guide.introduction.text-1
-demo_overwrite.guide.introduction.sub_title_1: __demo_overwrite.guide.introduction.sub-title-1
-demo_overwrite.guide.introduction.text_2: __demo_overwrite.guide.introduction.text-2
-demo_overwrite.guide.introduction.text_3: __demo_overwrite.guide.introduction.text-3
-demo_overwrite.guide.introduction.text_4: __demo_overwrite.guide.introduction.text-4
-demo_overwrite.guide.prerequisites.title: __demo_overwrite.guide.prerequis.title
-demo_overwrite.guide.prerequisites.text_1: __demo_overwrite.guide.prerequis.text-1
-demo_overwrite.guide.prerequisites.required_1: __demo_overwrite.guide.prerequis.requis-1
-demo_overwrite.guide.prerequisites.required_2: __demo_overwrite.guide.prerequis.requis-2
-demo_overwrite.guide.prerequisites.required_3: __demo_overwrite.guide.prerequis.requis-3
-demo_overwrite.guide.prerequisites.alert.title: __demo_overwrite.guide.prerequis.alert.info.titre
-demo_overwrite.guide.prerequisites.alert.text_1: __demo_overwrite.guide.prerequis.alert.info.text-1
-demo_overwrite.guide.prerequisites.alert.text_2: __demo_overwrite.guide.prerequis.alert.info.text-2
-demo_overwrite.guide.prerequisites.required_4: __demo_overwrite.guide.prerequis.requis-4
-demo_overwrite.guide.step_1.title: __demo_overwrite.guide.step-1.title
-demo_overwrite.guide.step_1.text_1: __demo_overwrite.guide.step-1.text-1
-demo_overwrite.guide.step_1.text_2: __demo_overwrite.guide.step-1.text-2
-demo_overwrite.guide.step_1.text_3: __demo_overwrite.guide.step-1.text-3
-demo_overwrite.guide.step_1.text_4: __demo_overwrite.guide.step-1.text-4
-demo_overwrite.guide.step_1.alert.title: __demo_overwrite.guide.step-1.alert.info.titre
-demo_overwrite.guide.step_1.alert.text_1: __demo_overwrite.guide.step-1.alert.info.text-1
-demo_overwrite.guide.step_2.alert.text_2: __demo_overwrite.guide.step-2.alert.info.text-2
-demo_overwrite.guide.step_2.title: __demo_overwrite.guide.step-2.title
-demo_overwrite.guide.step_2.text_1: __demo_overwrite.guide.step-2.text-1
-demo_overwrite.guide.step_2.text_2: __demo_overwrite.guide.step-2.text-2
-demo_overwrite.guide.step_3.title: __demo_overwrite.guide.step-3.title
-demo_overwrite.guide.step_3.text_1: __demo_overwrite.guide.step-3.text-1
-demo_overwrite.guide.step_3.text_2: __demo_overwrite.guide.step-3.text-2
-demo_overwrite.guide.step_3.text_3: __demo_overwrite.guide.step-3.text-3
-demo_overwrite.guide.step_3.text_4: __demo_overwrite.guide.step-3.text-4
-demo_overwrite.guide.step_3.text_5: __demo_overwrite.guide.step-3.text-5
-demo_overwrite.guide.step_3.text_6: __demo_overwrite.guide.step-3.text-6
-demo_overwrite.guide.step_3.text_7: __demo_overwrite.guide.step-3.text-7
-demo_overwrite.guide.step_3.text_8: __demo_overwrite.guide.step-3.text-8
-demo_overwrite.guide.step_4.title: __demo_overwrite.guide.step-4.title
-demo_overwrite.guide.step_4.text_1: __demo_overwrite.guide.step-4.text-1
+demo_overwrite.index.title: La sobrescritura de las páginas del back office
+demo_overwrite.index.description: Guía para sobrescribir páginas del back office
+demo_overwrite.guide.introduction.title: Introducción
+demo_overwrite.guide.introduction.text_1: Está viendo una página personalizada que sobrescribe una página existente del CMS. <br />Nathéo CMS permite sobrescribir de forma muy sencilla cualquier página del CMS para añadir su propia lógica de código
+demo_overwrite.guide.introduction.sub_title_1: ¿Cómo funciona?
+demo_overwrite.guide.introduction.text_2: La página original se llama desde el controlador {controller} y se renderiza con la vista Twig {vue}. Sin embargo, está sobrescrita y, por tanto, se llama desde el controlador {controller2} con la vista asociada {vue2}
+demo_overwrite.guide.introduction.text_3: Del mismo modo, la URL {url} se transforma en {url2} para redirigir al usuario a la página sobrescrita.
+demo_overwrite.guide.introduction.text_4: 'Ejemplo: <a class="link" href="{url}">la página no sobrescrita</a> y <a class="link" href="{url2}">la página sobrescrita</a> apuntan ambas a la misma página, la que está consultando.'
+demo_overwrite.guide.prerequisites.title: Requisitos previos
+demo_overwrite.guide.prerequisites.text_1: Estos son los requisitos previos para crear una nueva página personalizada.
+demo_overwrite.guide.prerequisites.required_1: Tener un mínimo de conocimientos de PHP y Symfony.
+demo_overwrite.guide.prerequisites.required_2: Disponer de un entorno de desarrollo completo.
+demo_overwrite.guide.prerequisites.required_3: Conocer las convenciones de Symfony.
+demo_overwrite.guide.prerequisites.alert.title: ¡Bueno saberlo!
+demo_overwrite.guide.prerequisites.alert.text_1: Cree una sobrescritura solo para añadir nueva lógica de código o para modificar a fondo la lógica existente.
+demo_overwrite.guide.prerequisites.alert.text_2: Si solo desea modificar el diseño, utilice las API (próximamente) del back office.
+demo_overwrite.guide.prerequisites.required_4: A lo largo de este tutorial, usaremos como ejemplo el código que muestra esta página.
+demo_overwrite.guide.step_1.title: Paso 1 - Creación del controlador personalizado
+demo_overwrite.guide.step_1.text_1: El primer paso consiste en crear un controlador personalizado que se llamará en lugar del controlador original. Aquí es donde colocará toda su lógica de negocio.
+demo_overwrite.guide.step_1.text_2: 'Cree su controlador en la carpeta <code>Overwrite</code>: {controller}'
+demo_overwrite.guide.step_1.text_3: Desde este archivo, tendrá acceso a todas las funcionalidades del CMS (enums, servicios, repositorios, etc.)
+demo_overwrite.guide.step_1.text_4: Ejemplo de código con el controlador <code>DemoOverwriteController.php</code>
+demo_overwrite.guide.step_1.alert.title: Atención
+demo_overwrite.guide.step_1.alert.text_1: ¿Por qué colocar mi código en la carpeta <code>Overwrite</code> en lugar de en la carpeta <code>Controller</code>?
+demo_overwrite.guide.step_2.alert.text_2: Como el CMS evoluciona constantemente, colocar su código personalizado en la carpeta <code>Controller</code> puede hacerle perder su trabajo durante una actualización. La carpeta <code>Overwrite</code> está reservada al código personalizado, por lo que su contenido nunca se modificará en las futuras actualizaciones del CMS.
+demo_overwrite.guide.step_2.title: Paso 2 - Creación de la vista Twig
+demo_overwrite.guide.step_2.text_1: Añada la vista que servirá para el renderizado y colóquela en la carpeta {dossier}.
+demo_overwrite.guide.step_2.text_2: Al igual que con el controlador, se recomienda colocar su código en la carpeta {dossier} para evitar cualquier riesgo de pérdida durante una actualización.
+demo_overwrite.guide.step_3.title: Paso 3 - Configuración
+demo_overwrite.guide.step_3.text_1: 'Una vez creados su controlador y su vista, solo queda indicar al CMS qué ruta debe sobrescribirse con su nueva ruta. Nada más sencillo: abra el archivo {dossier}.'
+demo_overwrite.guide.step_3.text_2: Esta es la configuración para sobrescribir esta página.
+demo_overwrite.guide.step_3.text_3: Explicación rápida de esta configuración.
+demo_overwrite.guide.step_3.text_4: '<b>controller</b>: el controlador que se desea sobrescribir, en nuestro ejemplo {controller}.'
+demo_overwrite.guide.step_3.text_5: '<b>route</b>: la ruta que se desea sobrescribir, en nuestro ejemplo <code>admin_dashboard_page_demo</code>.'
+demo_overwrite.guide.step_3.text_6: '<b>overwrite</b>: la configuración de la sobrescritura.'
+demo_overwrite.guide.step_3.text_7: '<b>route</b>: la nueva ruta, en nuestro ejemplo <code>admin_overwrite_page_demo</code>.'
+demo_overwrite.guide.step_3.text_8: '<b>parameters</b>: si su ruta tiene parámetros, indíquelos aquí con el formato clave: valor, donde clave es el nombre del parámetro y valor su tipo de dato.'
+demo_overwrite.guide.step_4.title: Paso 4 - ¡Terminado!
+demo_overwrite.guide.step_4.text_1: Enhorabuena, acaba de sobrescribir una URL interna del CMS con su propio código. ¡Bravo!
