@@ -30,7 +30,7 @@ Ce qui est fait automatiquement à la création (workflow `issue-triage`) :
 
 Les points de sécurité d'un audit sont détaillés dans une advisory privée ([SECURITY.md](SECURITY.md)) ; l'issue d'audit n'en cite que la correction attendue.
 
-Une Epic liste ses issues filles en cases à cocher et n'a pas de branche.
+Une Epic n'a pas de branche. Ses issues filles lui sont rattachées en **sous-issues** (panneau « Sub-issues » de l'Epic, qui affiche l'avancement) ; la rubrique « Issues » les cite dans l'ordre de traitement, et liste en texte celles qui ne sont pas encore créées.
 
 ### 2. La branche
 
