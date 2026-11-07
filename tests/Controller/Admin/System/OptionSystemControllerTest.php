@@ -31,7 +31,7 @@ class OptionSystemControllerTest extends AppWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains(
             'h1',
-            $this->translator->trans('option_system.page_title_h1', domain: 'option_system'),
+            $this->translator->trans('option_system.index.title', domain: 'option_system'),
         );
     }
 

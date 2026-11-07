@@ -1,29 +1,24 @@
 translate.select.language: __translate.select.language
-translate.page_title_h1: __translate.page_title_h1
-translate.description: __translate.description
+translate.index.title: __translate.page_title_h1
+translate.index.description: __translate.description
 translate.select.file: __translate.select.file
 translate.empty.file: __translate.empty.file
-translate.btn.save: __translate.btn.save
+translate.button.save: __translate.btn.save
 translate.info.edit: __translate.info.edit
 translate.link.revert: __translate.link.revert
 translate.nb.edit: __translate.nb.edit
-translate.loading: __translate.loading
-translate.confirm.leave: __translate.confirm.leave
 translate.save.success: __translate.save.success
-translate.toast.title.success: __translate.toast.title.success
-translate.toast.title.error: __translate.toast.title.error
-translate.toast.time: __translate.toast.time
 translate.block.search.title: __translate.block.search.title
 translate.block.search.sub.title: __translate.block.search.sub.title
-translate.select.language.label: __translate.select.language.label
-translate.select.file.label: __translate.select.file.label
+translate.select.language_label: __translate.select.language.label
+translate.select.file_label: __translate.select.file.label
 translate.block.edit.sub.title: __translate.block.edit.sub.title
 translate.save.error: 'Traducciones no guardadas: {nb, plural, one {# error detectado} other {# errores detectados}}'
-translate.save.error.invalid_payload: 'Los datos enviados no son válidos'
+translate.save.error_invalid_payload: 'Los datos enviados no son válidos'
 translate.error.file: 'Archivo de traducción no encontrado'
-translate.save.error.unknown_key: 'Esta clave no existe en el archivo'
-translate.save.error.not_string: 'El valor debe ser una cadena de caracteres'
-translate.save.error.icu: 'Sintaxis ICU no válida ({error}), revise las llaves y los parámetros'
+translate.save.error_unknown_key: 'Esta clave no existe en el archivo'
+translate.save.error_not_string: 'El valor debe ser una cadena de caracteres'
+translate.save.error_icu: 'Sintaxis ICU no válida ({error}), revise las llaves y los parámetros'
 translate.error.request: 'Se ha producido un error, inténtelo de nuevo'
 translate.search.placeholder: 'Filtrar por clave o por valor'
 translate.filter.untranslated: 'Solo las no traducidas'

@@ -1,29 +1,24 @@
 translate.select.language: __translate.select.language
-translate.page_title_h1: __translate.page_title_h1
-translate.description: __translate.description
+translate.index.title: __translate.page_title_h1
+translate.index.description: __translate.description
 translate.select.file: __translate.select.file
 translate.empty.file: __translate.empty.file
-translate.btn.save: __translate.btn.save
+translate.button.save: __translate.btn.save
 translate.info.edit: __translate.info.edit
 translate.link.revert: __translate.link.revert
 translate.nb.edit: __translate.nb.edit
-translate.loading: __translate.loading
-translate.confirm.leave: __translate.confirm.leave
 translate.save.success: __translate.save.success
-translate.toast.title.success: __translate.toast.title.success
-translate.toast.title.error: __translate.toast.title.error
-translate.toast.time: __translate.toast.time
 translate.block.search.title: __translate.block.search.title
 translate.block.search.sub.title: __translate.block.search.sub.title
-translate.select.language.label: __translate.select.language.label
-translate.select.file.label: __translate.select.file.label
+translate.select.language_label: __translate.select.language.label
+translate.select.file_label: __translate.select.file.label
 translate.block.edit.sub.title: __translate.block.edit.sub.title
 translate.save.error: 'Translations not saved: {nb, plural, one {# error found} other {# errors found}}'
-translate.save.error.invalid_payload: 'The submitted data is invalid'
+translate.save.error_invalid_payload: 'The submitted data is invalid'
 translate.error.file: 'Translation file not found'
-translate.save.error.unknown_key: 'This key does not exist in the file'
-translate.save.error.not_string: 'The value must be a string'
-translate.save.error.icu: 'Invalid ICU syntax ({error}), check braces and parameters'
+translate.save.error_unknown_key: 'This key does not exist in the file'
+translate.save.error_not_string: 'The value must be a string'
+translate.save.error_icu: 'Invalid ICU syntax ({error}), check braces and parameters'
 translate.error.request: 'An error occurred, please try again'
 translate.search.placeholder: 'Filter by key or value'
 translate.filter.untranslated: 'Untranslated only'

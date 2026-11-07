@@ -1,28 +1,28 @@
-mail.page_title_h1: 'Gestion des emails'
-mail.description: 'Gestion du contenu et du titre des emails qui sont envoyés depuis le CMS'
+mail.index.title: 'Gestion des emails'
+mail.index.description: 'Gestion du contenu et du titre des emails qui sont envoyés depuis le CMS'
 mail.list.language: 'Sélection de la langue'
 mail.grid.id: Id
 mail.grid.title: Titre
 mail.grid.description: Description
 mail.grid.created_at: Création
 mail.grid.update_at: 'Mise à jour'
-mail.edit_page_title_h1: "Édition d'un email"
-mail.edit_page_description: "Modification de l'email '<strong>{email}</strong>'"
-mail.info: 'Vous pouvez tester les emails en cliquant sur le bouton {icon}, vous les recevrez dans la boîte mail définie dans votre compte'
+mail.edit.title: "Édition d'un email"
+mail.edit.description: "Modification de l'email '<strong>{email}</strong>'"
+mail.index.info: 'Vous pouvez tester les emails en cliquant sur le bouton {icon}, vous les recevrez dans la boîte mail définie dans votre compte'
 mail.message.success: 'Mail <strong>{email}</strong> sauvegardé avec succès'
 mail.input.trans.title: 'Objet du mail'
-mail.input.trans.title.empty: "L'objet de l'email ne peut pas être vide"
-mail.index.popin.help.title: Aide
-mail.index.popin.help.send: "Recevoir l'email en démo"
-mail.index.popin.help.edit: 'Modifier un email'
+mail.input.trans.title_empty: "L'objet de l'email ne peut pas être vide"
+mail.index.modal.help.title: Aide
+mail.index.modal.help.send: "Recevoir l'email en démo"
+mail.index.modal.help.edit: 'Modifier un email'
 mail.link.save: Sauvegarder
 mail.link.send: "Tester l'email"
 mail.link.cant.save: "La sauvegarde n'est pas possible pour le moment"
 mail.content.title: "Contenu de l'email"
 mail.content.subtitle: "N'oubliez pas que vous pouvez éditer l'email dans toutes les langues gérées par le CMS"
-mail.edit_page.no.mail.title: 'Aucun mail trouvé'
-mail.edit_page.no.mail.text: "Cet email n'existe pas ou a été supprimé. Vous pouvez retourner à la liste des emails"
-mail.edit_page.no.mail.back: Retour
+mail.edit.not_found_title: 'Aucun mail trouvé'
+mail.edit.not_found_text: "Cet email n'existe pas ou a été supprimé. Vous pouvez retourner à la liste des emails"
+mail.edit.not_found_back: Retour
 mail.error.csrf: 'Jeton de sécurité invalide, veuillez recharger la page'
 mail.error.save: "Impossible de sauvegarder l'email : la langue, l'objet et le contenu sont obligatoires"
 mail.error.locale: "Cet email n'existe pas dans la langue demandée"

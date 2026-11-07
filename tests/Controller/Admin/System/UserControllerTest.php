@@ -52,7 +52,7 @@ class UserControllerTest extends AppWebTestCase
         $this->client->loginUser($userSuperAdm, 'admin');
         $this->client->request('GET', $this->router->generate('admin_user_index'));
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', $this->translator->trans('user.page_title_h1', domain: 'user'));
+        $this->assertSelectorTextContains('h1', $this->translator->trans('user.index.title', domain: 'user'));
     }
 
     /**
@@ -65,7 +65,7 @@ class UserControllerTest extends AppWebTestCase
         $this->client->loginUser($user, 'admin');
         $this->client->request('GET', $this->router->generate('admin_user_my_option'));
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', $this->translator->trans('user.my_option_title_h1', domain: 'user'));
+        $this->assertSelectorTextContains('h1', $this->translator->trans('user.my_options.title', domain: 'user'));
     }
 
     /**
@@ -469,7 +469,7 @@ class UserControllerTest extends AppWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains(
             'h1',
-            $this->translator->trans('user.page_update_title_h1_2', domain: 'user'),
+            $this->translator->trans('user.update.title', domain: 'user'),
         );
     }
 
@@ -546,7 +546,7 @@ class UserControllerTest extends AppWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains(
             'h1',
-            $this->translator->trans('user.page_my_account.title_h1', domain: 'user'),
+            $this->translator->trans('user.my_account.title', domain: 'user'),
         );
     }
 
@@ -577,7 +577,7 @@ class UserControllerTest extends AppWebTestCase
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);
-        $this->assertEquals($this->translator->trans('user.error_not_disabled', domain: 'user'), $content['msg']);
+        $this->assertEquals($this->translator->trans('user.error.not_disabled', domain: 'user'), $content['msg']);
 
         // Désactivation user
         /** @var OptionSystemService $optionSystemService */
@@ -598,7 +598,7 @@ class UserControllerTest extends AppWebTestCase
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);
-        $this->assertEquals($this->translator->trans('user.self_disabled_success', domain: 'user'), $content['msg']);
+        $this->assertEquals($this->translator->trans('user.success.self_disabled', domain: 'user'), $content['msg']);
 
         /** @var UserRepository $userRepository */
         $userRepository = $this->em->getRepository(User::class);
@@ -644,7 +644,7 @@ class UserControllerTest extends AppWebTestCase
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);
-        $this->assertEquals($this->translator->trans('user.error_not_disabled', domain: 'user'), $content['msg']);
+        $this->assertEquals($this->translator->trans('user.error.not_disabled', domain: 'user'), $content['msg']);
 
         //delete user - Anonymisation
         /** @var OptionSystemService $optionSystemService */
@@ -738,7 +738,7 @@ class UserControllerTest extends AppWebTestCase
         $this->client->loginUser($userSuperAdm, 'admin');
         $this->client->request('GET', $this->router->generate('admin_user_add'));
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', $this->translator->trans('user.page_add_title_h1', domain: 'user'));
+        $this->assertSelectorTextContains('h1', $this->translator->trans('user.add.title', domain: 'user'));
     }
 
     /**

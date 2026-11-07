@@ -169,7 +169,7 @@ class UserService extends AppAdminService
                 'url' => $router->generate('admin_user_update_disabled', ['id' => $user->getId()]),
                 'ajax' => true,
                 'confirm' => true,
-                'msgConfirm' => $translator->trans('user.confirm.disabled.msg', ['{login}' => $login], 'user'),
+                'msgConfirm' => $translator->trans('user.confirm.disabled.message', ['{login}' => $login], 'user'),
             ];
             if ($user->isDisabled()) {
                 $actionDisabled = [
@@ -189,13 +189,13 @@ class UserService extends AppAdminService
             // Bouton Delete
             $actionDelete = '';
             if ($optionSystemService->canDelete()) {
-                $msgConfirm = $translator->trans('user.confirm.delete.msg', ['{login}' => $login], 'user');
+                $msgConfirm = $translator->trans('user.confirm.delete.message', ['{login}' => $login], 'user');
                 $label = [
                     'M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z',
                 ];
                 $type = 'delete';
                 if ($optionSystemService->canReplace()) {
-                    $msgConfirm = $translator->trans('user.confirm.replace.msg', ['{login}' => $login], 'user');
+                    $msgConfirm = $translator->trans('user.confirm.replace.message', ['{login}' => $login], 'user');
                     $label = [
                         'M16 12h4M4 18v-1a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v1a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1Zm8-10a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z',
                     ];

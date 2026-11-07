@@ -39,14 +39,9 @@ export interface LogTranslate {
   log_empty_file: string;
   log_delete_file_confirm: string;
   log_delete_file_confirm_2: string;
-  log_delete_file_loading: string;
-  log_delete_file_btn_close: string;
   log_btn_reload: string;
   log_btn_delete_ok: string;
   log_btn_delete_ko: string;
-  toast_title_success: string;
-  toast_time: string;
-  toast_title_error: string;
   log_error_request: string;
 }
 

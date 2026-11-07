@@ -1,10 +1,10 @@
 {% extends 'admin/admin_base.html.twig' %}
 
-{% block title %}{{ 'mail.edit_page_title_h1' | trans({}, 'mail') }}{% endblock %}
+{% block title %}{{ 'mail.edit.title' | trans({}, 'mail') }}{% endblock %}
 
 {% block body %}
 
-    <twig:Admin:PageHeaderComponent :breadcrumb="breadcrumb" :title="'mail.edit_page_title_h1' | trans({}, 'mail')">
+    <twig:Admin:PageHeaderComponent :breadcrumb="breadcrumb" :title="'mail.edit.title' | trans({}, 'mail')">
         <twig:block name="icon">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -13,7 +13,7 @@
         </twig:block>
         <twig:block name="description">
             {% if mail %}
-                {{ 'mail.edit_page_description' | trans({'email' : mail.title | trans({})}, 'mail') | raw }}
+                {{ 'mail.edit.description' | trans({'email' : mail.title | trans({})}, 'mail') | raw }}
             {% endif %}
         </twig:block>
     </twig:Admin:PageHeaderComponent>
@@ -41,12 +41,12 @@
 
             <!-- Titre -->
             <p class="text-lg font-bold mb-2 text-fg">
-                {{ 'mail.edit_page.no.mail.title' | trans({}, 'mail') }}
+                {{ 'mail.edit.not_found_title' | trans({}, 'mail') }}
             </p>
 
             <!-- Description -->
             <p class="text-sm max-w-xs mb-6 text-fg-muted">
-                {{ 'mail.edit_page.no.mail.text' | trans({}, 'mail') }}
+                {{ 'mail.edit.not_found_text' | trans({}, 'mail') }}
             </p>
 
             <!-- Boutons -->
@@ -55,7 +55,7 @@
                     <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                     </svg>
-                    {{ 'mail.edit_page.no.mail.back' | trans({}, 'mail') }}
+                    {{ 'mail.edit.not_found_back' | trans({}, 'mail') }}
                 </a>
             </div>
         </div>

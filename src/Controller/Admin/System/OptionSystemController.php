@@ -43,7 +43,7 @@ class OptionSystemController extends AppAdminController
         $breadcrumb = [
             Breadcrumb::DOMAIN->value => 'option_system',
             Breadcrumb::BREADCRUMB->value => [
-                'option_system.page_title_h1' => '#',
+                'option_system.index.title' => '#',
             ],
         ];
 

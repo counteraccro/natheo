@@ -1,13 +1,13 @@
 {% extends 'admin/admin_base.html.twig' %}
 
 {%  if not apiToken %}
-    {% set title = 'api_token.update.page_title' | trans({'id' : '-'}, 'api_token') %}
+    {% set title = 'api_token.update.title_id' | trans({'id' : '-'}, 'api_token') %}
     {% set description = 'api_token.update.description' | trans({}, 'api_token') %}
 {% elseif apiToken.id is same as null %}
-    {% set title = 'api_token.add.page_title_h1' | trans({}, 'api_token') %}
+    {% set title = 'api_token.add.title' | trans({}, 'api_token') %}
     {% set description = 'api_token.add.description' | trans({}, 'api_token') %}
 {% else %}
-    {% set title = 'api_token.update.page_title' | trans({'id' : apiToken.id}, 'api_token') %}
+    {% set title = 'api_token.update.title_id' | trans({'id' : apiToken.id}, 'api_token') %}
     {% set description = 'api_token.update.description' | trans({}, 'api_token') %}
 {% endif %}
 
@@ -51,12 +51,12 @@
 
             <!-- Titre -->
             <p class="text-lg font-bold mb-2 text-fg">
-                {{ 'api_token.update.no.mail.title' | trans({}, 'api_token') }}</h1>
+                {{ 'api_token.update.not_found_title' | trans({}, 'api_token') }}</h1>
             </p>
 
             <!-- Description -->
             <p class="text-sm max-w-xs mb-6 text-fg-muted">
-                {{ 'api_token.update.no.mail.text' | trans({}, 'api_token') }}</h1>
+                {{ 'api_token.update.not_found_text' | trans({}, 'api_token') }}</h1>
             </p>
 
             <!-- Boutons -->
@@ -65,13 +65,13 @@
                     <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                     </svg>
-                    {{ 'api_token.update.no.mail.back' | trans({}, 'api_token') }}</h1>
+                    {{ 'api_token.update.not_found_back' | trans({}, 'api_token') }}</h1>
                 </a>
                 <a href="{{ path('admin_api_token_add') }}" class="btn btn-sm btn-primary">
                     <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                     </svg>
-                    {{ 'api_token.update.no.mail.new' | trans({}, 'api_token') }}</h1>
+                    {{ 'api_token.update.not_found_new' | trans({}, 'api_token') }}</h1>
                 </a>
             </div>
         </div>

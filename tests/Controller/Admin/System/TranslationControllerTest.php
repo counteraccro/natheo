@@ -28,7 +28,7 @@ class TranslationControllerTest extends AppWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains(
             'h1',
-            $this->translator->trans('translate.page_title_h1', domain: 'translate'),
+            $this->translator->trans('translate.index.title', domain: 'translate'),
         );
     }
 

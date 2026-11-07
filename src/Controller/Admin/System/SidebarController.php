@@ -40,7 +40,7 @@ class SidebarController extends AppAdminController
         $breadcrumb = [
             Breadcrumb::DOMAIN->value => 'sidebar',
             Breadcrumb::BREADCRUMB->value => [
-                'sidebar.page_title_h1' => '#',
+                'sidebar.index.title' => '#',
             ],
         ];
 
@@ -116,7 +116,7 @@ class SidebarController extends AppAdminController
         $sidebarElement->setDisabled(!$sidebarElement->isDisabled());
         $sidebarElementService->save($sidebarElement);
 
-        $key = $sidebarElement->isDisabled() ? 'sidebar.success.disabled' : 'sidebar.success.no.disabled';
+        $key = $sidebarElement->isDisabled() ? 'sidebar.success.disabled' : 'sidebar.success.enabled';
         $msg = $translator->trans($key, ['label' => $label], 'sidebar');
 
         return $this->json($sidebarElementService->getResponseAjax($msg));

@@ -1,10 +1,10 @@
 {% extends 'admin/admin_base.html.twig' %}
 
-{% block title %}{{ 'api_token.page_title_h1' | trans({}, 'api_token') }}{% endblock %}
+{% block title %}{{ 'api_token.index.title' | trans({}, 'api_token') }}{% endblock %}
 
 {% block body %}
 
-    <twig:Admin:PageHeaderComponent :breadcrumb="breadcrumb" :title="'api_token.page_title_h1' | trans({}, 'api_token')" :description="'api_token.description' | trans({}, 'api_token')">
+    <twig:Admin:PageHeaderComponent :breadcrumb="breadcrumb" :title="'api_token.index.title' | trans({}, 'api_token')" :description="'api_token.index.description' | trans({}, 'api_token')">
         <twig:block name="icon">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path>
@@ -15,7 +15,7 @@
                 <svg class="icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
                 </svg>
-                {{ 'api_token.index.btn.new' | trans({}, 'api_token') }}</a>
+                {{ 'api_token.index.button.new' | trans({}, 'api_token') }}</a>
             <button data-modal-target="help-grid-api-token" data-modal-toggle="help-grid-api-token" class="btn btn-primary btn-icon">
                 <svg class="icon-sm" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.529 9.988a2.502 2.502 0 1 1 5 .191A2.441 2.441 0 0 1 12 12.582V14m-.01 3.008H12M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"></path>
@@ -29,7 +29,7 @@
 
     <twig:Admin:ModaleComponent id="help-grid-api-token" bgColor="bg-secondary">
         <twig:block name="header">
-             {{ 'api_token.index.popin.help.title' | trans({}, 'api_token') }}
+             {{ 'api_token.index.modal.help.title' | trans({}, 'api_token') }}
         </twig:block>
 
         <div class="flex flex-row gap-10">
@@ -40,7 +40,7 @@
                         <path stroke="currentColor" stroke-width="2"
                               d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"></path>
                     </svg>
-                </button>  {{ 'api_token.index.popin.help.delete' | trans({}, 'api_token') }}
+                </button>  {{ 'api_token.index.modal.help.delete' | trans({}, 'api_token') }}
             </div>
             <div class="flex items-center gap-3">
                 <button type="button" class="btn btn-icon btn-xs btn-ghost-primary">
@@ -50,7 +50,7 @@
                               d="M10.779 17.779 4.36 19.918 6.5 13.5m4.279 4.279 8.364-8.643a3.027 3.027 0 0 0-2.14-5.165 3.03 3.03 0 0 0-2.14.886L6.5 13.5m4.279 4.279L6.499 13.5m2.14 2.14 6.213-6.504M12.75 7.04 17 11.28"></path>
                     </svg>
                 </button>
-                 {{ 'api_token.index.popin.help.edit' | trans({}, 'api_token') }}
+                 {{ 'api_token.index.modal.help.edit' | trans({}, 'api_token') }}
             </div>
         </div>
         <div class="flex flex-row gap-10">
@@ -63,7 +63,7 @@
                         <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                     </svg>
                 </button>
-                 {{ 'api_token.index.popin.help.enable' | trans({}, 'api_token') }}
+                 {{ 'api_token.index.modal.help.enable' | trans({}, 'api_token') }}
             </div>
             <div class="flex items-center gap-3">
                 <button type="button" class="btn btn-icon btn-xs btn-ghost-primary">
@@ -72,7 +72,7 @@
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                               d="M3.933 13.909A4.357 4.357 0 0 1 3 12c0-1 4-6 9-6m7.6 3.8A5.068 5.068 0 0 1 21 12c0 1-3 6-9 6-.314 0-.62-.014-.918-.04M5 19 19 5m-4 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                     </svg>
-                </button> {{ 'api_token.index.popin.help.disabled' | trans({}, 'api_token') }}
+                </button> {{ 'api_token.index.modal.help.disabled' | trans({}, 'api_token') }}
             </div>
         </div>
     </twig:Admin:ModaleComponent>

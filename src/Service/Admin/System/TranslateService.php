@@ -139,7 +139,7 @@ class TranslateService extends AppAdminService
             $key = $update['key'] ?? null;
             if (!is_string($key) || !array_key_exists($key, $tab)) {
                 $errors[is_string($key) ? $key : (string) $index] = $translator->trans(
-                    'translate.save.error.unknown_key',
+                    'translate.save.error_unknown_key',
                     domain: 'translate',
                 );
                 continue;
@@ -147,13 +147,13 @@ class TranslateService extends AppAdminService
 
             $value = $update['value'] ?? null;
             if (!is_string($value)) {
-                $errors[$key] = $translator->trans('translate.save.error.not_string', domain: 'translate');
+                $errors[$key] = $translator->trans('translate.save.error_not_string', domain: 'translate');
                 continue;
             }
 
             if ($isIcu && $value !== '' && \MessageFormatter::create($locale, $value) === null) {
                 $errors[$key] = $translator->trans(
-                    'translate.save.error.icu',
+                    'translate.save.error_icu',
                     ['error' => intl_error_name(intl_get_error_code())],
                     domain: 'translate',
                 );

@@ -162,7 +162,7 @@ class SidebarElementService extends AppAdminService
                 'ajax' => true,
                 'confirm' => true,
                 'msgConfirm' => $translator->trans(
-                    'sidebar.confirm.disabled.msg',
+                    'sidebar.confirm.disabled.message',
                     ['label' => $this->getLabelWithIcon($element)],
                     'sidebar',
                 ),
