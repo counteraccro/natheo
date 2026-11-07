@@ -21,6 +21,8 @@
 ## 📋 Table des matières
 
 - [À propos](#-à-propos)
+- [Version actuelle](#-version-actuelle--v1)
+- [Les nouveautés de la V2](#-les-nouveautés-de-la-v2)
 - [Prérequis](#-prérequis)
 - [Aperçu](#-aperçu)
 - [Installation](#-installation)
@@ -52,8 +54,10 @@ Nathéo est un système de gestion de contenu (CMS) moderne développé avec Sym
 
 ## 📌 Version actuelle — V1
 
-La V1 de Nathéo CMS est la version stable et disponible en production. Elle constitue le socle du projet et intègre l'ensemble des fonctionnalités principales : gestion de contenu, interface d'administration, support multilingue et architecture modulaire.
- 
+La V1 de Nathéo CMS (`v1.0.0`) est la version stable et disponible en production. Elle constitue le socle du projet et intègre l'ensemble des fonctionnalités principales : gestion de contenu, interface d'administration, support multilingue et architecture modulaire.
+
+La V2 est disponible en bêta (`v2.0.0-beta.2`) : son développement est terminé et la version stable arrive prochainement.
+
 ---
 
 ## 🚀 Les nouveautés de la V2
@@ -64,10 +68,12 @@ Voici une liste non exhaustive des nouveautés :
 
 - 🎨 **Une interface entièrement repensée** — Le backoffice a été redesigné de A à Z pour une expérience plus moderne et agréable au quotidien
 - ⚡ **Des performances améliorées** — Migration vers Vite et TailwindCSS 4 pour un frontend plus rapide et plus léger
-- 🏗️ **Une base technique solide** — Migration vers Symfony 8.0, code PHP modernisé et mieux structuré
-- 🔷 **TypeScript** — Le frontend migre progressivement vers TypeScript pour plus de robustesse
-
-La V2 est en cours de développement actif. Pas de date de sortie fixée, mais ça avance !
+- 🏗️ **Une base technique solide** — Migration vers Symfony 8.1, code PHP modernisé et mieux structuré
+- 🔷 **TypeScript** — Le frontend est écrit en TypeScript pour plus de robustesse
+- 🗄️ **MySQL / MariaDB et PostgreSQL** — Les deux plateformes sont supportées, avec des migrations dédiées à chacune
+- 🌍 **Une interface entièrement traduite** — Relecture du français et traduction complète en anglais et en espagnol
+- 🔒 **Une sécurité renforcée** — Audit des modules de contenu, protection CSRF des actions et droits par contenu
+- ✅ **Plus de tests** — Couverture étendue, dont un contrôle automatique des traductions
 
 ---
 
@@ -86,6 +92,7 @@ Avant de commencer, assurez-vous d'avoir installé les éléments suivants :
 
 - **PostgreSQL** : 15.2 ou supérieur
 - **MySQL** : 8.2 ou supérieur *(par défaut)*
+- **MariaDB** : 10.11 ou supérieur
 
 > **📌 Note** : Pour utiliser PostgreSQL ou une autre base de données, consultez [la documentation de configuration](https://counteraccro.github.io/natheo.doc/Docs/Installation/bdd.html).
 
@@ -93,6 +100,7 @@ Avant de commencer, assurez-vous d'avoir installé les éléments suivants :
 ```
 ext-ctype, ext-iconv, ext-pdo, ext-pdo_mysql, ext-json, ext-mbstring
 ```
+Avec PostgreSQL, remplacez `ext-pdo_mysql` par `ext-pdo_pgsql`.
 
 ---
 
@@ -200,8 +208,7 @@ Pour accéder au CMS en développement :
 2. Exemple de configuration Apache :
 ```apache
 <VirtualHost *:80>
-    ServerName www.local.natheo
-    ServerAlias  local.natheo
+    ServerName natheo.local
     DocumentRoot "[chemin-vers-natheo]/public"
     
     <Directory "[chemin-vers-natheo]/public">
@@ -241,13 +248,20 @@ Une fois l'installation terminée :
 |----------|-------------|
 | `php bin/console natheo:install` | Installation complète du CMS |
 | `php bin/console messenger:consume async -vv` | Traitement des tâches asynchrones |
+| `php bin/console doctrine:migrations:migrate` | Mise à jour de la base de données |
+| `php bin/console natheo:translations:update` | Extraction des traductions pour toutes les langues |
 | `php bin/console doctrine:fixtures:load` | Chargement des données de test |
 | `php bin/phpunit --display-deprecations` | Lancement tests unitaires |
-| `php bin/phpunit --filter=testLoadMedias  --display-deprecation` | Lancement d'un test unitaire en particulié |
+| `php bin/phpunit --filter=testLoadMedias --display-deprecations` | Lancement d'un test unitaire en particulier |
 
 ### Gestion des traductions
 
-Générer/extraire les traductions pour une langue :
+Extraire les traductions de toutes les langues :
+```bash
+php bin/console natheo:translations:update
+```
+
+Ou pour une seule langue :
 ```bash
 # Français
 php bin/console translation:extract --force --format=yaml fr
@@ -264,8 +278,8 @@ php bin/console translation:extract --force --format=yaml es
 # Mode développement avec watch
 yarn dev
 
-# Mode production
-vite build
+# Mode production (vérification TypeScript + build)
+yarn build
 ```
 
 ---
@@ -333,26 +347,17 @@ La documentation complète est disponible en ligne :
 
 ---
 
-## :end: Statistiques diverses
-
-Évolution du nombre de lignes de code du projet, valeur prise à des dates aléatoires en fonction de l'avancement du projet
-
-| Date | Lignes de code | Diff | Évolution |
-|---|---|---|---|
-| 06 avril 2026 | 162 250 | — | — |
-| 31 mai 2026 | 164 965 | +2 715 | +1,67 % |
-
----
-
 ## 🤝 Contribution
 
-Les contributions sont les bienvenues ! N'hésitez pas à :
+Les contributions sont les bienvenues ! Chaque sujet suit le même chemin : **une issue → une branche → une pull request liée à l'issue**.
 
-1. 🍴 Fork le projet
-2. 🔨 Créer une branche pour votre fonctionnalité (`git checkout -b feature/AmazingFeature`)
-3. ✅ Commit vos changements (`git commit -m 'Add some AmazingFeature'`)
-4. 📤 Push vers la branche (`git push origin feature/AmazingFeature`)
-5. 🎉 Ouvrir une Pull Request
+1. 📝 Créer une issue depuis l'un des formulaires (bug, feature, clean code…)
+2. 🔨 Créer une branche depuis `master` avec le numéro de l'issue (`feature/N-<n>-<slug>`, `bug/B-<n>-<slug>`)
+3. 🎉 Ouvrir une pull request dont la description commence par `Closes #<n>`
+
+Les conventions complètes (nommage, labels, vérifications) sont décrites dans [CONTRIBUTING.md](CONTRIBUTING.md).
+
+> **🔐 Faille de sécurité** : ne la signalez pas dans une issue publique, suivez [SECURITY.md](SECURITY.md).
 
 ---
 
