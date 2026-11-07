@@ -1,29 +1,24 @@
-translate.page_title_h1: 'Gestion des traductions'
-translate.description: 'Gérer les traductions du CMS à partir de cette page'
+translate.index.title: 'Gestion des traductions'
+translate.index.description: 'Gérer les traductions du CMS à partir de cette page'
 translate.select.language: 'Sélectionnez une langue'
 translate.select.file: 'Sélectionnez un fichier'
 translate.empty.file: 'Sélectionnez un fichier de traduction pour le modifier'
-translate.btn.save: Sauvegarder
+translate.button.save: Sauvegarder
 translate.info.edit: 'Cette traduction à été éditée'
 translate.link.revert: Annuler
 translate.nb.edit: 'ligne(s) modifiée(s) (non sauvegardée(s))'
-translate.loading: 'En cours de traitement...'
-translate.confirm.leave: "Des données n'ont pas encore été sauvegardées, confirmez vous de quitter cette page ?"
 translate.save.success: 'Traductions sauvegardées avec succès'
-translate.toast.title.success: 'Success !'
-translate.toast.title.error: 'Erreur !'
-translate.toast.time: "A l'instant"
 translate.block.search.title: 'Selection du fichier de traduction à éditer'
 translate.block.search.sub.title: 'Choisissez le fichier à éditer en fonction de sa langue'
-translate.select.language.label: Langue
-translate.select.file.label: Fichier
+translate.select.language_label: Langue
+translate.select.file_label: Fichier
 translate.block.edit.sub.title: 'Editer les traductions du fichier sélectionné'
 translate.save.error: 'Traductions non sauvegardées : {nb, plural, one {# erreur détectée} other {# erreurs détectées}}'
-translate.save.error.invalid_payload: 'Les données envoyées sont invalides'
+translate.save.error_invalid_payload: 'Les données envoyées sont invalides'
 translate.error.file: 'Fichier de traduction introuvable'
-translate.save.error.unknown_key: "Cette clé n'existe pas dans le fichier"
-translate.save.error.not_string: 'La valeur doit être une chaîne de caractères'
-translate.save.error.icu: 'Syntaxe ICU invalide ({error}), vérifiez les accolades et les paramètres'
+translate.save.error_unknown_key: "Cette clé n'existe pas dans le fichier"
+translate.save.error_not_string: 'La valeur doit être une chaîne de caractères'
+translate.save.error_icu: 'Syntaxe ICU invalide ({error}), vérifiez les accolades et les paramètres'
 translate.error.request: 'Une erreur est survenue, veuillez réessayer'
 translate.search.placeholder: 'Filtrer par clé ou par valeur'
 translate.filter.untranslated: 'Uniquement les non traduites'

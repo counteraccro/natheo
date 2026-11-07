@@ -23,7 +23,7 @@ class MailTranslate extends AppTranslate
             'mailContentTitle' => $this->translator->trans('mail.content.title', domain: 'mail'),
             'mailContentSubtitle' => $this->translator->trans('mail.content.subtitle', domain: 'mail'),
             'titleTrans' => $this->translator->trans('mail.input.trans.title', domain: 'mail'),
-            'msgEmptyTitle' => $this->translator->trans('mail.input.trans.title.empty', domain: 'mail'),
+            'msgEmptyTitle' => $this->translator->trans('mail.input.trans.title_empty', domain: 'mail'),
             'link_save' => $this->translator->trans('mail.link.save', domain: 'mail'),
             'link_send' => $this->translator->trans('mail.link.send', domain: 'mail'),
             'msg_cant_save' => $this->translator->trans('mail.link.cant.save', domain: 'mail'),

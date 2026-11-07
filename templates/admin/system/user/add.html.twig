@@ -1,10 +1,10 @@
 {% extends 'admin/admin_base.html.twig' %}
 
-{% block title %}{{ 'user.page_add_title_h1' | trans({}, 'user') }}{% endblock %}
+{% block title %}{{ 'user.add.title' | trans({}, 'user') }}{% endblock %}
 
 {% block body %}
 
-    <twig:Admin:PageHeaderComponent :breadcrumb="breadcrumb" :title="'user.page_add_title_h1' | trans({}, 'user')" :description="'user.page_add.description' | trans({}, 'user')">
+    <twig:Admin:PageHeaderComponent :breadcrumb="breadcrumb" :title="'user.add.title' | trans({}, 'user')" :description="'user.add.description' | trans({}, 'user')">
         <twig:block name="icon">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -34,10 +34,10 @@
                             d="M7 17v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
                         />
                     </svg>
-                    {{ 'user.page_add.profil' | trans({}, 'user') }}
+                    {{ 'user.add.profile' | trans({}, 'user') }}
                 </div>
                 <p class="card-subtitle">
-                    {{ 'user.page_add.profil.description' | trans({}, 'user') }}
+                    {{ 'user.add.profile_description' | trans({}, 'user') }}
                 </p>
             </div>
         </div>
@@ -79,10 +79,10 @@
                     >
                         <path stroke="currentColor" stroke-linecap="square" stroke-linejoin="round" stroke-width="2" d="M10 19H5a1 1 0 0 1-1-1v-1a3 3 0 0 1 3-3h2m10 1a3 3 0 0 1-3 3m3-3a3 3 0 0 0-3-3m3 3h1m-4 3a3 3 0 0 1-3-3m3 3v1m-3-4a3 3 0 0 1 3-3m-3 3h-1m4-3v-1m-2.121 1.879-.707-.707m5.656 5.656-.707-.707m-4.242 0-.707.707m5.656-5.656-.707.707M12 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
                     </svg>
-                    {{ 'user.page_add.personal_data' | trans({}, 'user') }}
+                    {{ 'user.add.personal_data' | trans({}, 'user') }}
                 </div>
                 <p class="card-subtitle">
-                    {{ 'user.page_add.personal_data.description' | trans({}, 'user') }}
+                    {{ 'user.add.personal_data_description' | trans({}, 'user') }}
                 </p>
             </div>
         </div>
@@ -137,28 +137,28 @@
                             d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
                         />
                     </svg>
-                    {{ 'user.page_add.information' | trans({}, 'user') }}
+                    {{ 'user.add.information' | trans({}, 'user') }}
                 </div>
                 <p class="card-subtitle">
-                    {{ 'user.page_add.information.description' | trans({}, 'user') }}
+                    {{ 'user.add.information_description' | trans({}, 'user') }}
                 </p>
             </div>
         </div>
         <div class="p-5">
             <div class="text-sm text-fg-muted">
 
-                <p class="mb-2">{{ 'user.page_add.information.role.info' | trans({}, 'user') }}</p>
+                <p class="mb-2">{{ 'user.add.information_role_info' | trans({}, 'user') }}</p>
 
-                {{ 'user.page_add.information.liste_role' | trans({}, 'user') }}
+                {{ 'user.add.information_list_role' | trans({}, 'user') }}
                 <ul class="list-inside list-disc mt-2 ms-2">
-                    <li><b>{{ 'user.page_add.information.role.user' | trans({}, 'user') }}</b>
-                        : {{ 'user.page_add.information.role.user.info' | trans({}, 'user') }}</li>
-                    <li><b>{{ 'user.page_add.information.role.contributeur' | trans({}, 'user') }}</b>
-                        : {{ 'user.page_add.information.role.contributeur.info' | trans({}, 'user') }}</li>
-                    <li><b>{{ 'user.page_add.information.role.admin' | trans({}, 'user') }}</b>
-                        : {{ 'user.page_add.information.role.admin.info' | trans({}, 'user') }}</li>
-                    <li><b>{{ 'user.page_add.information.role.super_admin' | trans({}, 'user') }}</b>
-                        : {{ 'user.page_add.information.role.super_admin.info' | trans({}, 'user') }}</li>
+                    <li><b>{{ 'user.add.information_role_user' | trans({}, 'user') }}</b>
+                        : {{ 'user.add.information_role_user_info' | trans({}, 'user') }}</li>
+                    <li><b>{{ 'user.add.information_role_contributor' | trans({}, 'user') }}</b>
+                        : {{ 'user.add.information_role_contributor_info' | trans({}, 'user') }}</li>
+                    <li><b>{{ 'user.add.information_role_admin' | trans({}, 'user') }}</b>
+                        : {{ 'user.add.information_role_admin_info' | trans({}, 'user') }}</li>
+                    <li><b>{{ 'user.add.information_role_super_admin' | trans({}, 'user') }}</b>
+                        : {{ 'user.add.information_role_super_admin_info' | trans({}, 'user') }}</li>
                 </ul>
             </div>
         </div>

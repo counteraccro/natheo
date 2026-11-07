@@ -27,7 +27,7 @@ class LogControllerTest extends AppWebTestCase
         $this->client->loginUser($userSuperAdm, 'admin');
         $this->client->request('GET', $this->router->generate('admin_log_index'));
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', $this->translator->trans('log.page_title_h1', domain: 'log'));
+        $this->assertSelectorTextContains('h1', $this->translator->trans('log.index.title', domain: 'log'));
 
         $props = $this->getVueProps();
         $this->assertNotEmpty($props['translate']);

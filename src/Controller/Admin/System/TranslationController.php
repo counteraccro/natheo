@@ -43,7 +43,7 @@ class TranslationController extends AppAdminController
         $breadcrumb = [
             Breadcrumb::DOMAIN->value => 'translate',
             Breadcrumb::BREADCRUMB->value => [
-                'translate.page_title_h1' => '#',
+                'translate.index.title' => '#',
             ],
         ];
 
@@ -133,7 +133,7 @@ class TranslationController extends AppAdminController
         if (!is_array($data) || !is_string($data['file'] ?? null) || !is_array($data['translates'] ?? null)) {
             return $this->json([
                 'success' => false,
-                'msg' => $translator->trans('translate.save.error.invalid_payload', domain: 'translate'),
+                'msg' => $translator->trans('translate.save.error_invalid_payload', domain: 'translate'),
                 'errors' => [],
             ]);
         }

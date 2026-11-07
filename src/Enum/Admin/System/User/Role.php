@@ -39,7 +39,7 @@ enum Role: string
     {
         return [
             'user.form_update.role.user' => self::USER->value,
-            'user.form_update.role.contributeur' => self::CONTRIBUTEUR->value,
+            'user.form_update.role.contributor' => self::CONTRIBUTEUR->value,
             'user.form_update.role.admin' => self::ADMIN->value,
             'user.form_update.role.super_admin' => self::SUPER_ADMIN->value,
         ];

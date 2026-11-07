@@ -31,7 +31,7 @@ class MailControllerTest extends AppWebTestCase
         $this->client->loginUser($userSuperAdm, 'admin');
         $this->client->request('GET', $this->router->generate('admin_mail_index'));
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', $this->translator->trans('mail.page_title_h1', domain: 'mail'));
+        $this->assertSelectorTextContains('h1', $this->translator->trans('mail.index.title', domain: 'mail'));
     }
 
     /**
@@ -75,9 +75,9 @@ class MailControllerTest extends AppWebTestCase
         $this->client->loginUser($userSuperAdm, 'admin');
         $this->client->request('GET', $this->router->generate('admin_mail_edit', ['id' => $mail->getId()]));
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', $this->translator->trans('mail.edit_page_title_h1', domain: 'mail'));
+        $this->assertSelectorTextContains('h1', $this->translator->trans('mail.edit.title', domain: 'mail'));
         // Titre avec apostrophe : pas de double échappement dans l'onglet
-        $this->assertPageTitleContains($this->translator->trans('mail.edit_page_title_h1', domain: 'mail'));
+        $this->assertPageTitleContains($this->translator->trans('mail.edit.title', domain: 'mail'));
     }
 
     /**
@@ -91,7 +91,7 @@ class MailControllerTest extends AppWebTestCase
         $this->client->request('GET', $this->router->generate('admin_mail_edit', ['id' => 999999]));
         $this->assertResponseIsSuccessful();
         $this->assertStringContainsString(
-            $this->translator->trans('mail.edit_page.no.mail.title', domain: 'mail'),
+            $this->translator->trans('mail.edit.not_found_title', domain: 'mail'),
             $this->client->getResponse()->getContent(),
         );
     }

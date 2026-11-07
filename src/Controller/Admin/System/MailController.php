@@ -51,7 +51,7 @@ class MailController extends AppAdminController
         $breadcrumb = [
             Breadcrumb::DOMAIN->value => 'mail',
             Breadcrumb::BREADCRUMB->value => [
-                'mail.page_title_h1' => '#',
+                'mail.index.title' => '#',
             ],
         ];
 
@@ -101,8 +101,8 @@ class MailController extends AppAdminController
         $breadcrumb = [
             Breadcrumb::DOMAIN->value => 'mail',
             Breadcrumb::BREADCRUMB->value => [
-                'mail.page_title_h1' => 'admin_mail_index',
-                'mail.edit_page_title_h1' => '#',
+                'mail.index.title' => 'admin_mail_index',
+                'mail.edit.title' => '#',
             ],
         ];
 

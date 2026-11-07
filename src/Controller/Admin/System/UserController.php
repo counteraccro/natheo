@@ -74,7 +74,7 @@ class UserController extends AppAdminController
         $breadcrumb = [
             Breadcrumb::DOMAIN->value => 'user',
             Breadcrumb::BREADCRUMB->value => [
-                'user.page_title_h1' => '#',
+                'user.index.title' => '#',
             ],
         ];
 
@@ -96,7 +96,7 @@ class UserController extends AppAdminController
         $breadcrumb = [
             Breadcrumb::DOMAIN->value => 'user',
             Breadcrumb::BREADCRUMB->value => [
-                'user.my_option_title_h1' => '#',
+                'user.my_options.title' => '#',
             ],
         ];
 
@@ -179,14 +179,14 @@ class UserController extends AppAdminController
         if (!$userService->canManage($user)) {
             return $this->json([
                 'success' => 'false',
-                'msg' => $translator->trans('user.error_not_disabled', domain: 'user'),
+                'msg' => $translator->trans('user.error.not_disabled', domain: 'user'),
             ]);
         }
 
         $user->setDisabled(!$user->isDisabled());
         $userService->save($user);
 
-        $msg = $translator->trans('user.success.no.disabled', ['login' => $user->getLogin()], 'user');
+        $msg = $translator->trans('user.success.enabled', ['login' => $user->getLogin()], 'user');
         if ($user->isDisabled()) {
             $msg = $translator->trans('user.success.disabled', ['login' => $user->getLogin()], 'user');
         }
@@ -205,7 +205,7 @@ class UserController extends AppAdminController
         if (!$userService->canManage($user)) {
             return $this->json([
                 'success' => 'false',
-                'msg' => $translator->trans('user.error_not_allowed', domain: 'user'),
+                'msg' => $translator->trans('user.error.not_allowed', domain: 'user'),
             ]);
         }
 
@@ -216,7 +216,7 @@ class UserController extends AppAdminController
         if ($canDelete === '1') {
             if ($canReplace === '1') {
                 $userService->anonymizer($user);
-                $msg = $translator->trans('user.success_anonymous', domain: 'user');
+                $msg = $translator->trans('user.success.anonymous', domain: 'user');
             } else {
                 if ($user->getAvatar() !== null) {
                     $fileSystem = new Filesystem();
@@ -224,10 +224,10 @@ class UserController extends AppAdminController
                 }
 
                 $userService->remove($user);
-                $msg = $translator->trans('user.success_remove', domain: 'user');
+                $msg = $translator->trans('user.success.remove', domain: 'user');
             }
         } else {
-            $msg = $translator->trans('user.error_not_allowed', domain: 'user');
+            $msg = $translator->trans('user.error.not_allowed', domain: 'user');
         }
         return $this->json($userService->getResponseAjax($msg, $msg_error));
     }
@@ -259,8 +259,8 @@ class UserController extends AppAdminController
         $breadcrumb = [
             Breadcrumb::DOMAIN->value => 'user',
             Breadcrumb::BREADCRUMB->value => [
-                'user.page_title_h1' => 'admin_user_index',
-                'user.page_update_title_h1_2' => '#',
+                'user.index.title' => 'admin_user_index',
+                'user.update.title' => '#',
             ],
         ];
 
@@ -280,7 +280,7 @@ class UserController extends AppAdminController
             $userService->save($user);
             $this->addFlash(
                 FlashKey::SUCCESS->value,
-                $translator->trans('user.page_update.success', ['email' => $user->getEmail()], domain: 'user'),
+                $translator->trans('user.update.success', ['email' => $user->getEmail()], domain: 'user'),
             );
         }
 
@@ -323,7 +323,7 @@ class UserController extends AppAdminController
         $breadcrumb = [
             Breadcrumb::DOMAIN->value => 'user',
             Breadcrumb::BREADCRUMB->value => [
-                'user.page_my_account.title_h1' => '#',
+                'user.my_account.title' => '#',
             ],
         ];
 
@@ -353,7 +353,7 @@ class UserController extends AppAdminController
                 } catch (FileException $e) {
                     $this->addFlash(
                         FlashKey::DANGER->value,
-                        $translator->trans('user.page_my_account.upload.avatar.error', domain: 'user'),
+                        $translator->trans('user.my_account.upload.avatar.error', domain: 'user'),
                     );
                 }
 
@@ -363,7 +363,7 @@ class UserController extends AppAdminController
             $userService->save($user);
             $this->addFlash(
                 FlashKey::SUCCESS->value,
-                $translator->trans('user.page_my_account.success', domain: 'user'),
+                $translator->trans('user.my_account.success', domain: 'user'),
             );
         }
 
@@ -409,7 +409,7 @@ class UserController extends AppAdminController
         #[Autowire('%app.folder.upload.avatar%')] string $avatarDirectory,
     ): RedirectResponse {
         if (!$this->isCsrfTokenValid('delete_avatar', $request->request->getString('_token'))) {
-            $this->addFlash(FlashKey::DANGER->value, $translator->trans('user.error_not_allowed', domain: 'user'));
+            $this->addFlash(FlashKey::DANGER->value, $translator->trans('user.error.not_allowed', domain: 'user'));
             return $this->redirectToRoute('admin_user_my_account');
         }
 
@@ -514,12 +514,12 @@ class UserController extends AppAdminController
         $user = $this->getUser();
         $isSuperAdmin = Role::SUPER_ADMIN->isGrantedTo($user);
         if ($isSuperAdmin) {
-            $msg = $translator->trans('user.error_not_disabled', domain: 'user');
+            $msg = $translator->trans('user.error.not_disabled', domain: 'user');
             $url = '';
         } else {
             $user->setDisabled(true);
             $userService->save($user);
-            $msg = $translator->trans('user.self_disabled_success', domain: 'user');
+            $msg = $translator->trans('user.success.self_disabled', domain: 'user');
             $url = $this->generateUrl('auth_logout');
         }
 
@@ -597,7 +597,7 @@ class UserController extends AppAdminController
         $isSuperAdmin = Role::SUPER_ADMIN->isGrantedTo($user);
         $url = '';
         if ($isSuperAdmin) {
-            $msg = $translator->trans('user.error_not_disabled', domain: 'user');
+            $msg = $translator->trans('user.error.not_disabled', domain: 'user');
         } else {
             if ($optionSystemService->canDelete()) {
                 if ($optionSystemService->canReplace()) {
@@ -618,7 +618,7 @@ class UserController extends AppAdminController
                     $url = $this->generateUrl('front_no_local');
                 }
             } else {
-                $msg = $translator->trans('user.error_not_allowed', domain: 'user');
+                $msg = $translator->trans('user.error.not_allowed', domain: 'user');
             }
         }
 
@@ -700,8 +700,8 @@ class UserController extends AppAdminController
         $breadcrumb = [
             Breadcrumb::DOMAIN->value => 'user',
             Breadcrumb::BREADCRUMB->value => [
-                'user.page_title_h1' => 'admin_user_index',
-                'user.page_add_title_h1' => '#',
+                'user.index.title' => 'admin_user_index',
+                'user.add.title' => '#',
             ],
         ];
 
@@ -733,7 +733,7 @@ class UserController extends AppAdminController
 
             $this->addFlash(
                 FlashKey::SUCCESS->value,
-                $translator->trans('user.page_add.success', ['email' => $user->getEmail()], domain: 'user'),
+                $translator->trans('user.add.success', ['email' => $user->getEmail()], domain: 'user'),
             );
 
             if ($optionSystemService->canNotification()) {
@@ -812,7 +812,7 @@ class UserController extends AppAdminController
 
         $this->addFlash(
             FlashKey::SUCCESS->value,
-            $translator->trans('user.page_my_account.reset_password_success', domain: 'user'),
+            $translator->trans('user.my_account.reset_password_success', domain: 'user'),
         );
 
         return $this->redirectToRoute('admin_user_update', ['id' => $user->getId()]);

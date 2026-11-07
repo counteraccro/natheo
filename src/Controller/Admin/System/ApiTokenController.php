@@ -37,7 +37,7 @@ class ApiTokenController extends AppAdminController
         $breadcrumb = [
             Breadcrumb::DOMAIN->value => 'api_token',
             Breadcrumb::BREADCRUMB->value => [
-                'api_token.page_title_h1' => '#',
+                'api_token.index.title' => '#',
             ],
         ];
 
@@ -100,7 +100,7 @@ class ApiTokenController extends AppAdminController
         $apiToken->setDisabled(!$apiToken->isDisabled());
         $apiTokenService->save($apiToken);
 
-        $msg = $translator->trans('api_token.success.no.disabled', ['label' => $apiToken->getName()], 'api_token');
+        $msg = $translator->trans('api_token.success.enabled', ['label' => $apiToken->getName()], 'api_token');
         if ($apiToken->isDisabled()) {
             $msg = $translator->trans('api_token.success.disabled', ['label' => $apiToken->getName()], 'api_token');
         }
@@ -154,16 +154,16 @@ class ApiTokenController extends AppAdminController
         #[MapEntity(id: 'id')] ?ApiToken $apiToken = null,
         ?int $id = null,
     ): Response {
-        $breadcrumbTitle = 'api_token.update.page_title_h1';
+        $breadcrumbTitle = 'api_token.update.title';
         if ($apiToken === null && $id === null) {
             $apiToken = new ApiToken();
-            $breadcrumbTitle = 'api_token.add.page_title_h1';
+            $breadcrumbTitle = 'api_token.add.title';
         }
 
         $breadcrumb = [
             Breadcrumb::DOMAIN->value => 'api_token',
             Breadcrumb::BREADCRUMB->value => [
-                'api_token.page_title' => 'admin_api_token_index',
+                'api_token.index.title' => 'admin_api_token_index',
                 $breadcrumbTitle => '#',
             ],
         ];
@@ -259,7 +259,7 @@ class ApiTokenController extends AppAdminController
             $apiToken = $apiTokenService->findOneById(ApiToken::class, $id);
             if ($apiToken === null) {
                 return $this->json(
-                    ['success' => false, 'msg' => $translator->trans('api_token.update.no.mail.title', domain: 'api_token')],
+                    ['success' => false, 'msg' => $translator->trans('api_token.update.not_found_title', domain: 'api_token')],
                     Response::HTTP_NOT_FOUND,
                 );
             }
@@ -273,7 +273,7 @@ class ApiTokenController extends AppAdminController
 
         $result = $apiTokenService->createApiToken($dataApiToken);
         $response = $apiTokenService->getResponseAjax(
-            $translator->trans('api_token.new.token.success', domain: 'api_token'),
+            $translator->trans('api_token.save.new_success', domain: 'api_token'),
         );
         $response['token'] = $response['success'] === true ? $result['token'] : '';
         return $this->json($response);

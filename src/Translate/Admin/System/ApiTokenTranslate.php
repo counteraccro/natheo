@@ -19,14 +19,14 @@ class ApiTokenTranslate extends AppTranslate
     public function getTranslate(): array
     {
         return [
-            'loading' => $this->translator->trans('api_token.loading', domain: 'api_token'),
+            'loading' => $this->translator->trans('api_token.card.loading', domain: 'api_token'),
             'title_add' => $this->translator->trans('api_token.card.title.add', domain: 'api_token'),
             'title_edit' => $this->translator->trans('api_token.card.title.edit', domain: 'api_token'),
             'description_add' => $this->translator->trans('api_token.card.description.add', domain: 'api_token'),
             'description_edit' => $this->translator->trans('api_token.card.description.edit', domain: 'api_token'),
-            'btn_regenerate_token' => $this->translator->trans('api_token.card.btn.regenerate', domain: 'api_token'),
-            'btn_back_list' => $this->translator->trans('api_token.card.btn.back_list', domain: 'api_token'),
-            'btn_copy_past' => $this->translator->trans('api_token.card.btn.copy_past', domain: 'api_token'),
+            'btn_regenerate_token' => $this->translator->trans('api_token.card.button.regenerate', domain: 'api_token'),
+            'btn_back_list' => $this->translator->trans('api_token.card.button.back_list', domain: 'api_token'),
+            'btn_copy_past' => $this->translator->trans('api_token.card.button.copy_past', domain: 'api_token'),
             'title_label' => $this->translator->trans('api_token.card.title.label', domain: 'api_token'),
             'name_error' => $this->translator->trans('api_token.card.title.error', domain: 'api_token'),
             'title_help' => $this->translator->trans('api_token.card.title.help', domain: 'api_token'),
@@ -54,43 +54,43 @@ class ApiTokenTranslate extends AppTranslate
             'help_role_read' => $this->translator->trans('api_token.card.help.role_read', domain: 'api_token'),
             'help_role_write' => $this->translator->trans('api_token.card.help.role_write', domain: 'api_token'),
             'help_role_admin' => $this->translator->trans('api_token.card.help.role_admin', domain: 'api_token'),
-            'btn_edit_token_api' => $this->translator->trans('api_token.card.btn.edit.token.api', domain: 'api_token'),
+            'btn_edit_token_api' => $this->translator->trans('api_token.card.button.edit', domain: 'api_token'),
             'btn_cancel_edit_token' => $this->translator->trans(
-                'api_token.card.btn.cancel.token.api',
+                'api_token.card.button.cancel',
                 domain: 'api_token',
             ),
-            'btn_delete_token' => $this->translator->trans('api_token.card.btn.delete.token.api', domain: 'api_token'),
-            'btn_save_token_api' => $this->translator->trans('api_token.card.btn.save.token.api', domain: 'api_token'),
+            'btn_delete_token' => $this->translator->trans('api_token.card.button.delete', domain: 'api_token'),
+            'btn_save_token_api' => $this->translator->trans('api_token.card.button.save', domain: 'api_token'),
             'modale_title_confirm_edit' => $this->translator->trans(
-                'api_token.modale.confirm.edit.title',
+                'api_token.modal.confirm.edit.title',
                 domain: 'api_token',
             ),
             'modale_title_confirm_text' => $this->translator->trans(
-                'api_token.modale.confirm.edit.text',
+                'api_token.modal.confirm.edit.text',
                 domain: 'api_token',
             ),
             'modale_title_confirm_btn_ok' => $this->translator->trans(
-                'api_token.modale.confirm.edit.btn_ok',
+                'api_token.modal.confirm.edit.button_ok',
                 domain: 'api_token',
             ),
             'modale_title_confirm_btn_ko' => $this->translator->trans(
-                'api_token.modale.confirm.edit.btn_ko',
+                'api_token.modal.confirm.edit.button_ko',
                 domain: 'api_token',
             ),
             'modale_title_confirm_delete' => $this->translator->trans(
-                'api_token.modale.confirm.delete.title',
+                'api_token.modal.confirm.delete.title',
                 domain: 'api_token',
             ),
             'modale_title_confirm_delete_text' => $this->translator->trans(
-                'api_token.modale.confirm.delete.text',
+                'api_token.modal.confirm.delete.text',
                 domain: 'api_token',
             ),
             'modale_title_confirm_regenerate' => $this->translator->trans(
-                'api_token.modale.confirm.regenerate.title',
+                'api_token.modal.confirm.regenerate.title',
                 domain: 'api_token',
             ),
             'modale_title_confirm_regenerate_text' => $this->translator->trans(
-                'api_token.modale.confirm.regenerate.text',
+                'api_token.modal.confirm.regenerate.text',
                 domain: 'api_token',
             ),
         ];

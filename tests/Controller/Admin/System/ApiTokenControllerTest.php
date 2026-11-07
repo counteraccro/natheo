@@ -32,7 +32,7 @@ class ApiTokenControllerTest extends AppWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains(
             'h1',
-            $this->translator->trans('api_token.page_title_h1', domain: 'api_token'),
+            $this->translator->trans('api_token.index.title', domain: 'api_token'),
         );
     }
 
@@ -154,14 +154,14 @@ class ApiTokenControllerTest extends AppWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains(
             'h1',
-            $this->translator->trans('api_token.add.page_title_h1', domain: 'api_token'),
+            $this->translator->trans('api_token.add.title', domain: 'api_token'),
         );
 
         $this->client->request('GET', $this->router->generate('admin_api_token_update', ['id' => $apiToken->getId()]));
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains(
             'h1',
-            $this->translator->trans('api_token.update.page_title_h1', domain: 'api_token'),
+            $this->translator->trans('api_token.update.title', domain: 'api_token'),
         );
 
         // Le hash du token ne doit jamais être envoyé à la page

@@ -1,40 +1,35 @@
-log.select-file: 'Choix du fichier de log'
-log.select-time.all: 'Tous les logs'
-log.select-time.now: "Aujourd'hui"
-log.select-time.yesterday: Hier
-log.file: Fichier
+log.select.file: 'Choix du fichier de log'
+log.select.time_all: 'Tous les logs'
+log.select.time_now: "Aujourd'hui"
+log.select.time_yesterday: Hier
+log.file.name: Fichier
 log.file.size: Taille
-log.file.ligne: lignes
-log.btn.delete.file: Supprimer
+log.file.lines: lignes
+log.button.delete.file: Supprimer
 log.empty.file: 'Veuillez sélectionner un fichier pour pouvoir en lire le contenu ou le supprimer'
 log.delete.file.confirm: 'Confirmez-vous la suppression du fichier'
 log.delete.file.confirm_2: 'La suppression est définitive et sans retour possible'
-log.delete.file.loading: 'Suppression en cours'
 log.delete.file.success: 'Fichier supprimé avec succès'
-log.delete.file.btn_close: Fermer
-log.btn.reload: Recharger
+log.button.reload: Recharger
 log.auth.admin.success: 'Connexion de {user} - IP {ip}'
 log.auth.admin.error: 'Tentative de Connexion de {user} - IP {ip}'
 log.doctrine.persist: "l'entité {entity} #{id} a été créée par {user} (#{id_user})"
 log.doctrine.remove: "l'entité {entity} #{id} à été supprimée par {user} (#{id_user})"
 log.doctrine.update: "l'entité {entity} #{id} à été modifiée par {user} (#{id_user})"
-log.page_title_h1: 'Gestion des logs'
-log.description: "Consulter l'ensemble des logs applicatifs, identifier un éventuel problème ou tracer l'historique d'une ressource depuis cette page. Vous pouvez aussi libérer de la place en supprimant les anciens fichiers de logs."
+log.index.title: 'Gestion des logs'
+log.index.description: "Consulter l'ensemble des logs applicatifs, identifier un éventuel problème ou tracer l'historique d'une ressource depuis cette page. Vous pouvez aussi libérer de la place en supprimant les anciens fichiers de logs."
 log.grid.level: Niveau
 log.grid.date: Date
 log.grid.message: Message
 log.auth.admin.user.switch: 'Le SUPER_ADMIN {user} a pris le contrôle du compte de {userToSwitch}'
-log.btn.download.file: Télécharger
-log.toast.title.success: Success
-log.toast.time: "A l'instant"
-log.toast.title.error: Erreur
+log.button.download.file: Télécharger
 log.load.success.file: 'Fichier <b>{file}</b> chargé avec succès'
 log.block.search.title: 'Selection du fichier de log à visionner'
 log.block.search.sub.title: 'Choisissez le fichier de log à inspecter, attention celui ci peut être volumineux'
-log.select-file.label: 'Fichiers de logs'
-log.select-time.label: 'Choix de la temporalité'
-log.btn.delete.ok: 'Supprimer le fichier'
-log.btn.delete.ko: Annuler
+log.select.file_label: 'Fichiers de logs'
+log.select.time_label: 'Choix de la temporalité'
+log.button.delete.ok: 'Supprimer le fichier'
+log.button.delete.ko: Annuler
 log.error.file: 'Le fichier de log demandé est introuvable'
 log.error.time: 'La temporalité demandée est invalide'
 log.error.csrf: 'Jeton de sécurité invalide, veuillez recharger la page'

@@ -50,7 +50,7 @@ class LogController extends AppAdminController
         $breadcrumb = [
             Breadcrumb::DOMAIN->value => 'log',
             Breadcrumb::BREADCRUMB->value => [
-                'log.page_title_h1' => '#',
+                'log.index.title' => '#',
             ],
         ];
 

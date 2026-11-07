@@ -27,7 +27,7 @@ class SidebarControllerTest extends AppWebTestCase
         $this->client->loginUser($userSuperAdm, 'admin');
         $this->client->request('GET', $this->router->generate('admin_sidebar_index'));
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', $this->translator->trans('sidebar.page_title_h1', domain: 'sidebar'));
+        $this->assertSelectorTextContains('h1', $this->translator->trans('sidebar.index.title', domain: 'sidebar'));
     }
 
     /**

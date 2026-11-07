@@ -1,10 +1,10 @@
 {% extends 'admin/admin_base.html.twig' %}
 
-{% block title %}{{ 'translate.page_title_h1' | trans({}, 'translate') }}{% endblock %}
+{% block title %}{{ 'translate.index.title' | trans({}, 'translate') }}{% endblock %}
 
 {% block body %}
 
-    <twig:Admin:PageHeaderComponent :breadcrumb="breadcrumb" :title="'translate.page_title_h1' | trans({}, 'translate')" :description="'translate.description' | trans({}, 'translate')">
+    <twig:Admin:PageHeaderComponent :breadcrumb="breadcrumb" :title="'translate.index.title' | trans({}, 'translate')" :description="'translate.index.description' | trans({}, 'translate')">
         <twig:block name="icon">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
