@@ -16,12 +16,14 @@ use Symfony\Component\Yaml\Yaml;
 class TranslationKeyConventionTest extends TestCase
 {
     /**
-     * Domaines déjà revus : la liste s'agrandit à chaque lot de l'Epic #437
+     * Domaines contrôlés par le test
      */
     private const DOMAINS = [
+        'advanced_options',
         'api_token',
         'comment',
         'dashboard',
+        'database_manager',
         'demo_overwrite',
         'dev',
         'editor_markdown',
@@ -38,6 +40,7 @@ class TranslationKeyConventionTest extends TestCase
         'option_system',
         'page',
         'sidebar',
+        'sql_manager',
         'tag',
         'translate',
         'user',
