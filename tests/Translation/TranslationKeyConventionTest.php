@@ -19,6 +19,7 @@ class TranslationKeyConventionTest extends TestCase
      * Domaines déjà revus : la liste s'agrandit à chaque lot de l'Epic #437
      */
     private const DOMAINS = [
+        'api_token',
         'comment',
         'dashboard',
         'demo_overwrite',
@@ -29,11 +30,17 @@ class TranslationKeyConventionTest extends TestCase
         'global_search',
         'grid',
         'info',
+        'log',
+        'mail',
         'media',
         'menu',
         'notification',
+        'option_system',
         'page',
+        'sidebar',
         'tag',
+        'translate',
+        'user',
     ];
 
     private const LOCALES = ['fr', 'en', 'es'];
