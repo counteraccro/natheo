@@ -4,7 +4,7 @@ name: Pull request
 # ce qui permet d'écrire les labels même pour une PR venant d'un fork.
 on:
   pull_request_target:
-    branches: [master]
+    branches: [master, 'release/**']
     types: [opened, edited, synchronize, reopened]
 
 permissions:
@@ -30,6 +30,14 @@ jobs:
             const pr = context.payload.pull_request;
             const branch = pr.head.ref;
             const errors = [];
+
+            // Report d'une branche de version sur master
+            if (branch.startsWith('release/')) {
+              if (!/^release\/\d+\.\d+$/.test(branch)) {
+                core.setFailed('Branche « ' + branch + ' » : format attendu release/<majeure>.<mineure>.');
+              }
+              return;
+            }
 
             // Maintenance sans issue (montée de version, configuration)
             if (branch.startsWith('maintenance/')) {
