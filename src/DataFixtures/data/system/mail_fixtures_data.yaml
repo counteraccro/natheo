@@ -1,8 +1,8 @@
 mail:
   MAIL_CHANGE_PASSWORD:
     key: MAIL_CHANGE_PASSWORD
-    title: mail.change.password.title
-    description: mail.change.password.description
+    title: mail.change_password.title
+    description: mail.change_password.description
     keyWords : MAIL_CHANGE_PASSWORD
     translate :
       -
@@ -22,8 +22,8 @@ mail:
         \n\n *Si vous n'êtes pas à l'origine de cette demande, vous pouvez l'ignorer*"
   MAIL_RESET_PASSWORD:
     key: MAIL_RESET_PASSWORD
-    title: mail.reset.password.title
-    description: mail.reset.password.description
+    title: mail.reset_password.title
+    description: mail.reset_password.description
     keyWords: MAIL_RESET_PASSWORD
     translate:
       - locale: 'fr'
@@ -40,8 +40,8 @@ mail:
         \n\n Ce lien est valable durant les **[[url.time]] prochaines minutes** \n\n *Si vous n'êtes pas à l'origine de cette demande, vous pouvez l'ignorer*"
   MAIL_ACCOUNT_ADM_DISABLE:
     key: MAIL_ACCOUNT_ADM_DISABLE
-    title: mail.account.adm.disable.title
-    description: mail.account.adm.disable.description
+    title: mail.account_adm_disable.title
+    description: mail.account_adm_disable.description
     keyWords: MAIL_ACCOUNT_ADM_DISABLE
     translate:
       - locale: 'fr'
@@ -55,8 +55,8 @@ mail:
         content: "[ES] Bonjour [[user.login]],   \n\nVotre compte à été désactivé par [[admin.login]].    \n\n*Pour toute contestation, veuillez contacter [[admin.login]]*"
   MAIL_ACCOUNT_ADM_ENABLE:
     key: MAIL_ACCOUNT_ADM_ENABLE
-    title: mail.account.adm.enable.title
-    description: mail.account.adm.enable.description
+    title: mail.account_adm_enable.title
+    description: mail.account_adm_enable.description
     keyWords: MAIL_ACCOUNT_ADM_ENABLE
     translate:
       - locale: 'fr'
@@ -70,8 +70,8 @@ mail:
         content: "[ES] Bonjour [[user.login]],   \n\nVotre compte à été réactivé par [[admin.login]].    \n\n*Pour toute contestation, veuillez contacter [[admin.login]]*"
   MAIL_CREATE_ACCOUNT_ADM:
     key: MAIL_CREATE_ACCOUNT_ADM
-    title: mail.create.account.adm.title
-    description: mail.create.account.adm.description
+    title: mail.create_account_adm.title
+    description: mail.create_account_adm.description
     keyWords: MAIL_CREATE_ACCOUNT_ADM
     translate:
       - locale: 'fr'

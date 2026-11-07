@@ -78,7 +78,7 @@ class DateService extends AppService
         }
 
         if ($dateInterval->s > 0) {
-            $tabReturn['s'] = $this->getTranslateValue($dateInterval->s, 'date.diff.seconde', 'secondes');
+            $tabReturn['s'] = $this->getTranslateValue($dateInterval->s, 'date.diff.second', 'secondes');
         }
 
         $return = $this->constructString($tabReturn, $short);
@@ -94,7 +94,7 @@ class DateService extends AppService
     private function constructString(array $tab, bool $short): string
     {
         if ($short) {
-            $return = $this->translator->trans('date.diff.start.short') . ' ';
+            $return = $this->translator->trans('date.diff.start_short') . ' ';
         } else {
             $return = $this->translator->trans('date.diff.start') . ' ';
         }

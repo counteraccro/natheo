@@ -41,6 +41,7 @@ class TranslationKeyConventionTest extends TestCase
         'mail',
         'media',
         'menu',
+        'messages',
         'notification',
         'option_system',
         'page',
@@ -49,6 +50,20 @@ class TranslationKeyConventionTest extends TestCase
         'tag',
         'translate',
         'user',
+    ];
+
+    /**
+     * Préfixes d'origine des clés du domaine messages, traduites sans domaine
+     */
+    private const MESSAGES_PREFIXES = [
+        'date',
+        'global',
+        'mail',
+        'options_system',
+        'options_user',
+        'pagedemo',
+        'response',
+        'sidebar',
     ];
 
     private const LOCALES = ['fr', 'en', 'es'];
@@ -67,14 +82,16 @@ class TranslationKeyConventionTest extends TestCase
 
     /**
      * Chaque clé suit le format <domaine>.<écran>.<élément> : minuscules, points entre les niveaux,
-     * tirets bas à l'intérieur d'un nom
+     * tirets bas à l'intérieur d'un nom ; le domaine messages remplace <domaine> par un préfixe d'origine
      * @param string $domain
      * @return void
      */
     #[DataProvider('domainProvider')]
     public function testKeyFormat(string $domain): void
     {
-        $pattern = '/^' . preg_quote($domain, '/') . '(\.[a-z0-9]+(_[a-z0-9]+)*){2,}$/';
+        $prefixes = $domain === 'messages' ? self::MESSAGES_PREFIXES : [$domain];
+        $prefixes = implode('|', array_map(fn(string $prefix) => preg_quote($prefix, '/'), $prefixes));
+        $pattern = '/^(' . $prefixes . ')(\.[a-z0-9]+(_[a-z0-9]+)*){2,}$/';
         $invalid = array_filter($this->getKeys($domain, 'fr'), fn(string $key) => !preg_match($pattern, $key));
 
         $this->assertSame([], array_values($invalid), 'Clés hors convention dans le domaine ' . $domain);

@@ -227,7 +227,7 @@ class SidebarExtension extends AppAdminExtension
     private function getNbNotification(): void
     {
         $this->tabNotification = [
-            'global.update' => 1,
+            'sidebar.update.label' => 1,
         ];
     }
 

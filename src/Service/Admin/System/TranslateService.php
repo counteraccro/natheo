@@ -34,7 +34,7 @@ class TranslateService extends AppAdminService
 
         $return = [];
         foreach ($tab as $language) {
-            $return[$language] = $translator->trans('global.' . $language);
+            $return[$language] = $translator->trans('global.locale.' . $language);
         }
         return $return;
     }

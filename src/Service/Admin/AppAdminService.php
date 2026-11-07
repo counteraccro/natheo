@@ -275,7 +275,7 @@ class AppAdminService extends AppAdminHandlerService
         $localesTranslate = [];
 
         foreach ($locales as $locale) {
-            $localesTranslate[$locale] = $this->getTranslator()->trans('global.' . $locale);
+            $localesTranslate[$locale] = $this->getTranslator()->trans('global.locale.' . $locale);
         }
 
         return [

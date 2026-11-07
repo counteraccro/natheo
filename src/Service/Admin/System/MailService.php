@@ -133,7 +133,7 @@ class MailService extends AppAdminService
 
         $return = [];
         foreach ($tab as $keyWord) {
-            $return[$keyWord] = $translator->trans('mail.' . $keyWord);
+            $return[$keyWord] = $translator->trans('mail.keyword.' . $keyWord);
         }
         return $return;
     }

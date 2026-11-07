@@ -1,11 +1,11 @@
 {% extends 'admin/admin_base.html.twig' %}
 
-{% block title %}{{ 'pagedemo.page_title_h1' | trans }}{% endblock %}
+{% block title %}{{ 'pagedemo.index.title' | trans }}{% endblock %}
 
 {% block body %}
 
     {# Page d'origine de l'exemple de surcharge : normalement remplacée via config/cms/overwrite.yaml #}
-    <twig:Admin:PageHeaderComponent :breadcrumb="breadcrumb" :title="'pagedemo.page_title_h1' | trans" :description="'pagedemo.description' | trans({'route': 'admin_dashboard_page_demo', 'file': 'config/cms/overwrite.yaml'})">
+    <twig:Admin:PageHeaderComponent :breadcrumb="breadcrumb" :title="'pagedemo.index.title' | trans" :description="'pagedemo.index.description' | trans({'route': 'admin_dashboard_page_demo', 'file': 'config/cms/overwrite.yaml'})">
         <twig:block name="icon">
             <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
