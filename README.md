@@ -54,7 +54,7 @@ Nathéo est un système de gestion de contenu (CMS) moderne développé avec Sym
 
 ## 📌 Version actuelle — V2
 
-La V2 de Nathéo CMS (`v2.0.0`) est la version stable et disponible en production. Elle succède à la V1 (`v1.0.0`), qui a posé le socle du projet : gestion de contenu, interface d'administration, support multilingue et architecture modulaire.
+La V2 de Nathéo CMS (`v2.0.1`) est la version stable et disponible en production. Elle succède à la V1 (`v1.0.0`), qui a posé le socle du projet : gestion de contenu, interface d'administration, support multilingue et architecture modulaire.
 
 ---
 
@@ -92,7 +92,7 @@ Avant de commencer, assurez-vous d'avoir installé les éléments suivants :
 - **MySQL** : 8.2 ou supérieur *(par défaut)*
 - **MariaDB** : 10.11 ou supérieur
 
-> **📌 Note** : Pour utiliser PostgreSQL ou une autre base de données, consultez [la documentation de configuration](https://counteraccro.github.io/natheo.doc/Docs/Installation/bdd.html).
+> **📌 Note** : Pour utiliser PostgreSQL ou une autre base de données, consultez [la documentation de configuration](https://counteraccro.github.io/natheo.doc/Docs/Demarrage/base_de_donnees.html).
 
 ### Extensions PHP recommandées
 ```
@@ -131,7 +131,7 @@ Avec PostgreSQL, remplacez `ext-pdo_mysql` par `ext-pdo_pgsql`.
 ### Installation rapide (développement)
 
 > **⚠️ Attention** : Cette procédure est prévue pour un environnement de développement.  
-> Pour une installation en production, consultez [la documentation d'installation production](https://counteraccro.github.io/natheo.doc/Docs/Installation/install-prod.html).
+> Pour une installation en production, consultez [la documentation d'installation production](https://counteraccro.github.io/natheo.doc/Docs/Demarrage/installation_prod.html).
 
 #### 1. Cloner le dépôt
 ```bash
@@ -339,9 +339,9 @@ php bin/phpunit
 La documentation complète est disponible en ligne :
 
 - **Documentation officielle** : [https://counteraccro.github.io/natheo.doc/](https://counteraccro.github.io/natheo.doc/)
-- **Guide d'installation** : [Installation](https://counteraccro.github.io/natheo.doc/Docs/Installation/)
-- **Configuration de la base de données** : [Configuration BDD](https://counteraccro.github.io/natheo.doc/Docs/Installation/bdd.html)
-- **Installation en production** : [Mode production](https://counteraccro.github.io/natheo.doc/Docs/Installation/install-prod.html)
+- **Guide d'installation** : [Installation](https://counteraccro.github.io/natheo.doc/Docs/Demarrage/)
+- **Configuration de la base de données** : [Configuration BDD](https://counteraccro.github.io/natheo.doc/Docs/Demarrage/base_de_donnees.html)
+- **Installation en production** : [Mode production](https://counteraccro.github.io/natheo.doc/Docs/Demarrage/installation_prod.html)
 
 ---
 
