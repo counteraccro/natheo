@@ -2,7 +2,7 @@
 
 
 {% if id is same as null %}
-    {% set title = 'menu.add.menu_title_h1' | trans({}, 'menu') %}
+    {% set title = 'menu.add.title' | trans({}, 'menu') %}
     {% set description = 'menu.add.description' | trans({}, 'menu') %}
 {% else %}
     {% set title = 'menu.update.menu_title' | trans({'id' : id}, 'menu') %}

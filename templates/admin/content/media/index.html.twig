@@ -1,9 +1,9 @@
 {% extends 'admin/admin_base.html.twig' %}
 
-{% block title %}{{ 'media.index.page_title_h1' | trans({}, 'media') }}{% endblock %}
+{% block title %}{{ 'media.index.title' | trans({}, 'media') }}{% endblock %}
 
 {% block body %}
-    <twig:Admin:PageHeaderComponent :breadcrumb="breadcrumb" :title="'media.index.page_title_h1' | trans({}, 'media')" :description="'media.index.description' | trans({}, 'media')">
+    <twig:Admin:PageHeaderComponent :breadcrumb="breadcrumb" :title="'media.index.title' | trans({}, 'media')" :description="'media.index.description' | trans({}, 'media')">
         <twig:block name="icon">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

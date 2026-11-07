@@ -1,10 +1,10 @@
 {% extends 'admin/admin_base.html.twig' %}
 
-{% block title %}{{ 'comment.index.page_title_h1' | trans({}, 'comment') }}{% endblock %}
+{% block title %}{{ 'comment.index.title' | trans({}, 'comment') }}{% endblock %}
 
 {% block body %}
 
-    <twig:Admin:PageHeaderComponent :breadcrumb="breadcrumb" :title="'comment.index.page_title_h1' | trans({}, 'comment')" :description="'comment.index.description' | trans({}, 'comment')">
+    <twig:Admin:PageHeaderComponent :breadcrumb="breadcrumb" :title="'comment.index.title' | trans({}, 'comment')" :description="'comment.index.description' | trans({}, 'comment')">
         <twig:block name="icon">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -16,7 +16,7 @@
                 <svg class="icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 9h5m3 0h2M7 12h2m3 0h5M5 5h14a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-6.616a1 1 0 0 0-.67.257l-2.88 2.592A.5.5 0 0 1 8 18.477V17a1 1 0 0 0-1-1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z"/>
                 </svg>
-                {{ 'comment.index.btn.moderate' | trans({}, 'comment') }}
+                {{ 'comment.index.button.moderate' | trans({}, 'comment') }}
             </a>
 
             <button data-modal-target="help-grid-comment" data-modal-toggle="help-grid-comment"
@@ -42,16 +42,16 @@
                 <div class="alert-title"> {{ 'comment.index.info' | trans({}, 'comment') }}</div>
                 <div class="alert-message">
                     {% if isOpenComment is same as("1") %}
-                        {{ 'comment.index.info.comment.open' | trans({}, 'comment') }}
+                        {{ 'comment.index.info_comment_open' | trans({}, 'comment') }}
                         {% if isModerate is same as('1') %}
-                            {{ 'comment.index.info.comment.moderate' | trans({}, 'comment') }}
+                            {{ 'comment.index.info_comment_moderate' | trans({}, 'comment') }}
                         {% endif %}
                     {% else %}
-                        {{ 'comment.index.info.comment.close' | trans({}, 'comment') }}
+                        {{ 'comment.index.info_comment_close' | trans({}, 'comment') }}
                     {% endif %}
                 </div>
                 <div class="alert-actions">
-                    <a href="{{ path('admin_option-system_change') }}" class="alert-btn alert-btn-primary">{{ 'comment.index.info.change.option' | trans({}, 'comment') }}</a>
+                    <a href="{{ path('admin_option-system_change') }}" class="alert-btn alert-btn-primary">{{ 'comment.index.info_change_option' | trans({}, 'comment') }}</a>
                 </div>
             </div>
         </div>
@@ -59,7 +59,7 @@
             <div class="card rounded-lg p-6 text-white" style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);">
                 <div class="flex items-center justify-between"><div>
                         <p class="text-3xl font-bold">{{ nbCommentWaitValidation }}</p>
-                        <p class="text-sm font-medium mt-1">{{ 'comment.index.btn.moderate.nb.wait.validation.2' | trans({}, 'comment') }}</p>
+                        <p class="text-sm font-medium mt-1">{{ 'comment.index.button.moderate_nb_wait_validation_2' | trans({}, 'comment') }}</p>
                     </div>
                     <div class="p-3 rounded-lg bg-primary opacity-60">
                         <svg class="w-8 h-8 text-white opacity-100" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -79,7 +79,7 @@
 
     <twig:Admin:ModaleComponent id="help-grid-comment" bgColor="bg-secondary">
         <twig:block name="header">
-            {{ svg_icon('QUESTION', 'inline w-5 h-5') }} {{ 'comment.index.popin.help.title' | trans({}, 'comment') }}
+            {{ svg_icon('QUESTION', 'inline w-5 h-5') }} {{ 'comment.index.modal.help.title' | trans({}, 'comment') }}
         </twig:block>
 
         <div class="flex flex-row gap-10">
@@ -89,7 +89,7 @@
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.779 17.779 4.36 19.918 6.5 13.5m4.279 4.279 8.364-8.643a3.027 3.027 0 0 0-2.14-5.165 3.03 3.03 0 0 0-2.14.886L6.5 13.5m4.279 4.279L6.499 13.5m2.14 2.14 6.213-6.504M12.75 7.04 17 11.28"/>
                     </svg>
 
-                </button> {{ 'comment.index.popin.help.edit' | trans({}, 'comment') }}
+                </button> {{ 'comment.index.modal.help.edit' | trans({}, 'comment') }}
             </div>
         </div>
     </twig:Admin:ModaleComponent>

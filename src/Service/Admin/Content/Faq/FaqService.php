@@ -146,7 +146,7 @@ class FaqService extends AppAdminService
                 ];
                 $actionDisabled['confirm'] = true;
                 $actionDisabled['msgConfirm'] = $translator->trans(
-                    'faq.confirm.disabled.msg',
+                    'faq.confirm.disabled.message',
                     ['label' => $label],
                     'faq',
                 );
@@ -164,7 +164,7 @@ class FaqService extends AppAdminService
                 'url' => $router->generate('admin_faq_delete', ['id' => $faq->getId()]),
                 'ajax' => true,
                 'confirm' => true,
-                'msgConfirm' => $translator->trans('faq.confirm.delete.msg', ['label' => $label], 'faq'),
+                'msgConfirm' => $translator->trans('faq.confirm.delete.message', ['label' => $label], 'faq'),
                 'csrf' => $csrfTokens[FaqCsrfToken::DELETE->value],
             ];
         }

@@ -1,136 +1,107 @@
-media.index.page_title_h1: 'Médiathèque'
-media.mediatheque.loading: 'Chargement de la médiatheque'
-media.mediatheque.generique.error: 'Une erreur est survenue, veuillez réessayer.'
-media.mediatheque.btn.new.folder: 'Nouveau dossier'
-media.mediatheque.btn.new.media: 'Nouveau média'
-media.mediatheque.btn.filtre: 'Trier par'
-media.mediatheque.filtre.date: 'Date création'
-media.mediatheque.filtre.nom: Nom
-media.mediatheque.filtre.type: Type
-media.mediatheque.order.asc: Croissant
-media.mediatheque.order.desc: Décroissant
-media.mediatheque.media.link.info: Information
-media.mediatheque.media.link.edit: Editer
-media.mediatheque.media.link.move: Déplacer
-media.mediatheque.media.link.remove: Corbeille
-media.mediatheque.folder.new: 'Nouveau dossier'
-media.mediatheque.folder.edit: 'Renommer le dossier'
-media.mediatheque.folder.input.label: 'Nom du dossier'
-media.mediatheque.folder.input.label.placeholder: 'Nom du dossier'
-media.mediatheque.folder.input.error: 'Le nom du dossier ne doit pas être vide, contenir que des chiffres et des lettres sans caractères spéciaux et doit faire entre 3 et 15 caractères de longueur'
-media.mediatheque.folder.btn.submit.create: 'Créer le dossier'
-media.mediatheque.folder.btn.submit.edit: 'Editer le dossier'
-media.mediatheque.folder.btn.cancel: Annuler
-media.mediatheque.folder.error.exist_name: 'Ce nom est déjà utilisé comme dossier dans la médiathèque'
-media.mediatheque.folder.success: 'Le dossier {name} à été créé avec succès.'
-media.mediatheque.folder.msg.wait.create: 'Création du dossier en cours...'
-media.mediatheque.folder.msg.wait.edit: 'Édition du dossier en cours...'
-media.mediatheque.folder.edit.success: 'Le dossier {name} renommé en {new_name} à été fait avec succès.'
-media.mediatheque.upload.title: 'Nouveau média'
-media.mediatheque.upload.help: 'Glisser un fichier ici'
-media.mediatheque.upload.input.upload: 'Sélectionner le média'
-media.mediatheque.upload.input.title: 'Nom du média'
-media.mediatheque.upload.input.description: 'Description du média'
-media.mediatheque.upload.btn.cancel: Annuler
-media.mediatheque.upload.btn.upload: Télécharger
-media.mediatheque.upload.error.title: "Erreur(s) survenue(s) lors de l'upload"
-media.mediatheque.upload.error.size: 'Votre fichier ne doit pas faire plus de'
-media.mediatheque.upload.error.ext: 'Votre fichier doit posséder une des extensions suivantes :'
-media.mediatheque.upload.form.title: 'Autres informations'
-media.mediatheque.upload.input.title.help: 'Si vide, le nom du fichier sera prit par défaut'
-media.mediatheque.upload.input.description.help: 'Description rapide de votre média'
-media.mediatheque.upload.no_preview: 'Pas de prévisualisation disponible pour les fichiers de type'
-media.mediatheque.upload.preview: Prévisualisation
-media.mediatheque.upload.loading.msg: 'Upload de votre média en cours...'
-media.mediatheque.upload.loading.msg.success: 'Média ajouté avec succès, cette fenêtre ce fermera toute seule dans 3 secondes...'
-media.mediatheque.upload.preview.help: 'Passez votre souris dessus pour un meilleur aperçu'
-media.mediatheque.upload.btn.close: Fermer
-media.mediatheque.media.link.edit.media: Editer
-media.mediatheque.search.placeholder: 'Rechercher (Soon™..)'
-media.mediatheque.media.no.media: 'Ce dossier est vide pour le moment'
-media.mediatheque.trash.title: 'Confirmation mise à la corbeille'
-media.mediatheque.trash.text.folder: 'Confirmez vous la mise à la corbeille du dossier'
-media.mediatheque.trash.text.media: 'Confirmez vous la mise à la corbeille du média'
-media.mediatheque.trash.text.info: 'Attention, tous les dossiers et médias présent dans ce dossier seront aussi poussés dans la corbeille'
-media.mediatheque.trash.loading: 'Déplacement vers la corbeille'
-media.mediatheque.trash.btn.confirm: Oui
-media.mediatheque.trash.btn.cancel: Non
-media.mediatheque.trash.success.trash: 'Mise en corbeille fait avec succès. La fenêtre ce fermera automatiquement dans 3 secondes'
-media.mediatheque.trash.success.no.trash: 'Restauration effectuée avec succès'
-media.mediatheque.trash.breadcrumb: Corbeille
-media.mediatheque.trash.btn.close: 'Retour médiathèque'
-media.mediatheque.trash.link.revert: Restaurer
-media.mediatheque.trash.link.delete: Supprimer
-media.mediatheque.trash.empty.media: 'La corbeille est vide'
-media.mediatheque.remove.title: 'Suppression définitive'
-media.mediatheque.remove.text.folder: 'Confirmez vous la suppression du dossier'
-media.mediatheque.remove.text.media: 'Confirmez vous la suppression du média'
-media.mediatheque.remove.text.info: 'Attention, tous les dossiers et médias présent dans ce dossier seront aussi supprimés de façon définitive.'
-media.mediatheque.remove.text.info2: 'Cette action est définitive et sans possibilité de restauration !'
-media.mediatheque.remove.loading: 'Suppression en cours...'
-media.mediatheque.remove.btn.confirm: 'Confirmer la suppression'
-media.mediatheque.remove.btn.cancel: Annuler
-media.mediatheque.remove.success: 'La suppression à été réalisé avec succès, La fenêtre ce fermera automatiquement dans 3 secondes'
-media.mediatheque.media.table.name: Nom
-media.mediatheque.media.table.size: Taille
-media.mediatheque.media.table.action: Actions
-media.mediatheque.media.table.caption: "Plus d'éléments...(Soon™..)"
-media.mediatheque.media.table.date: Date
-media.mediatheque.disque_size: utilisés
+media.index.title: 'Médiathèque'
+media.library.loading: 'Chargement de la médiatheque'
+media.library.generic.error: 'Une erreur est survenue, veuillez réessayer.'
+media.library.button.new.folder: 'Nouveau dossier'
+media.library.button.new.media: 'Nouveau média'
+media.library.button.filter: 'Trier par'
+media.library.filter.date: 'Date création'
+media.library.filter.name: Nom
+media.library.filter.type: Type
+media.library.media.link.info: Information
+media.library.media.link.edit: Editer
+media.library.media.link.move: Déplacer
+media.library.media.link.remove: Corbeille
+media.library.folder.new: 'Nouveau dossier'
+media.library.folder.edit: 'Renommer le dossier'
+media.library.folder.button.cancel: Annuler
+media.library.folder.error.exist_name: 'Ce nom est déjà utilisé comme dossier dans la médiathèque'
+media.library.folder.success: 'Le dossier {name} à été créé avec succès.'
+media.library.folder.edit_success: 'Le dossier {name} renommé en {new_name} à été fait avec succès.'
+media.library.upload.title: 'Nouveau média'
+media.library.upload.help: 'Glisser un fichier ici'
+media.library.upload.input.title: 'Nom du média'
+media.library.upload.input.description: 'Description du média'
+media.library.upload.button.cancel: Annuler
+media.library.upload.button.upload: Télécharger
+media.library.upload.error.title: "Erreur(s) survenue(s) lors de l'upload"
+media.library.upload.error.size: 'Votre fichier ne doit pas faire plus de'
+media.library.upload.error.ext: 'Votre fichier doit posséder une des extensions suivantes :'
+media.library.upload.input.title_help: 'Si vide, le nom du fichier sera prit par défaut'
+media.library.upload.input.description_help: 'Description rapide de votre média'
+media.library.upload.preview: Prévisualisation
+media.library.upload.loading.message.success: 'Média ajouté avec succès, cette fenêtre ce fermera toute seule dans 3 secondes...'
+media.library.search.placeholder: 'Rechercher (Soon™..)'
+media.library.media.no.media: 'Ce dossier est vide pour le moment'
+media.library.trash.title: 'Confirmation mise à la corbeille'
+media.library.trash.loading: 'Déplacement vers la corbeille'
+media.library.trash.button.confirm: Oui
+media.library.trash.button.cancel: Non
+media.library.trash.link.revert: Restaurer
+media.library.trash.link.delete: Supprimer
+media.library.trash.empty.media: 'La corbeille est vide'
+media.library.remove.title: 'Suppression définitive'
+media.library.remove.loading: 'Suppression en cours...'
+media.library.remove.button.cancel: Annuler
+media.library.remove.success: 'La suppression à été réalisé avec succès, La fenêtre ce fermera automatiquement dans 3 secondes'
+media.library.media.table.name: Nom
+media.library.media.table.size: Taille
+media.library.media.table.action: Actions
+media.library.media.table.date: Date
+media.library.disk_size: utilisés
 media.index.description: 'Gérer vos médias internes de votre site pour ensuite pouvoir les afficher directement dans vos pages'
-media.mediatheque.media.folder_element: élément
-media.mediatheque.media.folder_elements: éléments
-media.mediatheque.media.other_img: document
-media.mediatheque.info.title: Information
-media.mediatheque.info.taille: Taille
-media.mediatheque.info.dimension: Dimension
-media.mediatheque.info.created_at: 'Ajouté le'
-media.mediatheque.info.folder: Dossier
-media.mediatheque.info.url: URL
-media.mediatheque.info.btn.copy: "Copier l'URL"
-media.mediatheque.info.copy_ok: Copier
-media.mediatheque.media.folder.tag: Dossier
-media.mediatheque.media.folder.empty: Vide
-media.mediatheque.info.content: Contenu
-media.mediatheque.info.content.file: fichier(s)
-media.mediatheque.info.content.folder: dossier(s)
-media.mediatheque.edit.title: Édition
-media.mediatheque.edit.input.label.file: 'Nom du fichier *'
-media.mediatheque.edit.input.placeholder: 'Le nouveau nom de votre fichier'
-media.mediatheque.edit.btn.save: Modifier
-media.mediatheque.edit.btn.save.ok: 'Succès ! - Rechargement...'
-media.mediatheque.edit.input.label.folder: 'Nom du dossier *'
-media.mediatheque.edit.input.description: Description
-media.mediatheque.edit.btn.error: 'Erreur de validation'
-media.mediatheque.edit.save.media.msg.ok: 'Média édité avec succès !'
-media.mediatheque.edit.input.placeholder.folder: 'Le nom de votre dossier'
-media.mediatheque.move.title: 'Déplacer vers...'
-media.mediatheque.move.btn: Déplacer
-media.mediatheque.move.success: 'Déplacement validé !'
-media.mediatheque.move.label.media: 'Déplacer le média {name} vers'
-media.mediatheque.move.label.folder: 'Déplacer le dossier {name} vers'
-media.mediatheque.move.btn.error: 'Erreur de validation'
-media.mediatheque.move.search.placeholder: 'Filtrer les dossier'
-media.mediatheque.move.search.empty.msg: 'Aucun dossier trouvé'
-media.mediatheque.move.search.empty.msg.sub: 'Essayez un autre terme de recherche'
-media.mediatheque.move.toast.success: 'Déplacement effectué avec succès'
-media.mediatheque.move.sub.title.media: 'Déplacer le média '
-media.mediatheque.move.sub.title.folder: 'Déplacer le dossier '
-media.mediatheque.move.sub.title.end: ' vers...'
-media.mediatheque.success.add.trash: 'Ajouté à la corbeille avec succès'
-media.mediatheque.success.remove.trash: 'Retiré de la corbeille avec succès'
-media.mediatheque.edit.title.new.folder: 'Nouveau dossier'
-media.mediatheque.edit.btn.save_new.folder: Créer
-media.mediatheque.media.table.type: Type
-media.mediatheque.header.trash: 'Corbeille'
-media.mediatheque.nb.files.trash: 'élément(s) dans la corbeille'
-media.mediatheque.trash.confirm.title: 'Mettre en corbeille'
-media.mediatheque.delete.confirm.title: 'Supprimer définitivement'
-media.mediatheque.delete.btn.confirm: Oui
-media.mediatheque.delete.btn.cancel: Non
-media.mediatheque.trash.empty.title: 'La corbeille est vide'
-media.mediatheque.trash.empty.title_sub: 'Les éléments supprimés apparaîtront ici.'
-media.mediatheque.folder.empty.title: 'Ce dossier est vide'
-media.mediatheque.folder.empty.sub: 'Ajoutez des médias ou créez un sous-dossier pour commencer.'
-media.mediatheque.upload.or: 'ou'
-media.mediatheque.upload.browse: 'parcourir'
+media.library.media.folder_element: élément
+media.library.media.folder_elements: éléments
+media.library.media.other_img: document
+media.library.info.title: Information
+media.library.info.size: Taille
+media.library.info.dimension: Dimension
+media.library.info.created_at: 'Ajouté le'
+media.library.info.folder: Dossier
+media.library.info.url: URL
+media.library.info.button.copy: "Copier l'URL"
+media.library.info.copy_ok: Copier
+media.library.media.folder.tag: Dossier
+media.library.media.folder.empty: Vide
+media.library.info.content: Contenu
+media.library.info.content_file: fichier(s)
+media.library.info.content_folder: dossier(s)
+media.library.edit.title: Édition
+media.library.edit.input.label.file: 'Nom du fichier *'
+media.library.edit.input.placeholder: 'Le nouveau nom de votre fichier'
+media.library.edit.button.save: Modifier
+media.library.edit.button.save_ok: 'Succès ! - Rechargement...'
+media.library.edit.input.label.folder: 'Nom du dossier *'
+media.library.edit.input.description: Description
+media.library.edit.button.error: 'Erreur de validation'
+media.library.edit.save.media.message.ok: 'Média édité avec succès !'
+media.library.edit.input.placeholder_folder: 'Le nom de votre dossier'
+media.library.move.title: 'Déplacer vers...'
+media.library.move.button: Déplacer
+media.library.move.success: 'Déplacement validé !'
+media.library.move.label.media: 'Déplacer le média {name} vers'
+media.library.move.label.folder: 'Déplacer le dossier {name} vers'
+media.library.move.button_error: 'Erreur de validation'
+media.library.move.search.placeholder: 'Filtrer les dossier'
+media.library.move.search.empty.message: 'Aucun dossier trouvé'
+media.library.move.search.empty.message_sub: 'Essayez un autre terme de recherche'
+media.library.move.toast.success: 'Déplacement effectué avec succès'
+media.library.move.sub.title.media: 'Déplacer le média '
+media.library.move.sub.title.folder: 'Déplacer le dossier '
+media.library.move.sub.title.end: ' vers...'
+media.library.success.add.trash: 'Ajouté à la corbeille avec succès'
+media.library.success.remove.trash: 'Retiré de la corbeille avec succès'
+media.library.edit.title_new_folder: 'Nouveau dossier'
+media.library.edit.button.save_new.folder: Créer
+media.library.media.table.type: Type
+media.library.header.trash: 'Corbeille'
+media.library.nb.files.trash: 'élément(s) dans la corbeille'
+media.library.trash.confirm.title: 'Mettre en corbeille'
+media.library.delete.confirm.title: 'Supprimer définitivement'
+media.library.delete.button.confirm: Oui
+media.library.delete.button.cancel: Non
+media.library.trash.empty.title: 'La corbeille est vide'
+media.library.trash.empty.title_sub: 'Les éléments supprimés apparaîtront ici.'
+media.library.folder.empty.title: 'Ce dossier est vide'
+media.library.folder.empty.sub: 'Ajoutez des médias ou créez un sous-dossier pour commencer.'
+media.library.upload.or: 'ou'
+media.library.upload.browse: 'parcourir'

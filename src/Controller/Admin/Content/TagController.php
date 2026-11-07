@@ -46,7 +46,7 @@ class TagController extends AppAdminController
         $breadcrumb = [
             Breadcrumb::DOMAIN->value => 'tag',
             Breadcrumb::BREADCRUMB->value => [
-                'tag.index.page_title_h1' => '#',
+                'tag.index.title' => '#',
             ],
         ];
 
@@ -185,15 +185,15 @@ class TagController extends AppAdminController
             }
         }
 
-        $breadcrumbTitle = 'tag.update.page_title_h1';
+        $breadcrumbTitle = 'tag.update.title';
         if ($id === null) {
-            $breadcrumbTitle = 'tag.add.page_title_h1';
+            $breadcrumbTitle = 'tag.add.title';
         }
 
         $breadcrumb = [
             Breadcrumb::DOMAIN->value => 'tag',
             Breadcrumb::BREADCRUMB->value => [
-                'tag.index.page_title' => 'admin_tag_index',
+                'tag.index.title' => 'admin_tag_index',
                 $breadcrumbTitle => '#',
             ],
         ];

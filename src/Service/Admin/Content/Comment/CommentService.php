@@ -187,7 +187,7 @@ class CommentService extends AppAdminService
             ),
             CommentStatus::VALIDATE->value => $translator->trans('comment.status.validate', domain: 'comment'),
             CommentStatus::MODERATE->value => $translator->trans('comment.status.moderate', domain: 'comment'),
-            default => $translator->trans('comment.status.inconnu', domain: 'comment'),
+            default => $translator->trans('comment.status.unknown', domain: 'comment'),
         };
     }
 

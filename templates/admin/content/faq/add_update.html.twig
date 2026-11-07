@@ -2,10 +2,10 @@
 
 
 {% if id is same as null %}
-    {% set title = 'faq.add.page_title_h1' | trans({}, 'faq') %}
+    {% set title = 'faq.add.title' | trans({}, 'faq') %}
     {% set description = 'faq.add.description' | trans({}, 'faq') %}
 {% else %}
-    {% set title = 'faq.update.page_title' | trans({'id' : id}, 'faq') %}
+    {% set title = 'faq.update.title_id' | trans({'id' : id}, 'faq') %}
     {% set description = 'faq.update.description' | trans({}, 'faq') %}
 {% endif %}
 
@@ -41,13 +41,13 @@
                         <svg class="icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                         </svg>
-                        {{ 'faq.update.not.found.btn.return' | trans({}, 'faq') }}
+                        {{ 'faq.update.not.found.button.return' | trans({}, 'faq') }}
                     </a>
                     <a href="{{ path('admin_faq_add') }}" class="btn btn-sm btn-primary">
                         <svg class="icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path>
                         </svg>
-                        {{ 'faq.update.not.found.btn.new_faq' | trans({}, 'faq') }}
+                        {{ 'faq.update.not.found.button.new_faq' | trans({}, 'faq') }}
                     </a>
                 </div>
 

@@ -48,7 +48,7 @@ class FaqController extends AppAdminController
         $breadcrumb = [
             Breadcrumb::DOMAIN->value => 'faq',
             Breadcrumb::BREADCRUMB->value => [
-                'faq.index.page_title_h1' => '#',
+                'faq.index.title' => '#',
             ],
         ];
 
@@ -107,15 +107,15 @@ class FaqController extends AppAdminController
         MarkdownEditorTranslate $markdownEditorTranslate,
         ?int $id = null,
     ): Response {
-        $breadcrumbTitle = 'faq.update.page_title_h1';
+        $breadcrumbTitle = 'faq.update.title';
         if ($id === null) {
-            $breadcrumbTitle = 'faq.add.page_title_h1';
+            $breadcrumbTitle = 'faq.add.title';
         }
 
         $breadcrumb = [
             Breadcrumb::DOMAIN->value => 'faq',
             Breadcrumb::BREADCRUMB->value => [
-                'faq.index.page_title' => 'admin_faq_index',
+                'faq.index.title' => 'admin_faq_index',
                 $breadcrumbTitle => '#',
             ],
         ];

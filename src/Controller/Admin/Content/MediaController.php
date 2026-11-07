@@ -40,7 +40,7 @@ class MediaController extends AppAdminController
         $breadcrumb = [
             Breadcrumb::DOMAIN->value => 'media',
             Breadcrumb::BREADCRUMB->value => [
-                'media.index.page_title_h1' => '#',
+                'media.index.title' => '#',
             ],
         ];
 

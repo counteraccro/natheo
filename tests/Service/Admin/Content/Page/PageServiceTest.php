@@ -152,7 +152,7 @@ class PageServiceTest extends AppWebTestCase
 
         $result = $this->pageService->getStatusStr(1000);
         $this->assertIsString($result);
-        $this->assertEquals($translator->trans('page.status.inconnu', domain: 'page'), $result);
+        $this->assertEquals($translator->trans('page.status.unknown', domain: 'page'), $result);
     }
 
     /**

@@ -52,7 +52,7 @@ class CommentController extends AppAdminController
         $breadcrumb = [
             Breadcrumb::DOMAIN->value => 'comment',
             Breadcrumb::BREADCRUMB->value => [
-                'comment.index.page_title_h1' => '#',
+                'comment.index.title' => '#',
             ],
         ];
 
@@ -120,8 +120,8 @@ class CommentController extends AppAdminController
         $breadcrumb = [
             Breadcrumb::DOMAIN->value => 'comment',
             Breadcrumb::BREADCRUMB->value => [
-                'comment.index.page_title_h1' => 'admin_comment_index',
-                'comment.moderate.comments.page_title' => '#',
+                'comment.index.title' => 'admin_comment_index',
+                'comment.moderate.comments.title' => '#',
             ],
         ];
 
@@ -194,8 +194,8 @@ class CommentController extends AppAdminController
         $breadcrumb = [
             Breadcrumb::DOMAIN->value => 'comment',
             Breadcrumb::BREADCRUMB->value => [
-                'comment.index.page_title_h1' => 'admin_comment_index',
-                'comment.see.page_title' => '#',
+                'comment.index.title' => 'admin_comment_index',
+                'comment.see.title' => '#',
             ],
         ];
 

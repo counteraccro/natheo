@@ -31,7 +31,7 @@ class TagControllerTest extends AppWebTestCase
         $this->client->loginUser($user, 'admin');
         $this->client->request('GET', $this->router->generate('admin_tag_index'));
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', $this->translator->trans('tag.index.page_title_h1', domain: 'tag'));
+        $this->assertSelectorTextContains('h1', $this->translator->trans('tag.index.title', domain: 'tag'));
     }
 
     /**
@@ -235,11 +235,11 @@ class TagControllerTest extends AppWebTestCase
         $this->client->loginUser($user, 'admin');
         $this->client->request('GET', $this->router->generate('admin_tag_add'));
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', $this->translator->trans('tag.add.page_title_h1', domain: 'tag'));
+        $this->assertSelectorTextContains('h1', $this->translator->trans('tag.add.title', domain: 'tag'));
 
         $this->client->request('GET', $this->router->generate('admin_tag_update', ['id' => $tag->getId()]));
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', $this->translator->trans('tag.update.page_title_h1', domain: 'tag'));
+        $this->assertSelectorTextContains('h1', $this->translator->trans('tag.update.title', domain: 'tag'));
 
         $this->client->request('GET', $this->router->generate('admin_tag_update', ['id' => $otherTag->getId()]));
         $this->assertResponseStatusCodeSame(403);

@@ -6,25 +6,17 @@
 
 export interface TagFormTranslate {
   loading: string;
-  formTitleCreate: string;
-  formTitleUpdate: string;
-  formInputColorLabel: string;
   formInputColorError: string;
   formInputColorHelp: string;
   formInputLabelLabel: string;
   formInputLabelPlaceholder: string;
   formInputLabelError: string;
-  linkColorChoice: string;
   colorTitle: string;
-  colorDescription: string;
-  labelCurrent: string;
-  labelOther: string;
   autoCopy: string;
   renduTitle: string;
   btnSubmitUpdate: string;
   btnSubmitCreate: string;
   statTitle: string;
-  formDisabledLabel: string;
   btnCancel: string;
   btnDelete: string;
   successSave: string;

@@ -1,10 +1,10 @@
 {% extends 'admin/admin_base.html.twig' %}
 
-{% block title %}{{ 'comment.moderate.comments.page_title_h1' | trans({}, 'comment') }}{% endblock %}
+{% block title %}{{ 'comment.moderate.comments.title' | trans({}, 'comment') }}{% endblock %}
 
 {% block body %}
 
-    <twig:Admin:PageHeaderComponent :breadcrumb="breadcrumb" :title="'comment.moderate.comments.page_title_h1' | trans({}, 'comment')" :description="'comment.moderate.comments.description' | trans({}, 'comment')">
+    <twig:Admin:PageHeaderComponent :breadcrumb="breadcrumb" :title="'comment.moderate.comments.title' | trans({}, 'comment')" :description="'comment.moderate.comments.description' | trans({}, 'comment')">
         <twig:block name="icon">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
