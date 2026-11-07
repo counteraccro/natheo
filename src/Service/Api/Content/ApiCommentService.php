@@ -62,7 +62,7 @@ class ApiCommentService extends AppApiService
                 !$this->isGranted(['ROLE_CONTRIBUTEUR'], $user)
             ) {
                 $com = $translator->trans('api_errors.comment.wait.validation', domain: 'api_errors');
-                $author = $translator->trans('api_errors.comment.wait.validation.author', domain: 'api_errors');
+                $author = $translator->trans('api_errors.comment.wait.validation_author', domain: 'api_errors');
             } elseif (
                 $comment->getStatus() === CommentStatus::MODERATE->value &&
                 !$this->isGranted(['ROLE_CONTRIBUTEUR'], $user)

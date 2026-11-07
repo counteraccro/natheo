@@ -20,190 +20,155 @@ class InstallationTranslate extends AppTranslate
     public function getTranslateStepOne(): array
     {
         return [
-            'loading' => $this->translator->trans('installation.loading', domain: 'installation'),
-            'title' => $this->translator->trans('installation.step.1.titre', domain: 'installation'),
-            'title_h1' => $this->translator->trans('installation.step.1.titre.h1', domain: 'installation'),
-            'description_1' => $this->translator->trans('installation.step.1.description_1', domain: 'installation'),
-            'description_2' => $this->translator->trans('installation.step.1.description_2', domain: 'installation'),
+            'loading' => $this->translator->trans('installation.global.loading', domain: 'installation'),
+            'title' => $this->translator->trans('installation.step_1.title', domain: 'installation'),
+            'title_h1' => $this->translator->trans('installation.step_1.title_h1', domain: 'installation'),
             'config_bdd_title' => $this->translator->trans(
-                'installation.step.1.config.bdd.title',
+                'installation.step_1.config.database.title',
                 domain: 'installation',
             ),
             'config_bdd_input_type_label' => $this->translator->trans(
-                'installation.step.1.config.bdd.input.type.label',
+                'installation.step_1.config.database.input.type.label',
                 domain: 'installation',
             ),
             'config_bdd_input_login_label' => $this->translator->trans(
-                'installation.step.1.config.bdd.input.login.label',
+                'installation.step_1.config.database.input.login.label',
                 domain: 'installation',
             ),
             'config_bdd_input_password_label' => $this->translator->trans(
-                'installation.step.1.config.bdd.input.password.label',
+                'installation.step_1.config.database.input.password.label',
                 domain: 'installation',
             ),
             'config_bdd_input_ip_label' => $this->translator->trans(
-                'installation.step.1.config.bdd.input.ip.label',
+                'installation.step_1.config.database.input.ip.label',
                 domain: 'installation',
             ),
             'config_bdd_input_port_label' => $this->translator->trans(
-                'installation.step.1.config.bdd.input.port.label',
+                'installation.step_1.config.database.input.port.label',
                 domain: 'installation',
             ),
             'config_bdd_btn_test_config' => $this->translator->trans(
-                'installation.step.1.config.bdd.btn.test.config',
+                'installation.step_1.config.database.button.test.config',
                 domain: 'installation',
             ),
             'config_bdd_btn_save_config' => $this->translator->trans(
-                'installation.step.1.config.bdd.btn.save.config',
+                'installation.step_1.config.database.button.save.config',
                 domain: 'installation',
             ),
             'config_bdd_btn_test_config_loading' => $this->translator->trans(
-                'installation.step.1.config.bdd.btn.test.config.loading',
-                domain: 'installation',
-            ),
-            'title_thx_h1' => $this->translator->trans('installation.step.1.titre.thx.h1', domain: 'installation'),
-            'description_thx_1' => $this->translator->trans(
-                'installation.step.1.description.thx.1',
+                'installation.step_1.config.database.button.test.config_loading',
                 domain: 'installation',
             ),
             'config_bdd_loading_msg_update_file' => $this->translator->trans(
-                'installation.step.1.config.bdd.loading.msg.update.file',
-                domain: 'installation',
-            ),
-            'config_bdd_loading_msg_test_connexion' => $this->translator->trans(
-                'installation.step.1.config.bdd.loading.msg.test.connexion',
-                domain: 'installation',
-            ),
-            'config_bdd_loading_msg_test_connexion_ko' => $this->translator->trans(
-                'installation.step.1.config.bdd.loading.msg.test.connexion.ko',
+                'installation.step_1.config.database.loading.message.update.file',
                 domain: 'installation',
             ),
             'config_bdd_loading_msg_test_connexion_success' => $this->translator->trans(
-                'installation.step.1.config.bdd.loading.msg.test.connexion.success',
+                'installation.step_1.config.database.loading.message.test.connection.success',
                 domain: 'installation',
             ),
-            'create_bdd_h1' => $this->translator->trans('installation.step.1.create.bdd.h1', domain: 'installation'),
+            'create_bdd_h1' => $this->translator->trans('installation.step_1.create.database.h1', domain: 'installation'),
             'create_bdd_description_1' => $this->translator->trans(
-                'installation.step.1.create.bdd.description.1',
+                'installation.step_1.create.database.description.1',
                 domain: 'installation',
             ),
             'create_bdd_description_2' => $this->translator->trans(
-                'installation.step.1.create.bdd.description.2',
+                'installation.step_1.create.database.description.2',
                 domain: 'installation',
             ),
             'create_bdd_alert_title' => $this->translator->trans(
-                'installation.step.1.create.bdd.alert.title',
+                'installation.step_1.create.database.alert.title',
                 domain: 'installation',
             ),
             'create_bdd_alert_text_1' => $this->translator->trans(
-                'installation.step.1.create.bdd.alert.text.1',
+                'installation.step_1.create.database.alert.text.1',
                 domain: 'installation',
             ),
             'create_bdd_alert_text_2' => $this->translator->trans(
-                'installation.step.1.create.bdd.alert.text.2',
+                'installation.step_1.create.database.alert.text.2',
                 domain: 'installation',
             ),
             'create_bdd_alert_text_3' => $this->translator->trans(
-                'installation.step.1.create.bdd.alert.text.3',
+                'installation.step_1.create.database.alert.text.3',
                 domain: 'installation',
             ),
             'create_bdd_alert_text_4' => $this->translator->trans(
-                'installation.step.1.create.bdd.alert.text.4',
+                'installation.step_1.create.database.alert.text.4',
                 domain: 'installation',
             ),
             'create_bdd_alert_text_5' => $this->translator->trans(
-                'installation.step.1.create.bdd.alert.text.5',
+                'installation.step_1.create.database.alert.text.5',
                 domain: 'installation',
             ),
             'create_bdd_title' => $this->translator->trans(
-                'installation.step.1.create.bdd.title',
+                'installation.step_1.create.database.title',
                 domain: 'installation',
             ),
             'create_bdd_input_bdd_name_label' => $this->translator->trans(
-                'installation.step.1.create.bdd.input.bdd.name.label',
+                'installation.step_1.create.database.input.database.name.label',
                 domain: 'installation',
             ),
             'create_bdd_input_version_label' => $this->translator->trans(
-                'installation.step.1.create.bdd.input.version.label',
+                'installation.step_1.create.database.input.version.label',
                 domain: 'installation',
             ),
             'create_bdd_input_charset_label' => $this->translator->trans(
-                'installation.step.1.create.bdd.input.charset.label',
-                domain: 'installation',
-            ),
-            'create_bdd_input_bdd_name_error' => $this->translator->trans(
-                'installation.step.1.create.bdd.input.bdd.name.error',
-                domain: 'installation',
-            ),
-            'create_bdd_input_version_error' => $this->translator->trans(
-                'installation.step.1.create.bdd.input.version.error',
+                'installation.step_1.create.database.input.charset.label',
                 domain: 'installation',
             ),
             'create_bdd_btn_create' => $this->translator->trans(
-                'installation.step.1.create.bdd.btn.create',
+                'installation.step_1.create.database.button.create',
                 domain: 'installation',
             ),
             'create_bdd_loading_msg_update_file' => $this->translator->trans(
-                'installation.step.1.create.bdd.msg.update.file',
-                domain: 'installation',
-            ),
-            'create_bdd_loading_msg_update_secret' => $this->translator->trans(
-                'installation.step.1.create.bdd.msg.update.secret',
+                'installation.step_1.create.database.message.update.file',
                 domain: 'installation',
             ),
             'create_bdd_loading_msg_update_secret_success' => $this->translator->trans(
-                'installation.step.1.create.bdd.msg.update.secret_success',
+                'installation.step_1.create.database.message.update.secret_success',
                 domain: 'installation',
             ),
             'create_bdd_loading_msg_update_secret_ko' => $this->translator->trans(
-                'installation.step.1.create.bdd.msg.update.secret_ko',
-                domain: 'installation',
-            ),
-            'create_bdd_loading_msg_create_bdd' => $this->translator->trans(
-                'installation.step.1.create.bdd.msg.create.bdd',
+                'installation.step_1.create.database.message.update.secret_ko',
                 domain: 'installation',
             ),
             'create_bdd_loading_msg_create_bdd_success' => $this->translator->trans(
-                'installation.step.1.create.bdd.msg.create.bdd.success',
+                'installation.step_1.create.database.message.create.database.success',
                 domain: 'installation',
             ),
             'create_bdd_loading_msg_create_bdd_ko' => $this->translator->trans(
-                'installation.step.1.create.bdd.msg.create.bdd.ko',
-                domain: 'installation',
-            ),
-            'create_bdd_loading_msg_create_table' => $this->translator->trans(
-                'installation.step.1.create.bdd.msg.create.table',
+                'installation.step_1.create.database.message.create.database.ko',
                 domain: 'installation',
             ),
             'create_bdd_loading_msg_create_table_success' => $this->translator->trans(
-                'installation.step.1.create.bdd.msg.create.table.success',
+                'installation.step_1.create.database.message.create.table.success',
                 domain: 'installation',
             ),
             'create_bdd_loading_msg_create_table_ko' => $this->translator->trans(
-                'installation.step.1.create.bdd.msg.create.table.ko',
+                'installation.step_1.create.database.message.create.table.ko',
                 domain: 'installation',
             ),
             'create_bdd_loading_msg_success' => $this->translator->trans(
-                'installation.step.1.create.bdd.msg.success',
+                'installation.step_1.create.database.message.success',
                 domain: 'installation',
             ),
-            'field_required' => $this->translator->trans('installation.step.1.field.required', domain: 'installation'),
-            'btn_return' => $this->translator->trans('installation.step.1.btn.return', domain: 'installation'),
+            'field_required' => $this->translator->trans('installation.step_1.field.required', domain: 'installation'),
+            'btn_return' => $this->translator->trans('installation.step_1.button.return', domain: 'installation'),
             'create_bdd_sub_title_identifiant' => $this->translator->trans(
-                'installation.step.1.sub-title.identifiant',
+                'installation.step_1.sub_title.identifier',
                 domain: 'installation',
             ),
             'create_bdd_sub_title_server' => $this->translator->trans(
-                'installation.step.1.sub-title.server',
+                'installation.step_1.sub_title.server',
                 domain: 'installation',
             ),
             'create_bdd_sub_title_options' => $this->translator->trans(
-                'installation.step.1.sub-title.options',
+                'installation.step_1.sub_title.options',
                 domain: 'installation',
             ),
-            'btn_step_two' => $this->translator->trans('installation.step.1.btn.step.2', domain: 'installation'),
+            'btn_step_two' => $this->translator->trans('installation.step_1.button.step.2', domain: 'installation'),
             'create_bdd_msg_already_exist' => $this->translator->trans(
-                'installation.step.1.msg.bdd.already_exist',
+                'installation.step_1.message.database.already_exist',
                 domain: 'installation',
             ),
         ];
@@ -216,138 +181,126 @@ class InstallationTranslate extends AppTranslate
     public function getTranslateStepTwo(): array
     {
         return [
-            'loading' => $this->translator->trans('installation.loading', domain: 'installation'),
-            'title' => $this->translator->trans('installation.step.2.titre', domain: 'installation'),
-            'title_h1' => $this->translator->trans('installation.step.2.titre.h1', domain: 'installation'),
+            'loading' => $this->translator->trans('installation.global.loading', domain: 'installation'),
+            'title' => $this->translator->trans('installation.step_2.title', domain: 'installation'),
+            'title_h1' => $this->translator->trans('installation.step_2.title_h1', domain: 'installation'),
             'fondateur_description' => $this->translator->trans(
-                'installation.step.2.fondateur.description',
+                'installation.step_2.founder.description',
                 domain: 'installation',
             ),
             'fondateur_titre_card' => $this->translator->trans(
-                'installation.step.2.fondateur.titre.card',
+                'installation.step_2.founder.title.card',
                 domain: 'installation',
             ),
             'fondateur_login_label' => $this->translator->trans(
-                'installation.step.2.fondateur.login.label',
+                'installation.step_2.founder.login.label',
                 domain: 'installation',
             ),
             'fondateur_login_placeholder' => $this->translator->trans(
-                'installation.step.2.fondateur.login.placeholder',
+                'installation.step_2.founder.login.placeholder',
                 domain: 'installation',
             ),
             'fondateur_login_error' => $this->translator->trans(
-                'installation.step.2.fondateur.login.error',
+                'installation.step_2.founder.login.error',
                 domain: 'installation',
             ),
             'fondateur_email_label' => $this->translator->trans(
-                'installation.step.2.fondateur.email.label',
+                'installation.step_2.founder.email.label',
                 domain: 'installation',
             ),
             'fondateur_email_placeholder' => $this->translator->trans(
-                'installation.step.2.fondateur.email.placeholder',
+                'installation.step_2.founder.email.placeholder',
                 domain: 'installation',
             ),
             'fondateur_email_error' => $this->translator->trans(
-                'installation.step.2.fondateur.email.error',
+                'installation.step_2.founder.email.error',
                 domain: 'installation',
             ),
             'fondateur_password_label' => $this->translator->trans(
-                'installation.step.2.fondateur.password.label',
+                'installation.step_2.founder.password.label',
                 domain: 'installation',
             ),
             'fondateur_password_error' => $this->translator->trans(
-                'installation.step.2.fondateur.password.error',
+                'installation.step_2.founder.password.error',
                 domain: 'installation',
             ),
             'fondateur_password_weak' => $this->translator->trans(
-                'installation.step.2.fondateur.password.weak',
+                'installation.step_2.founder.password.weak',
                 domain: 'installation',
             ),
             'fondateur_password_normal' => $this->translator->trans(
-                'installation.step.2.fondateur.password.normal',
+                'installation.step_2.founder.password.normal',
                 domain: 'installation',
             ),
             'fondateur_password_strong' => $this->translator->trans(
-                'installation.step.2.fondateur.password.strong',
+                'installation.step_2.founder.password.strong',
                 domain: 'installation',
             ),
             'fondateur_password_help' => $this->translator->trans(
-                'installation.step.2.fondateur.password.help',
+                'installation.step_2.founder.password.help',
                 domain: 'installation',
             ),
             'fondateur_btn_create' => $this->translator->trans(
-                'installation.step.2.fondateur.btn.create',
+                'installation.step_2.founder.button.create',
                 domain: 'installation',
             ),
             'fondateur_loading_msg' => $this->translator->trans(
-                'installation.step.2.fondateur.loading.msg',
+                'installation.step_2.founder.loading.message',
                 domain: 'installation',
             ),
             'fondateur_success' => $this->translator->trans(
-                'installation.step.2.fondateur.success',
+                'installation.step_2.founder.success',
                 domain: 'installation',
             ),
-            'debug_titre' => $this->translator->trans('installation.step.2.debug.titre', domain: 'installation'),
-            'debug_texte_1' => $this->translator->trans('installation.step.2.debug.texte.1', domain: 'installation'),
-            'debug_texte_2' => $this->translator->trans('installation.step.2.debug.texte.2', domain: 'installation'),
-            'debug_texte_3' => $this->translator->trans('installation.step.2.debug.texte.3', domain: 'installation'),
-            'debug_texte_4' => $this->translator->trans('installation.step.2.debug.texte.4', domain: 'installation'),
-            'debug_texte_5' => $this->translator->trans('installation.step.2.debug.texte.5', domain: 'installation'),
-            'debug_texte_6' => $this->translator->trans('installation.step.2.debug.texte.6', domain: 'installation'),
+            'debug_titre' => $this->translator->trans('installation.step_2.debug.title', domain: 'installation'),
+            'debug_texte_1' => $this->translator->trans('installation.step_2.debug.text.1', domain: 'installation'),
+            'debug_texte_2' => $this->translator->trans('installation.step_2.debug.text.2', domain: 'installation'),
+            'debug_texte_3' => $this->translator->trans('installation.step_2.debug.text.3', domain: 'installation'),
+            'debug_texte_4' => $this->translator->trans('installation.step_2.debug.text.4', domain: 'installation'),
+            'debug_texte_5' => $this->translator->trans('installation.step_2.debug.text.5', domain: 'installation'),
+            'debug_texte_6' => $this->translator->trans('installation.step_2.debug.text.6', domain: 'installation'),
             'finish_installation_title' => $this->translator->trans(
-                'installation.step.2.finish.titre',
+                'installation.step_2.finish.title',
                 domain: 'installation',
             ),
             'finish_installation_text_1' => $this->translator->trans(
-                'installation.step.2.finish.texte.1',
+                'installation.step_2.finish.text.1',
                 domain: 'installation',
             ),
             'finish_installation_text_2' => $this->translator->trans(
-                'installation.step.2.finish.texte.2',
+                'installation.step_2.finish.text.2',
                 domain: 'installation',
             ),
             'finish_installation_btn' => $this->translator->trans(
-                'installation.step.2.finish.btn',
+                'installation.step_2.finish.button',
                 domain: 'installation',
             ),
             'finish_installation_loading_msg_success' => $this->translator->trans(
-                'installation.step.2.finish.loading.msg.success',
-                domain: 'installation',
-            ),
-            'finish_installation_loading_msg_config' => $this->translator->trans(
-                'installation.step.2.finish.loading.msg.config',
+                'installation.step_2.finish.loading.message.success',
                 domain: 'installation',
             ),
             'finish_installation_loading_msg_config_success' => $this->translator->trans(
-                'installation.step.2.finish.loading.msg.config.success',
+                'installation.step_2.finish.loading.message.config.success',
                 domain: 'installation',
             ),
             'finish_installation_loading_msg_config_ko' => $this->translator->trans(
-                'installation.step.2.finish.loading.msg.config.ko',
-                domain: 'installation',
-            ),
-            'finish_installation_loading_msg_installation_data' => $this->translator->trans(
-                'installation.step.2.finish.loading.msg.installation.data',
+                'installation.step_2.finish.loading.message.config.ko',
                 domain: 'installation',
             ),
             'finish_installation_loading_msg_installation_data_success' => $this->translator->trans(
-                'installation.step.2.finish.loading.msg.installation.data.success',
+                'installation.step_2.finish.loading.message.installation.data.success',
                 domain: 'installation',
             ),
             'finish_installation_loading_msg_installation_data_ko' => $this->translator->trans(
-                'installation.step.2.finish.loading.msg.installation.data.ko',
-                domain: 'installation',
-            ),
-            'finish_installation_loading_msg_cache' => $this->translator->trans(
-                'installation.step.2.finish.loading.msg.cache',
+                'installation.step_2.finish.loading.message.installation.data.ko',
                 domain: 'installation',
             ),
             'finish_installation_loading_msg_cache_success' => $this->translator->trans(
-                'installation.step.2.finish.loading.msg.cache.success',
+                'installation.step_2.finish.loading.message.cache.success',
                 domain: 'installation',
             ),
             'finish_installation_loading_msg_cache_ko' => $this->translator->trans(
-                'installation.step.2.finish.loading.msg.cache.ko',
+                'installation.step_2.finish.loading.message.cache.ko',
                 domain: 'installation',
             ),
         ];
@@ -356,16 +309,16 @@ class InstallationTranslate extends AppTranslate
     public function getTranslateStepFour(): array
     {
         return [
-            'title_h1' => $this->translator->trans('installation.step.4.title', domain: 'installation'),
-            'description' => $this->translator->trans('installation.step.4.description', domain: 'installation'),
+            'title_h1' => $this->translator->trans('installation.step_4.title', domain: 'installation'),
+            'description' => $this->translator->trans('installation.step_4.description', domain: 'installation'),
             'summary_database' => $this->translator->trans(
-                'installation.step.4.summary.database',
+                'installation.step_4.summary.database',
                 domain: 'installation',
             ),
-            'summary_user' => $this->translator->trans('installation.step.4.summary.user', domain: 'installation'),
-            'summary_data' => $this->translator->trans('installation.step.4.summary.data', domain: 'installation'),
-            'summary_cache' => $this->translator->trans('installation.step.4.summary.cache', domain: 'installation'),
-            'btn_login' => $this->translator->trans('installation.step.4.btn.login', domain: 'installation'),
+            'summary_user' => $this->translator->trans('installation.step_4.summary.user', domain: 'installation'),
+            'summary_data' => $this->translator->trans('installation.step_4.summary.data', domain: 'installation'),
+            'summary_cache' => $this->translator->trans('installation.step_4.summary.cache', domain: 'installation'),
+            'btn_login' => $this->translator->trans('installation.step_4.button.login', domain: 'installation'),
         ];
     }
 }

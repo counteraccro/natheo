@@ -590,7 +590,7 @@ class ApiCommentControllerTest extends AppApiTestCase
         $this->assertEquals(403, $response->getStatusCode());
         $content = json_decode($response->getContent(), true);
         $this->assertEquals(
-            $this->translator->trans('api_errors.comment.moderate.forbidden', domain: 'api_errors'),
+            $this->translator->trans('api_errors.comment.moderate_forbidden', domain: 'api_errors'),
             $content['errors'][0],
         );
     }

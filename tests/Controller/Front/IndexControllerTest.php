@@ -64,7 +64,7 @@ class IndexControllerTest extends AppWebTestCase
         $this->assertResponseStatusCodeSame(503);
         $this->assertSelectorTextContains(
             'h1',
-            $this->translator->trans('front.error.close.site.block.title', domain: 'front_error'),
+            $this->translator->trans('front_error.closed_site.block_title', domain: 'front_error'),
         );
     }
 

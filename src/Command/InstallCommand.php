@@ -47,68 +47,68 @@ class InstallCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $io->title($this->translator->trans('install.title', domain: 'command'));
+        $io->title($this->translator->trans('command.install.title', domain: 'command'));
 
         $env = $this->parameterBag->get('kernel.environment');
         if ('prod' === strtolower($env)) {
-            $io->text($this->translator->trans('install.env.prod', domain: 'command'));
+            $io->text($this->translator->trans('command.install.env.prod', domain: 'command'));
             return Command::SUCCESS;
         }
 
-        $io->text($this->translator->trans('install.description', domain: 'command'));
+        $io->text($this->translator->trans('command.install.description', domain: 'command'));
         $io->listing([
-            $this->translator->trans('install.description.create.database', domain: 'command'),
-            $this->translator->trans('install.description.create.schema', domain: 'command'),
-            $this->translator->trans('install.description.fixtures.load', domain: 'command'),
-            $this->translator->trans('install.description.clear.cache', domain: 'command'),
+            $this->translator->trans('command.install.description_create_database', domain: 'command'),
+            $this->translator->trans('command.install.description_create_schema', domain: 'command'),
+            $this->translator->trans('command.install.description_fixtures_load', domain: 'command'),
+            $this->translator->trans('command.install.description_clear_cache', domain: 'command'),
         ]);
 
         $delete = false;
         if ($this->installationService->checkSchema()) {
             $delete = true;
-            $io->warning($this->translator->trans('install.description.schema.warning', domain: 'command'));
+            $io->warning($this->translator->trans('command.install.description_schema_warning', domain: 'command'));
         }
 
-        if (!$io->confirm($this->translator->trans('install.description.confirm', domain: 'command'), false)) {
-            $io->text($this->translator->trans('install.description.confirm.no', domain: 'command'));
+        if (!$io->confirm($this->translator->trans('command.install.description_confirm', domain: 'command'), false)) {
+            $io->text($this->translator->trans('command.install.description_confirm_no', domain: 'command'));
             return Command::SUCCESS;
         }
 
         // Drop database
         if ($delete) {
-            $io->title($this->translator->trans('install.drop.database', domain: 'command'));
+            $io->title($this->translator->trans('command.install.drop.database', domain: 'command'));
 
             // PostgreSQL refuse de supprimer une base encore ouverte, ici par checkSchema()
             $this->connection->close();
 
             $returnCode = $this->runConsoleCommand(['doctrine:database:drop', '--force'], $io);
             if ($returnCode === 0) {
-                $io->text($this->translator->trans('install.drop.database.success', domain: 'command'));
+                $io->text($this->translator->trans('command.install.drop.database_success', domain: 'command'));
             } else {
-                $io->text($this->translator->trans('install.error', domain: 'command'));
+                $io->text($this->translator->trans('command.install.error', domain: 'command'));
                 return Command::FAILURE;
             }
             $this->deleteDump();
         }
 
         // Create database
-        $io->title($this->translator->trans('install.create.database', domain: 'command'));
+        $io->title($this->translator->trans('command.install.create.database', domain: 'command'));
 
         $returnCode = $this->runConsoleCommand(['doctrine:database:create'], $io);
         if ($returnCode === 0) {
-            $io->text($this->translator->trans('install.create.database.success', domain: 'command'));
+            $io->text($this->translator->trans('command.install.create.database_success', domain: 'command'));
         } else {
-            $io->text($this->translator->trans('install.error', domain: 'command'));
+            $io->text($this->translator->trans('command.install.error', domain: 'command'));
             return Command::FAILURE;
         }
 
         // Create schema
-        $io->title($this->translator->trans('install.create.schema', domain: 'command'));
+        $io->title($this->translator->trans('command.install.create.schema', domain: 'command'));
 
         // Sync metadata storage (create doctrine_migration_versions table if missing)
         $returnCode = $this->runConsoleCommand(['doctrine:migrations:sync-metadata-storage'], $io);
         if ($returnCode !== 0) {
-            $io->text($this->translator->trans('install.error', domain: 'command'));
+            $io->text($this->translator->trans('command.install.error', domain: 'command'));
             return Command::FAILURE;
         }
 
@@ -118,35 +118,35 @@ class InstallCommand extends Command
             $io,
         );
         if ($returnCode === 0) {
-            $io->text($this->translator->trans('install.create.schema.success', domain: 'command'));
+            $io->text($this->translator->trans('command.install.create.schema_success', domain: 'command'));
         } else {
-            $io->text($this->translator->trans('install.error', domain: 'command'));
+            $io->text($this->translator->trans('command.install.error', domain: 'command'));
             return Command::FAILURE;
         }
 
         // Create fixtures
-        $io->title($this->translator->trans('install.fixture.load', domain: 'command'));
+        $io->title($this->translator->trans('command.install.fixture.load', domain: 'command'));
 
         $returnCode = $this->runConsoleCommand(['doctrine:fixtures:load', '--append', '--no-interaction'], $io);
         if ($returnCode === 0) {
-            $io->text($this->translator->trans('install.fixture.load.success', domain: 'command'));
+            $io->text($this->translator->trans('command.install.fixture.load_success', domain: 'command'));
         } else {
-            $io->text($this->translator->trans('install.error', domain: 'command'));
+            $io->text($this->translator->trans('command.install.error', domain: 'command'));
             return Command::FAILURE;
         }
 
         // clear cache
-        $io->title($this->translator->trans('install.clear.cache', domain: 'command'));
+        $io->title($this->translator->trans('command.install.clear.cache', domain: 'command'));
 
         $returnCode = $this->runConsoleCommand(['cache:clear'], $io);
         if ($returnCode === 0) {
-            $io->text($this->translator->trans('install.clear.cache.success', domain: 'command'));
+            $io->text($this->translator->trans('command.install.clear.cache_success', domain: 'command'));
         } else {
-            $io->text($this->translator->trans('install.error', domain: 'command'));
+            $io->text($this->translator->trans('command.install.error', domain: 'command'));
             return Command::FAILURE;
         }
 
-        $io->success($this->translator->trans('install.success', domain: 'command'));
+        $io->success($this->translator->trans('command.install.success', domain: 'command'));
 
         return Command::SUCCESS;
     }

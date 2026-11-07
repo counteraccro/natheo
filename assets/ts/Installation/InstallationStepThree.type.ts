@@ -39,13 +39,10 @@ export interface InstallationStepThreeTranslate {
   finish_installation_text_2: string;
   finish_installation_btn: string;
   finish_installation_loading_msg_success: string;
-  finish_installation_loading_msg_config: string;
   finish_installation_loading_msg_config_success: string;
   finish_installation_loading_msg_config_ko: string;
-  finish_installation_loading_msg_installation_data: string;
   finish_installation_loading_msg_installation_data_success: string;
   finish_installation_loading_msg_installation_data_ko: string;
-  finish_installation_loading_msg_cache: string;
   finish_installation_loading_msg_cache_success: string;
   finish_installation_loading_msg_cache_ko: string;
 }

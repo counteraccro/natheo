@@ -12,11 +12,11 @@ front.footer.en.link: English
 front.error.api.modal.error.403: "La ressource demandé n'est pas accessible"
 front.error.api.modal.error.401: "Le token d'accès à l'API est faux ou expiré"
 front.article.footer.edit: Le
-front.article.footer.statPublication: publications
+front.article.footer.stat_publication: publications
 front.article.footer.info.draft: 'Cette page est en brouillon, vous seul pouvez la lire actuellement'
 front.comment.title: Commentaires
-front.comment.nbComments: commentaire(s)
-front.comment.timeAgo: "Il y'a"
+front.comment.nb_comments: commentaire(s)
+front.comment.time_ago: "Il y'a"
 front.comment.validate: Valider
 front.comment.moderate: Modérer
 front.comment.waiting: Invalider
@@ -27,9 +27,9 @@ front.comment.form.moderate.submit: Modérer
 front.comment.success.validate: 'Commentaire validé avec succès'
 front.comment.success.moderate: 'Commentaire modéré avec succès'
 front.comment.success.waiting: 'Commentaire invalidé avec succès'
-front.comment.btn.new.comment: 'Laisser un commentaire'
-front.comment.btn.new.comment.cancel: Annuler
-front.comment.btn.new.comment.submit: Poster
+front.comment.button.new.comment: 'Laisser un commentaire'
+front.comment.button.new.comment_cancel: Annuler
+front.comment.button.new.comment_submit: Poster
 front.comment.form.new.comment.pseudo.label: Pseudonyme
 front.comment.form.new.comment.pseudo.placeholder: 'Votre pseudonyme'
 front.comment.form.new.comment.email.label: 'Adresse email'

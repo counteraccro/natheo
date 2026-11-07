@@ -1,6 +1,6 @@
-front.error.not.template: "Le template {template} n'existe pas"
-front.error.close.site.title: 'Maintenance !'
-front.error.close.site.block.title: 'Site en maintenance'
-front.error.close.site.block.text: "Rassurez vous, rien de grave, l'administrateur du site à décidé de mettre en maintenance le site pour une durée indéterminé, mais je suis sur que cela ne devrais pas durer bien longtemps."
-front.error.not.scriptTag: "Le scriptTag front_{template} pour le template {template} n'existe pas"
-front.error.close.site.admin.link: "Administration"
+front_error.index.no_template: "Le template {template} n'existe pas"
+front_error.closed_site.title: 'Maintenance !'
+front_error.closed_site.block_title: 'Site en maintenance'
+front_error.closed_site.block_text: "Rassurez vous, rien de grave, l'administrateur du site à décidé de mettre en maintenance le site pour une durée indéterminé, mais je suis sur que cela ne devrais pas durer bien longtemps."
+front_error.index.no_script_tag: "Le scriptTag front_{template} pour le template {template} n'existe pas"
+front_error.closed_site.admin_link: "Administration"

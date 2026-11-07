@@ -4,7 +4,6 @@ api_errors.not.found: 'Ressource non disponible'
 api_errors.access.unauthorized: 'Accès non autorisé'
 api_errors.params.name.not.found: "Le paramètre attendu {param} n'est pas présent"
 api_errors.params.not.string: 'Le paramètre {param} doit être de type string'
-api_errors.params.type.not.found: 'Le type du paramètre {param} est inconnu'
 api_errors.user.not.found: 'Utilisateur non trouvé'
 api_errors.find.menu.id.slug.together: 'Le paramètre id et page_slug ne peuvent pas être mis ensemble'
 api_errors.find.menu.not.id.slug.together: 'Le paramètre id ou page_slug doit être présent'
@@ -30,7 +29,7 @@ api_errors.bad.request: 'Requête invalide'
 api_errors.method.not.allowed: 'Méthode HTTP non autorisée'
 api_errors.too.many.requests: 'Trop de tentatives, veuillez réessayer plus tard'
 api_errors.request.body.invalid: 'Le corps de la requête doit être un JSON valide'
-api_errors.comment.moderate.forbidden: "Vous n'avez pas les droits pour modérer ce commentaire"
+api_errors.comment.moderate_forbidden: "Vous n'avez pas les droits pour modérer ce commentaire"
 api_errors.params.not.boolean: 'Le paramètre {param} doit être un booléen (true/false, 1/0)'
 api_errors.access.role.denied: "Les droits du token API ne permettent pas d'accéder à cette ressource"
-api_errors.comment.wait.validation.author: Anonyme
+api_errors.comment.wait.validation_author: Anonyme
