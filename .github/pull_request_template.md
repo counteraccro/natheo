@@ -1,6 +1,7 @@
 <!--
 Titre attendu : "Bug/B-<n> Titre", "Audit/A-<n> Titre" ou "Feature/N-<n> Titre" (numéro de l'issue).
 Branche attendue : bug/B-<n>-<slug>, audit/A-<n>-<slug> ou feature/N-<n>-<slug>, ou maintenance/<slug> pour une maintenance sans issue.
+Un correctif d'une version déjà publiée cible la branche release/<majeure>.<mineure> au lieu de master.
 Les labels tech/couche et le milestone sont posés automatiquement.
 -->
 
