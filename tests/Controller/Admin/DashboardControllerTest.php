@@ -162,8 +162,8 @@ class DashboardControllerTest extends AppWebTestCase
         $container->get('request_stack')->pop();
 
         $crawler = new Crawler($content);
-        $label = $this->translator->trans('pagedemo.page_title_h1');
+        $label = $this->translator->trans('pagedemo.index.title');
         $this->assertStringContainsString($label, $crawler->filter('nav[aria-label="Breadcrumb"]')->text());
-        $this->assertStringNotContainsString('pagedemo.page_title_h1', $content);
+        $this->assertStringNotContainsString('pagedemo.index.title', $content);
     }
 }
