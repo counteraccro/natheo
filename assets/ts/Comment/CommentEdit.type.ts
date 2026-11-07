@@ -67,9 +67,6 @@ export interface Translate {
   ip: string;
   userAgent: string;
   btnEdit: string;
-  toast_title_success: string;
-  toast_title_error: string;
-  toast_time: string;
   markdown: Record<string, Record<string, string>>;
   commentTitle: string;
   cancel: string;

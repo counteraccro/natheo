@@ -34,7 +34,7 @@ class MenuControllerTest extends AppWebTestCase
         $this->client->loginUser($user, 'admin');
         $this->client->request('GET', $this->router->generate('admin_menu_index'));
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', $this->translator->trans('menu.index.page_title_h1', domain: 'menu'));
+        $this->assertSelectorTextContains('h1', $this->translator->trans('menu.index.title', domain: 'menu'));
     }
 
     /**
@@ -264,11 +264,11 @@ class MenuControllerTest extends AppWebTestCase
         $this->client->loginUser($user, 'admin');
         $this->client->request('GET', $this->router->generate('admin_menu_add'));
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', $this->translator->trans('menu.add.menu_title_h1', domain: 'menu'));
+        $this->assertSelectorTextContains('h1', $this->translator->trans('menu.add.title', domain: 'menu'));
 
         $this->client->request('GET', $this->router->generate('admin_menu_update', ['id' => $menu->getId()]));
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', $this->translator->trans('menu.update.menu_title_h1', domain: 'menu'));
+        $this->assertSelectorTextContains('h1', $this->translator->trans('menu.update.title', domain: 'menu'));
 
         $otherMenu = $this->createMenuAllDataDefault();
         $this->client->request('GET', $this->router->generate('admin_menu_update', ['id' => $otherMenu->getId()]));

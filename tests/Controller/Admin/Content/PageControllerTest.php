@@ -35,7 +35,7 @@ class PageControllerTest extends AppWebTestCase
         $this->client->loginUser($user, 'admin');
         $this->client->request('GET', $this->router->generate('admin_page_index'));
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', $this->translator->trans('page.index.page_title_h1', domain: 'page'));
+        $this->assertSelectorTextContains('h1', $this->translator->trans('page.index.title', domain: 'page'));
     }
 
     /**
@@ -261,11 +261,11 @@ class PageControllerTest extends AppWebTestCase
         $this->client->loginUser($user, 'admin');
         $this->client->request('GET', $this->router->generate('admin_page_add'));
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', $this->translator->trans('page.add.page_title_h1', domain: 'page'));
+        $this->assertSelectorTextContains('h1', $this->translator->trans('page.add.title', domain: 'page'));
 
         $this->client->request('GET', $this->router->generate('admin_page_update', ['id' => $page->getId()]));
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', $this->translator->trans('page.update.page_title_h1', domain: 'page'));
+        $this->assertSelectorTextContains('h1', $this->translator->trans('page.update.title', domain: 'page'));
 
         $this->client->request('GET', $this->router->generate('admin_page_update', ['id' => $pageOther->getId()]));
         $this->assertResponseStatusCodeSame(403);

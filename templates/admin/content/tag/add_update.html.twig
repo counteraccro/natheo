@@ -1,16 +1,16 @@
 {% extends 'admin/admin_base.html.twig' %}
 
 {% if tag is same as null %}
-    {% set title = 'tag.update.page_title' | trans({'id' : '-'}, 'tag') %}
+    {% set title = 'tag.update.title_id' | trans({'id' : '-'}, 'tag') %}
     {% set description = 'tag.update.description' | trans({}, 'tag') %}
 {% elseif tag.id is same as null %}
-    {% set title = 'tag.add.page_title_h1' | trans({}, 'tag') %}
+    {% set title = 'tag.add.title' | trans({}, 'tag') %}
     {% set description = 'tag.add.description' | trans({}, 'tag') %}
     {% set url_stats = '' %}
     {% set url_update = '' %}
     {% set url_delete = ''%}
 {% else %}
-    {% set title = 'tag.update.page_title' | trans({'id' : tag.id}, 'tag') %}
+    {% set title = 'tag.update.title_id' | trans({'id' : tag.id}, 'tag') %}
     {% set description = 'tag.update.description' | trans({}, 'tag') %}
     {% set url_stats =  path('admin_tag_stats', {'id' : tag.id}) %}
     {% set url_update =  path('admin_tag_update', {'id' : tag.id}) %}

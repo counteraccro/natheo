@@ -2,10 +2,10 @@
 
 
 {% if id is same as null %}
-    {% set title = 'page.add.page_title_h1' | trans({}, 'page') %}
+    {% set title = 'page.add.title' | trans({}, 'page') %}
     {% set description = 'page.add.description' | trans({}, 'page') %}
 {% else %}
-    {% set title = 'page.update.page_title' | trans({'id' : id}, 'page') %}
+    {% set title = 'page.update.title_id' | trans({'id' : id}, 'page') %}
     {% set description = 'page.update.description' | trans({}, 'page') %}
 {% endif %}
 

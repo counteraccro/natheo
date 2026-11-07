@@ -90,9 +90,9 @@ class MenuService extends AppAdminService
                 ' / ' .
                 $listeType[$element->getPosition()][$element->getType()];
 
-            $strDefault = $translator->trans('menu.grid.default.no', domain: 'menu');
+            $strDefault = $translator->trans('menu.grid.default_no', domain: 'menu');
             if ($element->isDefaultMenu()) {
-                $strDefault = $translator->trans('menu.grid.default.yes', domain: 'menu');
+                $strDefault = $translator->trans('menu.grid.default_yes', domain: 'menu');
             }
 
             $data[] = [
@@ -159,7 +159,7 @@ class MenuService extends AppAdminService
                 'type' => 'put',
                 'ajax' => true,
                 'confirm' => true,
-                'msgConfirm' => $translator->trans('menu.confirm.disabled.msg', ['label' => $label], 'menu'),
+                'msgConfirm' => $translator->trans('menu.confirm.disabled.message', ['label' => $label], 'menu'),
                 'csrf' => $csrfTokenManager->getToken(MenuCsrfToken::DISABLED->value)->getValue(),
             ];
             if ($menu->isDisabled()) {
@@ -188,7 +188,7 @@ class MenuService extends AppAdminService
                 'url' => $router->generate('admin_menu_delete', ['id' => $menu->getId()]),
                 'ajax' => true,
                 'confirm' => true,
-                'msgConfirm' => $translator->trans('menu.confirm.delete.msg', ['label' => $label], 'menu'),
+                'msgConfirm' => $translator->trans('menu.confirm.delete.message', ['label' => $label], 'menu'),
                 'csrf' => $csrfTokenManager->getToken(MenuCsrfToken::DELETE->value)->getValue(),
             ];
         }
@@ -217,7 +217,7 @@ class MenuService extends AppAdminService
                 'type' => 'put',
                 'ajax' => true,
                 'confirm' => true,
-                'msgConfirm' => $translator->trans('menu.confirm.switch.default.msg', ['label' => $label], 'menu'),
+                'msgConfirm' => $translator->trans('menu.confirm.switch.default.message', ['label' => $label], 'menu'),
                 'csrf' => $csrfTokenManager->getToken(MenuCsrfToken::SWITCH_DEFAULT->value)->getValue(),
             ];
         }
@@ -254,45 +254,45 @@ class MenuService extends AppAdminService
         $translator = $this->getTranslator();
         return [
             MenuPosition::POSITION_HEADER->value => [
-                MenuType::HEADER_SIDE_BAR->value => $translator->trans('menu.header.type.side-bar', domain: 'menu'),
+                MenuType::HEADER_SIDE_BAR->value => $translator->trans('menu.header.type.sidebar', domain: 'menu'),
                 MenuType::HEADER_MENU_DEROULANT->value => $translator->trans(
-                    'menu.header.type.deroulant',
+                    'menu.header.type.dropdown',
                     domain: 'menu',
                 ),
                 MenuType::HEADER_MENU_DEROULANT_BIG_MENU->value => $translator->trans(
-                    'menu.header.type.deroulant.big.menu',
+                    'menu.header.type.dropdown_big_menu',
                     domain: 'menu',
                 ),
                 MenuType::HEADER_MENU_DEROULANT_BIG_MENU_2_COLONNES->value => $translator->trans(
-                    'menu.header.type.deroulant.big.menu.2col',
+                    'menu.header.type.dropdown_big_menu_2col',
                     domain: 'menu',
                 ),
                 MenuType::HEADER_MENU_DEROULANT_BIG_MENU_3_COLONNES->value => $translator->trans(
-                    'menu.header.type.deroulant.big.menu.3col',
+                    'menu.header.type.dropdown_big_menu_3col',
                     domain: 'menu',
                 ),
                 MenuType::HEADER_MENU_DEROULANT_BIG_MENU_4_COLONNES->value => $translator->trans(
-                    'menu.header.type.deroulant.big.menu.4col',
+                    'menu.header.type.dropdown_big_menu_4col',
                     domain: 'menu',
                 ),
             ],
             MenuPosition::POSITION_LEFT->value => [
                 MenuType::LEFT_RIGHT_SIDE_BAR->value => $translator->trans(
-                    'menu.left.right.type.side-bar',
+                    'menu.left.right.type.sidebar',
                     domain: 'menu',
                 ),
                 MenuType::LEFT_RIGHT_SIDE_BAR_ACCORDEON->value => $translator->trans(
-                    'menu.left.right.type.side-bar.accordeon',
+                    'menu.left.right.type.sidebar_accordion',
                     domain: 'menu',
                 ),
             ],
             MenuPosition::POSITION_RIGHT->value => [
                 MenuType::LEFT_RIGHT_SIDE_BAR->value => $translator->trans(
-                    'menu.left.right.type.side-bar',
+                    'menu.left.right.type.sidebar',
                     domain: 'menu',
                 ),
                 MenuType::LEFT_RIGHT_SIDE_BAR_ACCORDEON->value => $translator->trans(
-                    'menu.left.right.type.side-bar.accordeon',
+                    'menu.left.right.type.sidebar_accordion',
                     domain: 'menu',
                 ),
             ],

@@ -32,7 +32,7 @@ class FaqControllerTest extends AppWebTestCase
         $this->client->loginUser($user, 'admin');
         $this->client->request('GET', $this->router->generate('admin_faq_index'));
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', $this->translator->trans('faq.index.page_title_h1', domain: 'faq'));
+        $this->assertSelectorTextContains('h1', $this->translator->trans('faq.index.title', domain: 'faq'));
     }
 
     /**
@@ -131,12 +131,12 @@ class FaqControllerTest extends AppWebTestCase
         $this->client->loginUser($user, 'admin');
         $this->client->request('GET', $this->router->generate('admin_faq_add'));
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', $this->translator->trans('faq.add.page_title_h1', domain: 'faq'));
+        $this->assertSelectorTextContains('h1', $this->translator->trans('faq.add.title', domain: 'faq'));
 
         $faq = $this->createFaqAllDataDefault($user);
         $this->client->request('GET', $this->router->generate('admin_faq_update', ['id' => $faq->getId()]));
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', $this->translator->trans('faq.update.page_title_h1', domain: 'faq'));
+        $this->assertSelectorTextContains('h1', $this->translator->trans('faq.update.title', domain: 'faq'));
         $this->assertPageTitleContains('#' . $faq->getId());
 
         // FAQ d'un autre contributeur

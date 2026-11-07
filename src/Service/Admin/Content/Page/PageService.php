@@ -174,7 +174,7 @@ class PageService extends AppAdminService
                 ];
                 $actionDisabled['confirm'] = true;
                 $actionDisabled['msgConfirm'] = $translator->trans(
-                    'page.confirm.disabled.msg',
+                    'page.confirm.disabled.message',
                     ['label' => $label],
                     'page',
                 );
@@ -192,7 +192,7 @@ class PageService extends AppAdminService
                 'url' => $router->generate('admin_page_delete', ['id' => $page->getId()]),
                 'ajax' => true,
                 'confirm' => true,
-                'msgConfirm' => $translator->trans('page.confirm.delete.msg', ['label' => $label], 'page'),
+                'msgConfirm' => $translator->trans('page.confirm.delete.message', ['label' => $label], 'page'),
                 'csrf' => $csrfTokens[PageCsrfToken::DELETE->value],
             ];
         }
@@ -221,7 +221,7 @@ class PageService extends AppAdminService
                 'type' => 'put',
                 'ajax' => true,
                 'confirm' => true,
-                'msgConfirm' => $translator->trans('page.confirm.landing.page.msg', ['label' => $label], 'page'),
+                'msgConfirm' => $translator->trans('page.confirm.landing.page.message', ['label' => $label], 'page'),
                 'csrf' => $csrfTokens[PageCsrfToken::LANDING_PAGE->value],
             ];
         }
@@ -265,7 +265,7 @@ class PageService extends AppAdminService
             PageStatus::DRAFT->value => $translator->trans('page.status.draft', domain: 'page'),
             PageStatus::PUBLISH->value => $translator->trans('page.status.publish', domain: 'page'),
             PageStatus::ARCHIVED->value => $translator->trans('page.status.archived', domain: 'page'),
-            default => $translator->trans('page.status.inconnu', domain: 'page'),
+            default => $translator->trans('page.status.unknown', domain: 'page'),
         };
     }
 
@@ -300,8 +300,8 @@ class PageService extends AppAdminService
             PageRender::ONE_BLOCK->value => $translator->trans('page.render.1.block', domain: 'page'),
             PageRender::TWO_BLOCK->value => $translator->trans('page.render.2.block', domain: 'page'),
             PageRender::THREE_BLOCK->value => $translator->trans('page.render.3.block', domain: 'page'),
-            PageRender::TWO_BLOCK_BOTTOM->value => $translator->trans('page.render.2.block.bottom', domain: 'page'),
-            PageRender::THREE_BLOCK_BOTTOM->value => $translator->trans('page.render.3.block.bottom', domain: 'page'),
+            PageRender::TWO_BLOCK_BOTTOM->value => $translator->trans('page.render.2.block_bottom', domain: 'page'),
+            PageRender::THREE_BLOCK_BOTTOM->value => $translator->trans('page.render.3.block_bottom', domain: 'page'),
             PageRender::ONE_TWO_BLOCK->value => $translator->trans('page.render.1.2.block', domain: 'page'),
             PageRender::TWO_ONE_BLOCK->value => $translator->trans('page.render.2.1.block', domain: 'page'),
             PageRender::TWO_TWO_BLOCK->value => $translator->trans('page.render.2.2.block', domain: 'page'),
@@ -320,8 +320,8 @@ class PageService extends AppAdminService
 
         return [
             PageContentType::TEXT->value => $translator->trans('page.content.text', domain: 'page'),
-            PageContentType::FAQ->value => $translator->trans('page.content.type.faq', domain: 'page'),
-            PageContentType::LISTING->value => $translator->trans('page.content.type.listing', domain: 'page'),
+            PageContentType::FAQ->value => $translator->trans('page.content.type_faq', domain: 'page'),
+            PageContentType::LISTING->value => $translator->trans('page.content.type_listing', domain: 'page'),
         ];
     }
 
@@ -336,10 +336,10 @@ class PageService extends AppAdminService
         $translator = $this->getTranslator();
         return [
             PageCategory::PAGE->value => $translator->trans('page.category.page', domain: 'page'),
-            PageCategory::PROJET->value => $translator->trans('page.category.projet', domain: 'page'),
+            PageCategory::PROJET->value => $translator->trans('page.category.project', domain: 'page'),
             PageCategory::ARTICLE->value => $translator->trans('page.category.article', domain: 'page'),
             PageCategory::BLOG->value => $translator->trans('page.category.blog', domain: 'page'),
-            PageCategory::EVENEMENT->value => $translator->trans('page.category.evenement', domain: 'page'),
+            PageCategory::EVENEMENT->value => $translator->trans('page.category.event', domain: 'page'),
             PageCategory::NEWS->value => $translator->trans('page.category.news', domain: 'page'),
             PageCategory::EVOLUTION->value => $translator->trans('page.category.evolution', domain: 'page'),
             PageCategory::DOCUMENTATION->value => $translator->trans('page.category.documentation', domain: 'page'),
@@ -413,9 +413,9 @@ class PageService extends AppAdminService
         }
 
         if ($page->getUpdateAt() === null || $history[0]['time'] > $page->getUpdateAt()->getTimestamp()) {
-            $msg = $translator->trans('page.msg.history.reload', domain: 'page');
+            $msg = $translator->trans('page.message.history.reload', domain: 'page');
             if ($page->getUpdateAt() === null) {
-                $msg = $translator->trans('page.msg.history.new.reload', domain: 'page');
+                $msg = $translator->trans('page.message.history.new.reload', domain: 'page');
             }
 
             $return = [
@@ -484,13 +484,13 @@ class PageService extends AppAdminService
                 $list = $repo->getListeFaq($locale);
                 $selected = array_key_first($list);
                 $label = $translator->trans('page.content.faq.list', domain: 'page');
-                $help = $translator->trans('page.content.faq.list.help', domain: 'page');
+                $help = $translator->trans('page.content.faq.list_help', domain: 'page');
                 break;
             case PageContentType::LISTING->value:
                 $list = $this->getAllCategories();
                 $selected = array_key_first($list);
                 $label = $translator->trans('page.content.listing.list', domain: 'page');
-                $help = $translator->trans('page.content.listing.list.help', domain: 'page');
+                $help = $translator->trans('page.content.listing.list_help', domain: 'page');
                 break;
             default:
                 break;
@@ -522,21 +522,21 @@ class PageService extends AppAdminService
             case PageContentType::FAQ->value:
                 /** @var Faq|null $faq */
                 $faq = $this->findOneById(Faq::class, $typeId);
-                $typeStr .= $translator->trans('page.content.type.faq', domain: 'page');
+                $typeStr .= $translator->trans('page.content.type_faq', domain: 'page');
                 $info =
                     $faq?->getFaqTranslationByLocale($this->getLocales()['current'])?->getTitle() ??
                     $translator->trans('page.content.info.not_found', domain: 'page');
                 break;
             case PageContentType::LISTING->value:
-                $typeStr .= $translator->trans('page.content.type.listing', domain: 'page');
+                $typeStr .= $translator->trans('page.content.type_listing', domain: 'page');
                 $category = $this->getAllCategories()[$typeId] ?? null;
                 $info =
                     $category === null
                         ? $translator->trans('page.content.info.not_found', domain: 'page')
-                        : $translator->trans('page.content.type.listing.info', ['type' => $category], domain: 'page');
+                        : $translator->trans('page.content.type_listing_info', ['type' => $category], domain: 'page');
                 break;
             default:
-                $typeStr .= $translator->trans('page.content.type.unknown', domain: 'page');
+                $typeStr .= $translator->trans('page.content.type_unknown', domain: 'page');
                 $info = $translator->trans('page.content.info.unknown', domain: 'page');
         }
 

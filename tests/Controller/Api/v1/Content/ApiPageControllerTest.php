@@ -478,7 +478,7 @@ class ApiPageControllerTest extends AppApiTestCase
         $this->assertEquals(
             $this->translator->trans(
                 'page.content.listing.title',
-                ['category' => $this->translator->trans('page.category.evenement', domain: 'page')],
+                ['category' => $this->translator->trans('page.category.event', domain: 'page')],
                 domain: 'page',
                 locale: 'fr',
             ),

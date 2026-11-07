@@ -1,10 +1,10 @@
 {% extends 'admin/admin_base.html.twig' %}
 
-{% block title %}{{ 'comment.see.page_title_h1' | trans({'%id%' : datas.id}, 'comment') }}{% endblock %}
+{% block title %}{{ 'comment.see.title_id' | trans({'%id%' : datas.id}, 'comment') }}{% endblock %}
 
 {% block body %}
 
-    <twig:Admin:PageHeaderComponent :breadcrumb="breadcrumb" :title="'comment.see.page_title_h1' | trans({'%id%' : datas.id}, 'comment')">
+    <twig:Admin:PageHeaderComponent :breadcrumb="breadcrumb" :title="'comment.see.title_id' | trans({'%id%' : datas.id}, 'comment')">
         <twig:block name="icon">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

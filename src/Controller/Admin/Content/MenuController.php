@@ -51,7 +51,7 @@ class MenuController extends AppAdminController
         $breadcrumb = [
             Breadcrumb::DOMAIN->value => 'menu',
             Breadcrumb::BREADCRUMB->value => [
-                'menu.index.page_title_h1' => '#',
+                'menu.index.title' => '#',
             ],
         ];
 
@@ -229,15 +229,15 @@ class MenuController extends AppAdminController
             $this->denyAccessUnlessGranted(ContentVoter::EDIT, $menu);
         }
 
-        $breadcrumbTitle = 'menu.update.menu_title_h1';
+        $breadcrumbTitle = 'menu.update.title';
         if ($id === null) {
-            $breadcrumbTitle = 'menu.add.menu_title_h1';
+            $breadcrumbTitle = 'menu.add.title';
         }
 
         $breadcrumb = [
             Breadcrumb::DOMAIN->value => 'menu',
             Breadcrumb::BREADCRUMB->value => [
-                'menu.index.page_title' => 'admin_menu_index',
+                'menu.index.title' => 'admin_menu_index',
                 $breadcrumbTitle => '#',
             ],
         ];

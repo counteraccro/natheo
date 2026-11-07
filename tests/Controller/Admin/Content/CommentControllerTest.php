@@ -30,7 +30,7 @@ class CommentControllerTest extends AppWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains(
             'h1',
-            $this->translator->trans('comment.index.page_title_h1', domain: 'comment'),
+            $this->translator->trans('comment.index.title', domain: 'comment'),
         );
     }
 
@@ -49,7 +49,7 @@ class CommentControllerTest extends AppWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains(
             'h1',
-            $this->translator->trans('comment.moderate.comments.page_title', domain: 'comment'),
+            $this->translator->trans('comment.moderate.comments.title', domain: 'comment'),
         );
     }
 
@@ -117,7 +117,7 @@ class CommentControllerTest extends AppWebTestCase
         $this->client->loginUser($user, 'admin');
         $this->client->request('GET', $this->router->generate('admin_comment_see', ['id' => $comment->getId()]));
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', $this->translator->trans('comment.see.page_title', domain: 'comment'));
+        $this->assertSelectorTextContains('h1', $this->translator->trans('comment.see.title', domain: 'comment'));
     }
 
     /**

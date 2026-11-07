@@ -18,13 +18,11 @@ export interface CommentModerationTranslate {
   status_default: string;
   pages_label: string;
   pages_default: string;
-  btn_reset: string;
   selection_title: string;
   selection_comment: string;
   selection_status: string;
   selection_comment_moderation: string;
   selection_submit: string;
-  comment_id: string;
   comment_date: string;
   comment_author: string;
   comment_comment: string;
@@ -35,9 +33,6 @@ export interface CommentModerationTranslate {
   comment_moderator: string;
   comment_update: string;
   no_result: string;
-  toast_title_success: string;
-  toast_title_error: string;
-  toast_time: string;
   paginate: GridPaginateTranslate;
   comment_unselect_all: string;
   comment_select_all: string;

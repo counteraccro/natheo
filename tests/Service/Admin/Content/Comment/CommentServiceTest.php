@@ -86,7 +86,7 @@ class CommentServiceTest extends AppWebTestCase
 
         $result = $this->commentService->getStatusFormatedByCode(999);
         $this->assertStringContainsString(
-            $this->translator->trans('comment.status.inconnu', domain: 'comment'),
+            $this->translator->trans('comment.status.unknown', domain: 'comment'),
             $result,
         );
     }

@@ -151,7 +151,7 @@ class TagService extends AppAdminService
                 ];
                 $actionDisabled['confirm'] = true;
                 $actionDisabled['msgConfirm'] = $translator->trans(
-                    'tag.confirm.disabled.msg',
+                    'tag.confirm.disabled.message',
                     ['label' => $label],
                     'tag',
                 );
@@ -169,7 +169,7 @@ class TagService extends AppAdminService
                 'url' => $router->generate('admin_tag_delete', ['id' => $tag->getId()]),
                 'ajax' => true,
                 'confirm' => true,
-                'msgConfirm' => $translator->trans('tag.confirm.delete.msg', ['label' => $label], 'tag'),
+                'msgConfirm' => $translator->trans('tag.confirm.delete.message', ['label' => $label], 'tag'),
                 'csrf' => $csrfTokens[TagCsrfToken::DELETE->value],
             ];
         }

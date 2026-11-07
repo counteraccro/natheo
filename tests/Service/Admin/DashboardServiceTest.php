@@ -193,7 +193,7 @@ class DashboardServiceTest extends AppWebTestCase
         $this->assertStringContainsString('badge ' . PageStatus::PUBLISH->getClassCss(), $result);
 
         $result = $this->dashboardService->getStatusFormatedByCode(999);
-        $this->assertStringContainsString($this->translator->trans('page.status.inconnu', domain: 'page'), $result);
+        $this->assertStringContainsString($this->translator->trans('page.status.unknown', domain: 'page'), $result);
     }
 
     /**

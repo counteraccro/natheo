@@ -51,7 +51,7 @@ class MediaControllerTest extends AppWebTestCase
 
         $this->client->request('GET', $this->router->generate('admin_media_index'));
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', $this->translator->trans('media.index.page_title_h1', domain: 'media'));
+        $this->assertSelectorTextContains('h1', $this->translator->trans('media.index.title', domain: 'media'));
     }
 
     /**
