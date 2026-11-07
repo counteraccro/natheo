@@ -50,7 +50,7 @@ class DatabaseManagerController extends AppAdminController
         $breadcrumb = [
             Breadcrumb::DOMAIN->value => 'database_manager',
             Breadcrumb::BREADCRUMB->value => [
-                'database_manager.index.page_title_h1' => '#',
+                'database_manager.index.title' => '#',
             ],
         ];
 
@@ -161,7 +161,7 @@ class DatabaseManagerController extends AppAdminController
             return $this->json([
                 'success' => false,
                 'msg' => $translator->trans(
-                    'database_manager.error.dump.filename.exist',
+                    'database_manager.error.dump.filename_exist',
                     ['fichier' => $filename . DatabaseManagerData::FILE_DUMP_EXTENSION->value],
                     domain: 'database_manager',
                 ),

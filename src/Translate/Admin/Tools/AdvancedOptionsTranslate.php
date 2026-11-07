@@ -19,15 +19,6 @@ class AdvancedOptionsTranslate extends AppTranslate
     public function getTranslate(): array
     {
         return [
-            'toast_title_success' => $this->translator->trans(
-                'advanced_options.toast.title.success',
-                domain: 'advanced_options',
-            ),
-            'toast_title_error' => $this->translator->trans(
-                'advanced_options.toast.title.error',
-                domain: 'advanced_options',
-            ),
-            'toast_time' => $this->translator->trans('advanced_options.toast.time', domain: 'advanced_options'),
             'switch_env_title' => $this->translator->trans(
                 'advanced_options.switch.env.title',
                 domain: 'advanced_options',
@@ -45,23 +36,23 @@ class AdvancedOptionsTranslate extends AppTranslate
                 domain: 'advanced_options',
             ),
             'switch_env_define_dev_1' => $this->translator->trans(
-                'advanced_options.switch.define.env.dev.1',
+                'advanced_options.switch.define.env.dev_1',
                 domain: 'advanced_options',
             ),
             'switch_env_define_dev_2' => $this->translator->trans(
-                'advanced_options.switch.define.env.dev.2',
+                'advanced_options.switch.define.env.dev_2',
                 domain: 'advanced_options',
             ),
             'switch_env_define_dev_3' => $this->translator->trans(
-                'advanced_options.switch.define.env.dev.3',
+                'advanced_options.switch.define.env.dev_3',
                 domain: 'advanced_options',
             ),
             'switch_env_define_dev_4' => $this->translator->trans(
-                'advanced_options.switch.define.env.dev.4',
+                'advanced_options.switch.define.env.dev_4',
                 domain: 'advanced_options',
             ),
             'switch_env_define_dev_warning' => $this->translator->trans(
-                'advanced_options.switch.define.env.dev.warning',
+                'advanced_options.switch.define.env.dev_warning',
                 domain: 'advanced_options',
             ),
             'switch_env_define_prod' => $this->translator->trans(
@@ -69,27 +60,27 @@ class AdvancedOptionsTranslate extends AppTranslate
                 domain: 'advanced_options',
             ),
             'switch_env_define_prod_1' => $this->translator->trans(
-                'advanced_options.switch.define.env.prod.1',
+                'advanced_options.switch.define.env.prod_1',
                 domain: 'advanced_options',
             ),
             'switch_env_define_prod_2' => $this->translator->trans(
-                'advanced_options.switch.define.env.prod.2',
+                'advanced_options.switch.define.env.prod_2',
                 domain: 'advanced_options',
             ),
             'switch_env_define_prod_3' => $this->translator->trans(
-                'advanced_options.switch.define.env.prod.3',
+                'advanced_options.switch.define.env.prod_3',
                 domain: 'advanced_options',
             ),
             'switch_env_define_prod_warning' => $this->translator->trans(
-                'advanced_options.switch.define.env.prod.warning',
+                'advanced_options.switch.define.env.prod_warning',
                 domain: 'advanced_options',
             ),
             'switch_env_btn_dev' => $this->translator->trans(
-                'advanced_options.switch.env.btn.dev',
+                'advanced_options.switch.env.button.dev',
                 domain: 'advanced_options',
             ),
             'switch_env_btn_prod' => $this->translator->trans(
-                'advanced_options.switch.env.btn.prod',
+                'advanced_options.switch.env.button.prod',
                 domain: 'advanced_options',
             ),
             'title_danger_zone' => $this->translator->trans(
@@ -127,7 +118,7 @@ class AdvancedOptionsTranslate extends AppTranslate
                 'advanced_options.reset.database.warning',
                 domain: 'advanced_options',
             ),
-            'btn' => $this->translator->trans('advanced_options.reset.database.btn', domain: 'advanced_options'),
+            'btn' => $this->translator->trans('advanced_options.reset.database.button', domain: 'advanced_options'),
         ];
     }
 
@@ -141,7 +132,7 @@ class AdvancedOptionsTranslate extends AppTranslate
             'title' => $this->translator->trans('advanced_options.reload.data.title', domain: 'advanced_options'),
             'text_1' => $this->translator->trans('advanced_options.reload.data.text_1', domain: 'advanced_options'),
             'warning' => $this->translator->trans('advanced_options.reload.data.warning', domain: 'advanced_options'),
-            'btn' => $this->translator->trans('advanced_options.reload.data.btn', domain: 'advanced_options'),
+            'btn' => $this->translator->trans('advanced_options.reload.data.button', domain: 'advanced_options'),
         ];
     }
 
@@ -153,23 +144,23 @@ class AdvancedOptionsTranslate extends AppTranslate
     {
         return [
             'modale_title' => $this->translator->trans(
-                'advanced_options.modale.confirm.env.title',
+                'advanced_options.modal.confirm.env.title',
                 domain: 'advanced_options',
             ),
             'modale_body_text_1' => $this->translator->trans(
-                'advanced_options.modale.confirm.env.body.text.1',
+                'advanced_options.modal.confirm.env.body.text.1',
                 domain: 'advanced_options',
             ),
             'modale_body_text_2' => $this->translator->trans(
-                'advanced_options.modale.confirm.env.body.text.2',
+                'advanced_options.modal.confirm.env.body.text.2',
                 domain: 'advanced_options',
             ),
             'modale_btn_confirm' => $this->translator->trans(
-                'advanced_options.modale.confirm.env.btn.confirm',
+                'advanced_options.modal.confirm.env.button.confirm',
                 domain: 'advanced_options',
             ),
             'modale_btn_undo' => $this->translator->trans(
-                'advanced_options.modale.confirm.env.btn.undo',
+                'advanced_options.modal.confirm.env.button.undo',
                 domain: 'advanced_options',
             ),
         ];
@@ -183,23 +174,23 @@ class AdvancedOptionsTranslate extends AppTranslate
     {
         return [
             'modale_title' => $this->translator->trans(
-                'advanced_options.modale.confirm.reset.database.title',
+                'advanced_options.modal.confirm.reset.database.title',
                 domain: 'advanced_options',
             ),
             'modale_body_text_1' => $this->translator->trans(
-                'advanced_options.modale.confirm.reset.database.body.text.1',
+                'advanced_options.modal.confirm.reset.database.body.text.1',
                 domain: 'advanced_options',
             ),
             'modale_body_text_2' => $this->translator->trans(
-                'advanced_options.modale.confirm.reset.database.body.text.2',
+                'advanced_options.modal.confirm.reset.database.body.text.2',
                 domain: 'advanced_options',
             ),
             'modale_btn_confirm' => $this->translator->trans(
-                'advanced_options.modale.confirm.reset.database.btn.confirm',
+                'advanced_options.modal.confirm.reset.database.button.confirm',
                 domain: 'advanced_options',
             ),
             'modale_btn_undo' => $this->translator->trans(
-                'advanced_options.modale.confirm.reset.database.btn.undo',
+                'advanced_options.modal.confirm.reset.database.button.undo',
                 domain: 'advanced_options',
             ),
         ];
@@ -213,23 +204,23 @@ class AdvancedOptionsTranslate extends AppTranslate
     {
         return [
             'modale_title' => $this->translator->trans(
-                'advanced_options.modale.confirm.reset.data.title',
+                'advanced_options.modal.confirm.reset.data.title',
                 domain: 'advanced_options',
             ),
             'modale_body_text_1' => $this->translator->trans(
-                'advanced_options.modale.confirm.reset.data.body.text.1',
+                'advanced_options.modal.confirm.reset.data.body.text.1',
                 domain: 'advanced_options',
             ),
             'modale_body_text_2' => $this->translator->trans(
-                'advanced_options.modale.confirm.reset.data.body.text.2',
+                'advanced_options.modal.confirm.reset.data.body.text.2',
                 domain: 'advanced_options',
             ),
             'modale_btn_confirm' => $this->translator->trans(
-                'advanced_options.modale.confirm.reset.data.btn.confirm',
+                'advanced_options.modal.confirm.reset.data.button.confirm',
                 domain: 'advanced_options',
             ),
             'modale_btn_undo' => $this->translator->trans(
-                'advanced_options.modale.confirm.reset.data.btn.undo',
+                'advanced_options.modal.confirm.reset.data.button.undo',
                 domain: 'advanced_options',
             ),
         ];
@@ -243,31 +234,31 @@ class AdvancedOptionsTranslate extends AppTranslate
     {
         return [
             'title' => $this->translator->trans(
-                'advanced_options.switch.env.msg.info.title',
+                'advanced_options.switch.env.message.info.title',
                 domain: 'advanced_options',
             ),
             'switch_env' => $this->translator->trans(
-                'advanced_options.switch.env.msg.info.switch',
+                'advanced_options.switch.env.message.info.switch',
                 domain: 'advanced_options',
             ),
             'switch_env_end' => $this->translator->trans(
-                'advanced_options.switch.env.msg.info.switch.end',
+                'advanced_options.switch.env.message.info.switch_end',
                 domain: 'advanced_options',
             ),
             'reset_data' => $this->translator->trans(
-                'advanced_options.reset.data.msg.info.reset',
+                'advanced_options.reset.data.message.info.reset',
                 domain: 'advanced_options',
             ),
             'reset_data_end' => $this->translator->trans(
-                'advanced_options.reset.data.msg.info.reset.end',
+                'advanced_options.reset.data.message.info.reset_end',
                 domain: 'advanced_options',
             ),
             'reset_database' => $this->translator->trans(
-                'advanced_options.reset.database.msg.info.reset',
+                'advanced_options.reset.database.message.info.reset',
                 domain: 'advanced_options',
             ),
             'reset_database_end' => $this->translator->trans(
-                'advanced_options.reset.database.msg.info.reset.end',
+                'advanced_options.reset.database.message.info.reset_end',
                 domain: 'advanced_options',
             ),
         ];

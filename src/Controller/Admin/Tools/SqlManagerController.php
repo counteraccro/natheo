@@ -43,7 +43,7 @@ class SqlManagerController extends AppAdminController
         $breadcrumb = [
             Breadcrumb::DOMAIN->value => 'sql_manager',
             Breadcrumb::BREADCRUMB->value => [
-                'sql_manager.index.page_title_h1' => '#',
+                'sql_manager.index.title' => '#',
             ],
         ];
 
@@ -160,11 +160,11 @@ class SqlManagerController extends AppAdminController
         ?int $id = null,
         bool $isExecute = false,
     ): Response {
-        $breadcrumbTitle = 'sql_manager.update.page_title_h1';
+        $breadcrumbTitle = 'sql_manager.update.title';
         if ($id === null) {
-            $breadcrumbTitle = 'sql_manager.add.page_title_h1';
+            $breadcrumbTitle = 'sql_manager.add.title';
         } elseif ($isExecute) {
-            $breadcrumbTitle = 'sql_manager.execute.page_title_h1';
+            $breadcrumbTitle = 'sql_manager.execute.title';
         }
 
         if ($id !== null) {
@@ -178,7 +178,7 @@ class SqlManagerController extends AppAdminController
         $breadcrumb = [
             Breadcrumb::DOMAIN->value => 'sql_manager',
             Breadcrumb::BREADCRUMB->value => [
-                'sql_manager.index.page_title' => 'admin_sql_manager_index',
+                'sql_manager.index.title' => 'admin_sql_manager_index',
                 $breadcrumbTitle => '#',
             ],
         ];

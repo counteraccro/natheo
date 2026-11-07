@@ -37,7 +37,7 @@ class DatabaseManagerControllerTest extends AppWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains(
             'h1',
-            $this->translator->trans('database_manager.index.page_title_h1', domain: 'database_manager'),
+            $this->translator->trans('database_manager.index.title', domain: 'database_manager'),
         );
     }
 

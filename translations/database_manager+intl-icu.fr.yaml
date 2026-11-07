@@ -1,11 +1,11 @@
-database_manager.index.page_title_h1: 'Gestionnaire de base de données'
+database_manager.index.title: 'Gestionnaire de base de données'
 database_manager.index.description: 'Gérer / restaurer / sauvegarder votre base de données'
 database_manager.schema.all.bdd.row.schema: Schema
 database_manager.schema.all.bdd.row.table_name: Table
 database_manager.schema.all.bdd.row.row: "Nombre d'éléments"
 database_manager.schema.all.bdd.row.size: Taille
 database_manager.schema.all.bdd.error_row: 'données indisponible'
-database_manager.loading: Chargement
+database_manager.index.loading: Chargement
 database_manager.dump.title: 'Créer une nouvelle sauvegarde'
 database_manager.dump.sub_title_1: 'Générez une sauvegarde complète de votre base de données'
 database_manager.dump.sub_title_2: 'Option sur les données'
@@ -14,44 +14,42 @@ database_manager.dump.select_tables: 'Ou uniquement les tables'
 database_manager.dump.option_data: 'Uniquement les données'
 database_manager.dump.option_table: 'Uniquement les schemas SQL'
 database_manager.dump.option_table_data: 'Schema SQL et données'
-database_manager.dump.help.title: Information
 database_manager.dump.help.body: "La génération d'un dump SQL peut prendre du temps, cette action va être réalisée en arrière plan. <br />Une notification vous sera envoyée une fois celle-ci terminée"
-database_manager.btn_generate_dump: 'Nouvelle sauvegarde'
-database_manager.btn_schema_bdd: 'Schema de la base de données'
-database_manager.btn_liste_dump: 'Liste des sauvegardes'
-database_manager.dump.btn.generate: 'Générer la sauvegarde'
+database_manager.index.button_generate_dump: 'Nouvelle sauvegarde'
+database_manager.index.button_schema_database: 'Schema de la base de données'
+database_manager.index.button_list_dump: 'Liste des sauvegardes'
+database_manager.dump.button.generate: 'Générer la sauvegarde'
 database_manager.schema.table.row.column_name: Nom
 database_manager.schema.table.row.data_type: Type
 database_manager.schema.table.row.character_maximum_length: 'Taille maximum'
 database_manager.schema.table.row.is_nullable: 'Null possible'
 database_manager.schema.table.row.column_default: 'Valeur par défaut'
 database_manager.success.dump: 'Génération de la sauvegarde prise en compte'
-database_manager.dump.warning.title: 'Attention !'
 database_manager.dump.warning.body: 'Utilisez des outils adaptés dès que votre site grandi. Une sauvegarde sur une base de donnée trop grande peut provoquer des crash de votre application voir de votre serveur !'
 database_manager.list.dump.title: 'Liste de vos sauvegardes disponible'
 database_manager.list.dump.no.data: 'Aucune sauvegarde pour le moment'
 database_manager.stat.nb.table: 'Tables au total'
 database_manager.stat.nb.row: 'Eléments au total'
 database_manager.stat.size: 'Taille de la base'
-database_manager.btn_schema_table: 'Schéma de la table'
-database_manager.action: Action
-database_manager.list.dump.btn.refresh: Rafraichir
-database_manager.list.dump.btn.download: Télécharger
+database_manager.index.button_schema_table: 'Schéma de la table'
+database_manager.index.action: Action
+database_manager.list.dump.button.refresh: Rafraichir
+database_manager.list.dump.button.download: Télécharger
 database_manager.dump.filename.label: 'Nom de la sauvegarde'
 database_manager.dump.filename.help: 'Laissez vide ou la valeur par défaut pour générer automatiquement avec la date'
-database_manager.index.popin.help.title: Aide
-database_manager.index.popin.help.delete: 'Supprimer une sauvegarde'
-database_manager.index.popin.help.enable: "Voir le schema d'une table"
-database_manager.index.popin.help.download: 'Télécharger une sauvegarde'
-database_manager.dump.option_data.label: 'Données à sauvegarder'
+database_manager.index.modal.help.title: Aide
+database_manager.index.modal.help.delete: 'Supprimer une sauvegarde'
+database_manager.index.modal.help.enable: "Voir le schema d'une table"
+database_manager.index.modal.help.download: 'Télécharger une sauvegarde'
+database_manager.dump.option_data_label: 'Données à sauvegarder'
 database_manager.list.dump.confirm.delete.title: 'Confirmation suppression sauvegarde SQL'
 database_manager.list.dump.confirm.delete.texte: 'Confirmez vous la suppression de la sauvegarde SQL ? Cette action est définitive et sans possibilité de retour'
-database_manager.list.dump.confirm.btn.ok: Oui
-database_manager.list.dump.confirm.btn.ko: Non
+database_manager.list.dump.confirm.button.ok: Oui
+database_manager.list.dump.confirm.button.ko: Non
 database_manager.success.delete.file.dump: 'Fichier {fichier} supprimé avec succès'
 database_manager.error.table.not.found: "La table {table} n'existe pas"
 database_manager.error.delete.file.dump: 'Impossible de supprimer le fichier {fichier}'
 database_manager.error.dump.options: 'Les options de sauvegarde sont invalides'
 database_manager.error.dump.filename: 'Le nom de la sauvegarde ne doit contenir que des lettres, chiffres, tirets et underscores (100 caractères maximum)'
-database_manager.error.dump.filename.exist: 'Une sauvegarde nommée {fichier} existe déjà'
+database_manager.error.dump.filename_exist: 'Une sauvegarde nommée {fichier} existe déjà'
 database_manager.error.generic: 'Une erreur est survenue, veuillez réessayer.'

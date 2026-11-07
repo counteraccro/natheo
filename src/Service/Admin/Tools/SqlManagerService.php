@@ -112,7 +112,7 @@ class SqlManagerService extends AppAdminService
             'ajax' => true,
             'confirm' => true,
             'msgConfirm' => $translator->trans(
-                'sql_manager.confirm.disabled.msg',
+                'sql_manager.confirm.disabled.message',
                 ['label' => $sqlManager->getName()],
                 'sql_manager',
             ),
@@ -142,7 +142,7 @@ class SqlManagerService extends AppAdminService
                 'ajax' => true,
                 'confirm' => true,
                 'msgConfirm' => $translator->trans(
-                    'sql_manager.confirm.delete.msg',
+                    'sql_manager.confirm.delete.message',
                     ['label' => $sqlManager->getName()],
                     'sql_manager',
                 ),
