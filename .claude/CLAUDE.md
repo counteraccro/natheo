@@ -111,6 +111,6 @@ Every comment (inline, PHPDoc, Twig, Vue, SCSS) is short, concise and only talks
 
 The issue → branch → PR workflow, branch/title conventions and label taxonomy are defined in `CONTRIBUTING.md` (imported below) and enforced by `.github/workflows/`. Never commit on `master`. Security vulnerabilities never go into public issues: follow `SECURITY.md`.
 
-When creating an issue with `gh issue create`, the YAML forms are not applied: write the body with the same `### <Field>` headings as the matching form in `.github/ISSUE_TEMPLATE/` (so the triage workflow can label it), and use the `[BUG] ` / `[AUDIT] ` / `[FEATURE] ` / `[CLEAN CODE] ` / `[EPIC] ` title prefix (the triage workflow adds the issue number to `[BUG]` titles only; other types keep their title without number).
+When creating an issue with `gh issue create`, the YAML forms are not applied: write the body with the same `### <Field>` headings as the matching form in `.github/ISSUE_TEMPLATE/` (so the triage workflow can label it), and use the `[BUG] ` / `[AUDIT] ` / `[FEATURE] ` / `[CLEAN CODE] ` / `[EPIC] ` title prefix (the triage workflow adds the issue number to `[BUG]` titles only; other types keep their title without number). The `Epic` label comes from the form, so add it with `--label Epic`. Attach an Epic's child issues as sub-issues (`gh api -X POST repos/<owner>/<repo>/issues/<epic>/sub_issues -F sub_issue_id=<child issue id>`, the `id` field, not the number) instead of checkboxes.
 
 @../CONTRIBUTING.md

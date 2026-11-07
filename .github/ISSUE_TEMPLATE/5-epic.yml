@@ -7,7 +7,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Une Epic n'a pas de branche : chaque issue fille a la sienne. Cochez les issues au fur et à mesure qu'elles sont fermées.
+        Une Epic n'a pas de branche : chaque issue fille a la sienne. Après la création, rattachez les issues filles en sous-issues (panneau « Sub-issues ») : l'avancement s'y met à jour tout seul.
 
   - type: dropdown
     id: module
@@ -54,9 +54,9 @@ body:
     id: issues
     attributes:
       label: Issues
-      description: Dans l'ordre de traitement.
+      description: Dans l'ordre de traitement. Les issues existantes sont aussi rattachées en sous-issues ; celles à créer sont listées en texte.
       value: |
-        - [ ] #
+        - #
     validations:
       required: true
 
