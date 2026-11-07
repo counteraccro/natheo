@@ -30,7 +30,7 @@ class SqlManagerControllerTest extends AppWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains(
             'h1',
-            $this->translator->trans('sql_manager.index.page_title_h1', domain: 'sql_manager'),
+            $this->translator->trans('sql_manager.index.title', domain: 'sql_manager'),
         );
     }
 
@@ -154,7 +154,7 @@ class SqlManagerControllerTest extends AppWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains(
             'h1',
-            $this->translator->trans('sql_manager.add.page_title_h1', domain: 'sql_manager'),
+            $this->translator->trans('sql_manager.add.title', domain: 'sql_manager'),
         );
 
         $this->client->request(
@@ -164,7 +164,7 @@ class SqlManagerControllerTest extends AppWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains(
             'h1',
-            $this->translator->trans('sql_manager.update.page_title_h1', domain: 'sql_manager'),
+            $this->translator->trans('sql_manager.update.title', domain: 'sql_manager'),
         );
 
         $this->client->request(
@@ -174,7 +174,7 @@ class SqlManagerControllerTest extends AppWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains(
             'h1',
-            $this->translator->trans('sql_manager.execute.page_title_h1', domain: 'sql_manager'),
+            $this->translator->trans('sql_manager.execute.title', domain: 'sql_manager'),
         );
 
         $sqlManager = $this->createSqlManager(customData: ['disabled' => true]);

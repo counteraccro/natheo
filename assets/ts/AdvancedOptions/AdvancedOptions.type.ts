@@ -41,9 +41,6 @@ export interface AdvancedOptionsMsgInfoTranslations {
 }
 
 export interface AdvancedOptionsTranslations {
-  toast_title_success: string;
-  toast_title_error: string;
-  toast_time: string;
   switch_env_title: string;
   switch_env_subtitle_prod: string;
   switch_env_subtitle_dev: string;

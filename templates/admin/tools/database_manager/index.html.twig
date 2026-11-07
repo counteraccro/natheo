@@ -1,10 +1,10 @@
 {% extends 'admin/admin_base.html.twig' %}
 
-{% block title %}{{ 'database_manager.index.page_title_h1' | trans({}, 'database_manager') }}{% endblock %}
+{% block title %}{{ 'database_manager.index.title' | trans({}, 'database_manager') }}{% endblock %}
 
 {% block body %}
 
-    <twig:Admin:PageHeaderComponent :breadcrumb="breadcrumb" :title="'database_manager.index.page_title_h1' | trans({}, 'database_manager')" :description="'database_manager.index.description' | trans({}, 'database_manager')">
+    <twig:Admin:PageHeaderComponent :breadcrumb="breadcrumb" :title="'database_manager.index.title' | trans({}, 'database_manager')" :description="'database_manager.index.description' | trans({}, 'database_manager')">
         <twig:block name="icon">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -37,7 +37,7 @@
 
     <twig:Admin:ModaleComponent id="help-grid-data-manager" bgColor="bg-secondary">
         <twig:block name="header">
-            {{ 'database_manager.index.popin.help.title' | trans({}, 'database_manager') }}
+            {{ 'database_manager.index.modal.help.title' | trans({}, 'database_manager') }}
         </twig:block>
 
         <div class="flex flex-row gap-10">
@@ -48,7 +48,7 @@
                         <path stroke="currentColor" stroke-width="2"
                               d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"></path>
                     </svg>
-                </button> {{ 'database_manager.index.popin.help.delete' | trans({}, 'database_manager') }}
+                </button> {{ 'database_manager.index.modal.help.delete' | trans({}, 'database_manager') }}
             </div>
             <div class="flex items-center gap-3">
                 <button type="button" class="btn btn-icon btn-xs btn-ghost-primary">
@@ -58,7 +58,7 @@
                               d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
                         <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                     </svg>
-                </button> {{ 'database_manager.index.popin.help.enable' | trans({}, 'database_manager') }}
+                </button> {{ 'database_manager.index.modal.help.enable' | trans({}, 'database_manager') }}
             </div>
         </div>
         <div class="flex flex-row gap-10">
@@ -69,7 +69,7 @@
                         <path stroke="currentColor" stroke-width="2"
                               d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                     </svg>
-                </button> {{ 'database_manager.index.popin.help.download' | trans({}, 'database_manager') }}
+                </button> {{ 'database_manager.index.modal.help.download' | trans({}, 'database_manager') }}
             </div>
         </div>
     </twig:Admin:ModaleComponent>

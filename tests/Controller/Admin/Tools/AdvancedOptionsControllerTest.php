@@ -28,7 +28,7 @@ class AdvancedOptionsControllerTest extends AppWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains(
             'h1',
-            $this->translator->trans('advanced_options.index.page_title_h1', domain: 'advanced_options'),
+            $this->translator->trans('advanced_options.index.title', domain: 'advanced_options'),
         );
     }
 

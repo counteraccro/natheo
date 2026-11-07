@@ -45,7 +45,7 @@ Directory shape under `src/` mirrors the domain, duplicated across `Controller/`
 `src/Overwrite/` holds controllers that override/extend a bundle or base controller for demo/override behavior (e.g. read-only demo mode).
 
 ### Where non-service code goes
-The former `src/Utils/` and `assets/utils/` catch-all folders were removed (#377): never recreate them. Place code by role instead:
+The former `src/Utils/` and `assets/utils/` catch-all folders were removed: never recreate them. Place code by role instead:
 - `src/Service/...` for services (and plain helper classes used by them), `src/Enum/...` for constants — constant holder classes are written as backed enums;
 - `src/Factory/<Layer>/<Domain>/` for `*Factory`, `src/Populate/<Layer>/<Domain>/` for `*Populate`, `src/Formatter/<Layer>/<Domain>/` for `*Formatter`/`*Formater` — all three excluded from autowiring in `config/services.yaml`;
 - `src/Entity/Trait/` (entity helpers) or `src/Repository/Trait/` (query helpers) for reusable traits;
@@ -87,7 +87,7 @@ Buttons use the classes of `assets/styles/admin/global/button.scss` (`btn` + a s
 ### Multilingual content vs. UI locale
 Content entities (Page, Menu, Faq, Comment, ...) store per-locale data via `*Translation` child entities/tables (e.g. `PageTranslation`, `MenuElementTranslation`), while UI/interface strings live in `translations/<domain>+intl-icu.<locale>.yaml` (or `<domain>.<locale>.yaml`), one domain per feature area, loaded via Symfony's translator with an explicit `domain:` on every `trans()` call. Supported UI locales are `fr`, `en`, `es`.
 
-Translation keys follow `<domain>.<screen>.<element>`: the domain name (file name) first, lowercase, dots between levels, underscores inside a name (`grid.search.placeholder_table`, `notification.confirm.button_ok`), English level names. A key is never also the prefix of another key (`dashboard.index.title`, not `dashboard.index` + `dashboard.index.description`). Common labels (Cancel, Delete, Yes/No…) get one key per domain, never a shared one: translations are editable from the CMS and must be changeable for a single button. `tests/Translation/TranslationKeyConventionTest.php` checks the format, the prefix rule and identical keys in fr/en/es for the domains listed in its `DOMAINS` constant (extended by each lot of Epic #437). Exceptions: `security` and `validators` (Symfony catalogues keyed by the English message) and the `messages` domain, whose dynamic keys (stored in database or `config/cms/*.yaml`, translated without domain) keep their origin prefix (`options_system.*`, `mail.*`, `sidebar.*`…). Keys built dynamically (`'notification.category.' . $value`) must stay lowercase.
+Translation keys follow `<domain>.<screen>.<element>`: the domain name (file name) first, lowercase, dots between levels, underscores inside a name (`grid.search.placeholder_table`, `notification.confirm.button_ok`), English level names. A key is never also the prefix of another key (`dashboard.index.title`, not `dashboard.index` + `dashboard.index.description`). Common labels (Cancel, Delete, Yes/No…) get one key per domain, never a shared one: translations are editable from the CMS and must be changeable for a single button. `tests/Translation/TranslationKeyConventionTest.php` checks the format, the prefix rule and identical keys in fr/en/es for the domains listed in its `DOMAINS` constant (add every new compliant domain to it). Exceptions: `security` and `validators` (Symfony catalogues keyed by the English message) and the `messages` domain, whose dynamic keys (stored in database or `config/cms/*.yaml`, translated without domain) keep their origin prefix (`options_system.*`, `mail.*`, `sidebar.*`…). Keys built dynamically (`'notification.category.' . $value`) must stay lowercase.
 
 ### Database migrations (MySQL / MariaDB and PostgreSQL)
 Both platforms are supported, so every migration exists **twice, with the same version number**: `migrations/V2/Mysql/VersionXXX.php` (namespace `DoctrineMigrations\V2\Mysql`) and `migrations/V2/Postgresql/VersionXXX.php` (namespace `DoctrineMigrations\V2\Postgresql`). `App\Doctrine\Migrations\PlatformMigrationFinder` (wired in `config/packages/doctrine_migrations.yaml`) only loads the folder matching the current connection platform; each migration also starts with a `skipIf()` on its platform as a safety net.
@@ -104,6 +104,8 @@ Both platforms are supported, so every migration exists **twice, with the same v
 ## Code style
 
 Inline (`//`) comments must stay short and concise: 2 lines maximum, and only when they explain the *why*, not narrate the *what* — if a comment only restates what the code already says, remove it. Prefer a clearer name or a shorter comment over a long explanation. Neither rule applies to method-level PHPDoc blocks (`@param`, `@return`, `@throws`), which stay descriptive as elsewhere in the codebase.
+
+Every comment (inline, PHPDoc, Twig, Vue, SCSS) is short, concise and only talks about the element it is attached to (function, constant, block): no instruction for future changes, no context about other code, and never a reference to an issue, an Epic, a PR or a work batch (`#437`, « lot 2 », « Epic »…). The history belongs in git and on GitHub.
 
 ## GitHub workflow
 

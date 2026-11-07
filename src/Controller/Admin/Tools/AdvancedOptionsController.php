@@ -49,7 +49,7 @@ class AdvancedOptionsController extends AppAdminController
         $breadcrumb = [
             Breadcrumb::DOMAIN->value => 'advanced_options',
             Breadcrumb::BREADCRUMB->value => [
-                'advanced_options.index.page_title_h1' => '#',
+                'advanced_options.index.title' => '#',
             ],
         ];
 

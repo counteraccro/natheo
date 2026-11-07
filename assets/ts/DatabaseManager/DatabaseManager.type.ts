@@ -26,9 +26,7 @@ export interface DatabaseManagerDumpOptionTranslations {
   option_data: string;
   option_table: string;
   option_table_data: string;
-  help_title: string;
   help_body: string;
-  warning_title: string;
   warning_body: string;
   btn_generate: string;
 }

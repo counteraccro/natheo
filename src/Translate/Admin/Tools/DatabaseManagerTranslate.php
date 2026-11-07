@@ -19,21 +19,21 @@ class DatabaseManagerTranslate extends AppTranslate
     public function getTranslate(): array
     {
         return [
-            'loading' => $this->translator->trans('database_manager.loading', domain: 'database_manager'),
+            'loading' => $this->translator->trans('database_manager.index.loading', domain: 'database_manager'),
             'btn_generate_dump' => $this->translator->trans(
-                'database_manager.btn_generate_dump',
+                'database_manager.index.button_generate_dump',
                 domain: 'database_manager',
             ),
-            'btn_schema_bdd' => $this->translator->trans('database_manager.btn_schema_bdd', domain: 'database_manager'),
+            'btn_schema_bdd' => $this->translator->trans('database_manager.index.button_schema_database', domain: 'database_manager'),
             'btn_schema_table' => $this->translator->trans(
-                'database_manager.btn_schema_table',
+                'database_manager.index.button_schema_table',
                 domain: 'database_manager',
             ),
-            'btn_liste_dump' => $this->translator->trans('database_manager.btn_liste_dump', domain: 'database_manager'),
+            'btn_liste_dump' => $this->translator->trans('database_manager.index.button_list_dump', domain: 'database_manager'),
             'stat_nb_table' => $this->translator->trans('database_manager.stat.nb.table', domain: 'database_manager'),
             'stat_nb_row' => $this->translator->trans('database_manager.stat.nb.row', domain: 'database_manager'),
             'stat_size' => $this->translator->trans('database_manager.stat.size', domain: 'database_manager'),
-            'action' => $this->translator->trans('database_manager.action', domain: 'database_manager'),
+            'action' => $this->translator->trans('database_manager.index.action', domain: 'database_manager'),
             'error_generic' => $this->translator->trans('database_manager.error.generic', domain: 'database_manager'),
             'dump_option' => $this->getTranslateDumpOption(),
             'list_dump' => $this->getTranslateListDump(),
@@ -64,7 +64,7 @@ class DatabaseManagerTranslate extends AppTranslate
                 domain: 'database_manager',
             ),
             'option_data_label' => $this->translator->trans(
-                'database_manager.dump.option_data.label',
+                'database_manager.dump.option_data_label',
                 domain: 'database_manager',
             ),
             'option_data' => $this->translator->trans('database_manager.dump.option_data', domain: 'database_manager'),
@@ -76,18 +76,13 @@ class DatabaseManagerTranslate extends AppTranslate
                 'database_manager.dump.option_table_data',
                 domain: 'database_manager',
             ),
-            'help_title' => $this->translator->trans('database_manager.dump.help.title', domain: 'database_manager'),
             'help_body' => $this->translator->trans('database_manager.dump.help.body', domain: 'database_manager'),
-            'warning_title' => $this->translator->trans(
-                'database_manager.dump.warning.title',
-                domain: 'database_manager',
-            ),
             'warning_body' => $this->translator->trans(
                 'database_manager.dump.warning.body',
                 domain: 'database_manager',
             ),
             'btn_generate' => $this->translator->trans(
-                'database_manager.dump.btn.generate',
+                'database_manager.dump.button.generate',
                 domain: 'database_manager',
             ),
         ];
@@ -103,11 +98,11 @@ class DatabaseManagerTranslate extends AppTranslate
             'title' => $this->translator->trans('database_manager.list.dump.title', domain: 'database_manager'),
             'no_data' => $this->translator->trans('database_manager.list.dump.no.data', domain: 'database_manager'),
             'btn_refresh' => $this->translator->trans(
-                'database_manager.list.dump.btn.refresh',
+                'database_manager.list.dump.button.refresh',
                 domain: 'database_manager',
             ),
             'btn_download' => $this->translator->trans(
-                'database_manager.list.dump.btn.download',
+                'database_manager.list.dump.button.download',
                 domain: 'database_manager',
             ),
             'title_modale_confirm' => $this->translator->trans(
@@ -119,11 +114,11 @@ class DatabaseManagerTranslate extends AppTranslate
                 domain: 'database_manager',
             ),
             'btn_go' => $this->translator->trans(
-                'database_manager.list.dump.confirm.btn.ok',
+                'database_manager.list.dump.confirm.button.ok',
                 domain: 'database_manager',
             ),
             'btn_undo' => $this->translator->trans(
-                'database_manager.list.dump.confirm.btn.ko',
+                'database_manager.list.dump.confirm.button.ko',
                 domain: 'database_manager',
             ),
         ];
