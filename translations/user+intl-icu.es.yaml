@@ -1,210 +1,210 @@
-user.success.enabled: __user.success.no.disabled
-user.success.disabled: __user.success.disabled
-user.grid.id: __user.grid.id
-user.grid.login: __user.grid.login
-user.grid.email: __user.grid.email
-user.grid.name: __user.grid.name
-user.grid.role: __user.grid.role
-user.grid.created_at: __user.grid.created_at
-user.grid.update_at: __user.grid.update_at
-user.confirm.disabled.message: __user.confirm.disabled.msg
-user.confirm.delete.message: __user.confirm.delete.msg
-user.confirm.replace.message: __user.confirm.replace.msg
-user.login.title: __user.login.title
-user.index.title: __user.page_title_h1
-user.index.description: __user.description
-user.index.info: __user.info
-user.my_options.title: __user.my_option_title_h1
-user.my_options.description: __user.my_option_description
-user.update.title_login: __user.page_update_title_h1
-user.login_user.title: __user.login_user.title
-user.login.always_log: __user.login.always_log
-user.login.logout: __user.login.logout
-user.login_user.email: __user.login_user.email
-user.login_user.forgot_password: __user.login_user.forgot_password
-user.login_user.remember_me: __user.login_user.remember_me
-user.login_user.button_login: __user.login_user.btn_login
-user.my_account.title: __user.page_my_account.title_h1
-user.my_account.description: __user.page_my_account.description
-user.form.adresse_email.label: __user.form.adresse_email.label
-user.form.adresse_email.help: __user.form.adresse_email.help
-user.form.login.label: __user.form.login.label
-user.form.login.help: __user.form.login.help
-user.form.login.placeholder: __user.form.login.placeholder
-user.form.firstname.label: __user.form.firstname.label
-user.form.firstname.help: __user.form.firstname.help
-user.form.firstname.placeholder: __user.form.firstname.placeholder
-user.form.lastname.label: __user.form.lastname.label
-user.form.lastname.help: __user.form.lastname.help
-user.form.lastname.placeholder: __user.form.lastname.placeholder
-user.form.submit: __user.form.submit
+user.success.enabled: La cuenta del usuario <strong>{login}</strong> ha sido activada
+user.success.disabled: La cuenta del usuario <strong>{login}</strong> ha sido desactivada
+user.grid.id: ID
+user.grid.login: Usuario
+user.grid.email: Correo electrónico
+user.grid.name: Nombre
+user.grid.role: Rol
+user.grid.created_at: Creación
+user.grid.update_at: Actualización
+user.confirm.disabled.message: La cuenta del usuario <strong>{login}</strong> se desactivará y ya no podrá conectarse a la administración. <br /> ¿Confirma esta acción?
+user.confirm.delete.message: La cuenta del usuario <strong>{login}</strong> se eliminará, esta acción es definitiva. <br /> ¿Confirma esta acción?
+user.confirm.replace.message: La cuenta del usuario <strong>{login}</strong> se sustituirá por una cuenta John Doe, esta acción es definitiva. <br /> ¿Confirma esta acción?
+user.login.title: Autenticación
+user.index.title: Gestión de los usuarios
+user.index.description: Gestione los usuarios que pueden conectarse al CMS y gestionar su contenido
+user.index.info: Los usuarios [John Doe] están anonimizados y bloqueados | los usuarios mostrados en gris están desactivados
+user.my_options.title: Mis opciones
+user.my_options.description: Personalice la interfaz, el idioma y otros detalles de la administración
+user.update.title_login: Edición de la cuenta {login}
+user.login_user.title: Autenticación
+user.login.always_log: 'Ya ha iniciado sesión como {login}, ¿desea '
+user.login.logout: cerrar sesión?
+user.login_user.email: Correo electrónico
+user.login_user.forgot_password: ¿Ha olvidado su contraseña?
+user.login_user.remember_me: Recordarme
+user.login_user.button_login: Iniciar sesión
+user.my_account.title: Mi cuenta
+user.my_account.description: Gestione sus datos personales y su contraseña, y consulte sus estadísticas
+user.form.adresse_email.label: Correo electrónico
+user.form.adresse_email.help: Identificador para conectarse. Pida a un administrador que lo modifique
+user.form.login.label: Usuario
+user.form.login.help: Identificador que aparece al final de sus artículos
+user.form.login.placeholder: Su usuario
+user.form.firstname.label: Nombre
+user.form.firstname.help: Identificador que aparece al final de sus artículos si desea mostrar su identidad real
+user.form.firstname.placeholder: Su nombre
+user.form.lastname.label: Apellidos
+user.form.lastname.help: Identificador que aparece al final de sus artículos si desea mostrar su identidad real
+user.form.lastname.placeholder: Sus apellidos
+user.form.submit: Modificar mi perfil
 user.form.back: Volver
-user.my_account.personal_data: __user.page_my_account.personal_data
-user.my_account.personal_data_description: __user.page_my_account.personal_data.description
-user.my_account.danger: __user.page_my_account.danger
-user.my_account.statistics: __user.page_my_account.statistiques
-user.my_account.password_change: __user.page_my_account.password_change
-user.change_password.input.password_1: __user.change_password.input.password_1
-user.change_password.input.password_2: __user.change_password.input.password_2
-user.change_password.force: __user.change_password.force
-user.change_password.force_nb_character: __user.change_password.force.nb_character
-user.change_password.force_uppercase: __user.change_password.force.majuscule
-user.change_password.force_lowercase: __user.change_password.force.minuscule
-user.change_password.force_digit: __user.change_password.force.chiffre
-user.change_password.force_character_special: __user.change_password.force.character_spe
-user.error.password_2: __user.error.password_2
-user.update_password.success: __user.update_password.success
-user.error.not_disabled: __user.error_not_disabled
-user.success.self_disabled: __user.self_disabled_success
-user.danger_zone.loading: __user.danger_zone.loading
-user.danger_zone.button_disabled: __user.danger_zone.btn_disabled
-user.danger_zone.button_delete: __user.danger_zone.btn_delete
-user.danger_zone.button_replace: __user.danger_zone.btn_replace
-user.danger_zone.title_disabled: __user.danger_zone.title_disabled
-user.danger_zone.content_disabled_1: __user.danger_zone.content_disabled_1
-user.danger_zone.content_disabled_2: __user.danger_zone.content_disabled_2
-user.danger_zone.button_cancel_disabled: __user.danger_zone.btn_cancel_disabled
-user.danger_zone.button_confirm_disabled: __user.danger_zone.btn_confirm_disabled
-user.danger_zone.button_cancel_delete: __user.danger_zone.btn_cancel_delete
-user.danger_zone.button_confirm_delete: __user.danger_zone.btn_confirm_delete
-user.danger_zone.title_delete: __user.danger_zone.title_delete
-user.danger_zone.content_delete_1: __user.danger_zone.content_delete_1
-user.danger_zone.content_delete_2: __user.danger_zone.content_delete_2
-user.danger_zone.button_cancel_replace: __user.danger_zone.btn_cancel_replace
-user.danger_zone.button_confirm_replace: __user.danger_zone.btn_confirm_replace
-user.danger_zone.title_replace: __user.danger_zone.title_replace
-user.danger_zone.content_replace_1: __user.danger_zone.content_replace_1
-user.danger_zone.content_replace_2: __user.danger_zone.content_replace_2
-user.success.anonymous: __user.success_anonymous
-user.success.remove: __user.success_remove
-user.error.not_allowed: __user.error_not_allowed
-user.danger_zone.success_anonymous: __user.danger_zone.success_anonymous
-user.danger_zone.success_remove: __user.danger_zone.success_remove
-user.add.title: __user.page_add_title_h1
-user.add.description: __user.page_add.description
-user.button.new: __user.btn.new
-user.index.modal.help.title: __user.index.popin.help.title
-user.index.modal.help.disabled_user: __user.index.popin.help.disabled_user
-user.index.modal.help.enable_user: __user.index.popin.help.enable_user
-user.index.modal.help.delete: __user.index.popin.help.delete
-user.index.modal.help.anonymous: __user.index.popin.help.anonymous
-user.index.modal.help.edit: __user.index.popin.help.edit
-user.index.modal.help.switch: __user.index.popin.help.switch
-user.update.success: __user.page_update.success
-user.form_update.adresse_email.label: __user.form_update.adresse_email.label
-user.form_update.adresse_email.help: __user.form_update.adresse_email.help
-user.form_update.login.label: __user.form_update.login.label
-user.form_update.login.help: __user.form_update.login.help
-user.form_update.login.placeholder: __user.form_update.login.placeholder
-user.form_update.firstname.label: __user.form_update.firstname.label
-user.form_update.firstname.help: __user.form_update.firstname.help
-user.form_update.firstname.placeholder: __user.form_update.firstname.placeholder
-user.form_update.lastname.label: __user.form_update.lastname.label
-user.form_update.lastname.help: __user.form_update.lastname.help
-user.form_update.lastname.placeholder: __user.form_update.lastname.placeholder
-user.form_update.disabled.label: __user.form_update.disabled.label
-user.form_update.disabled.help: __user.form_update.disabled.help
-user.form_update.submit: __user.form_update.submit
-user.update.description: __user.page_update_description
-user.update.last_update: __user.page_update.last_update
-user.update.information: __user.page_update.information
-user.my_account.success: __user.page_my_account.success
-user.update.created: __user.page_update.created
-user.update.info.user_disabled: __user.page_update.info.user_disabled
-user.update.info.warning: __user.page_update.info.warning
-user.update.reset_password: __user.page_update.reset_password
-user.update.action: __user.page_update.action
-user.update.reset_password_description: __user.page_update.reset_password.description
-user.update.connected_to: __user.page_update.connecte_to
-user.update.connected_to_description: __user.page_update.connecte_to.description
-user.update.connected_to_button: __user.page_update.connecte_to.btn
-user.form_update.role.user: __Utilisateur
-user.form_update.role.contributor: __Contributeur
-user.form_update.role.admin: __Administrateur
-user.form_update.role.super_admin: '__Super Administrateur'
-user.form_update.role.label: __user.form_update.role.label
-user.form_update.role.help: __user.form_update.role.help
-user.update.info_role_super_admin: __user.page_update.info_role_super_admin
-user.form_update.role.founder: __user.form_update.role.founder
-user.update.last_connexion: __user.page_update.last_connexion
-user.update.reset_password_button: __user.page_update.reset_password.btn
-user.reset_password.title: __user.reset_password.title
-user.my_account.reset_password_success: __user.page_my_account.reset_password_success
-user.change_password.error_404: __user.change_password.error_404
-user.change_password.success: __user.change_password.success
-user.change_password.title: __user.change_password.title
-user.change_password.link_login: __user.change_password.link_login
-user.change_password.link_home: __user.change_password.link_home
-user.add.success: __user.page_add.success
-user.form_add.adresse_email.label: __user.form_add.adresse_email.label
-user.form_add.adresse_email.help: __user.form_add.adresse_email.help
-user.form_add.role.label: __user.form_add.role.label
-user.form_add.role.help: __user.form_add.role.help
-user.form_add.login.label: __user.form_add.login.label
-user.form_add.login.help: __user.form_add.login.help
-user.form_add.login.placeholder: __user.form_add.login.placeholder
-user.form_add.firstname.label: __user.form_add.firstname.label
-user.form_add.firstname.help: __user.form_add.firstname.help
-user.form_add.firstname.placeholder: __user.form_add.firstname.placeholder
-user.form_add.lastname.label: __user.form_add.lastname.label
-user.form_add.lastname.help: __user.form_add.lastname.help
-user.form_add.lastname.placeholder: __user.form_add.lastname.placeholder
-user.form_add.submit: __user.form_add.submit
-user.add.profile: __user.page_add.profil
-user.add.personal_data: __user.page_add.personal_data
-user.add.personal_data_description: __user.page_add.personal_data.description
-user.add.information: __user.page_add.information
-user.change_password.new_title: __user.change_password.new_title
-user.add.information_role_info: __user.page_add.information.role.info
-user.add.information_list_role: __user.page_add.information.liste_role
-user.add.information_role_user: __user.page_add.information.role.user
-user.add.information_role_user_info: __user.page_add.information.role.user.info
-user.add.information_role_contributor: __user.page_add.information.role.contributeur
-user.add.information_role_contributor_info: __user.page_add.information.role.contributeur.info
-user.add.information_role_admin: __user.page_add.information.role.admin
-user.add.information_role_admin_info: __user.page_add.information.role.admin.info
-user.add.information_role_super_admin: __user.page_add.information.role.super_admin
-user.add.information_role_super_admin_info: __user.page_add.information.role.super_admin.info
-user.reset_password.success: __user.reset_password.success
-user.reset_password.submit: __user.reset_password.submit
-user.more_options.loading: __user.more_options.loading
-user.more_options.button.show_help: __user.more_options.btn.show_help
-user.more_options.button.hide_help: __user.more_options.btn.hide_help
-user.my_account.options.misc: __user.page_my_account.options.divers
-user.form.avatar.label: __user.form.avatar.label
-user.form.avatar.help: __user.form.avatar.help
-user.form.avatar.placeholder: __user.form.avatar.placeholder
-user.form.avatar.error.upload: __user.form.avatar.error.upload
-user.form.description.label: __user.form.description.label
-user.form.description.help: __user.form.description.help
-user.form.description.placeholder: __user.form.description.placeholder
-user.my_account.upload.avatar.error: __user.page_my_account.upload.avatar.error
-user.login.always_log_title: __user.login.always_log.title
-user.my_account.avatar: __user.page_my_account.avatar
-user.my_account.avatar_subtitle: __user.page_my_account.avatar.subtitle
-user.my_account.avatar_recommendation: __user.page_my_account.avatar.recommandation
-user.my_account.avatar_format: __user.page_my_account.avatar.format
-user.my_account.avatar_weight: __user.page_my_account.avatar.weight
-user.my_account.avatar_size: __user.page_my_account.avatar.size
-user.my_account.avatar_delete: __user.page_my_account.avatar.delete
-user.my_account.statistics_description: __user.page_my_account.statistiques.description
-user.my_account.password_change_description: __user.page_my_account.password_change.description
-user.danger_zone.description_disabled: __user.danger_zone.description_disabled
-user.danger_zone.description_delete: __user.danger_zone.description_delete
-user.danger_zone.description_replace: __user.danger_zone.description_replace
-user.my_account.danger_description: __user.page_my_account.danger.description
-user.change_password.button.submit: __user.change_password.btn.submit
-user.my_account.options.misc_description: __user.page_my_account.options.divers.description
-user.delete_avatar.success: __user.delete_avatar.success
-user.my_account.email.placeholder: __user.page_my_account.email.placeholder
-user.my_account.login.placeholder: __user.page_my_account.login.placeholder
-user.my_account.firstname.placeholder: __user.page_my_account.firstname.placeholder
-user.my_account.lastname.placeholder: __user.page_my_account.lastname.placeholder
-user.my_account.avatar_no_field: __user.page_my_account.avatar.nofield
-user.add.profile_description: __user.page_add.profil.description
-user.add.information_description: __user.page_add.information.description
-user.update.action_description: __user.page_update.action.description
-user.update.information_description: __user.page_update.information.description
+user.my_account.personal_data: Mis datos personales
+user.my_account.personal_data_description: Estos datos no son obligatorios. Si deja todos los campos vacíos, sus contenidos no se identificarán como suyos. Se recomienda introducir al menos un usuario
+user.my_account.danger: Zona de peligro
+user.my_account.statistics: Mis estadísticas
+user.my_account.password_change: Seguridad
+user.change_password.input.password_1: Nueva contraseña
+user.change_password.input.password_2: Confirmar la nueva contraseña
+user.change_password.force: 'Seguridad de la contraseña, su contraseña debe tener:'
+user.change_password.force_nb_character: Al menos 8 caracteres
+user.change_password.force_uppercase: Al menos una letra mayúscula
+user.change_password.force_lowercase: Al menos una letra minúscula
+user.change_password.force_digit: Al menos una cifra
+user.change_password.force_character_special: Al menos un carácter especial
+user.error.password_2: La contraseña de confirmación es diferente de la contraseña
+user.update_password.success: La nueva contraseña se ha actualizado correctamente
+user.error.not_disabled: No puede desactivar a este usuario
+user.success.self_disabled: Su cuenta está ahora desactivada, se cerrará su sesión en unos segundos...
+user.danger_zone.loading: Acción en curso...
+user.danger_zone.button_disabled: Desactivar
+user.danger_zone.button_delete: Eliminar
+user.danger_zone.button_replace: Anonimizar
+user.danger_zone.title_disabled: Desactivar mi cuenta
+user.danger_zone.content_disabled_1: 'Está a punto de desactivar su cuenta: después de esta acción, ya no podrá conectarse al sitio'
+user.danger_zone.content_disabled_2: Será necesaria la intervención de un administrador para anular esta acción
+user.danger_zone.button_cancel_disabled: Cancelar
+user.danger_zone.button_confirm_disabled: Confirmo mi elección
+user.danger_zone.button_cancel_delete: Cancelar
+user.danger_zone.button_confirm_delete: Confirmo mi elección
+user.danger_zone.title_delete: Eliminar mi cuenta
+user.danger_zone.content_delete_1: 'Está a punto de eliminar su cuenta: perderá todo el contenido creado en este sitio y ya no podrá conectarse'
+user.danger_zone.content_delete_2: Esta acción es definitiva e irreversible
+user.danger_zone.button_cancel_replace: Cancelar
+user.danger_zone.button_confirm_replace: Confirmo mi elección
+user.danger_zone.title_replace: Anonimizar mi cuenta
+user.danger_zone.content_replace_1: 'Está a punto de anonimizar su cuenta: perderá todo el contenido creado en este sitio y ya no podrá conectarse'
+user.danger_zone.content_replace_2: Esta acción es definitiva e irreversible
+user.success.anonymous: La cuenta se ha anonimizado correctamente
+user.success.remove: La cuenta se ha eliminado correctamente
+user.error.not_allowed: Esta acción no está permitida
+user.danger_zone.success_anonymous: Su cuenta se ha anonimizado correctamente, cierre de sesión en 3 segundos...
+user.danger_zone.success_remove: Su cuenta se ha eliminado correctamente, cierre de sesión en 3 segundos...
+user.add.title: Nuevo usuario
+user.add.description: Cree un nuevo usuario que podrá contribuir al contenido de su sitio
+user.button.new: Nuevo usuario
+user.index.modal.help.title: Ayuda
+user.index.modal.help.disabled_user: Desactiva un usuario
+user.index.modal.help.enable_user: Activa un usuario
+user.index.modal.help.delete: Elimina un usuario
+user.index.modal.help.anonymous: Anonimiza un usuario
+user.index.modal.help.edit: Modificar un usuario
+user.index.modal.help.switch: Conectarse como
+user.update.success: Usuario {email} modificado correctamente
+user.form_update.adresse_email.label: Correo electrónico
+user.form_update.adresse_email.help: Atención, cámbielo solo a petición del usuario o si es necesario
+user.form_update.login.label: Usuario
+user.form_update.login.help: Identificador que aparece al final de sus artículos
+user.form_update.login.placeholder: Su usuario
+user.form_update.firstname.label: Nombre
+user.form_update.firstname.help: Identificador que aparece al final de sus artículos si desea mostrar su identidad real
+user.form_update.firstname.placeholder: Su nombre
+user.form_update.lastname.label: Apellidos
+user.form_update.lastname.help: Identificador que aparece al final de sus artículos si desea mostrar su identidad real
+user.form_update.lastname.placeholder: Sus apellidos
+user.form_update.disabled.label: Desactivar el usuario
+user.form_update.disabled.help: Permite o no al usuario conectarse a la zona de administración del sitio
+user.form_update.submit: Modificar
+user.update.description: Modifique la cuenta de un usuario y/o consulte algunas estadísticas
+user.update.last_update: Última actualización
+user.update.information: Información
+user.my_account.success: Sus datos personales se han modificado correctamente
+user.update.created: Fecha de creación
+user.update.info.user_disabled: Este usuario está desactivado, por lo que algunas acciones no están disponibles.
+user.update.info.warning: Atención
+user.update.reset_password: Restablecimiento de la contraseña
+user.update.action: Acciones posibles
+user.update.reset_password_description: Puede iniciar el restablecimiento de la contraseña del usuario. Se le enviará un correo electrónico para ayudarle a restablecer su contraseña
+user.update.connected_to: Conectarse como
+user.update.connected_to_description: Puede tomar el control de la cuenta de {login} para conectarse con su cuenta
+user.update.connected_to_button: Conectarme como {login}
+user.form_update.role.user: Usuario
+user.form_update.role.contributor: Colaborador
+user.form_update.role.admin: Administrador
+user.form_update.role.super_admin: Superadministrador
+user.form_update.role.label: Rol en la aplicación
+user.form_update.role.help: El rol determina los permisos que tiene el usuario en la administración del sitio
+user.update.info_role_super_admin: 'Esta cuenta tiene el rol <b>SUPER_ADMIN</b> y es <b>fundadora</b>: por seguridad, algunos datos no se pueden modificar y algunas acciones no están permitidas.'
+user.form_update.role.founder: Fundador
+user.update.last_connexion: Última conexión
+user.update.reset_password_button: Restablecer la contraseña
+user.reset_password.title: Cambio de contraseña
+user.my_account.reset_password_success: Se ha enviado correctamente al usuario un correo electrónico con las instrucciones para cambiar la contraseña
+user.change_password.error_404: ¡No, no, no, no ha dicho la palabra mágica!
+user.change_password.success: Su contraseña se ha cambiado correctamente, ya puede conectarse con su nueva contraseña
+user.change_password.title: Cambio de mi contraseña
+user.change_password.link_login: Conectarme
+user.change_password.link_home: Inicio del sitio
+user.add.success: Usuario {email} añadido correctamente
+user.form_add.adresse_email.label: Correo electrónico
+user.form_add.adresse_email.help: Identificador para conectarse, el nuevo usuario recibirá un correo electrónico en esta dirección para finalizar la creación de su cuenta
+user.form_add.role.label: Rol en la aplicación
+user.form_add.role.help: El rol determina los permisos que tiene el usuario en la administración del sitio
+user.form_add.login.label: Usuario
+user.form_add.login.help: Identificador que aparece al final de sus artículos
+user.form_add.login.placeholder: Usuario
+user.form_add.firstname.label: Nombre
+user.form_add.firstname.help: Identificador que aparece al final de sus artículos si desea mostrar su identidad real
+user.form_add.firstname.placeholder: Su nombre
+user.form_add.lastname.label: Apellidos
+user.form_add.lastname.help: Identificador que aparece al final de sus artículos si desea mostrar su identidad real
+user.form_add.lastname.placeholder: Sus apellidos
+user.form_add.submit: Crear el nuevo usuario
+user.add.profile: Su perfil
+user.add.personal_data: Sus datos personales
+user.add.personal_data_description: El usuario puede modificar sus datos directamente desde su cuenta, datos no obligatorios
+user.add.information: Información
+user.change_password.new_title: Cree su contraseña
+user.add.information_role_info: Los roles se enumeran del más débil al más potente. Cada rol hereda los permisos del rol inferior
+user.add.information_list_role: Roles disponibles
+user.add.information_role_user: Rol usuario
+user.add.information_role_user_info: Da derecho a conectarse a la aplicación (rol por defecto)
+user.add.information_role_contributor: Rol colaborador
+user.add.information_role_contributor_info: Da derecho a añadir contenido al sitio
+user.add.information_role_admin: Rol administrador
+user.add.information_role_admin_info: Da derecho a administrar los contenidos del sitio (comentarios, miembros, etc.)
+user.add.information_role_super_admin: Rol superadministrador
+user.add.information_role_super_admin_info: Permite gestionar todo el CMS
+user.reset_password.success: Se ha enviado un correo electrónico a la dirección indicada
+user.reset_password.submit: Cambiar mi contraseña
+user.more_options.loading: Procesando...
+user.more_options.button.show_help: Mostrar la ayuda de configuración
+user.more_options.button.hide_help: Ocultar la ayuda de configuración
+user.my_account.options.misc: Otras opciones
+user.form.avatar.label: Su avatar
+user.form.avatar.help: Ninguna imagen seleccionada
+user.form.avatar.placeholder: Seleccione un avatar
+user.form.avatar.error.upload: Suba una imagen válida en formato JPG, GIF o PNG
+user.form.description.label: Descripción personal
+user.form.description.help: Una breve descripción de usted que aparecerá al final de sus artículos
+user.form.description.placeholder: Una breve descripción de usted
+user.my_account.upload.avatar.error: Se ha producido un error al subir su avatar
+user.login.always_log_title: Información importante
+user.my_account.avatar: Mi avatar
+user.my_account.avatar_subtitle: Avatar que se mostrará al final de sus artículos
+user.my_account.avatar_recommendation: Recomendaciones
+user.my_account.avatar_format: Formato JPG, PNG o GIF
+user.my_account.avatar_weight: Tamaño máximo de 2 MB
+user.my_account.avatar_size: Imagen cuadrada recomendada (500x500px como mínimo)
+user.my_account.avatar_delete: Eliminar
+user.my_account.statistics_description: Consulte las estadísticas de su cuenta
+user.my_account.password_change_description: Gestione la contraseña de su cuenta
+user.danger_zone.description_disabled: Su cuenta se desactivará
+user.danger_zone.description_delete: Su cuenta se eliminará
+user.danger_zone.description_replace: Su cuenta se anonimizará
+user.my_account.danger_description: Acciones irreversibles sobre su cuenta
+user.change_password.button.submit: Modificar mi contraseña
+user.my_account.options.misc_description: Otras opciones de configuración
+user.delete_avatar.success: Avatar eliminado correctamente
+user.my_account.email.placeholder: Mi correo electrónico
+user.my_account.login.placeholder: Mi usuario
+user.my_account.firstname.placeholder: Mi nombre
+user.my_account.lastname.placeholder: Mis apellidos
+user.my_account.avatar_no_field: Ninguna imagen seleccionada
+user.add.profile_description: Datos utilizados para la conexión
+user.add.information_description: Acerca de los roles
+user.update.action_description: Acciones posibles sobre la cuenta
+user.update.information_description: Estadísticas de la cuenta
 user.change_password.input.password_current: 'Contraseña actual'
 user.change_password.error.current_password: 'La contraseña actual es incorrecta'
 user.change_password.error.rule: 'La contraseña no cumple las reglas de seguridad'

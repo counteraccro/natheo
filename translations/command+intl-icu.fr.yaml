@@ -1,15 +1,15 @@
-command.install.title: 'Installation de Natheo CMS'
+command.install.title: Installation de Nathéo CMS
 command.install.description: 'Cette commande est un raccourci des commandes suivantes :'
 command.install.description_create_database: 'doctrine:database:create'
 command.install.description_create_schema: 'doctrine:schema:create'
 command.install.description_fixtures_load: 'doctrine:fixtures:load '
 command.install.description_clear_cache: 'cache:clear'
 command.install.description_schema_warning: 'Une base de données pour le projet existe déjà, celle-ci sera supprimée'
-command.install.description_confirm: 'Confirmez vous ?'
+command.install.description_confirm: Confirmez-vous ?
 command.install.description_confirm_no: 'Aucune action réalisée...'
-command.install.drop.database: 'Suppression de base de données'
-command.install.drop.database_success: 'Suppression réalisé avec succès'
-command.install.error: "Une erreur est survenue, consulter les logs pour plus d'information"
+command.install.drop.database: Suppression de la base de données
+command.install.drop.database_success: Suppression réalisée avec succès
+command.install.error: Une erreur est survenue, consultez les logs pour plus d'informations
 command.install.create.database: 'Création de la base de données'
 command.install.create.database_success: 'Base de données créée avec succès'
 command.install.create.schema: 'Création du schéma SQL'
@@ -18,7 +18,7 @@ command.install.fixture.load: 'Lancement des fixtures'
 command.install.fixture.load_success: 'Fixtures installées avec succès'
 command.install.clear.cache: 'Suppression du cache'
 command.install.clear.cache_success: 'Cache supprimé avec succès'
-command.install.success: 'Installation de Natheo CMS réalisée avec succès'
+command.install.success: Installation de Nathéo CMS réalisée avec succès
 command.install_test.title: "Installation de l'environnement de test"
 command.install_test.note: 'Vérifiez que votre fichier .env.test ou .env.test.local est correctement configuré'
 command.install_test.confirm: 'Cette opération va recréer la base de données de test. Continuer ?'
@@ -32,8 +32,8 @@ command.install_test.error: "Une erreur est survenue durant l'installation de l'
 command.install_test.step.create_database: 'Création de la base de données de test'
 command.install_test.create_database.success: 'Base de données de test créée avec succès'
 command.install_test.step.create_schema: 'Création du schéma de la base de données de test'
-command.install_test.create_schema.success: 'Schéma de la base de données créé avec succès'
+command.install_test.create_schema.success: Schéma de la base de données de test créé avec succès
 command.install_test.success: "Installation de l'environnement de test terminée avec succès"
 command.install_test.help.phpunit: 'Vous pouvez maintenant exécuter les tests avec la commande suivante :'
-command.install_test.warning.change.env: 'Cette commande doit être executé en environnement de test, lancement de la commande en test'
-command.install.env.prod: "Vous êtes en environnement de production, passer par l'installateur classique pour installer l'application"
+command.install_test.warning.change.env: 'Cette commande doit être exécutée en environnement de test : relance de la commande en test'
+command.install.env.prod: 'Vous êtes en environnement de production : passez par l''installateur classique pour installer l''application'

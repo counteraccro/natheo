@@ -1,18 +1,18 @@
-sidebar.success.enabled: __sidebar.success.no.disabled
-sidebar.success.disabled: __sidebar.success.disabled
-sidebar.grid.id: __sidebar.grid.id
-sidebar.grid.parent: __sidebar.grid.parent
-sidebar.grid.label: __sidebar.grid.label
-sidebar.grid.role: __sidebar.grid.role
-sidebar.grid.description: __sidebar.grid.description
-sidebar.grid.created_at: __sidebar.grid.created_at
-sidebar.grid.update_at: __sidebar.grid.update_at
-sidebar.confirm.disabled.message: __sidebar.confirm.disabled.msg
-sidebar.index.title: __sidebar.page_title_h1
-sidebar.index.description: __sidebar.description
-sidebar.index.info: __sidebar.info
-sidebar.index.modal.help.title: __sidebar.index.popin.help.title
-sidebar.index.modal.help.disabled: __sidebar.index.popin.help.disabled
-sidebar.index.modal.help.enabled: __sidebar.index.popin.help.enabled
+sidebar.success.enabled: El elemento de la barra lateral <strong>{label}</strong> ahora es visible
+sidebar.success.disabled: El elemento de la barra lateral <strong>{label}</strong> ahora está oculto para todos
+sidebar.grid.id: ID
+sidebar.grid.parent: Padre
+sidebar.grid.label: Etiqueta
+sidebar.grid.role: Rol de acceso
+sidebar.grid.description: Descripción
+sidebar.grid.created_at: Creación
+sidebar.grid.update_at: Actualización
+sidebar.confirm.disabled.message: El elemento de la barra lateral <strong>{label}</strong> se desactivará y, por tanto, quedará oculto en la administración. <br /> ¿Confirma esta acción?
+sidebar.index.title: Gestión de la barra lateral
+sidebar.index.description: Define qué elementos del menú izquierdo de la administración se muestran u ocultan
+sidebar.index.info: Los elementos bloqueados {icon} no se pueden ocultar. Los elementos ocultos {icon2} ya no aparecen en la barra lateral, pero siguen accesibles mediante su URL
+sidebar.index.modal.help.title: Ayuda
+sidebar.index.modal.help.disabled: Oculta un elemento
+sidebar.index.modal.help.enabled: Muestra un elemento
 sidebar.error.csrf: "Token de seguridad no válido, vuelva a cargar la página"
 sidebar.error.lock: "El elemento de la barra lateral <strong>{label}</strong> está bloqueado y no se puede ocultar"

@@ -1,18 +1,18 @@
-sidebar.success.enabled: __sidebar.success.no.disabled
-sidebar.success.disabled: __sidebar.success.disabled
-sidebar.grid.id: __sidebar.grid.id
-sidebar.grid.parent: __sidebar.grid.parent
-sidebar.grid.label: __sidebar.grid.label
-sidebar.grid.role: __sidebar.grid.role
-sidebar.grid.description: __sidebar.grid.description
-sidebar.grid.created_at: __sidebar.grid.created_at
-sidebar.grid.update_at: __sidebar.grid.update_at
-sidebar.confirm.disabled.message: __sidebar.confirm.disabled.msg
-sidebar.index.title: __sidebar.page_title_h1
-sidebar.index.description: __sidebar.description
-sidebar.index.info: __sidebar.info
-sidebar.index.modal.help.title: __sidebar.index.popin.help.title
-sidebar.index.modal.help.disabled: __sidebar.index.popin.help.disabled
-sidebar.index.modal.help.enabled: __sidebar.index.popin.help.enabled
+sidebar.success.enabled: The sidebar item <strong>{label}</strong> is now visible
+sidebar.success.disabled: The sidebar item <strong>{label}</strong> is now hidden for everyone
+sidebar.grid.id: ID
+sidebar.grid.parent: Parent
+sidebar.grid.label: Label
+sidebar.grid.role: Access role
+sidebar.grid.description: Description
+sidebar.grid.created_at: Created
+sidebar.grid.update_at: Updated
+sidebar.confirm.disabled.message: The sidebar item <strong>{label}</strong> will be disabled and therefore hidden in the administration. <br /> Do you confirm this action?
+sidebar.index.title: Sidebar management
+sidebar.index.description: Defines which items of the administration's left menu are shown or hidden
+sidebar.index.info: Locked items {icon} cannot be hidden. Hidden items {icon2} no longer appear in the sidebar, but remain reachable through their URL
+sidebar.index.modal.help.title: Help
+sidebar.index.modal.help.disabled: Hides an item
+sidebar.index.modal.help.enabled: Shows an item
 sidebar.error.csrf: "Invalid security token, please reload the page"
-sidebar.error.lock: "The sidebar element <strong>{label}</strong> is locked and cannot be hidden"
+sidebar.error.lock: The sidebar item <strong>{label}</strong> is locked and cannot be hidden

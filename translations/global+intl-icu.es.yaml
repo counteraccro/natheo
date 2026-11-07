@@ -1,24 +1,24 @@
-global.role.user: 'Utilisateur [es]'
-global.role.contributor: 'Contributeur [es]'
-global.role.admin: 'Administrateur [es]'
-global.role.super_admin: 'Super Administrateur [es]'
-global.footer.licence: 'Copyright &copy; 2023-{year} &mdash; Propulsé par Nathéo CMS [es]'
-global.breadcrumb.dashboard: 'Dashboard [es]'
-global.header.new.button: __global.header.btn.nouveau
-global.header.new.page: __global.header.btn.nouveau.page
-global.header.new.menu: __global.header.btn.menu
-global.header.new.faq: __global.header.btn.faq
-global.header.new.tag: __global.header.btn.tag
-global.header.search.placeholder: __global.header.search.input
-global.header.menu.my_account: __global.header.menu.my.account
-global.header.menu.my_options: __global.header.menu.my.options
-global.header.menu.website: __global.header.menu.website
-global.header.menu.impersonation: __global.header.menu.impersonation
-global.header.menu.logout: __global.header.menu.logout
-global.header.theme.title: __global.header.theme
-global.header.theme.dark_mode: __global.header.dark.mode
-global.modal.help.close: __global.modale.help.close
-global.error.csrf: __global.error.csrf
+global.role.user: Usuario
+global.role.contributor: Colaborador
+global.role.admin: Administrador
+global.role.super_admin: Superadministrador
+global.footer.licence: Copyright &copy; 2023-{year} &mdash; Desarrollado con Nathéo CMS
+global.breadcrumb.dashboard: Panel de control
+global.header.new.button: Nuevo
+global.header.new.page: Nueva página
+global.header.new.menu: Nuevo menú
+global.header.new.faq: Nueva FAQ
+global.header.new.tag: Nueva etiqueta
+global.header.search.placeholder: Buscar una página, una etiqueta, un menú...
+global.header.menu.my_account: Mi cuenta
+global.header.menu.my_options: Mis opciones
+global.header.menu.website: Mi sitio web
+global.header.menu.impersonation: Volver a mi cuenta
+global.header.menu.logout: Cerrar sesión
+global.header.theme.title: Temas disponibles
+global.header.theme.dark_mode: Modo oscuro
+global.modal.help.close: Cerrar la ayuda
+global.error.csrf: Token de seguridad no válido, vuelva a cargar la página e inténtelo de nuevo.
 global.a11y.close: 'Cerrar'
 global.a11y.loading: 'Cargando…'
 global.a11y.first: 'Primera página'

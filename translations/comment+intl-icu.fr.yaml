@@ -5,8 +5,8 @@ comment.index.modal.help.edit: Modérer
 comment.grid.id: '#'
 comment.grid.comment: Commentaire
 comment.grid.author: Auteur
-comment.grid.status: Etat
-comment.grid.created_at: 'Créer le'
+comment.grid.status: État
+comment.grid.created_at: Créé le
 comment.grid.page: Page
 comment.status.wait.validation: 'En attente de validation'
 comment.status.validate: Validé
@@ -18,34 +18,34 @@ comment.see.title_id: 'Commentaire #{id}'
 comment.index.button.moderate: 'Modération globale'
 comment.see.loading: 'Chargement du commentaire'
 comment.see.author: Auteur
-comment.see.created: 'Créer le '
+comment.see.created: 'Créé le '
 comment.see.ip: IP
 comment.see.user_agent: 'Autres infos'
-comment.see.title_info: 'Information du commentaire'
+comment.see.title_info: Informations du commentaire
 comment.see.moderation.comment: 'Commentaire de modération'
 comment.see.moderation.author: Modérateur
-comment.see.button.edit: 'Editer le commentaire'
-comment.see.save.success: 'Commentaire mise à jour avec succès'
+comment.see.button.edit: Modifier le commentaire
+comment.see.save.success: Commentaire mis à jour avec succès
 comment.index.info: Information
 comment.index.info_comment_open: 'Les commentaires sont ouverts sur le site'
 comment.index.info_comment_moderate: 'et sont en attente de validation par défaut.'
 comment.index.info_comment_close: 'Les commentaires sont désactivés sur le site'
 comment.index.info_change_option: 'Modifier les options'
-comment.moderation.loading: 'Chargement de la liste de commentaire'
-comment.moderate.comments.description: 'Validé ou modéré de façon globale une liste de commentaires'
+comment.moderation.loading: Chargement de la liste des commentaires
+comment.moderate.comments.description: Valider ou modérer en une fois une liste de commentaires
 comment.moderation.legend.search: Filtre
-comment.moderation.status.label: 'Trier par status'
+comment.moderation.status.label: Trier par statut
 comment.moderation.pages.label: 'Trier par pages'
 comment.moderation.pages.default: 'Toutes les pages'
 comment.moderation.selection.title: 'Action de modération'
-comment.moderation.status.default: 'Tous les status'
+comment.moderation.status.default: Tous les statuts
 comment.index.button.moderate_nb_wait_validation_2: ' en attente de validation'
 comment.moderation.paginate.page: page
 comment.moderation.paginate.on: sur
 comment.moderation.paginate.row: commentaire(s)
 comment.moderation.comment.comment: Contenu
 comment.moderation.comment.page: 'Posté sur la page'
-comment.moderation.comment.info: Information
+comment.moderation.comment.info: Informations
 comment.moderation.comment.ip: IP
 comment.moderation.comment.user_agent: 'User Agent'
 comment.moderation.comment.date: 'écrit le'
@@ -53,15 +53,15 @@ comment.moderation.comment.moderator: 'Modéré par'
 comment.moderation.comment.update: 'Modéré le'
 comment.moderation.comment.author: par
 comment.moderation.selection.comment: sélectionné(s)
-comment.moderation.selection.status: 'Nouveau status'
+comment.moderation.selection.status: Nouveau statut
 comment.moderation.selection.comment_moderation: 'Commentaire de modération'
 comment.moderation.selection.submit: 'Mettre à jour'
-comment.moderation.update.success: 'commentaire(s) édité(s) avec succès'
-comment.moderation.no_result: 'Aucun commentaire trouvé pour le status sélectionné'
+comment.moderation.update.success: commentaire(s) modifié(s) avec succès
+comment.moderation.no_result: Aucun commentaire trouvé pour le statut sélectionné
 comment.see.cancel: Retour
 comment.see.comment.title: 'Contenu du commentaire'
-comment.see.comment.status: Status
-comment.see.comment.status_current: 'Status actuel'
+comment.see.comment.status: Statut
+comment.see.comment.status_current: Statut actuel
 comment.see.comment.status_label: 'Modifier le statut'
 comment.see.comment.page.associated: 'Page associée'
 comment.see.comment.page.created: 'Créée le '
@@ -73,7 +73,7 @@ comment.moderation.status.short.validate: Validé
 comment.moderation.status.short.moderate: Modéré
 comment.moderation.status.short.waiting: 'En attente'
 comment.see.comment.error.no.comment.title: 'Aucun commentaire trouvé'
-comment.see.comment.error.no.comment.text: "Ce commentaire n'existe pas ou à été supprimé. Vous pouvez retourner à la liste ou en créer un nouveau"
+comment.see.comment.error.no.comment.text: Ce commentaire n'existe pas ou a été supprimé. Vous pouvez retourner à la liste
 comment.see.comment.button.back: Retour
 comment.error.not_found: 'Ce commentaire n''existe pas ou a été supprimé.'
 comment.error.status_invalid: 'Ce statut de commentaire n''existe pas.'

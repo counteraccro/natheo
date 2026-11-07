@@ -1,46 +1,46 @@
-notification.msg.welcome.title: '__Bienvenue sur le site'
-notification.msg.welcome.content: "__Bienvenue {login} , Vous pouvez dès à présent contribuer au site. Votre compte possède les droits <strong>{role}</strong> sur le site <br /> Pour toute question vous avez <a href='{url_aide}'>l'aide</a> du site"
-notification.msg.self_disabled.title: '__Désactivation de compte'
-notification.msg.self_disabled.content: '__{login} à décidé de désactiver son compte'
-notification.msg.self_delete.title: '__Suppression de compte'
-notification.msg.self_delete.content: '__{login} à décidé de supprimer son compte'
-notification.msg.self_anonymous.title: '__Anonymisation de compte'
-notification.msg.self_anonymous.content: "__{login} à décidé d'anonymiser son compte"
-notification.msg.dump_sql.title: '__Dump SQL disponible'
-notification.msg.dump_sql.content: "__Le dump SQL {file} est disponible, vous pouvez le télécharger <a href='{url}'>ici</a> ou directement depuis l'interface de sauvegarde"
-notification.msg.dump_sql_error.title: __notification.msg.dump_sql_error.title
-notification.msg.dump_sql_error.content: __notification.msg.dump_sql_error.content
+notification.msg.welcome.title: Welcome to the site
+notification.msg.welcome.content: Welcome {login}, you can now contribute to the site. Your account has the <strong>{role}</strong> rights on the site. <br /> If you have any questions, read the site <a href="{url_aide}">help</a>
+notification.msg.self_disabled.title: Account deactivation
+notification.msg.self_disabled.content: '{login} has decided to deactivate their account'
+notification.msg.self_delete.title: Account deletion
+notification.msg.self_delete.content: '{login} has decided to delete their account'
+notification.msg.self_anonymous.title: Account anonymization
+notification.msg.self_anonymous.content: '{login} has decided to anonymize their account'
+notification.msg.dump_sql.title: SQL dump available
+notification.msg.dump_sql.content: The SQL dump {file} is available, you can download it <a href="{url}">here</a> or directly from the backup interface
+notification.msg.dump_sql_error.title: SQL dump failed
+notification.msg.dump_sql_error.content: The generation of the SQL dump {file} failed. Check the application logs for more details
 notification.msg.new_fondateur.title: 'Welcome!'
-notification.msg.new_fondateur.content: 'Hello <b>{login}</b>, you have just completed the installation of Natheo CMS. A few more settings and your site will be up and running. <br /> To help you put your site online, you can read the site <a href="{url_aide}" target="_blank">help</a>'
-notification.index.title: __notification.page_title_h1
-notification.index.description: __notification.description
-notification.list.loading: __notification.loading
-notification.list.empty: __notification.empty
-notification.index.purge_info: __notification.purge.info
-notification.filter.unread: __notification.only_not_read
-notification.list.read_all: __notification.read_All
-notification.filter.all: __notification.all
-notification.stats.unread: __notification.stat_non_lu
-notification.stats.today: __notification.stat_today
-notification.stats.all: __notification.stat_all
-notification.category.comment: __Commentaire
-notification.category.sql: __Dump
-notification.category.admin: __Administration
-notification.list.delete_selected: __notification.delete_selected
-notification.list.delete_all: __notification.delete_all
-notification.list.unread_success: __notification.update.unread.success
-notification.list.read_success: __notification.update.read.success
-notification.list.mark_unread: __notification.no_read
-notification.list.mark_read: __notification.read
-notification.list.read_all_success: __notification.read.all.success
-notification.confirm.title: __notification.confirm.title
-notification.confirm.button_ok: __notification.confirm.btn.ok
-notification.confirm.button_no: __notification.confirm.btn.no
-notification.confirm.message: __notification.confirm.msg
-notification.list.delete_success: __notification.delete.success
-notification.item.see_comment: __notification.notification.see.comment
-notification.item.mark_read: __notification.notification.read
-notification.item.time: __notification.notification.time
-notification.confirm.message_single: __notification.confirm.single_delete
+notification.msg.new_fondateur.content: Hello <b>{login}</b>, you have just completed the installation of Nathéo CMS. A few more settings and your site will be up and running. <br /> To help you put your site online, you can read the site <a href="{url_aide}" target='_blank'>help</a>
+notification.index.title: Notification center
+notification.index.description: List of my notifications, hover your mouse {mouse} over them to mark them as read.
+notification.list.loading: Loading data
+notification.list.empty: No notifications yet...
+notification.index.purge_info: Read notifications will be automatically deleted after <b>{nb_day}</b> days
+notification.filter.unread: Unread
+notification.list.read_all: Mark all as read
+notification.filter.all: All
+notification.stats.unread: Unread
+notification.stats.today: Today
+notification.stats.all: Total
+notification.category.comment: Comment
+notification.category.sql: Dump
+notification.category.admin: Administration
+notification.list.delete_selected: Delete
+notification.list.delete_all: Delete all
+notification.list.unread_success: Notifications marked as unread
+notification.list.read_success: Notifications marked as read
+notification.list.mark_unread: Mark as unread
+notification.list.mark_read: Mark as read
+notification.list.read_all_success: All notifications have been marked as read
+notification.confirm.title: Do you confirm this action?
+notification.confirm.button_ok: Yes, I confirm
+notification.confirm.button_no: 'No'
+notification.confirm.message: You are about to delete {total} notification(s), including {noRead} unread
+notification.list.delete_success: Notification(s) deleted successfully
+notification.item.see_comment: See the comment
+notification.item.mark_read: Mark as read
+notification.item.time: 'Posted '
+notification.confirm.message_single: You are about to delete this notification
 notification.msg.new_comment.title: 'New comment'
 notification.msg.new_comment.content: 'Hello, a new comment has been added by <b>{author}</b> on the page <b>{page}</b>, its status is <b>{status}</b>'

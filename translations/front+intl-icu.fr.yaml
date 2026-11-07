@@ -9,19 +9,19 @@ front.header.logout: Déconnexion
 front.footer.fr.link: Français
 front.footer.es.link: Español
 front.footer.en.link: English
-front.error.api.modal.error.403: "La ressource demandé n'est pas accessible"
-front.error.api.modal.error.401: "Le token d'accès à l'API est faux ou expiré"
+front.error.api.modal.error.403: La ressource demandée n'est pas accessible
+front.error.api.modal.error.401: Le token d'accès à l'API est invalide ou expiré
 front.article.footer.edit: Le
-front.article.footer.stat_publication: publications
+front.article.footer.stat_publication: lecture(s)
 front.article.footer.info.draft: 'Cette page est en brouillon, vous seul pouvez la lire actuellement'
 front.comment.title: Commentaires
 front.comment.nb_comments: commentaire(s)
-front.comment.time_ago: "Il y'a"
+front.comment.time_ago: Il y a
 front.comment.validate: Valider
 front.comment.moderate: Modérer
 front.comment.waiting: Invalider
 front.comment.form.moderate.label: 'Message de modération'
-front.comment.form.moderate.placeholder: 'Message de modération pour ce commentaire, visible uniquement pas les administrateurs'
+front.comment.form.moderate.placeholder: Message de modération pour ce commentaire, visible uniquement par les administrateurs
 front.comment.form.moderate.cancel: Annuler
 front.comment.form.moderate.submit: Modérer
 front.comment.success.validate: 'Commentaire validé avec succès'

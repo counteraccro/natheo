@@ -1,64 +1,64 @@
-sql_manager.index.modal.help.title: __sql_manager.index.popin.help.title
-sql_manager.index.modal.help.disabled: __sql_manager.index.popin.help.disabled
-sql_manager.index.modal.help.enable: __sql_manager.index.popin.help.enable
-sql_manager.index.modal.help.delete: __sql_manager.index.popin.help.delete
-sql_manager.index.modal.help.edit: __sql_manager.index.popin.help.edit
-sql_manager.index.title: __sql_manager.index.page_title
-sql_manager.index.button.new: __sql_manager.index.btn.new
-sql_manager.index.description: __sql_manager.index.description
-sql_manager.grid.id: __sql_manager.grid.id
-sql_manager.grid.name: __sql_manager.grid.name
-sql_manager.grid.query: __sql_manager.grid.query
-sql_manager.grid.update_at: __sql_manager.grid.update_at
-sql_manager.confirm.disabled.message: __sql_manager.confirm.disabled.msg
-sql_manager.confirm.delete.message: __sql_manager.confirm.delete.msg
-sql_manager.remove.success: __sql_manager.remove.success
-sql_manager.success.no.disabled: __sql_manager.success.no.disabled
-sql_manager.success.disabled: __sql_manager.success.disabled
-sql_manager.add.title: __sql_manager.add.page_title_h1
-sql_manager.add.description: __sql_manager.add.description
-sql_manager.execute.title_id: __sql_manager.execute.page_title
-sql_manager.execute.title: __sql_manager.execute.page_title_h1
-sql_manager.execute.description: __sql_manager.execute.description
-sql_manager.update.title_id: __sql_manager.update.page_title
-sql_manager.update.title: __sql_manager.update.page_title_h1
-sql_manager.update.description: __sql_manager.update.description
-sql_manager.label.textarea.query: __sql_manager.label.textarea.query
-sql_manager.button.execute.query: __sql_manager.btn.execute.query
-sql_manager.button.save.query: __sql_manager.btn.save.query
-sql_manager.block.query: __sql_manager.bloc.query
-sql_manager.label.list.table: __sql_manager.label.liste.table
-sql_manager.button.add.table: __sql_manager.btn.add.table
-sql_manager.label.list.field: __sql_manager.label.liste.field
-sql_manager.placeholder.table: __sql_manager.placeholder.table
-sql_manager.placeholder.field: __sql_manager.placeholder.field
-sql_manager.block.result: __sql_manager.bloc.result
-sql_manager.label.list.field_2: __sql_manager.label.liste.field.2
-sql_manager.toast.message.exec.error: __sql_manager.toast.msg.exec.error
-sql_manager.toast.message.exec.success: __sql_manager.toast.msg.exec.success
-sql_manager.toast.message.save.error: __sql_manager.toast.msg.save.error
-sql_manager.toast.message.load.error: __sql_manager.toast.msg.load.error
-sql_manager.error.not.only.select.query: __sql_manager.error.not.only.select.query
-sql_manager.help.text.1: __sql_manager.help.text.1
-sql_manager.help.select.table: __sql_manager.help.select.table
-sql_manager.help.select.field: __sql_manager.help.select.field
-sql_manager.label.name: __sql_manager.label.name
-sql_manager.label.name_placeholder: __sql_manager.label.name.placeholder
-sql_manager.save.error.validate: __sql_manager.save.error.validate
-sql_manager.save.success: __sql_manager.save.success
-sql_manager.save.error.no.select: __sql_manager.save.error.no.select
-sql_manager.error.query.empty: __sql_manager.error.query.empty
-sql_manager.error.name.empty: __sql_manager.error.name.empty
-sql_manager.index.modal.help.execute: __sql_manager.index.popin.help.execute
-sql_manager.name.generic.query.success: __sql_manager.name.generic.query.success
-sql_manager.save.generic.query.success: __sql_manager.save.generic.query.success
-sql_manager.title.my_query: __sql_manager.title.my_query
-sql_manager.sub.title.my_query: __sql_manager.sub.title.my_query
-sql_manager.block.query_sub_title: __sql_manager.bloc.query.sub.title
-sql_manager.block.result_sub_title: __sql_manager.bloc.result.sub.title
-sql_manager.no_result.query: __sql_manager.no_result.query
-sql_manager.no_result.help: __sql_manager.no_result.help
-sql_manager.no.query.manager.title: __sql_manager.no.query.manager.title
-sql_manager.no.query.manager.text: __sql_manager.no.query.manager.text
-sql_manager.button.back: __sql_manager.btn.back
-sql_manager.button.new: __sql_manager.btn.new
+sql_manager.index.modal.help.title: Ayuda
+sql_manager.index.modal.help.disabled: Desactivar
+sql_manager.index.modal.help.enable: Activar
+sql_manager.index.modal.help.delete: Eliminar
+sql_manager.index.modal.help.edit: Modificar
+sql_manager.index.title: Gestor SQL
+sql_manager.index.button.new: Nueva consulta SQL
+sql_manager.index.description: Cree / modifique consultas SQL para consultar la base de datos
+sql_manager.grid.id: ID
+sql_manager.grid.name: Nombre
+sql_manager.grid.query: Consulta
+sql_manager.grid.update_at: Última modificación
+sql_manager.confirm.disabled.message: ¿Confirma la desactivación de la consulta SQL <b>{label}</b>? Esta consulta ya no se podrá utilizar
+sql_manager.confirm.delete.message: ¿Confirma la eliminación de la consulta SQL <b>{label}</b>? Esta acción es definitiva
+sql_manager.remove.success: La consulta <b>{label}</b> se ha eliminado correctamente
+sql_manager.success.no.disabled: La consulta <b>{label}</b> se ha activado correctamente
+sql_manager.success.disabled: La consulta <b>{label}</b> se ha desactivado correctamente
+sql_manager.add.title: Nueva consulta
+sql_manager.add.description: Cree una nueva consulta SQL con la ayuda de los nombres de las tablas y de los campos.
+sql_manager.execute.title_id: 'Ejecución de la consulta #{id}'
+sql_manager.execute.title: Ejecución de la consulta
+sql_manager.execute.description: Pruebe y modifique la consulta SQL según sus necesidades
+sql_manager.update.title_id: 'Edición de la consulta #{id}'
+sql_manager.update.title: Edición de la consulta
+sql_manager.update.description: Modifique la consulta SQL según sus necesidades
+sql_manager.label.textarea.query: Consulta
+sql_manager.button.execute.query: Ejecutar
+sql_manager.button.save.query: Guardar
+sql_manager.block.query: Asistente de construcción de consultas
+sql_manager.label.list.table: Tablas
+sql_manager.button.add.table: Añadir
+sql_manager.label.list.field: Seleccione una tabla
+sql_manager.placeholder.table: Buscar una tabla
+sql_manager.placeholder.field: Buscar un campo
+sql_manager.block.result: Resultado
+sql_manager.label.list.field_2: Campos de la tabla
+sql_manager.toast.message.exec.error: Se ha producido un error en su consulta SQL
+sql_manager.toast.message.exec.success: Consulta SQL ejecutada correctamente
+sql_manager.toast.message.save.error: Se ha producido un error al guardar
+sql_manager.toast.message.load.error: Se ha producido un error al cargar los datos
+sql_manager.error.not.only.select.query: La consulta SQL debe ser únicamente de tipo SELECT
+sql_manager.help.text.1: 'Solo se ejecutan las consultas de tipo SELECT, las siguientes palabras clave: [UPDATE, DELETE, INSERT, CREATE, ALTER, DROP] están bloqueadas para evitar cualquier intento malintencionado sobre la base de datos'
+sql_manager.help.select.table: Haga clic en el botón «Añadir» para añadir la tabla seleccionada a la consulta
+sql_manager.help.select.field: Haga clic en el botón «Añadir» para añadir el campo seleccionado a la consulta
+sql_manager.label.name: Nombre
+sql_manager.label.name_placeholder: El nombre de la consulta SQL
+sql_manager.save.error.validate: Error de validación, compruebe sus datos
+sql_manager.save.success: Consulta guardada correctamente
+sql_manager.save.error.no.select: La consulta no es de tipo SELECT
+sql_manager.error.query.empty: El campo SQL no puede estar vacío
+sql_manager.error.name.empty: El nombre no puede estar vacío
+sql_manager.index.modal.help.execute: Ejecutar
+sql_manager.name.generic.query.success: -- Consulta genérica --
+sql_manager.save.generic.query.success: Consulta guardada correctamente
+sql_manager.title.my_query: Mi consulta SQL
+sql_manager.sub.title.my_query: Construya su consulta SQL según sus necesidades
+sql_manager.block.query_sub_title: Para ayudarle a conocer las tablas y las columnas
+sql_manager.block.result_sub_title: Los datos devueltos por su consulta SQL
+sql_manager.no_result.query: Ningún resultado por el momento
+sql_manager.no_result.help: Ejecute una consulta para ver los resultados aquí
+sql_manager.no.query.manager.title: No se ha encontrado ninguna consulta
+sql_manager.no.query.manager.text: Esta consulta no existe o ha sido eliminada. Puede volver a la lista o crear una nueva
+sql_manager.button.back: Volver
+sql_manager.button.new: Crear una consulta SQL

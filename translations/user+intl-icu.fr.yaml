@@ -1,87 +1,87 @@
 user.index.title: 'Gestion des utilisateurs'
-user.index.description: 'Gérer des utilisateurs qui peuvent se connecter au CMS et gérer son contenu'
-user.success.enabled: "Le compte de l'utilisateur <strong>{login}</strong> à été activé"
-user.success.disabled: "Le compte de l'utilisateur <strong>{login}</strong> à été désactivé"
-user.grid.id: Id
+user.index.description: Gérer les utilisateurs qui peuvent se connecter au CMS et gérer son contenu
+user.success.enabled: Le compte de l'utilisateur <strong>{login}</strong> a été activé
+user.success.disabled: Le compte de l'utilisateur <strong>{login}</strong> a été désactivé
+user.grid.id: ID
 user.grid.login: Login
 user.grid.email: Email
 user.grid.name: Nom
 user.grid.created_at: Création
 user.grid.update_at: 'Mise à jour'
-user.confirm.disabled.message: "Le compte de l'utilisateur <strong>{login}</strong> sera désactivé et il ne pourra plus ce connecter à l'administration <br /> Confirmez-vous cette action ?"
-user.confirm.delete.message: "Le compte de l'utilisateur <strong>{login}</strong> sera supprimé, cette action est définitive <br /> Confirmez-vous cette action ?"
-user.confirm.replace.message: "Le compte de l'utilisateur <strong>{login}</strong> sera remplacé par un compte John Doe, cette action est définitive <br /> Confirmez-vous cette action ?"
+user.confirm.disabled.message: Le compte de l'utilisateur <strong>{login}</strong> sera désactivé et il ne pourra plus se connecter à l'administration. <br /> Confirmez-vous cette action ?
+user.confirm.delete.message: Le compte de l'utilisateur <strong>{login}</strong> sera supprimé, cette action est définitive. <br /> Confirmez-vous cette action ?
+user.confirm.replace.message: Le compte de l'utilisateur <strong>{login}</strong> sera remplacé par un compte John Doe, cette action est définitive. <br /> Confirmez-vous cette action ?
 user.update.title_login: 'Édition du compte {login}'
 user.update.title: 'Édition du compte'
-user.index.info: 'Les utilisateurs [John Doe] sont anonymisés et verrouillés | les utilisateurs affiché de façon pâle sont désactivés'
-user.grid.role: Role
+user.index.info: Les utilisateurs [John Doe] sont anonymisés et verrouillés | les utilisateurs affichés en grisé sont désactivés
+user.grid.role: Rôle
 user.my_options.title: 'Mes options'
-user.my_options.description: "Personaliser l'interface ainsi que la langue et d'autres détails de l'administration"
+user.my_options.description: Personnaliser l'interface, la langue et d'autres détails de l'administration
 user.login_user.title: Authentification
 user.login_user.email: 'Adresse email'
 user.login_user.forgot_password: 'Mot de passe oublié ?'
-user.login_user.remember_me: 'Ce souvenir de moi'
+user.login_user.remember_me: Se souvenir de moi
 user.login_user.button_login: Connexion
 user.login.always_log_title: 'Information importante'
-user.login.always_log: 'Vous êtes déjà connecté en tant que {login}, souhaitez vous, vous '
+user.login.always_log: 'Vous êtes déjà connecté en tant que {login}, souhaitez-vous vous '
 user.login.logout: 'déconnecter ?'
 user.login.title: Authentification
 user.my_account.title: 'Mon compte'
 user.my_account.description: 'Gérer vos données personnelles, votre mot de passe et consulter vos statistiques'
 user.form.adresse_email.label: 'Adresse email'
-user.form.adresse_email.help: 'Identifiant pour vous connectez. Demander à un administrateur pour le modifier'
+user.form.adresse_email.help: Identifiant pour vous connecter. Demandez à un administrateur pour le modifier
 user.form.login.label: Login
-user.form.login.help: 'Identifiant qui apparait à la fin de vos articles'
+user.form.login.help: Identifiant qui apparaît à la fin de vos articles
 user.form.firstname.label: Prénom
-user.form.firstname.help: 'Identifiant qui apparait à la fin de vos articles si vous souhaitez faire apparaitre votre vrai identité'
+user.form.firstname.help: Identifiant qui apparaît à la fin de vos articles si vous souhaitez faire apparaître votre vraie identité
 user.form.lastname.label: Nom
-user.form.lastname.help: 'Identifiant qui apparait à la fin de vos articles si vous souhaitez faire apparaitre votre vrai identité'
+user.form.lastname.help: Identifiant qui apparaît à la fin de vos articles si vous souhaitez faire apparaître votre vraie identité
 user.form.submit: 'Modifier mon profil'
 user.form.back: Retour
 user.form.login.placeholder: 'Votre login'
 user.form.firstname.placeholder: 'Votre prénom'
 user.form.lastname.placeholder: 'Votre nom'
 user.my_account.personal_data: 'Mes données personnelles'
-user.my_account.personal_data_description: "Ces données ne sont pas obligatoires, si vous laissé tous les champs vide, vos contenus ne seront pas identifiés comme vos créations. Il est conseillé d'au moins saisir un login"
+user.my_account.personal_data_description: Ces données ne sont pas obligatoires. Si vous laissez tous les champs vides, vos contenus ne seront pas identifiés comme vos créations. Il est conseillé de saisir au moins un login
 user.my_account.danger: 'Zone de danger'
 user.my_account.statistics: 'Mes statistiques'
 user.my_account.password_change: Sécurité
 user.change_password.input.password_1: 'Nouveau mot de passe'
-user.change_password.input.password_2: 'Confirmer nouveau mot de passe'
+user.change_password.input.password_2: Confirmer le nouveau mot de passe
 user.change_password.force: 'Force du mot de passe, votre mot de passe doit avoir :'
-user.change_password.force_nb_character: 'Au moins un minimum de 8 caractères'
+user.change_password.force_nb_character: Au moins 8 caractères
 user.change_password.force_uppercase: 'Au moins une lettre majuscule'
 user.change_password.force_lowercase: 'Au moins une lettre minuscule'
 user.change_password.force_digit: 'Au moins un chiffre'
 user.change_password.force_character_special: 'Au moins un caractère spécial'
 user.error.password_2: 'Le mot de passe de confirmation est différent du mot de passe'
-user.update_password.success: 'Le nouveau mot de passe à correctement été mis à jour'
+user.update_password.success: Le nouveau mot de passe a été mis à jour avec succès
 user.error.not_disabled: 'Vous ne pouvez pas désactiver cet utilisateur'
-user.success.self_disabled: 'Votre compte est maintenant désactivé, vous aller être déconnecté dans quelques secondes...'
+user.success.self_disabled: Votre compte est maintenant désactivé, vous allez être déconnecté dans quelques secondes...
 user.danger_zone.button_disabled: Désactiver
 user.danger_zone.title_disabled: 'Désactiver mon compte'
-user.danger_zone.content_disabled_1: 'Vous êtes sur le point de désactiver votre compte, après cette action vous ne pourrez plus vous connecter sur le site'
+user.danger_zone.content_disabled_1: 'Vous êtes sur le point de désactiver votre compte : après cette action, vous ne pourrez plus vous connecter au site'
 user.danger_zone.content_disabled_2: "Une intervention d'un administrateur sera nécessaire pour annuler cette action"
 user.danger_zone.button_cancel_disabled: Annuler
 user.danger_zone.button_confirm_disabled: 'Je confirme mon choix'
-user.danger_zone.loading: 'Action en cours de réalisation...'
+user.danger_zone.loading: Action en cours...
 user.danger_zone.button_delete: Supprimer
 user.danger_zone.button_replace: Anonymiser
 user.danger_zone.button_cancel_delete: Annuler
 user.danger_zone.button_confirm_delete: 'Je confirme mon choix'
 user.danger_zone.title_delete: 'Suppression de mon compte'
-user.danger_zone.content_delete_1: "Vous êtes sur le point de supprimer votre compte, après cette action vous perdrez l'ensemble du contenu réalisé sur ce site et vous ne pourrez plus vous connecter sur le site"
-user.danger_zone.content_delete_2: 'Cette action est définitive et sans retour possible'
+user.danger_zone.content_delete_1: 'Vous êtes sur le point de supprimer votre compte : vous perdrez tout le contenu réalisé sur ce site et vous ne pourrez plus vous y connecter'
+user.danger_zone.content_delete_2: Cette action est définitive et irréversible
 user.danger_zone.button_cancel_replace: Annuler
 user.danger_zone.button_confirm_replace: 'Je confirme mon choix'
 user.danger_zone.title_replace: 'Anonymiser mon compte'
-user.danger_zone.content_replace_1: "Vous êtes sur le point d'anonymiser votre compte, après cette action vous perdrez l'ensemble du contenu réalisé sur ce site et vous ne pourrez plus vous connecter sur le site"
-user.danger_zone.content_replace_2: 'Cette action est définitive et sans retour possible'
-user.success.anonymous: 'Le compte à été anonymisé avec succès'
-user.success.remove: 'Le compte à été supprimé avec succès'
+user.danger_zone.content_replace_1: 'Vous êtes sur le point d''anonymiser votre compte : vous perdrez tout le contenu réalisé sur ce site et vous ne pourrez plus vous y connecter'
+user.danger_zone.content_replace_2: Cette action est définitive et irréversible
+user.success.anonymous: Le compte a été anonymisé avec succès
+user.success.remove: Le compte a été supprimé avec succès
 user.error.not_allowed: "Cette action n'est pas autorisée"
-user.danger_zone.success_anonymous: 'Votre compte à été anonymiser avec succès, déconnexion dans 3 secondes...'
-user.danger_zone.success_remove: 'Votre compte à été supprimé avec succès, déconnexion dans 3 secondes...'
+user.danger_zone.success_anonymous: Votre compte a été anonymisé avec succès, déconnexion dans 3 secondes...
+user.danger_zone.success_remove: Votre compte a été supprimé avec succès, déconnexion dans 3 secondes...
 user.add.title: 'Nouvel utilisateur'
 user.button.new: 'Nouvel utilisateur'
 user.add.description: 'Créer un nouvel utilisateur qui pourra contribuer au contenu de votre site'
@@ -91,21 +91,21 @@ user.index.modal.help.enable_user: 'Active un utilisateur'
 user.index.modal.help.delete: 'Supprime un utilisateur'
 user.index.modal.help.anonymous: 'Anonymise un utilisateur'
 user.index.modal.help.edit: 'Modifier un utilisateur'
-user.index.modal.help.switch: 'Ce connecter en tant que'
+user.index.modal.help.switch: Se connecter en tant que
 user.update.last_update: 'Dernière mise à jour'
-user.update.information: Information
+user.update.information: Informations
 user.form_update.adresse_email.label: 'Adresse email'
-user.form_update.adresse_email.help: "Attention, à ne changer que sur demande de l'utilisateur, ou uniquement si nécessaire"
+user.form_update.adresse_email.help: Attention, à ne changer qu'à la demande de l'utilisateur ou en cas de nécessité
 user.form_update.disabled.label: "Désactiver l'utilisateur"
 user.form_update.disabled.help: "Autorise ou non l'utilisateur à se connecter à la zone admin du site"
 user.form_update.login.label: Login
-user.form_update.login.help: 'Identifiant qui apparait à la fin de ses articles'
+user.form_update.login.help: Identifiant qui apparaît à la fin de ses articles
 user.form_update.login.placeholder: 'Son login'
 user.form_update.firstname.label: Prénom
-user.form_update.firstname.help: "Identifiant qui apparait à la fin de ses articles s'il souhaite faire apparaitre sa vrai identité"
+user.form_update.firstname.help: Identifiant qui apparaît à la fin de ses articles s'il souhaite faire apparaître sa vraie identité
 user.form_update.firstname.placeholder: 'Son prénom'
 user.form_update.lastname.label: Nom
-user.form_update.lastname.help: "Identifiant qui apparait à la fin de ses articles s'il souhaite faire apparaitre sa vrai identité"
+user.form_update.lastname.help: Identifiant qui apparaît à la fin de ses articles s'il souhaite faire apparaître sa vraie identité
 user.form_update.lastname.placeholder: 'Son nom'
 user.form_update.submit: Modifier
 user.update.description: "Modifier le compte d'un utilisateur et/ou consulter quelques statistiques"
@@ -116,70 +116,70 @@ user.update.info.user_disabled: 'Cet utilisateur est désactivé, certaines acti
 user.update.info.warning: Attention
 user.update.reset_password: 'Réinitialisation du mot de passe'
 user.update.action: 'Actions possibles'
-user.update.reset_password_description: "Vous pouvez initialisé le reset du mot de passe de l'utilisateur. Un email sera envoyé à l'utilisateur pour l'aider à réinitialiser son mot de passe"
-user.update.connected_to: 'Ce connecter en tant que'
-user.update.connected_to_description: 'Vous pouvez faire une prise de contrôle du compte de {login} afin de pouvoir vous connecter sur son compte'
+user.update.reset_password_description: Vous pouvez lancer la réinitialisation du mot de passe de l'utilisateur. Un email lui sera envoyé pour l'aider à réinitialiser son mot de passe
+user.update.connected_to: Se connecter en tant que
+user.update.connected_to_description: Vous pouvez prendre le contrôle du compte de {login} afin de vous connecter avec son compte
 user.update.connected_to_button: 'Me connecter en tant que {login}'
 user.form_update.role.user: Utilisateur
 user.form_update.role.contributor: Contributeur
 user.form_update.role.admin: Administrateur
-user.form_update.role.super_admin: 'Super Administrateur'
+user.form_update.role.super_admin: Super administrateur
 user.form_update.role.label: "Rôle dans l'application"
 user.form_update.role.help: "Le rôle détermine les droits que possède l'utilisateur dans la partie administration du site"
-user.update.info_role_super_admin: 'Ce compte possède un role <b>SUPER_ADMIN</b> et est <b>fondateur</b>, par sécurité certaines données ne sont pas modifiables et certaines actions ne sont pas autorisées.'
+user.update.info_role_super_admin: 'Ce compte possède le rôle <b>SUPER_ADMIN</b> et est <b>fondateur</b> : par sécurité, certaines données ne sont pas modifiables et certaines actions ne sont pas autorisées.'
 user.form_update.role.founder: Fondateur
 user.update.reset_password_button: 'Réinitialiser le mot de passe'
 user.update.last_connexion: 'Dernière connexion'
-user.reset_password.title: 'Changement de mot passe'
-user.my_account.reset_password_success: "Un email contenant les instructions de changement de mot de passe à été envoyé avec succès à l'utilisateur"
-user.change_password.error_404: 'Non non non, Vous n’avez pas dit le mot magique !'
+user.reset_password.title: Changement de mot de passe
+user.my_account.reset_password_success: Un email contenant les instructions de changement de mot de passe a été envoyé avec succès à l'utilisateur
+user.change_password.error_404: Non non non, vous n'avez pas dit le mot magique !
 user.change_password.title: 'Changement de mon mot de passe'
 user.change_password.link_login: 'Me connecter'
-user.change_password.link_home: 'Index du site'
-user.change_password.success: 'Votre mot de passe à été changé avec succès, vous pouvez maintenant vous connecter avec votre nouveau mot de passe'
+user.change_password.link_home: Accueil du site
+user.change_password.success: Votre mot de passe a été changé avec succès, vous pouvez maintenant vous connecter avec votre nouveau mot de passe
 user.form_add.adresse_email.label: 'Adresse email'
-user.form_add.adresse_email.help: 'Identifiant pour ce connecter, le nouvelle utilisateur recevra un email sur cette adresse pour finaliser la création de son compte'
+user.form_add.adresse_email.help: Identifiant pour se connecter, le nouvel utilisateur recevra un email à cette adresse pour finaliser la création de son compte
 user.form_add.role.label: "Rôle dans l'application"
 user.form_add.role.help: "Le rôle détermine les droits que possède l'utilisateur dans la partie administration du site"
 user.form_add.login.label: Login
-user.form_add.login.help: 'Identifiant qui apparait à la fin de ses articles'
+user.form_add.login.help: Identifiant qui apparaît à la fin de ses articles
 user.form_add.login.placeholder: Login
 user.form_add.firstname.label: Prénom
-user.form_add.firstname.help: "Identifiant qui apparait à la fin de ses articles s'il souhaite faire apparaitre sa vrai identité"
+user.form_add.firstname.help: Identifiant qui apparaît à la fin de ses articles s'il souhaite faire apparaître sa vraie identité
 user.form_add.firstname.placeholder: 'Son prénom'
 user.form_add.lastname.label: Nom
-user.form_add.lastname.help: "Identifiant qui apparait à la fin de ses articles s'il souhaite faire apparaitre sa vrai identité"
+user.form_add.lastname.help: Identifiant qui apparaît à la fin de ses articles s'il souhaite faire apparaître sa vraie identité
 user.form_add.lastname.placeholder: 'Son nom'
 user.add.profile: 'Son profil'
 user.add.personal_data: 'Ses données personnelles'
-user.add.personal_data_description: "L'utilisateur peut modifier ses données directement depuis son compte, données non obligatoire"
-user.add.information: Information
+user.add.personal_data_description: L'utilisateur peut modifier ses données directement depuis son compte, données non obligatoires
+user.add.information: Informations
 user.form_add.submit: 'Créer le nouvel utilisateur'
 user.add.success: 'Utilisateur {email} ajouté avec succès'
 user.change_password.new_title: 'Créer votre mot de passe'
 user.add.information_list_role: 'Rôles disponibles'
-user.add.information_role_user: 'Rôle Utilisateur'
-user.add.information_role_user_info: "Donne le droit de ce connecter à l'application (rôle par défaut)"
-user.add.information_role_contributor: 'Rôle Contributeur'
+user.add.information_role_user: Rôle utilisateur
+user.add.information_role_user_info: Donne le droit de se connecter à l'application (rôle par défaut)
+user.add.information_role_contributor: Rôle contributeur
 user.add.information_role_contributor_info: "Donne le droit d'ajouter du contenu sur le site"
-user.add.information_role_admin: 'Rôle Administrateur'
-user.add.information_role_admin_info: "Donne le droit d'administrer les contenus du site (commentaires, membres etc...)"
-user.add.information_role_super_admin: 'Rôle Super Administrateur'
+user.add.information_role_admin: Rôle administrateur
+user.add.information_role_admin_info: Donne le droit d'administrer les contenus du site (commentaires, membres, etc.)
+user.add.information_role_super_admin: Rôle super administrateur
 user.add.information_role_super_admin_info: "Permet de gérer l'ensemble du CMS"
-user.add.information_role_info: 'Les rôles sont listés par ordre de puissance, du plus faible, au plus puissant. chaque rôle supérieur hérite des droits du rôle inférieur'
+user.add.information_role_info: Les rôles sont listés du plus faible au plus puissant. Chaque rôle hérite des droits du rôle inférieur
 user.reset_password.submit: 'Changer mon mot de passe'
-user.reset_password.success: "Un email à été envoyé à l'adresse email indiquée"
-user.more_options.loading: 'traitement en cours...'
+user.reset_password.success: Un email a été envoyé à l'adresse indiquée
+user.more_options.loading: Traitement en cours...
 user.more_options.button.show_help: "Afficher l'aide de configuration"
 user.more_options.button.hide_help: "Masquer l'aide de configuration"
 user.my_account.options.misc: 'Autres options'
 user.form.description.label: 'Description personnelle'
-user.form.description.help: 'Une petite description de vous qui apparaitra en bas de vos articles'
+user.form.description.help: Une petite description de vous qui apparaîtra en bas de vos articles
 user.form.description.placeholder: 'Une petite description de vous'
 user.form.avatar.label: 'Votre avatar'
 user.form.avatar.help: 'Aucune image sélectionnée'
-user.form.avatar.placeholder: 'Sélectionné un avatar'
-user.form.avatar.error.upload: 'Merci de télécharger une image au format jpg, gif ou png valide'
+user.form.avatar.placeholder: Sélectionnez un avatar
+user.form.avatar.error.upload: Merci de télécharger une image valide au format JPG, GIF ou PNG
 user.my_account.upload.avatar.error: 'Une erreur est survenue lors du téléchargement de votre avatar'
 user.my_account.avatar: 'Mon avatar'
 user.my_account.avatar_subtitle: 'Avatar qui sera affiché en bas de vos articles'
@@ -188,7 +188,7 @@ user.my_account.avatar_format: 'Format JPG, PNG ou GIF'
 user.my_account.avatar_weight: 'Taille maximale de 2 Mo'
 user.my_account.avatar_size: 'Image carrée recommandée (500x500px minimum)'
 user.my_account.avatar_delete: Supprimer
-user.my_account.statistics_description: 'Retrouver les statistiques de votre compte'
+user.my_account.statistics_description: Retrouvez les statistiques de votre compte
 user.my_account.password_change_description: 'Gérer le mot de passe de votre compte'
 user.danger_zone.description_disabled: 'Votre compte sera désactivé'
 user.danger_zone.description_delete: 'Votre compte sera supprimé'
@@ -203,8 +203,8 @@ user.my_account.lastname.placeholder: 'Mon nom'
 user.my_account.avatar_no_field: 'Aucune image sélectionnée'
 user.delete_avatar.success: 'Avatar supprimé avec succès'
 user.add.profile_description: 'Données utilisées pour la connexion'
-user.add.information_description: 'A propos des rôles'
-user.update.action_description: 'Actions possible sur le compte'
+user.add.information_description: À propos des rôles
+user.update.action_description: Actions possibles sur le compte
 user.update.information_description: 'Statistiques du compte'
 user.change_password.input.password_current: 'Mot de passe actuel'
 user.change_password.error.current_password: 'Le mot de passe actuel est incorrect'

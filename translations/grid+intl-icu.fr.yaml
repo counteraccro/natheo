@@ -2,18 +2,18 @@ grid.search.placeholder: 'Rechercher dans le tableau'
 grid.list.loading: 'Chargement des données'
 grid.toast.success_title: 'Succès !'
 grid.confirm.title: 'Confirmation demandée'
-grid.confirm.text: 'Êtes vous sur de vouloir faire cela ?'
+grid.confirm.text: Êtes-vous sûr de vouloir faire cela ?
 grid.confirm.button_ok: Oui
 grid.confirm.button_no: Non
 grid.pagination.page: Page
 grid.pagination.on: sur
 grid.pagination.row: lignes
 grid.list.no_result: 'Aucun résultat pour votre recherche'
-grid.toast.time: "A l'instant"
+grid.toast.time: À l'instant
 grid.toast.error_title: 'Erreur !'
 grid.search.placeholder_database: 'Rechercher dans la base de données'
 grid.search.button: Rechercher
-grid.query.copy_success: 'Donnée copiée dans le presse papier'
+grid.query.copy_success: Donnée copiée dans le presse-papiers
 grid.query.copy_error: 'Une erreur est survenue lors de la copie'
 grid.query.title: 'Requête SQL'
 grid.filter.only_me: 'Afficher mes données'
@@ -30,4 +30,4 @@ grid.sort.hide: 'Masquer les options'
 grid.sort.field: Colonnes
 grid.sort.order: Ordre
 grid.sort.button: Trier
-grid.sort.sub_title: 'Options de trie'
+grid.sort.sub_title: Options de tri

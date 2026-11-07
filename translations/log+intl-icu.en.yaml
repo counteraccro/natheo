@@ -1,36 +1,36 @@
-log.select.file: __log.select-file
-log.select.time_all: __log.select-time.all
-log.select.time_now: __log.select-time.now
-log.select.time_yesterday: __log.select-time.yesterday
-log.file.name: __log.file
-log.file.size: __log.file.size
-log.file.lines: __log.file.ligne
-log.button.delete.file: __log.btn.delete.file
-log.empty.file: __log.empty.file
-log.delete.file.confirm: __log.delete.file.confirm
-log.delete.file.confirm_2: __log.delete.file.confirm_2
-log.delete.file.success: __log.delete.file.success
-log.button.reload: __log.btn.reload
-log.auth.admin.success: __log.auth.admin.success
-log.auth.admin.error: __log.auth.admin.error
-log.doctrine.persist: __log.doctrine.persist
-log.doctrine.remove: __log.doctrine.remove
-log.doctrine.update: __log.doctrine.update
-log.grid.level: __log.grid.level
-log.grid.date: __log.grid.date
-log.grid.message: __log.grid.message
-log.index.title: __log.page_title_h1
-log.index.description: __log.description
-log.auth.admin.user.switch: __log.auth.admin.user.switch
-log.button.download.file: __log.btn.download.file
-log.load.success.file: __log.load.success.file
-log.block.search.title: __log.block.search.title
-log.block.search.sub.title: __log.block.search.sub.title
-log.select.file_label: __log.select-file.label
-log.select.time_label: __log.select-time.label
-log.button.delete.ok: __log.btn.delete.ok
-log.button.delete.ko: __log.btn.delete.ko
-log.error.file: __log.error.file
-log.error.time: __log.error.time
-log.error.csrf: __log.error.csrf
-log.error.request: __log.error.request
+log.select.file: Choose the log file
+log.select.time_all: All logs
+log.select.time_now: Today
+log.select.time_yesterday: Yesterday
+log.file.name: File
+log.file.size: Size
+log.file.lines: lines
+log.button.delete.file: Delete
+log.empty.file: Please select a file to read its content or delete it
+log.delete.file.confirm: Do you confirm the deletion of the file
+log.delete.file.confirm_2: The deletion is permanent and cannot be undone
+log.delete.file.success: File deleted successfully
+log.button.reload: Reload
+log.auth.admin.success: Login of {user} - IP {ip}
+log.auth.admin.error: Login attempt by {user} - IP {ip}
+log.doctrine.persist: 'The entity {entity} #{id} was created by {user} (#{id_user})'
+log.doctrine.remove: 'The entity {entity} #{id} was deleted by {user} (#{id_user})'
+log.doctrine.update: 'The entity {entity} #{id} was updated by {user} (#{id_user})'
+log.grid.level: Level
+log.grid.date: Date
+log.grid.message: Message
+log.index.title: Log management
+log.index.description: View all the application logs, identify a possible problem or trace the history of a resource from this page. You can also free up space by deleting old log files.
+log.auth.admin.user.switch: The SUPER_ADMIN {user} took control of the account of {userToSwitch}
+log.button.download.file: Download
+log.load.success.file: File <b>{file}</b> loaded successfully
+log.block.search.title: Select the log file to view
+log.block.search.sub.title: 'Choose the log file to inspect, be careful: it can be large'
+log.select.file_label: Log files
+log.select.time_label: Period
+log.button.delete.ok: Delete the file
+log.button.delete.ko: Cancel
+log.error.file: The requested log file cannot be found
+log.error.time: The requested period is invalid
+log.error.csrf: Invalid security token, please reload the page
+log.error.request: An error occurred during the request

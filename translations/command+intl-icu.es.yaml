@@ -1,39 +1,39 @@
-command.install.title: __install.title
-command.install.description: __install.description
-command.install.description_create_database: __install.description.create.database
-command.install.description_create_schema: __install.description.create.schema
-command.install.description_fixtures_load: __install.description.fixtures.load
-command.install.description_clear_cache: __install.description.clear.cache
-command.install.description_schema_warning: __install.description.schema.warning
-command.install.description_confirm: __install.description.confirm
-command.install.description_confirm_no: __install.description.confirm.no
-command.install.drop.database: __install.drop.database
-command.install.drop.database_success: __install.drop.database.success
-command.install.error: __install.error
-command.install.create.database: __install.create.database
-command.install.create.database_success: __install.create.database.success
-command.install.create.schema: __install.create.schema
-command.install.create.schema_success: __install.create.schema.success
-command.install.fixture.load: __install.fixture.load
-command.install.fixture.load_success: __install.fixture.load.success
-command.install.clear.cache: __install.clear.cache
-command.install.clear.cache_success: __install.clear.cache.success
-command.install.success: __install.success
-command.install_test.warning.change.env: __install.test.warning.change.env
-command.install_test.title: __install.test.title
-command.install_test.note: __install.test.note
-command.install_test.confirm: __install.test.confirm
-command.install_test.confirm_cancel: __install.test.confirm.cancel
-command.install_test.summary.drop_database: __install.test.summary.drop_database
-command.install_test.summary.create_database: __install.test.summary.create_database
-command.install_test.summary.create_schema: __install.test.summary.create_schema
-command.install_test.step.drop_database: __install.test.step.drop_database
-command.install_test.drop_database.success: __install.test.drop_database.success
-command.install_test.error: __install.test.error
-command.install_test.step.create_database: __install.test.step.create_database
-command.install_test.create_database.success: __install.test.create_database.success
-command.install_test.step.create_schema: __install.test.step.create_schema
-command.install_test.create_schema.success: __install.test.create_schema.success
-command.install_test.success: __install.test.success
-command.install_test.help.phpunit: __install.test.help.phpunit
-command.install.env.prod: __install.env.prod
+command.install.title: Instalación de Nathéo CMS
+command.install.description: 'Este comando es un atajo de los siguientes comandos:'
+command.install.description_create_database: doctrine:database:create
+command.install.description_create_schema: doctrine:schema:create
+command.install.description_fixtures_load: 'doctrine:fixtures:load '
+command.install.description_clear_cache: cache:clear
+command.install.description_schema_warning: Ya existe una base de datos para el proyecto, se eliminará
+command.install.description_confirm: ¿Confirma?
+command.install.description_confirm_no: No se ha realizado ninguna acción...
+command.install.drop.database: Eliminación de la base de datos
+command.install.drop.database_success: Eliminación realizada correctamente
+command.install.error: Se ha producido un error, consulte los logs para más información
+command.install.create.database: Creación de la base de datos
+command.install.create.database_success: Base de datos creada correctamente
+command.install.create.schema: Creación del esquema SQL
+command.install.create.schema_success: Esquema SQL creado correctamente
+command.install.fixture.load: Carga de las fixtures
+command.install.fixture.load_success: Fixtures instaladas correctamente
+command.install.clear.cache: Eliminación de la caché
+command.install.clear.cache_success: Caché eliminada correctamente
+command.install.success: Instalación de Nathéo CMS realizada correctamente
+command.install_test.warning.change.env: 'Este comando debe ejecutarse en el entorno de pruebas: se relanza el comando en test'
+command.install_test.title: Instalación del entorno de pruebas
+command.install_test.note: Compruebe que su archivo .env.test o .env.test.local está configurado correctamente
+command.install_test.confirm: Esta operación volverá a crear la base de datos de pruebas. ¿Continuar?
+command.install_test.confirm_cancel: Instalación del entorno de pruebas cancelada
+command.install_test.summary.drop_database: Eliminación de la base de datos de pruebas existente
+command.install_test.summary.create_database: Creación de la base de datos de pruebas
+command.install_test.summary.create_schema: Creación del esquema de la base de datos de pruebas
+command.install_test.step.drop_database: Eliminación de la base de datos de pruebas
+command.install_test.drop_database.success: Base de datos de pruebas eliminada correctamente
+command.install_test.error: Se ha producido un error durante la instalación del entorno de pruebas.
+command.install_test.step.create_database: Creación de la base de datos de pruebas
+command.install_test.create_database.success: Base de datos de pruebas creada correctamente
+command.install_test.step.create_schema: Creación del esquema de la base de datos de pruebas
+command.install_test.create_schema.success: Esquema de la base de datos de pruebas creado correctamente
+command.install_test.success: Instalación del entorno de pruebas finalizada correctamente
+command.install_test.help.phpunit: 'Ahora puede ejecutar las pruebas con el siguiente comando:'
+command.install.env.prod: 'Está en el entorno de producción: utilice el instalador estándar para instalar la aplicación'

@@ -1,56 +1,56 @@
-dashboard.index.title: __dashboard.index
+dashboard.index.title: Dashboard
 dashboard.index.description: "Overview of the site activity."
-dashboard.help_first_connection.title: __dashboard.block.help.first.connexion.title
-dashboard.help_first_connection.loading: __dashboard.block.help.first.connexion.loading
-dashboard.help_first_connection.sub_title: __dashboard.block.help.first.connexion.sub_title
-dashboard.help_first_connection.text_1: __dashboard.block.help.first.connexion.text_1
-dashboard.help_first_connection.text_end_success: __dashboard.block.help.first.connexion.text.end.success
-dashboard.help_first_connection.button_hide: __dashboard.block.help.first.connexion.btn.hide
-dashboard.index.error_load_block: __dashboard.error.load.block
-dashboard.last_comments.title: __dashboard.block.last.comments.title
-dashboard.last_comments.loading: __dashboard.block.last.comments.loading
-dashboard.help_first_connection.site_name_success: __dashboard.block.help.first.connexion.site.name.success
-dashboard.help_first_connection.site_address_success: __dashboard.block.help.first.connexion.site.adresse.success
-dashboard.help_first_connection.site_open_success: __dashboard.block.help.first.connexion.site.open.success
-dashboard.help_first_connection.site_name_warning: __dashboard.block.help.first.connexion.site.name.warning
-dashboard.help_first_connection.site_address_warning: __dashboard.block.help.first.connexion.site.adresse.warning
-dashboard.help_first_connection.site_open_warning: __dashboard.block.help.first.connexion.site.open.warning
-dashboard.help_first_connection.text_end: __dashboard.block.help.first.connexion.text.end
-dashboard.help_first_connection.modal.title: __dashboard.block.help.first.connexion.modal.confirm.title
-dashboard.help_first_connection.modal.body_1: __dashboard.block.help.first.connexion.modal.confirm.body.1
-dashboard.help_first_connection.modal.body_2: __dashboard.block.help.first.connexion.modal.confirm.body.2
-dashboard.help_first_connection.modal.button_ok: __dashboard.block.help.first.connexion.modal.confirm.btn_ok
-dashboard.help_first_connection.modal.button_ko: __dashboard.block.help.first.connexion.modal.confirm.btn_ko
-dashboard.help_first_connection.hide_success: __dashboard.block.help.first.connexion.msg.hide.success
-dashboard.help_first_connection.api_token_success: __dashboard.block.help.first.connexion.api_token.status.success
-dashboard.help_first_connection.api_token_default_warning: __dashboard.block.help.first.connexion.api_token.default.warning
-dashboard.help_first_connection.api_token_default_warning_detail: __dashboard.block.help.first.connexion.api_token.default.warning.submsg
-dashboard.help_first_connection.api_token_empty_warning: __dashboard.block.help.first.connexion.api_token.empty.warning
-dashboard.last_comments.column_id: __dashboard.block.last.comments.table.id
-dashboard.last_comments.column_author: __dashboard.block.last.comments.table.author
-dashboard.last_comments.column_status: __dashboard.block.last.comments.table.status
-dashboard.last_comments.column_date: __dashboard.block.last.comments.table.date
-dashboard.last_comments.link_comment: __dashboard.block.last.comments.link.comment
-dashboard.last_pages.title: __dashboard.block.last.pages.title
-dashboard.last_pages.loading: __dashboard.block.last.pages.loading
-dashboard.help_first_connection.link_options: __dashboard.block.help.first.connexion.link.options
-dashboard.help_first_connection.link_tokens: __dashboard.block.help.first.connexion.link.tokens
-dashboard.statistics.total_pages: __dashboard.statistics.total.article
-dashboard.statistics.total_comments: __dashboard.statistics.total.comments
-dashboard.statistics.total_comments_waiting: __dashboard.statistics.total.comments.waiting
-dashboard.statistics.total_users: __dashboard.statistics.total.users
-dashboard.statistics.total_views: __dashboard.statistics.total.views
-dashboard.statistics.link_pages: __dashboard.statistics.link.pages
-dashboard.statistics.link_users: __dashboard.statistics.link.users
-dashboard.statistics.info_cache: __dashboard.statistics.info.cache
-dashboard.last_pages.link_page: __dashboard.block.last.pages.link.page
-dashboard.last_pages.column_id: __dashboard.block.last.pages.table.id
-dashboard.last_pages.column_status: __dashboard.block.last.pages.table.status
-dashboard.last_pages.column_title: __dashboard.block.last.pages.table.title
-dashboard.last_pages.column_date: __dashboard.block.last.pages.table.date
-dashboard.most_viewed_pages.title: __dashboard.block.pages.most.viewed.title
-dashboard.most_viewed_pages.link_page: __dashboard.block.pages.most.viewed.link.page
-dashboard.most_viewed_pages.column_id: __dashboard.block.pages.most.viewed.table.id
-dashboard.most_viewed_pages.column_title: __dashboard.block.pages.most.viewed.table.title
-dashboard.most_viewed_pages.column_views: __dashboard.block.pages.most.viewed.table.view
-dashboard.most_viewed_pages.column_date: __dashboard.block.pages.most.viewed.table.date
+dashboard.help_first_connection.title: Configuration help
+dashboard.help_first_connection.loading: Loading help
+dashboard.help_first_connection.sub_title: Missing configuration
+dashboard.help_first_connection.text_1: Some options are still set to their default values, it is recommended to change them.
+dashboard.help_first_connection.text_end_success: Congratulations, you have finished configuring your site
+dashboard.help_first_connection.button_hide: Hide
+dashboard.index.error_load_block: An error occurred while loading the block
+dashboard.last_comments.title: Latest comments
+dashboard.last_comments.loading: Loading the latest comments
+dashboard.help_first_connection.site_name_success: Your site name has been changed
+dashboard.help_first_connection.site_address_success: The front URL has been entered
+dashboard.help_first_connection.site_open_success: Your site is open to the public
+dashboard.help_first_connection.site_name_warning: Your site name is the one set during installation
+dashboard.help_first_connection.site_address_warning: No front URL is currently set
+dashboard.help_first_connection.site_open_warning: Your site is closed to the public
+dashboard.help_first_connection.text_end: One more little effort and your site configuration will be complete.
+dashboard.help_first_connection.modal.title: Do you confirm this action?
+dashboard.help_first_connection.modal.body_1: You are about to hide the CMS installation help, do you confirm this action?
+dashboard.help_first_connection.modal.body_2: This block can be shown again from your profile
+dashboard.help_first_connection.modal.button_ok: 'Yes'
+dashboard.help_first_connection.modal.button_ko: 'No'
+dashboard.help_first_connection.hide_success: Block hidden successfully
+dashboard.help_first_connection.api_token_success: Token present and correctly configured
+dashboard.help_first_connection.api_token_default_warning: 'Test token(s) detected:'
+dashboard.help_first_connection.api_token_default_warning_detail: The token {name} is present, delete it!
+dashboard.help_first_connection.api_token_empty_warning: No token is configured
+dashboard.last_comments.column_id: '#'
+dashboard.last_comments.column_author: Author
+dashboard.last_comments.column_status: Status
+dashboard.last_comments.column_date: Date
+dashboard.last_comments.link_comment: Comment management
+dashboard.last_pages.title: Latest pages
+dashboard.last_pages.loading: Loading the latest pages...
+dashboard.help_first_connection.link_options: System options
+dashboard.help_first_connection.link_tokens: Manage tokens
+dashboard.statistics.total_pages: Published pages
+dashboard.statistics.total_comments: Approved comments
+dashboard.statistics.total_comments_waiting: pending
+dashboard.statistics.total_users: Users
+dashboard.statistics.total_views: Page views
+dashboard.statistics.link_pages: Manage
+dashboard.statistics.link_users: Manage
+dashboard.statistics.info_cache: Cached data (5 minutes)
+dashboard.last_pages.link_page: Page management
+dashboard.last_pages.column_id: '#'
+dashboard.last_pages.column_status: Status
+dashboard.last_pages.column_title: Title
+dashboard.last_pages.column_date: Date
+dashboard.most_viewed_pages.title: Most viewed pages
+dashboard.most_viewed_pages.link_page: Page management
+dashboard.most_viewed_pages.column_id: '#'
+dashboard.most_viewed_pages.column_title: Title
+dashboard.most_viewed_pages.column_views: Views
+dashboard.most_viewed_pages.column_date: Date

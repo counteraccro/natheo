@@ -1,6 +1,6 @@
-front_error.index.no_template: __front.error.not.template
-front_error.closed_site.title: __front.error.close.site.title
-front_error.closed_site.block_title: __front.error.close.site.block.title
-front_error.closed_site.block_text: __front.error.close.site.block.text
-front_error.index.no_script_tag: __front.error.not.scriptTag
-front_error.closed_site.admin_link: __front.error.close.site.admin.link
+front_error.index.no_template: The template {template} does not exist
+front_error.closed_site.title: Maintenance!
+front_error.closed_site.block_title: Site under maintenance
+front_error.closed_site.block_text: 'Don''t worry, nothing serious: the administrator has put the site into maintenance for an indefinite period, but it should not last very long.'
+front_error.index.no_script_tag: The scriptTag front_{template} for the template {template} does not exist
+front_error.closed_site.admin_link: Administration

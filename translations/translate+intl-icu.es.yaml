@@ -1,18 +1,18 @@
-translate.select.language: __translate.select.language
-translate.index.title: __translate.page_title_h1
-translate.index.description: __translate.description
-translate.select.file: __translate.select.file
-translate.empty.file: __translate.empty.file
-translate.button.save: __translate.btn.save
-translate.info.edit: __translate.info.edit
-translate.link.revert: __translate.link.revert
-translate.nb.edit: __translate.nb.edit
-translate.save.success: __translate.save.success
-translate.block.search.title: __translate.block.search.title
-translate.block.search.sub.title: __translate.block.search.sub.title
-translate.select.language_label: __translate.select.language.label
-translate.select.file_label: __translate.select.file.label
-translate.block.edit.sub.title: __translate.block.edit.sub.title
+translate.select.language: Seleccione un idioma
+translate.index.title: Gestión de las traducciones
+translate.index.description: Gestione las traducciones del CMS desde esta página
+translate.select.file: Seleccione un archivo
+translate.empty.file: Seleccione un archivo de traducción para modificarlo
+translate.button.save: Guardar
+translate.info.edit: Esta traducción ha sido modificada
+translate.link.revert: Cancelar
+translate.nb.edit: línea(s) modificada(s) (sin guardar)
+translate.save.success: Traducciones guardadas correctamente
+translate.block.search.title: Selección del archivo de traducción que se va a modificar
+translate.block.search.sub.title: Elija el archivo que desea modificar según su idioma
+translate.select.language_label: Idioma
+translate.select.file_label: Archivo
+translate.block.edit.sub.title: Modificar las traducciones del archivo seleccionado
 translate.save.error: 'Traducciones no guardadas: {nb, plural, one {# error detectado} other {# errores detectados}}'
 translate.save.error_invalid_payload: 'Los datos enviados no son válidos'
 translate.error.file: 'Archivo de traducción no encontrado'

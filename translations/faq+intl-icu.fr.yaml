@@ -2,12 +2,12 @@ faq.add.title: 'Nouvelle FAQ'
 faq.add.description: 'Créer une nouvelle FAQ pour votre site web'
 faq.update.title_id: 'Édition de la FAQ #{id}'
 faq.update.title: 'Édition de la FAQ'
-faq.update.description: 'Depuis cette page, éditer votre FAQ, réordonner la ou ajouter/supprimer de nouvelles questions/réponses'
+faq.update.description: Depuis cette page, modifiez votre FAQ, réordonnez-la ou ajoutez / supprimez des questions-réponses
 faq.index.modal.help.title: Aide
 faq.index.modal.help.disabled: 'Désactiver la FAQ'
 faq.index.modal.help.enable: 'Activer la FAQ'
 faq.index.modal.help.delete: Supprimer
-faq.index.modal.help.edit: Editer
+faq.index.modal.help.edit: Modifier
 faq.index.title: 'Gestion des FAQ'
 faq.index.button.new: 'Nouvelle FAQ'
 faq.index.description: 'Gérer les FAQ de votre site web'
@@ -15,31 +15,31 @@ faq.grid.id: '#'
 faq.grid.title: Titre
 faq.grid.nb_questions: 'Nombre de questions'
 faq.grid.update_at: 'Dernière modification'
-faq.confirm.disabled.message: 'Confirmez vous la désactivation de la faq <b>{label}</b>, cette faq deviendra inaccessible'
-faq.confirm.delete.message: 'Confirmez vous la suppression de la faq <b>{label}</b>, cette action est définitive'
-faq.success.no.disabled: 'La faq <b>{label}</b> à été restaurée avec succès'
-faq.success.disabled: 'La faq <b>{label}</b> à été désactivée avec succès'
-faq.remove.success: 'La faq <b>{label}</b> à été supprimée avec succès'
+faq.confirm.disabled.message: Confirmez-vous la désactivation de la FAQ <b>{label}</b> ? Cette FAQ deviendra inaccessible
+faq.confirm.delete.message: Confirmez-vous la suppression de la FAQ <b>{label}</b> ? Cette action est définitive
+faq.success.no.disabled: La FAQ <b>{label}</b> a été restaurée avec succès
+faq.success.disabled: La FAQ <b>{label}</b> a été désactivée avec succès
+faq.remove.success: La FAQ <b>{label}</b> a été supprimée avec succès
 faq.select.locale: 'Sélectionner la langue'
-faq.save.success: 'Votre FAQ à été sauvegardée avec succès'
+faq.save.success: Votre FAQ a été sauvegardée avec succès
 faq.new.title: "Création d'une nouvelle FAQ"
 faq.new.input.title: 'Titre de la FAQ'
-faq.new.help: "A la création de la FAQ, le titre sera dans la langue par défaut du site, vous pourrez éditer les autres textes dans l'édition de la FAQ"
+faq.new.help: À la création de la FAQ, le titre sera dans la langue par défaut du site, vous pourrez modifier les autres textes lors de l'édition de la FAQ
 faq.new.button: 'Créer la FAQ'
 faq.new.input.error.empty: 'Vous devez saisir un titre pour votre nouvelle FAQ'
-faq.create.success: "Votre FAQ à été créée avec succès, vous aller être redirigé vers l'édition"
+faq.create.success: Votre FAQ a été créée avec succès, vous allez être redirigé vers l'édition
 faq.grid.nb_categories: 'Nombre de catégories'
-faq.new.sub_title: 'Saisissez juste un titre pour créer votre FAQ'
+faq.new.sub_title: Saisissez simplement un titre pour créer votre FAQ
 faq.new.button_cancel: Retour
 faq.edit.title: 'Données globales'
 faq.edit.sub_title: 'Les données globales de la FAQ'
 faq.edit.input.title: 'Titre de la FAQ'
-faq.edit.input.title_help: 'Texte qui apparaitra en haut de votre FAQ'
-faq.edit.input.title_error: 'Ce champ ne peux pas être vide'
+faq.edit.input.title_help: Texte qui apparaîtra en haut de votre FAQ
+faq.edit.input.title_error: Ce champ ne peut pas être vide
 faq.edit.button.save: Sauvegarder
 faq.edit.button.cancel: Retour
 faq.edit.text.no_change: 'Aucun changement pour le moment'
-faq.edit.text.change_no_save: 'Des changements ont été effectués mais pas encore sauvegardé'
+faq.edit.text.change_no_save: Des changements ont été effectués mais pas encore sauvegardés
 faq.edit.text.error: 'Une ou plusieurs erreurs de validation ont été détectées'
 faq.edit.no.questions: 'Aucune question'
 faq.edit.one.question: '1 question'
@@ -57,8 +57,8 @@ faq.edit.new.answer.fr: 'Nouvelle réponse'
 faq.edit.new.answer.en: 'New answer'
 faq.edit.new.answer.es: 'Nueva respuesta'
 faq.edit.new.category.fr: 'Nouvelle catégorie'
-faq.edit.new.category.en: 'New Category'
-faq.edit.new.category.es: 'Nueva Categoy'
+faq.edit.new.category.en: New category
+faq.edit.new.category.es: Nueva categoría
 faq.update.not.found.faq.title: 'Aucune FAQ trouvée'
 faq.update.not.found.faq.description: "Cette FAQ n'existe pas ou a été supprimée. Vous pouvez retourner à la liste ou en créer une nouvelle."
 faq.update.not.found.button.return: Retour
@@ -67,12 +67,12 @@ faq.edit.disabled.label: Désactivée
 faq.edit.input.disabled.label: 'FAQ visible sur le site'
 faq.edit.input.disabled.help: 'Votre FAQ est visible pour tout le monde'
 faq.edit.input.disabled.help_disabled: 'Votre FAQ est actuellement désactivée'
-faq.edit.button.confirm_ok: 'Oui je confirme'
+faq.edit.button.confirm_ok: Oui, je confirme
 faq.edit.button.confirm_ko: Non
 faq.edit.confirm.delete.category.title: "Suppression d'une catégorie"
-faq.edit.confirm.delete.category.body: "Vous êtes sur le point de supprimer cette catégorie ainsi que l'ensemble des questions associées, êtes-vous sur ?"
+faq.edit.confirm.delete.category.body: Vous êtes sur le point de supprimer cette catégorie ainsi que toutes les questions associées, êtes-vous sûr ?
 faq.edit.confirm.delete.question.title: "Suppression d'une question"
-faq.edit.confirm.delete.question.body: 'Vous êtes sur le point de supprimer cette question, êtes-vous sur ?'
+faq.edit.confirm.delete.question.body: Vous êtes sur le point de supprimer cette question, êtes-vous sûr ?
 faq.error.forbidden: 'Vous n''avez pas les droits pour effectuer cette action sur cette FAQ.'
 faq.error.not_found: 'Cette FAQ n''existe pas ou a été supprimée.'
 faq.error.delete.used: 'Cette FAQ est utilisée par {nb, plural, one {# page} other {# pages}}, elle ne peut pas être supprimée. Retirez-la d''abord des pages concernées.'

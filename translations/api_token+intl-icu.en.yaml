@@ -1,81 +1,81 @@
-api_token.index.modal.help.title: __api_token.index.popin.help.title
-api_token.index.modal.help.delete: __api_token.index.popin.help.delete
-api_token.index.modal.help.edit: __api_token.index.popin.help.edit
-api_token.index.title: __api_token.page_title
-api_token.index.description: __api_token.description
-api_token.success.enabled: __api_token.success.no.disabled
-api_token.success.disabled: __api_token.success.disabled
-api_token.remove.success: __api_token.remove.success
-api_token.grid.id: __api_token.grid.id
-api_token.grid.name: __api_token.grid.name
-api_token.grid.comment: __api_token.grid.comment
-api_token.grid.token: __api_token.grid.token
-api_token.grid.roles: __api_token.grid.roles
-api_token.grid.created_at: __api_token.grid.created_at
-api_token.grid.update_at: __api_token.grid.update_at
-api_token.confirm.disabled.message: __api_token.confirm.disabled.msg
-api_token.confirm.delete.message: __api_token.confirm.delete.msg
-api_token.add.title: __api_token.add.page_title_h1
-api_token.add.description: __api_token.add.description
-api_token.update.title_id: __api_token.update.page_title
-api_token.update.title: __api_token.update.page_title_h1
-api_token.update.description: __api_token.update.description
-api_token.index.button.new: __api_token.index.btn.new
-api_token.index.modal.help.enable: __api_token.index.popin.help.enable
-api_token.index.modal.help.disabled: __api_token.index.popin.help.disabled
-api_token.card.title.add: __api_token.card.title.add
-api_token.card.title.edit: __api_token.card.title.edit
-api_token.card.button.copy_past: __api_token.card.btn.copy_past
-api_token.role.read: __api_token.role.read
-api_token.role.write: __api_token.role.write
-api_token.role.admin: __api_token.role.admin
-api_token.card.select.label.role: __api_token.card.select.label.role
-api_token.card.title.label: __api_token.card.title.label
-api_token.card.title.help: __api_token.card.title.help
-api_token.card.title.placeholder: __api_token.card.title.placeholder
-api_token.card.comment.label: __api_token.card.comment.label
-api_token.card.comment.help: __api_token.card.comment.help
-api_token.card.comment.placeholder: __api_token.card.comment.placeholder
-api_token.card.copy.success: __api_token.card.copy.success
-api_token.card.help.role: __api_token.card.help.role
-api_token.card.help.role_read: __api_token.card.help.role_read
-api_token.card.help.role_write: __api_token.card.help.role_write
-api_token.card.help.role_admin: __api_token.card.help.role_admin
-api_token.card.button.edit: __api_token.card.btn.edit.token.api
-api_token.modal.confirm.edit.title: __api_token.modale.confirm.edit.title
-api_token.modal.confirm.edit.text: __api_token.modale.confirm.edit.text
-api_token.modal.confirm.edit.button_ok: __api_token.modale.confirm.edit.btn_ok
-api_token.modal.confirm.edit.button_ko: __api_token.modale.confirm.edit.btn_ko
-api_token.card.button.save: __api_token.card.btn.save.token.api
-api_token.card.title.error: __api_token.card.title.error
-api_token.save.success: __api_token.save.success
-api_token.save.new_success: __api_token.new.token.success
-api_token.card.loading: __api_token.loading
-api_token.card.description.add: __api_token.card.description.add
-api_token.card.description.edit: __api_token.card.description.edit
-api_token.card.token.label: __api_token.card.token.label
-api_token.card.input.token.help.add: __api_token.card.input.token.help.add
+api_token.index.modal.help.title: Help
+api_token.index.modal.help.delete: Delete
+api_token.index.modal.help.edit: Edit
+api_token.index.title: API token management
+api_token.index.description: Manage the access tokens to the APIs of your website and their rights
+api_token.success.enabled: The token <strong>{label}</strong> is now active
+api_token.success.disabled: The token <strong>{label}</strong> is now disabled
+api_token.remove.success: The token <strong>{label}</strong> has been deleted successfully
+api_token.grid.id: ID
+api_token.grid.name: Label
+api_token.grid.comment: Comment
+api_token.grid.token: Token
+api_token.grid.roles: Roles
+api_token.grid.created_at: Created
+api_token.grid.update_at: Updated
+api_token.confirm.disabled.message: Disabling the token <strong>{label}</strong> will deny access to every client using this token
+api_token.confirm.delete.message: Deleting the token <strong>{label}</strong> is permanent and cannot be undone
+api_token.add.title: New API token
+api_token.add.description: Create a new token to manage access to the APIs of your site
+api_token.update.title_id: 'Editing API token #{id}'
+api_token.update.title: API token editing
+api_token.update.description: Edit the data of my token
+api_token.index.button.new: New token
+api_token.index.modal.help.enable: Enable the token
+api_token.index.modal.help.disabled: Disable the token
+api_token.card.title.add: New token
+api_token.card.title.edit: My token
+api_token.card.button.copy_past: Copy
+api_token.role.read: Read
+api_token.role.write: Read + Write
+api_token.role.admin: Admin
+api_token.card.select.label.role: Role associated with the token
+api_token.card.title.label: Name
+api_token.card.title.help: Name of your token
+api_token.card.title.placeholder: Label
+api_token.card.comment.label: Comment
+api_token.card.comment.help: Comment associated with the token to note any useful information
+api_token.card.comment.placeholder: Comment
+api_token.card.copy.success: Token copied successfully
+api_token.card.help.role: List of roles available for the token
+api_token.card.help.role_read: 'Read: only gives access to the read APIs'
+api_token.card.help.role_write: 'Read + Write: gives access to the read and write APIs'
+api_token.card.help.role_admin: 'Admin: gives access to all the APIs'
+api_token.card.button.edit: Edit
+api_token.modal.confirm.edit.title: Do you confirm the change?
+api_token.modal.confirm.edit.text: Warning, changing this token or its role will affect the applications that use it. <br /> Do you confirm this action?
+api_token.modal.confirm.edit.button_ok: 'Yes'
+api_token.modal.confirm.edit.button_ko: 'No'
+api_token.card.button.save: Create the token
+api_token.card.title.error: ✗ You must enter a name for your token
+api_token.save.success: Token saved successfully
+api_token.save.new_success: Token created successfully
+api_token.card.loading: Loading...
+api_token.card.description.add: Create a new access key to your data
+api_token.card.description.edit: Edit the access key to your data
+api_token.card.token.label: Token
+api_token.card.input.token.help.add: The token will be generated on creation and shown only once
 api_token.card.button.cancel: Back
-api_token.card.button.delete: __api_token.card.btn.delete.token.api
-api_token.modal.confirm.delete.title: __api_token.modale.confirm.delete.title
-api_token.modal.confirm.delete.text: __api_token.modale.confirm.delete.text
-api_token.update.not_found_title: __api_token.update.no.mail.title
-api_token.update.not_found_text: __api_token.update.no.mail.text
-api_token.update.not_found_back: __api_token.update.no.mail.back
-api_token.update.not_found_new: __api_token.update.no.mail.new
-api_token.grid.expires_at: __api_token.grid.expires_at
-api_token.grid.last_used_at: __api_token.grid.last_used_at
-api_token.grid.never: __api_token.grid.never
-api_token.grid.no_expiration: __api_token.grid.no_expiration
-api_token.grid.expired: __api_token.grid.expired
-api_token.regenerate.success: __api_token.regenerate.success
-api_token.card.expires_at.label: __api_token.card.expires_at.label
-api_token.card.expires_at.help: __api_token.card.expires_at.help
-api_token.card.last_used_at.label: __api_token.card.last_used_at.label
-api_token.card.last_used_at.never: __api_token.card.last_used_at.never
-api_token.card.token.once.warning: __api_token.card.token.once.warning
-api_token.card.token.hidden: __api_token.card.token.hidden
-api_token.card.button.regenerate: __api_token.card.btn.regenerate
-api_token.card.button.back_list: __api_token.card.btn.back_list
-api_token.modal.confirm.regenerate.title: __api_token.modale.confirm.regenerate.title
-api_token.modal.confirm.regenerate.text: __api_token.modale.confirm.regenerate.text
+api_token.card.button.delete: Delete
+api_token.modal.confirm.delete.title: Confirm the token deletion
+api_token.modal.confirm.delete.text: Deleting the token is permanent and cannot be undone. <br /> Every application using it will instantly lose its access.
+api_token.update.not_found_title: No token found
+api_token.update.not_found_text: This token does not exist or has been deleted. You can go back to the list or create a new one
+api_token.update.not_found_back: Back
+api_token.update.not_found_new: New token
+api_token.grid.expires_at: Expiration
+api_token.grid.last_used_at: Last used
+api_token.grid.never: Never
+api_token.grid.no_expiration: None
+api_token.grid.expired: Expired on {date}
+api_token.regenerate.success: New token generated successfully
+api_token.card.expires_at.label: Expiration date
+api_token.card.expires_at.help: Optional. After this date, the token will be refused. Leave empty for no expiration
+api_token.card.last_used_at.label: Last used
+api_token.card.last_used_at.never: Never used
+api_token.card.token.once.warning: 'Copy this token now: for security reasons, it will never be shown again.'
+api_token.card.token.hidden: The token is not shown for security reasons. You can generate a new one, the old one will then be invalidated immediately.
+api_token.card.button.regenerate: Regenerate
+api_token.card.button.back_list: Back to the list
+api_token.modal.confirm.regenerate.title: Regenerate the token?
+api_token.modal.confirm.regenerate.text: The old token will be invalidated immediately, all the applications that use it will have to be updated. <br /> Do you confirm this action?

@@ -1,35 +1,35 @@
-api_errors.authentication.failure: __api_errors.authentication.failure
-api_errors.access.denied: __api_errors.access.denied
-api_errors.not.found: __api_errors.not.found
-api_errors.params.name.not.found: __api_errors.params.name.not.found
-api_errors.params.not.string: __api_errors.params.not.string
-api_errors.user.not.found: __api_errors.user.not.found
-api_errors.find.menu.not.id.slug.together: __api_errors.find.menu.not.id.slug.together
-api_errors.find.menu.id.slug.together: __api_errors.find.menu.id.slug.together
-api_errors.user.token.not.found: __api_errors.user.token.not.found
-api_errors.find.menu.not.found: __api_errors.find.menu.not.found
-api_errors.access.unauthorized: __api_errors.access.unauthorized
-api_errors.find.page.not.found: __api_errors.find.page.not.found
-api_errors.find.page.content.not.found: __api_errors.find.page.content.not.found
-api_errors.find.listing.category.not.found: __api_errors.find.listing.category.not.found
-api_errors.find.listing.tag.not.found: __api_errors.find.listing.tag.not.found
-api_errors.api.not.open: __api_errors.api.not.open
-api_errors.find.option.system.not.found: __api_errors.find.option.system.not.found
-api_errors.comment.by.page.not.id.slug.together: __api_errors.comment.by.page.not.id.slug.together
-api_errors.comment.by.page.id.slug.together: __api_errors.comment.by.page.id.slug.together
-api_errors.comment.wait.validation: __api_errors.comment.wait.validation
-api_errors.comment.moderate: __api_errors.comment.moderate
-api_errors.comment.add.not.id.slug.together: __api_errors.comment.add.not.id.slug.together
-api_errors.comment.add.id.slug.together: __api_errors.comment.add.id.slug.together
-api_errors.comment.not.open: __api_errors.comment.not.open
-api_errors.comment.not.save: __api_errors.comment.not.save
-api_errors.internal.server.error: __api_errors.internal.server.error
-api_errors.comment.status.no.valid: __api_errors.comment.status.no.valid
-api_errors.bad.request: __api_errors.bad.request
-api_errors.method.not.allowed: __api_errors.method.not.allowed
-api_errors.too.many.requests: __api_errors.too.many.requests
-api_errors.request.body.invalid: __api_errors.request.body.invalid
-api_errors.comment.moderate_forbidden: __api_errors.comment.moderate.forbidden
-api_errors.params.not.boolean: __api_errors.params.not.boolean
-api_errors.access.role.denied: __api_errors.access.role.denied
-api_errors.comment.wait.validation_author: __api_errors.comment.wait.validation.author
+api_errors.authentication.failure: Token no válido
+api_errors.access.denied: Recurso no accesible
+api_errors.not.found: Recurso no disponible
+api_errors.params.name.not.found: Falta el parámetro esperado {param}
+api_errors.params.not.string: El parámetro {param} debe ser una cadena de caracteres
+api_errors.user.not.found: Usuario no encontrado
+api_errors.find.menu.not.id.slug.together: Se requiere el parámetro id o page_slug
+api_errors.find.menu.id.slug.together: Los parámetros id y page_slug no se pueden usar juntos
+api_errors.user.token.not.found: Usuario no encontrado
+api_errors.find.menu.not.found: Menú no disponible
+api_errors.access.unauthorized: Acceso no autorizado
+api_errors.find.page.not.found: Página no disponible
+api_errors.find.page.content.not.found: Contenido de la página no disponible
+api_errors.find.listing.category.not.found: La categoría solicitada no existe
+api_errors.find.listing.tag.not.found: La etiqueta solicitada no existe
+api_errors.api.not.open: Recurso no accesible - API cerrada
+api_errors.find.option.system.not.found: Opción del sistema no disponible
+api_errors.comment.by.page.not.id.slug.together: Se requiere el parámetro id o page_slug
+api_errors.comment.by.page.id.slug.together: Los parámetros id y page_slug no se pueden usar juntos
+api_errors.comment.wait.validation: Pendiente de validación
+api_errors.comment.moderate: Comentario moderado
+api_errors.comment.add.not.id.slug.together: Se requiere el parámetro id_page o page_slug
+api_errors.comment.add.id.slug.together: Los parámetros id_page y page_slug no se pueden usar juntos
+api_errors.comment.not.open: Los comentarios no están abiertos
+api_errors.comment.not.save: Se ha producido un error al crear el comentario
+api_errors.internal.server.error: Error interno del servidor
+api_errors.comment.status.no.valid: El estado del comentario no es válido
+api_errors.bad.request: Solicitud no válida
+api_errors.method.not.allowed: Método HTTP no permitido
+api_errors.too.many.requests: Demasiados intentos, inténtelo de nuevo más tarde
+api_errors.request.body.invalid: El cuerpo de la solicitud debe ser un JSON válido
+api_errors.comment.moderate_forbidden: No tiene permisos para moderar este comentario
+api_errors.params.not.boolean: El parámetro {param} debe ser un booleano (true/false, 1/0)
+api_errors.access.role.denied: Los permisos del token API no permiten acceder a este recurso
+api_errors.comment.wait.validation_author: Anónimo

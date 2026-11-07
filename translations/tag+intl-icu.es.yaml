@@ -1,65 +1,65 @@
-tag.index.title: __tag.index.page_title
-tag.index.button.new: __tag.index.btn.new
-tag.index.description: __tag.index.description
-tag.success.no.disabled: __tag.success.no.disabled
-tag.success.disabled: __tag.success.disabled
-tag.grid.id: __tag.grid.id
-tag.grid.label: __tag.grid.label
-tag.grid.color: __tag.grid.color
-tag.grid.created_at: __tag.grid.created_at
-tag.grid.update_at: __tag.grid.update_at
-tag.confirm.disabled.message: __tag.confirm.disabled.msg
-tag.remove.success: __tag.remove.success
-tag.confirm.delete.message: __tag.confirm.delete.msg
-tag.add.title: __tag.add.page_title_h1
-tag.index.modal.help.title: __tag.index.popin.help.title
-tag.index.modal.help.disabled_user: __tag.index.popin.help.disabled_user
-tag.index.modal.help.enable_user: __tag.index.popin.help.enable_user
-tag.index.modal.help.delete: __tag.index.popin.help.delete
-tag.index.modal.help.edit: __tag.index.popin.help.edit
-tag.update.title_id: __tag.update.page_title
-tag.update.title: __tag.update.page_title_h1
-tag.form.loading: __tag.form.loading
-tag.form.input.color.error: __tag.form.input.color.error
-tag.form.input.label.label: __tag.form.input.label.label
-tag.add.description: __tag.add.description
-tag.update.description: __tag.update.description
-tag.form.color.title: __tag.form.color.title
-tag.form.check.auto.copy: __tag.form.check.auto.copy
-tag.form.input.label.error: __tag.form.input.label.error
-tag.form.render.title: __tag.form.rendu.title
-tag.form.submit.update: __tag.form.submit.update
-tag.form.submit.create: __tag.form.submit.create
-tag.form.stat.title: __tag.form.stat.title
-tag.page_date_update.created: __tag.page_date_update.created
-tag.page_date_update.last_update: __tag.page_date_update.last_update
-tag.page.error.tag.disabled: __tag.page.error.tag.disabled
-tag.form.input.label.placeholder: __tag.form.input.label.placeholder
+tag.index.title: Gestión de las etiquetas
+tag.index.button.new: Nueva etiqueta
+tag.index.description: Gestione las etiquetas asociadas al contenido de su sitio
+tag.success.no.disabled: La etiqueta <strong>{label}</strong> ahora está activada
+tag.success.disabled: La etiqueta <strong>{label}</strong> ahora está desactivada
+tag.grid.id: ID
+tag.grid.label: Nombre
+tag.grid.color: Color
+tag.grid.created_at: Fecha de creación
+tag.grid.update_at: Fecha de actualización
+tag.confirm.disabled.message: La desactivación de la etiqueta <strong>{label}</strong> la hace invisible en el sitio. No se elimina ningún dato, pero los contenidos vinculados a esta etiqueta pueden quedar ocultos
+tag.remove.success: La etiqueta <strong>{label}</strong> se ha eliminado correctamente
+tag.confirm.delete.message: La eliminación de la etiqueta <strong>{label}</strong> es definitiva. Solo se elimina la etiqueta, no los datos asociados
+tag.add.title: Nueva etiqueta
+tag.index.modal.help.title: Ayuda
+tag.index.modal.help.disabled_user: Desactivar una etiqueta
+tag.index.modal.help.enable_user: Activar una etiqueta
+tag.index.modal.help.delete: Eliminar una etiqueta
+tag.index.modal.help.edit: Modificar una etiqueta
+tag.update.title_id: 'Edición de la etiqueta #{id}'
+tag.update.title: Edición de la etiqueta
+tag.form.loading: Cargando datos...
+tag.form.input.color.error: El formato esperado es «#rrggbb», donde rr, gg y bb son dos valores hexadecimales.
+tag.form.input.label.label: Nombre en
+tag.add.description: Añada una nueva etiqueta para organizar su contenido
+tag.update.description: La modificación de la etiqueta no modifica los contenidos asociados a ella
+tag.form.color.title: Color de la etiqueta
+tag.form.check.auto.copy: Duplicar el nombre para los demás idiomas
+tag.form.input.label.error: El nombre de la etiqueta no puede estar vacío
+tag.form.render.title: Vista previa de la etiqueta
+tag.form.submit.update: Modificar
+tag.form.submit.create: Crear la etiqueta
+tag.form.stat.title: Estadísticas
+tag.page_date_update.created: Fecha de creación
+tag.page_date_update.last_update: Última modificación
+tag.page.error.tag.disabled: Esta etiqueta está desactivada, no se puede añadir
+tag.form.input.label.placeholder: Nombre de la etiqueta
 tag.form.button.cancel: Volver
-tag.form.button.delete: __tag.form.button.delete
-tag.form.success.save: __tag.form.success.save
-tag.form.error.save: __tag.form.error.save
-tag.form.modal.confirm.delete.title: __tag.form.modale.confirm.delete.title
-tag.form.modal.confirm.delete.message: __tag.form.modale.confirm.delete.message
-tag.form.modal.confirm.delete.button.ok: __tag.form.modale.confirm.delete.btn.ok
-tag.form.modal.confirm.delete.button.ko: __tag.form.modale.confirm.delete.btn.ko
-tag.form.style.title: __tag.form.style.title
-tag.form.style.description: __tag.form.style.description
-tag.form.text.title: __tag.form.text.title
-tag.form.text.description: __tag.form.text.description
-tag.update.page.no.tag.title: __tag.update.page.no.tag.title
-tag.update.page.no.tag.text: __tag.update.page.no.tag.text
-tag.update.page.back: __tag.update.page.back
-tag.update.page.new: __tag.update.page.new
+tag.form.button.delete: Eliminar
+tag.form.success.save: Etiqueta guardada correctamente
+tag.form.error.save: Se ha producido un error al guardar la etiqueta
+tag.form.modal.confirm.delete.title: ¿Confirma la eliminación de esta etiqueta?
+tag.form.modal.confirm.delete.message: La eliminación de esta etiqueta es definitiva e irreversible, su contenido no se verá afectado por esta acción
+tag.form.modal.confirm.delete.button.ok: Sí, confirmo
+tag.form.modal.confirm.delete.button.ko: 'No'
+tag.form.style.title: Estilo de la etiqueta
+tag.form.style.description: Definición del color
+tag.form.text.title: Otra información
+tag.form.text.description: Definición del nombre
+tag.update.page.no.tag.title: No se ha encontrado ninguna etiqueta
+tag.update.page.no.tag.text: Esta etiqueta no existe o ha sido eliminada. Puede volver a la lista o crear una nueva
+tag.update.page.back: Volver
+tag.update.page.new: Nueva etiqueta
 tag.save.new: 'La etiqueta <strong>{label}</strong> se ha creado correctamente'
 tag.save.edit: 'La etiqueta <strong>{label}</strong> se ha modificado correctamente'
-tag.error.forbidden: __tag.error.forbidden
-tag.error.not_found: __tag.error.not_found
-tag.grid.author: __tag.grid.author
-tag.error.label.blank: __tag.error.label.blank
-tag.error.label.length: __tag.error.label.length
-tag.error.color: __tag.error.color
-tag.error.label.duplicate: __tag.error.label.duplicate
-tag.error.delete.used: __tag.error.delete.used
-tag.error.tag_by_name: __tag.error.tag_by_name
-tag.form.input.color.help: 'Elija un color para identificar visualmente este tag'
+tag.error.forbidden: No tiene permisos para realizar esta acción en esta etiqueta.
+tag.error.not_found: Esta etiqueta no existe o ha sido eliminada.
+tag.grid.author: Autor
+tag.error.label.blank: El nombre de la etiqueta no puede estar vacío.
+tag.error.label.length: El nombre de la etiqueta no puede superar los 255 caracteres.
+tag.error.color: 'El color debe tener el formato #rrggbb.'
+tag.error.label.duplicate: El nombre <strong>{label}</strong> ya lo utiliza otra etiqueta.
+tag.error.delete.used: Esta etiqueta se utiliza en {nb, plural, one {# página} other {# páginas}}, no se puede eliminar. Corrija su nombre o retírela de esas páginas.
+tag.error.tag_by_name: El nombre o el idioma de la etiqueta no es válido.
+tag.form.input.color.help: Elija un color para identificar visualmente esta etiqueta

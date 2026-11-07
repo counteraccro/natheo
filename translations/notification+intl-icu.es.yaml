@@ -1,46 +1,46 @@
-notification.msg.welcome.title: '__Bienvenue sur le site'
-notification.msg.welcome.content: "__Bienvenue {login} , Vous pouvez dès à présent contribuer au site. Votre compte possède les droits <strong>{role}</strong> sur le site <br /> Pour toute question vous avez <a href='{url_aide}'>l'aide</a> du site"
-notification.msg.self_disabled.title: '__Désactivation de compte'
-notification.msg.self_disabled.content: '__{login} à décidé de désactiver son compte'
-notification.msg.self_delete.title: '__Suppression de compte'
-notification.msg.self_delete.content: '__{login} à décidé de supprimer son compte'
-notification.msg.self_anonymous.title: '__Anonymisation de compte'
-notification.msg.self_anonymous.content: "__{login} à décidé d'anonymiser son compte"
-notification.msg.dump_sql.title: '__Dump SQL disponible'
-notification.msg.dump_sql.content: "__Le dump SQL {file} est disponible, vous pouvez le télécharger <a href='{url}'>ici</a> ou directement depuis l'interface de sauvegarde"
-notification.msg.dump_sql_error.title: __notification.msg.dump_sql_error.title
-notification.msg.dump_sql_error.content: __notification.msg.dump_sql_error.content
+notification.msg.welcome.title: Bienvenido al sitio
+notification.msg.welcome.content: Bienvenido {login}, ya puede contribuir al sitio. Su cuenta tiene los permisos <strong>{role}</strong> en el sitio. <br /> Para cualquier pregunta, consulte la <a href="{url_aide}">ayuda</a> del sitio
+notification.msg.self_disabled.title: Desactivación de cuenta
+notification.msg.self_disabled.content: '{login} ha decidido desactivar su cuenta'
+notification.msg.self_delete.title: Eliminación de cuenta
+notification.msg.self_delete.content: '{login} ha decidido eliminar su cuenta'
+notification.msg.self_anonymous.title: Anonimización de cuenta
+notification.msg.self_anonymous.content: '{login} ha decidido anonimizar su cuenta'
+notification.msg.dump_sql.title: Volcado SQL disponible
+notification.msg.dump_sql.content: El volcado SQL {file} está disponible, puede descargarlo <a href="{url}">aquí</a> o directamente desde la interfaz de copias de seguridad
+notification.msg.dump_sql_error.title: Error del volcado SQL
+notification.msg.dump_sql_error.content: La generación del volcado SQL {file} ha fallado. Consulte los logs de la aplicación para más detalles
 notification.msg.new_fondateur.title: '¡Bienvenido!'
-notification.msg.new_fondateur.content: 'Hola <b>{login}</b>, acaba de finalizar la instalación de Natheo CMS. Con unos pocos ajustes más su sitio estará operativo. <br /> Para ayudarle a publicar su sitio, puede consultar la <a href="{url_aide}" target="_blank">ayuda</a> del sitio'
-notification.index.title: __notification.page_title_h1
-notification.index.description: __notification.description
-notification.list.loading: __notification.loading
-notification.list.empty: __notification.empty
-notification.index.purge_info: __notification.purge.info
-notification.filter.unread: __notification.only_not_read
-notification.list.read_all: __notification.read_All
-notification.filter.all: __notification.all
-notification.stats.unread: __notification.stat_non_lu
-notification.stats.today: __notification.stat_today
-notification.stats.all: __notification.stat_all
-notification.category.comment: __Commentaire
-notification.category.sql: __Dump
-notification.category.admin: __Administration
-notification.list.delete_selected: __notification.delete_selected
-notification.list.delete_all: __notification.delete_all
-notification.list.unread_success: __notification.update.unread.success
-notification.list.read_success: __notification.update.read.success
-notification.list.mark_unread: __notification.no_read
-notification.list.mark_read: __notification.read
-notification.list.read_all_success: __notification.read.all.success
-notification.confirm.title: __notification.confirm.title
-notification.confirm.button_ok: __notification.confirm.btn.ok
-notification.confirm.button_no: __notification.confirm.btn.no
-notification.confirm.message: __notification.confirm.msg
-notification.list.delete_success: __notification.delete.success
-notification.item.see_comment: __notification.notification.see.comment
-notification.item.mark_read: __notification.notification.read
-notification.item.time: __notification.notification.time
-notification.confirm.message_single: __notification.confirm.single_delete
+notification.msg.new_fondateur.content: Hola <b>{login}</b>, acaba de finalizar la instalación de Nathéo CMS. Con unos pocos ajustes más su sitio estará operativo. <br /> Para ayudarle a publicar su sitio, puede consultar la <a href="{url_aide}" target='_blank'>ayuda</a> del sitio
+notification.index.title: Centro de notificaciones
+notification.index.description: Lista de mis notificaciones, pase el ratón {mouse} por encima para marcarlas como leídas.
+notification.list.loading: Cargando datos
+notification.list.empty: Ninguna notificación por el momento...
+notification.index.purge_info: Las notificaciones leídas se eliminarán automáticamente al cabo de <b>{nb_day}</b> días
+notification.filter.unread: No leídas
+notification.list.read_all: Marcar todo como leído
+notification.filter.all: Todas
+notification.stats.unread: No leídas
+notification.stats.today: Hoy
+notification.stats.all: Total
+notification.category.comment: Comentario
+notification.category.sql: Volcado
+notification.category.admin: Administración
+notification.list.delete_selected: Eliminar
+notification.list.delete_all: Eliminar todo
+notification.list.unread_success: Notificaciones marcadas como no leídas
+notification.list.read_success: Notificaciones marcadas como leídas
+notification.list.mark_unread: Marcar como no leído
+notification.list.mark_read: Marcar como leído
+notification.list.read_all_success: Todas las notificaciones se han marcado como leídas
+notification.confirm.title: ¿Confirma esta acción?
+notification.confirm.button_ok: Sí, confirmo
+notification.confirm.button_no: 'No'
+notification.confirm.message: Está a punto de eliminar {total} notificación(es), de las cuales {noRead} no leída(s)
+notification.list.delete_success: Notificación(es) eliminada(s) correctamente
+notification.item.see_comment: Ver el comentario
+notification.item.mark_read: Marcar como leído
+notification.item.time: 'hace '
+notification.confirm.message_single: Está a punto de eliminar esta notificación
 notification.msg.new_comment.title: 'Nuevo comentario'
 notification.msg.new_comment.content: 'Hola, <b>{author}</b> ha añadido un nuevo comentario en la página <b>{page}</b>, su estado es <b>{status}</b>'

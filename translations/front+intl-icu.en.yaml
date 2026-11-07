@@ -1,61 +1,61 @@
-front.footer.credit: __front.footer.credit
-front.footer.template.version: __front.footer.template.version
-front.footer.admin.link: __front.footer.admin.link
-front.footer.github.link: __front.footer.github.link
-front.page.title: __front.page.title
-front.footer.sitemap.link: __front.footer.sitemap.link
-front.header.login: __front.header.login
-front.header.logout: __front.header.logout
-front.footer.fr.link: __front.footer.fr.link
-front.footer.es.link: __front.footer.es.link
-front.footer.en.link: __front.footer.en.link
-front.error.api.modal.error.401: __front.error.api.modal.error.401
-front.error.api.modal.error.403: __front.error.api.modal.error.403
-front.article.footer.edit: __front.article.footer.edit
-front.article.footer.stat_publication: __front.article.footer.statPublication
-front.article.footer.info.draft: __front.article.footer.info.draft
-front.comment.title: __front.comment.title
-front.comment.nb_comments: __front.comment.nbComments
-front.comment.time_ago: __front.comment.timeAgo
-front.comment.validate: __front.comment.validate
-front.comment.moderate: __front.comment.moderate
-front.comment.waiting: __front.comment.waiting
-front.comment.form.moderate.label: __front.comment.form.moderate.label
-front.comment.form.moderate.placeholder: __front.comment.form.moderate.placeholder
-front.comment.form.moderate.cancel: __front.comment.form.moderate.cancel
-front.comment.form.moderate.submit: __front.comment.form.moderate.submit
-front.comment.success.validate: __front.comment.success.validate
-front.comment.success.moderate: __front.comment.success.moderate
-front.comment.success.waiting: __front.comment.success.waiting
-front.comment.button.new.comment: __front.comment.btn.new.comment
-front.comment.button.new.comment_cancel: __front.comment.btn.new.comment.cancel
-front.comment.button.new.comment_submit: __front.comment.btn.new.comment.submit
-front.comment.form.new.comment.pseudo.label: __front.comment.form.new.comment.pseudo.label
-front.comment.form.new.comment.pseudo.placeholder: __front.comment.form.new.comment.pseudo.placeholder
-front.comment.form.new.comment.email.label: __front.comment.form.new.comment.email.label
-front.comment.form.new.comment.email.placeholder: __front.comment.form.new.comment.email.placeholder
-front.comment.form.new.comment.comment.label: __front.comment.form.new.comment.comment.label
-front.comment.form.new.comment.comment.placeholder: __front.comment.form.new.comment.comment.placeholder
-front.comment.form.new.comment.pseudo.error: __front.comment.form.new.comment.pseudo.error
-front.comment.form.new.comment.error: __front.comment.form.new.comment.error
-front.comment.new.success.message: __front.comment.new.success.message
-front.error.api.modal.error.404: __front.error.api.modal.error.404
-front.error.api.modal.error.429: __front.error.api.modal.error.429
-front.error.api.modal.error.default: __front.error.api.modal.error.default
-front.error.api.token.missing: __front.error.api.token.missing
-front.error.api.modal.back: __front.error.api.modal.back
-front.header.open.menu: __front.header.open.menu
-front.header.dark.mode: __front.header.dark.mode
-front.breadcrumb.index: __front.breadcrumb.index
-front.article.header.img.alt: __front.article.header.img.alt
-front.comment.moderation.prefix: __front.comment.moderation.prefix
-front.listing.no.image: __front.listing.no.image
-front.listing.by: __front.listing.by
-front.listing.empty: __front.listing.empty
-front.listing.nb.pages: __front.listing.nb.pages
-front.pagination.of: __front.pagination.of
-front.pagination.label: __front.pagination.label
-front.pagination.first: __front.pagination.first
-front.pagination.previous: __front.pagination.previous
-front.pagination.next: __front.pagination.next
-front.pagination.last: __front.pagination.last
+front.footer.credit: 2023-{year} — Powered by Nathéo CMS {version}
+front.footer.template.version: '{version}'
+front.footer.admin.link: Administration
+front.footer.github.link: GitHub
+front.page.title: Loading...
+front.footer.sitemap.link: Sitemap
+front.header.login: Log in
+front.header.logout: Log out
+front.footer.fr.link: Français
+front.footer.es.link: Español
+front.footer.en.link: English
+front.error.api.modal.error.401: The API access token is invalid or expired
+front.error.api.modal.error.403: The requested resource is not accessible
+front.article.footer.edit: 'On'
+front.article.footer.stat_publication: view(s)
+front.article.footer.info.draft: This page is a draft, only you can read it for now
+front.comment.title: Comments
+front.comment.nb_comments: comment(s)
+front.comment.time_ago: Posted
+front.comment.validate: Approve
+front.comment.moderate: Moderate
+front.comment.waiting: Unapprove
+front.comment.form.moderate.label: Moderation message
+front.comment.form.moderate.placeholder: Moderation message for this comment, only visible to administrators
+front.comment.form.moderate.cancel: Cancel
+front.comment.form.moderate.submit: Moderate
+front.comment.success.validate: Comment approved successfully
+front.comment.success.moderate: Comment moderated successfully
+front.comment.success.waiting: Comment unapproved successfully
+front.comment.button.new.comment: Leave a comment
+front.comment.button.new.comment_cancel: Cancel
+front.comment.button.new.comment_submit: Post
+front.comment.form.new.comment.pseudo.label: Nickname
+front.comment.form.new.comment.pseudo.placeholder: Your nickname
+front.comment.form.new.comment.email.label: Email address
+front.comment.form.new.comment.email.placeholder: Your email address
+front.comment.form.new.comment.comment.label: Comment
+front.comment.form.new.comment.comment.placeholder: Leave a little comment ;)
+front.comment.form.new.comment.pseudo.error: Please enter a nickname
+front.comment.form.new.comment.error: The comment must not be empty
+front.comment.new.success.message: Comment added successfully
+front.error.api.modal.error.404: The requested page does not exist
+front.error.api.modal.error.429: Too many requests, please try again in a few minutes
+front.error.api.modal.error.default: An error occurred while calling the API
+front.error.api.token.missing: The front API token is not configured (System options > API)
+front.error.api.modal.back: Back to home
+front.header.open.menu: Open the menu
+front.header.dark.mode: Toggle dark mode
+front.breadcrumb.index: Home
+front.article.header.img.alt: Page header image
+front.comment.moderation.prefix: 'Moderation:'
+front.listing.no.image: No image
+front.listing.by: By
+front.listing.empty: No item found
+front.listing.nb.pages: page(s)
+front.pagination.of: of
+front.pagination.label: Pagination
+front.pagination.first: First page
+front.pagination.previous: Previous page
+front.pagination.next: Next page
+front.pagination.last: Last page

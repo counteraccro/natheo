@@ -7,9 +7,9 @@ info.browser.title: 'Mon navigateur'
 info.server.software_version: Serveur
 info.server.php_version: 'Version PHP'
 info.server.memory_limit: 'Limite mémoire'
-info.server.upload_max_file: 'Taille max upload'
+info.server.upload_max_file: Taille max. d'upload
 info.cms.version: Version
-info.cms.url: Url
+info.cms.url: URL
 info.database.type: Type
 info.database.server: Serveur
 info.database.user: Utilisateur

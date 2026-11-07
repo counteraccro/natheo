@@ -1,33 +1,33 @@
-grid.search.placeholder: __grid.search.placeholder
-grid.list.loading: __grid.loading
-grid.toast.success_title: __grid.success.titre
-grid.confirm.title: __grid.confirm.titre
-grid.confirm.text: __grid.confirm.texte
-grid.confirm.button_ok: __grid.confirm.btn.ok
-grid.confirm.button_no: __grid.confirm.btn.no
-grid.pagination.page: __grid.page
-grid.pagination.on: __grid.on
-grid.pagination.row: __grid.row
-grid.list.no_result: __grid.no.result
-grid.toast.time: __grid.toast.time
-grid.toast.error_title: __grid.error.titre
-grid.search.placeholder_database: __grid.search.placeholder.bdd.search
-grid.search.button: __grid.btn.search
-grid.query.copy_success: __grid.copy.success
-grid.query.copy_error: __grid.copy.error
-grid.query.title: __grid.query.title
-grid.filter.only_me: __grid.filter.only.me
-grid.filter.all: __grid.filter.all
-grid.search.placeholder_table: __grid.search.placeholder.table.search
-grid.search.text_database: __grid.search.text.bdd.search
-grid.search.title: __grid.search.title.search
-grid.search.text_table: __grid.search.text.table.search
-grid.query.show: __grid.text.show.query
-grid.query.hide: __grid.text.hide.query
-grid.sort.show: __grid.text.show.trie.option
-grid.sort.hide: __grid.text.hide.trie.option
-grid.sort.title: __grid.trie.title.option
-grid.sort.sub_title: __grid.trie.title.option.sub
-grid.sort.field: __grid.trie.option.liste.field
-grid.sort.order: __grid.trie.option.liste.order
-grid.sort.button: __grid.trie.option.btn
+grid.search.placeholder: Search in the table
+grid.list.loading: Loading data
+grid.toast.success_title: Success!
+grid.confirm.title: Confirmation required
+grid.confirm.text: Are you sure you want to do this?
+grid.confirm.button_ok: 'Yes'
+grid.confirm.button_no: 'No'
+grid.pagination.page: Page
+grid.pagination.on: of
+grid.pagination.row: rows
+grid.list.no_result: No results for your search
+grid.toast.time: Just now
+grid.toast.error_title: Error!
+grid.search.placeholder_database: Search in the database
+grid.search.button: Search
+grid.query.copy_success: Data copied to the clipboard
+grid.query.copy_error: An error occurred while copying
+grid.query.title: SQL query
+grid.filter.only_me: Show my data
+grid.filter.all: Show all data
+grid.search.placeholder_table: Search in the table
+grid.search.text_database: In the database
+grid.search.title: Search
+grid.search.text_table: In the table
+grid.query.show: Show the SQL
+grid.query.hide: Hide the SQL
+grid.sort.show: More options
+grid.sort.hide: Hide options
+grid.sort.title: Other options
+grid.sort.sub_title: Sort options
+grid.sort.field: Columns
+grid.sort.order: Order
+grid.sort.button: Sort

@@ -1,55 +1,55 @@
-global_search.index.title: __global_search.index.page_title_h1
-global_search.index.sub_title: __global_search.sub.title.page
-global_search.index.error_not_found: __global_search.error.notFound
-global_search.pagination.page: __global_search.paginate.page
-global_search.pagination.on: __global_search.paginate.on
-global_search.pagination.row: __global_search.paginate.row
-global_search.page.tab: __global_search.onglet.page.onglet
-global_search.page.title: __global_search.onglet.page.title
-global_search.page.description: __global_search.onglet.page.description
-global_search.page.no_result: __global_search.onglet.page.no.result
-global_search.index.description: __global_search.index.page.description
-global_search.page.create: __global_search.onglet.page.create
-global_search.page.update: __global_search.onglet.page.update
-global_search.page.author: __global_search.onglet.page.author
-global_search.page.no_result_content: __global_search.onglet.page.no.result.content
-global_search.index.total_results: __global_search.total.results
-global_search.index.total_no_results: __global_search.total.no.results
-global_search.page.loading: __global_search.onglet.page.loading
-global_search.menu.tab: __global_search.onglet.menu.onglet
-global_search.menu.title: __global_search.onglet.menu.title
-global_search.menu.description: __global_search.onglet.menu.description
-global_search.menu.no_result: __global_search.onglet.menu.no.result
-global_search.menu.loading: __global_search.onglet.menu.loading
-global_search.page.content: __global_search.onglet.page.content
-global_search.menu.content: __global_search.onglet.menu.content
-global_search.menu.create: __global_search.onglet.menu.create
-global_search.menu.update: __global_search.onglet.menu.update
-global_search.menu.author: __global_search.onglet.menu.author
-global_search.menu.no_result_content: __global_search.onglet.menu.no.result.content
-global_search.faq.tab: __global_search.onglet.faq.onglet
-global_search.faq.title: __global_search.onglet.faq.title
-global_search.faq.description: __global_search.onglet.faq.description
-global_search.faq.content: __global_search.onglet.faq.content
-global_search.faq.no_result: __global_search.onglet.faq.no.result
-global_search.faq.create: __global_search.onglet.faq.create
-global_search.faq.update: __global_search.onglet.faq.update
-global_search.faq.author: __global_search.onglet.faq.author
-global_search.faq.no_result_content: __global_search.onglet.faq.no.result.content
-global_search.faq.loading: __global_search.onglet.faq.loading
-global_search.user.tab: __global_search.onglet.user.onglet
-global_search.user.title: __global_search.onglet.user.title
-global_search.user.description: __global_search.onglet.user.description
-global_search.user.no_result: __global_search.onglet.user.no.result
-global_search.user.create: __global_search.onglet.user.create
-global_search.user.update: __global_search.onglet.user.update
-global_search.user.author: __global_search.onglet.user.author
-global_search.user.loading: __global_search.onglet.user.loading
-global_search.tag.tab: __global_search.onglet.tag.onglet
-global_search.tag.title: __global_search.onglet.tag.title
-global_search.tag.description: __global_search.onglet.tag.description
-global_search.tag.no_result: __global_search.onglet.tag.no.result
-global_search.tag.create: __global_search.onglet.tag.create
-global_search.tag.update: __global_search.onglet.tag.update
-global_search.tag.author: __global_search.onglet.tag.author
-global_search.tag.loading: __global_search.onglet.tag.loading
+global_search.index.title: Global search
+global_search.index.sub_title: Results in the pages
+global_search.index.error_not_found: No results
+global_search.pagination.page: Page
+global_search.pagination.on: of
+global_search.pagination.row: result(s)
+global_search.page.tab: Pages
+global_search.page.title: result(s) for pages
+global_search.page.description: List of pages found
+global_search.page.no_result: No page found for your search
+global_search.index.description: Find the results of your search sorted by data type
+global_search.page.create: Created on
+global_search.page.update: edited on
+global_search.page.author: by
+global_search.page.no_result_content: No results found in the page content
+global_search.index.total_results: result(s) for
+global_search.index.total_no_results: No results for
+global_search.page.loading: Searching the pages...
+global_search.menu.tab: Menus
+global_search.menu.title: result(s) for menus
+global_search.menu.description: List of menus found
+global_search.menu.no_result: No menu found for your search
+global_search.menu.loading: Searching the menus
+global_search.page.content: Page content
+global_search.menu.content: Links in the menu
+global_search.menu.create: Created on
+global_search.menu.update: edited on
+global_search.menu.author: by
+global_search.menu.no_result_content: No results found in the menu links
+global_search.faq.tab: FAQ
+global_search.faq.title: result(s) for FAQs
+global_search.faq.description: List of FAQs found
+global_search.faq.content: FAQ content
+global_search.faq.no_result: No FAQ found for your search
+global_search.faq.create: Created on
+global_search.faq.update: edited on
+global_search.faq.author: by
+global_search.faq.no_result_content: No results found in the FAQ questions / answers
+global_search.faq.loading: Searching the FAQs
+global_search.user.tab: Users
+global_search.user.title: result(s) for users
+global_search.user.description: List of users found
+global_search.user.no_result: No user found for your search
+global_search.user.create: Created on
+global_search.user.update: edited on
+global_search.user.author: by
+global_search.user.loading: Searching the users
+global_search.tag.tab: Tags
+global_search.tag.title: result(s) for tags
+global_search.tag.description: List of tags found
+global_search.tag.no_result: No tag found for your search
+global_search.tag.create: Created on
+global_search.tag.update: edited on
+global_search.tag.author: by
+global_search.tag.loading: Searching the tags

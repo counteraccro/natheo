@@ -1,18 +1,18 @@
-translate.select.language: __translate.select.language
-translate.index.title: __translate.page_title_h1
-translate.index.description: __translate.description
-translate.select.file: __translate.select.file
-translate.empty.file: __translate.empty.file
-translate.button.save: __translate.btn.save
-translate.info.edit: __translate.info.edit
-translate.link.revert: __translate.link.revert
-translate.nb.edit: __translate.nb.edit
-translate.save.success: __translate.save.success
-translate.block.search.title: __translate.block.search.title
-translate.block.search.sub.title: __translate.block.search.sub.title
-translate.select.language_label: __translate.select.language.label
-translate.select.file_label: __translate.select.file.label
-translate.block.edit.sub.title: __translate.block.edit.sub.title
+translate.select.language: Select a language
+translate.index.title: Translation management
+translate.index.description: Manage the CMS translations from this page
+translate.select.file: Select a file
+translate.empty.file: Select a translation file to edit it
+translate.button.save: Save
+translate.info.edit: This translation has been edited
+translate.link.revert: Cancel
+translate.nb.edit: line(s) edited (not saved)
+translate.save.success: Translations saved successfully
+translate.block.search.title: Select the translation file to edit
+translate.block.search.sub.title: Choose the file to edit according to its language
+translate.select.language_label: Language
+translate.select.file_label: File
+translate.block.edit.sub.title: Edit the translations of the selected file
 translate.save.error: 'Translations not saved: {nb, plural, one {# error found} other {# errors found}}'
 translate.save.error_invalid_payload: 'The submitted data is invalid'
 translate.error.file: 'Translation file not found'

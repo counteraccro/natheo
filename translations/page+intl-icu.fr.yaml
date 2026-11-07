@@ -3,17 +3,17 @@ page.index.button.new: 'Nouvelle page'
 page.index.modal.help.title: Aide
 page.index.description: 'Gérer les pages accessibles par vos visiteurs.'
 page.grid.title: Titre
-page.grid.status: Status
+page.grid.status: Statut
 page.grid.tag: Tags
-page.grid.comment: 'Nb Commentaires'
-page.grid.nb_see: Affichage
+page.grid.comment: Nb de commentaires
+page.grid.nb_see: Vues
 page.grid.update_at: 'Dernière modification'
-page.confirm.disabled.message: 'Confirmez vous la désactivation de la page <b>{label}</b>, cette page deviendra inaccessible'
+page.confirm.disabled.message: Confirmez-vous la désactivation de la page <b>{label}</b> ? Cette page deviendra inaccessible
 page.grid.id: '#'
-page.confirm.delete.message: 'Confirmez vous la suppression de la page <b>{label}</b>, cette action est définitive'
-page.success.no.disabled: 'La page <b>{label}</b> à été restaurée avec succès'
-page.success.disabled: 'La page <b>{label}</b> à été désactivée avec succès'
-page.remove.success: 'La page <b>{label}</b> à été supprimée avec succès'
+page.confirm.delete.message: Confirmez-vous la suppression de la page <b>{label}</b> ? Cette action est définitive
+page.success.no.disabled: La page <b>{label}</b> a été restaurée avec succès
+page.success.disabled: La page <b>{label}</b> a été désactivée avec succès
+page.remove.success: La page <b>{label}</b> a été supprimée avec succès
 page.status.draft: Brouillon
 page.status.publish: Publiée
 page.status.unknown: Inconnu
@@ -24,35 +24,35 @@ page.update.title: 'Édition de la page'
 page.update.description: 'Modifier une page de votre site web'
 page.tab.content: Contenu
 page.tab.seo: SEO
-page.tab.tag: 'Les tags'
+page.tab.tag: Tags
 page.select.locale: 'Choix de la langue'
 page.edit.loading: 'Chargement des données...'
-page.page_content_form.input.url.label: 'Url de la page'
-page.page_content_form.input.url.info: "Url d'accès à votre page"
+page.page_content_form.input.url.label: URL de la page
+page.page_content_form.input.url.info: URL d'accès à votre page
 page.page_content_form.input.title.label: 'Titre de la page'
-page.page_content_form.input.title.info: "Texte qui va permettre d'identifier la page"
+page.page_content_form.input.title.info: Texte qui permet d'identifier la page
 page.tab.history: Historique
 page.page_history.title: 'Historique des modifications'
-page.page_history.description: "Liste de l'ensemble des modifications faite sur cette page "
+page.page_history.description: Liste de toutes les modifications faites sur cette page
 page.page_history.empty: 'Aucun historique pour le moment'
 page.page_history.reload: Restaurer
-page.page_history.success: "Restauration de la page à l'état #{id} faite avec succès"
+page.page_history.success: 'Page restaurée à l''état #{id} avec succès'
 page.index.modal.help.disabled_page: 'Désactiver une page'
 page.index.modal.help.enable_page: 'Activer une page'
 page.index.modal.help.delete: Supprimer
-page.index.modal.help.edit: Editer
-page.tag.auto_complete.label: 'Rechercher / Ajouter tag'
+page.index.modal.help.edit: Modifier
+page.tag.auto_complete.label: Rechercher / ajouter un tag
 page.tag.auto_complete.placeholder: 'Rechercher un tag'
-page.tag.auto_complete.help: "Si le tag n'existe pas, celui-ci sera créé en même temps qu'associé à la page"
-page.tab.tag_title: 'Les tags'
+page.tag.auto_complete.help: Si le tag n'existe pas, il sera créé et associé à la page
+page.tab.tag_title: Tags
 page.tab.tag_sub_title: 'Tags associés à la page'
 page.page_save.title: 'Sauvegarde de la page'
-page.page_save.list_status_label: 'Etat de la page'
-page.page_save.list_status_help: 'Permet de définir l`état de la page'
+page.page_save.list_status_label: État de la page
+page.page_save.list_status_help: Permet de définir l'état de la page
 page.page_save.button.save: Sauvegarder
 page.page_save.button.see_ext: 'Voir le rendu'
-page.save.success: 'Sauvegarde de la page fait avec succès'
-page.page_content_form.title: 'Information de la page'
+page.save.success: Page sauvegardée avec succès
+page.page_content_form.title: Informations de la page
 page.render.1.block: '1 bloc'
 page.render.2.block: '2 blocs côte à côte'
 page.render.3.block: '3 blocs côte à côte'
@@ -60,29 +60,29 @@ page.page_save.list_render_label: "Choix de l'affichage du contenu de la page"
 page.page_save.list_render_help: 'Permet de définir la structure du contenu de la page'
 page.render.2.1.block: '2 blocs côte à côte + 1 bloc en dessous'
 page.render.2.2.block: '2 blocs côte à côte + 2 blocs côte à côte en dessous'
-page.page_content.title: 'Ajouter / Editer les blocs de contenu'
+page.page_content.title: Ajouter / modifier les blocs de contenu
 page.render.2.block_bottom: "2 blocs l'un en dessous de l'autre"
 page.render.3.block_bottom: "3 blocs l'un en dessous de l'autre"
-page.render.1.2.block: 'Un bloc au dessus + 2 blocs côte à côte en dessous'
+page.render.1.2.block: 1 bloc au-dessus + 2 blocs côte à côte en dessous
 page.page_content_block.button.new_content: 'Nouveau contenu'
 page.page_content_block.button.delete_content: Supprimer
-page.page_content_block.modal.remove.title: 'Confirmation suppression du contenu'
-page.page_content_block.modal.remove.body: 'Vous êtes sur le point de supprimer ce contenu, confirmez vous cette action?'
+page.page_content_block.modal.remove.title: Confirmation de suppression du contenu
+page.page_content_block.modal.remove.body: Vous êtes sur le point de supprimer ce contenu, confirmez-vous cette action ?
 page.page_content_block.modal.remove.button.confirm: Supprimer
 page.page_content_block.modal.remove.button.cancel: Annuler
 page.page_content_block.modal.new.title: 'Nouveau contenu'
 page.page_content_block.modal.new.button.cancel: Annuler
 page.page_content_block.modal.new.button.new: 'Ajouter le contenu'
 page.page_content_block.modal.new.choice_label: 'Choix du contenu à ajouter'
-page.page_content_block.modal.new.choice_info: 'Le contenu peut être du texte, un cv, une faq etc..'
+page.page_content_block.modal.new.choice_info: Le contenu peut être du texte, une FAQ, une liste de pages, etc.
 page.content.text: 'Bloc de texte'
-page.page_content_block.loading: chargement...
+page.page_content_block.loading: Chargement...
 page.message.title.restore.history: 'Page restaurée avec succès à '
 page.message.button.restore.history: Restaurer
 page.message.button.cancel.restore.history: Masquer
-page.message.history.reload: 'Des modifications non enregistrées ont été détectées, voulez vous les restaurer ?'
-page.message.history.new.reload: 'Une nouvelle page à été créée sans être enregistrée, voulez vous la restaurer ?'
-page.message.error_url_no_unique: "Cette url est déjà utilisée pour une autre page de l'application"
+page.message.history.reload: Des modifications non enregistrées ont été détectées, voulez-vous les restaurer ?
+page.message.history.new.reload: Une nouvelle page a été créée sans être enregistrée, voulez-vous la restaurer ?
+page.message.error_url_no_unique: Cette URL est déjà utilisée par une autre page de l'application
 page.page_history.id: '#'
 page.page_history.time: Date
 page.page_history.user: Origine
@@ -90,7 +90,7 @@ page.page_history.action: Dernière
 page.page_history.error: 'Une erreur est survenue lors de la restauration des données'
 page.content.type_faq: 'FAQ'
 page.content.faq.list: 'Choisir une FAQ parmi la liste'
-page.content.faq.list_help: 'Seule les FAQs non désactivées sont listées'
+page.content.faq.list_help: Seules les FAQ actives sont listées
 page.content.type_unknown: Inconnu
 page.content.info.unknown: 'Information non disponible pour le moment'
 page.content.type: Type
@@ -99,34 +99,34 @@ page.category.project: Projet
 page.category.article: Article
 page.category.blog: Blog
 page.page_content.list_categories_label: 'Catégorie de la page'
-page.page_content.list_categories_help: 'Définie la catégorie de la page'
-page.category.event: Évènement
+page.page_content.list_categories_help: Définit la catégorie de la page
+page.category.event: Événement
 page.content.type_listing: 'Listing'
-page.content.listing.list: 'Choisir quel type de listing vous voulez'
-page.content.listing.list_help: 'La page sera une liste paginée de page avec la catégorie choisie'
+page.content.listing.list: Choisissez le type de liste souhaité
+page.content.listing.list_help: La page sera une liste paginée des pages de la catégorie choisie
 page.content.type_listing_info: 'Listing des pages {type}'
 page.category.news: Nouveauté
-page.category.evolution: Evolution
+page.category.evolution: Évolution
 page.category.documentation: Documentation
 page.category.faq: FAQ
-page.page_menu.list_menu_label: 'Menu disponible'
-page.page_menu.list_menu_help: "Vous pouvez associer plusieurs menus à une page (haut / bas etc...), si le menu est désactivé, celui ci n'apparaitra pas dans le rendu final. Dans le cas du choix 'Aucun menu', c'est le menu 'Par défaut' (si il existe) qui sera pris en compte"
+page.page_menu.list_menu_label: Menus disponibles
+page.page_menu.list_menu_help: Vous pouvez associer plusieurs menus à une page (haut, bas, etc.). Si un menu est désactivé, il n'apparaîtra pas dans le rendu final. Avec le choix « Aucun menu », c'est le menu par défaut (s'il existe) qui est utilisé
 page.page_menu.list_menu_empty: 'Menu par défaut (si défini)'
 page.page_menu.list_menu_disabled: Désactivé
-page.confirm.landing.page.message: 'Vous êtes sur le point de mettre la page <b>{label}</b> en affichage par défaut sur le front de votre site. <br />Confirmez vous cette action ?'
-page.switch.landing.page.success: 'La page <b>{label}</b> est maintenant la landing-page de votre site'
-page.page_save.list_landing_page_label: "Définir si cette page s'affichera en tant que landing page ou non"
-page.page_save.select_page_landing_page: 'Landing Page'
-page.page_save.select_page_normal_page: 'Page normal'
-page.page_save.list_landing_page_help: "Si la page est défini comme landing page, elle apparaitra comme page par défaut à l'accueil de votre site. Il ne peux y avoir qu'une seule landing-page"
-page.index.modal.help.pin: 'Epingler (landing page)'
+page.confirm.landing.page.message: Vous êtes sur le point de définir la page <b>{label}</b> comme page d'accueil de votre site. <br />Confirmez-vous cette action ?
+page.switch.landing.page.success: La page <b>{label}</b> est maintenant la landing page de votre site
+page.page_save.list_landing_page_label: Définir si cette page s'affiche en tant que landing page
+page.page_save.select_page_landing_page: Landing page
+page.page_save.select_page_normal_page: Page normale
+page.page_save.list_landing_page_help: Si la page est définie comme landing page, elle apparaîtra comme page d'accueil de votre site. Il ne peut y avoir qu'une seule landing page
+page.index.modal.help.pin: Épingler (landing page)
 page.grid.author: Auteur
 page.tab.comments: Commentaires
 page.page_comment.title: Commentaires
 page.page_comment.input_open: 'Autoriser les commentaires sur cette page'
-page.page_comment.input_status_label: 'Status par défaut du commentaire à sa soumission'
-page.page_comment.input_status_help: 'Attention, la configuration globale est prioritaire sur la config pour une page. Exemple si la config global est "En attente de validation", alors les commentaires de la page seront en attente de validation même si la configuration de la page est sur "validé"'
-page.page_comment.info: 'Paramétrage globale des commentaires'
+page.page_comment.input_status_label: Statut par défaut d'un commentaire à sa soumission
+page.page_comment.input_status_help: Attention, la configuration globale est prioritaire sur celle de la page. Par exemple, si la configuration globale est « En attente de validation », les commentaires de la page seront en attente de validation même si la page est configurée sur « Validé »
+page.page_comment.info: Paramétrage global des commentaires
 page.page_comment.comment.open: 'Les commentaires sont ouverts'
 page.page_comment.comment.close: 'Les commentaires sont fermés'
 page.page_comment.comment.moderate: 'et sont en attente de validation par défaut'
@@ -134,44 +134,44 @@ page.page_seo.title: 'SEO de la page'
 page.page_seo.input.meta_description.label: 'Balise méta "description"'
 page.page_seo.input.meta_description.help: 'Une brève description de votre page'
 page.page_seo.input.meta_keywords.label: 'Balise méta "keywords"'
-page.page_seo.input.meta_keywords.help: 'Liste de mots clés séparé par une virgule, exemple natheo, article, cms'
+page.page_seo.input.meta_keywords.help: 'Liste de mots-clés séparés par une virgule, par exemple : natheo, article, cms'
 page.page_seo.input.meta_author.label: 'Balise méta "author"'
 page.page_seo.input.meta_author.help: "L'auteur de la page"
 page.page_seo.input.meta_copyright.label: 'Balise méta "copyright"'
 page.page_seo.input.meta_copyright.help: 'Le copyright de votre page'
-page.page_content.header_img.title: 'Image en entête de la page'
-page.page_content.header_img.help: "Cette image apparaîtra en entête de page, elle doit être suffisament grande pour avoir un rendu correcte. Laissez vide pour ne pas mettre d'image sur votre page"
+page.page_content.header_img.title: Image d'en-tête de la page
+page.page_content.header_img.help: Cette image apparaîtra en en-tête de page, elle doit être suffisamment grande pour un rendu correct. Laissez vide pour ne pas mettre d'image sur votre page
 page.page_content.header_img.no.img: 'Aucune image sélectionnée'
 page.page_content.header_img.remove: Supprimer
 page.page_content.header_img.change: Changer
 page.content.listing.title: 'Liste des pages pour la catégorie "{category}"'
 page.page.no.exist.title: 'Aucune page trouvée'
-page.page.no.exist.text: "Cette page n'existe pas ou à été supprimée. Vous pouvez retourner à la liste ou en créer une nouvelle"
+page.page.no.exist.text: Cette page n'existe pas ou a été supprimée. Vous pouvez retourner à la liste ou en créer une nouvelle
 page.button.back: Retour
 page.button.new: 'Nouvelle page'
 page.page_content_form.input.title.error: 'Le titre de la page ne peut pas être vide'
-page.page_content.auto_slug.label: "Générer automatiquement l'url"
+page.page_content.auto_slug.label: Générer automatiquement l'URL
 page.message.auto_save.error: 'Une erreur est survenue lors de la sauvegarde automatique'
 page.page_history.load_more: 'Charger plus...'
 page.page_seo.input.meta.description.error: 'La description est obligatoire'
-page.page_seo.input.meta.keywords.error: 'Au moins 1 mot clé doit être saisi'
+page.page_seo.input.meta.keywords.error: Au moins un mot-clé doit être saisi
 page.page_seo.input.meta.author.error: "Il faut préciser l'auteur de la page"
 page.page_seo.input.meta.copyright.error: 'Il faut saisir un copyright'
 page.tab.menu: Menus
 page.page_menu.list_menu.header: 'Haut de page'
 page.page_menu.list_menu.footer: 'Pied de page'
-page.page_menu.list_menu.left: 'Menu Gauche'
-page.page_menu.list_menu.right: 'Menu droite'
+page.page_menu.list_menu.left: Menu de gauche
+page.page_menu.list_menu.right: Menu de droite
 page.page_menu.list_menu.sub_label: 'Associer un ou plusieurs menus à votre page'
 page.page_content_block.default_text: 'Bloc de texte ajouté'
 page.tab.information: Informations
-page.page_content_block.block: 'Block n°'
+page.page_content_block.block: Bloc n°
 page.status.archived: Archivée
-page.page_content.warning.empty_content: 'Au moins 1 contenu doit être remplit'
+page.page_content.warning.empty_content: Au moins un contenu doit être rempli
 page.message.auto_save.success: 'Sauvegarde automatique effectuée à'
 page.error.forbidden: 'Vous n''avez pas les droits pour effectuer cette action sur cette page.'
 page.error.not_found: 'Cette page n''existe pas ou a été supprimée.'
-page.error.url_not_unique: 'L''url « {url} » ({locale}) est déjà utilisée par une autre page.'
+page.error.url_not_unique: L'URL « {url} » ({locale}) est déjà utilisée par une autre page.
 page.error.invalid_data: 'Certaines valeurs de la page sont invalides : {fields}.'
 page.error.landing.delete: 'La landing page ne peut pas être supprimée. Définissez d''abord une autre landing page.'
 page.error.landing.disabled: 'La landing page ne peut pas être désactivée. Définissez d''abord une autre landing page.'

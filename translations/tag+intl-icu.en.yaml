@@ -1,65 +1,65 @@
-tag.index.title: __tag.index.page_title
-tag.index.button.new: __tag.index.btn.new
-tag.index.description: __tag.index.description
-tag.success.no.disabled: __tag.success.no.disabled
-tag.success.disabled: __tag.success.disabled
-tag.grid.id: __tag.grid.id
-tag.grid.label: __tag.grid.label
-tag.grid.color: __tag.grid.color
-tag.grid.created_at: __tag.grid.created_at
-tag.grid.update_at: __tag.grid.update_at
-tag.confirm.disabled.message: __tag.confirm.disabled.msg
-tag.remove.success: __tag.remove.success
-tag.confirm.delete.message: __tag.confirm.delete.msg
-tag.add.title: __tag.add.page_title_h1
-tag.index.modal.help.title: __tag.index.popin.help.title
-tag.index.modal.help.disabled_user: __tag.index.popin.help.disabled_user
-tag.index.modal.help.enable_user: __tag.index.popin.help.enable_user
-tag.index.modal.help.delete: __tag.index.popin.help.delete
-tag.index.modal.help.edit: __tag.index.popin.help.edit
-tag.update.title_id: __tag.update.page_title
-tag.update.title: __tag.update.page_title_h1
-tag.form.loading: __tag.form.loading
-tag.form.input.color.error: __tag.form.input.color.error
-tag.form.input.label.label: __tag.form.input.label.label
-tag.add.description: __tag.add.description
-tag.update.description: __tag.update.description
-tag.form.color.title: __tag.form.color.title
-tag.form.check.auto.copy: __tag.form.check.auto.copy
-tag.form.input.label.error: __tag.form.input.label.error
-tag.form.render.title: __tag.form.rendu.title
-tag.form.submit.update: __tag.form.submit.update
-tag.form.submit.create: __tag.form.submit.create
-tag.form.stat.title: __tag.form.stat.title
-tag.page_date_update.created: __tag.page_date_update.created
-tag.page_date_update.last_update: __tag.page_date_update.last_update
-tag.page.error.tag.disabled: __tag.page.error.tag.disabled
-tag.form.input.label.placeholder: __tag.form.input.label.placeholder
+tag.index.title: Tag management
+tag.index.button.new: New tag
+tag.index.description: Manage the tags associated with the content of your site
+tag.success.no.disabled: The tag <strong>{label}</strong> is now enabled
+tag.success.disabled: The tag <strong>{label}</strong> is now disabled
+tag.grid.id: ID
+tag.grid.label: Label
+tag.grid.color: Color
+tag.grid.created_at: Creation date
+tag.grid.update_at: Update date
+tag.confirm.disabled.message: Disabling the tag <strong>{label}</strong> makes it invisible on the site. No data is deleted, but the content linked to this tag may be hidden
+tag.remove.success: The tag <strong>{label}</strong> has been deleted successfully
+tag.confirm.delete.message: Deleting the tag <strong>{label}</strong> is permanent. Only the tag is deleted, not the associated data
+tag.add.title: New tag
+tag.index.modal.help.title: Help
+tag.index.modal.help.disabled_user: Disable a tag
+tag.index.modal.help.enable_user: Enable a tag
+tag.index.modal.help.delete: Delete a tag
+tag.index.modal.help.edit: Edit a tag
+tag.update.title_id: 'Editing tag #{id}'
+tag.update.title: Tag editing
+tag.form.loading: Loading data...
+tag.form.input.color.error: The expected format is “#rrggbb”, where rr, gg and bb are two hexadecimal digits.
+tag.form.input.label.label: Label in
+tag.add.description: Add a new tag to organize your content
+tag.update.description: Editing the tag does not change the content associated with it
+tag.form.color.title: Tag color
+tag.form.check.auto.copy: Copy the label to the other languages
+tag.form.input.label.error: The tag label cannot be empty
+tag.form.render.title: Tag preview
+tag.form.submit.update: Update
+tag.form.submit.create: Create the tag
+tag.form.stat.title: Statistics
+tag.page_date_update.created: Creation date
+tag.page_date_update.last_update: Last modified
+tag.page.error.tag.disabled: This tag is disabled, it cannot be added
+tag.form.input.label.placeholder: Tag label
 tag.form.button.cancel: Back
-tag.form.button.delete: __tag.form.button.delete
-tag.form.success.save: __tag.form.success.save
-tag.form.error.save: __tag.form.error.save
-tag.form.modal.confirm.delete.title: __tag.form.modale.confirm.delete.title
-tag.form.modal.confirm.delete.message: __tag.form.modale.confirm.delete.message
-tag.form.modal.confirm.delete.button.ok: __tag.form.modale.confirm.delete.btn.ok
-tag.form.modal.confirm.delete.button.ko: __tag.form.modale.confirm.delete.btn.ko
-tag.form.style.title: __tag.form.style.title
-tag.form.style.description: __tag.form.style.description
-tag.form.text.title: __tag.form.text.title
-tag.form.text.description: __tag.form.text.description
-tag.update.page.no.tag.title: __tag.update.page.no.tag.title
-tag.update.page.no.tag.text: __tag.update.page.no.tag.text
-tag.update.page.back: __tag.update.page.back
-tag.update.page.new: __tag.update.page.new
+tag.form.button.delete: Delete
+tag.form.success.save: Tag saved successfully
+tag.form.error.save: An error occurred while saving the tag
+tag.form.modal.confirm.delete.title: Do you confirm the deletion of this tag?
+tag.form.modal.confirm.delete.message: Deleting this tag is permanent and cannot be undone, your content will not be affected by this action
+tag.form.modal.confirm.delete.button.ok: Yes, I confirm
+tag.form.modal.confirm.delete.button.ko: 'No'
+tag.form.style.title: Tag style
+tag.form.style.description: Color definition
+tag.form.text.title: Other information
+tag.form.text.description: Label definition
+tag.update.page.no.tag.title: No tag found
+tag.update.page.no.tag.text: This tag does not exist or has been deleted. You can go back to the list or create a new one
+tag.update.page.back: Back
+tag.update.page.new: New tag
 tag.save.new: 'The tag <strong>{label}</strong> has been created successfully'
 tag.save.edit: 'The tag <strong>{label}</strong> has been updated successfully'
-tag.error.forbidden: __tag.error.forbidden
-tag.error.not_found: __tag.error.not_found
-tag.grid.author: __tag.grid.author
-tag.error.label.blank: __tag.error.label.blank
-tag.error.label.length: __tag.error.label.length
-tag.error.color: __tag.error.color
-tag.error.label.duplicate: __tag.error.label.duplicate
-tag.error.delete.used: __tag.error.delete.used
-tag.error.tag_by_name: __tag.error.tag_by_name
+tag.error.forbidden: You are not allowed to perform this action on this tag.
+tag.error.not_found: This tag does not exist or has been deleted.
+tag.grid.author: Author
+tag.error.label.blank: The tag label cannot be empty.
+tag.error.label.length: The tag label cannot exceed 255 characters.
+tag.error.color: 'The color must use the #rrggbb format.'
+tag.error.label.duplicate: The label <strong>{label}</strong> is already used by another tag.
+tag.error.delete.used: This tag is used by {nb, plural, one {# page} other {# pages}}, it cannot be deleted. Fix its label instead or remove it from those pages.
+tag.error.tag_by_name: The label or language of the tag is invalid.
 tag.form.input.color.help: 'Choose a color to visually identify this tag'

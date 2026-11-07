@@ -1,182 +1,182 @@
-page.select.locale: __page.select.locale
-page.tab.content: __page.onglet.content
-page.tab.seo: __page.onglet.seo
-page.tab.tag: __page.onglet.tag
-page.tab.comments: __page.onglet.comments
-page.tab.history: __page.onglet.history
-page.edit.loading: __page.loading
-page.tab.tag_title: __page.onglet.tag.title
-page.tab.tag_sub_title: __page.onglet.tag.sub_title
-page.message.title.restore.history: __page.msg.titre.restore.history
-page.message.button.restore.history: __page.msg.btn.restore.history
-page.message.button.cancel.restore.history: __page.msg.btn.cancel.restore.history
-page.message.error_url_no_unique: __page.msg.error_url_no_unique
-page.page.no.exist.title: __page.page.no.exist.title
-page.page.no.exist.text: __page.page.no.exist.text
-page.button.back: __page.btn.back
-page.button.new: __page.btn.new
-page.message.auto_save.error: __page.msg.auto_save.error
-page.page_seo.title: __page.page_seo.title
-page.page_seo.input.meta_description.label: __page.page_seo.input.meta_description.label
-page.page_seo.input.meta_description.help: __page.page_seo.input.meta_description.help
-page.page_seo.input.meta_keywords.label: __page.page_seo.input.meta_keywords.label
-page.page_seo.input.meta_keywords.help: __page.page_seo.input.meta_keywords.help
-page.page_seo.input.meta_author.label: __page.page_seo.input.meta_author.label
-page.page_seo.input.meta_author.help: __page.page_seo.input.meta_author.help
-page.page_seo.input.meta_copyright.label: __page.page_seo.input.meta_copyright.label
-page.page_seo.input.meta_copyright.help: __page.page_seo.input.meta_copyright.help
-page.page_comment.title: __page.page_comment.title
-page.page_comment.input_open: __page.page_comment.input_open
-page.page_comment.input_status_label: __page.page_comment.input_status_label
-page.page_comment.input_status_help: __page.page_comment.input_status_help
-page.page_comment.info: __page.page_comment.info
-page.page_comment.comment.open: __page.page_comment.comment.open
-page.page_comment.comment.close: __page.page_comment.comment.close
-page.page_comment.comment.moderate: __page.page_comment.comment.moderate
-page.page_content_form.title: __page.page_content_form.title
-page.page_content_form.input.url.label: __page.page_content_form.input.url.label
-page.page_content_form.input.url.info: __page.page_content_form.input.url.info
-page.page_content_form.input.title.label: __page.page_content_form.input.titre.label
-page.page_content_form.input.title.info: __page.page_content_form.input.titre.info
-page.page_content_form.input.title.error: __page.page_content_form.input.titre.error
-page.page_save.list_render_label: __page.page_save.list_render_label
-page.page_save.list_render_help: __page.page_save.list_render_help
-page.page_content.list_categories_label: __page.page_content.list_categories_label
-page.page_content.list_categories_help: __page.page_content.list_categories_help
-page.page_content.header_img.title: __page.page_content.header_img.title
-page.page_content.header_img.help: __page.page_content.header_img.help
-page.page_content.header_img.no.img: __page.page_content.header_img.no.img
-page.page_content.header_img.remove: __page.page_content.header_img.remove
-page.page_content.header_img.change: __page.page_content.header_img.change
-page.page_content.auto_slug.label: __page.page_content.auto_slug.label
-page.page_content.title: __page.page_content.title
-page.page_content_block.button.new_content: __page.page_content_block.btn.new_content
-page.page_content_block.button.delete_content: __page.page_content_block.btn.delete_content
-page.page_content_block.modal.remove.title: __page.page_content_block.modale.remove.title
-page.page_content_block.modal.remove.body: __page.page_content_block.modale.remove.body
-page.page_content_block.modal.remove.button.confirm: __page.page_content_block.modale.remove.btn.confirm
-page.page_content_block.modal.remove.button.cancel: __page.page_content_block.modale.remove.btn.cancel
-page.page_content_block.modal.new.title: __page.page_content_block.modale.new.title
-page.page_content_block.modal.new.button.cancel: __page.page_content_block.modale.new.btn.cancel
-page.page_content_block.modal.new.button.new: __page.page_content_block.modale.new.btn.new
-page.page_content_block.modal.new.choice_label: __page.page_content_block.modale.new.choice_label
-page.page_content_block.modal.new.choice_info: __page.page_content_block.modale.new.choice_info
-page.page_content_block.loading: __page.page_content_block.loading
-page.page_history.title: __page.page_history.title
-page.page_history.description: __page.page_history.description
-page.page_history.empty: __page.page_history.empty
-page.page_history.id: __page.page_history.id
-page.page_history.time: __page.page_history.time
-page.page_history.user: __page.page_history.user
-page.page_history.action: __page.page_history.action
-page.page_history.reload: __page.page_history.reload
-page.page_save.title: __page.page_save.title
-page.page_save.list_status_label: __page.page_save.list_status_label
-page.page_save.list_status_help: __page.page_save.list_status_help
-page.page_save.list_landing_page_label: __page.page_save.list_landing_page_label
-page.page_save.select_page_landing_page: __page.page_save.select_page_landing_page
-page.page_save.select_page_normal_page: __page.page_save.select_page_normal_page
-page.page_save.list_landing_page_help: __page.page_save.list_landing_page_help
-page.page_save.button.save: __page.page_save.btn.save
-page.page_save.button.see_ext: __page.page_save.btn.see_ext
-page.tag.auto_complete.label: __page.tag.auto_complete.label
-page.tag.auto_complete.placeholder: __page.tag.auto_complete.placeholder
-page.tag.auto_complete.help: __page.tag.auto_complete.help
-page.success.no.disabled: __page.success.no.disabled
-page.success.disabled: __page.success.disabled
-page.remove.success: __page.remove.success
-page.switch.landing.page.success: __page.switch.landing.page.success
-page.page_history.success: __page.page_history.success
-page.page_history.error: __page.page_history.error
-page.save.success: __page.save.success
-page.grid.id: __page.grid.id
-page.grid.title: __page.grid.title
-page.grid.status: __page.grid.status
-page.grid.tag: __page.grid.tag
-page.grid.comment: __page.grid.comment
-page.grid.nb_see: __page.grid.nb_see
-page.grid.update_at: __page.grid.update_at
-page.grid.author: __page.grid.author
-page.confirm.disabled.message: __page.confirm.disabled.msg
-page.confirm.delete.message: __page.confirm.delete.msg
-page.confirm.landing.page.message: __page.confirm.landing.page.msg
-page.status.draft: __page.status.draft
-page.status.publish: __page.status.publish
-page.status.unknown: __page.status.inconnu
-page.render.1.block: __page.render.1.block
-page.render.2.block: __page.render.2.block
-page.render.3.block: __page.render.3.block
-page.render.2.block_bottom: __page.render.2.block.bottom
-page.render.3.block_bottom: __page.render.3.block.bottom
-page.render.1.2.block: __page.render.1.2.block
-page.render.2.1.block: __page.render.2.1.block
-page.render.2.2.block: __page.render.2.2.block
-page.content.text: __page.content.text
+page.select.locale: Language
+page.tab.content: Content
+page.tab.seo: SEO
+page.tab.tag: Tags
+page.tab.comments: Comments
+page.tab.history: History
+page.edit.loading: Loading data...
+page.tab.tag_title: Tags
+page.tab.tag_sub_title: Tags associated with the page
+page.message.title.restore.history: 'Page restored successfully at '
+page.message.button.restore.history: Restore
+page.message.button.cancel.restore.history: Hide
+page.message.error_url_no_unique: This URL is already used by another page of the application
+page.page.no.exist.title: No page found
+page.page.no.exist.text: This page does not exist or has been deleted. You can go back to the list or create a new one
+page.button.back: Back
+page.button.new: New page
+page.message.auto_save.error: An error occurred during the auto-save
+page.page_seo.title: Page SEO
+page.page_seo.input.meta_description.label: Meta tag "description"
+page.page_seo.input.meta_description.help: A short description of your page
+page.page_seo.input.meta_keywords.label: Meta tag "keywords"
+page.page_seo.input.meta_keywords.help: 'List of keywords separated by a comma, for example: natheo, article, cms'
+page.page_seo.input.meta_author.label: Meta tag "author"
+page.page_seo.input.meta_author.help: The author of the page
+page.page_seo.input.meta_copyright.label: Meta tag "copyright"
+page.page_seo.input.meta_copyright.help: The copyright of your page
+page.page_comment.title: Comments
+page.page_comment.input_open: Allow comments on this page
+page.page_comment.input_status_label: Default status of a comment when submitted
+page.page_comment.input_status_help: Warning, the global configuration takes precedence over the page configuration. For example, if the global configuration is “Awaiting approval”, the comments of the page will await approval even if the page is set to “Approved”
+page.page_comment.info: Global comment settings
+page.page_comment.comment.open: Comments are open
+page.page_comment.comment.close: Comments are closed
+page.page_comment.comment.moderate: and await approval by default
+page.page_content_form.title: Page information
+page.page_content_form.input.url.label: Page URL
+page.page_content_form.input.url.info: URL used to access your page
+page.page_content_form.input.title.label: Page title
+page.page_content_form.input.title.info: Text used to identify the page
+page.page_content_form.input.title.error: The page title cannot be empty
+page.page_save.list_render_label: Page content layout
+page.page_save.list_render_help: Sets the structure of the page content
+page.page_content.list_categories_label: Page category
+page.page_content.list_categories_help: Sets the category of the page
+page.page_content.header_img.title: Page header image
+page.page_content.header_img.help: This image will appear in the page header, it must be large enough to render correctly. Leave empty for no image on your page
+page.page_content.header_img.no.img: No image selected
+page.page_content.header_img.remove: Remove
+page.page_content.header_img.change: Change
+page.page_content.auto_slug.label: Generate the URL automatically
+page.page_content.title: Add / edit the content blocks
+page.page_content_block.button.new_content: New content
+page.page_content_block.button.delete_content: Delete
+page.page_content_block.modal.remove.title: Content deletion confirmation
+page.page_content_block.modal.remove.body: You are about to delete this content, do you confirm this action?
+page.page_content_block.modal.remove.button.confirm: Delete
+page.page_content_block.modal.remove.button.cancel: Cancel
+page.page_content_block.modal.new.title: New content
+page.page_content_block.modal.new.button.cancel: Cancel
+page.page_content_block.modal.new.button.new: Add the content
+page.page_content_block.modal.new.choice_label: Content to add
+page.page_content_block.modal.new.choice_info: The content can be text, an FAQ, a list of pages, etc.
+page.page_content_block.loading: Loading...
+page.page_history.title: Change history
+page.page_history.description: List of all the changes made to this page
+page.page_history.empty: No history yet
+page.page_history.id: '#'
+page.page_history.time: Date
+page.page_history.user: Origin
+page.page_history.action: Latest
+page.page_history.reload: Restore
+page.page_save.title: Save the page
+page.page_save.list_status_label: Page status
+page.page_save.list_status_help: Sets the status of the page
+page.page_save.list_landing_page_label: Set whether this page is displayed as the landing page
+page.page_save.select_page_landing_page: Landing page
+page.page_save.select_page_normal_page: Normal page
+page.page_save.list_landing_page_help: If the page is set as the landing page, it will be shown as the home page of your site. There can only be one landing page
+page.page_save.button.save: Save
+page.page_save.button.see_ext: See the result
+page.tag.auto_complete.label: Search / add a tag
+page.tag.auto_complete.placeholder: Search for a tag
+page.tag.auto_complete.help: If the tag does not exist, it will be created and associated with the page
+page.success.no.disabled: The page <b>{label}</b> has been restored successfully
+page.success.disabled: The page <b>{label}</b> has been disabled successfully
+page.remove.success: The page <b>{label}</b> has been deleted successfully
+page.switch.landing.page.success: The page <b>{label}</b> is now the landing page of your site
+page.page_history.success: 'Page restored to version #{id} successfully'
+page.page_history.error: An error occurred while restoring the data
+page.save.success: Page saved successfully
+page.grid.id: '#'
+page.grid.title: Title
+page.grid.status: Status
+page.grid.tag: Tags
+page.grid.comment: Comments
+page.grid.nb_see: Views
+page.grid.update_at: Last modified
+page.grid.author: Author
+page.confirm.disabled.message: Do you confirm disabling the page <b>{label}</b>? This page will become inaccessible
+page.confirm.delete.message: Do you confirm deleting the page <b>{label}</b>? This action is permanent
+page.confirm.landing.page.message: You are about to set the page <b>{label}</b> as the home page of your site. <br />Do you confirm this action?
+page.status.draft: Draft
+page.status.publish: Published
+page.status.unknown: Unknown
+page.render.1.block: 1 block
+page.render.2.block: 2 blocks side by side
+page.render.3.block: 3 blocks side by side
+page.render.2.block_bottom: 2 blocks one below the other
+page.render.3.block_bottom: 3 blocks one below the other
+page.render.1.2.block: 1 block above + 2 blocks side by side below
+page.render.2.1.block: 2 blocks side by side + 1 block below
+page.render.2.2.block: 2 blocks side by side + 2 blocks side by side below
+page.content.text: Text block
 page.content.type_faq: 'FAQ'
 page.content.type_listing: 'Listing'
-page.category.page: __page.category.page
-page.category.project: __page.category.projet
-page.category.article: __page.category.article
-page.category.blog: __page.category.blog
-page.category.event: __page.category.evenement
-page.category.news: __page.category.news
-page.category.evolution: __page.category.evolution
-page.category.documentation: __page.category.documentation
-page.category.faq: __page.category.faq
-page.message.history.reload: __page.msg.history.reload
-page.message.history.new.reload: __page.msg.history.new.reload
-page.content.faq.list: __page.content.faq.list
-page.content.faq.list_help: __page.content.faq.list.help
-page.content.listing.list: __page.content.listing.list
-page.content.listing.list_help: __page.content.listing.list.help
-page.content.type: __page.content.type
-page.content.type_listing_info: __page.content.type.listing.info
-page.content.type_unknown: __page.content.type.unknown
-page.content.info.unknown: __page.content.info.unknown
-page.content.listing.title: __page.content.listing.title
-page.add.title: __page.add.page_title_h1
-page.add.description: __page.add.description
-page.update.title_id: __page.update.page_title
-page.update.title: __page.update.page_title_h1
-page.update.description: __page.update.description
-page.index.modal.help.title: __page.index.popin.help.title
-page.index.modal.help.disabled_page: __page.index.popin.help.disabled_page
-page.index.modal.help.enable_page: __page.index.popin.help.enable_page
-page.index.modal.help.delete: __page.index.popin.help.delete
-page.index.modal.help.pin: __page.index.popin.help.pin
-page.index.modal.help.edit: __page.index.popin.help.edit
-page.index.title: __page.index.page_title
-page.index.button.new: __page.index.btn.new
-page.index.description: __page.index.description
-page.page_history.load_more: __page.page_history.load_more
-page.page_seo.input.meta.description.error: __page.page_seo.input.meta.description.error
-page.page_seo.input.meta.keywords.error: __page.page_seo.input.meta.keywords.error
-page.page_seo.input.meta.author.error: __page.page_seo.input.meta.author.error
-page.page_seo.input.meta.copyright.error: __page.page_seo.input.meta.copyright.error
-page.tab.menu: __page.onglet.menu
-page.page_menu.list_menu_label: __page.page_menu.list_menu_label
-page.page_menu.list_menu_help: __page.page_menu.list_menu_help
-page.page_menu.list_menu_empty: __page.page_menu.list_menu_empty
-page.page_menu.list_menu_disabled: __page.page_menu.list_menu_disabled
-page.page_menu.list_menu.header: __page.page_menu.list_menu.header
-page.page_menu.list_menu.footer: __page.page_menu.list_menu.footer
-page.page_menu.list_menu.left: __page.page_menu.list_menu.left
-page.page_menu.list_menu.right: __page.page_menu.list_menu.right
-page.page_menu.list_menu.sub_label: __page.page_menu.list_menu.sub_label
-page.page_content_block.default_text: __page.page_content_block.default_text
-page.tab.information: __page.onglet.information
-page.page_content_block.block: __page.page_content_block.bloc
-page.status.archived: __page.status.archived
-page.page_content.warning.empty_content: __page.page_content.warning.empty_content
+page.category.page: Page
+page.category.project: Project
+page.category.article: Article
+page.category.blog: Blog
+page.category.event: Event
+page.category.news: News
+page.category.evolution: Update
+page.category.documentation: Documentation
+page.category.faq: FAQ
+page.message.history.reload: Unsaved changes have been detected, do you want to restore them?
+page.message.history.new.reload: A new page was created without being saved, do you want to restore it?
+page.content.faq.list: Choose an FAQ from the list
+page.content.faq.list_help: Only active FAQs are listed
+page.content.listing.list: Choose the type of listing you want
+page.content.listing.list_help: The page will be a paginated list of the pages in the chosen category
+page.content.type: Type
+page.content.type_listing_info: Listing of {type} pages
+page.content.type_unknown: Unknown
+page.content.info.unknown: Information not available yet
+page.content.listing.title: List of pages for the category "{category}"
+page.add.title: New page
+page.add.description: Create a new page for your website
+page.update.title_id: 'Editing page #{id}'
+page.update.title: Page editing
+page.update.description: Edit a page of your website
+page.index.modal.help.title: Help
+page.index.modal.help.disabled_page: Disable a page
+page.index.modal.help.enable_page: Enable a page
+page.index.modal.help.delete: Delete
+page.index.modal.help.pin: Pin (landing page)
+page.index.modal.help.edit: Edit
+page.index.title: Page management
+page.index.button.new: New page
+page.index.description: Manage the pages your visitors can access.
+page.page_history.load_more: Load more...
+page.page_seo.input.meta.description.error: The description is required
+page.page_seo.input.meta.keywords.error: At least one keyword must be entered
+page.page_seo.input.meta.author.error: The author of the page is required
+page.page_seo.input.meta.copyright.error: A copyright is required
+page.tab.menu: Menus
+page.page_menu.list_menu_label: Available menus
+page.page_menu.list_menu_help: You can associate several menus with a page (top, bottom, etc.). If a menu is disabled, it will not appear in the final result. With the “No menu” choice, the default menu (if any) is used
+page.page_menu.list_menu_empty: Default menu (if set)
+page.page_menu.list_menu_disabled: Disabled
+page.page_menu.list_menu.header: Header
+page.page_menu.list_menu.footer: Footer
+page.page_menu.list_menu.left: Left menu
+page.page_menu.list_menu.right: Right menu
+page.page_menu.list_menu.sub_label: Associate one or more menus with your page
+page.page_content_block.default_text: Text block added
+page.tab.information: Information
+page.page_content_block.block: Block no.
+page.status.archived: Archived
+page.page_content.warning.empty_content: At least one content must be filled in
 page.message.auto_save.success: 'Auto-saved at'
-page.error.forbidden: __page.error.forbidden
-page.error.not_found: __page.error.not_found
-page.error.url_not_unique: __page.error.url_not_unique
-page.error.invalid_data: __page.error.invalid_data
-page.error.landing.delete: __page.error.landing.delete
-page.error.landing.disabled: __page.error.landing.disabled
-page.error.landing.not_publish: __page.error.landing.not_publish
-page.error.landing.remove: __page.error.landing.remove
-page.content.info.not_found: __page.content.info.not_found
+page.error.forbidden: You are not allowed to perform this action on this page.
+page.error.not_found: This page does not exist or has been deleted.
+page.error.url_not_unique: The URL “{url}” ({locale}) is already used by another page.
+page.error.invalid_data: 'Some values of the page are invalid: {fields}.'
+page.error.landing.delete: The landing page cannot be deleted. First set another landing page.
+page.error.landing.disabled: The landing page cannot be disabled. First set another landing page.
+page.error.landing.not_publish: Only a published and active page can become the landing page.
+page.error.landing.remove: 'The site must always have a landing page: set another one from the list of pages.'
+page.content.info.not_found: Content not found, it may have been deleted.
 page.page_content_block.faq_id: 'FAQ ID'
 page.page_content_block.listing_id: 'Category ID'
