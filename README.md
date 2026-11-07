@@ -54,7 +54,7 @@ Nathéo est un système de gestion de contenu (CMS) moderne développé avec Sym
 
 ## 📌 Version actuelle — V2
 
-La V2 de Nathéo CMS (`v2.0.0`) est la version stable et disponible en production. Elle succède à la V1 (`v1.0.0`), qui a posé le socle du projet : gestion de contenu, interface d'administration, support multilingue et architecture modulaire.
+La V2 de Nathéo CMS (`v2.0.1`) est la version stable et disponible en production. Elle succède à la V1 (`v1.0.0`), qui a posé le socle du projet : gestion de contenu, interface d'administration, support multilingue et architecture modulaire.
 
 ---
 
