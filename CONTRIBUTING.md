@@ -42,8 +42,11 @@ Elle part de `master` à jour, avec le numéro de l'issue :
 | Audit | `audit/A-<n>-<slug>` |
 | Feature, évolution, clean code | `feature/N-<n>-<slug>` |
 | Maintenance sans issue (montée de version, configuration) | `maintenance/<slug>` |
+| Version publiée à corriger (voir [Versions maintenues](#versions-maintenues)) | `release/<majeure>.<mineure>` |
 
 Le `<slug>` est en minuscules, avec des tirets : `bug/B-363-audit-dashboard`.
+
+Un correctif destiné à une version déjà sortie part de la branche `release/<version>` (voir [Versions maintenues](#versions-maintenues)).
 
 ### 3. La pull request
 
@@ -55,6 +58,21 @@ Ce qui est fait automatiquement (workflow `pull-request`) :
 - labels de technologie et de couche selon les fichiers modifiés ;
 - recopie depuis l'issue de ses labels (hors statut) et du milestone ;
 - contrôle du nom de branche, du titre et de `Closes #<n>` : le check échoue si l'un des trois ne respecte pas la convention.
+
+## Versions maintenues
+
+`master` porte la prochaine version mineure (`app.version` en `x.y.0-dev`). Chaque version publiée est marquée par un tag `vx.y.z` et une release GitHub.
+
+Une branche `release/x.y` n'est créée que lorsqu'une version publiée a besoin d'un correctif :
+
+1. créer `release/x.y` depuis le dernier tag de cette version (ex. `v2.0.0`) ;
+2. faire la branche du correctif (`bug/B-<n>-<slug>`) depuis `release/x.y`, et ouvrir la PR vers `release/x.y` ;
+3. passer `app.version` au numéro du correctif (ex. `2.0.1`), taguer `vx.y.z` et publier la release ;
+4. reporter le correctif sur `master` (merge de `release/x.y` ou cherry-pick), pour qu'il ne disparaisse pas de la version suivante.
+
+Une migration ajoutée dans un correctif est reportée sur `master` avec le même numéro de version, sur les deux plateformes.
+
+Le milestone d'un correctif est celui de sa version (`Sortie v2.0.1`), créé à ce moment-là.
 
 ## Labels
 

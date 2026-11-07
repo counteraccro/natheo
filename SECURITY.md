@@ -14,13 +14,14 @@ Indiquez si possible : la version du CMS, la route ou l'écran concerné, les é
 
 1. Accusé de réception sous 7 jours.
 2. Analyse et correctif, suivis dans une advisory privée.
-3. Publication d'une version corrigée, puis de l'advisory (avec mention de l'auteur du signalement s'il le souhaite).
+3. Publication d'une version corrigée pour chaque version suivie concernée, puis de l'advisory (avec mention de l'auteur du signalement s'il le souhaite).
 
 ## Versions suivies
 
 | Version | Correctifs de sécurité |
 |---|---|
-| 2.x (en cours) | ✅ |
+| 2.1 (en développement, branche `master`) | ✅ |
+| 2.0.x (branche `release/2.0`) | ✅ |
 | 1.x | ❌ |
 
 ## Pour les mainteneurs : traiter une faille
