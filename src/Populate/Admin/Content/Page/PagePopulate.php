@@ -148,6 +148,10 @@ class PagePopulate
     {
         $render = PageRender::tryFrom($this->getInt('render'));
         $status = PageStatus::tryFrom($this->getInt('status'));
+        // L'archivage passe par une action dédiée, jamais par l'éditeur
+        if ($status === PageStatus::ARCHIVED) {
+            $status = null;
+        }
         $category = PageCategory::tryFrom($this->getInt('category'));
         $ruleComment = CommentStatus::tryFrom($this->getInt('ruleComment'));
 

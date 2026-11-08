@@ -280,6 +280,15 @@ class PagePopulateTest extends AppWebTestCase
         $this->assertEquals(PageRender::ONE_BLOCK->value, $page->getRender());
         $this->assertEquals(PageStatus::PUBLISH->value, $page->getStatus());
         $this->assertEquals(PageCategory::BLOG->value, $page->getCategory());
+
+        // L'archivage passe par une action dédiée : refusé depuis les données de l'éditeur
+        $data['render'] = PageRender::ONE_BLOCK->value;
+        $data['ruleComment'] = $page->getRuleComment();
+        $data['status'] = PageStatus::ARCHIVED->value;
+        $pagePopulate = new PagePopulate($page, $data, $this->container->get(PageService::class));
+        $page = $pagePopulate->populate()->getPage();
+        $this->assertEquals(['status'], $pagePopulate->getErrors());
+        $this->assertEquals(PageStatus::PUBLISH->value, $page->getStatus());
     }
 
     /**

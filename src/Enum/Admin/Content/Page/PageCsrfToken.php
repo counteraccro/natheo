@@ -40,4 +40,22 @@ enum PageCsrfToken: string
      * @var string
      */
     case AUTO_SAVE = 'page_auto_save';
+
+    /**
+     * Publication du brouillon d'une page publiée
+     * @var string
+     */
+    case PUBLISH_DRAFT = 'page_publish_draft';
+
+    /**
+     * Abandon du brouillon d'une page publiée
+     * @var string
+     */
+    case DISCARD_DRAFT = 'page_discard_draft';
+
+    /**
+     * Archivage d'une page
+     * @var string
+     */
+    case ARCHIVE = 'page_archive';
 }

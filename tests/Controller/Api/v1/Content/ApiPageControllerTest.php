@@ -9,8 +9,11 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller\Api\v1\Content;
 
+use App\Entity\Admin\Content\Page\Page;
+use App\Entity\Admin\Content\Page\PageDraft;
 use App\Enum\Admin\Content\Page\PageCategory;
 use App\Enum\Admin\Content\Page\PageContentType;
+use App\Enum\Admin\Content\Page\PageRender;
 use App\Enum\Admin\Content\Page\PageStatistics;
 use App\Enum\Admin\Content\Page\PageStatus;
 use App\Service\Admin\System\User\UserDataService;
@@ -310,6 +313,95 @@ class ApiPageControllerTest extends AppApiTestCase
             server: array_merge($this->getCustomHeaders(), ['HTTP_User-token' => $userToken]),
         );
         $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
+    }
+
+    /**
+     * Prévisualisation du brouillon : servie uniquement à un utilisateur qui peut modifier la page
+     * @return void
+     */
+    public function testFindPreviewDraft(): void
+    {
+        // Données préparées avant la première requête : le kernel est redémarré entre deux requêtes
+        $owner = $this->createUserContributeur(['disabled' => false, 'anonymous' => false]);
+        $page = $this->createPageAllDataDefault($owner);
+        $slug = $page->getPageTranslationByLocale('fr')->getUrl();
+        $titleOnline = $page->getPageTranslationByLocale('fr')->getTitre();
+        $nbRead = (int) $page->getPageStatistiqueByKey(PageStatistics::NB_READ->value)->getValue();
+
+        $translations = [];
+        $contentTranslations = [];
+        foreach ($page->getPageTranslations() as $translation) {
+            $translations[] = [
+                'locale' => $translation->getLocale(),
+                'titre' => 'Brouillon ' . $translation->getLocale(),
+                'url' => $translation->getUrl(),
+            ];
+            $contentTranslations[] = ['locale' => $translation->getLocale(), 'text' => 'Texte du brouillon'];
+        }
+        $draft = (new PageDraft())->setPage($page)->setData([
+            'id' => $page->getId(),
+            'render' => PageRender::ONE_BLOCK->value,
+            'status' => PageStatus::PUBLISH->value,
+            'category' => $page->getCategory(),
+            'ruleComment' => $page->getRuleComment(),
+            'landingPage' => false,
+            'isOpenComment' => true,
+            'pageTranslations' => $translations,
+            'pageContents' => [
+                [
+                    'renderBlock' => 1,
+                    'renderOrder' => 1,
+                    'type' => PageContentType::TEXT->value,
+                    'pageContentTranslations' => $contentTranslations,
+                ],
+            ],
+            'tags' => [],
+            'menus' => [],
+        ]);
+        $this->persistAndFlush($draft);
+
+        $userData = $this->container->get(UserDataService::class);
+        $ownerToken = $userData->generateUserToken($owner);
+        $otherToken = $userData->generateUserToken(
+            $this->createUserContributeur(['disabled' => false, 'anonymous' => false]),
+        );
+
+        $find = function (array $params, ?string $userToken = null): array {
+            $headers = $this->getCustomHeaders();
+            if ($userToken !== null) {
+                $headers['HTTP_User-token'] = $userToken;
+            }
+            $this->client->request(
+                'GET',
+                $this->router->generate(
+                    'api_page_find',
+                    array_merge(['api_version' => self::API_VERSION, 'locale' => 'fr'], $params),
+                ),
+                server: $headers,
+            );
+            $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+            return json_decode($this->client->getResponse()->getContent(), true)['data']['page'];
+        };
+
+        // Sans prévisualisation, ou sans droit d'édition : la version en ligne
+        $this->assertEquals($titleOnline, $find(['slug' => $slug], $ownerToken)['title']);
+        $this->assertEquals($titleOnline, $find(['slug' => $slug, 'preview' => 1])['title']);
+        $this->assertEquals($titleOnline, $find(['slug' => $slug, 'preview' => 1], $otherToken)['title']);
+
+        // Le propriétaire voit le brouillon, avec le rendu de ses contenus
+        $preview = $find(['slug' => $slug, 'preview' => 1], $ownerToken);
+        $this->assertEquals('Brouillon fr', $preview['title']);
+        $this->assertCount(1, $preview['contents']);
+        $this->assertEquals(-1, $preview['contents'][0]['id']);
+        $this->assertStringContainsString('Texte du brouillon', $preview['preview_contents'][-1]['content']);
+        // Seules les trois lectures de la version en ligne sont comptées
+        $this->assertEquals($nbRead + 3, (int) $preview['statistiques'][PageStatistics::NB_READ->value]);
+
+        $this->em->clear();
+        $pageOnline = $this->em->getRepository(Page::class)->find($page->getId());
+        $this->assertEquals($titleOnline, $pageOnline->getPageTranslationByLocale('fr')->getTitre());
+        $this->assertCount(2, $pageOnline->getPageContents());
+        $this->assertNotNull($this->em->getRepository(PageDraft::class)->findOneBy(['page' => $page->getId()]));
     }
 
     /**

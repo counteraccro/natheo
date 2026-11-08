@@ -25,6 +25,8 @@ enum ApiFindPageParameter: string
 
     case USER_TOKEN = 'user_token';
 
+    case PREVIEW = 'preview';
+
     /**
      * Paramètres attendus
      */
@@ -36,6 +38,7 @@ enum ApiFindPageParameter: string
         self::SHOW_STATISTIQUES->value => '',
         self::MENU_POSITION->value => '',
         self::USER_TOKEN->value => '',
+        self::PREVIEW->value => '',
     ];
 
     /**
@@ -47,5 +50,6 @@ enum ApiFindPageParameter: string
         self::SHOW_TAGS->value => true,
         self::SHOW_STATISTIQUES->value => true,
         self::MENU_POSITION->value => [0 => 0],
+        self::PREVIEW->value => false,
     ];
 }

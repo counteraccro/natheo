@@ -50,8 +50,14 @@ class PageTranslate extends AppTranslate
             'loading' => $this->translator->trans('page.edit.loading', domain: 'page'),
             'tag_title' => $this->translator->trans('page.tab.tag_title', domain: 'page'),
             'tag_sub_title' => $this->translator->trans('page.tab.tag_sub_title', domain: 'page'),
-            'msg_titre_restore_history' => $this->translator->trans('page.message.title.restore.history', domain: 'page'),
-            'msg_btn_restore_history' => $this->translator->trans('page.message.button.restore.history', domain: 'page'),
+            'msg_titre_restore_history' => $this->translator->trans(
+                'page.message.title.restore.history',
+                domain: 'page',
+            ),
+            'msg_btn_restore_history' => $this->translator->trans(
+                'page.message.button.restore.history',
+                domain: 'page',
+            ),
             'msg_btn_cancel_restore_history' => $this->translator->trans(
                 'page.message.button.cancel.restore.history',
                 domain: 'page',
@@ -71,7 +77,39 @@ class PageTranslate extends AppTranslate
             'page_comment' => $this->getTranslatePageComment(),
             'page_seo' => $this->getTranslatePageSeo(),
             'page_menu' => $this->getTranslatePageMenu(),
+            'page_draft' => $this->getTranslatePageDraft(),
         ];
+    }
+
+    /**
+     * Traductions du brouillon des pages publiées et des pages archivées
+     * @return array
+     */
+    private function getTranslatePageDraft(): array
+    {
+        $keys = [
+            'badge',
+            'banner',
+            'published_info',
+            'archived_banner',
+            'button_save',
+            'button_publish',
+            'button_discard',
+            'publish_confirm_title',
+            'publish_confirm_text',
+            'publish_confirm_cancel',
+            'publish_confirm_ok',
+            'discard_confirm_title',
+            'discard_confirm_text',
+            'discard_confirm_cancel',
+            'discard_confirm_ok',
+        ];
+
+        $translate = [];
+        foreach ($keys as $key) {
+            $translate[$key] = $this->translator->trans('page.draft.' . $key, domain: 'page');
+        }
+        return $translate;
     }
 
     private function getTranslatePageSEO(): array

@@ -11,6 +11,7 @@ namespace App\Service\Admin\Content\Page;
 
 use App\Entity\Admin\Content\Faq\Faq;
 use App\Entity\Admin\Content\Page\Page;
+use App\Entity\Admin\Content\Page\PageDraft;
 use App\Entity\Admin\Content\Page\PageTranslation;
 use App\Entity\Admin\System\User;
 use App\Enum\Admin\Content\Page\PageCategory;
@@ -20,6 +21,7 @@ use App\Enum\Admin\Content\Page\PageRender;
 use App\Enum\Admin\Content\Page\PageStatistics;
 use App\Enum\Admin\Content\Page\PageStatus;
 use App\Enum\Admin\System\Options\OptionSystem;
+use App\Repository\Admin\Content\Page\PageDraftRepository;
 use App\Repository\Admin\Content\Page\PageRepository;
 use App\Repository\Admin\Content\Page\PageTranslationRepository;
 use App\Security\Voter\ContentVoter;
@@ -65,7 +67,10 @@ class PageService extends AppAdminService
         $locale = $this->getRequestStack()->getCurrentRequest()->getLocale();
         $csrfTokenManager = $this->getCsrfTokenManager();
         $csrfTokens = [];
-        foreach ([PageCsrfToken::DISABLED, PageCsrfToken::DELETE, PageCsrfToken::LANDING_PAGE] as $csrfToken) {
+        foreach (
+            [PageCsrfToken::DISABLED, PageCsrfToken::DELETE, PageCsrfToken::LANDING_PAGE, PageCsrfToken::ARCHIVE]
+            as $csrfToken
+        ) {
             $csrfTokens[$csrfToken->value] = $csrfTokenManager->getToken($csrfToken->value)->getValue();
         }
 
@@ -84,6 +89,18 @@ class PageService extends AppAdminService
         $dataPaginate = $this->getAllPaginate($page, $limit, $queryParams, $userId);
 
         $nb = $dataPaginate->count();
+        $pageIds = [];
+        foreach ($dataPaginate as $element) {
+            $pageIds[] = $element->getId();
+        }
+        /** @var PageDraftRepository $pageDraftRepository */
+        $pageDraftRepository = $this->getRepository(PageDraft::class);
+        $pageIdsWithDraft = $pageDraftRepository->getPageIdsWithDraft($pageIds);
+        $draftBadge =
+            ' <span class="badge badge-pending">' .
+            htmlspecialchars($translator->trans('page.grid.draft_badge', domain: 'page'), ENT_QUOTES) .
+            '</span>';
+
         $data = [];
         foreach ($dataPaginate as $element) {
             /* @var Page $element */
@@ -105,7 +122,9 @@ class PageService extends AppAdminService
                 $translator->trans('page.grid.id', domain: 'page') =>
                     $element->getId() . ' ' . $isDisabled . ' ' . $isLandingPage,
                 $translator->trans('page.grid.title', domain: 'page') => $this->getEscapedTitle($element, $locale),
-                $translator->trans('page.grid.status', domain: 'page') => $this->getStatusStr($element->getStatus()),
+                $translator->trans('page.grid.status', domain: 'page') =>
+                    $this->getStatusStr($element->getStatus()) .
+                    (in_array($element->getId(), $pageIdsWithDraft, true) ? $draftBadge : ''),
                 $translator->trans('page.grid.tag', domain: 'page') => $this->getTags($element->getTags()),
                 $translator->trans('page.grid.comment', domain: 'page') => $element->getNbComment(),
                 $translator->trans('page.grid.nb_see', domain: 'page') =>
@@ -155,8 +174,10 @@ class PageService extends AppAdminService
         $label = $this->getEscapedTitle($page, $locale);
         $actions = [];
 
-        // La landing page ne peut être ni désactivée ni supprimée
-        if (!$page->isLandingPage() && $security->isGranted(ContentVoter::DISABLE, $page)) {
+        $isArchived = $page->getStatus() === PageStatus::ARCHIVED->value;
+
+        // La landing page ne peut être ni désactivée ni supprimée, une page archivée ne change plus
+        if (!$page->isLandingPage() && !$isArchived && $security->isGranted(ContentVoter::DISABLE, $page)) {
             $actionDisabled = [
                 'label' => [
                     'M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z',
@@ -199,6 +220,19 @@ class PageService extends AppAdminService
 
         if (!$security->isGranted(ContentVoter::EDIT, $page)) {
             return $actions;
+        }
+
+        if (!$page->isLandingPage() && !$isArchived) {
+            $actions[] = [
+                'label' => ['M4 4h16v4H4V4Zm1 4v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8m-9 4h4'],
+                'color' => 'primary',
+                'type' => 'put',
+                'url' => $router->generate('admin_page_archive', ['id' => $page->getId()]),
+                'ajax' => true,
+                'confirm' => true,
+                'msgConfirm' => $translator->trans('page.confirm.archive.message', ['label' => $label], 'page'),
+                'csrf' => $csrfTokens[PageCsrfToken::ARCHIVE->value],
+            ];
         }
 
         $actions[] = [
@@ -388,11 +422,12 @@ class PageService extends AppAdminService
      * d'update de la page.
      * Retourne un tableau avec un message si la date du dernier history est supérieur
      * @param Page $page
+     * @param \DateTimeInterface|null $draftUpdateAt date du brouillon, comparée à la place de celle de la page
      * @return array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getDiffBetweenHistoryAndPage(Page $page): array
+    public function getDiffBetweenHistoryAndPage(Page $page, ?\DateTimeInterface $draftUpdateAt = null): array
     {
         $security = $this->getSecurity();
         $containerBag = $this->getContainerBag();
@@ -412,9 +447,10 @@ class PageService extends AppAdminService
             return $return;
         }
 
-        if ($page->getUpdateAt() === null || $history[0]['time'] > $page->getUpdateAt()->getTimestamp()) {
+        $updateAt = $draftUpdateAt ?? $page->getUpdateAt();
+        if ($updateAt === null || $history[0]['time'] > $updateAt->getTimestamp()) {
             $msg = $translator->trans('page.message.history.reload', domain: 'page');
-            if ($page->getUpdateAt() === null) {
+            if ($updateAt === null) {
                 $msg = $translator->trans('page.message.history.new.reload', domain: 'page');
             }
 

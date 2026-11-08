@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace App\Tests\Controller\Admin\Content;
 
 use App\Entity\Admin\Content\Page\Page;
+use App\Entity\Admin\Content\Page\PageDraft;
 use App\Entity\Admin\System\User;
 use App\Enum\Admin\Content\Page\PageContentType;
 use App\Enum\Admin\Content\Page\PageStatus;
@@ -78,8 +79,8 @@ class PageControllerTest extends AppWebTestCase
         }
         $titleCol = $this->translator->trans('page.grid.title', domain: 'page');
         $this->assertEquals('&lt;img src=x onerror=alert(1)&gt;', $rows[$pageOwn->getId()][$titleCol]);
-        // Sa page publiée : désactiver, supprimer, éditer, landing page ; celle d'un autre : rien
-        $this->assertCount(4, $rows[$pageOwn->getId()]['action']);
+        // Sa page publiée : désactiver, supprimer, archiver, éditer, landing page ; celle d'un autre : rien
+        $this->assertCount(5, $rows[$pageOwn->getId()]['action']);
         $this->assertCount(0, $rows[$pageOther->getId()]['action']);
 
         $this->client->request('GET', $url, ['orderField' => 'updateAt', 'order' => 'ASC']);
@@ -435,8 +436,12 @@ class PageControllerTest extends AppWebTestCase
         $this->checkNoAccess('admin_page_save', methode: 'POST');
 
         $user = $this->createUserContributeur();
+        // Page jamais publiée : enregistrée directement, sans brouillon
         $page = $this->createPageAllDataDefault($user);
+        $page->setStatus(PageStatus::DRAFT->value);
+        $this->em->flush();
         $data = ['page' => $this->getDataTest($page->getId())];
+        $data['page']['status'] = PageStatus::DRAFT->value;
 
         $this->client->loginUser($user, 'admin');
         $url = $this->router->generate('admin_page_save');
@@ -667,6 +672,289 @@ class PageControllerTest extends AppWebTestCase
         $this->assertArrayHasKey('pages', $content);
         $this->assertCount(1, $content['pages']);
         $this->assertArrayHasKey($page->getId(), $content['pages']);
+    }
+
+    /**
+     * Test du brouillon d'une page publiée : chargement, enregistrement sans toucher la version en ligne
+     * @return void
+     */
+    public function testSaveDraft(): void
+    {
+        $user = $this->createUserContributeur();
+        $page = $this->createPageAllDataDefault($user);
+        $other = $this->createPageWithTranslations($user);
+        $otherUrl = $other->getPageTranslationByLocale('fr')->getUrl();
+        $titleOnline = $page->getPageTranslationByLocale('fr')->getTitre();
+
+        $this->client->loginUser($user, 'admin');
+        $csrf = $this->getPropsCsrfToken('csrfTokenSave');
+        $url = $this->router->generate('admin_page_save');
+
+        $data = ['page' => $this->getDataTest($page->getId())];
+        $data['page']['status'] = PageStatus::DRAFT->value;
+        $this->client->request('POST', $url, server: ['HTTP_X-CSRF-TOKEN' => $csrf], content: json_encode($data));
+        $this->assertResponseIsSuccessful();
+        $content = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertTrue($content['success']);
+        $this->assertTrue($content['state']['has_draft']);
+        $this->assertEquals($this->translator->trans('page.save.draft_success', domain: 'page'), $content['msg']);
+
+        // Deuxième enregistrement : toujours un seul brouillon
+        $data['page']['pageTranslations'][0]['titre'] = 'Titre du brouillon';
+        $this->client->request('POST', $url, server: ['HTTP_X-CSRF-TOKEN' => $csrf], content: json_encode($data));
+        $this->assertResponseIsSuccessful();
+
+        $this->em->clear();
+        $drafts = $this->em->getRepository(PageDraft::class)->findBy(['page' => $page->getId()]);
+        $this->assertCount(1, $drafts);
+        $this->assertEquals('Titre du brouillon', $drafts[0]->getData()['pageTranslations'][0]['titre']);
+        // Le statut de la page publiée ne change pas depuis le brouillon
+        $this->assertEquals(PageStatus::PUBLISH->value, $drafts[0]->getData()['status']);
+
+        $pageOnline = $this->em->getRepository(Page::class)->find($page->getId());
+        $this->assertEquals($titleOnline, $pageOnline->getPageTranslationByLocale('fr')->getTitre());
+        $this->assertEquals(PageStatus::PUBLISH->value, $pageOnline->getStatus());
+
+        // L'éditeur charge le brouillon
+        $this->client->request('GET', $this->router->generate('admin_page_load_page', ['id' => $page->getId()]));
+        $content = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertEquals('Titre du brouillon', $content['page']['pageTranslations'][0]['titre']);
+        $this->assertTrue($content['state']['is_published']);
+        $this->assertTrue($content['state']['has_draft']);
+        $this->assertEquals(
+            $pageOnline->getPageTranslationByLocale('fr')->getUrl(),
+            $content['state']['published_urls']['fr'],
+        );
+
+        // URL déjà prise : le brouillon est refusé
+        $duplicate = $data;
+        $duplicate['page']['pageTranslations'][0]['url'] = $otherUrl;
+        $this->client->request('POST', $url, server: ['HTTP_X-CSRF-TOKEN' => $csrf], content: json_encode($duplicate));
+        $this->assertResponseStatusCodeSame(400);
+    }
+
+    /**
+     * Test méthode publishDraft()
+     * @return void
+     */
+    public function testPublishDraft(): void
+    {
+        $user = $this->createUserContributeur();
+        $page = $this->createPageAllDataDefault($user);
+        $pageDraftStatus = $this->createPageWithTranslations($user, ['status' => PageStatus::DRAFT->value]);
+        $pageOther = $this->createPageAllDataDefault();
+        $dataOther = ['page' => $this->getDataTest($pageOther->getId())];
+        $tag = $this->createTag();
+
+        $this->checkNoAccess('admin_page_publish_draft', ['id' => $page->getId()], 'PUT');
+
+        $this->client->loginUser($user, 'admin');
+        $url = $this->router->generate('admin_page_publish_draft', ['id' => $page->getId()]);
+        $data = ['page' => $this->getDataTest($page->getId())];
+        $data['page']['pageTranslations'][0]['titre'] = 'Titre publié';
+        $data['page']['tags'] = [['id' => $tag->getId()]];
+
+        $this->client->request('PUT', $url, content: json_encode($data));
+        $this->assertResponseStatusCodeSame(403);
+
+        // Un brouillon existant est supprimé à la publication
+        $this->client->request(
+            'POST',
+            $this->router->generate('admin_page_save'),
+            server: ['HTTP_X-CSRF-TOKEN' => $this->getPropsCsrfToken('csrfTokenSave')],
+            content: json_encode($data),
+        );
+        $this->assertResponseIsSuccessful();
+
+        $csrf = $this->getPropsCsrfToken('csrfTokenPublishDraft');
+        $this->client->request('PUT', $url, server: ['HTTP_X-CSRF-TOKEN' => $csrf], content: json_encode($data));
+        $this->assertResponseIsSuccessful();
+        $content = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertTrue($content['success']);
+        $this->assertFalse($content['state']['has_draft']);
+
+        $this->em->clear();
+        $pageOnline = $this->em->getRepository(Page::class)->find($page->getId());
+        $this->assertEquals('Titre publié', $pageOnline->getPageTranslationByLocale('fr')->getTitre());
+        $this->assertEquals(PageStatus::PUBLISH->value, $pageOnline->getStatus());
+        $this->assertCount(1, $pageOnline->getTags());
+        $this->assertCount(1, $pageOnline->getMenus());
+        $this->assertEquals(PageContentType::TEXT->value, $pageOnline->getPageContents()->first()->getType());
+        $this->assertNull($this->em->getRepository(PageDraft::class)->findOneBy(['page' => $page->getId()]));
+
+        // Page jamais publiée : pas de brouillon
+        $this->client->request(
+            'PUT',
+            $this->router->generate('admin_page_publish_draft', ['id' => $pageDraftStatus->getId()]),
+            server: ['HTTP_X-CSRF-TOKEN' => $csrf],
+            content: json_encode($data),
+        );
+        $this->assertResponseStatusCodeSame(403);
+
+        // Page d'un autre contributeur
+        $this->client->request(
+            'PUT',
+            $this->router->generate('admin_page_publish_draft', ['id' => $pageOther->getId()]),
+            server: ['HTTP_X-CSRF-TOKEN' => $csrf],
+            content: json_encode($dataOther),
+        );
+        $this->assertResponseStatusCodeSame(403);
+    }
+
+    /**
+     * Test méthode discardDraft()
+     * @return void
+     */
+    public function testDiscardDraft(): void
+    {
+        $user = $this->createUserContributeur();
+        $page = $this->createPageAllDataDefault($user);
+        $titleOnline = $page->getPageTranslationByLocale('fr')->getTitre();
+
+        $this->checkNoAccess('admin_page_discard_draft', ['id' => $page->getId()], 'DELETE');
+
+        $this->client->loginUser($user, 'admin');
+        $data = ['page' => $this->getDataTest($page->getId())];
+        $this->client->request(
+            'POST',
+            $this->router->generate('admin_page_save'),
+            server: ['HTTP_X-CSRF-TOKEN' => $this->getPropsCsrfToken('csrfTokenSave')],
+            content: json_encode($data),
+        );
+
+        $url = $this->router->generate('admin_page_discard_draft', ['id' => $page->getId()]);
+        $this->client->request('DELETE', $url);
+        $this->assertResponseStatusCodeSame(403);
+
+        $csrf = $this->getPropsCsrfToken('csrfTokenDiscardDraft');
+        $this->client->request('DELETE', $url, server: ['HTTP_X-CSRF-TOKEN' => $csrf]);
+        $this->assertResponseIsSuccessful();
+        $this->assertTrue(json_decode($this->client->getResponse()->getContent(), true)['success']);
+
+        $this->em->clear();
+        $this->assertNull($this->em->getRepository(PageDraft::class)->findOneBy(['page' => $page->getId()]));
+        $pageOnline = $this->em->getRepository(Page::class)->find($page->getId());
+        $this->assertEquals($titleOnline, $pageOnline->getPageTranslationByLocale('fr')->getTitre());
+
+        $pageOther = $this->createPageAllDataDefault();
+        $this->client->request(
+            'DELETE',
+            $this->router->generate('admin_page_discard_draft', ['id' => $pageOther->getId()]),
+            server: ['HTTP_X-CSRF-TOKEN' => $csrf],
+        );
+        $this->assertResponseStatusCodeSame(403);
+    }
+
+    /**
+     * Test méthode archive() : une page archivée quitte le site et ne peut plus être modifiée
+     * @return void
+     */
+    public function testArchive(): void
+    {
+        $user = $this->createUserContributeur();
+        $page = $this->createPageAllDataDefault($user);
+        $landingPage = $this->createPageWithTranslations($user, ['disabled' => false, 'landingPage' => true]);
+
+        $this->checkNoAccess('admin_page_archive', ['id' => $page->getId()], 'PUT');
+
+        $this->client->loginUser($user, 'admin');
+        $this->client->request(
+            'POST',
+            $this->router->generate('admin_page_save'),
+            server: ['HTTP_X-CSRF-TOKEN' => $this->getPropsCsrfToken('csrfTokenSave')],
+            content: json_encode(['page' => $this->getDataTest($page->getId())]),
+        );
+
+        $url = $this->router->generate('admin_page_archive', ['id' => $page->getId()]);
+        $this->client->request('PUT', $url);
+        $this->assertResponseStatusCodeSame(403);
+
+        $csrf = $this->getGridCsrfToken('archive');
+        $csrfDisabled = $this->getGridCsrfToken('update-disabled');
+        $this->client->request('PUT', $url, server: ['HTTP_X-CSRF-TOKEN' => $csrf]);
+        $this->assertResponseIsSuccessful();
+        $this->assertTrue(json_decode($this->client->getResponse()->getContent(), true)['success']);
+
+        $this->em->clear();
+        $pageArchived = $this->em->getRepository(Page::class)->find($page->getId());
+        $this->assertEquals(PageStatus::ARCHIVED->value, $pageArchived->getStatus());
+        $this->assertNull($this->em->getRepository(PageDraft::class)->findOneBy(['page' => $page->getId()]));
+
+        // Lecture seule : chargement signalé, enregistrement, sauvegarde auto et désactivation refusés
+        $this->client->request('GET', $this->router->generate('admin_page_load_page', ['id' => $page->getId()]));
+        $this->assertTrue(json_decode($this->client->getResponse()->getContent(), true)['state']['read_only']);
+
+        $this->client->request(
+            'POST',
+            $this->router->generate('admin_page_save'),
+            server: ['HTTP_X-CSRF-TOKEN' => $this->getPropsCsrfToken('csrfTokenSave')],
+            content: json_encode(['page' => $this->getDataTest($page->getId())]),
+        );
+        $this->assertResponseStatusCodeSame(403);
+        $this->assertEquals(
+            $this->translator->trans('page.error.archived', domain: 'page'),
+            json_decode($this->client->getResponse()->getContent(), true)['msg'],
+        );
+
+        $this->client->request(
+            'PUT',
+            $this->router->generate('admin_page_auto_save'),
+            server: ['HTTP_X-CSRF-TOKEN' => $this->getPropsCsrfToken('csrfTokenAutoSave')],
+            content: json_encode(['page' => ['id' => $page->getId()]]),
+        );
+        $this->assertResponseStatusCodeSame(403);
+
+        $this->client->request(
+            'PUT',
+            $this->router->generate('admin_page_update_disabled', ['id' => $page->getId()]),
+            server: ['HTTP_X-CSRF-TOKEN' => $csrfDisabled],
+        );
+        $this->assertResponseStatusCodeSame(403);
+
+        // Landing page : refusé
+        $this->client->request(
+            'PUT',
+            $this->router->generate('admin_page_archive', ['id' => $landingPage->getId()]),
+            server: ['HTTP_X-CSRF-TOKEN' => $csrf],
+        );
+        $this->assertResponseStatusCodeSame(403);
+
+        // Page d'un autre contributeur
+        $pageOther = $this->createPageWithTranslations();
+        $this->client->request(
+            'PUT',
+            $this->router->generate('admin_page_archive', ['id' => $pageOther->getId()]),
+            server: ['HTTP_X-CSRF-TOKEN' => $csrf],
+        );
+        $this->assertResponseStatusCodeSame(403);
+    }
+
+    /**
+     * Le badge « Modifications non publiées » apparaît dans la grille pour une page qui a un brouillon
+     * @return void
+     */
+    public function testLoadGridDataDraftBadge(): void
+    {
+        $user = $this->createUserContributeur();
+        $page = $this->createPageAllDataDefault($user);
+        $this->client->loginUser($user, 'admin');
+
+        $badge = $this->translator->trans('page.grid.draft_badge', domain: 'page');
+        $statusCol = $this->translator->trans('page.grid.status', domain: 'page');
+        $gridUrl = $this->router->generate('admin_page_load_grid_data', ['page' => 1, 'limit' => 50]);
+        $this->client->request('GET', $gridUrl);
+        $data = json_decode($this->client->getResponse()->getContent(), true)['data'];
+        $this->assertStringNotContainsString($badge, $data[0][$statusCol]);
+
+        $this->client->request(
+            'POST',
+            $this->router->generate('admin_page_save'),
+            server: ['HTTP_X-CSRF-TOKEN' => $this->getPropsCsrfToken('csrfTokenSave')],
+            content: json_encode(['page' => $this->getDataTest($page->getId())]),
+        );
+        $this->client->request('GET', $gridUrl);
+        $data = json_decode($this->client->getResponse()->getContent(), true)['data'];
+        $this->assertStringContainsString($badge, $data[0][$statusCol]);
     }
 
     /**

@@ -4,6 +4,7 @@
  * @author Gourdon Aymeric
  * @version 2.0
  */
+import { PageStatus } from '@/vue/Composables/Front/Const/PageStatus';
 import { defineComponent, PropType } from 'vue';
 import { Locales, Page, PageData, PageTranslationItem, PageTranslations, Urls } from '@/ts/Page/Page.type';
 import axios from 'axios';
@@ -43,6 +44,10 @@ export default defineComponent({
       type: Object as PropType<Urls>,
       required: true,
     },
+    statusLocked: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -63,6 +68,16 @@ export default defineComponent({
   },
   emits: ['update-translation', 'update:section-errors', 'update-header-img'],
   computed: {
+    /**
+     * Statuts proposés : l'archivage passe par la liste des pages, jamais par l'éditeur
+     */
+    selectableStatus(): Record<string, string> {
+      return Object.fromEntries(
+        Object.entries(this.pageDatas.list_status).filter(
+          ([key]) => parseInt(key) !== PageStatus.archived || this.page.status === PageStatus.archived
+        )
+      );
+    },
     /**
      * Slug de l'url
      */
@@ -442,8 +457,8 @@ export default defineComponent({
 
       <div class="form-group">
         <label for="list-status-page" class="form-label">{{ translate.page_save.list_status_label }}</label>
-        <select id="list-status-page" class="form-input" v-model="page.status">
-          <option v-for="(value, key) in pageDatas.list_status" :value="parseInt(key)">{{ value }}</option>
+        <select id="list-status-page" class="form-input" v-model="page.status" :disabled="statusLocked">
+          <option v-for="(value, key) in selectableStatus" :value="parseInt(key)">{{ value }}</option>
         </select>
         <div id="list-status-help" class="form-text">{{ translate.page_save.list_status_help }}</div>
       </div>

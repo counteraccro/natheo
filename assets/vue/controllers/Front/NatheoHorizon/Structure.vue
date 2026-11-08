@@ -73,10 +73,17 @@ export default defineComponent({
       try {
         const [optionsSystem, response] = await Promise.all([
           this.frontApi.getOptionSystems(),
-          this.frontApi.getPageBySlug({ slug: this.datas.slug, locale: this.datas.locale }),
+          this.frontApi.getPageBySlug({
+            slug: this.datas.slug,
+            locale: this.datas.locale,
+            preview: this.datas.preview ? 1 : undefined,
+          }),
         ]);
         this.utilsFront = markRaw(new UtilsFront(this.datas, optionsSystem));
         this.page = response.page;
+        if (response.page.preview_contents) {
+          this.frontApi.setPreviewContents(response.page.preview_contents);
+        }
         document.title = this.page.title;
       } catch (error) {
         this.apiFailure(error as FrontApiError);
