@@ -24,6 +24,7 @@ class DashboardTranslate extends AppTranslate
             'dashboard_last_comments' => $this->getBlockLastCommentsTranslate(),
             'dashboard_last_pages' => $this->getBlockLastPagesTranslate(),
             'dashboard_page_most_viewed' => $this->getBlockPagesMostViewedTranslate(),
+            'dashboard_pages_pending_validation' => $this->getBlockPagesPendingValidationTranslate(),
         ];
     }
 
@@ -143,6 +144,52 @@ class DashboardTranslate extends AppTranslate
             ),
             'table_date' => $this->translator->trans(
                 'dashboard.most_viewed_pages.column_date',
+                domain: 'dashboard',
+            ),
+        ];
+    }
+
+    /**
+     * Retourne les traductions du block pages à valider
+     * @return array
+     */
+    public function getBlockPagesPendingValidationTranslate(): array
+    {
+        return [
+            'title' => $this->translator->trans(
+                'dashboard.pages_pending_validation.title',
+                domain: 'dashboard',
+            ),
+            'link_page' => $this->translator->trans(
+                'dashboard.pages_pending_validation.link_page',
+                domain: 'dashboard',
+            ),
+            'column_id' => $this->translator->trans(
+                'dashboard.pages_pending_validation.column_id',
+                domain: 'dashboard',
+            ),
+            'column_title' => $this->translator->trans(
+                'dashboard.pages_pending_validation.column_title',
+                domain: 'dashboard',
+            ),
+            'column_author' => $this->translator->trans(
+                'dashboard.pages_pending_validation.column_author',
+                domain: 'dashboard',
+            ),
+            'column_date' => $this->translator->trans(
+                'dashboard.pages_pending_validation.column_date',
+                domain: 'dashboard',
+            ),
+            'column_action' => $this->translator->trans(
+                'dashboard.pages_pending_validation.column_action',
+                domain: 'dashboard',
+            ),
+            'link_edit' => $this->translator->trans(
+                'dashboard.pages_pending_validation.link_edit',
+                domain: 'dashboard',
+            ),
+            'empty' => $this->translator->trans(
+                'dashboard.pages_pending_validation.empty',
                 domain: 'dashboard',
             ),
         ];

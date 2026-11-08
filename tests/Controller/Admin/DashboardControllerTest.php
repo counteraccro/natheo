@@ -9,6 +9,10 @@ declare(strict_types=1);
 namespace App\Tests\Controller\Admin;
 
 use App\Controller\Admin\DashboardController;
+use App\Entity\Admin\Content\Page\Page;
+use App\Entity\Admin\System\User;
+use App\Enum\Admin\Content\Page\PageStatus;
+use App\Enum\Admin\Content\Page\PageValidationStatus;
 use App\Enum\Admin\DashboardBlock;
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Admin\System\OptionSystemService;
@@ -116,6 +120,72 @@ class DashboardControllerTest extends AppWebTestCase
     }
 
     /**
+     * Bloc « Pages à valider » : réservé aux administrateurs, affiché seulement si l'option est active
+     * @return void
+     */
+    public function testIndexBlockPagesPendingValidation(): void
+    {
+        $admin = $this->createUserAdmin();
+        $this->client->loginUser($admin, 'admin');
+        $this->assertFalse($this->getDashboardProps()['datas']['dashboard_pages_pending_validation']['active']);
+
+        $this->setPageValidation(true);
+        $props = $this->getDashboardProps();
+        $this->assertTrue($props['datas']['dashboard_pages_pending_validation']['active']);
+        $this->assertTrue($props['roles']['isAdmin']);
+        $this->assertStringContainsString(
+            'filter=pending_validation',
+            $props['urls']['dashboard_pages_pending_validation']['url_pages'],
+        );
+
+        $this->client->loginUser($this->createUserContributeur(), 'admin');
+        $this->assertFalse($this->getDashboardProps()['roles']['isAdmin']);
+    }
+
+    /**
+     * Test méthode loadDashboardBlock() : bloc « Pages à valider »
+     * @return void
+     */
+    public function testLoadDashboardBlockPagesPendingValidation(): void
+    {
+        $route = 'admin_dashboard_load_block';
+        $params = ['id' => DashboardBlock::PAGES_PENDING_VALIDATION->value];
+        $this->setPageValidation(true);
+        $this->checkNoAccess($route, $params, user: $this->createUserContributeur());
+
+        $contributeur = $this->createUserContributeur();
+        $pageRecent = $this->createPendingPage($contributeur, new \DateTime('-1 hour'));
+        $pageOld = $this->createPendingPage($contributeur, new \DateTime('-2 days'));
+        $this->createPage($contributeur, [
+            'status' => PageStatus::DRAFT->value,
+            'validationStatus' => PageValidationStatus::REFUSED->value,
+        ]);
+        $this->createPage($contributeur, ['status' => PageStatus::DRAFT->value]);
+
+        $this->client->loginUser($this->createUserAdmin(), 'admin');
+        $this->client->request('GET', $this->router->generate($route, $params));
+        $this->assertResponseIsSuccessful();
+        $content = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertTrue($content['success']);
+        $this->assertSame([$pageOld->getId(), $pageRecent->getId()], array_column($content['body'], 'id'));
+        $this->assertSame($contributeur->getLogin(), $content['body'][0]['author']);
+        $this->assertSame(
+            $this->router->generate('admin_page_update', ['id' => $pageOld->getId()]),
+            $content['body'][0]['url'],
+        );
+
+        $this->setPageValidation(false);
+        $this->client->request('GET', $this->router->generate($route, $params));
+        $content = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertFalse($content['success']);
+        $this->assertNull($content['body']);
+        $this->assertSame(
+            $this->translator->trans('dashboard.pages_pending_validation.error_inactive', domain: 'dashboard'),
+            $content['error'],
+        );
+    }
+
+    /**
      * Test méthode loadStatistics()
      * @return void
      */
@@ -165,5 +235,50 @@ class DashboardControllerTest extends AppWebTestCase
         $label = $this->translator->trans('pagedemo.index.title');
         $this->assertStringContainsString($label, $crawler->filter('nav[aria-label="Breadcrumb"]')->text());
         $this->assertStringNotContainsString('pagedemo.index.title', $content);
+    }
+
+    /**
+     * Active ou désactive l'option « Validation des pages »
+     * @param bool $active
+     * @return void
+     */
+    private function setPageValidation(bool $active): void
+    {
+        $this->container
+            ->get(OptionSystemService::class)
+            ->saveValueByKee(OptionSystem::OS_PAGE_VALIDATION->value, $active ? '1' : '0');
+    }
+
+    /**
+     * Crée une page soumise à validation par $user à la date $validationAt
+     * @param User $user
+     * @param \DateTime $validationAt
+     * @return Page
+     */
+    private function createPendingPage(User $user, \DateTime $validationAt): Page
+    {
+        $page = $this->createPage($user, [
+            'status' => PageStatus::DRAFT->value,
+            'validationStatus' => PageValidationStatus::PENDING->value,
+            'validationUser' => $user,
+            'validationAt' => $validationAt,
+        ]);
+        $this->createPageTranslation($page, ['locale' => 'fr']);
+        return $page;
+    }
+
+    /**
+     * Retourne les props passées au composant Vue Dashboard
+     * @return array
+     */
+    private function getDashboardProps(): array
+    {
+        $this->client->request('GET', $this->router->generate('admin_dashboard_index'));
+        $this->assertResponseIsSuccessful();
+        $props = $this->client
+            ->getCrawler()
+            ->filter('[data-symfony--ux-vue--vue-component-value="Admin/Dashboard/Dashboard"]')
+            ->attr('data-symfony--ux-vue--vue-props-value');
+        return json_decode($props, true);
     }
 }

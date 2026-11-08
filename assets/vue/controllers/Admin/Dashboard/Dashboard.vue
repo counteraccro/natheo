@@ -9,6 +9,7 @@ import BlockHelpFirstConnexion from '../../../Components/Dashboard/BlockHelpFirs
 import BlockLastComment from '../../../Components/Dashboard/BlockLastComment.vue';
 import BlockLastPage from '../../../Components/Dashboard/BlockLastPage.vue';
 import BlockPageMostViewed from '@/vue/Components/Dashboard/BlockPageMostViewed.vue';
+import BlockPagesPendingValidation from '@/vue/Components/Dashboard/BlockPagesPendingValidation.vue';
 import type {
   DashboardUrls,
   DashboardTranslate,
@@ -19,7 +20,13 @@ import type {
 
 export default defineComponent({
   name: 'Dashboard',
-  components: { BlockPageMostViewed, BlockLastPage, BlockLastComment, BlockHelpFirstConnexion },
+  components: {
+    BlockPagesPendingValidation,
+    BlockPageMostViewed,
+    BlockLastPage,
+    BlockLastComment,
+    BlockHelpFirstConnexion,
+  },
   props: {
     urls: {
       type: Object as PropType<DashboardUrls>,
@@ -72,6 +79,13 @@ export default defineComponent({
         :urls="urls.dashboard_help_first_connexion"
         :csrf_token="csrf_tokens.update_user_data"
         @hide-block="hideBlockFirstConnexion"
+      />
+    </div>
+
+    <div class="grid grid-cols-1 gap-6 mb-6" v-if="roles.isAdmin && datas.dashboard_pages_pending_validation.active">
+      <BlockPagesPendingValidation
+        :translate="translate.dashboard_pages_pending_validation"
+        :urls="urls.dashboard_pages_pending_validation"
       />
     </div>
 

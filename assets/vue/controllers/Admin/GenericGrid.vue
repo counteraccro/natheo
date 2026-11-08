@@ -5,7 +5,7 @@
  * Permet de générer le tableau GRID
  */
 
-import { defineComponent } from 'vue';
+import { defineComponent, type PropType } from 'vue';
 import axios from 'axios';
 import { Dropdown } from 'flowbite';
 import Grid from '@/vue/Components/Grid/Grid.vue';
@@ -52,6 +52,10 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    defaultFilter: {
+      type: String as PropType<GenericGridFilter>,
+      default: 'all',
+    },
   },
   data() {
     return {
@@ -80,7 +84,7 @@ export default defineComponent({
       showQuery: false as boolean,
       showMoreOption: false as boolean,
       urlSaveQuery: '' as string,
-      filter: 'all' as GenericGridFilter,
+      filter: this.defaultFilter as GenericGridFilter,
       orderField: 'id' as string,
       listOrderField: {} as Record<string, string>,
       order: 'DESC' as GenericGridOrder,

@@ -19,6 +19,8 @@ enum DashboardBlock: string
 
     case PAGES_MOST_VIEWED = 'pages_most_viewed';
 
+    case PAGES_PENDING_VALIDATION = 'pages_pending_validation';
+
     /**
      * Retourne le rôle minimum pour accéder au block
      * @return string
@@ -27,6 +29,7 @@ enum DashboardBlock: string
     {
         return match ($this) {
             self::HELP_FIRST_CONNEXION => 'ROLE_SUPER_ADMIN',
+            self::PAGES_PENDING_VALIDATION => 'ROLE_ADMIN',
             self::LAST_COMMENT, self::LAST_PAGE_CREATE, self::PAGES_MOST_VIEWED => 'ROLE_CONTRIBUTEUR',
         };
     }

@@ -10,10 +10,12 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Controller\Admin\Content\PageController;
 use App\Enum\Admin\DashboardBlock;
 use App\Enum\Admin\Global\Breadcrumb;
 use App\Service\Admin\DashboardService;
 use App\Service\Admin\StatisticsService;
+use App\Service\Admin\System\OptionSystemService;
 use App\Service\Admin\System\User\UserDataService;
 use App\Enum\Admin\System\User\UserCsrfToken;
 use App\Enum\Admin\System\User\UserDataKey;
@@ -35,12 +37,17 @@ class DashboardController extends AppAdminController
      * Point d'entrée du dashboard
      * @param DashboardTranslate $dashboardTranslate
      * @param UserDataService $userDataService
+     * @param OptionSystemService $optionSystemService
      * @return Response
      */
     #[Route('/index', name: 'index')]
     #[Route('/', 'index_3')]
     #[Route('', name: 'index_2')]
-    public function index(DashboardTranslate $dashboardTranslate, UserDataService $userDataService): Response
+    public function index(
+        DashboardTranslate $dashboardTranslate,
+        UserDataService $userDataService,
+        OptionSystemService $optionSystemService,
+    ): Response
     {
         return $this->render('admin/dashboard/index.html.twig', [
             'translate' => $dashboardTranslate->getTranslate(),
@@ -69,11 +76,22 @@ class DashboardController extends AppAdminController
                     ]),
                     'url_pages' => $this->generateUrl('admin_page_index'),
                 ],
+                'dashboard_pages_pending_validation' => [
+                    'load_block_dashboard' => $this->generateUrl('admin_dashboard_load_block', [
+                        'id' => DashboardBlock::PAGES_PENDING_VALIDATION->value,
+                    ]),
+                    'url_pages' => $this->generateUrl('admin_page_index', [
+                        'filter' => PageController::FILTER_PENDING_VALIDATION,
+                    ]),
+                ],
             ],
             'datas' => [
                 'dashboard_help_first_connexion' => [
                     'help_first_connexion' => $userDataService->getHelpFirstConnexion($this->getUser()),
                     'user_data_key_first_connexion' => UserDataKey::HELP_FIRST_CONNEXION->value,
+                ],
+                'dashboard_pages_pending_validation' => [
+                    'active' => $optionSystemService->isPageValidationActive(),
                 ],
             ],
             'csrfTokenUpdateUserData' => UserCsrfToken::UPDATE_USER_DATA->value,
@@ -123,6 +141,7 @@ class DashboardController extends AppAdminController
             DashboardBlock::LAST_COMMENT => $dashboardService->getBlockLastComment(),
             DashboardBlock::LAST_PAGE_CREATE => $dashboardService->getBlockLastPageCreate(),
             DashboardBlock::PAGES_MOST_VIEWED => $dashboardService->getBlockPageMostViewed(),
+            DashboardBlock::PAGES_PENDING_VALIDATION => $dashboardService->getBlockPagesPendingValidation(),
         };
         return $this->json($return);
     }

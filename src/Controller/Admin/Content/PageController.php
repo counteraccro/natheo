@@ -55,16 +55,25 @@ class PageController extends AppAdminController
     /**
      * Filtre de la grille : pages en attente de validation
      */
-    private const string FILTER_PENDING_VALIDATION = 'pending_validation';
+    public const string FILTER_PENDING_VALIDATION = 'pending_validation';
 
     /**
+     * Grille des pages, filtrée sur les pages en attente de validation avec ?filter=pending_validation
+     * @param PageValidationService $pageValidationService
+     * @param Request $request
      * @return Response
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
     #[Route('/', name: 'index')]
-    public function index(PageValidationService $pageValidationService): Response
+    public function index(PageValidationService $pageValidationService, Request $request): Response
     {
+        $validationActive = $pageValidationService->isActive();
+        $filter =
+            $validationActive && $request->query->get('filter') === self::FILTER_PENDING_VALIDATION
+                ? self::FILTER_PENDING_VALIDATION
+                : 'all';
+
         $breadcrumb = [
             Breadcrumb::DOMAIN->value => 'page',
             Breadcrumb::BREADCRUMB->value => [
@@ -76,7 +85,8 @@ class PageController extends AppAdminController
             'breadcrumb' => $breadcrumb,
             'page' => 1,
             'limit' => $this->optionUserService->getValueByKey(OptionUser::OU_NB_ELEMENT->value),
-            'filterPendingValidation' => $pageValidationService->isActive(),
+            'filterPendingValidation' => $validationActive,
+            'filter' => $filter,
         ]);
     }
 

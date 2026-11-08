@@ -54,3 +54,13 @@ dashboard.most_viewed_pages.column_id: '#'
 dashboard.most_viewed_pages.column_title: Titre
 dashboard.most_viewed_pages.column_views: Vues
 dashboard.most_viewed_pages.column_date: Date
+dashboard.pages_pending_validation.title: 'Pages à valider'
+dashboard.pages_pending_validation.link_page: 'Voir toutes les pages en attente'
+dashboard.pages_pending_validation.column_id: '#'
+dashboard.pages_pending_validation.column_title: Titre
+dashboard.pages_pending_validation.column_author: 'Soumise par'
+dashboard.pages_pending_validation.column_date: 'Soumise le'
+dashboard.pages_pending_validation.column_action: Action
+dashboard.pages_pending_validation.link_edit: 'Traiter'
+dashboard.pages_pending_validation.empty: 'Aucune page en attente de validation.'
+dashboard.pages_pending_validation.error_inactive: 'La validation des pages est désactivée.'
