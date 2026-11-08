@@ -44,6 +44,7 @@ class NotificationTranslate extends AppTranslate
     {
         return [
             'seeComment' => $this->translator->trans('notification.item.see_comment', domain: 'notification'),
+            'seePage' => $this->translator->trans('notification.item.see_page', domain: 'notification'),
             'read' => $this->translator->trans('notification.item.mark_read', domain: 'notification'),
             'time' => $this->translator->trans('notification.item.time', domain: 'notification'),
         ];

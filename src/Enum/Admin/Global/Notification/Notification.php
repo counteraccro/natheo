@@ -57,6 +57,21 @@ enum Notification: string
      */
     case NEW_COMMENT = 'new_comment';
 
+    /**
+     * Page soumise à validation
+     */
+    case PAGE_VALIDATION_SUBMITTED = 'page_validation_submitted';
+
+    /**
+     * Page validée et publiée
+     */
+    case PAGE_VALIDATION_APPROVED = 'page_validation_approved';
+
+    /**
+     * Page refusée
+     */
+    case PAGE_VALIDATION_REFUSED = 'page_validation_refused';
+
     private const CONFIG = [
         self::WELCOME->value => [
             NotificationKeyConfig::CATEGORY->value => NotificationCategory::ADMIN->value,
@@ -136,6 +151,40 @@ enum Notification: string
             ],
             NotificationKeyConfig::TITLE->value => 'notification.msg.new_comment.title',
             NotificationKeyConfig::CONTENT->value => 'notification.msg.new_comment.content',
+        ],
+        self::PAGE_VALIDATION_SUBMITTED->value => [
+            NotificationKeyConfig::CATEGORY->value => NotificationCategory::PAGE->value,
+            NotificationKeyConfig::LEVEL->value => NotificationLevel::INFO->value,
+            NotificationKeyConfig::PARAMETERS->value => [
+                'login' => '',
+                'page' => '',
+                'page_id' => '',
+            ],
+            NotificationKeyConfig::TITLE->value => 'notification.msg.page_validation_submitted.title',
+            NotificationKeyConfig::CONTENT->value => 'notification.msg.page_validation_submitted.content',
+        ],
+        self::PAGE_VALIDATION_APPROVED->value => [
+            NotificationKeyConfig::CATEGORY->value => NotificationCategory::PAGE->value,
+            NotificationKeyConfig::LEVEL->value => NotificationLevel::INFO->value,
+            NotificationKeyConfig::PARAMETERS->value => [
+                'login' => '',
+                'page' => '',
+                'page_id' => '',
+            ],
+            NotificationKeyConfig::TITLE->value => 'notification.msg.page_validation_approved.title',
+            NotificationKeyConfig::CONTENT->value => 'notification.msg.page_validation_approved.content',
+        ],
+        self::PAGE_VALIDATION_REFUSED->value => [
+            NotificationKeyConfig::CATEGORY->value => NotificationCategory::PAGE->value,
+            NotificationKeyConfig::LEVEL->value => NotificationLevel::WARNING->value,
+            NotificationKeyConfig::PARAMETERS->value => [
+                'login' => '',
+                'page' => '',
+                'page_id' => '',
+                'reason' => '',
+            ],
+            NotificationKeyConfig::TITLE->value => 'notification.msg.page_validation_refused.title',
+            NotificationKeyConfig::CONTENT->value => 'notification.msg.page_validation_refused.content',
         ],
     ];
 

@@ -129,7 +129,18 @@ export default defineComponent({
           >
             {{ translation.seeComment }}
           </a>
-          <span v-if="notification.category === 'comment' && notification.read === false" class="text-xs text-fg-subtle"
+          <a
+            v-if="notification.category === 'page' && notification.tmpObjectId"
+            :href="notification.tmpObjectId"
+            class="text-xs font-semibold hover:underline cursor-pointer text-primary"
+          >
+            {{ translation.seePage }}
+          </a>
+          <span
+            v-if="
+              (notification.category === 'comment' || notification.category === 'page') && notification.read === false
+            "
+            class="text-xs text-fg-subtle"
             >•</span
           >
           <button

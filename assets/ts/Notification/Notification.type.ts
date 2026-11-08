@@ -16,6 +16,7 @@ export interface NotificationItem {
 
 export interface NotificationItemTranslate {
   seeComment: string;
+  seePage: string;
   read: string;
   time: string;
 }

@@ -39,14 +39,21 @@ import AlertInfo from '@/vue/Components/Alert/Info.vue';
 import AlertPrimary from '@/vue/Components/Alert/Primary.vue';
 import { toastSuccess, toastError, toastRequestError } from '@/vue/Composables/Global/toast';
 import Modal from '@/vue/Components/Global/Modal.vue';
+import { PageValidationStatus } from '@/vue/Composables/Admin/Page/PageValidationStatus';
 
 const DEFAULT_STATE: PageState = {
   is_published: false,
+  is_archived: false,
   read_only: false,
   has_draft: false,
   draft_update_at: null,
   draft_user: null,
   published_urls: {},
+  validation_active: false,
+  validation_status: PageValidationStatus.none,
+  validation_message: '',
+  must_submit: false,
+  can_validate: false,
 };
 
 export default defineComponent({
@@ -110,6 +117,22 @@ export default defineComponent({
       type: String,
       default: '',
     },
+    csrfTokenSubmitValidation: {
+      type: String,
+      default: '',
+    },
+    csrfTokenApproveValidation: {
+      type: String,
+      default: '',
+    },
+    csrfTokenRefuseValidation: {
+      type: String,
+      default: '',
+    },
+    csrfTokenWithdrawValidation: {
+      type: String,
+      default: '',
+    },
   },
   data() {
     return {
@@ -122,7 +145,14 @@ export default defineComponent({
       availableMenus: {} as PageMenus,
       restoreCount: 0 as number,
       state: { ...DEFAULT_STATE } as PageState,
-      modalTab: { modalPublishDraft: false, modalDiscardDraft: false } as Record<string, boolean>,
+      modalTab: {
+        modalPublishDraft: false,
+        modalDiscardDraft: false,
+        modalSubmitValidation: false,
+        modalApproveValidation: false,
+        modalRefuseValidation: false,
+      } as Record<string, boolean>,
+      refuseReason: '' as string,
       sectionErrors: {} as Record<
         string,
         { hasError: boolean; errorsByLocale: Record<string, Record<string, string>> }
@@ -152,6 +182,13 @@ export default defineComponent({
      */
     hasContentError(): boolean {
       return this.sectionErrors.content?.hasError ?? false;
+    },
+
+    /**
+     * Page refusée lors de sa dernière soumission
+     */
+    isRefused(): boolean {
+      return this.state.validation_status === PageValidationStatus.refused;
     },
   },
   methods: {
@@ -444,6 +481,79 @@ export default defineComponent({
     },
 
     /**
+     * Enregistre la page puis la soumet à validation
+     */
+    submitValidation() {
+      this.closeModal('modalSubmitValidation');
+      this.sendValidationAction(this.urls.submit_validation, { page: this.page }, this.csrfTokenSubmitValidation, true);
+    },
+
+    /**
+     * Valide la page soumise : le contenu de l'éditeur est publié
+     */
+    approveValidation() {
+      this.closeModal('modalApproveValidation');
+      this.sendValidationAction(
+        this.urls.approve_validation,
+        { page: this.page },
+        this.csrfTokenApproveValidation,
+        true
+      );
+    },
+
+    /**
+     * Refuse la page soumise avec le motif saisi
+     */
+    refuseValidation() {
+      this.closeModal('modalRefuseValidation');
+      this.sendValidationAction(
+        this.urls.refuse_validation,
+        { reason: this.refuseReason },
+        this.csrfTokenRefuseValidation,
+        false
+      );
+      this.refuseReason = '';
+    },
+
+    /**
+     * Retire la soumission : la page redevient modifiable
+     */
+    withdrawValidation() {
+      this.sendValidationAction(this.urls.withdraw_validation, {}, this.csrfTokenWithdrawValidation, false);
+    },
+
+    /**
+     * Envoie une action de validation et met à jour l'état de la page
+     * @param url
+     * @param data
+     * @param csrfToken
+     * @param withLoading affiche le chargement (l'éditeur est rechargé avec le contenu enregistré)
+     */
+    sendValidationAction(url: string, data: object, csrfToken: string, withLoading: boolean) {
+      if (withLoading) {
+        this.loading = true;
+      }
+      axios
+        .put(this.getDraftUrl(url), data, withCsrf(csrfToken))
+        .then((response) => {
+          toastSuccess(response.data.msg);
+          if (response.data.state) {
+            this.state = response.data.state;
+          }
+        })
+        .catch((error) => {
+          toastRequestError(error);
+        })
+        .finally(() => {
+          this.loading = false;
+          this.$nextTick(() => {
+            initFlowbite();
+          });
+          emitter.emit('reset-check-confirm');
+        });
+    },
+
+    /**
      * Url d'une action sur le brouillon, générée côté serveur avec l'id 0 comme marqueur
      * @param url
      */
@@ -533,13 +643,17 @@ export default defineComponent({
     ></AlertPrimary>
 
     <AlertWarning
-      v-if="state.read_only"
+      v-if="state.is_archived"
       class="mt-4"
       type="alert-warning-light"
       :text="translate.page_draft.archived_banner"
     />
+    <template v-else-if="state.validation_message !== ''">
+      <AlertWarning v-if="isRefused" class="mt-4" type="alert-warning-light" :text="state.validation_message" />
+      <AlertInfo v-else class="mt-4" type="alert-info-light" :text="state.validation_message" />
+    </template>
     <AlertInfo
-      v-else-if="state.has_draft"
+      v-if="!state.is_archived && state.has_draft"
       class="mt-4"
       type="alert-info-light"
       :text="
@@ -779,6 +893,7 @@ export default defineComponent({
           :page-datas="pageDatas"
           :urls="urls"
           :status-locked="state.is_published"
+          :publish-locked="state.must_submit"
           @update-translation="handleUpdatePageTranslation"
           @update:section-errors="handleSectionErrors"
           @update-header-img="handleUpdateHeaderImg"
@@ -862,7 +977,104 @@ export default defineComponent({
     @page-preview="openPreview"
     @publish-page="openModal('modalPublishDraft')"
     @discard-page="openModal('modalDiscardDraft')"
+    @submit-page="openModal('modalSubmitValidation')"
+    @approve-page="openModal('modalApproveValidation')"
+    @refuse-page="openModal('modalRefuseValidation')"
+    @withdraw-page="withdrawValidation"
   />
+
+  <Modal
+    id="modalSubmitValidation"
+    :show="modalTab.modalSubmitValidation"
+    :option-show-close-btn="false"
+    @close-modal="closeModal"
+  >
+    <template #title>{{ translate.page_validation.submit_confirm_title }}</template>
+    <template #body>
+      <p class="text-sm text-fg-muted">{{ translate.page_validation.submit_confirm_text }}</p>
+    </template>
+    <template #footer>
+      <button type="button" class="btn btn-outline-dark btn-sm" @click="closeModal('modalSubmitValidation')">
+        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 18 6M6 6l12 12" />
+        </svg>
+        {{ translate.page_validation.submit_confirm_cancel }}
+      </button>
+      <button type="button" class="btn btn-primary btn-sm" @click="submitValidation">
+        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m12 18-7 3 7-18 7 18-7-3Zm0 0v-5" />
+        </svg>
+        {{ translate.page_validation.submit_confirm_ok }}
+      </button>
+    </template>
+  </Modal>
+
+  <Modal
+    id="modalApproveValidation"
+    :show="modalTab.modalApproveValidation"
+    :option-show-close-btn="false"
+    @close-modal="closeModal"
+  >
+    <template #title>{{ translate.page_validation.approve_confirm_title }}</template>
+    <template #body>
+      <p class="text-sm text-fg-muted">{{ translate.page_validation.approve_confirm_text }}</p>
+    </template>
+    <template #footer>
+      <button type="button" class="btn btn-outline-dark btn-sm" @click="closeModal('modalApproveValidation')">
+        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 18 6M6 6l12 12" />
+        </svg>
+        {{ translate.page_validation.approve_confirm_cancel }}
+      </button>
+      <button type="button" class="btn btn-primary btn-sm" @click="approveValidation">
+        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+        {{ translate.page_validation.approve_confirm_ok }}
+      </button>
+    </template>
+  </Modal>
+
+  <Modal
+    id="modalRefuseValidation"
+    :show="modalTab.modalRefuseValidation"
+    :option-show-close-btn="false"
+    @close-modal="closeModal"
+  >
+    <template #title>{{ translate.page_validation.refuse_confirm_title }}</template>
+    <template #body>
+      <p class="text-sm text-fg-muted mb-4">{{ translate.page_validation.refuse_confirm_text }}</p>
+      <label for="page-refuse-reason" class="form-label">{{ translate.page_validation.refuse_reason_label }}</label>
+      <textarea
+        id="page-refuse-reason"
+        v-model="refuseReason"
+        class="form-input"
+        rows="4"
+        maxlength="1000"
+        aria-describedby="page-refuse-reason-help"
+      ></textarea>
+      <div id="page-refuse-reason-help" class="form-text">{{ translate.page_validation.refuse_reason_help }}</div>
+    </template>
+    <template #footer>
+      <button type="button" class="btn btn-outline-dark btn-sm" @click="closeModal('modalRefuseValidation')">
+        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 18 6M6 6l12 12" />
+        </svg>
+        {{ translate.page_validation.refuse_confirm_cancel }}
+      </button>
+      <button type="button" class="btn btn-danger btn-sm" @click="refuseValidation">
+        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 18 6M6 6l12 12" />
+        </svg>
+        {{ translate.page_validation.refuse_confirm_ok }}
+      </button>
+    </template>
+  </Modal>
 
   <Modal
     id="modalPublishDraft"

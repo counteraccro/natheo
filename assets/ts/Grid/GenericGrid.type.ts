@@ -31,6 +31,7 @@ export interface GenericGridTranslate {
   queryTitle: string;
   filterOnlyMe: string;
   filterAll: string;
+  filterPendingValidation: string;
   titleTrieOption: string;
   titleTrieOptionSubMenu: string;
   trieOptionListeField: string;
@@ -66,5 +67,5 @@ export interface GenericGridActionResponse {
 }
 
 export type GenericGridHttpType = 'get' | 'post' | 'put' | 'patch' | 'delete';
-export type GenericGridFilter = 'all' | 'me';
+export type GenericGridFilter = 'all' | 'me' | 'pending_validation';
 export type GenericGridOrder = 'ASC' | 'DESC';

@@ -18,6 +18,7 @@ grid.query.copy_error: An error occurred while copying
 grid.query.title: SQL query
 grid.filter.only_me: Show my data
 grid.filter.all: Show all data
+grid.filter.pending_validation: Show pages awaiting validation
 grid.search.placeholder_table: Search in the table
 grid.search.text_database: In the database
 grid.search.title: Search

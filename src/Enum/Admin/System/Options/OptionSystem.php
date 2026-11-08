@@ -64,6 +64,11 @@ enum OptionSystem: string
     case OS_ALLOW_DELETE_DATA = 'OS_ALLOW_DELETE_DATA';
 
     /**
+     * Clé option validation des pages publiées par un contributeur
+     */
+    case OS_PAGE_VALIDATION = 'OS_PAGE_VALIDATION';
+
+    /**
      * Clé option langue par défaut pour le site
      * @var string
      */

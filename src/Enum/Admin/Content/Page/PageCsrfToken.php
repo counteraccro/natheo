@@ -58,4 +58,28 @@ enum PageCsrfToken: string
      * @var string
      */
     case ARCHIVE = 'page_archive';
+
+    /**
+     * Soumission d'une page à validation
+     * @var string
+     */
+    case SUBMIT_VALIDATION = 'page_submit_validation';
+
+    /**
+     * Validation d'une page soumise
+     * @var string
+     */
+    case APPROVE_VALIDATION = 'page_approve_validation';
+
+    /**
+     * Refus d'une page soumise
+     * @var string
+     */
+    case REFUSE_VALIDATION = 'page_refuse_validation';
+
+    /**
+     * Retrait d'une soumission à validation
+     * @var string
+     */
+    case WITHDRAW_VALIDATION = 'page_withdraw_validation';
 }

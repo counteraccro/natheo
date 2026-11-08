@@ -91,6 +91,12 @@ trait OptionSystemFixturesTrait
         $this->createOptionSystem($data);
 
         $data = [
+            'key' => OptionSystemEnum::OS_PAGE_VALIDATION->value,
+            'value' => '0',
+        ];
+        $this->createOptionSystem($data);
+
+        $data = [
             'key' => OptionSystemEnum::OS_DEFAULT_LANGUAGE->value,
             'value' => 'fr',
         ];

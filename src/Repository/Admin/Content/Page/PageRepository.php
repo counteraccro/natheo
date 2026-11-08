@@ -94,6 +94,11 @@ class PageRepository extends ServiceEntityRepository
             $query->setParameter('userId', $userId);
         }
 
+        if (isset($queryParams['validationStatus'])) {
+            $query->andWhere(Page::DEFAULT_ALIAS . '.validationStatus = :validationStatus');
+            $query->setParameter('validationStatus', (int) $queryParams['validationStatus']);
+        }
+
         $paginator = new Paginator($query->getQuery(), true);
         $paginator
             ->getQuery()

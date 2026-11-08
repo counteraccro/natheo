@@ -11,9 +11,13 @@ namespace App\Tests\Controller\Admin\Content;
 
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\Content\Page\PageDraft;
+use App\Entity\Admin\Notification;
 use App\Entity\Admin\System\User;
 use App\Enum\Admin\Content\Page\PageContentType;
 use App\Enum\Admin\Content\Page\PageStatus;
+use App\Enum\Admin\Content\Page\PageValidationStatus;
+use App\Enum\Admin\System\Options\OptionSystem;
+use App\Service\Admin\System\OptionSystemService;
 use App\Tests\AppWebTestCase;
 use App\Service\Admin\Content\Page\PageHistory;
 use Psr\Container\ContainerExceptionInterface;
@@ -680,7 +684,7 @@ class PageControllerTest extends AppWebTestCase
      */
     public function testSaveDraft(): void
     {
-        $user = $this->createUserContributeur();
+        $user = $this->createUserContributeur(['login' => '<b>login</b>']);
         $page = $this->createPageAllDataDefault($user);
         $other = $this->createPageWithTranslations($user);
         $otherUrl = $other->getPageTranslationByLocale('fr')->getUrl();
@@ -698,6 +702,7 @@ class PageControllerTest extends AppWebTestCase
         $this->assertTrue($content['success']);
         $this->assertTrue($content['state']['has_draft']);
         $this->assertEquals($this->translator->trans('page.save.draft_success', domain: 'page'), $content['msg']);
+        $this->assertEquals('&lt;b&gt;login&lt;/b&gt;', $content['state']['draft_user']);
 
         // Deuxième enregistrement : toujours un seul brouillon
         $data['page']['pageTranslations'][0]['titre'] = 'Titre du brouillon';
@@ -955,6 +960,379 @@ class PageControllerTest extends AppWebTestCase
         $this->client->request('GET', $gridUrl);
         $data = json_decode($this->client->getResponse()->getContent(), true)['data'];
         $this->assertStringContainsString($badge, $data[0][$statusCol]);
+    }
+
+    /**
+     * Option « Validation des pages » : un contributeur ne publie plus directement, un administrateur oui
+     * @return void
+     */
+    public function testPublishWithValidation(): void
+    {
+        $user = $this->createUserContributeur();
+        $pageDraftStatus = $this->createPageWithTranslations($user, ['status' => PageStatus::DRAFT->value]);
+        $page = $this->createPageWithTranslations($user, ['status' => PageStatus::DRAFT->value]);
+        $pagePublished = $this->createPageAllDataDefault($user);
+        $admin = $this->createUserAdmin();
+        $pageAdmin = $this->createPageWithTranslations($admin, ['status' => PageStatus::DRAFT->value]);
+
+        // Option inactive : le contributeur publie directement
+        $this->client->loginUser($user, 'admin');
+        $data = ['page' => $this->getDataTest($pageDraftStatus->getId())];
+        $content = $this->postSave($data);
+        $this->assertResponseIsSuccessful();
+        $this->assertTrue($content['success']);
+        $this->assertFalse($content['state']['must_submit']);
+
+        $this->setPageValidation(true);
+
+        // Option active : passer une page au statut publié est refusé, l'enregistrer en brouillon reste possible
+        $data = ['page' => $this->getDataTest($page->getId())];
+        $this->postSave($data);
+        $this->assertResponseStatusCodeSame(403);
+        $data['page']['status'] = PageStatus::DRAFT->value;
+        $content = $this->postSave($data);
+        $this->assertResponseIsSuccessful();
+        $this->assertTrue($content['state']['must_submit']);
+        $this->em->clear();
+        $this->assertEquals(
+            PageStatus::DRAFT->value,
+            $this->em->getRepository(Page::class)->find($page->getId())->getStatus(),
+        );
+
+        // Le brouillon d'une page publiée ne peut pas être publié
+        $data = ['page' => $this->getDataTest($pagePublished->getId())];
+        $this->client->request(
+            'PUT',
+            $this->router->generate('admin_page_publish_draft', ['id' => $pagePublished->getId()]),
+            server: ['HTTP_X-CSRF-TOKEN' => $this->getPropsCsrfToken('csrfTokenPublishDraft')],
+            content: json_encode($data),
+        );
+        $this->assertResponseStatusCodeSame(403);
+
+        // Un administrateur publie directement ses propres pages
+        $this->client->loginUser($admin, 'admin');
+        $content = $this->postSave(['page' => $this->getDataTest($pageAdmin->getId())]);
+        $this->assertResponseIsSuccessful();
+        $this->assertTrue($content['success']);
+        $this->assertFalse($content['state']['must_submit']);
+        $this->em->clear();
+        $this->assertEquals(
+            PageStatus::PUBLISH->value,
+            $this->em->getRepository(Page::class)->find($pageAdmin->getId())->getStatus(),
+        );
+    }
+
+    /**
+     * Test méthode submitValidation()
+     * @return void
+     */
+    public function testSubmitValidation(): void
+    {
+        $user = $this->createUserContributeur();
+        $admin = $this->createUserAdmin();
+        $page = $this->createPageWithTranslations($user, ['status' => PageStatus::DRAFT->value]);
+        $pagePublished = $this->createPageAllDataDefault($user);
+        $titleOnline = $pagePublished->getPageTranslationByLocale('fr')->getTitre();
+        $pageOther = $this->createPageWithTranslations(null, ['status' => PageStatus::DRAFT->value]);
+
+        $this->checkNoAccess('admin_page_submit_validation', ['id' => $page->getId()], 'PUT');
+        $this->client->loginUser($user, 'admin');
+        $data = ['page' => $this->getDataTest($page->getId())];
+        $data['page']['pageTranslations'][0]['titre'] = 'Titre soumis';
+
+        // Option inactive
+        $this->putValidation('admin_page_submit_validation', $page, 'csrfTokenSubmitValidation', $data);
+        $this->assertResponseStatusCodeSame(403);
+
+        $this->setPageValidation(true);
+        $this->putValidation('admin_page_submit_validation', $page, null, $data);
+        $this->assertResponseStatusCodeSame(403);
+
+        // Page jamais publiée : enregistrée en brouillon puis en attente
+        $content = $this->putValidation('admin_page_submit_validation', $page, 'csrfTokenSubmitValidation', $data);
+        $this->assertResponseIsSuccessful();
+        $this->assertTrue($content['success']);
+        $this->assertTrue($content['state']['read_only']);
+        $this->assertEquals(PageValidationStatus::PENDING->value, $content['state']['validation_status']);
+
+        $this->em->clear();
+        $pageDb = $this->em->getRepository(Page::class)->find($page->getId());
+        $this->assertEquals(PageStatus::DRAFT->value, $pageDb->getStatus());
+        $this->assertEquals('Titre soumis', $pageDb->getPageTranslationByLocale('fr')->getTitre());
+        $this->assertEquals(PageValidationStatus::PENDING->value, $pageDb->getValidationStatus());
+        $this->assertEquals($user->getId(), $pageDb->getValidationUser()->getId());
+        $this->assertEquals(1, $this->countNotifications($admin, 'page_validation_submitted'));
+
+        // En attente : ni nouvelle soumission ni enregistrement par le contributeur
+        $this->putValidation('admin_page_submit_validation', $page, 'csrfTokenSubmitValidation', $data);
+        $this->assertResponseStatusCodeSame(403);
+        $data['page']['status'] = PageStatus::DRAFT->value;
+        $this->postSave($data);
+        $this->assertResponseStatusCodeSame(403);
+
+        // Page publiée : le brouillon est soumis, la version en ligne ne change pas
+        $dataPublished = ['page' => $this->getDataTest($pagePublished->getId())];
+        $dataPublished['page']['pageTranslations'][0]['titre'] = 'Titre du brouillon soumis';
+        $content = $this->putValidation(
+            'admin_page_submit_validation',
+            $pagePublished,
+            'csrfTokenSubmitValidation',
+            $dataPublished,
+        );
+        $this->assertResponseIsSuccessful();
+        $this->assertTrue($content['state']['has_draft']);
+
+        $this->em->clear();
+        $pageOnline = $this->em->getRepository(Page::class)->find($pagePublished->getId());
+        $this->assertEquals($titleOnline, $pageOnline->getPageTranslationByLocale('fr')->getTitre());
+        $this->assertEquals(PageValidationStatus::PENDING->value, $pageOnline->getValidationStatus());
+        $draft = $this->em->getRepository(PageDraft::class)->findOneBy(['page' => $pagePublished->getId()]);
+        $this->assertEquals('Titre du brouillon soumis', $draft->getData()['pageTranslations'][0]['titre']);
+
+        // Page d'un autre contributeur
+        $this->putValidation('admin_page_submit_validation', $pageOther, 'csrfTokenSubmitValidation', [
+            'page' => $this->getDataTest($pageOther->getId()),
+        ]);
+        $this->assertResponseStatusCodeSame(403);
+    }
+
+    /**
+     * Test méthode approveValidation()
+     * @return void
+     */
+    public function testApproveValidation(): void
+    {
+        $user = $this->createUserContributeur();
+        $admin = $this->createUserAdmin();
+        $page = $this->createPageWithTranslations($user, ['status' => PageStatus::DRAFT->value]);
+        $pagePublished = $this->createPageAllDataDefault($user);
+        $this->setPageValidation(true);
+
+        $this->checkNoAccess('admin_page_approve_validation', ['id' => $page->getId()], 'PUT');
+        $this->client->loginUser($user, 'admin');
+        $data = ['page' => $this->getDataTest($page->getId())];
+        $data['page']['status'] = PageStatus::DRAFT->value;
+        $this->putValidation('admin_page_submit_validation', $page, 'csrfTokenSubmitValidation', $data);
+        $dataPublished = ['page' => $this->getDataTest($pagePublished->getId())];
+        $dataPublished['page']['pageTranslations'][0]['titre'] = 'Titre validé';
+        $this->putValidation(
+            'admin_page_submit_validation',
+            $pagePublished,
+            'csrfTokenSubmitValidation',
+            $dataPublished,
+        );
+
+        // Un contributeur ne valide pas
+        $this->putValidation('admin_page_approve_validation', $page, 'csrfTokenApproveValidation', $data);
+        $this->assertResponseStatusCodeSame(403);
+
+        $this->client->loginUser($admin, 'admin');
+        $this->putValidation('admin_page_approve_validation', $page, null, $data);
+        $this->assertResponseStatusCodeSame(403);
+
+        // Page jamais publiée : publiée avec les données de l'éditeur
+        $data['page']['pageTranslations'][0]['titre'] = 'Titre corrigé par l\'admin';
+        $content = $this->putValidation('admin_page_approve_validation', $page, 'csrfTokenApproveValidation', $data);
+        $this->assertResponseIsSuccessful();
+        $this->assertTrue($content['success']);
+        $this->assertEquals(PageValidationStatus::NONE->value, $content['state']['validation_status']);
+
+        $this->em->clear();
+        $pageDb = $this->em->getRepository(Page::class)->find($page->getId());
+        $this->assertEquals(PageStatus::PUBLISH->value, $pageDb->getStatus());
+        $this->assertEquals('Titre corrigé par l\'admin', $pageDb->getPageTranslationByLocale('fr')->getTitre());
+        $this->assertEquals(PageValidationStatus::NONE->value, $pageDb->getValidationStatus());
+        $this->assertEquals(1, $this->countNotifications($user, 'page_validation_approved'));
+
+        // Plus en attente : pas de seconde validation
+        $this->putValidation('admin_page_approve_validation', $page, 'csrfTokenApproveValidation', $data);
+        $this->assertResponseStatusCodeSame(403);
+
+        // Page publiée : le brouillon remplace la version en ligne
+        $content = $this->putValidation(
+            'admin_page_approve_validation',
+            $pagePublished,
+            'csrfTokenApproveValidation',
+            $dataPublished,
+        );
+        $this->assertResponseIsSuccessful();
+        $this->assertFalse($content['state']['has_draft']);
+        $this->em->clear();
+        $pageOnline = $this->em->getRepository(Page::class)->find($pagePublished->getId());
+        $this->assertEquals('Titre validé', $pageOnline->getPageTranslationByLocale('fr')->getTitre());
+        $this->assertNull($this->em->getRepository(PageDraft::class)->findOneBy(['page' => $pagePublished->getId()]));
+        $this->assertEquals(2, $this->countNotifications($user, 'page_validation_approved'));
+    }
+
+    /**
+     * Test méthode refuseValidation()
+     * @return void
+     */
+    public function testRefuseValidation(): void
+    {
+        $user = $this->createUserContributeur();
+        $admin = $this->createUserAdmin();
+        $page = $this->createPageWithTranslations($user, ['status' => PageStatus::DRAFT->value]);
+        $this->setPageValidation(true);
+
+        $this->checkNoAccess('admin_page_refuse_validation', ['id' => $page->getId()], 'PUT');
+        $this->client->loginUser($user, 'admin');
+        $data = ['page' => $this->getDataTest($page->getId())];
+        $data['page']['status'] = PageStatus::DRAFT->value;
+        $this->putValidation('admin_page_submit_validation', $page, 'csrfTokenSubmitValidation', $data);
+
+        $reason = ['reason' => 'Titre à revoir <script>'];
+        $this->putValidation('admin_page_refuse_validation', $page, 'csrfTokenRefuseValidation', $reason);
+        $this->assertResponseStatusCodeSame(403);
+
+        $this->client->loginUser($admin, 'admin');
+        $content = $this->putValidation('admin_page_refuse_validation', $page, 'csrfTokenRefuseValidation', $reason);
+        $this->assertResponseIsSuccessful();
+        $this->assertTrue($content['success']);
+        $this->assertEquals(PageValidationStatus::REFUSED->value, $content['state']['validation_status']);
+        $this->assertStringContainsString('&lt;script&gt;', $content['state']['validation_message']);
+
+        $this->em->clear();
+        $pageDb = $this->em->getRepository(Page::class)->find($page->getId());
+        $this->assertEquals(PageStatus::DRAFT->value, $pageDb->getStatus());
+        $this->assertEquals('Titre à revoir <script>', $pageDb->getValidationComment());
+        $this->assertEquals(1, $this->countNotifications($user, 'page_validation_refused'));
+
+        // Le contributeur modifie la page refusée puis la soumet à nouveau : le motif est effacé
+        $this->client->loginUser($user, 'admin');
+        $content = $this->postSave($data);
+        $this->assertResponseIsSuccessful();
+        $this->assertFalse($content['state']['read_only']);
+        $this->putValidation('admin_page_submit_validation', $page, 'csrfTokenSubmitValidation', $data);
+        $this->assertResponseIsSuccessful();
+        $this->em->clear();
+        $pageDb = $this->em->getRepository(Page::class)->find($page->getId());
+        $this->assertEquals(PageValidationStatus::PENDING->value, $pageDb->getValidationStatus());
+        $this->assertNull($pageDb->getValidationComment());
+    }
+
+    /**
+     * Test méthode withdrawValidation()
+     * @return void
+     */
+    public function testWithdrawValidation(): void
+    {
+        $user = $this->createUserContributeur();
+        $page = $this->createPageWithTranslations($user, ['status' => PageStatus::DRAFT->value]);
+        $this->setPageValidation(true);
+
+        $this->checkNoAccess('admin_page_withdraw_validation', ['id' => $page->getId()], 'PUT');
+        $this->client->loginUser($user, 'admin');
+
+        // Pas de soumission en cours
+        $this->putValidation('admin_page_withdraw_validation', $page, 'csrfTokenWithdrawValidation', []);
+        $this->assertResponseStatusCodeSame(403);
+
+        $data = ['page' => $this->getDataTest($page->getId())];
+        $data['page']['status'] = PageStatus::DRAFT->value;
+        $this->putValidation('admin_page_submit_validation', $page, 'csrfTokenSubmitValidation', $data);
+
+        $this->putValidation('admin_page_withdraw_validation', $page, null, []);
+        $this->assertResponseStatusCodeSame(403);
+
+        $content = $this->putValidation('admin_page_withdraw_validation', $page, 'csrfTokenWithdrawValidation', []);
+        $this->assertResponseIsSuccessful();
+        $this->assertTrue($content['success']);
+        $this->assertFalse($content['state']['read_only']);
+        $this->em->clear();
+        $this->assertEquals(
+            PageValidationStatus::NONE->value,
+            $this->em->getRepository(Page::class)->find($page->getId())->getValidationStatus(),
+        );
+    }
+
+    /**
+     * Grille des pages : filtre et badge des pages en attente de validation
+     * @return void
+     */
+    public function testLoadGridDataValidationFilter(): void
+    {
+        $user = $this->createUserContributeur();
+        $pagePending = $this->createPageWithTranslations($user, [
+            'status' => PageStatus::DRAFT->value,
+            'validationStatus' => PageValidationStatus::PENDING->value,
+        ]);
+        $this->createPageWithTranslations($user, ['status' => PageStatus::DRAFT->value]);
+
+        $this->client->loginUser($user, 'admin');
+        $this->client->request(
+            'GET',
+            $this->router->generate('admin_page_load_grid_data', ['page' => 1, 'limit' => 50]),
+            ['filter' => 'pending_validation'],
+        );
+        $this->assertResponseIsSuccessful();
+        $content = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertEquals(1, $content['nb']);
+        $row = $content['data'][0];
+        $this->assertStringStartsWith((string) $pagePending->getId(), trim((string) reset($row)));
+        $badge = $this->translator->trans('page.grid.validation_pending_badge', domain: 'page');
+        $this->assertStringContainsString($badge, $row[$this->translator->trans('page.grid.status', domain: 'page')]);
+    }
+
+    /**
+     * Active ou désactive l'option « Validation des pages »
+     * @param bool $active
+     * @return void
+     */
+    private function setPageValidation(bool $active): void
+    {
+        $this->container
+            ->get(OptionSystemService::class)
+            ->saveValueByKee(OptionSystem::OS_PAGE_VALIDATION->value, $active ? '1' : '0');
+    }
+
+    /**
+     * Enregistre la page depuis l'éditeur et retourne la réponse JSON décodée
+     * @param array $data
+     * @return array
+     */
+    private function postSave(array $data): array
+    {
+        $this->client->request(
+            'POST',
+            $this->router->generate('admin_page_save'),
+            server: ['HTTP_X-CSRF-TOKEN' => $this->getPropsCsrfToken('csrfTokenSave')],
+            content: json_encode($data),
+        );
+        return json_decode($this->client->getResponse()->getContent(), true) ?? [];
+    }
+
+    /**
+     * Envoie une action de validation et retourne la réponse JSON décodée
+     * @param string $route
+     * @param Page $page
+     * @param string|null $csrfKey clé du jeton dans les props du composant, null pour l'envoyer sans jeton
+     * @param array $data
+     * @return array
+     */
+    private function putValidation(string $route, Page $page, ?string $csrfKey, array $data): array
+    {
+        $server = $csrfKey !== null ? ['HTTP_X-CSRF-TOKEN' => $this->getPropsCsrfToken($csrfKey)] : [];
+        $this->client->request(
+            'PUT',
+            $this->router->generate($route, ['id' => $page->getId()]),
+            server: $server,
+            content: json_encode($data),
+        );
+        return json_decode($this->client->getResponse()->getContent(), true) ?? [];
+    }
+
+    /**
+     * Nombre de notifications de l'utilisateur dont le titre correspond à la notification $name
+     * @param User $user
+     * @param string $name
+     * @return int
+     */
+    private function countNotifications(User $user, string $name): int
+    {
+        return $this->em
+            ->getRepository(Notification::class)
+            ->count(['user' => $user->getId(), 'title' => 'notification.msg.' . $name . '.title']);
     }
 
     /**

@@ -10,6 +10,7 @@ import { Locales, Page, PageState, PageTranslations, Urls } from '@/ts/Page/Page
 import axios from 'axios';
 import { withCsrf } from '@/vue/Composables/Admin/csrf';
 import { initFlowbite } from 'flowbite';
+import { PageValidationStatus } from '@/vue/Composables/Admin/Page/PageValidationStatus';
 
 type SectionErrors = Record<string, { hasError: boolean; errorsByLocale: Record<string, Record<string, string>> }>;
 
@@ -45,7 +46,18 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ['restore-page', 'go-to-error', 'save-page', 'page-preview', 'publish-page', 'discard-page'],
+  emits: [
+    'restore-page',
+    'go-to-error',
+    'save-page',
+    'page-preview',
+    'publish-page',
+    'discard-page',
+    'submit-page',
+    'approve-page',
+    'refuse-page',
+    'withdraw-page',
+  ],
   data() {
     return {
       autoSaveTimeout: null as ReturnType<typeof setTimeout> | null,
@@ -146,6 +158,41 @@ export default defineComponent({
      */
     showErrorSummaryButton(): boolean {
       return this.allErrors.length > 1;
+    },
+
+    /**
+     * Page soumise, en attente de validation
+     */
+    isPending(): boolean {
+      return this.state.validation_status === PageValidationStatus.pending;
+    },
+
+    /**
+     * Page soumise, en lecture seule pour un contributeur
+     */
+    isLocked(): boolean {
+      return this.isPending && !this.state.can_validate;
+    },
+
+    /**
+     * Page soumise, à valider ou refuser par l'administrateur
+     */
+    isReview(): boolean {
+      return this.isPending && this.state.can_validate;
+    },
+
+    /**
+     * La publication passe par une soumission à validation
+     */
+    isSubmitRequired(): boolean {
+      return this.state.must_submit && !this.isPending;
+    },
+
+    /**
+     * Le bouton d'enregistrement d'une page non publiée est l'action principale
+     */
+    isSavePrimary(): boolean {
+      return !this.isReview && !this.isSubmitRequired;
     },
   },
   methods: {
@@ -295,7 +342,7 @@ export default defineComponent({
         {{ translate.btn_back }}
       </a>
       <button
-        v-if="!state.read_only"
+        v-if="!state.is_archived"
         class="btn btn-success btn-sm"
         @click="$emit('page-preview')"
         :disabled="page.id === null"
@@ -310,25 +357,91 @@ export default defineComponent({
         </svg>
         {{ translate.page_save.btn_see_ext }}
       </button>
-      <template v-if="state.is_published">
-        <button v-if="state.has_draft" class="btn btn-outline-dark btn-sm" @click="$emit('discard-page')">
+      <button v-if="isLocked" class="btn btn-outline-dark btn-sm" @click="$emit('withdraw-page')">
+        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M3 9h13a5 5 0 0 1 0 10H7M3 9l4-4M3 9l4 4"
+          />
+        </svg>
+        {{ translate.page_validation.button_withdraw }}
+      </button>
+      <template v-else-if="!state.read_only">
+        <template v-if="state.is_published">
+          <button v-if="state.has_draft" class="btn btn-outline-dark btn-sm" @click="$emit('discard-page')">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M3 9h13a5 5 0 0 1 0 10H7M3 9l4-4M3 9l4 4"
+              />
+            </svg>
+            {{ translate.page_draft.button_discard }}
+          </button>
+          <button class="btn btn-outline-dark btn-sm" :disabled="hasAnyError" @click="$emit('save-page')">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            {{ translate.page_draft.button_save }}
+          </button>
+        </template>
+        <button
+          v-else
+          class="btn btn-sm"
+          :class="isSavePrimary ? 'btn-primary' : 'btn-outline-dark'"
+          :disabled="hasAnyError"
+          @click="$emit('save-page')"
+        >
+          <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+          {{ translate.page_save.btn_save }}
+        </button>
+
+        <template v-if="isReview">
+          <button class="btn btn-outline-dark btn-sm" @click="$emit('refuse-page')">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 18 6M6 6l12 12" />
+            </svg>
+            {{ translate.page_validation.button_refuse }}
+          </button>
+          <button class="btn btn-primary btn-sm" :disabled="hasAnyError" @click="$emit('approve-page')">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+              />
+            </svg>
+            {{ translate.page_validation.button_approve }}
+          </button>
+        </template>
+        <button
+          v-else-if="isSubmitRequired"
+          class="btn btn-primary btn-sm"
+          :disabled="hasAnyError || page.id === null"
+          @click="$emit('submit-page')"
+        >
           <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
               stroke-width="2"
-              d="M3 9h13a5 5 0 0 1 0 10H7M3 9l4-4M3 9l4 4"
+              d="m12 18-7 3 7-18 7 18-7-3Zm0 0v-5"
             />
           </svg>
-          {{ translate.page_draft.button_discard }}
+          {{ translate.page_validation.button_submit }}
         </button>
-        <button class="btn btn-outline-dark btn-sm" :disabled="hasAnyError" @click="$emit('save-page')">
-          <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-          </svg>
-          {{ translate.page_draft.button_save }}
-        </button>
-        <button class="btn btn-primary btn-sm" :disabled="hasAnyError" @click="$emit('publish-page')">
+        <button
+          v-else-if="state.is_published"
+          class="btn btn-primary btn-sm"
+          :disabled="hasAnyError"
+          @click="$emit('publish-page')"
+        >
           <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
@@ -340,17 +453,6 @@ export default defineComponent({
           {{ translate.page_draft.button_publish }}
         </button>
       </template>
-      <button
-        v-else-if="!state.read_only"
-        class="btn btn-primary btn-sm"
-        :disabled="hasAnyError"
-        @click="$emit('save-page')"
-      >
-        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-        </svg>
-        {{ translate.page_save.btn_save }}
-      </button>
     </div>
   </div>
 </template>

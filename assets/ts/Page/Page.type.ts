@@ -149,6 +149,7 @@ export interface PageTranslations {
   page_seo: PageSeoTranslate;
   page_menu: PageMenuTranslate;
   page_draft: PageDraftTranslate;
+  page_validation: PageValidationTranslate;
 }
 
 export interface PageDraftTranslate {
@@ -169,16 +170,44 @@ export interface PageDraftTranslate {
   discard_confirm_ok: string;
 }
 
+export interface PageValidationTranslate {
+  button_submit: string;
+  button_approve: string;
+  button_refuse: string;
+  button_withdraw: string;
+  submit_confirm_title: string;
+  submit_confirm_text: string;
+  submit_confirm_cancel: string;
+  submit_confirm_ok: string;
+  approve_confirm_title: string;
+  approve_confirm_text: string;
+  approve_confirm_cancel: string;
+  approve_confirm_ok: string;
+  refuse_confirm_title: string;
+  refuse_confirm_text: string;
+  refuse_reason_label: string;
+  refuse_reason_help: string;
+  refuse_confirm_cancel: string;
+  refuse_confirm_ok: string;
+}
+
 /**
- * État de la page renvoyé par le serveur : publiée (modifiée via un brouillon), archivée (lecture seule)
+ * État de la page renvoyé par le serveur : publiée (modifiée via un brouillon), archivée ou verrouillée
+ * par une soumission à validation (lecture seule), état de validation
  */
 export interface PageState {
   is_published: boolean;
+  is_archived: boolean;
   read_only: boolean;
   has_draft: boolean;
   draft_update_at: string | null;
   draft_user: string | null;
   published_urls: Record<string, string>;
+  validation_active: boolean;
+  validation_status: number;
+  validation_message: string;
+  must_submit: boolean;
+  can_validate: boolean;
 }
 
 export interface Urls {
@@ -191,6 +220,10 @@ export interface Urls {
   save: string;
   publish_draft: string;
   discard_draft: string;
+  submit_validation: string;
+  approve_validation: string;
+  refuse_validation: string;
+  withdraw_validation: string;
   new_content: string;
   liste_content_by_id: string;
   is_unique_url_page: string;

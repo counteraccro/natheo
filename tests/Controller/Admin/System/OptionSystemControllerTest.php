@@ -9,6 +9,9 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller\Admin\System;
 
+use App\Entity\Admin\Content\Page\Page;
+use App\Enum\Admin\Content\Page\PageStatus;
+use App\Enum\Admin\Content\Page\PageValidationStatus;
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Admin\System\OptionSystemService;
 use App\Tests\AppWebTestCase;
@@ -103,6 +106,47 @@ class OptionSystemControllerTest extends AppWebTestCase
             $this->assertFalse($content['success'], $data['key']);
             $this->assertEquals($before, $optionSystemService->getValueByKey($data['key']), $data['key']);
         }
+    }
+
+    /**
+     * Désactiver la validation des pages remet les pages en attente en brouillon, sans les publier
+     * @return void
+     */
+    public function testUpdateDisablePageValidation(): void
+    {
+        $pagePending = $this->createPage(
+            customData: [
+                'status' => PageStatus::DRAFT->value,
+                'validationStatus' => PageValidationStatus::PENDING->value,
+            ],
+        );
+        $pageRefused = $this->createPage(
+            customData: [
+                'status' => PageStatus::DRAFT->value,
+                'validationStatus' => PageValidationStatus::REFUSED->value,
+            ],
+        );
+
+        $this->client->loginUser($this->createUserSuperAdmin(), 'admin');
+        $server = ['HTTP_X-CSRF-TOKEN' => $this->getCsrfToken()];
+        $this->postUpdate(['key' => OptionSystem::OS_PAGE_VALIDATION->value, 'value' => '1'], $server);
+        $this->em->clear();
+        $repository = $this->em->getRepository(Page::class);
+        $this->assertEquals(
+            PageValidationStatus::PENDING->value,
+            $repository->find($pagePending->getId())->getValidationStatus(),
+        );
+
+        $content = $this->postUpdate(['key' => OptionSystem::OS_PAGE_VALIDATION->value, 'value' => '0'], $server);
+        $this->assertTrue($content['success']);
+        $this->em->clear();
+        $page = $repository->find($pagePending->getId());
+        $this->assertEquals(PageValidationStatus::NONE->value, $page->getValidationStatus());
+        $this->assertEquals(PageStatus::DRAFT->value, $page->getStatus());
+        $this->assertEquals(
+            PageValidationStatus::REFUSED->value,
+            $repository->find($pageRefused->getId())->getValidationStatus(),
+        );
     }
 
     /**
