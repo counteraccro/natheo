@@ -54,3 +54,13 @@ dashboard.most_viewed_pages.column_id: '#'
 dashboard.most_viewed_pages.column_title: Title
 dashboard.most_viewed_pages.column_views: Views
 dashboard.most_viewed_pages.column_date: Date
+dashboard.pages_pending_validation.title: 'Pages to review'
+dashboard.pages_pending_validation.link_page: 'See all pending pages'
+dashboard.pages_pending_validation.column_id: '#'
+dashboard.pages_pending_validation.column_title: Title
+dashboard.pages_pending_validation.column_author: 'Submitted by'
+dashboard.pages_pending_validation.column_date: 'Submitted on'
+dashboard.pages_pending_validation.column_action: Action
+dashboard.pages_pending_validation.link_edit: 'Review'
+dashboard.pages_pending_validation.empty: 'No page awaiting review.'
+dashboard.pages_pending_validation.error_inactive: 'Page review is disabled.'

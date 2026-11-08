@@ -25,7 +25,7 @@ option_system:
         value: '1'
     OS_PAGE_VALIDATION:
         key: 'OS_PAGE_VALIDATION'
-        value: '0'
+        value: '1'
     OS_DEFAULT_LANGUAGE:
         key: 'OS_DEFAULT_LANGUAGE'
         value: 'fr'

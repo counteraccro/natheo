@@ -44,6 +44,23 @@ class PageControllerTest extends AppWebTestCase
     }
 
     /**
+     * Test méthode index() : grille filtrée sur les pages en attente, seulement si l'option est active
+     * @return void
+     */
+    public function testIndexPendingValidationFilter(): void
+    {
+        $this->client->loginUser($this->createUserAdmin(), 'admin');
+        $this->assertSame('all', $this->getGridProps(['filter' => 'pending_validation'])['defaultFilter']);
+
+        $this->setPageValidation(true);
+        $this->assertSame(
+            'pending_validation',
+            $this->getGridProps(['filter' => 'pending_validation'])['defaultFilter'],
+        );
+        $this->assertSame('all', $this->getGridProps(['filter' => 'other'])['defaultFilter']);
+    }
+
+    /**
      * Test méthode loadGridData() : données échappées, tri et actions selon les droits
      * @return void
      */
@@ -1567,6 +1584,22 @@ class PageControllerTest extends AppWebTestCase
             }
         }
         $this->fail('Aucun jeton CSRF trouvé dans les actions de la grille pour ' . $urlPart);
+    }
+
+    /**
+     * Retourne les props passées au composant Vue GenericGrid de la grille des pages
+     * @param array $query
+     * @return array
+     */
+    private function getGridProps(array $query): array
+    {
+        $this->client->request('GET', $this->router->generate('admin_page_index', $query));
+        $this->assertResponseIsSuccessful();
+        $props = $this->client
+            ->getCrawler()
+            ->filter('[data-symfony--ux-vue--vue-component-value="Admin/GenericGrid"]')
+            ->attr('data-symfony--ux-vue--vue-props-value');
+        return json_decode($props, true);
     }
 
     /**

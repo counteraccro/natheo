@@ -257,6 +257,42 @@ class DashboardService extends AppAdminService
     }
 
     /**
+     * Retourne le bloc des pages en attente de validation, les plus anciennes soumissions en premier
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getBlockPagesPendingValidation(): array
+    {
+        if (!$this->getOptionSystemService()->isPageValidationActive()) {
+            return [
+                'success' => false,
+                'body' => null,
+                'error' => $this->getTranslator()->trans(
+                    'dashboard.pages_pending_validation.error_inactive',
+                    domain: 'dashboard',
+                ),
+            ];
+        }
+
+        $currentLocale = $this->getLocales()['current'];
+        $router = $this->getRouter();
+
+        $body = [];
+        foreach ($this->pageRepo->findPendingValidation(10) as $page) {
+            $body[] = [
+                'id' => $page->getId(),
+                'title' => $page->getPageTranslationByLocale($currentLocale)?->getTitre() ?? '',
+                'author' => $page->getValidationUser()?->getLogin() ?? '',
+                'date' => $page->getValidationAt()?->format('Y-m-d H:i:s') ?? '',
+                'url' => $router->generate('admin_page_update', ['id' => $page->getId()]),
+            ];
+        }
+
+        return ['success' => true, 'body' => $body];
+    }
+
+    /**
      * Retourne un status formaté HTML en fonction de son code
      * @param int $status
      * @return string

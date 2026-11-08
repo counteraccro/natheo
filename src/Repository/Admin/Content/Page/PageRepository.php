@@ -10,6 +10,7 @@ use App\Entity\Admin\Content\Tag\Tag;
 use App\Entity\Admin\Content\Tag\TagTranslation;
 use App\Enum\Admin\Content\Page\PageContentType;
 use App\Enum\Admin\Content\Page\PageStatus;
+use App\Enum\Admin\Content\Page\PageValidationStatus;
 use App\Repository\Trait\OrderedQueryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -277,5 +278,24 @@ class PageRepository extends ServiceEntityRepository
             ->orderBy('p.id', \SortDirection::Descending)
             ->getQuery()
             ->getArrayResult();
+    }
+
+    /**
+     * Retourne les pages en attente de validation, les plus anciennes soumissions en premier
+     * @param int $limit
+     * @return Page[]
+     */
+    public function findPendingValidation(int $limit): array
+    {
+        return $this->createQueryBuilder('p')
+            ->addSelect('vu')
+            ->leftJoin('p.validationUser', 'vu')
+            ->where('p.validationStatus = :validationStatus')
+            ->setParameter('validationStatus', PageValidationStatus::PENDING->value)
+            ->orderBy('p.validationAt', \SortDirection::Ascending)
+            ->addOrderBy('p.id', \SortDirection::Ascending)
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
     }
 }

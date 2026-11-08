@@ -54,3 +54,13 @@ dashboard.most_viewed_pages.column_id: '#'
 dashboard.most_viewed_pages.column_title: Título
 dashboard.most_viewed_pages.column_views: Visitas
 dashboard.most_viewed_pages.column_date: Fecha
+dashboard.pages_pending_validation.title: 'Páginas por validar'
+dashboard.pages_pending_validation.link_page: 'Ver todas las páginas pendientes'
+dashboard.pages_pending_validation.column_id: '#'
+dashboard.pages_pending_validation.column_title: Título
+dashboard.pages_pending_validation.column_author: 'Enviada por'
+dashboard.pages_pending_validation.column_date: 'Enviada el'
+dashboard.pages_pending_validation.column_action: Acción
+dashboard.pages_pending_validation.link_edit: 'Revisar'
+dashboard.pages_pending_validation.empty: 'Ninguna página pendiente de validación.'
+dashboard.pages_pending_validation.error_inactive: 'La validación de páginas está desactivada.'

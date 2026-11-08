@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.2
+ * @version 1.3
  * Fixtures pour générer des pages
  */
 namespace App\DataFixtures\Admin\Content\Page;
@@ -54,7 +54,13 @@ class PageFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
             foreach ($data as $key => $value) {
                 switch ($key) {
                     case 'user':
-                        $page->setUser($this->getReference($value, User::class));
+                        $page->setUser($this->getUserReference($value));
+                        break;
+                    case 'validationUser':
+                        $page->setValidationUser($this->getUserReference($value));
+                        break;
+                    case 'validationAt':
+                        $page->setValidationAt(new \DateTime($value));
                         break;
                     case 'tags':
                         $this->addTag($page, $value);
@@ -99,6 +105,19 @@ class PageFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
             $this->addReference($ref, $page);
         }
         $manager->flush();
+    }
+
+    /**
+     * Retourne l'utilisateur $ref, ou le fondateur quand les comptes de démonstration ne sont pas chargés
+     * @param string $ref
+     * @return User
+     */
+    private function getUserReference(string $ref): User
+    {
+        if (!$this->hasReference($ref, User::class)) {
+            $ref = 'User';
+        }
+        return $this->getReference($ref, User::class);
     }
 
     /**

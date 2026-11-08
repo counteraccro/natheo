@@ -3510,3 +3510,61 @@ pages:
                     en:
                         locale: en
                         value: 'Powered by Nathéo CMS'
+    page_pending_validation:
+        user: R-Contributeur
+        render: 1
+        status: 2
+        category: 1
+        landingPage: false
+        isOpenComment: false
+        nbComment: 0
+        ruleComment: 2
+        validationStatus: 1
+        validationUser: R-Contributeur
+        validationAt: '-1 day'
+        tags:
+            - Tag_demo
+        pageTranslation:
+            fr:
+                locale: fr
+                titre: 'Page en attente de validation'
+                url: 'page-en-attente-de-validation'
+            en:
+                locale: en
+                titre: 'Page awaiting review'
+                url: 'page-awaiting-review'
+            es:
+                locale: es
+                titre: 'Página pendiente de validación'
+                url: 'pagina-pendiente-de-validacion'
+        pageContent:
+            content_1:
+                renderBlock: 1
+                renderOrder: 1
+                type: 1
+                pageContentTranslation:
+                    fr:
+                        locale: fr
+                        text: |
+                            # Page en attente de validation
+
+                            Cette page a été soumise par un contributeur. Un administrateur doit la valider avant sa publication.
+                    en:
+                        locale: en
+                        text: |
+                            # Page awaiting review
+
+                            This page was submitted by a contributor. An administrator must approve it before it is published.
+                    es:
+                        locale: es
+                        text: |
+                            # Página pendiente de validación
+
+                            Esta página fue enviada por un colaborador. Un administrador debe validarla antes de su publicación.
+        pageStatistique:
+            PAGE_NB_VISITEUR:
+                key: PAGE_NB_VISITEUR
+                value: '0'
+            PAGE_NB_READ:
+                key: PAGE_NB_READ
+                value: '0'
