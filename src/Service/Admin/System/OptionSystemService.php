@@ -208,4 +208,15 @@ class OptionSystemService extends AppAdminService
         }
         return false;
     }
+
+    /**
+     * Renvoi true si l'option OS_PAGE_VALIDATION est active
+     * @return bool
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function isPageValidationActive(): bool
+    {
+        return $this->getValueByKey(OptionSystemEnum::OS_PAGE_VALIDATION->value) == 1;
+    }
 }

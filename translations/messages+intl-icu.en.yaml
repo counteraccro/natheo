@@ -271,3 +271,5 @@ sidebar.update.description: Management of the CMS updates
 sidebar.update.label: Update
 sidebar.user.description: Management of the users who can log in to the site administration
 sidebar.user.label: Users
+options_system.page_validation.label: 'Page validation'
+options_system.page_validation.help: 'If this option is enabled, contributors submit their pages for validation instead of publishing them; administrators approve or reject them'

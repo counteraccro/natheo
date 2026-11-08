@@ -78,6 +78,7 @@ class PageTranslate extends AppTranslate
             'page_seo' => $this->getTranslatePageSeo(),
             'page_menu' => $this->getTranslatePageMenu(),
             'page_draft' => $this->getTranslatePageDraft(),
+            'page_validation' => $this->getTranslatePageValidation(),
         ];
     }
 
@@ -108,6 +109,40 @@ class PageTranslate extends AppTranslate
         $translate = [];
         foreach ($keys as $key) {
             $translate[$key] = $this->translator->trans('page.draft.' . $key, domain: 'page');
+        }
+        return $translate;
+    }
+
+    /**
+     * Traductions de la validation des pages
+     * @return array
+     */
+    private function getTranslatePageValidation(): array
+    {
+        $keys = [
+            'button_submit',
+            'button_approve',
+            'button_refuse',
+            'button_withdraw',
+            'submit_confirm_title',
+            'submit_confirm_text',
+            'submit_confirm_cancel',
+            'submit_confirm_ok',
+            'approve_confirm_title',
+            'approve_confirm_text',
+            'approve_confirm_cancel',
+            'approve_confirm_ok',
+            'refuse_confirm_title',
+            'refuse_confirm_text',
+            'refuse_reason_label',
+            'refuse_reason_help',
+            'refuse_confirm_cancel',
+            'refuse_confirm_ok',
+        ];
+
+        $translate = [];
+        foreach ($keys as $key) {
+            $translate[$key] = $this->translator->trans('page.validation.' . $key, domain: 'page');
         }
         return $translate;
     }

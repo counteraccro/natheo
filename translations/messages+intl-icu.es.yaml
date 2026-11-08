@@ -271,3 +271,5 @@ sidebar.update.description: Gestión de las actualizaciones del CMS
 sidebar.update.label: Actualización
 sidebar.user.description: Gestión de los usuarios que pueden conectarse a la administración del sitio
 sidebar.user.label: Usuarios
+options_system.page_validation.label: 'Validación de páginas'
+options_system.page_validation.help: 'Si esta opción está activada, los colaboradores envían sus páginas a validación en lugar de publicarlas; los administradores las validan o las rechazan'

@@ -11,6 +11,8 @@ namespace App\Controller\Admin\System;
 
 use App\Controller\Admin\AppAdminController;
 use App\Enum\Admin\Global\Breadcrumb;
+use App\Enum\Admin\System\Options\OptionSystem;
+use App\Service\Admin\Content\Page\PageValidationService;
 use App\Service\Admin\System\OptionSystemService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -57,6 +59,7 @@ class OptionSystemController extends AppAdminController
      * Met à jour une option
      * @param Request $request
      * @param OptionSystemService $optionSystemService
+     * @param PageValidationService $pageValidationService
      * @param TranslatorInterface $translator
      * @return JsonResponse
      * @throws ContainerExceptionInterface
@@ -66,6 +69,7 @@ class OptionSystemController extends AppAdminController
     public function update(
         Request $request,
         OptionSystemService $optionSystemService,
+        PageValidationService $pageValidationService,
         TranslatorInterface $translator,
     ): JsonResponse {
         if (!$this->isCsrfTokenValid(self::CSRF_TOKEN_UPDATE, $request->headers->get('X-CSRF-TOKEN'))) {
@@ -80,7 +84,15 @@ class OptionSystemController extends AppAdminController
             return $this->json($optionSystemService->getResponseAjax(), Response::HTTP_BAD_REQUEST);
         }
 
-        $optionSystemService->updateValueFromAdmin($data['key'], strval($data['value']));
+        $updated = $optionSystemService->updateValueFromAdmin($data['key'], strval($data['value']));
+        // Désactiver la validation ne publie pas les pages en attente : elles redeviennent modifiables
+        if (
+            $updated &&
+            $data['key'] === OptionSystem::OS_PAGE_VALIDATION->value &&
+            !$optionSystemService->isPageValidationActive()
+        ) {
+            $pageValidationService->clearAllPending();
+        }
         return $this->json($optionSystemService->getResponseAjax());
     }
 }

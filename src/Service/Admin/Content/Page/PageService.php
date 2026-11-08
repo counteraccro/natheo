@@ -20,7 +20,9 @@ use App\Enum\Admin\Content\Page\PageContentType;
 use App\Enum\Admin\Content\Page\PageRender;
 use App\Enum\Admin\Content\Page\PageStatistics;
 use App\Enum\Admin\Content\Page\PageStatus;
+use App\Enum\Admin\Content\Page\PageValidationStatus;
 use App\Enum\Admin\System\Options\OptionSystem;
+use App\Enum\Admin\System\User\Role;
 use App\Repository\Admin\Content\Page\PageDraftRepository;
 use App\Repository\Admin\Content\Page\PageRepository;
 use App\Repository\Admin\Content\Page\PageTranslationRepository;
@@ -100,6 +102,16 @@ class PageService extends AppAdminService
             ' <span class="badge badge-pending">' .
             htmlspecialchars($translator->trans('page.grid.draft_badge', domain: 'page'), ENT_QUOTES) .
             '</span>';
+        $validationBadges = [
+            PageValidationStatus::PENDING->value =>
+                ' <span class="badge badge-pending">' .
+                htmlspecialchars($translator->trans('page.grid.validation_pending_badge', domain: 'page'), ENT_QUOTES) .
+                '</span>',
+            PageValidationStatus::REFUSED->value =>
+                ' <span class="badge badge-moderated">' .
+                htmlspecialchars($translator->trans('page.grid.validation_refused_badge', domain: 'page'), ENT_QUOTES) .
+                '</span>',
+        ];
 
         $data = [];
         foreach ($dataPaginate as $element) {
@@ -124,7 +136,8 @@ class PageService extends AppAdminService
                 $translator->trans('page.grid.title', domain: 'page') => $this->getEscapedTitle($element, $locale),
                 $translator->trans('page.grid.status', domain: 'page') =>
                     $this->getStatusStr($element->getStatus()) .
-                    (in_array($element->getId(), $pageIdsWithDraft, true) ? $draftBadge : ''),
+                    (in_array($element->getId(), $pageIdsWithDraft, true) ? $draftBadge : '') .
+                    ($validationBadges[$element->getValidationStatus()] ?? ''),
                 $translator->trans('page.grid.tag', domain: 'page') => $this->getTags($element->getTags()),
                 $translator->trans('page.grid.comment', domain: 'page') => $element->getNbComment(),
                 $translator->trans('page.grid.nb_see', domain: 'page') =>
@@ -175,6 +188,10 @@ class PageService extends AppAdminService
         $actions = [];
 
         $isArchived = $page->getStatus() === PageStatus::ARCHIVED->value;
+        // Une page en attente de validation n'est plus modifiable par un contributeur
+        $isLocked =
+            $page->getValidationStatus() === PageValidationStatus::PENDING->value &&
+            !$security->isGranted(Role::ADMIN->value);
 
         // La landing page ne peut être ni désactivée ni supprimée, une page archivée ne change plus
         if (!$page->isLandingPage() && !$isArchived && $security->isGranted(ContentVoter::DISABLE, $page)) {
@@ -222,7 +239,7 @@ class PageService extends AppAdminService
             return $actions;
         }
 
-        if (!$page->isLandingPage() && !$isArchived) {
+        if (!$page->isLandingPage() && !$isArchived && !$isLocked) {
             $actions[] = [
                 'label' => ['M4 4h16v4H4V4Zm1 4v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8m-9 4h4'],
                 'color' => 'primary',

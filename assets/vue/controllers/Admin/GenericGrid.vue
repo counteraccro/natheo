@@ -48,6 +48,10 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    showFilterPendingValidation: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -91,6 +95,17 @@ export default defineComponent({
       document.getElementById('searchMode'),
       document.getElementById('searchModeButton')
     );
+  },
+  computed: {
+    /**
+     * Libellé du filtre actif
+     */
+    filterTitle(): string {
+      if (this.filter === 'pending_validation') {
+        return this.translate.filterPendingValidation;
+      }
+      return this.filter === 'me' ? this.translate.filterOnlyMe : this.translate.filterAll;
+    },
   },
   methods: {
     /**
@@ -432,13 +447,27 @@ export default defineComponent({
               {{ translate.btnSearch }}
             </button>
 
-            <button
-              v-if="showFilter"
-              class="btn btn-outline-primary btn-md btn-icon"
-              :title="filter === 'me' ? translate.filterOnlyMe : translate.filterAll"
-            >
+            <button v-if="showFilter" class="btn btn-outline-primary btn-md btn-icon" :title="filterTitle">
               <svg
-                v-if="filter === 'me'"
+                v-if="filter === 'pending_validation'"
+                class="icon-sm"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                />
+              </svg>
+              <svg
+                v-else-if="filter === 'me'"
                 class="icon-sm"
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
@@ -656,6 +685,32 @@ export default defineComponent({
                     </svg>
 
                     {{ translate.filterAll }}</a
+                  >
+                </li>
+                <li v-if="showFilterPendingValidation">
+                  <a
+                    class="no-control flex items-center px-4 py-2 text-sm hover:bg-gray-100"
+                    href="#"
+                    @click="changeFilter('pending_validation')"
+                  >
+                    <svg
+                      class="w-5 h-5 mr-3 text-primary"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                      />
+                    </svg>
+                    {{ translate.filterPendingValidation }}</a
                   >
                 </li>
               </ul>

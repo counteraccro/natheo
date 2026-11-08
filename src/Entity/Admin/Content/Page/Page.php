@@ -117,6 +117,28 @@ class Page
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $headerImg = null;
 
+    /**
+     * Valeur de PageValidationStatus
+     */
+    #[ORM\Column(name: 'validation_status', type: Types::SMALLINT, options: ['default' => 0])]
+    private int $validationStatus = 0;
+
+    /**
+     * Auteur de la dernière soumission à validation
+     */
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(name: 'validation_user_id', nullable: true, onDelete: 'SET NULL')]
+    private ?User $validationUser = null;
+
+    #[ORM\Column(name: 'validation_at', type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $validationAt = null;
+
+    /**
+     * Motif du dernier refus
+     */
+    #[ORM\Column(name: 'validation_comment', type: Types::TEXT, nullable: true)]
+    private ?string $validationComment = null;
+
     public function __construct()
     {
         $this->pageTranslations = new ArrayCollection();
@@ -566,6 +588,54 @@ class Page
     public function setHeaderImg(?string $headerImg): static
     {
         $this->headerImg = $headerImg;
+
+        return $this;
+    }
+
+    public function getValidationStatus(): int
+    {
+        return $this->validationStatus;
+    }
+
+    public function setValidationStatus(int $validationStatus): static
+    {
+        $this->validationStatus = $validationStatus;
+
+        return $this;
+    }
+
+    public function getValidationUser(): ?User
+    {
+        return $this->validationUser;
+    }
+
+    public function setValidationUser(?User $validationUser): static
+    {
+        $this->validationUser = $validationUser;
+
+        return $this;
+    }
+
+    public function getValidationAt(): ?\DateTimeInterface
+    {
+        return $this->validationAt;
+    }
+
+    public function setValidationAt(?\DateTimeInterface $validationAt): static
+    {
+        $this->validationAt = $validationAt;
+
+        return $this;
+    }
+
+    public function getValidationComment(): ?string
+    {
+        return $this->validationComment;
+    }
+
+    public function setValidationComment(?string $validationComment): static
+    {
+        $this->validationComment = $validationComment;
 
         return $this;
     }

@@ -16,4 +16,6 @@ enum NotificationCategory: string
     case ADMIN = 'admin';
 
     case SQL = 'SQL';
+
+    case PAGE = 'page';
 }

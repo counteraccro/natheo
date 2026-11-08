@@ -48,6 +48,10 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    publishLocked: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -69,13 +73,21 @@ export default defineComponent({
   emits: ['update-translation', 'update:section-errors', 'update-header-img'],
   computed: {
     /**
-     * Statuts proposés : l'archivage passe par la liste des pages, jamais par l'éditeur
+     * Statuts proposés : l'archivage passe par la liste des pages, la publication par la validation
+     * quand elle est imposée
      */
     selectableStatus(): Record<string, string> {
       return Object.fromEntries(
-        Object.entries(this.pageDatas.list_status).filter(
-          ([key]) => parseInt(key) !== PageStatus.archived || this.page.status === PageStatus.archived
-        )
+        Object.entries(this.pageDatas.list_status).filter(([key]) => {
+          const status = parseInt(key);
+          if (status === this.page.status) {
+            return true;
+          }
+          if (status === PageStatus.archived) {
+            return false;
+          }
+          return !(status === PageStatus.publish && this.publishLocked);
+        })
       );
     },
     /**

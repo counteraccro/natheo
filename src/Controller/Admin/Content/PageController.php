@@ -17,6 +17,7 @@ use App\Enum\Admin\Content\Page\PageCsrfToken;
 use App\Enum\Admin\Content\Page\PageMeta;
 use App\Enum\Admin\Content\Page\PageRender;
 use App\Enum\Admin\Content\Page\PageStatus;
+use App\Enum\Admin\Content\Page\PageValidationStatus;
 use App\Enum\Admin\Content\Tag\TagCsrfToken;
 use App\Enum\Admin\Global\Breadcrumb;
 use App\Enum\Admin\System\Options\OptionSystem;
@@ -25,6 +26,7 @@ use App\Service\Admin\Content\Comment\CommentService;
 use App\Service\Admin\Content\Menu\MenuService;
 use App\Service\Admin\Content\Page\PageDraftService;
 use App\Service\Admin\Content\Page\PageService;
+use App\Service\Admin\Content\Page\PageValidationService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Service\Global\DateService;
 use App\Factory\Admin\Content\Page\PageFactory;
@@ -51,12 +53,17 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class PageController extends AppAdminController
 {
     /**
+     * Filtre de la grille : pages en attente de validation
+     */
+    private const string FILTER_PENDING_VALIDATION = 'pending_validation';
+
+    /**
      * @return Response
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
     #[Route('/', name: 'index')]
-    public function index(): Response
+    public function index(PageValidationService $pageValidationService): Response
     {
         $breadcrumb = [
             Breadcrumb::DOMAIN->value => 'page',
@@ -69,6 +76,7 @@ class PageController extends AppAdminController
             'breadcrumb' => $breadcrumb,
             'page' => 1,
             'limit' => $this->optionUserService->getValueByKey(OptionUser::OU_NB_ELEMENT->value),
+            'filterPendingValidation' => $pageValidationService->isActive(),
         ]);
     }
 
@@ -101,6 +109,9 @@ class PageController extends AppAdminController
         $userId = null;
         if ($filter === self::FILTER_ME) {
             $userId = $this->getUser()->getId();
+        }
+        if ($filter === self::FILTER_PENDING_VALIDATION) {
+            $queryParams['validationStatus'] = PageValidationStatus::PENDING->value;
         }
         $grid = $pageService->getAllFormatToGrid($page, $limit, $queryParams, $userId);
         return $this->json($grid);
@@ -289,6 +300,10 @@ class PageController extends AppAdminController
             'csrfTokenAutoSave' => PageCsrfToken::AUTO_SAVE->value,
             'csrfTokenPublishDraft' => PageCsrfToken::PUBLISH_DRAFT->value,
             'csrfTokenDiscardDraft' => PageCsrfToken::DISCARD_DRAFT->value,
+            'csrfTokenSubmitValidation' => PageCsrfToken::SUBMIT_VALIDATION->value,
+            'csrfTokenApproveValidation' => PageCsrfToken::APPROVE_VALIDATION->value,
+            'csrfTokenRefuseValidation' => PageCsrfToken::REFUSE_VALIDATION->value,
+            'csrfTokenWithdrawValidation' => PageCsrfToken::WITHDRAW_VALIDATION->value,
             'datas' => [
                 'list_status' => $pageService->getAllStatus(),
                 'list_render' => $pageService->getAllRender(),
@@ -313,6 +328,10 @@ class PageController extends AppAdminController
                 'save' => $this->generateUrl('admin_page_save'),
                 'publish_draft' => $this->generateUrl('admin_page_publish_draft', ['id' => 0]),
                 'discard_draft' => $this->generateUrl('admin_page_discard_draft', ['id' => 0]),
+                'submit_validation' => $this->generateUrl('admin_page_submit_validation', ['id' => 0]),
+                'approve_validation' => $this->generateUrl('admin_page_approve_validation', ['id' => 0]),
+                'refuse_validation' => $this->generateUrl('admin_page_refuse_validation', ['id' => 0]),
+                'withdraw_validation' => $this->generateUrl('admin_page_withdraw_validation', ['id' => 0]),
                 'new_content' => $this->generateUrl('admin_page_new_content'),
                 'liste_content_by_id' => $this->generateUrl('admin_page_liste_content_by_id'),
                 'is_unique_url_page' => $this->generateUrl('admin_page_is_unique_url_page'),
@@ -328,6 +347,7 @@ class PageController extends AppAdminController
      * Permet de charger le contenu du tab content ; une page publiée qui a un brouillon est chargée depuis celui-ci
      * @param PageService $pageService
      * @param PageDraftService $pageDraftService
+     * @param PageValidationService $pageValidationService
      * @param MenuService $menuService
      * @param OptionSystemService $optionSystemService
      * @param int|null $id
@@ -340,6 +360,7 @@ class PageController extends AppAdminController
     public function loadTabContent(
         PageService $pageService,
         PageDraftService $pageDraftService,
+        PageValidationService $pageValidationService,
         MenuService $menuService,
         OptionSystemService $optionSystemService,
         ?int $id = null,
@@ -391,6 +412,8 @@ class PageController extends AppAdminController
             'menus',
             'comments',
             'tags',
+            'validationUser',
+            'validationAt',
         ]);
 
         // On lie les menus à la page
@@ -434,7 +457,7 @@ class PageController extends AppAdminController
             'page' => $pageArray,
             'history' => $pageService->getDiffBetweenHistoryAndPage($page, $draft?->getUpdateAt()),
             'menus' => $menuService->getListMenus(),
-            'state' => $this->getPageState($page, $pageDraftService),
+            'state' => $this->getPageState($page, $pageDraftService, $pageValidationService),
         ]);
     }
 
@@ -444,6 +467,7 @@ class PageController extends AppAdminController
      * @param Request $request
      * @param PageService $pageService
      * @param PageDraftService $pageDraftService
+     * @param PageValidationService $pageValidationService
      * @param TranslatorInterface $translator
      * @return JsonResponse
      * @throws ContainerExceptionInterface
@@ -455,6 +479,7 @@ class PageController extends AppAdminController
         Request $request,
         PageService $pageService,
         PageDraftService $pageDraftService,
+        PageValidationService $pageValidationService,
         TranslatorInterface $translator,
     ): JsonResponse {
         $error = $this->checkCsrf(PageCsrfToken::AUTO_SAVE->value, $request);
@@ -475,6 +500,9 @@ class PageController extends AppAdminController
             $page = $pageService->findOneById(Page::class, (int) $pageId);
             if ($page !== null && $pageDraftService->isReadOnly($page)) {
                 return $this->jsonError($translator->trans('page.error.archived', domain: 'page'));
+            }
+            if ($page !== null && $pageValidationService->isLocked($page)) {
+                return $this->jsonError($translator->trans('page.error.validation_pending', domain: 'page'));
             }
         }
 
@@ -575,6 +603,7 @@ class PageController extends AppAdminController
      * @param Request $request
      * @param PageService $pageService
      * @param PageDraftService $pageDraftService
+     * @param PageValidationService $pageValidationService
      * @param TranslatorInterface $translator
      * @param ContainerBagInterface $containerBag
      * @return JsonResponse
@@ -586,6 +615,7 @@ class PageController extends AppAdminController
         Request $request,
         PageService $pageService,
         PageDraftService $pageDraftService,
+        PageValidationService $pageValidationService,
         TranslatorInterface $translator,
         ContainerBagInterface $containerBag,
     ): JsonResponse {
@@ -606,7 +636,7 @@ class PageController extends AppAdminController
         $id = $data['id'] ?? null;
         if (is_numeric($id) && (int) $id > 0) {
             $page = $pageService->findOneById(Page::class, (int) $id);
-            $error = $this->checkPageWriteAccess($page, $pageDraftService, $translator);
+            $error = $this->checkPageWriteAccess($page, $pageDraftService, $pageValidationService, $translator);
             if ($error !== null) {
                 return $error;
             }
@@ -631,11 +661,12 @@ class PageController extends AppAdminController
                     ? $translator->trans('page.save.draft_success', domain: 'page')
                     : $translator->trans('response.ajax.error'),
                 'redirect' => false,
-                'state' => $this->getPageState($page, $pageDraftService),
+                'state' => $this->getPageState($page, $pageDraftService, $pageValidationService),
             ]);
         }
 
         $wasLandingPage = (bool) $page->isLandingPage();
+        $wasPublished = $page->getStatus() === PageStatus::PUBLISH->value;
 
         $pagePopulate = new PagePopulate($page, $data, $pageService);
         $page = $pagePopulate->populate()->getPage();
@@ -650,11 +681,18 @@ class PageController extends AppAdminController
         if ($error !== null) {
             return $error;
         }
+        $isPublished = $page->getStatus() === PageStatus::PUBLISH->value;
+        if ($isPublished && !$wasPublished && $pageValidationService->mustSubmit()) {
+            return $this->jsonError($translator->trans('page.error.validation_required', domain: 'page'));
+        }
 
         $pageService->save($page);
 
         if ($page->isLandingPage()) {
             $pageService->switchLandingPage($page->getId());
+        }
+        if ($isPublished) {
+            $pageValidationService->approve($page, $user, $request->getLocale());
         }
 
         $pageHistory = new PageHistory($containerBag, $user);
@@ -663,7 +701,7 @@ class PageController extends AppAdminController
         $returnArray = $pageService->getResponseAjax($translator->trans('page.save.success', domain: 'page'));
         $returnArray['url_redirect'] = $this->generateUrl('admin_page_update', ['id' => $page->getId()]);
         $returnArray['redirect'] = $redirect;
-        $returnArray['state'] = $this->getPageState($page, $pageDraftService);
+        $returnArray['state'] = $this->getPageState($page, $pageDraftService, $pageValidationService);
 
         return $this->json($returnArray);
     }
@@ -675,6 +713,7 @@ class PageController extends AppAdminController
      * @param Request $request
      * @param PageService $pageService
      * @param PageDraftService $pageDraftService
+     * @param PageValidationService $pageValidationService
      * @param TranslatorInterface $translator
      * @return JsonResponse
      * @throws ContainerExceptionInterface
@@ -686,16 +725,20 @@ class PageController extends AppAdminController
         Request $request,
         PageService $pageService,
         PageDraftService $pageDraftService,
+        PageValidationService $pageValidationService,
         TranslatorInterface $translator,
     ): JsonResponse {
         $error =
             $this->checkCsrf(PageCsrfToken::PUBLISH_DRAFT->value, $request) ??
-            $this->checkPageWriteAccess($page, $pageDraftService, $translator);
+            $this->checkPageWriteAccess($page, $pageDraftService, $pageValidationService, $translator);
         if ($error !== null) {
             return $error;
         }
         if (!$pageDraftService->isDraftMode($page)) {
             return $this->jsonError($translator->trans('page.error.not_published', domain: 'page'));
+        }
+        if ($pageValidationService->mustSubmit()) {
+            return $this->jsonError($translator->trans('page.error.validation_required', domain: 'page'));
         }
 
         $data = $this->getPageData($request, $translator);
@@ -711,12 +754,15 @@ class PageController extends AppAdminController
         if (!$pageDraftService->publishDraft($page, $data)) {
             return $this->jsonError($translator->trans('response.ajax.error'));
         }
+        /** @var User $user */
+        $user = $this->getUser();
+        $pageValidationService->approve($page, $user, $request->getLocale());
 
         $label = $pageService->getEscapedTitle($page, $request->getLocale());
         return $this->json([
             'success' => true,
             'msg' => $translator->trans('page.draft.publish_success', ['label' => $label], 'page'),
-            'state' => $this->getPageState($page, $pageDraftService),
+            'state' => $this->getPageState($page, $pageDraftService, $pageValidationService),
         ]);
     }
 
@@ -725,6 +771,7 @@ class PageController extends AppAdminController
      * @param Page $page
      * @param Request $request
      * @param PageDraftService $pageDraftService
+     * @param PageValidationService $pageValidationService
      * @param TranslatorInterface $translator
      * @return JsonResponse
      * @throws ContainerExceptionInterface
@@ -735,11 +782,12 @@ class PageController extends AppAdminController
         #[MapEntity(id: 'id')] Page $page,
         Request $request,
         PageDraftService $pageDraftService,
+        PageValidationService $pageValidationService,
         TranslatorInterface $translator,
     ): JsonResponse {
         $error =
             $this->checkCsrf(PageCsrfToken::DISCARD_DRAFT->value, $request) ??
-            $this->checkPageWriteAccess($page, $pageDraftService, $translator);
+            $this->checkPageWriteAccess($page, $pageDraftService, $pageValidationService, $translator);
         if ($error !== null) {
             return $error;
         }
@@ -747,6 +795,8 @@ class PageController extends AppAdminController
         if (!$pageDraftService->discardDraft($page)) {
             return $this->jsonError($translator->trans('response.ajax.error'));
         }
+        // Plus rien à valider une fois le brouillon abandonné
+        $pageValidationService->clear($page);
 
         return $this->json([
             'success' => true,
@@ -760,6 +810,7 @@ class PageController extends AppAdminController
      * @param Request $request
      * @param PageService $pageService
      * @param PageDraftService $pageDraftService
+     * @param PageValidationService $pageValidationService
      * @param TranslatorInterface $translator
      * @return JsonResponse
      * @throws ContainerExceptionInterface
@@ -771,11 +822,12 @@ class PageController extends AppAdminController
         Request $request,
         PageService $pageService,
         PageDraftService $pageDraftService,
+        PageValidationService $pageValidationService,
         TranslatorInterface $translator,
     ): JsonResponse {
         $error =
             $this->checkCsrf(PageCsrfToken::ARCHIVE->value, $request) ??
-            $this->checkPageWriteAccess($page, $pageDraftService, $translator);
+            $this->checkPageWriteAccess($page, $pageDraftService, $pageValidationService, $translator);
         if ($error !== null) {
             return $error;
         }
@@ -786,11 +838,238 @@ class PageController extends AppAdminController
         if (!$pageDraftService->archive($page)) {
             return $this->jsonError($translator->trans('response.ajax.error'));
         }
+        $pageValidationService->clear($page);
 
         $label = $pageService->getEscapedTitle($page, $request->getLocale());
         return $this->json([
             'success' => true,
             'msg' => $translator->trans('page.archive.success', ['label' => $label], 'page'),
+        ]);
+    }
+
+    /**
+     * Enregistre la page (son brouillon si elle est publiée) puis la soumet à validation
+     * @param Page $page
+     * @param Request $request
+     * @param PageService $pageService
+     * @param PageDraftService $pageDraftService
+     * @param PageValidationService $pageValidationService
+     * @param TranslatorInterface $translator
+     * @param ContainerBagInterface $containerBag
+     * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/ajax/submit-validation/{id}', name: 'submit_validation', requirements: ['id' => '\d+'], methods: ['PUT'])]
+    public function submitValidation(
+        #[MapEntity(id: 'id')] Page $page,
+        Request $request,
+        PageService $pageService,
+        PageDraftService $pageDraftService,
+        PageValidationService $pageValidationService,
+        TranslatorInterface $translator,
+        ContainerBagInterface $containerBag,
+    ): JsonResponse {
+        $error =
+            $this->checkCsrf(PageCsrfToken::SUBMIT_VALIDATION->value, $request) ??
+            $this->checkPageWriteAccess($page, $pageDraftService, $pageValidationService, $translator);
+        if ($error !== null) {
+            return $error;
+        }
+        if (!$pageValidationService->isActive()) {
+            return $this->jsonError($translator->trans('page.error.validation_inactive', domain: 'page'));
+        }
+        if ($pageValidationService->isPending($page)) {
+            return $this->jsonError($translator->trans('page.error.validation_pending', domain: 'page'));
+        }
+
+        $data = $this->getPageData($request, $translator);
+        if ($data instanceof JsonResponse) {
+            return $data;
+        }
+
+        /** @var User $user */
+        $user = $this->getUser();
+        if ($pageDraftService->isDraftMode($page)) {
+            $error = $this->checkDraft($page, $data, $pageService, $pageDraftService, $translator);
+            if ($error !== null) {
+                return $error;
+            }
+            if (!$pageDraftService->saveDraft($page, $data, $user)) {
+                return $this->jsonError($translator->trans('response.ajax.error'));
+            }
+        } else {
+            $error = $this->saveUnpublishedPage($page, $data, PageStatus::DRAFT, $pageService, $translator);
+            if ($error !== null) {
+                return $error;
+            }
+        }
+        (new PageHistory($containerBag, $user))->renamePageHistorySave($page->getId());
+        $pageValidationService->submit($page, $user, $request->getLocale());
+
+        $label = $pageService->getEscapedTitle($page, $request->getLocale());
+        return $this->json([
+            'success' => true,
+            'msg' => $translator->trans('page.validation.submit_success', ['label' => $label], 'page'),
+            'state' => $this->getPageState($page, $pageDraftService, $pageValidationService),
+        ]);
+    }
+
+    /**
+     * Valide une page soumise : les données de l'éditeur sont publiées, l'auteur de la soumission est prévenu
+     * @param Page $page
+     * @param Request $request
+     * @param PageService $pageService
+     * @param PageDraftService $pageDraftService
+     * @param PageValidationService $pageValidationService
+     * @param TranslatorInterface $translator
+     * @param ContainerBagInterface $containerBag
+     * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[
+        Route(
+            '/ajax/approve-validation/{id}',
+            name: 'approve_validation',
+            requirements: ['id' => '\d+'],
+            methods: ['PUT'],
+        ),
+    ]
+    public function approveValidation(
+        #[MapEntity(id: 'id')] Page $page,
+        Request $request,
+        PageService $pageService,
+        PageDraftService $pageDraftService,
+        PageValidationService $pageValidationService,
+        TranslatorInterface $translator,
+        ContainerBagInterface $containerBag,
+    ): JsonResponse {
+        $error =
+            $this->checkCsrf(PageCsrfToken::APPROVE_VALIDATION->value, $request) ??
+            $this->checkValidationAccess($page, $pageDraftService, $pageValidationService, $translator);
+        if ($error !== null) {
+            return $error;
+        }
+
+        $data = $this->getPageData($request, $translator);
+        if ($data instanceof JsonResponse) {
+            return $data;
+        }
+
+        if ($pageDraftService->isDraftMode($page)) {
+            $error = $this->checkDraft($page, $data, $pageService, $pageDraftService, $translator);
+            if ($error !== null) {
+                return $error;
+            }
+            if (!$pageDraftService->publishDraft($page, $data)) {
+                return $this->jsonError($translator->trans('response.ajax.error'));
+            }
+        } else {
+            $error = $this->saveUnpublishedPage($page, $data, PageStatus::PUBLISH, $pageService, $translator);
+            if ($error !== null) {
+                return $error;
+            }
+        }
+
+        /** @var User $user */
+        $user = $this->getUser();
+        (new PageHistory($containerBag, $user))->renamePageHistorySave($page->getId());
+        $pageValidationService->approve($page, $user, $request->getLocale());
+
+        $label = $pageService->getEscapedTitle($page, $request->getLocale());
+        return $this->json([
+            'success' => true,
+            'msg' => $translator->trans('page.validation.approve_success', ['label' => $label], 'page'),
+            'state' => $this->getPageState($page, $pageDraftService, $pageValidationService),
+        ]);
+    }
+
+    /**
+     * Refuse une page soumise, avec un motif facultatif ; le contenu soumis est conservé
+     * @param Page $page
+     * @param Request $request
+     * @param PageService $pageService
+     * @param PageDraftService $pageDraftService
+     * @param PageValidationService $pageValidationService
+     * @param TranslatorInterface $translator
+     * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/ajax/refuse-validation/{id}', name: 'refuse_validation', requirements: ['id' => '\d+'], methods: ['PUT'])]
+    public function refuseValidation(
+        #[MapEntity(id: 'id')] Page $page,
+        Request $request,
+        PageService $pageService,
+        PageDraftService $pageDraftService,
+        PageValidationService $pageValidationService,
+        TranslatorInterface $translator,
+    ): JsonResponse {
+        $error =
+            $this->checkCsrf(PageCsrfToken::REFUSE_VALIDATION->value, $request) ??
+            $this->checkValidationAccess($page, $pageDraftService, $pageValidationService, $translator);
+        if ($error !== null) {
+            return $error;
+        }
+
+        $data = json_decode($request->getContent(), true);
+        $reason = is_array($data) && is_string($data['reason'] ?? null) ? $data['reason'] : null;
+
+        /** @var User $user */
+        $user = $this->getUser();
+        $pageValidationService->refuse($page, $user, $reason, $request->getLocale());
+
+        $label = $pageService->getEscapedTitle($page, $request->getLocale());
+        return $this->json([
+            'success' => true,
+            'msg' => $translator->trans('page.validation.refuse_success', ['label' => $label], 'page'),
+            'state' => $this->getPageState($page, $pageDraftService, $pageValidationService),
+        ]);
+    }
+
+    /**
+     * Retire la soumission à validation : la page redevient modifiable
+     * @param Page $page
+     * @param Request $request
+     * @param PageDraftService $pageDraftService
+     * @param PageValidationService $pageValidationService
+     * @param TranslatorInterface $translator
+     * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[
+        Route(
+            '/ajax/withdraw-validation/{id}',
+            name: 'withdraw_validation',
+            requirements: ['id' => '\d+'],
+            methods: ['PUT'],
+        ),
+    ]
+    public function withdrawValidation(
+        #[MapEntity(id: 'id')] Page $page,
+        Request $request,
+        PageDraftService $pageDraftService,
+        PageValidationService $pageValidationService,
+        TranslatorInterface $translator,
+    ): JsonResponse {
+        $error =
+            $this->checkCsrf(PageCsrfToken::WITHDRAW_VALIDATION->value, $request) ??
+            $this->checkContentAccess(ContentVoter::EDIT, $page, 'page');
+        if ($error !== null) {
+            return $error;
+        }
+        if (!$pageValidationService->isPending($page)) {
+            return $this->jsonError($translator->trans('page.error.validation_not_pending', domain: 'page'));
+        }
+
+        $pageValidationService->clear($page);
+
+        return $this->json([
+            'success' => true,
+            'msg' => $translator->trans('page.validation.withdraw_success', domain: 'page'),
+            'state' => $this->getPageState($page, $pageDraftService, $pageValidationService),
         ]);
     }
 
@@ -906,8 +1185,10 @@ class PageController extends AppAdminController
 
     /**
      * Vérifie qu'une page existante peut être modifiée : page trouvée, droit d'édition, page non archivée
+     * et non verrouillée par une soumission à validation
      * @param Page|null $page
      * @param PageDraftService $pageDraftService
+     * @param PageValidationService $pageValidationService
      * @param TranslatorInterface $translator
      * @return JsonResponse|null
      * @throws ContainerExceptionInterface
@@ -916,6 +1197,7 @@ class PageController extends AppAdminController
     private function checkPageWriteAccess(
         ?Page $page,
         PageDraftService $pageDraftService,
+        PageValidationService $pageValidationService,
         TranslatorInterface $translator,
     ): ?JsonResponse {
         if ($page === null) {
@@ -927,6 +1209,83 @@ class PageController extends AppAdminController
         }
         if ($pageDraftService->isReadOnly($page)) {
             return $this->jsonError($translator->trans('page.error.archived', domain: 'page'));
+        }
+        if ($pageValidationService->isLocked($page)) {
+            return $this->jsonError($translator->trans('page.error.validation_pending', domain: 'page'));
+        }
+        return null;
+    }
+
+    /**
+     * Vérifie que l'utilisateur peut valider ou refuser la page : administrateur, droit d'édition,
+     * page non archivée et en attente de validation
+     * @param Page $page
+     * @param PageDraftService $pageDraftService
+     * @param PageValidationService $pageValidationService
+     * @param TranslatorInterface $translator
+     * @return JsonResponse|null
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function checkValidationAccess(
+        Page $page,
+        PageDraftService $pageDraftService,
+        PageValidationService $pageValidationService,
+        TranslatorInterface $translator,
+    ): ?JsonResponse {
+        if (!$pageValidationService->canValidate()) {
+            return $this->jsonError(
+                $translator->trans('page.error.forbidden', domain: 'page'),
+                Response::HTTP_FORBIDDEN,
+            );
+        }
+        $error = $this->checkPageWriteAccess($page, $pageDraftService, $pageValidationService, $translator);
+        if ($error !== null) {
+            return $error;
+        }
+        if (!$pageValidationService->isPending($page)) {
+            return $this->jsonError($translator->trans('page.error.validation_not_pending', domain: 'page'));
+        }
+        return null;
+    }
+
+    /**
+     * Enregistre une page jamais publiée avec les données de l'éditeur et le statut $status
+     * @param Page $page
+     * @param array $data
+     * @param PageStatus $status
+     * @param PageService $pageService
+     * @param TranslatorInterface $translator
+     * @return JsonResponse|null réponse d'erreur, null si la page est enregistrée
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function saveUnpublishedPage(
+        Page $page,
+        array $data,
+        PageStatus $status,
+        PageService $pageService,
+        TranslatorInterface $translator,
+    ): ?JsonResponse {
+        $wasLandingPage = (bool) $page->isLandingPage();
+        $data['status'] = $status->value;
+        $pagePopulate = new PagePopulate($page, $data, $pageService);
+        $page = $pagePopulate->populate()->getPage();
+
+        $error = $this->checkPageBeforeSave(
+            $page,
+            $pagePopulate->getErrors(),
+            $wasLandingPage,
+            $pageService,
+            $translator,
+        );
+        if ($error !== null) {
+            return $error;
+        }
+
+        $pageService->save($page);
+        if ($page->isLandingPage()) {
+            $pageService->switchLandingPage($page->getId());
         }
         return null;
     }
@@ -981,15 +1340,20 @@ class PageController extends AppAdminController
     }
 
     /**
-     * État de la page pour l'éditeur : publiée, archivée (lecture seule), brouillon en cours, urls en ligne
+     * État de la page pour l'éditeur : publiée, archivée ou verrouillée (lecture seule), brouillon en cours,
+     * urls en ligne, validation
      * @param Page $page
      * @param PageDraftService $pageDraftService
+     * @param PageValidationService $pageValidationService
      * @return array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    private function getPageState(Page $page, PageDraftService $pageDraftService): array
-    {
+    private function getPageState(
+        Page $page,
+        PageDraftService $pageDraftService,
+        PageValidationService $pageValidationService,
+    ): array {
         $draft = $pageDraftService->getDraft($page);
         $publishedUrls = [];
         if ($pageDraftService->isDraftMode($page)) {
@@ -1000,11 +1364,17 @@ class PageController extends AppAdminController
 
         return [
             'is_published' => $pageDraftService->isDraftMode($page),
-            'read_only' => $pageDraftService->isReadOnly($page),
+            'is_archived' => $pageDraftService->isReadOnly($page),
+            'read_only' => $pageDraftService->isReadOnly($page) || $pageValidationService->isLocked($page),
             'has_draft' => $draft !== null,
             'draft_update_at' => $draft?->getUpdateAt()?->format('d/m/Y H:i'),
-            'draft_user' => $draft?->getUser()?->getLogin(),
+            // Affiché dans un bandeau rendu en HTML
+            'draft_user' =>
+                $draft?->getUser() !== null
+                    ? htmlspecialchars((string) $draft->getUser()->getLogin(), ENT_QUOTES)
+                    : null,
             'published_urls' => $publishedUrls,
+            ...$pageValidationService->getState($page),
         ];
     }
 

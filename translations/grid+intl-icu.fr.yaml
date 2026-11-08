@@ -18,6 +18,7 @@ grid.query.copy_error: 'Une erreur est survenue lors de la copie'
 grid.query.title: 'Requête SQL'
 grid.filter.only_me: 'Afficher mes données'
 grid.filter.all: 'Afficher toutes les données'
+grid.filter.pending_validation: 'Afficher les pages en attente de validation'
 grid.search.placeholder_table: 'Rechercher dans le tableau'
 grid.search.text_database: 'Dans la base de données'
 grid.search.title: Rechercher

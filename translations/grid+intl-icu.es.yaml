@@ -18,6 +18,7 @@ grid.query.copy_error: Se ha producido un error al copiar
 grid.query.title: Consulta SQL
 grid.filter.only_me: Mostrar mis datos
 grid.filter.all: Mostrar todos los datos
+grid.filter.pending_validation: Mostrar las páginas pendientes de validación
 grid.search.placeholder_table: Buscar en la tabla
 grid.search.text_database: En la base de datos
 grid.search.title: Buscar

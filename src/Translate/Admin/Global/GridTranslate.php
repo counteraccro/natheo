@@ -35,10 +35,7 @@ class GridTranslate extends AppTranslate
         return [
             'placeholder' => $this->translator->trans('grid.search.placeholder', domain: 'grid'),
             'placeholderBddSearch' => $this->translator->trans('grid.search.placeholder_database', domain: 'grid'),
-            'placeholderTableSearch' => $this->translator->trans(
-                'grid.search.placeholder_table',
-                domain: 'grid',
-            ),
+            'placeholderTableSearch' => $this->translator->trans('grid.search.placeholder_table', domain: 'grid'),
             'textBddSearch' => $this->translator->trans('grid.search.text_database', domain: 'grid'),
             'titleSearch' => $this->translator->trans('grid.search.title', domain: 'grid'),
             'textTableSearch' => $this->translator->trans('grid.search.text_table', domain: 'grid'),
@@ -60,6 +57,7 @@ class GridTranslate extends AppTranslate
             'queryTitle' => $this->translator->trans('grid.query.title', domain: 'grid'),
             'filterOnlyMe' => $this->translator->trans('grid.filter.only_me', domain: 'grid'),
             'filterAll' => $this->translator->trans('grid.filter.all', domain: 'grid'),
+            'filterPendingValidation' => $this->translator->trans('grid.filter.pending_validation', domain: 'grid'),
             'titleTrieOption' => $this->translator->trans('grid.sort.title', domain: 'grid'),
             'titleTrieOptionSubMenu' => $this->translator->trans('grid.sort.sub_title', domain: 'grid'),
             'trieOptionListeField' => $this->translator->trans('grid.sort.field', domain: 'grid'),

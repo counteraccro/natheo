@@ -154,6 +154,11 @@ options_system:
                 label: 'options_system.confirm_leave_form.label'
                 help: 'options_system.confirm_leave_form.help'
                 default: '1'
+            OS_PAGE_VALIDATION:
+                type: 'boolean'
+                label: 'options_system.page_validation.label'
+                help: 'options_system.page_validation.help'
+                default: '0'
             OS_THEME_SITE:
                 type: 'select'
                 label: 'options_system.theme_site.label'
