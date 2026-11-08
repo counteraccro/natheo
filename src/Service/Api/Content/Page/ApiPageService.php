@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace App\Service\Api\Content\Page;
 
 use App\Dto\Api\Content\Page\ApiFindPageCategoryDto;
+use App\Dto\Api\Content\Page\ApiFindPageContentDto;
 use App\Dto\Api\Content\Page\ApiFindPageDto;
 use App\Dto\Api\Content\Page\ApiFindPageTagDto;
 use App\Entity\Admin\Content\Menu\Menu;
@@ -24,11 +25,13 @@ use App\Enum\Admin\Content\Page\PageStatus;
 use App\Enum\Admin\System\Options\OptionUser;
 use App\Repository\Admin\Content\Menu\MenuRepository;
 use App\Repository\Admin\Content\Page\PageRepository;
+use App\Security\Voter\ContentVoter;
 use App\Service\Api\AppApiService;
 use App\Service\Api\Content\ApiMenuService;
 use App\Formatter\Api\Content\ApiPageFormater;
 use App\Service\Admin\System\User\PersonalData;
 use Doctrine\ORM\NonUniqueResultException;
+use League\CommonMark\Exception\CommonMarkException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -44,12 +47,20 @@ class ApiPageService extends AppApiService
      * @throws ContainerExceptionInterface
      * @throws NonUniqueResultException
      * @throws NotFoundExceptionInterface
+     * @throws CommonMarkException
      */
     public function getPageForApi(ApiFindPageDto $dto, ?User $user = null): array
     {
         $page = $this->getPageBySlug($dto->getSlug(), $dto->getLocale(), $user);
         if (empty($page)) {
             return [];
+        }
+
+        $previewPage = $this->getPreviewPage($page, $dto, $user);
+        if ($previewPage !== null) {
+            $pageApi = $this->addPreviewContents($this->formatPageForApi($previewPage, $dto), $previewPage, $dto);
+            $this->getPageDraftService()->releaseWorkingCopy($previewPage);
+            return $pageApi;
         }
 
         // Les prévisualisations de brouillons par un contributeur ne comptent pas comme des lectures
@@ -65,6 +76,71 @@ class ApiPageService extends AppApiService
             $this->save($pageStatistiqueNbPageRead);
         }
 
+        return $this->formatPageForApi($page, $dto);
+    }
+
+    /**
+     * Retourne la page telle qu'elle sera une fois son brouillon publié, si la prévisualisation est demandée
+     * par un utilisateur qui peut modifier la page ; null sinon
+     * @param Page $page
+     * @param ApiFindPageDto $dto
+     * @param User|null $user
+     * @return Page|null
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function getPreviewPage(Page $page, ApiFindPageDto $dto, ?User $user): ?Page
+    {
+        if (!$dto->isPreview() || $user === null) {
+            return null;
+        }
+        if (!$this->getSecurity()->isGrantedForUser($user, ContentVoter::EDIT, $page)) {
+            return null;
+        }
+        return $this->getPageDraftService()->getPreviewPage($page);
+    }
+
+    /**
+     * Les contenus d'un brouillon n'existent pas encore en base : ils reçoivent un id négatif et leur rendu
+     * est joint à la page (preview_contents), au format de l'endpoint content
+     * @param array $pageApi
+     * @param Page $previewPage
+     * @param ApiFindPageDto $dto
+     * @return array
+     * @throws CommonMarkException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function addPreviewContents(array $pageApi, Page $previewPage, ApiFindPageDto $dto): array
+    {
+        $apiPageContentService = $this->getApiPageContentService();
+        $pageApi['contents'] = [];
+        $pageApi['preview_contents'] = [];
+        $id = 0;
+        foreach ($previewPage->getPageContents() as $pageContent) {
+            $id--;
+            $pageApi['contents'][] = [
+                'id' => $id,
+                'type' => $pageContent->getType(),
+                'position' => $pageContent->getRenderBlock(),
+            ];
+            $contentDto = new ApiFindPageContentDto($id, $dto->getLocale(), 1, 20, $dto->getUserToken());
+            $pageApi['preview_contents'][$id] =
+                ['id' => $id] + $apiPageContentService->getFormatContent($pageContent, $contentDto);
+        }
+        return $pageApi;
+    }
+
+    /**
+     * Formate la page et ses menus pour l'API
+     * @param Page $page
+     * @param ApiFindPageDto $dto
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function formatPageForApi(Page $page, ApiFindPageDto $dto): array
+    {
         $apiPageFormater = new ApiPageFormater($page, $dto);
         $pageApi = $apiPageFormater->convertPage()->getPageForApi();
 

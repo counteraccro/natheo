@@ -17,7 +17,7 @@ use Doctrine\Migrations\Finder\MigrationFinder;
 use Doctrine\Migrations\Finder\RecursiveRegexFinder;
 
 /**
- * Chaque version de migration existe une fois par SGBD (migrations/V2/Mysql, migrations/V2/Postgresql) :
+ * Chaque version de migration existe une fois par SGBD (migrations/<version>/Mysql, migrations/<version>/Postgresql) :
  * seules celles de la plateforme courante sont chargées, les autres n'apparaissent ni en « New » ni en statut
  */
 class PlatformMigrationFinder implements MigrationFinder

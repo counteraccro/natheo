@@ -14,6 +14,7 @@ import {
   PageData,
   PageHistoryState,
   PageMenus,
+  PageState,
   PageTranslations,
   Tag,
   Urls,
@@ -37,10 +38,21 @@ import AlertWarning from '@/vue/Components/Alert/Warning.vue';
 import AlertInfo from '@/vue/Components/Alert/Info.vue';
 import AlertPrimary from '@/vue/Components/Alert/Primary.vue';
 import { toastSuccess, toastError, toastRequestError } from '@/vue/Composables/Global/toast';
+import Modal from '@/vue/Components/Global/Modal.vue';
+
+const DEFAULT_STATE: PageState = {
+  is_published: false,
+  read_only: false,
+  has_draft: false,
+  draft_update_at: null,
+  draft_user: null,
+  published_urls: {},
+};
 
 export default defineComponent({
   name: 'Page',
   components: {
+    Modal,
     AlertPrimary,
     AlertInfo,
     AlertWarning,
@@ -90,6 +102,14 @@ export default defineComponent({
       type: String,
       default: '',
     },
+    csrfTokenPublishDraft: {
+      type: String,
+      default: '',
+    },
+    csrfTokenDiscardDraft: {
+      type: String,
+      default: '',
+    },
   },
   data() {
     return {
@@ -101,6 +121,8 @@ export default defineComponent({
       activeTab: 'content' as string,
       availableMenus: {} as PageMenus,
       restoreCount: 0 as number,
+      state: { ...DEFAULT_STATE } as PageState,
+      modalTab: { modalPublishDraft: false, modalDiscardDraft: false } as Record<string, boolean>,
       sectionErrors: {} as Record<
         string,
         { hasError: boolean; errorsByLocale: Record<string, Record<string, string>> }
@@ -148,6 +170,7 @@ export default defineComponent({
           this.page = response.data.page;
           this.availableMenus = response.data.menus;
           this.history = response.data.history;
+          this.state = response.data.state ?? { ...DEFAULT_STATE };
         })
         .catch((error) => {
           toastRequestError(error);
@@ -352,6 +375,9 @@ export default defineComponent({
         .then((response) => {
           if (response.data.success === true) {
             toastSuccess(response.data.msg);
+            if (response.data.state) {
+              this.state = response.data.state;
+            }
             // Cas première page, on force la redirection pour passer en mode édition
             if (response.data.redirect === true) {
               window.location.replace(response.data.url_redirect);
@@ -376,14 +402,76 @@ export default defineComponent({
     },
 
     /**
-     * Ouvre l'aperçu de la page
+     * Publie les modifications d'une page publiée : le contenu de l'éditeur remplace la version en ligne
+     */
+    publishDraft() {
+      this.closeModal('modalPublishDraft');
+      this.loading = true;
+      axios
+        .put(this.getDraftUrl(this.urls.publish_draft), { page: this.page }, withCsrf(this.csrfTokenPublishDraft))
+        .then((response) => {
+          toastSuccess(response.data.msg);
+          if (response.data.state) {
+            this.state = response.data.state;
+          }
+        })
+        .catch((error) => {
+          toastRequestError(error);
+        })
+        .finally(() => {
+          this.loading = false;
+          this.$nextTick(() => {
+            initFlowbite();
+          });
+          emitter.emit('reset-check-confirm');
+        });
+    },
+
+    /**
+     * Abandonne le brouillon puis recharge la version en ligne
+     */
+    discardDraft() {
+      this.closeModal('modalDiscardDraft');
+      axios
+        .delete(this.getDraftUrl(this.urls.discard_draft), withCsrf(this.csrfTokenDiscardDraft))
+        .then((response) => {
+          toastSuccess(response.data.msg);
+          this.loadPage();
+        })
+        .catch((error) => {
+          toastRequestError(error);
+        });
+    },
+
+    /**
+     * Url d'une action sur le brouillon, générée côté serveur avec l'id 0 comme marqueur
+     * @param url
+     */
+    getDraftUrl(url: string): string {
+      return url.replace(/\/0$/, '/' + this.id);
+    },
+
+    openModal(id: string) {
+      this.modalTab[id] = true;
+    },
+
+    closeModal(id: string) {
+      this.modalTab[id] = false;
+    },
+
+    /**
+     * Ouvre l'aperçu de la page ; une page publiée est prévisualisée avec son brouillon depuis son url en ligne
      */
     openPreview() {
       const translation = this.page.pageTranslations.find((t) => t.locale === this.currentLocale);
       if (!translation) return;
       const category = this.pageDatas.list_categories[this.page.category]?.toLowerCase() ?? '';
-      const url = `${this.pageDatas.url_front}/${this.currentLocale}/${category}/${translation.url}`;
-      window.open(url);
+      if (this.state.is_published) {
+        const publishedUrl = this.state.published_urls[this.currentLocale] ?? translation.url;
+        window.open(`${this.pageDatas.url_front}/${this.currentLocale}/${category}/${publishedUrl}?preview=1`);
+        return;
+      }
+      window.open(`${this.pageDatas.url_front}/${this.currentLocale}/${category}/${translation.url}`);
     },
   },
 });
@@ -443,6 +531,30 @@ export default defineComponent({
         },
       ]"
     ></AlertPrimary>
+
+    <AlertWarning
+      v-if="state.read_only"
+      class="mt-4"
+      type="alert-warning-light"
+      :text="translate.page_draft.archived_banner"
+    />
+    <AlertInfo
+      v-else-if="state.has_draft"
+      class="mt-4"
+      type="alert-info-light"
+      :text="
+        translate.page_draft.banner +
+        (state.draft_update_at
+          ? ' (' + state.draft_update_at + (state.draft_user ? ', ' + state.draft_user : '') + ')'
+          : '')
+      "
+    />
+    <AlertInfo
+      v-else-if="state.is_published"
+      class="mt-4"
+      type="alert-info-light"
+      :text="translate.page_draft.published_info"
+    />
 
     <div class="mb-4 mt-4 border-b border-gray-200 dark:border-gray-700" id="nav-tab-option-system">
       <div class="float-right flex items-center" style="margin-top: -0.5rem">
@@ -657,7 +769,7 @@ export default defineComponent({
       </ul>
     </div>
 
-    <div id="nav-tab-page">
+    <fieldset id="nav-tab-page" :disabled="state.read_only">
       <div class="" id="page-information" role="tabpanel" aria-labelledby="nav-0-tab">
         <PageInformation
           :translate="translate"
@@ -666,6 +778,7 @@ export default defineComponent({
           :locales="locales"
           :page-datas="pageDatas"
           :urls="urls"
+          :status-locked="state.is_published"
           @update-translation="handleUpdatePageTranslation"
           @update:section-errors="handleSectionErrors"
           @update-header-img="handleUpdateHeaderImg"
@@ -732,7 +845,7 @@ export default defineComponent({
           @restore-history="handleRestoreHistory"
         />
       </div>
-    </div>
+    </fieldset>
   </div>
 
   <PageStatusBar
@@ -743,10 +856,75 @@ export default defineComponent({
     :translate="translate"
     :section-errors="sectionErrors"
     :csrf-token-auto-save="csrfTokenAutoSave"
+    :state="state"
     @go-to-error="handleGoToError"
     @save-page="save"
     @page-preview="openPreview"
+    @publish-page="openModal('modalPublishDraft')"
+    @discard-page="openModal('modalDiscardDraft')"
   />
+
+  <Modal
+    id="modalPublishDraft"
+    :show="modalTab.modalPublishDraft"
+    :option-show-close-btn="false"
+    @close-modal="closeModal"
+  >
+    <template #title>{{ translate.page_draft.publish_confirm_title }}</template>
+    <template #body>
+      <p class="text-sm text-fg-muted">{{ translate.page_draft.publish_confirm_text }}</p>
+    </template>
+    <template #footer>
+      <button type="button" class="btn btn-outline-dark btn-sm" @click="closeModal('modalPublishDraft')">
+        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 18 6M6 6l12 12" />
+        </svg>
+        {{ translate.page_draft.publish_confirm_cancel }}
+      </button>
+      <button type="button" class="btn btn-primary btn-sm" @click="publishDraft">
+        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 5v14m0-14 4 4m-4-4-4 4M5 19h14"
+          />
+        </svg>
+        {{ translate.page_draft.publish_confirm_ok }}
+      </button>
+    </template>
+  </Modal>
+
+  <Modal
+    id="modalDiscardDraft"
+    :show="modalTab.modalDiscardDraft"
+    :option-show-close-btn="false"
+    @close-modal="closeModal"
+  >
+    <template #title>{{ translate.page_draft.discard_confirm_title }}</template>
+    <template #body>
+      <p class="text-sm text-fg-muted">{{ translate.page_draft.discard_confirm_text }}</p>
+    </template>
+    <template #footer>
+      <button type="button" class="btn btn-outline-dark btn-sm" @click="closeModal('modalDiscardDraft')">
+        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 18 6M6 6l12 12" />
+        </svg>
+        {{ translate.page_draft.discard_confirm_cancel }}
+      </button>
+      <button type="button" class="btn btn-danger btn-sm" @click="discardDraft">
+        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"
+          />
+        </svg>
+        {{ translate.page_draft.discard_confirm_ok }}
+      </button>
+    </template>
+  </Modal>
 
   <MediathequeModale :url-media="urls.load_media" :translate="translate.page_content_form.mediatheque" />
 </template>

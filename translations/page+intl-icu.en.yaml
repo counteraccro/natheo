@@ -180,3 +180,27 @@ page.error.landing.remove: 'The site must always have a landing page: set anothe
 page.content.info.not_found: Content not found, it may have been deleted.
 page.page_content_block.faq_id: 'FAQ ID'
 page.page_content_block.listing_id: 'Category ID'
+page.save.draft_success: 'Draft saved: the live version is unchanged.'
+page.grid.draft_badge: 'Unpublished changes'
+page.error.archived: 'This page is archived: it can no longer be edited.'
+page.error.not_published: 'Only a published page can have a draft.'
+page.error.landing.archive: 'The landing page cannot be archived. Set another landing page first.'
+page.archive.success: 'The page <b>{label}</b> has been archived.'
+page.confirm.archive.message: 'Do you confirm archiving the page <b>{label}</b>? It will be removed from the site and can no longer be edited.'
+page.draft.publish_success: 'The changes to the page <b>{label}</b> are live.'
+page.draft.discard_success: 'The unpublished changes have been discarded.'
+page.draft.badge: 'Unpublished changes'
+page.draft.banner: 'This page has unpublished changes: the live version stays unchanged until they are published.'
+page.draft.published_info: 'Live page: saving creates a draft, publish it to update the page.'
+page.draft.archived_banner: 'This page is archived: it is no longer displayed on the site and can no longer be edited.'
+page.draft.button_save: 'Save draft'
+page.draft.button_publish: Publish
+page.draft.button_discard: Discard
+page.draft.publish_confirm_title: 'Publish the changes?'
+page.draft.publish_confirm_text: 'The live version will be replaced by the content of the editor.'
+page.draft.publish_confirm_cancel: Cancel
+page.draft.publish_confirm_ok: Publish
+page.draft.discard_confirm_title: 'Discard the changes?'
+page.draft.discard_confirm_text: 'All unpublished changes will be lost. The live version is not modified.'
+page.draft.discard_confirm_cancel: Cancel
+page.draft.discard_confirm_ok: Discard

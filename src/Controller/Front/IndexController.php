@@ -153,6 +153,7 @@ class IndexController extends AppFrontController
             'basePath' => $request->getBasePath(),
             'userToken' => $token,
             'userInfo' => $userInfo,
+            'preview' => $request->query->getBoolean('preview'),
         ];
 
         $seoRobots = $this->optionSystemFrontService->getMetaRobots(true);

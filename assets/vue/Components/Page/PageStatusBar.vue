@@ -6,7 +6,7 @@
  */
 
 import { defineComponent, PropType } from 'vue';
-import { Locales, Page, PageTranslations, Urls } from '@/ts/Page/Page.type';
+import { Locales, Page, PageState, PageTranslations, Urls } from '@/ts/Page/Page.type';
 import axios from 'axios';
 import { withCsrf } from '@/vue/Composables/Admin/csrf';
 import { initFlowbite } from 'flowbite';
@@ -40,8 +40,12 @@ export default defineComponent({
       type: String,
       default: '',
     },
+    state: {
+      type: Object as PropType<PageState>,
+      required: true,
+    },
   },
-  emits: ['restore-page', 'go-to-error', 'save-page', 'page-preview'],
+  emits: ['restore-page', 'go-to-error', 'save-page', 'page-preview', 'publish-page', 'discard-page'],
   data() {
     return {
       autoSaveTimeout: null as ReturnType<typeof setTimeout> | null,
@@ -64,7 +68,7 @@ export default defineComponent({
     page: {
       deep: true,
       handler() {
-        if (!this.pageWatchReady) {
+        if (!this.pageWatchReady || this.state.read_only) {
           return;
         }
 
@@ -205,7 +209,8 @@ export default defineComponent({
     class="fixed right-0 bottom-0 left-0 lg:left-64 z-40 shrink-0 px-4 sm:px-6 py-3 flex items-center justify-between bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]"
   >
     <div class="flex items-center gap-2 flex-1 min-w-0">
-      <template v-if="!hasAnyError">
+      <template v-if="state.read_only"></template>
+      <template v-else-if="!hasAnyError">
         <p
           v-if="autoSaveStatus === 'saving'"
           class="text-xs flex items-center gap-2 text-gray-500 dark:text-gray-400 shrink-0"
@@ -289,7 +294,12 @@ export default defineComponent({
         </svg>
         {{ translate.btn_back }}
       </a>
-      <button class="btn btn-success btn-sm" @click="$emit('page-preview')" :disabled="page.id === null">
+      <button
+        v-if="!state.read_only"
+        class="btn btn-success btn-sm"
+        @click="$emit('page-preview')"
+        :disabled="page.id === null"
+      >
         <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             stroke-linecap="round"
@@ -300,7 +310,42 @@ export default defineComponent({
         </svg>
         {{ translate.page_save.btn_see_ext }}
       </button>
-      <button class="btn btn-primary btn-sm" :disabled="hasAnyError" @click="$emit('save-page')">
+      <template v-if="state.is_published">
+        <button v-if="state.has_draft" class="btn btn-outline-dark btn-sm" @click="$emit('discard-page')">
+          <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M3 9h13a5 5 0 0 1 0 10H7M3 9l4-4M3 9l4 4"
+            />
+          </svg>
+          {{ translate.page_draft.button_discard }}
+        </button>
+        <button class="btn btn-outline-dark btn-sm" :disabled="hasAnyError" @click="$emit('save-page')">
+          <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+          {{ translate.page_draft.button_save }}
+        </button>
+        <button class="btn btn-primary btn-sm" :disabled="hasAnyError" @click="$emit('publish-page')">
+          <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 5v14m0-14 4 4m-4-4-4 4M5 19h14"
+            />
+          </svg>
+          {{ translate.page_draft.button_publish }}
+        </button>
+      </template>
+      <button
+        v-else-if="!state.read_only"
+        class="btn btn-primary btn-sm"
+        :disabled="hasAnyError"
+        @click="$emit('save-page')"
+      >
         <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
         </svg>

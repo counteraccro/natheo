@@ -35,6 +35,7 @@ export interface FrontDatas {
   basePath: string;
   userToken: string;
   userInfo: FrontUserInfo | null;
+  preview: boolean;
 }
 
 export interface FrontPaginationTranslate {
@@ -212,6 +213,8 @@ export interface FrontPage {
   contents: FrontPageContent[];
   openComment: boolean;
   menus?: FrontPageMenus;
+  /** Rendu des contenus d'un brouillon prévisualisé, indexé par leur id négatif */
+  preview_contents?: Record<number, unknown>;
 }
 
 export interface FrontPageResponse {

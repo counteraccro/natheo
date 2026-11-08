@@ -148,6 +148,37 @@ export interface PageTranslations {
   page_comment: PageCommentTranslate;
   page_seo: PageSeoTranslate;
   page_menu: PageMenuTranslate;
+  page_draft: PageDraftTranslate;
+}
+
+export interface PageDraftTranslate {
+  badge: string;
+  banner: string;
+  published_info: string;
+  archived_banner: string;
+  button_save: string;
+  button_publish: string;
+  button_discard: string;
+  publish_confirm_title: string;
+  publish_confirm_text: string;
+  publish_confirm_cancel: string;
+  publish_confirm_ok: string;
+  discard_confirm_title: string;
+  discard_confirm_text: string;
+  discard_confirm_cancel: string;
+  discard_confirm_ok: string;
+}
+
+/**
+ * État de la page renvoyé par le serveur : publiée (modifiée via un brouillon), archivée (lecture seule)
+ */
+export interface PageState {
+  is_published: boolean;
+  read_only: boolean;
+  has_draft: boolean;
+  draft_update_at: string | null;
+  draft_user: string | null;
+  published_urls: Record<string, string>;
 }
 
 export interface Urls {
@@ -158,6 +189,8 @@ export interface Urls {
   auto_complete_tag: string;
   tag_by_name: string;
   save: string;
+  publish_draft: string;
+  discard_draft: string;
   new_content: string;
   liste_content_by_id: string;
   is_unique_url_page: string;

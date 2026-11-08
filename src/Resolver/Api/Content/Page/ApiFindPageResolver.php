@@ -43,6 +43,8 @@ class ApiFindPageResolver extends AppApiResolver implements ValueResolverInterfa
         foreach ($tabParameters as $parameter => $value) {
             if (in_array($parameter, ['show_menus', 'show_tags', 'show_statistiques'])) {
                 $value = $request->query->get($parameter, true);
+            } elseif ($parameter === ApiFindPageParameter::PREVIEW->value) {
+                $value = $request->query->get($parameter, false);
             } else {
                 $value = $request->query->get($parameter, '');
             }
@@ -56,7 +58,7 @@ class ApiFindPageResolver extends AppApiResolver implements ValueResolverInterfa
             }
 
             // Accepte true/false, 1/0, yes/no, on/off ; toute autre valeur est refusée
-            if (in_array($parameter, ['show_menus', 'show_tags', 'show_statistiques'])) {
+            if (in_array($parameter, ['show_menus', 'show_tags', 'show_statistiques', 'preview'])) {
                 $value = is_bool($value) ? $value : filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
                 if ($value === null) {
                     throw new HttpException(
@@ -68,11 +70,7 @@ class ApiFindPageResolver extends AppApiResolver implements ValueResolverInterfa
                 }
             }
 
-            if (
-                !is_bool($value) &&
-                empty($value) &&
-                isset(ApiFindPageParameter::PARAMS_DEFAULT_VALUE[$parameter])
-            ) {
+            if (!is_bool($value) && empty($value) && isset(ApiFindPageParameter::PARAMS_DEFAULT_VALUE[$parameter])) {
                 $value = ApiFindPageParameter::PARAMS_DEFAULT_VALUE[$parameter];
             }
 
@@ -89,6 +87,7 @@ class ApiFindPageResolver extends AppApiResolver implements ValueResolverInterfa
             $tabParameters[ApiFindPageParameter::SHOW_STATISTIQUES->value],
             $tabParameters[ApiFindPageParameter::MENU_POSITION->value],
             $tabParameters[ApiFindPageParameter::USER_TOKEN->value],
+            $tabParameters[ApiFindPageParameter::PREVIEW->value],
         );
 
         $this->validateDto($dto);

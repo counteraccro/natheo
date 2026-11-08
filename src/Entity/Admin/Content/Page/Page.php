@@ -129,6 +129,29 @@ class Page
         $this->pageMetas = new ArrayCollection();
     }
 
+    /**
+     * Copie de travail jamais enregistrée : les traductions sont dupliquées, les autres collections
+     * sont détachées de celles de la page d'origine
+     */
+    public function __clone()
+    {
+        $translations = $this->pageTranslations;
+        $this->pageTranslations = new ArrayCollection();
+        foreach ($translations as $translation) {
+            $copy = clone $translation;
+            $copy->setPage($this);
+            $this->pageTranslations->add($copy);
+        }
+
+        $this->pageContents = new ArrayCollection($this->pageContents->toArray());
+        $this->tags = new ArrayCollection($this->tags->toArray());
+        $this->menus = new ArrayCollection($this->menus->toArray());
+        $this->pageMetas = new ArrayCollection($this->pageMetas->toArray());
+        $this->pageStatistiques = new ArrayCollection($this->pageStatistiques->toArray());
+        $this->menuElements = new ArrayCollection($this->menuElements->toArray());
+        $this->comments = new ArrayCollection($this->comments->toArray());
+    }
+
     #[ORM\PrePersist]
     public function onPrePersist(): void
     {

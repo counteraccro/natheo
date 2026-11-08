@@ -180,3 +180,27 @@ page.error.landing.remove: 'El sitio debe tener siempre una landing page: defina
 page.content.info.not_found: Contenido no encontrado, es posible que se haya eliminado.
 page.page_content_block.faq_id: 'Identificador de la FAQ'
 page.page_content_block.listing_id: 'Identificador de la categoría'
+page.save.draft_success: 'Borrador guardado: la versión en línea no se modifica.'
+page.grid.draft_badge: 'Cambios no publicados'
+page.error.archived: 'Esta página está archivada: ya no se puede modificar.'
+page.error.not_published: 'Solo una página publicada puede tener un borrador.'
+page.error.landing.archive: 'La landing page no se puede archivar. Defina primero otra landing page.'
+page.archive.success: 'La página <b>{label}</b> se ha archivado.'
+page.confirm.archive.message: '¿Confirma el archivado de la página <b>{label}</b>? Se retirará del sitio y ya no se podrá modificar.'
+page.draft.publish_success: 'Los cambios de la página <b>{label}</b> están en línea.'
+page.draft.discard_success: 'Los cambios no publicados se han descartado.'
+page.draft.badge: 'Cambios no publicados'
+page.draft.banner: 'Esta página tiene cambios no publicados: la versión en línea no cambia hasta que se publiquen.'
+page.draft.published_info: 'Página en línea: al guardar se crea un borrador, publíquelo para actualizar la página.'
+page.draft.archived_banner: 'Esta página está archivada: ya no se muestra en el sitio y ya no se puede modificar.'
+page.draft.button_save: 'Guardar borrador'
+page.draft.button_publish: Publicar
+page.draft.button_discard: Descartar
+page.draft.publish_confirm_title: '¿Publicar los cambios?'
+page.draft.publish_confirm_text: 'La versión en línea se sustituirá por el contenido del editor.'
+page.draft.publish_confirm_cancel: Cancelar
+page.draft.publish_confirm_ok: Publicar
+page.draft.discard_confirm_title: '¿Descartar los cambios?'
+page.draft.discard_confirm_text: 'Se perderán todos los cambios no publicados. La versión en línea no se modifica.'
+page.draft.discard_confirm_cancel: Cancelar
+page.draft.discard_confirm_ok: Descartar

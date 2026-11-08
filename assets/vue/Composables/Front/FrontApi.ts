@@ -24,11 +24,20 @@ interface ApiErrorBody {
 }
 
 export class FrontApi {
+  private previewContents: Record<number, unknown> = {};
+
   constructor(
     private readonly urls: FrontUrls,
     private readonly apiToken: string,
     private readonly userToken: string
   ) {}
+
+  /**
+   * Contenus d'un brouillon prévisualisé : ils n'existent pas en base et sont servis sans appel à l'API
+   */
+  setPreviewContents(contents: Record<number, unknown>): void {
+    this.previewContents = contents;
+  }
 
   getOptionSystems(): Promise<FrontOptionsSystem> {
     return this.request<FrontOptionsSystem>({ method: 'get', url: this.urls.apiOptionsSystems });
@@ -39,6 +48,10 @@ export class FrontApi {
   }
 
   getContentPage<T>(params: QueryParams): Promise<T> {
+    const previewContent = this.previewContents[Number(params.id)];
+    if (previewContent !== undefined) {
+      return Promise.resolve(previewContent as T);
+    }
     return this.request<T>({ method: 'get', url: this.urls.apiPageContent, params: this.clean(params) });
   }
 

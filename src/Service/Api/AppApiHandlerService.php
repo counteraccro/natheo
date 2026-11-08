@@ -8,6 +8,7 @@ declare(strict_types=1);
  */
 namespace App\Service\Api;
 
+use App\Service\Admin\Content\Page\PageDraftService;
 use App\Service\Admin\Content\Page\PageService;
 use App\Service\Admin\MarkdownEditorService;
 use App\Service\Admin\System\OptionSystemService;
@@ -44,6 +45,7 @@ class AppApiHandlerService
                 'parameterBag' => ParameterBagInterface::class,
                 'optionSystemService' => OptionSystemService::class,
                 'pageService' => PageService::class,
+                'pageDraftService' => PageDraftService::class,
                 'apiMenuService' => ApiMenuService::class,
                 'apiPageContentService' => ApiPageContentService::class,
                 'kernel' => KernelInterface::class,
@@ -183,6 +185,17 @@ class AppApiHandlerService
     protected function getPageService(): PageService
     {
         return $this->handlers->get('pageService');
+    }
+
+    /**
+     * Retourne PageDraftService
+     * @return PageDraftService
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getPageDraftService(): PageDraftService
+    {
+        return $this->handlers->get('pageDraftService');
     }
 
     /**

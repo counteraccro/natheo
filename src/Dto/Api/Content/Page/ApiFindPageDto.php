@@ -92,7 +92,25 @@ class ApiFindPageDto extends AppApiDto
             Assert\Type(type: 'string', message: 'The user_token parameter must be a string'),
         ]
         private readonly string $userToken,
+
+        /**
+         * Prévisualisation du brouillon, réservée aux utilisateurs qui peuvent modifier la page
+         * @var bool
+         */
+        #[
+            Assert\Type(type: 'boolean', message: 'The preview parameter must be a boolean'),
+        ]
+        private readonly bool $preview = false,
     ) {}
+
+    /**
+     * Prévisualisation du brouillon
+     * @return bool
+     */
+    public function isPreview(): bool
+    {
+        return $this->preview;
+    }
 
     /**
      * Slug

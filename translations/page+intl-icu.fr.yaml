@@ -180,3 +180,27 @@ page.error.landing.remove: 'Le site doit toujours avoir une landing page : défi
 page.content.info.not_found: 'Contenu introuvable, il a peut-être été supprimé.'
 page.page_content_block.faq_id: 'Identifiant de la FAQ'
 page.page_content_block.listing_id: 'Identifiant de la catégorie'
+page.save.draft_success: 'Brouillon enregistré : la version en ligne n''est pas modifiée.'
+page.grid.draft_badge: 'Modifications non publiées'
+page.error.archived: 'Cette page est archivée : elle ne peut plus être modifiée.'
+page.error.not_published: 'Seule une page publiée peut avoir un brouillon.'
+page.error.landing.archive: 'La landing page ne peut pas être archivée. Définissez d''abord une autre landing page.'
+page.archive.success: 'La page <b>{label}</b> a été archivée.'
+page.confirm.archive.message: 'Confirmez-vous l''archivage de la page <b>{label}</b> ? Elle sera retirée du site et ne pourra plus être modifiée.'
+page.draft.publish_success: 'Les modifications de la page <b>{label}</b> sont en ligne.'
+page.draft.discard_success: 'Les modifications non publiées ont été abandonnées.'
+page.draft.badge: 'Modifications non publiées'
+page.draft.banner: 'Cette page a des modifications non publiées : la version en ligne reste inchangée tant qu''elles ne sont pas publiées.'
+page.draft.published_info: 'Page en ligne : vos enregistrements créent un brouillon, publiez-le pour mettre la page à jour.'
+page.draft.archived_banner: 'Cette page est archivée : elle n''est plus affichée sur le site et ne peut plus être modifiée.'
+page.draft.button_save: 'Enregistrer le brouillon'
+page.draft.button_publish: Publier
+page.draft.button_discard: Abandonner
+page.draft.publish_confirm_title: 'Publier les modifications ?'
+page.draft.publish_confirm_text: 'La version en ligne sera remplacée par le contenu de l''éditeur.'
+page.draft.publish_confirm_cancel: Annuler
+page.draft.publish_confirm_ok: Publier
+page.draft.discard_confirm_title: 'Abandonner les modifications ?'
+page.draft.discard_confirm_text: 'Toutes les modifications non publiées seront perdues. La version en ligne n''est pas modifiée.'
+page.draft.discard_confirm_cancel: Annuler
+page.draft.discard_confirm_ok: Abandonner
