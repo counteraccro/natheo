@@ -157,7 +157,14 @@ class PageRepository extends ServiceEntityRepository
         ?int $pageId = null,
         ?bool $landing = null,
     ): Paginator {
+        // Données du résumé chargées avec les pages
         $query = $this->createQueryBuilder('p')
+            ->addSelect('pt', 'u', 'ou', 'tag', 'tagt')
+            ->leftJoin('p.pageTranslations', 'pt')
+            ->leftJoin('p.user', 'u')
+            ->leftJoin('u.optionsUser', 'ou')
+            ->leftJoin('p.tags', 'tag')
+            ->leftJoin('tag.tagTranslations', 'tagt')
             ->where('p.disabled = :disabled')
             ->setParameter('disabled', false)
             ->andWhere('p.status = :status')

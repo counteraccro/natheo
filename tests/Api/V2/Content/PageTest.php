@@ -247,4 +247,29 @@ class PageTest extends AppApiV2TestCase
         $this->assertEquals(422, $this->requestV2('GET', '/pages?category=inconnue')->getStatusCode());
         $this->assertEquals(422, $this->requestV2('GET', '/pages?tag=abc')->getStatusCode());
     }
+
+    /**
+     * Nombre de requêtes de la liste indépendant du nombre de pages renvoyées
+     * @return void
+     */
+    public function testCollectionQueryCount(): void
+    {
+        $tag = $this->createTag(customData: ['disabled' => false]);
+        foreach ($this->locales as $locale) {
+            $this->createTagTranslation($tag, ['locale' => $locale]);
+        }
+        for ($i = 0; $i < 6; $i++) {
+            $this->createPageTag($this->createPageAllDataDefault(), $tag);
+        }
+
+        $counts = [];
+        foreach ([2, 6] as $itemsPerPage) {
+            $this->em->clear();
+            $this->client->enableProfiler();
+            $content = $this->decode($this->requestV2('GET', '/pages?tag=' . $tag->getId() . '&itemsPerPage=' . $itemsPerPage));
+            $this->assertCount($itemsPerPage, $content['member']);
+            $counts[] = $this->client->getProfile()->getCollector('db')->getQueryCount();
+        }
+        $this->assertEquals($counts[0], $counts[1]);
+    }
 }
