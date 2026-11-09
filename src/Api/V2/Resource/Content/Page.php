@@ -13,14 +13,12 @@ use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\QueryParameter;
 use App\Api\V2\Output\Content\Author;
 use App\Api\V2\Output\Content\Meta;
 use App\Api\V2\Output\Content\Tag;
 use App\Api\V2\Parameter\LocaleParameter;
 use App\Api\V2\Parameter\PageCategoryParameter;
-use App\Api\V2\State\Processor\Content\ReadPageProcessor;
 use App\Api\V2\State\Provider\Content\PageCollectionProvider;
 use App\Api\V2\State\Provider\Content\PageProvider;
 use Symfony\Component\Serializer\Attribute\Groups;
@@ -71,20 +69,6 @@ use Symfony\Component\Validator\Constraints as Assert;
                         constraints: [new Assert\Regex(pattern: '/^[1-9][0-9]*$/')],
                     ),
                 ],
-            ),
-            new Post(
-                uriTemplate: '/pages/{id}/read',
-                uriVariables: ['id'],
-                requirements: ['id' => '\d+'],
-                status: 204,
-                description: 'Compte une lecture de la page',
-                security: "is_granted('ROLE_READ_API')",
-                input: false,
-                output: false,
-                read: false,
-                deserialize: false,
-                validate: false,
-                processor: ReadPageProcessor::class,
             ),
         ],
     ),

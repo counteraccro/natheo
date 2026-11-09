@@ -108,7 +108,7 @@ class PageTest extends AppApiV2TestCase
     }
 
     /**
-     * POST /pages/{id}/read compte une lecture
+     * POST /page_reads compte une lecture de la page désignée par son IRI
      * @return void
      */
     public function testRead(): void
@@ -120,7 +120,7 @@ class PageTest extends AppApiV2TestCase
         $id = $page->getId();
         $reads = (int) $page->getPageStatistiqueByKey(PageStatistics::NB_READ->value)->getValue();
 
-        $response = $this->requestV2('POST', '/pages/' . $id . '/read');
+        $response = $this->requestV2('POST', '/page_reads', body: ['page' => self::PREFIX . '/pages/' . $id]);
         $this->assertEquals(204, $response->getStatusCode());
         $this->assertEmpty($response->getContent());
 
@@ -128,8 +128,11 @@ class PageTest extends AppApiV2TestCase
         $page = $this->em->getRepository(Page::class)->find($id);
         $this->assertEquals($reads + 1, (int) $page->getPageStatistiqueByKey(PageStatistics::NB_READ->value)->getValue());
 
-        $this->assertProblem($this->requestV2('POST', '/pages/' . $draft->getId() . '/read'), 404);
-        $this->assertProblem($this->requestV2('POST', '/pages/' . $id . '/read', self::HEADER_NONE), 401);
+        $this->assertProblem($this->requestV2('POST', '/page_reads', body: ['page' => self::PREFIX . '/pages/' . $draft->getId()]), 404);
+        $this->assertProblem($this->requestV2('POST', '/page_reads', body: ['page' => self::PREFIX . '/pages/999999999']), 404);
+        $this->assertProblem($this->requestV2('POST', '/page_reads', body: ['page' => '/api/v2/inconnue/1']), 400);
+        $this->assertProblem($this->requestV2('POST', '/page_reads', body: []), 422);
+        $this->assertProblem($this->requestV2('POST', '/page_reads', self::HEADER_NONE, ['page' => self::PREFIX . '/pages/' . $id]), 401);
     }
 
     /**
