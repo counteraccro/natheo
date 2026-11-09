@@ -101,6 +101,14 @@ Both platforms are supported, so every migration exists **twice, with the same v
 - **AJAX write actions** (save, delete, disable, switch): check a CSRF token with `AppAdminController::checkCsrf()` (header `X-CSRF-TOKEN`, sent from Vue with `withCsrf()` from `assets/vue/Composables/Admin/csrf.ts`; in grids, via the `'csrf'` key of the action).
 - **Content rights** (Page, FAQ, Menu, Tag): check `ContentVoter::EDIT` / `DISABLE` / `DELETE` with `AppAdminController::checkContentAccess()`, which returns the translated `<domain>.error.forbidden` JSON error.
 
+### API v2 (API Platform)
+The v1 (`src/Controller/Api/v1`, `/api/v1`) stays as it is; the v2 is served by API Platform 5 under `/api/v2` (`config/packages/api_platform.yaml`), JSON-LD/Hydra by default, plain JSON with `Accept: application/json`, errors in `application/problem+json`. Swagger UI on `/api/v2/docs` is public while `OS_OPEN_API` is on (`ApiDocumentationListener` returns 404 otherwise).
+- **Resources**: DTO classes in `src/ApiResource/<Domain>/<Name>.php` (singular PascalCase, `shortName` = class name), never Doctrine entities: the Doctrine integration is disabled and only `src/ApiResource` is scanned. Operations are declared explicitly on each resource.
+- **State**: one provider per resource read (`src/State/Api/<Domain>/<Name>Provider.php`) and one processor per write operation (`<Operation><Name>Processor.php`, e.g. `CreatePageProcessor`). They only map data and call the services of `src/Service/Api/`, where the logic stays.
+- **Writes**: input DTO validated with Symfony constraints (`input:` class in `src/ApiResource/<Domain>/Input/`), PATCH in `application/merge-patch+json`, no CSRF (stateless token).
+- **Security**: authentication stays on the `api` firewall (`ApiAuthenticator`, Bearer token, IP filter, `OS_OPEN_API`); each operation declares its role with `security: "is_granted('ROLE_READ_API')"` (`ROLE_WRITE_API`, `ROLE_ADMIN_API`). Content rights (`ContentVoter`) are checked on the entity in the processor or the service, not on the DTO.
+- **Tests**: `tests/Api/v2/` with `AppApiV2TestCase`; `tests/ApiResource/` holds resources loaded in the test env only.
+
 ## Code style
 
 Inline (`//`) comments must stay short and concise: 2 lines maximum, and only when they explain the *why*, not narrate the *what* — if a comment only restates what the code already says, remove it. Prefer a clearer name or a shorter comment over a long explanation. Neither rule applies to method-level PHPDoc blocks (`@param`, `@return`, `@throws`), which stay descriptive as elsewhere in the codebase.
