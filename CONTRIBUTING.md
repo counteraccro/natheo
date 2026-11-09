@@ -30,17 +30,18 @@ Ce qui est fait automatiquement à la création (workflow `issue-triage`) :
 
 Les points de sécurité d'un audit sont détaillés dans une advisory privée ([SECURITY.md](SECURITY.md)) ; l'issue d'audit n'en cite que la correction attendue.
 
-Une Epic n'a pas de branche. Ses issues filles lui sont rattachées en **sous-issues** (panneau « Sub-issues » de l'Epic, qui affiche l'avancement) ; la rubrique « Issues » les cite dans l'ordre de traitement, et liste en texte celles qui ne sont pas encore créées.
+Une Epic a sa propre branche (voir [Branche d'Epic](#branche-depic)). Ses issues filles lui sont rattachées en **sous-issues** (panneau « Sub-issues » de l'Epic, qui affiche l'avancement) ; la rubrique « Issues » les cite dans l'ordre de traitement, et liste en texte celles qui ne sont pas encore créées.
 
 ### 2. La branche
 
-Elle part de `master` à jour, avec le numéro de l'issue :
+Elle part de `master` à jour (de la branche de son Epic pour une issue fille), avec le numéro de l'issue :
 
 | Issue | Branche |
 |---|---|
 | Bug | `bug/B-<n>-<slug>` |
 | Audit | `audit/A-<n>-<slug>` |
 | Feature, évolution, clean code | `feature/N-<n>-<slug>` |
+| Epic | `epic/E-<n>-<slug>` |
 | Maintenance sans issue (montée de version, configuration) | `maintenance/<slug>` |
 | Version publiée à corriger (voir [Versions maintenues](#versions-maintenues)) | `release/<majeure>.<mineure>` |
 
@@ -50,14 +51,25 @@ Un correctif destiné à une version déjà sortie part de la branche `release/<
 
 ### 3. La pull request
 
-- Titre : `Bug/B-<n> Titre`, `Audit/A-<n> Titre` ou `Feature/N-<n> Titre`.
+- Titre : `Bug/B-<n> Titre`, `Audit/A-<n> Titre`, `Feature/N-<n> Titre` ou `Epic/E-<n> Titre`.
+- Base : `master`, ou la branche de l'Epic pour une issue fille.
 - Description : le template commence par `Closes #<n>`. C'est ce qui lie la PR à l'issue et ferme l'issue au merge.
 - Les vérifications du template (tests, build, traductions, migration, fixtures) sont à cocher avant de demander la relecture.
 
 Ce qui est fait automatiquement (workflow `pull-request`) :
 - labels de technologie et de couche selon les fichiers modifiés ;
 - recopie depuis l'issue de ses labels (hors statut) et du milestone ;
-- contrôle du nom de branche, du titre et de `Closes #<n>` : le check échoue si l'un des trois ne respecte pas la convention.
+- contrôle du nom de branche, du titre et de `Closes #<n>` : le check échoue si l'un des trois ne respecte pas la convention ;
+- au merge dans une branche d'Epic, fermeture de l'issue liée (GitHub ne le fait qu'au merge sur `master`).
+
+### Branche d'Epic
+
+Les issues d'une Epic ne passent pas une à une sur `master` :
+
+1. à la première issue de l'Epic, créer `epic/E-<n>-<slug>` depuis `master` à jour (`<n>` : numéro de l'Epic) ;
+2. chaque issue fille part de cette branche, et sa PR la vise ; l'issue est fermée au merge ;
+3. pour reprendre les nouveautés de `master`, merger `master` dans la branche d'Epic ;
+4. quand toutes les issues sont faites, ouvrir la PR `Epic/E-<n> Titre` de la branche d'Epic vers `master`, avec `Closes #<n>` : l'Epic est fermée au merge.
 
 ## Versions maintenues
 
