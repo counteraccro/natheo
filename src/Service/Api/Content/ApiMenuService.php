@@ -38,6 +38,20 @@ class ApiMenuService extends AppApiService
     }
 
     /**
+     * Retourne un menu actif en fonction de son id
+     * @param int $id
+     * @return Menu|null
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function findActiveMenu(int $id): ?Menu
+    {
+        /** @var Menu|null $menu */
+        $menu = $this->findOneByCriteria(Menu::class, ['id' => $id, 'disabled' => false]);
+        return $menu;
+    }
+
+    /**
      * Format un menu
      * @param array $menu
      * @param string $locale
@@ -50,19 +64,6 @@ class ApiMenuService extends AppApiService
     }
 
     /**
-     * Retourne un menu actif et ses éléments de premier niveau en fonction de son id, [] s'il n'existe pas
-     * @param int $id
-     * @return array
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    public function findMenuForApi(int $id): array
-    {
-        $menu = $this->getRepository(Menu::class)->getByIdForApi($id);
-        return $this->addMenuElements($menu);
-    }
-
-    /**
      * Retourne un menu en fonction de son id ou de pageUrl
      * @param ApiFindMenuDto $dto
      * @return array
@@ -71,31 +72,19 @@ class ApiMenuService extends AppApiService
      */
     private function getMenuByIdOrPageUrl(ApiFindMenuDto $dto): array
     {
+        $repository = $this->getRepository(Menu::class);
         if ($dto->getId() !== 0) {
-            return $this->findMenuForApi($dto->getId());
+            $menu = $repository->getByIdForApi($dto->getId());
+        } else {
+            $menu = $repository->getByPageUrlAndPositionForApi($dto->getPageSlug(), $dto->getPosition());
         }
-        $menu = $this->getRepository(Menu::class)->getByPageUrlAndPositionForApi($dto->getPageSlug(), $dto->getPosition());
-        return $this->addMenuElements($menu);
-    }
 
-    /**
-     * Garde le premier menu trouvé et lui ajoute ses éléments de premier niveau actifs
-     * @param array $menus
-     * @return array
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    private function addMenuElements(array $menus): array
-    {
-        if (empty($menus)) {
-            return [];
+        if (!empty($menu)) {
+            $menu = $menu[0];
+            $repository = $this->getRepository(MenuElement::class);
+            $menu['menuElements'] = $repository->getMenuElementByMenuAndParent($menu['id'], null, false);
         }
-        $menu = $menus[0];
-        $menu['menuElements'] = $this->getRepository(MenuElement::class)->getMenuElementByMenuAndParent(
-            $menu['id'],
-            null,
-            false,
-        );
+
         return $menu;
     }
 }

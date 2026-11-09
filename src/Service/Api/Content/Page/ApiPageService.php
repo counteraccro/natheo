@@ -143,11 +143,11 @@ class ApiPageService extends AppApiService
         /** @var MenuRepository $menuRepo */
         $menuRepo = $apiMenuService->getRepository(Menu::class);
 
-        foreach ($this->getMenuIdsForPage($page) as $menu) {
-            if (!$this->isMenuPositionRequested($menu['position'], $dto)) {
+        foreach ($this->getMenusForPage($page) as $menu) {
+            if (!$this->isMenuPositionRequested($menu->getPosition(), $dto)) {
                 continue;
             }
-            $pageApi = $this->getFormatedMenu($menu['id'], $dto->getLocale(), $pageApi, $apiMenuService, $menuRepo);
+            $pageApi = $this->getFormatedMenu($menu->getId(), $dto->getLocale(), $pageApi, $apiMenuService, $menuRepo);
         }
         return $pageApi;
     }
@@ -156,46 +156,38 @@ class ApiPageService extends AppApiService
      * Retourne les menus affichés sur une page, dans l'ordre d'affichage : ceux de la page puis les menus par défaut
      * des positions libres (pas de menu gauche par défaut si la page a un menu droit, et inversement)
      * @param Page $page
-     * @return array<array{position: int, id: int}>
+     * @return Menu[]
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getMenuIdsForPage(Page $page): array
+    public function getMenusForPage(Page $page): array
     {
-        /** @var MenuRepository $menuRepo */
-        $menuRepo = $this->getRepository(Menu::class);
-
-        $tabDefault = [];
-        foreach ($menuRepo->getDefaultForApi() as $default) {
-            $tabDefault[$default['position']] = $default['id'];
-        }
-
-        $return = [];
-        $isRightMenu = $isLeftMenu = false;
+        $menus = [];
+        $usedPositions = [];
         foreach ($page->getMenus() as $menu) {
             if ($menu->isDisabled()) {
                 continue;
             }
-            unset($tabDefault[$menu->getPosition()]);
-            if ($menu->getPosition() === MenuPosition::POSITION_RIGHT->value) {
-                $isRightMenu = true;
-            }
-            if ($menu->getPosition() === MenuPosition::POSITION_LEFT->value) {
-                $isLeftMenu = true;
-            }
-            $return[] = ['position' => $menu->getPosition(), 'id' => $menu->getId()];
+            $menus[] = $menu;
+            $usedPositions[$menu->getPosition()] = true;
         }
 
-        foreach ($tabDefault as $position => $id) {
-            if ($position === MenuPosition::POSITION_LEFT->value && $isRightMenu) {
-                continue;
-            }
-            if ($position === MenuPosition::POSITION_RIGHT->value && $isLeftMenu) {
-                continue;
-            }
-            $return[] = ['position' => $position, 'id' => $id];
+        $sides = [MenuPosition::POSITION_LEFT->value, MenuPosition::POSITION_RIGHT->value];
+        $hasSideMenu = isset($usedPositions[$sides[0]]) || isset($usedPositions[$sides[1]]);
+
+        /** @var MenuRepository $menuRepo */
+        $menuRepo = $this->getRepository(Menu::class);
+        $defaults = [];
+        foreach ($menuRepo->findActiveDefaults() as $default) {
+            $defaults[$default->getPosition()] = $default;
         }
-        return $return;
+        foreach ($defaults as $position => $default) {
+            if (isset($usedPositions[$position]) || ($hasSideMenu && in_array($position, $sides, true))) {
+                continue;
+            }
+            $menus[] = $default;
+        }
+        return $menus;
     }
 
     /**
@@ -368,29 +360,20 @@ class ApiPageService extends AppApiService
     }
 
     /**
-     * Retourne les pages publiées, filtrées par catégorie (libellé traduit ou slug) et / ou tag
-     * Retourne null si la catégorie demandée n'existe pas
+     * Retourne les pages publiées, filtrées par catégorie et / ou par tag actif
      * @param int $page
      * @param int $limit
-     * @param string|null $category
-     * @param string|null $tag
-     * @return Paginator|null
+     * @param PageCategory|null $category
+     * @param int|null $tagId
+     * @return Paginator
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function findPublishedPages(int $page, int $limit, ?string $category, ?string $tag): ?Paginator
+    public function findPublishedPages(int $page, int $limit, ?PageCategory $category, ?int $tagId): Paginator
     {
-        $idCategory = 0;
-        if ($category !== null && $category !== '') {
-            $idCategory = $this->findCategoryId($category);
-            if ($idCategory === 0) {
-                return null;
-            }
-        }
-
         /** @var PageRepository $pageRepository */
         $pageRepository = $this->getRepository(Page::class);
-        return $pageRepository->getPublishedPagesPaginate($page, $limit, $idCategory, $tag ?? '');
+        return $pageRepository->getPublishedPagesPaginate($page, $limit, $category, $tagId);
     }
 
     /**

@@ -9,6 +9,7 @@ use App\Entity\Admin\Content\Page\PageTranslation;
 use App\Entity\Admin\Content\Tag\Tag;
 use App\Entity\Admin\Content\Tag\TagTranslation;
 use App\Enum\Admin\Content\Page\PageContentType;
+use App\Enum\Admin\Content\Page\PageCategory;
 use App\Enum\Admin\Content\Page\PageStatus;
 use App\Enum\Admin\Content\Page\PageValidationStatus;
 use App\Repository\Trait\OrderedQueryTrait;
@@ -138,15 +139,15 @@ class PageRepository extends ServiceEntityRepository
     }
 
     /**
-     * Retourne les pages publiées et actives, filtrées par catégorie (0 = toutes) et par libellé de tag ('' = tous),
+     * Retourne les pages publiées et actives, filtrées par catégorie et / ou par tag actif,
      * les plus récemment modifiées en premier
      * @param int $page
      * @param int $limit
-     * @param int $categoryId
-     * @param string $tag
+     * @param PageCategory|null $category
+     * @param int|null $tagId
      * @return Paginator
      */
-    public function getPublishedPagesPaginate(int $page, int $limit, int $categoryId = 0, string $tag = ''): Paginator
+    public function getPublishedPagesPaginate(int $page, int $limit, ?PageCategory $category, ?int $tagId): Paginator
     {
         $query = $this->createQueryBuilder('p')
             ->where('p.disabled = :disabled')
@@ -156,16 +157,17 @@ class PageRepository extends ServiceEntityRepository
             ->orderBy('p.updateAt', \SortDirection::Descending)
             ->addOrderBy('p.id', \SortDirection::Descending);
 
-        if ($categoryId !== 0) {
-            $query->andWhere('p.category = :categoryId')->setParameter('categoryId', $categoryId);
+        if ($category !== null) {
+            $query->andWhere('p.category = :category')->setParameter('category', $category->value);
         }
 
-        if ($tag !== '') {
+        if ($tagId !== null) {
             $query
                 ->join('p.tags', 't')
-                ->join('t.tagTranslations', 'tt')
-                ->andWhere('LOWER(tt.label) like :tag')
-                ->setParameter('tag', '%' . addcslashes(strtolower($tag), '%_\\') . '%');
+                ->andWhere('t.id = :tagId')
+                ->setParameter('tagId', $tagId)
+                ->andWhere('t.disabled = :tagDisabled')
+                ->setParameter('tagDisabled', false);
         }
 
         $paginator = new Paginator($query->getQuery(), true);

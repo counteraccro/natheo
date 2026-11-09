@@ -69,41 +69,49 @@ class ApiPageContentService extends AppApiService
     }
 
     /**
-     * Retourne le rendu d'un contenu de page pour l'API v2 : HTML pour un texte, structure pour une FAQ,
-     * catégorie et titre pour un listing ; null si le contenu est vide ou inconnu
-     * @param PageContent $pageContent
-     * @param string $locale
-     * @return string|array|null
+     * Retourne une FAQ active
+     * @param int $id
+     * @return Faq|null
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function findActiveFaq(int $id): ?Faq
+    {
+        /** @var Faq|null $faq */
+        $faq = $this->findOneByCriteria(Faq::class, ['id' => $id, 'disabled' => false]);
+        return $faq;
+    }
+
+    /**
+     * Convertit un texte Markdown en HTML, liens internes résolus
+     * @param string $markdown
+     * @return string
      * @throws CommonMarkException
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getRenderedContent(PageContent $pageContent, string $locale): string|array|null
+    public function renderMarkdown(string $markdown): string
     {
-        switch ($pageContent->getType()) {
-            case PageContentType::TEXT->value:
-                $text = $pageContent->getPageContentTranslationByLocale($locale)?->getText() ?? '';
-                return $text === '' ? null : $this->formatContentText($text);
-            case PageContentType::FAQ->value:
-                $faq = $this->formatContentFAq($pageContent->getTypeId(), $locale);
-                return empty($faq) ? null : $faq;
-            case PageContentType::LISTING->value:
-                $category = PageCategory::tryFrom((int) $pageContent->getTypeId());
-                if ($category === null) {
-                    return null;
-                }
-                return [
-                    'category' => $category->getSlug(),
-                    'title' => $this->getTranslator()->trans(
-                        'page.content.listing.title',
-                        parameters: ['category' => $this->getPageService()->getCategoryById($category->value)],
-                        domain: 'page',
-                        locale: $locale,
-                    ),
-                ];
-            default:
-                return null;
-        }
+        $markdownService = new MarkdownService();
+        return $markdownService->convertMarkdownToHtml($this->getMarkdownEditorService()->parseMarkdown($markdown));
+    }
+
+    /**
+     * Titre d'un bloc listing traduit dans la langue demandée
+     * @param PageCategory $category
+     * @param string $locale
+     * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getListingTitle(PageCategory $category, string $locale): string
+    {
+        return $this->getTranslator()->trans(
+            'page.content.listing.title',
+            parameters: ['category' => $this->getPageService()->getCategoryById($category->value)],
+            domain: 'page',
+            locale: $locale,
+        );
     }
 
     /**
@@ -161,9 +169,7 @@ class ApiPageContentService extends AppApiService
      */
     private function formatContentText(string $text): string
     {
-        $markdown = new MarkdownService();
-        $text = $this->getMarkdownEditorService()->parseMarkdown($text);
-        return $markdown->convertMarkdownToHtml($text);
+        return $this->renderMarkdown($text);
     }
 
     /**
