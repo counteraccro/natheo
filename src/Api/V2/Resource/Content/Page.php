@@ -77,64 +77,75 @@ use Symfony\Component\Validator\Constraints as Assert;
 ]
 final class Page
 {
-    #[ApiProperty(identifier: true)]
+    #[ApiProperty(identifier: true, required: true)]
     #[Groups(['page:read', 'page:list'])]
     public int $id = 0;
 
+    #[ApiProperty(required: true)]
     #[Groups(['page:read', 'page:list'])]
     public string $slug = '';
 
+    #[ApiProperty(required: true)]
     #[Groups(['page:read', 'page:list'])]
     public string $title = '';
 
+    #[ApiProperty(required: true)]
     #[Groups(['page:read', 'page:list'])]
     public string $category = '';
 
+    #[ApiProperty(required: true)]
     #[Groups(['page:read', 'page:list'])]
     public ?string $headerImage = null;
 
-    #[ApiProperty(genId: false)]
+    #[ApiProperty(genId: false, required: true)]
     #[Groups(['page:read', 'page:list'])]
     public ?Author $author = null;
 
     /**
      * @var Tag[]
      */
-    #[ApiProperty(genId: false)]
+    #[ApiProperty(genId: false, required: true)]
     #[Groups(['page:read', 'page:list'])]
     public array $tags = [];
 
+    #[ApiProperty(required: true)]
     #[Groups(['page:read', 'page:list'])]
     public ?\DateTimeInterface $createdAt = null;
 
+    #[ApiProperty(required: true)]
     #[Groups(['page:read', 'page:list'])]
     public ?\DateTimeInterface $updatedAt = null;
 
     /**
      * Disposition des blocs (one_block, two_block…)
      */
+    #[ApiProperty(required: true)]
     #[Groups(['page:read'])]
     public string $render = '';
 
+    #[ApiProperty(required: true)]
     #[Groups(['page:read'])]
     public bool $landingPage = false;
 
+    #[ApiProperty(required: true)]
     #[Groups(['page:read'])]
     public bool $openComment = false;
 
+    #[ApiProperty(required: true)]
     #[Groups(['page:read'])]
     public int $reads = 0;
 
     /**
      * @var Meta[]
      */
-    #[ApiProperty(genId: false)]
+    #[ApiProperty(genId: false, required: true)]
     #[Groups(['page:read'])]
     public array $seo = [];
 
     /**
      * @var PageContent[]
      */
+    #[ApiProperty(required: true)]
     #[Groups(['page:read'])]
     public array $contents = [];
 
@@ -142,6 +153,7 @@ final class Page
      * Menus affichés sur la page : ceux de la page puis les menus par défaut des positions libres
      * @var Menu[]
      */
+    #[ApiProperty(required: true)]
     #[Groups(['page:read'])]
     public array $menus = [];
 }

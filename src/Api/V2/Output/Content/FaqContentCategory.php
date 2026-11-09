@@ -18,7 +18,7 @@ final readonly class FaqContentCategory
      * @param FaqContentQuestion[] $questions
      */
     public function __construct(
-        #[Groups(['page_content:read'])] public string $title,
-        #[Groups(['page_content:read'])] #[ApiProperty(genId: false)] public array $questions,
+        #[Groups(['page_content:read'])] #[ApiProperty(required: true)] public string $title,
+        #[Groups(['page_content:read'])] #[ApiProperty(genId: false, required: true)] public array $questions,
     ) {}
 }

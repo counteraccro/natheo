@@ -9,13 +9,14 @@ declare(strict_types=1);
 
 namespace App\Api\V2\Output\Content;
 
+use ApiPlatform\Metadata\ApiProperty;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 final readonly class Tag
 {
     public function __construct(
-        #[Groups(['page:read', 'page:list'])] public int $id,
-        #[Groups(['page:read', 'page:list'])] public string $label,
-        #[Groups(['page:read', 'page:list'])] public string $color,
+        #[Groups(['page:read', 'page:list'])] #[ApiProperty(required: true)] public int $id,
+        #[Groups(['page:read', 'page:list'])] #[ApiProperty(required: true)] public string $label,
+        #[Groups(['page:read', 'page:list'])] #[ApiProperty(required: true)] public string $color,
     ) {}
 }

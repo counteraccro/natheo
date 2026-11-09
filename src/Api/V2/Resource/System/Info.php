@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace App\Api\V2\Resource\System;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use App\Api\V2\State\Provider\System\InfoProvider;
@@ -30,8 +31,8 @@ use App\Api\V2\State\Provider\System\InfoProvider;
 final readonly class Info
 {
     public function __construct(
-        public string $siteName,
-        public string $natheoVersion,
-        public string $apiVersion,
+        #[ApiProperty(required: true)] public string $siteName,
+        #[ApiProperty(required: true)] public string $natheoVersion,
+        #[ApiProperty(required: true)] public string $apiVersion,
     ) {}
 }

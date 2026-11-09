@@ -9,13 +9,14 @@ declare(strict_types=1);
 
 namespace App\Api\V2\Output\Content;
 
+use ApiPlatform\Metadata\ApiProperty;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 final readonly class Author
 {
     public function __construct(
-        #[Groups(['page:read', 'page:list'])] public string $name,
-        #[Groups(['page:read', 'page:list'])] public ?string $description,
-        #[Groups(['page:read', 'page:list'])] public ?string $avatar,
+        #[Groups(['page:read', 'page:list'])] #[ApiProperty(required: true)] public string $name,
+        #[Groups(['page:read', 'page:list'])] #[ApiProperty(required: true)] public ?string $description,
+        #[Groups(['page:read', 'page:list'])] #[ApiProperty(required: true)] public ?string $avatar,
     ) {}
 }

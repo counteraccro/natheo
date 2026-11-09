@@ -9,12 +9,13 @@ declare(strict_types=1);
 
 namespace App\Api\V2\Output\Content;
 
+use ApiPlatform\Metadata\ApiProperty;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 final readonly class FaqContentQuestion
 {
     public function __construct(
-        #[Groups(['page_content:read'])] public string $title,
-        #[Groups(['page_content:read'])] public string $answer,
+        #[Groups(['page_content:read'])] #[ApiProperty(required: true)] public string $title,
+        #[Groups(['page_content:read'])] #[ApiProperty(required: true)] public string $answer,
     ) {}
 }

@@ -9,12 +9,13 @@ declare(strict_types=1);
 
 namespace App\Api\V2\Output\Content;
 
+use ApiPlatform\Metadata\ApiProperty;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 final readonly class Meta
 {
     public function __construct(
-        #[Groups(['page:read'])] public string $name,
-        #[Groups(['page:read'])] public string $value,
+        #[Groups(['page:read'])] #[ApiProperty(required: true)] public string $name,
+        #[Groups(['page:read'])] #[ApiProperty(required: true)] public string $value,
     ) {}
 }

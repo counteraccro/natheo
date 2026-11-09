@@ -44,26 +44,28 @@ use Symfony\Component\Serializer\Attribute\Groups;
 ]
 final class PageContent
 {
-    #[ApiProperty(identifier: true)]
+    #[ApiProperty(identifier: true, required: true)]
     #[Groups(['page_content:read', 'page:read'])]
     public int $id = 0;
 
     /**
      * Type de bloc : text, faq, listing
      */
+    #[ApiProperty(required: true)]
     #[Groups(['page_content:read', 'page:read'])]
     public string $type = '';
 
     /**
      * Emplacement du bloc dans la disposition de la page
      */
+    #[ApiProperty(required: true)]
     #[Groups(['page_content:read', 'page:read'])]
     public int $position = 0;
 
     /**
      * Selon le type du bloc : TextContent (text), FaqContent (faq) ou ListingContent (listing)
      */
-    #[ApiProperty(genId: false)]
+    #[ApiProperty(genId: false, required: true)]
     #[Groups(['page_content:read'])]
     public TextContent|FaqContent|ListingContent|null $content = null;
 }

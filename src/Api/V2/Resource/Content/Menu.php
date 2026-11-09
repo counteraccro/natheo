@@ -65,26 +65,28 @@ use Symfony\Component\Serializer\Attribute\Groups;
 ]
 final class Menu
 {
-    #[ApiProperty(identifier: true)]
+    #[ApiProperty(identifier: true, required: true)]
     #[Groups(['menu:read', 'page:read'])]
     public int $id = 0;
 
     /**
      * Position : header, right, footer, left
      */
+    #[ApiProperty(required: true)]
     #[Groups(['menu:read', 'page:read'])]
     public string $position = '';
 
     /**
      * Type d'affichage (header_side_bar, footer_colonnes…)
      */
+    #[ApiProperty(required: true)]
     #[Groups(['menu:read', 'page:read'])]
     public string $type = '';
 
     /**
      * @var MenuElement[]
      */
-    #[ApiProperty(genId: false)]
+    #[ApiProperty(genId: false, required: true)]
     #[Groups(['menu:read', 'page:read'])]
     public array $elements = [];
 }

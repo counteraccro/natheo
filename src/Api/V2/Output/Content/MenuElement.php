@@ -18,14 +18,14 @@ final readonly class MenuElement
      * @param MenuElement[] $children
      */
     public function __construct(
-        #[Groups(['menu:read', 'page:read'])] public int $id,
-        #[Groups(['menu:read', 'page:read'])] public string $label,
-        #[Groups(['menu:read', 'page:read'])] public string $target,
-        #[Groups(['menu:read', 'page:read'])] public ?string $url,
-        #[Groups(['menu:read', 'page:read'])] public ?string $pageSlug,
-        #[Groups(['menu:read', 'page:read'])] public ?string $pageCategory,
-        #[Groups(['menu:read', 'page:read'])] public int $column,
-        #[Groups(['menu:read', 'page:read'])] public int $row,
-        #[Groups(['menu:read', 'page:read'])] #[ApiProperty(genId: false)] public array $children = [],
+        #[Groups(['menu:read', 'page:read'])] #[ApiProperty(required: true)] public int $id,
+        #[Groups(['menu:read', 'page:read'])] #[ApiProperty(required: true)] public string $label,
+        #[Groups(['menu:read', 'page:read'])] #[ApiProperty(required: true)] public string $target,
+        #[Groups(['menu:read', 'page:read'])] #[ApiProperty(required: true)] public ?string $url,
+        #[Groups(['menu:read', 'page:read'])] #[ApiProperty(required: true)] public ?string $pageSlug,
+        #[Groups(['menu:read', 'page:read'])] #[ApiProperty(required: true)] public ?string $pageCategory,
+        #[Groups(['menu:read', 'page:read'])] #[ApiProperty(required: true)] public int $column,
+        #[Groups(['menu:read', 'page:read'])] #[ApiProperty(required: true)] public int $row,
+        #[Groups(['menu:read', 'page:read'])] #[ApiProperty(genId: false, required: true)] public array $children = [],
     ) {}
 }
