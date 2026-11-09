@@ -4,8 +4,8 @@ name: Pull request
 # ce qui permet d'écrire les labels même pour une PR venant d'un fork.
 on:
   pull_request_target:
-    branches: [master, 'release/**']
-    types: [opened, edited, synchronize, reopened]
+    branches: [master, 'release/**', 'epic/**']
+    types: [opened, edited, synchronize, reopened, closed]
 
 permissions:
   contents: read
@@ -15,13 +15,14 @@ permissions:
 jobs:
   labels:
     name: Labels selon les fichiers modifiés
+    if: github.event.action != 'closed'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/labeler@bf12e9b00b37c5c0ca2b87b79b2daf7891dbda13 # v7.0.0
 
   conventions:
     name: Conventions (branche, titre, issue liée)
-    if: github.event.pull_request.user.type != 'Bot'
+    if: github.event.action != 'closed' && github.event.pull_request.user.type != 'Bot'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
@@ -47,12 +48,17 @@ jobs:
               return;
             }
 
-            const b = branch.match(/^(bug\/B|audit\/A|feature\/N)-(\d+)-[a-z0-9]+(?:-[a-z0-9]+)*$/);
-            const t = pr.title.match(/^(Bug\/B|Audit\/A|Feature\/N)-(\d+) \S/);
+            // Une branche d'Epic ne se merge que sur master
+            if (branch.startsWith('epic/') && pr.base.ref !== 'master') {
+              errors.push('Une branche d\'Epic se merge sur master, pas sur « ' + pr.base.ref + ' ».');
+            }
+
+            const b = branch.match(/^(bug\/B|audit\/A|feature\/N|epic\/E)-(\d+)-[a-z0-9]+(?:-[a-z0-9]+)*$/);
+            const t = pr.title.match(/^(Bug\/B|Audit\/A|Feature\/N|Epic\/E)-(\d+) \S/);
             const c = (pr.body ?? '').match(/\b(?:close[sd]?|fix(?:e[sd])?|resolve[sd]?) #(\d+)\b/i);
 
-            if (!b) errors.push('Branche « ' + branch + ' » : format attendu bug/B-<n>-<slug>, audit/A-<n>-<slug>, feature/N-<n>-<slug> ou maintenance/<slug>.');
-            if (!t) errors.push('Titre « ' + pr.title + ' » : format attendu « Bug/B-<n> Titre », « Audit/A-<n> Titre » ou « Feature/N-<n> Titre ».');
+            if (!b) errors.push('Branche « ' + branch + ' » : format attendu bug/B-<n>-<slug>, audit/A-<n>-<slug>, feature/N-<n>-<slug>, epic/E-<n>-<slug> ou maintenance/<slug>.');
+            if (!t) errors.push('Titre « ' + pr.title + ' » : format attendu « Bug/B-<n> Titre », « Audit/A-<n> Titre », « Feature/N-<n> Titre » ou « Epic/E-<n> Titre ».');
             if (!c) errors.push('Description : ajouter « Closes #<n> » pour lier la PR à son issue.');
             if (b && t && b[1].toLowerCase() !== t[1].toLowerCase()) errors.push('Le préfixe du titre ne correspond pas à celui de la branche.');
             if (b && t && b[2] !== t[2]) errors.push('Le numéro du titre (#' + t[2] + ') ne correspond pas à celui de la branche (#' + b[2] + ').');
@@ -66,9 +72,11 @@ jobs:
                   errors.push('#' + number + ' est une pull request, pas une issue.');
                 } else {
                   const issueLabels = issue.labels.map((l) => (typeof l === 'string' ? l : l.name));
-                  const kind = issueLabels.some((l) => ['Bug', 'Régression', 'Sécurité'].includes(l))
-                    ? 'bug/B'
-                    : issueLabels.includes('Audit') ? 'audit/A' : 'feature/N';
+                  const kind = issueLabels.includes('Epic')
+                    ? 'epic/E'
+                    : issueLabels.some((l) => ['Bug', 'Régression', 'Sécurité'].includes(l))
+                      ? 'bug/B'
+                      : issueLabels.includes('Audit') ? 'audit/A' : 'feature/N';
                   if (b && b[1] !== kind) {
                     core.warning('Le type de branche (' + b[1] + ') ne correspond pas au type de l\'issue #' + number + '.');
                   }
@@ -97,3 +105,27 @@ jobs:
             if (errors.length) {
               core.setFailed('Conventions non respectées (voir CONTRIBUTING.md) :\n- ' + errors.join('\n- '));
             }
+
+  close-issue:
+    name: Fermeture de l'issue mergée dans une Epic
+    # GitHub ne ferme l'issue liée qu'au merge sur la branche par défaut
+    if: github.event.action == 'closed' && github.event.pull_request.merged && startsWith(github.event.pull_request.base.ref, 'epic/')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const c = (pr.body ?? '').match(/\b(?:close[sd]?|fix(?:e[sd])?|resolve[sd]?) #(\d+)\b/i);
+            if (!c) return;
+
+            const number = Number(c[1]);
+            const { data: issue } = await github.rest.issues.get({ ...context.repo, issue_number: number });
+            if (issue.pull_request || issue.state === 'closed') return;
+
+            await github.rest.issues.createComment({
+              ...context.repo,
+              issue_number: number,
+              body: 'Mergée dans `' + pr.base.ref + '` par #' + pr.number + ' : arrivera sur master avec l\'Epic.',
+            });
+            await github.rest.issues.update({ ...context.repo, issue_number: number, state: 'closed', state_reason: 'completed' });
