@@ -9,24 +9,14 @@ declare(strict_types=1);
 
 namespace App\Tests\Api\V2;
 
-use ApiPlatform\Test\ApiTestAssertionsTrait;
-use ApiPlatform\Test\Response as ApiResponse;
+use ApiPlatform\JsonSchema\BackwardCompatibleSchemaFactory;
+use ApiPlatform\JsonSchema\Schema;
+use ApiPlatform\Test\Constraint\MatchesJsonSchema;
 use App\Tests\Controller\Api\AppApiTestCase;
-use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class AppApiV2TestCase extends AppApiTestCase
 {
-    // Assertions d'API Platform (schémas JSON des ressources) appliquées au client de WebTestCase
-    use ApiTestAssertionsTrait;
-
-    /**
-     * Client de la dernière requête, lu par les assertions statiques d'API Platform
-     * @var KernelBrowser|null
-     */
-    private static ?KernelBrowser $lastClient = null;
-
     /**
      * Préfixe des routes de l'API v2
      * @var string
@@ -72,7 +62,6 @@ class AppApiV2TestCase extends AppApiTestCase
             server: $server,
             content: $body === null ? null : json_encode($body),
         );
-        self::$lastClient = $this->client;
         return $this->client->getResponse();
     }
 
@@ -104,12 +93,51 @@ class AppApiV2TestCase extends AppApiTestCase
     }
 
     /**
-     * Dernière réponse du client, au format attendu par ApiTestAssertionsTrait
-     * @return ResponseInterface
+     * Vérifie la dernière réponse avec le schéma JSON-LD d'une opération d'item de la ressource
+     * @param string $resourceClass
+     * @param string|null $operationName opération d'item par défaut si null
+     * @return void
      */
-    private static function getHttpResponse(): ResponseInterface
+    protected function assertMatchesResourceItemJsonSchema(string $resourceClass, ?string $operationName = null): void
     {
-        $client = self::$lastClient ?? self::fail('Aucune requête envoyée avec requestV2()');
-        return new ApiResponse($client->getResponse(), $client->getInternalResponse(), []);
+        $this->assertMatchesResourceJsonSchema($resourceClass, $operationName, false);
+    }
+
+    /**
+     * Vérifie la dernière réponse avec le schéma JSON-LD d'une opération de collection de la ressource
+     * @param string $resourceClass
+     * @param string|null $operationName opération de collection par défaut si null
+     * @return void
+     */
+    protected function assertMatchesResourceCollectionJsonSchema(string $resourceClass, ?string $operationName = null): void
+    {
+        $this->assertMatchesResourceJsonSchema($resourceClass, $operationName, true);
+    }
+
+    /**
+     * Construit le schéma de sortie de l'opération, comme les assertions d'API Platform, et valide la réponse
+     * @param string $resourceClass
+     * @param string|null $operationName
+     * @param bool $collection
+     * @return void
+     */
+    private function assertMatchesResourceJsonSchema(string $resourceClass, ?string $operationName, bool $collection): void
+    {
+        $operation = $this->container
+            ->get('api_platform.metadata.resource.metadata_collection_factory')
+            ->create($resourceClass)
+            ->getOperation($operationName, $collection);
+        $schema = $this->container
+            ->get('api_platform.json_schema.schema_factory')
+            ->buildSchema(
+                $resourceClass,
+                'jsonld',
+                Schema::TYPE_OUTPUT,
+                $operation,
+                null,
+                ($operation->getNormalizationContext() ?? []) + [BackwardCompatibleSchemaFactory::SCHEMA_DRAFT4_VERSION => true],
+            );
+
+        $this->assertThat($this->decode($this->client->getResponse()), new MatchesJsonSchema($schema->getArrayCopy()));
     }
 }
