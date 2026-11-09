@@ -14,8 +14,8 @@ use ApiPlatform\Metadata\QueryParameter;
 use ApiPlatform\State\Pagination\Pagination;
 use ApiPlatform\State\Pagination\TraversablePaginator;
 use ApiPlatform\State\ProviderInterface;
+use App\Api\V2\Filter\PageCategoryFilter;
 use App\Api\V2\Parameter\LocaleParameter;
-use App\Api\V2\Parameter\PageCategoryParameter;
 use App\Api\V2\Resource\Content\Page;
 use App\Api\V2\Mapper\Content\PageMapper;
 use App\Service\Api\Content\Page\ApiPageService;
@@ -54,7 +54,7 @@ final readonly class PageCollectionProvider implements ProviderInterface
             $page,
             $limit,
             $locale,
-            PageCategoryParameter::getValueFrom($operation),
+            PageCategoryFilter::getValue($operation),
             is_numeric($tag) ? (int) $tag : null,
             is_string($slug) ? $slug : null,
             is_bool($landing) ? $landing : null,

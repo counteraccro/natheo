@@ -12,8 +12,8 @@ namespace App\Api\V2\State\Provider\Content;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\Metadata\QueryParameter;
 use ApiPlatform\State\ProviderInterface;
+use App\Api\V2\Filter\MenuPositionFilter;
 use App\Api\V2\Parameter\LocaleParameter;
-use App\Api\V2\Parameter\MenuPositionParameter;
 use App\Api\V2\Resource\Content\Menu;
 use App\Api\V2\Mapper\Content\MenuMapper;
 use App\Service\Api\Content\Page\ApiPageService;
@@ -45,7 +45,7 @@ final readonly class MenuCollectionProvider implements ProviderInterface
         $locale = $this->apiPageService->resolveLocale(LocaleParameter::getValueFrom($operation));
         $parameters = $operation->getParameters();
         $slug = (string) $parameters?->get('page', QueryParameter::class)?->getValue('');
-        $position = MenuPositionParameter::getValueFrom($operation);
+        $position = MenuPositionFilter::getValue($operation);
 
         $page = $slug === '' ? null : $this->apiPageService->findPublishedPageBySlug($slug, $locale);
         if ($page === null) {

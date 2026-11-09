@@ -17,8 +17,8 @@ use ApiPlatform\Metadata\QueryParameter;
 use App\Api\V2\Output\Content\Author;
 use App\Api\V2\Output\Content\Meta;
 use App\Api\V2\Output\Content\Tag;
+use App\Api\V2\Filter\PageCategoryFilter;
 use App\Api\V2\Parameter\LocaleParameter;
-use App\Api\V2\Parameter\PageCategoryParameter;
 use App\Api\V2\State\Provider\Content\PageCollectionProvider;
 use App\Api\V2\State\Provider\Content\PageProvider;
 use Symfony\Component\Serializer\Attribute\Groups;
@@ -44,7 +44,7 @@ use Symfony\Component\Validator\Constraints as Assert;
                 provider: PageCollectionProvider::class,
                 parameters: [
                     'locale' => new LocaleParameter(),
-                    'category' => new PageCategoryParameter(),
+                    'category' => new QueryParameter(filter: PageCategoryFilter::class, description: 'Catégorie des pages'),
                     'tag' => new QueryParameter(
                         schema: ['type' => 'integer', 'minimum' => 1],
                         description: 'Id d\'un tag actif',

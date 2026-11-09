@@ -52,4 +52,19 @@ enum MenuPosition: int
     {
         return strtolower(self::getStringByPosition($this->value));
     }
+
+    /**
+     * Retourne la position correspondant au nom de l'API, null si inconnu
+     * @param string|null $apiName
+     * @return self|null
+     */
+    public static function tryFromApiName(?string $apiName): ?self
+    {
+        foreach (self::cases() as $position) {
+            if ($position->getApiName() === $apiName) {
+                return $position;
+            }
+        }
+        return null;
+    }
 }

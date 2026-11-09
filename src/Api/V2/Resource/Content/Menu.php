@@ -15,8 +15,8 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\QueryParameter;
 use App\Api\V2\Output\Content\MenuElement;
+use App\Api\V2\Filter\MenuPositionFilter;
 use App\Api\V2\Parameter\LocaleParameter;
-use App\Api\V2\Parameter\MenuPositionParameter;
 use App\Api\V2\State\Provider\Content\MenuCollectionProvider;
 use App\Api\V2\State\Provider\Content\MenuProvider;
 use Symfony\Component\Serializer\Attribute\Groups;
@@ -47,7 +47,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
                         description: 'URL (slug) de la page',
                         required: true,
                     ),
-                    'position' => new MenuPositionParameter(),
+                    'position' => new QueryParameter(filter: MenuPositionFilter::class, description: 'Position du menu'),
                 ],
             ),
         ],
