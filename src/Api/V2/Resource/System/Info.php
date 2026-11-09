@@ -7,11 +7,11 @@ declare(strict_types=1);
  * Ressource API v2 : informations générales de l'installation
  */
 
-namespace App\ApiResource\System;
+namespace App\Api\V2\Resource\System;
 
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
-use App\State\Api\System\InfoProvider;
+use App\Api\V2\State\Provider\System\InfoProvider;
 
 #[
     ApiResource(

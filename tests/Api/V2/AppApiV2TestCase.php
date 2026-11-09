@@ -7,7 +7,7 @@ declare(strict_types=1);
  * Classe de base des tests de l'API v2 (API Platform)
  */
 
-namespace App\Tests\Api\v2;
+namespace App\Tests\Api\V2;
 
 use App\Tests\Controller\Api\AppApiTestCase;
 use Symfony\Component\HttpFoundation\Response;

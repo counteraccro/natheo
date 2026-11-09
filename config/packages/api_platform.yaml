@@ -5,11 +5,11 @@ api_platform:
     show_webby: false
     enable_re_doc: false
     enable_scalar: false
-    # Ressources déclarées uniquement dans src/ApiResource : aucune entité exposée
+    # Ressources déclarées uniquement dans src/Api/V2/Resource : aucune entité exposée
     doctrine:
         enabled: false
     mapping:
-        paths: ['%kernel.project_dir%/src/ApiResource']
+        paths: ['%kernel.project_dir%/src/Api/V2/Resource']
     formats:
         jsonld: ['application/ld+json']
         json: ['application/json']
@@ -40,4 +40,4 @@ api_platform:
 when@test:
     api_platform:
         mapping:
-            paths: ['%kernel.project_dir%/src/ApiResource', '%kernel.project_dir%/tests/ApiResource']
+            paths: ['%kernel.project_dir%/src/Api/V2/Resource', '%kernel.project_dir%/tests/Api/V2/Resource']

@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace App\Service\Api\System;
 
-use App\ApiResource\System\Info;
+use App\Api\V2\Resource\System\Info;
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Api\AppApiService;
 use Psr\Container\ContainerExceptionInterface;

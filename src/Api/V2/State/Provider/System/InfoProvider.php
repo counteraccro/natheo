@@ -7,11 +7,11 @@ declare(strict_types=1);
  * Provider de la ressource Info
  */
 
-namespace App\State\Api\System;
+namespace App\Api\V2\State\Provider\System;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
-use App\ApiResource\System\Info;
+use App\Api\V2\Resource\System\Info;
 use App\Service\Api\System\ApiInfoService;
 
 /**

@@ -7,12 +7,12 @@ declare(strict_types=1);
  * Tests de la ressource Info de l'API v2
  */
 
-namespace App\Tests\Api\v2\System;
+namespace App\Tests\Api\V2\System;
 
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Admin\System\OptionSystemService;
 use App\Service\Api\System\ApiInfoService;
-use App\Tests\Api\v2\AppApiV2TestCase;
+use App\Tests\Api\V2\AppApiV2TestCase;
 
 class InfoTest extends AppApiV2TestCase
 {

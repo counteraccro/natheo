@@ -7,7 +7,7 @@ declare(strict_types=1);
  * Ressource API v2 chargée uniquement en env test pour tester le socle (rôles, formats, erreurs)
  */
 
-namespace App\Tests\ApiResource;
+namespace App\Tests\Api\V2\Resource;
 
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;

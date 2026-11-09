@@ -7,11 +7,11 @@ declare(strict_types=1);
  * Tests du socle de l'API v2 : sécurité, formats, erreurs et documentation
  */
 
-namespace App\Tests\Api\v2;
+namespace App\Tests\Api\V2;
 
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Admin\System\OptionSystemService;
-use App\Tests\ApiResource\Probe;
+use App\Tests\Api\V2\Resource\Probe;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ApiPlatformTest extends AppApiV2TestCase
