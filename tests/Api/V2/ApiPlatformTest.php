@@ -52,7 +52,7 @@ class ApiPlatformTest extends AppApiV2TestCase
     }
 
     /**
-     * API fermée : 403 avec un token valide, documentation masquée
+     * API fermée : 403 avec ou sans token, documentation masquée
      * @return void
      */
     public function testClosedApi(): void
@@ -68,6 +68,7 @@ class ApiPlatformTest extends AppApiV2TestCase
             $translator->trans('api_errors.api.not.open', domain: 'api_errors'),
             $content['detail'],
         );
+        $this->assertProblem($this->requestV2('GET', '/probes', self::HEADER_NONE), 403);
 
         $this->assertEquals(404, $this->requestV2('GET', '/docs.jsonopenapi', self::HEADER_NONE)->getStatusCode());
         $this->assertEquals(404, $this->requestV2('GET', '/', self::HEADER_NONE)->getStatusCode());
