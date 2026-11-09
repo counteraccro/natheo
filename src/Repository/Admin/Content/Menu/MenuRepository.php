@@ -199,4 +199,13 @@ class MenuRepository extends ServiceEntityRepository
             ->setMaxResults($limit);
         return $paginator;
     }
+
+    /**
+     * Retourne les menus par défaut actifs
+     * @return Menu[]
+     */
+    public function findActiveDefaults(): array
+    {
+        return $this->findBy(['defaultMenu' => true, 'disabled' => false], ['id' => 'ASC']);
+    }
 }

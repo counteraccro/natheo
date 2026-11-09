@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace App\Service\Api\System;
 
-use App\Api\V2\Resource\System\Info;
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Api\AppApiService;
 use Psr\Container\ContainerExceptionInterface;
@@ -25,16 +24,16 @@ class ApiInfoService extends AppApiService
 
     /**
      * Retourne les informations générales de l'installation
-     * @return Info
+     * @return array{siteName: string, natheoVersion: string, apiVersion: string}
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getInfo(): Info
+    public function getInfo(): array
     {
-        return new Info(
-            (string) $this->getOptionSystemService()->getValueByKey(OptionSystem::OS_SITE_NAME->value),
-            (string) $this->getParameterBag()->get('app.version'),
-            self::API_VERSION,
-        );
+        return [
+            'siteName' => (string) $this->getOptionSystemService()->getValueByKey(OptionSystem::OS_SITE_NAME->value),
+            'natheoVersion' => (string) $this->getParameterBag()->get('app.version'),
+            'apiVersion' => self::API_VERSION,
+        ];
     }
 }

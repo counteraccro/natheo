@@ -62,4 +62,19 @@ enum PageCategory: int
     {
         return strtolower($this->name);
     }
+
+    /**
+     * Retourne la catégorie correspondant au slug, null si inconnu
+     * @param string|null $slug
+     * @return self|null
+     */
+    public static function tryFromSlug(?string $slug): ?self
+    {
+        foreach (self::cases() as $category) {
+            if ($category->getSlug() === $slug) {
+                return $category;
+            }
+        }
+        return null;
+    }
 }

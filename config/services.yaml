@@ -42,6 +42,8 @@ services:
             - '../src/Factory/'
             - '../src/Populate/'
             - '../src/Formatter/'
+            # API v2 : ressources, objets intégrés et mappers sont instanciés à la main
+            - '../src/Api/V2/{Mapper,Output,Resource}/'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

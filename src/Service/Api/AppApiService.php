@@ -12,10 +12,12 @@ use App\Entity\Admin\System\User;
 use App\Entity\Admin\Content\Page\Page;
 use App\Enum\Admin\Content\Page\PageStatus;
 use App\Enum\Admin\System\Options\OptionSystem;
+use App\EventListener\ApiLocaleListener;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityRepository;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\HttpFoundation\AcceptHeader;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class AppApiService extends AppApiHandlerService
@@ -143,6 +145,45 @@ class AppApiService extends AppApiHandlerService
             return [PageStatus::PUBLISH->value, PageStatus::DRAFT->value];
         }
         return [PageStatus::PUBLISH->value];
+    }
+
+    /**
+     * Retourne la langue du contenu : celle demandée si elle est supportée, sinon la première langue supportée
+     * de l'en-tête Accept-Language, sinon la langue par défaut du site
+     * @param string|null $locale
+     * @param string|null $acceptLanguage
+     * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function resolveLocale(?string $locale, ?string $acceptLanguage = null): string
+    {
+        $supportedLocales = explode('|', (string) $this->getParameterBag()->get('app.supported_locales'));
+        if (in_array($locale, $supportedLocales, true)) {
+            return $locale;
+        }
+
+        foreach (AcceptHeader::fromString($acceptLanguage)->all() as $item) {
+            $language = strtolower(explode('-', str_replace('_', '-', $item->getValue()))[0]);
+            if ($item->getQuality() > 0 && in_array($language, $supportedLocales, true)) {
+                return $language;
+            }
+        }
+
+        $default = $this->getOptionSystemService()->getValueByKey(OptionSystem::OS_DEFAULT_LANGUAGE->value);
+        return $default ?: (OptionSystem::OS_DEFAULT_LANGUAGE->getDefault() ?? 'fr');
+    }
+
+    /**
+     * Langue de la requête en cours de l'API v2, résolue par ApiLocaleListener ; à défaut langue par défaut du site
+     * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getContentLocale(): string
+    {
+        $locale = $this->getRequestStack()->getCurrentRequest()?->attributes->get(ApiLocaleListener::ATTRIBUTE);
+        return is_string($locale) ? $locale : $this->resolveLocale(null);
     }
 
     /**

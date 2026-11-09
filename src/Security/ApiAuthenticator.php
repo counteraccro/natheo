@@ -33,12 +33,16 @@ class ApiAuthenticator extends AbstractAuthenticator
     ) {}
 
     /**
+     * Requête avec un token, ou toute requête quand l'API est fermée (refusée dans authenticate())
      * @param Request $request
      * @return bool|null
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function supports(Request $request): ?bool
     {
-        return str_starts_with((string) $request->headers->get('Authorization'), self::BEARER_PREFIX);
+        return str_starts_with((string) $request->headers->get('Authorization'), self::BEARER_PREFIX) ||
+            !$this->apiService->isApiOpen();
     }
 
     /**

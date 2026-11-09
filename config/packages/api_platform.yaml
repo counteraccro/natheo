@@ -34,6 +34,9 @@ api_platform:
         pagination_items_per_page: 20
         pagination_client_items_per_page: true
         pagination_maximum_items_per_page: 100
+        # Champs null renvoyés explicitement : le contrat de chaque ressource reste stable
+        normalization_context:
+            skip_null_values: false
         cache_headers:
             vary: ['Content-Type', 'Authorization', 'Origin']
 

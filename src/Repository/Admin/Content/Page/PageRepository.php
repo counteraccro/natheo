@@ -9,6 +9,7 @@ use App\Entity\Admin\Content\Page\PageTranslation;
 use App\Entity\Admin\Content\Tag\Tag;
 use App\Entity\Admin\Content\Tag\TagTranslation;
 use App\Enum\Admin\Content\Page\PageContentType;
+use App\Enum\Admin\Content\Page\PageCategory;
 use App\Enum\Admin\Content\Page\PageStatus;
 use App\Enum\Admin\Content\Page\PageValidationStatus;
 use App\Repository\Trait\OrderedQueryTrait;
@@ -127,6 +128,69 @@ class PageRepository extends ServiceEntityRepository
 
         if ($categoryId !== 0) {
             $query->andWhere('p.category = :categoryId')->setParameter('categoryId', $categoryId);
+        }
+
+        $paginator = new Paginator($query->getQuery(), true);
+        $paginator
+            ->getQuery()
+            ->setFirstResult($limit * ($page - 1))
+            ->setMaxResults($limit);
+        return $paginator;
+    }
+
+    /**
+     * Retourne les pages publiées et actives, filtrées par catégorie, tag actif, id ou page d'accueil,
+     * les plus récemment modifiées en premier
+     * @param int $page
+     * @param int $limit
+     * @param PageCategory|null $category
+     * @param int|null $tagId
+     * @param int|null $pageId
+     * @param bool|null $landing
+     * @return Paginator
+     */
+    public function getPublishedPagesPaginate(
+        int $page,
+        int $limit,
+        ?PageCategory $category = null,
+        ?int $tagId = null,
+        ?int $pageId = null,
+        ?bool $landing = null,
+    ): Paginator {
+        // Données du résumé chargées avec les pages
+        $query = $this->createQueryBuilder('p')
+            ->addSelect('pt', 'u', 'ou', 'tag', 'tagt')
+            ->leftJoin('p.pageTranslations', 'pt')
+            ->leftJoin('p.user', 'u')
+            ->leftJoin('u.optionsUser', 'ou')
+            ->leftJoin('p.tags', 'tag')
+            ->leftJoin('tag.tagTranslations', 'tagt')
+            ->where('p.disabled = :disabled')
+            ->setParameter('disabled', false)
+            ->andWhere('p.status = :status')
+            ->setParameter('status', PageStatus::PUBLISH->value)
+            ->orderBy('p.updateAt', \SortDirection::Descending)
+            ->addOrderBy('p.id', \SortDirection::Descending);
+
+        if ($category !== null) {
+            $query->andWhere('p.category = :category')->setParameter('category', $category->value);
+        }
+
+        if ($tagId !== null) {
+            $query
+                ->join('p.tags', 't')
+                ->andWhere('t.id = :tagId')
+                ->setParameter('tagId', $tagId)
+                ->andWhere('t.disabled = :tagDisabled')
+                ->setParameter('tagDisabled', false);
+        }
+
+        if ($pageId !== null) {
+            $query->andWhere('p.id = :pageId')->setParameter('pageId', $pageId);
+        }
+
+        if ($landing !== null) {
+            $query->andWhere('p.landingPage = :landing')->setParameter('landing', $landing);
         }
 
         $paginator = new Paginator($query->getQuery(), true);

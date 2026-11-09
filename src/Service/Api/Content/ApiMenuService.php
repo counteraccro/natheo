@@ -38,6 +38,20 @@ class ApiMenuService extends AppApiService
     }
 
     /**
+     * Retourne un menu actif en fonction de son id
+     * @param int $id
+     * @return Menu|null
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function findActiveMenu(int $id): ?Menu
+    {
+        /** @var Menu|null $menu */
+        $menu = $this->findOneByCriteria(Menu::class, ['id' => $id, 'disabled' => false]);
+        return $menu;
+    }
+
+    /**
      * Format un menu
      * @param array $menu
      * @param string $locale

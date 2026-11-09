@@ -52,7 +52,7 @@ class ApiPlatformTest extends AppApiV2TestCase
     }
 
     /**
-     * API fermée : 403 avec un token valide, documentation masquée
+     * API fermée : 403 avec ou sans token, documentation masquée
      * @return void
      */
     public function testClosedApi(): void
@@ -68,6 +68,10 @@ class ApiPlatformTest extends AppApiV2TestCase
             $translator->trans('api_errors.api.not.open', domain: 'api_errors'),
             $content['detail'],
         );
+        $this->assertProblem($this->requestV2('GET', '/probes', self::HEADER_NONE), 403);
+        foreach (['/errors/404', '/validation_errors/8e179f1b-97aa-4560-a02f-2a8b42e49df7', '/.well-known/genid/1'] as $path) {
+            $this->assertEquals(403, $this->requestV2('GET', $path, self::HEADER_NONE)->getStatusCode(), $path);
+        }
 
         $this->assertEquals(404, $this->requestV2('GET', '/docs.jsonopenapi', self::HEADER_NONE)->getStatusCode());
         $this->assertEquals(404, $this->requestV2('GET', '/', self::HEADER_NONE)->getStatusCode());
@@ -93,12 +97,14 @@ class ApiPlatformTest extends AppApiV2TestCase
     }
 
     /**
-     * Erreurs au format problem+json : ressource absente, validation
+     * Erreurs au format problem+json avec un titre traduit : ressource absente, validation
      * @return void
      */
     public function testErrors(): void
     {
-        $this->assertProblem($this->requestV2('GET', '/probes/99'), 404);
+        $translator = $this->container->get(TranslatorInterface::class);
+        $content = $this->assertProblem($this->requestV2('GET', '/probes/99'), 404);
+        $this->assertEquals($translator->trans('api_errors.title.404', domain: 'api_errors'), $content['title']);
         $this->assertProblem($this->requestV2('GET', '/probes/99', accept: 'application/json'), 404);
 
         $content = $this->assertProblem(
@@ -106,6 +112,7 @@ class ApiPlatformTest extends AppApiV2TestCase
             422,
         );
         $this->assertEquals('name', $content['violations'][0]['propertyPath']);
+        $this->assertEquals($translator->trans('api_errors.title.422', domain: 'api_errors'), $content['title']);
     }
 
     /**

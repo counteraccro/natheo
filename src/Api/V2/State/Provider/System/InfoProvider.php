@@ -33,6 +33,6 @@ final readonly class InfoProvider implements ProviderInterface
      */
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): Info
     {
-        return $this->apiInfoService->getInfo();
+        return new Info(...$this->apiInfoService->getInfo());
     }
 }
