@@ -33,3 +33,15 @@ api_errors.comment.moderate_forbidden: You are not allowed to moderate this comm
 api_errors.params.not.boolean: The parameter {param} must be a boolean (true/false, 1/0)
 api_errors.access.role.denied: The API token rights do not allow access to this resource
 api_errors.comment.wait.validation_author: Anonymous
+api_errors.title.400: 'Bad request'
+api_errors.title.401: 'Authentication required'
+api_errors.title.403: 'Access denied'
+api_errors.title.404: 'Resource not found'
+api_errors.title.405: 'Method not allowed'
+api_errors.title.406: 'Format not available'
+api_errors.title.409: 'Conflict'
+api_errors.title.415: 'Unsupported content format'
+api_errors.title.422: 'Invalid data'
+api_errors.title.429: 'Too many requests'
+api_errors.title.500: 'Internal server error'
+api_errors.title.default: 'An error occurred'

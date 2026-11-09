@@ -33,3 +33,15 @@ api_errors.comment.moderate_forbidden: No tiene permisos para moderar este comen
 api_errors.params.not.boolean: El parámetro {param} debe ser un booleano (true/false, 1/0)
 api_errors.access.role.denied: Los permisos del token API no permiten acceder a este recurso
 api_errors.comment.wait.validation_author: Anónimo
+api_errors.title.400: 'Solicitud no válida'
+api_errors.title.401: 'Autenticación requerida'
+api_errors.title.403: 'Acceso denegado'
+api_errors.title.404: 'Recurso no encontrado'
+api_errors.title.405: 'Método no permitido'
+api_errors.title.406: 'Formato no disponible'
+api_errors.title.409: 'Conflicto'
+api_errors.title.415: 'Formato de contenido no compatible'
+api_errors.title.422: 'Datos no válidos'
+api_errors.title.429: 'Demasiadas solicitudes'
+api_errors.title.500: 'Error interno del servidor'
+api_errors.title.default: 'Se ha producido un error'

@@ -33,3 +33,15 @@ api_errors.comment.moderate_forbidden: "Vous n'avez pas les droits pour modérer
 api_errors.params.not.boolean: 'Le paramètre {param} doit être un booléen (true/false, 1/0)'
 api_errors.access.role.denied: "Les droits du token API ne permettent pas d'accéder à cette ressource"
 api_errors.comment.wait.validation_author: Anonyme
+api_errors.title.400: 'Requête invalide'
+api_errors.title.401: 'Authentification requise'
+api_errors.title.403: 'Accès refusé'
+api_errors.title.404: 'Ressource introuvable'
+api_errors.title.405: 'Méthode non autorisée'
+api_errors.title.406: 'Format non disponible'
+api_errors.title.409: 'Conflit'
+api_errors.title.415: 'Format de contenu non supporté'
+api_errors.title.422: 'Données invalides'
+api_errors.title.429: 'Trop de requêtes'
+api_errors.title.500: 'Erreur serveur interne'
+api_errors.title.default: 'Une erreur est survenue'

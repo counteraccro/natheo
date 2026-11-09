@@ -93,12 +93,14 @@ class ApiPlatformTest extends AppApiV2TestCase
     }
 
     /**
-     * Erreurs au format problem+json : ressource absente, validation
+     * Erreurs au format problem+json avec un titre traduit : ressource absente, validation
      * @return void
      */
     public function testErrors(): void
     {
-        $this->assertProblem($this->requestV2('GET', '/probes/99'), 404);
+        $translator = $this->container->get(TranslatorInterface::class);
+        $content = $this->assertProblem($this->requestV2('GET', '/probes/99'), 404);
+        $this->assertEquals($translator->trans('api_errors.title.404', domain: 'api_errors'), $content['title']);
         $this->assertProblem($this->requestV2('GET', '/probes/99', accept: 'application/json'), 404);
 
         $content = $this->assertProblem(
@@ -106,6 +108,7 @@ class ApiPlatformTest extends AppApiV2TestCase
             422,
         );
         $this->assertEquals('name', $content['violations'][0]['propertyPath']);
+        $this->assertEquals($translator->trans('api_errors.title.422', domain: 'api_errors'), $content['title']);
     }
 
     /**
