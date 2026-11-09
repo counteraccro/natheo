@@ -1,0 +1,43 @@
+api_platform:
+    title: 'Nathéo API'
+    description: 'API v2 de Nathéo CMS'
+    version: '2.0.0'
+    show_webby: false
+    enable_re_doc: false
+    enable_scalar: false
+    # Ressources déclarées uniquement dans src/ApiResource : aucune entité exposée
+    doctrine:
+        enabled: false
+    mapping:
+        paths: ['%kernel.project_dir%/src/ApiResource']
+    formats:
+        jsonld: ['application/ld+json']
+        json: ['application/json']
+    patch_formats:
+        json: ['application/merge-patch+json']
+    error_formats:
+        jsonproblem: ['application/problem+json']
+        jsonld: ['application/ld+json']
+        json: ['application/json']
+    docs_formats:
+        jsonopenapi: ['application/vnd.openapi+json']
+        jsonld: ['application/ld+json']
+        html: ['text/html']
+    swagger:
+        api_keys: []
+        http_auth:
+            Bearer:
+                scheme: 'bearer'
+                bearerFormat: 'API token'
+    defaults:
+        stateless: true
+        pagination_items_per_page: 20
+        pagination_client_items_per_page: true
+        pagination_maximum_items_per_page: 100
+        cache_headers:
+            vary: ['Content-Type', 'Authorization', 'Origin']
+
+when@test:
+    api_platform:
+        mapping:
+            paths: ['%kernel.project_dir%/src/ApiResource', '%kernel.project_dir%/tests/ApiResource']
