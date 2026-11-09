@@ -25,6 +25,12 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ExceptionListener
 {
+    /**
+     * Préfixe des routes servies par API Platform
+     * @var string
+     */
+    private const string API_PLATFORM_PREFIX = '/api/v2';
+
     public function __construct(
         #[
             AutowireLocator([
@@ -46,6 +52,11 @@ class ExceptionListener
     {
         $exception = $event->getThrowable();
         $request = $event->getRequest();
+
+        // Les erreurs de l'API v2 sont rendues par API Platform (problem+json)
+        if (str_starts_with($request->getPathInfo(), self::API_PLATFORM_PREFIX)) {
+            return;
+        }
 
         if (
             in_array('application/json', $request->getAcceptableContentTypes()) ||
