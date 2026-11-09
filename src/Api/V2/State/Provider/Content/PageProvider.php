@@ -51,6 +51,11 @@ final readonly class PageProvider implements ProviderInterface
             );
         }
 
+        // Page désignée par son IRI dans un corps de requête (page_reads) : seule son identité sert
+        if ($context['api_denormalize'] ?? false) {
+            return (new PageMapper($locale))->mapSummary($entity);
+        }
+
         $menuMapper = new MenuMapper($locale);
         $menus = array_map($menuMapper->map(...), $this->apiPageService->getMenusForPage($entity));
 

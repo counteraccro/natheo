@@ -295,4 +295,27 @@ class PageTest extends AppApiV2TestCase
         }
         $this->assertEquals($counts[0], $counts[1]);
     }
+
+    /**
+     * Lecture comptée sans construire la page complète désignée par l'IRI
+     * @return void
+     */
+    public function testReadQueryCount(): void
+    {
+        $page = $this->createPageAllDataDefault();
+        $menu = $this->createMenuAllDataDefault();
+        $page->addMenu($menu);
+        $this->persistAndFlush($page);
+        $body = ['page' => self::PREFIX . '/pages/' . $page->getId()];
+
+        $this->em->clear();
+        $this->client->enableProfiler();
+        $this->assertEquals(200, $this->requestV2('GET', '/pages/' . $page->getId())->getStatusCode());
+        $getCount = $this->client->getProfile()->getCollector('db')->getQueryCount();
+
+        $this->em->clear();
+        $this->client->enableProfiler();
+        $this->assertEquals(204, $this->requestV2('POST', '/page_reads', body: $body)->getStatusCode());
+        $this->assertLessThan($getCount, $this->client->getProfile()->getCollector('db')->getQueryCount());
+    }
 }
