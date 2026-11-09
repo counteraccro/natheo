@@ -10,6 +10,7 @@ use App\Entity\Admin\Content\Menu\MenuElement;
 use App\Entity\Admin\Content\Tag\Tag;
 use App\Entity\Admin\System\User;
 use App\Entity\Trait\TranslationByLocaleTrait;
+use App\Enum\Admin\Content\Page\PageStatus;
 use App\Enum\Installation\DoctrineStrategy;
 use App\Repository\Admin\Content\Page\PageRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -376,6 +377,15 @@ class Page
         $this->disabled = $disabled;
 
         return $this;
+    }
+
+    /**
+     * Indique si la page est publiée et active
+     * @return bool
+     */
+    public function isPublished(): bool
+    {
+        return !$this->disabled && $this->status === PageStatus::PUBLISH->value;
     }
 
     /**

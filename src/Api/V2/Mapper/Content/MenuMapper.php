@@ -46,7 +46,8 @@ final readonly class MenuMapper
     {
         $return = [];
         foreach ($elements as $element) {
-            if ($element->isDisabled()) {
+            // Lien vers une page non publiée : élément masqué avec ses enfants
+            if ($element->isDisabled() || $element->getPage()?->isPublished() === false) {
                 continue;
             }
 

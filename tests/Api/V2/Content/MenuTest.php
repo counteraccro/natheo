@@ -11,6 +11,7 @@ namespace App\Tests\Api\V2\Content;
 
 use App\Api\V2\Resource\Content\Menu as MenuResource;
 use App\Enum\Admin\Content\Menu\MenuPosition;
+use App\Enum\Admin\Content\Page\PageStatus;
 use App\Tests\Api\V2\AppApiV2TestCase;
 
 class MenuTest extends AppApiV2TestCase
@@ -41,6 +42,30 @@ class MenuTest extends AppApiV2TestCase
 
         $this->assertProblem($this->requestV2('GET', '/menus/' . $disabled->getId()), 404);
         $this->assertProblem($this->requestV2('GET', '/menus/999999999'), 404);
+    }
+
+    /**
+     * Élément lié à une page non publiée : masqué, son slug n'est pas exposé
+     * @return void
+     */
+    public function testElementOfUnpublishedPage(): void
+    {
+        $menu = $this->createMenu(customData: ['disabled' => false]);
+        $published = $this->createPageAllDataDefault();
+        $draft = $this->createPageAllDataDefault();
+        $draft->setStatus(PageStatus::DRAFT->value);
+        $this->persistAndFlush($draft);
+        foreach ([$published, $draft] as $page) {
+            $element = $this->createMenuElement($menu, page: $page, customData: ['disabled' => false]);
+            foreach ($this->locales as $locale) {
+                $this->createMenuElementTranslation($element, ['locale' => $locale]);
+            }
+        }
+        $this->em->clear();
+
+        $content = $this->decode($this->requestV2('GET', '/menus/' . $menu->getId() . '?locale=fr'));
+        $this->assertCount(1, $content['elements']);
+        $this->assertEquals($published->getPageTranslationByLocale('fr')->getUrl(), $content['elements'][0]['pageSlug']);
     }
 
     /**
