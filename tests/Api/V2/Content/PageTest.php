@@ -17,10 +17,10 @@ use App\Tests\Api\V2\AppApiV2TestCase;
 class PageTest extends AppApiV2TestCase
 {
     /**
-     * Page complète par son slug : IRI canonique, champs, blocs et menus ; pas de lecture comptée
+     * Page complète par son id : champs, blocs et menus ; pas de lecture comptée
      * @return void
      */
-    public function testGetBySlug(): void
+    public function testGet(): void
     {
         $page = $this->createPageAllDataDefault();
         $menu = $this->createMenuAllDataDefault();
@@ -29,7 +29,7 @@ class PageTest extends AppApiV2TestCase
         $reads = (int) $page->getPageStatistiqueByKey(PageStatistics::NB_READ->value)->getValue();
         $translation = $page->getPageTranslationByLocale('fr');
 
-        $content = $this->decode($this->requestV2('GET', '/pages/slug/' . $translation->getUrl() . '?locale=fr'));
+        $content = $this->decode($this->requestV2('GET', '/pages/' . $page->getId() . '?locale=fr'));
 
         $this->assertEquals('/api/v2/pages/' . $page->getId(), $content['@id']);
         $this->assertEquals('Page', $content['@type']);
@@ -73,18 +73,49 @@ class PageTest extends AppApiV2TestCase
     }
 
     /**
-     * Page d'accueil
+     * Recherche exacte par slug : au plus une page, en priorité celle de la langue demandée
      * @return void
      */
-    public function testGetLanding(): void
+    public function testCollectionBySlug(): void
+    {
+        $page = $this->createPageAllDataDefault();
+        $other = $this->createPageAllDataDefault();
+        $slug = $page->getPageTranslationByLocale('en')->getUrl();
+        $other->getPageTranslationByLocale('fr')->setUrl($slug);
+        $this->persistAndFlush($other);
+
+        $content = $this->decode($this->requestV2('GET', '/pages?slug=' . $slug . '&locale=en'));
+        $this->assertEquals(1, $content['totalItems']);
+        $this->assertEquals('/api/v2/pages/' . $page->getId(), $content['member'][0]['@id']);
+
+        $content = $this->decode($this->requestV2('GET', '/pages?slug=' . $slug . '&locale=fr'));
+        $this->assertEquals(1, $content['totalItems']);
+        $this->assertEquals($other->getId(), $content['member'][0]['id']);
+
+        $this->assertEquals(0, $this->decode($this->requestV2('GET', '/pages?slug=page-inexistante'))['totalItems']);
+        $this->assertEquals(0, $this->decode($this->requestV2('GET', '/pages?slug=' . $slug . '&category=blog'))['totalItems']);
+        $this->assertEquals(422, $this->requestV2('GET', '/pages?slug=')->getStatusCode());
+    }
+
+    /**
+     * Page d'accueil seule ou pages hors accueil
+     * @return void
+     */
+    public function testCollectionLanding(): void
     {
         $page = $this->createPageAllDataDefault();
         $page->setLandingPage(true);
         $this->persistAndFlush($page);
+        $this->createPageAllDataDefault();
 
-        $response = $this->requestV2('GET', '/pages/landing');
-        $this->assertEquals(200, $response->getStatusCode());
-        $this->assertTrue($this->decode($response)['landingPage']);
+        $content = $this->decode($this->requestV2('GET', '/pages?landing=true'));
+        $this->assertEquals(1, $content['totalItems']);
+        $this->assertEquals($page->getId(), $content['member'][0]['id']);
+
+        $ids = array_column($this->decode($this->requestV2('GET', '/pages?landing=false&itemsPerPage=100'))['member'], 'id');
+        $this->assertNotContains($page->getId(), $ids);
+
+        $this->assertEquals(422, $this->requestV2('GET', '/pages?landing=oui')->getStatusCode());
     }
 
     /**
@@ -101,8 +132,9 @@ class PageTest extends AppApiV2TestCase
         $this->persistAndFlush($disabled);
 
         $this->assertProblem($this->requestV2('GET', '/pages/' . $draft->getId()), 404);
-        $this->assertProblem($this->requestV2('GET', '/pages/slug/' . $disabled->getPageTranslationByLocale('fr')->getUrl()), 404);
-        $this->assertProblem($this->requestV2('GET', '/pages/slug/page-inexistante'), 404);
+        $this->assertProblem($this->requestV2('GET', '/pages/' . $disabled->getId()), 404);
+        $slug = $disabled->getPageTranslationByLocale('fr')->getUrl();
+        $this->assertEquals(0, $this->decode($this->requestV2('GET', '/pages?slug=' . $slug))['totalItems']);
         $this->assertProblem($this->requestV2('GET', '/pages/999999999'), 404);
         $this->assertProblem($this->requestV2('GET', '/pages/' . $disabled->getId(), self::HEADER_NONE), 401);
     }

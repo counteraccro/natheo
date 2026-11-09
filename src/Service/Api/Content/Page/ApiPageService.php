@@ -360,20 +360,37 @@ class ApiPageService extends AppApiService
     }
 
     /**
-     * Retourne les pages publiées, filtrées par catégorie et / ou par tag actif
+     * Retourne les pages publiées, filtrées par catégorie, tag actif, slug ou page d'accueil.
+     * Le slug désigne au plus une page, en priorité celle dont le slug est celui de $locale
      * @param int $page
      * @param int $limit
+     * @param string $locale
      * @param PageCategory|null $category
      * @param int|null $tagId
+     * @param string|null $slug
+     * @param bool|null $landing
      * @return Paginator
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function findPublishedPages(int $page, int $limit, ?PageCategory $category, ?int $tagId): Paginator
-    {
+    public function findPublishedPages(
+        int $page,
+        int $limit,
+        string $locale,
+        ?PageCategory $category = null,
+        ?int $tagId = null,
+        ?string $slug = null,
+        ?bool $landing = null,
+    ): Paginator {
+        $pageId = null;
+        if ($slug !== null) {
+            // Slug inconnu : id 0, aucune page
+            $pageId = $slug === '' ? 0 : $this->getPageBySlug($slug, $locale)?->getId() ?? 0;
+        }
+
         /** @var PageRepository $pageRepository */
         $pageRepository = $this->getRepository(Page::class);
-        return $pageRepository->getPublishedPagesPaginate($page, $limit, $category, $tagId);
+        return $pageRepository->getPublishedPagesPaginate($page, $limit, $category, $tagId, $pageId, $landing);
     }
 
     /**

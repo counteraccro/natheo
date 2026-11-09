@@ -139,16 +139,24 @@ class PageRepository extends ServiceEntityRepository
     }
 
     /**
-     * Retourne les pages publiées et actives, filtrées par catégorie et / ou par tag actif,
+     * Retourne les pages publiées et actives, filtrées par catégorie, tag actif, id ou page d'accueil,
      * les plus récemment modifiées en premier
      * @param int $page
      * @param int $limit
      * @param PageCategory|null $category
      * @param int|null $tagId
+     * @param int|null $pageId
+     * @param bool|null $landing
      * @return Paginator
      */
-    public function getPublishedPagesPaginate(int $page, int $limit, ?PageCategory $category, ?int $tagId): Paginator
-    {
+    public function getPublishedPagesPaginate(
+        int $page,
+        int $limit,
+        ?PageCategory $category = null,
+        ?int $tagId = null,
+        ?int $pageId = null,
+        ?bool $landing = null,
+    ): Paginator {
         $query = $this->createQueryBuilder('p')
             ->where('p.disabled = :disabled')
             ->setParameter('disabled', false)
@@ -168,6 +176,14 @@ class PageRepository extends ServiceEntityRepository
                 ->setParameter('tagId', $tagId)
                 ->andWhere('t.disabled = :tagDisabled')
                 ->setParameter('tagDisabled', false);
+        }
+
+        if ($pageId !== null) {
+            $query->andWhere('p.id = :pageId')->setParameter('pageId', $pageId);
+        }
+
+        if ($landing !== null) {
+            $query->andWhere('p.landingPage = :landing')->setParameter('landing', $landing);
         }
 
         $paginator = new Paginator($query->getQuery(), true);

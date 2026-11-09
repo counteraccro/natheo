@@ -36,24 +36,6 @@ use Symfony\Component\Validator\Constraints as Assert;
                 provider: PageProvider::class,
                 parameters: ['locale' => new LocaleParameter()],
             ),
-            new Get(
-                uriTemplate: '/pages/slug/{slug}',
-                uriVariables: ['slug'],
-                description: 'Une page publiée par son URL (slug), en priorité dans la langue demandée',
-                normalizationContext: ['groups' => ['page:read'], 'item_uri_template' => '/pages/{id}'],
-                security: "is_granted('ROLE_READ_API')",
-                provider: PageProvider::class,
-                parameters: ['locale' => new LocaleParameter()],
-            ),
-            new Get(
-                uriTemplate: '/pages/landing',
-                uriVariables: [],
-                description: 'La page d\'accueil du site',
-                normalizationContext: ['groups' => ['page:read'], 'item_uri_template' => '/pages/{id}'],
-                security: "is_granted('ROLE_READ_API')",
-                provider: PageProvider::class,
-                parameters: ['locale' => new LocaleParameter()],
-            ),
             new GetCollection(
                 uriTemplate: '/pages',
                 description: 'Les pages publiées, les plus récemment modifiées en premier',
@@ -68,6 +50,15 @@ use Symfony\Component\Validator\Constraints as Assert;
                         description: 'Id d\'un tag actif',
                         constraints: [new Assert\Regex(pattern: '/^[1-9][0-9]*$/')],
                     ),
+                    'slug' => new QueryParameter(
+                        schema: ['type' => 'string', 'minLength' => 1],
+                        description: 'URL (slug) exacte : au plus une page, en priorité dans la langue demandée',
+                    ),
+                    'landing' => new QueryParameter(
+                        schema: ['type' => 'boolean'],
+                        description: 'true : la page d\'accueil seule, false : les autres pages',
+                        castToNativeType: true,
+                    ),
                 ],
             ),
         ],
@@ -79,7 +70,6 @@ final class Page
     #[Groups(['page:read', 'page:list'])]
     public int $id = 0;
 
-    #[ApiProperty(identifier: false)]
     #[Groups(['page:read', 'page:list'])]
     public string $slug = '';
 

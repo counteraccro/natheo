@@ -4,7 +4,7 @@ declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
  * @version 1.0
- * Provider d'une page publiée : par id, par slug ou page d'accueil
+ * Provider d'une page publiée par son id
  */
 
 namespace App\Api\V2\State\Provider\Content;
@@ -43,13 +43,7 @@ final readonly class PageProvider implements ProviderInterface
     {
         $locale = $this->apiPageService->resolveLocale(LocaleParameter::getValueFrom($operation));
 
-        if (isset($uriVariables['id'])) {
-            $entity = $this->apiPageService->findPublishedPage((int) $uriVariables['id']);
-        } else {
-            // Slug vide : page d'accueil
-            $entity = $this->apiPageService->findPublishedPageBySlug((string) ($uriVariables['slug'] ?? ''), $locale);
-        }
-
+        $entity = $this->apiPageService->findPublishedPage((int) $uriVariables['id']);
         if ($entity === null) {
             throw new NotFoundHttpException(
                 $this->translator->trans('api_errors.find.page.not.found', domain: 'api_errors'),

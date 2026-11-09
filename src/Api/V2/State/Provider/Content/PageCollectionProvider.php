@@ -4,7 +4,7 @@ declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
  * @version 1.0
- * Provider de la liste paginée des pages publiées
+ * Provider de la liste paginée des pages publiées, filtrée par catégorie, tag, slug ou page d'accueil
  */
 
 namespace App\Api\V2\State\Provider\Content;
@@ -46,12 +46,18 @@ final readonly class PageCollectionProvider implements ProviderInterface
         $page = $this->pagination->getPage($context);
         $limit = $this->pagination->getLimit($operation, $context);
 
-        $tag = $operation->getParameters()?->get('tag', QueryParameter::class)?->getValue(null);
+        $parameters = $operation->getParameters();
+        $tag = $parameters?->get('tag', QueryParameter::class)?->getValue(null);
+        $slug = $parameters?->get('slug', QueryParameter::class)?->getValue(null);
+        $landing = $parameters?->get('landing', QueryParameter::class)?->getValue(null);
         $paginator = $this->apiPageService->findPublishedPages(
             $page,
             $limit,
+            $locale,
             PageCategoryParameter::getValueFrom($operation),
             is_numeric($tag) ? (int) $tag : null,
+            is_string($slug) ? $slug : null,
+            is_bool($landing) ? $landing : null,
         );
 
         $mapper = new PageMapper($locale);
