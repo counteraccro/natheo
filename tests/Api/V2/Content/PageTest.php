@@ -1,0 +1,170 @@
+<?php
+
+declare(strict_types=1);
+/**
+ * @author Gourdon Aymeric
+ * @version 1.0
+ * Tests de la ressource Page de l'API v2
+ */
+
+namespace App\Tests\Api\V2\Content;
+
+use App\Entity\Admin\Content\Page\Page;
+use App\Enum\Admin\Content\Page\PageStatistics;
+use App\Enum\Admin\Content\Page\PageStatus;
+use App\Tests\Api\V2\AppApiV2TestCase;
+
+class PageTest extends AppApiV2TestCase
+{
+    /**
+     * Page complète par son slug : IRI canonique, champs, blocs et menus ; pas de lecture comptée
+     * @return void
+     */
+    public function testGetBySlug(): void
+    {
+        $page = $this->createPageAllDataDefault();
+        $menu = $this->createMenuAllDataDefault();
+        $page->addMenu($menu);
+        $this->persistAndFlush($page);
+        $reads = (int) $page->getPageStatistiqueByKey(PageStatistics::NB_READ->value)->getValue();
+        $translation = $page->getPageTranslationByLocale('fr');
+
+        $content = $this->decode($this->requestV2('GET', '/pages/slug/' . $translation->getUrl() . '?locale=fr'));
+
+        $this->assertEquals('/api/v2/pages/' . $page->getId(), $content['@id']);
+        $this->assertEquals('Page', $content['@type']);
+        $this->assertEquals($translation->getTitre(), $content['title']);
+        $this->assertEquals($translation->getUrl(), $content['slug']);
+        $this->assertEquals('page', $content['category']);
+        $this->assertEquals('two_block_bottom', $content['render']);
+        $this->assertTrue($content['openComment']);
+        $this->assertEquals($reads, $content['reads']);
+        $this->assertNotFalse(\DateTimeImmutable::createFromFormat(\DATE_ATOM, $content['updatedAt']));
+        $this->assertArrayHasKey('name', $content['author']);
+        $this->assertCount($page->getTags()->count(), $content['tags']);
+        $this->assertCount($page->getPageMetas()->count(), $content['seo']);
+        $this->assertEquals(['@type', 'name', 'value'], array_keys($content['seo'][0]));
+
+        $this->assertCount($page->getPageContents()->count(), $content['contents']);
+        $block = $content['contents'][0];
+        $this->assertEquals('/api/v2/page_contents/' . $page->getPageContents()->first()->getId(), $block['@id']);
+        $this->assertArrayHasKey('type', $block);
+        $this->assertArrayHasKey('position', $block);
+        $this->assertArrayNotHasKey('content', $block);
+
+        $menuIds = array_column($content['menus'], 'id');
+        $this->assertContains($menu->getId(), $menuIds);
+    }
+
+    /**
+     * Page par son id, dans la langue demandée
+     * @return void
+     */
+    public function testGetByIdAndLocale(): void
+    {
+        $page = $this->createPageAllDataDefault();
+
+        $content = $this->decode($this->requestV2('GET', '/pages/' . $page->getId() . '?locale=en'));
+        $this->assertEquals($page->getId(), $content['id']);
+        $this->assertEquals($page->getPageTranslationByLocale('en')->getTitre(), $content['title']);
+
+        $this->assertEquals(422, $this->requestV2('GET', '/pages/' . $page->getId() . '?locale=de')->getStatusCode());
+    }
+
+    /**
+     * Page d'accueil
+     * @return void
+     */
+    public function testGetLanding(): void
+    {
+        $page = $this->createPageAllDataDefault();
+        $page->setLandingPage(true);
+        $this->persistAndFlush($page);
+
+        $response = $this->requestV2('GET', '/pages/landing');
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertTrue($this->decode($response)['landingPage']);
+    }
+
+    /**
+     * Page inexistante, au statut brouillon ou désactivée : 404 ; sans token : 401
+     * @return void
+     */
+    public function testNotVisible(): void
+    {
+        $draft = $this->createPageAllDataDefault();
+        $draft->setStatus(PageStatus::DRAFT->value);
+        $this->persistAndFlush($draft);
+        $disabled = $this->createPageAllDataDefault();
+        $disabled->setDisabled(true);
+        $this->persistAndFlush($disabled);
+
+        $this->assertProblem($this->requestV2('GET', '/pages/' . $draft->getId()), 404);
+        $this->assertProblem($this->requestV2('GET', '/pages/slug/' . $disabled->getPageTranslationByLocale('fr')->getUrl()), 404);
+        $this->assertProblem($this->requestV2('GET', '/pages/slug/page-inexistante'), 404);
+        $this->assertProblem($this->requestV2('GET', '/pages/999999999'), 404);
+        $this->assertProblem($this->requestV2('GET', '/pages/' . $disabled->getId(), self::HEADER_NONE), 401);
+    }
+
+    /**
+     * POST /pages/{id}/read compte une lecture
+     * @return void
+     */
+    public function testRead(): void
+    {
+        $page = $this->createPageAllDataDefault();
+        $draft = $this->createPageAllDataDefault();
+        $draft->setStatus(PageStatus::DRAFT->value);
+        $this->persistAndFlush($draft);
+        $id = $page->getId();
+        $reads = (int) $page->getPageStatistiqueByKey(PageStatistics::NB_READ->value)->getValue();
+
+        $response = $this->requestV2('POST', '/pages/' . $id . '/read');
+        $this->assertEquals(204, $response->getStatusCode());
+        $this->assertEmpty($response->getContent());
+
+        $this->em->clear();
+        $page = $this->em->getRepository(Page::class)->find($id);
+        $this->assertEquals($reads + 1, (int) $page->getPageStatistiqueByKey(PageStatistics::NB_READ->value)->getValue());
+
+        $this->assertProblem($this->requestV2('POST', '/pages/' . $draft->getId() . '/read'), 404);
+        $this->assertProblem($this->requestV2('POST', '/pages/' . $id . '/read', self::HEADER_NONE), 401);
+    }
+
+    /**
+     * Liste paginée filtrée par tag, par catégorie
+     * @return void
+     */
+    public function testCollection(): void
+    {
+        $tag = $this->createTag();
+        foreach ($this->locales as $locale) {
+            $this->createTagTranslation($tag, ['locale' => $locale, 'label' => 'tag-api-v2-' . $locale]);
+        }
+        $ids = [];
+        for ($i = 0; $i < 3; $i++) {
+            $page = $this->createPageAllDataDefault();
+            $this->createPageTag($page, $tag);
+            $ids[] = $page->getId();
+        }
+
+        $content = $this->decode($this->requestV2('GET', '/pages?tag=tag-api-v2-fr&itemsPerPage=2'));
+        $this->assertEquals('Collection', $content['@type']);
+        $this->assertEquals(3, $content['totalItems']);
+        $this->assertCount(2, $content['member']);
+        $this->assertArrayHasKey('next', $content['view']);
+        $this->assertEquals(['@id', '@type', 'id', 'slug', 'title', 'category', 'headerImage', 'author', 'tags', 'createdAt', 'updatedAt'], array_keys($content['member'][0]));
+
+        $content = $this->decode($this->requestV2('GET', '/pages?tag=tag-api-v2-fr&itemsPerPage=2&page=2'));
+        $this->assertCount(1, $content['member']);
+        $returned = array_column($content['member'], 'id');
+        $this->assertContains($returned[0], $ids);
+
+        $content = $this->decode($this->requestV2('GET', '/pages?tag=tag-api-v2-fr&category=page'));
+        $this->assertEquals(3, $content['totalItems']);
+        $content = $this->decode($this->requestV2('GET', '/pages?tag=tag-api-v2-fr&category=blog'));
+        $this->assertEquals(0, $content['totalItems']);
+
+        $this->assertProblem($this->requestV2('GET', '/pages?category=inconnue'), 404);
+    }
+}
