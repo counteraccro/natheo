@@ -116,8 +116,14 @@ class OverwriteListener
             self::KEY_PARAMETERS => [],
         ];
 
+        // Contrôleurs invocables (API Platform) ou closures : jamais surchargés
+        $controller = $event->getController();
+        if (!is_array($controller)) {
+            return $tabReturn;
+        }
+
         foreach ($tabOverwriteConfig[self::KEY_OVERWRITE] as $row) {
-            if ($row[self::KEY_CONTROLLER] === $event->getController()[0]::class
+            if ($row[self::KEY_CONTROLLER] === $controller[0]::class
                 && $row[self::KEY_ROUTE] === $event->getRequest()->attributes->get('_route')) {
                 $tabReturn[self::KEY_ROUTE] = $row[self::KEY_OVERWRITE][self::KEY_ROUTE];
                 $params = $event->getRequest()->attributes->get('_route_params');
