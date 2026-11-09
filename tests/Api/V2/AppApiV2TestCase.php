@@ -58,7 +58,8 @@ class AppApiV2TestCase extends AppApiTestCase
         array $headers = [],
     ): Response {
         $server = $typeHeader === self::HEADER_NONE ? [] : $this->getCustomHeaders($typeHeader);
-        $server = [...$server, ...$headers];
+        // Request::create() envoie « en-us » par défaut : sans en-tête, la langue par défaut du site s'applique
+        $server = [...$server, 'HTTP_ACCEPT_LANGUAGE' => '', ...$headers];
         $server['HTTP_ACCEPT'] = $accept;
         unset($server['HTTP_Accept'], $server['HTTP_Content-Type']);
         if ($body !== null) {

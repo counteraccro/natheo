@@ -14,7 +14,6 @@ use ApiPlatform\Metadata\IriConverterInterface;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
 use App\Api\V2\Exception\NotFoundException;
-use App\Api\V2\Filter\LocaleFilter;
 use App\Api\V2\Mapper\Content\FaqMapper;
 use App\Api\V2\Output\Content\FaqContent;
 use App\Api\V2\Output\Content\ListingContent;
@@ -52,7 +51,7 @@ final readonly class PageContentProvider implements ProviderInterface
      */
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): PageContent
     {
-        $locale = $this->apiPageContentService->resolveLocale(...LocaleFilter::getValues($operation));
+        $locale = $this->apiPageContentService->getContentLocale();
         $entity = $this->apiPageContentService->findPublishedPageContent((int) $uriVariables['id']);
         $type = PageContentType::tryFrom((int) $entity?->getType());
         $isAvailable = $entity !== null && $this->apiPageContentService->isPageContentAvailable($entity, $locale);

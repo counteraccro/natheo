@@ -38,7 +38,7 @@ api_platform:
         normalization_context:
             skip_null_values: false
         cache_headers:
-            vary: ['Content-Type', 'Authorization', 'Origin', 'Accept-Language']
+            vary: ['Content-Type', 'Authorization', 'Origin']
 
 when@test:
     api_platform:

@@ -105,6 +105,29 @@ class PageTest extends AppApiV2TestCase
     }
 
     /**
+     * Erreurs traduites dans la langue demandée, y compris l'authentification et la validation
+     * @return void
+     */
+    public function testErrorLocale(): void
+    {
+        $en = ['HTTP_ACCEPT_LANGUAGE' => 'en'];
+        $trans = fn(string $key) => $this->translator->trans($key, domain: 'api_errors', locale: 'en');
+
+        $content = $this->assertProblem($this->requestV2('GET', '/pages/999999999', headers: $en), 404);
+        $this->assertEquals($trans('api_errors.title.404'), $content['title']);
+        $this->assertEquals($trans('api_errors.find.page.not.found'), $content['detail']);
+
+        $response = $this->requestV2('GET', '/pages?category=inconnue&locale=es');
+        $content = $this->assertProblem($response, 422);
+        $this->assertEquals($this->translator->trans('api_errors.title.422', domain: 'api_errors', locale: 'es'), $content['title']);
+        $this->assertContains('Accept-Language', $response->getVary());
+
+        $content = $this->assertProblem($this->requestV2('GET', '/pages', self::HEADER_WRONG, headers: $en), 401);
+        $this->assertEquals($trans('api_errors.title.401'), $content['title']);
+        $this->assertEquals($trans('api_errors.authentication.failure'), $content['detail']);
+    }
+
+    /**
      * Recherche exacte par slug : au plus une page, en priorité celle de la langue demandée
      * @return void
      */

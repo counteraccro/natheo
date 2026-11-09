@@ -11,6 +11,7 @@ namespace App\EventSubscriber;
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Enum\Admin\System\Options\OptionUser;
 use App\Enum\Installation\OptionInstallation;
+use App\EventListener\ApiLocaleListener;
 use App\Service\Admin\System\OptionSystemService;
 use App\Service\Admin\System\OptionUserService;
 use App\Service\Global\Database\DataBase;
@@ -80,6 +81,11 @@ class LocaleSubscriber implements EventSubscriberInterface
      */
     public function onKernelController(ControllerEvent $event): void
     {
+        // Langue de l'API v2 déjà fixée par ApiLocaleListener
+        if ($event->getRequest()->attributes->has(ApiLocaleListener::ATTRIBUTE)) {
+            return;
+        }
+
         // Lors de l'installation si pas de bdd pour éviter les crashs
         if (
             !$this->dataBase->check(OptionInstallation::DATABASE_EXIST->value)['success'] ||

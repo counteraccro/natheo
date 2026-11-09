@@ -12,7 +12,6 @@ namespace App\Api\V2\State\Provider\Content;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
 use App\Api\V2\Exception\NotFoundException;
-use App\Api\V2\Filter\LocaleFilter;
 use App\Api\V2\Resource\Content\Menu;
 use App\Api\V2\Mapper\Content\MenuMapper;
 use App\Service\Api\Content\ApiMenuService;
@@ -37,7 +36,7 @@ final readonly class MenuProvider implements ProviderInterface
      */
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): Menu
     {
-        $locale = $this->apiMenuService->resolveLocale(...LocaleFilter::getValues($operation));
+        $locale = $this->apiMenuService->getContentLocale();
         $menu = $this->apiMenuService->findActiveMenu((int) $uriVariables['id']);
         if ($menu === null) {
             throw new NotFoundException(

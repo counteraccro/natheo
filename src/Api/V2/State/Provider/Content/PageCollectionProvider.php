@@ -14,7 +14,6 @@ use ApiPlatform\Metadata\QueryParameter;
 use ApiPlatform\State\Pagination\Pagination;
 use ApiPlatform\State\Pagination\TraversablePaginator;
 use ApiPlatform\State\ProviderInterface;
-use App\Api\V2\Filter\LocaleFilter;
 use App\Api\V2\Filter\PageCategoryFilter;
 use App\Api\V2\Resource\Content\Page;
 use App\Api\V2\Mapper\Content\PageMapper;
@@ -42,7 +41,7 @@ final readonly class PageCollectionProvider implements ProviderInterface
      */
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): TraversablePaginator
     {
-        $locale = $this->apiPageService->resolveLocale(...LocaleFilter::getValues($operation));
+        $locale = $this->apiPageService->getContentLocale();
         $page = $this->pagination->getPage($context);
         $limit = $this->pagination->getLimit($operation, $context);
 
