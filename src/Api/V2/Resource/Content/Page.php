@@ -15,6 +15,8 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\HeaderParameter;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\QueryParameter;
+use ApiPlatform\Validator\Exception\ValidationException;
+use App\Api\V2\Exception\NotFoundException;
 use App\Api\V2\Output\Content\Author;
 use App\Api\V2\Output\Content\Meta;
 use App\Api\V2\Output\Content\Tag;
@@ -30,28 +32,31 @@ use Symfony\Component\Validator\Constraints as Assert;
         operations: [
             new Get(
                 uriTemplate: '/pages/{id}',
+                errors: [NotFoundException::class, ValidationException::class],
                 requirements: ['id' => '\d+'],
                 description: 'Une page publiée par son id',
                 normalizationContext: ['groups' => ['page:read']],
                 security: "is_granted('ROLE_READ_API')",
                 provider: PageProvider::class,
                 parameters: [
-                    'locale' => new QueryParameter(filter: LocaleFilter::class, description: LocaleFilter::LOCALE_DESCRIPTION),
+                    'locale' => new QueryParameter(filter: LocaleFilter::class, property: 'locale', description: LocaleFilter::LOCALE_DESCRIPTION),
                     LocaleFilter::HEADER => new HeaderParameter(schema: ['type' => 'string'], description: LocaleFilter::HEADER_DESCRIPTION),
                 ],
             ),
             new GetCollection(
                 uriTemplate: '/pages',
+                errors: [ValidationException::class],
                 description: 'Les pages publiées, les plus récemment modifiées en premier',
                 normalizationContext: ['groups' => ['page:list']],
                 security: "is_granted('ROLE_READ_API')",
                 provider: PageCollectionProvider::class,
                 parameters: [
-                    'locale' => new QueryParameter(filter: LocaleFilter::class, description: LocaleFilter::LOCALE_DESCRIPTION),
+                    'locale' => new QueryParameter(filter: LocaleFilter::class, property: 'locale', description: LocaleFilter::LOCALE_DESCRIPTION),
                     LocaleFilter::HEADER => new HeaderParameter(schema: ['type' => 'string'], description: LocaleFilter::HEADER_DESCRIPTION),
                     'category' => new QueryParameter(filter: PageCategoryFilter::class, description: 'Catégorie des pages'),
                     'tag' => new QueryParameter(
                         schema: ['type' => 'integer', 'minimum' => 1],
+                        property: 'tags',
                         description: 'Id d\'un tag actif',
                         constraints: [new Assert\Regex(pattern: '/^[1-9][0-9]*$/')],
                     ),
@@ -61,6 +66,7 @@ use Symfony\Component\Validator\Constraints as Assert;
                     ),
                     'landing' => new QueryParameter(
                         schema: ['type' => 'boolean'],
+                        property: 'landingPage',
                         description: 'true : la page d\'accueil seule, false : les autres pages',
                         castToNativeType: true,
                     ),

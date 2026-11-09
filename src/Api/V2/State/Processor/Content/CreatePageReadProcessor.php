@@ -11,11 +11,11 @@ namespace App\Api\V2\State\Processor\Content;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
+use App\Api\V2\Exception\NotFoundException;
 use App\Api\V2\Resource\Content\PageRead;
 use App\Service\Api\Content\Page\ApiPageService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -38,7 +38,7 @@ final readonly class CreatePageReadProcessor implements ProcessorInterface
     {
         $page = $this->apiPageService->findPublishedPage((int) $data->page?->id);
         if ($page === null) {
-            throw new NotFoundHttpException(
+            throw new NotFoundException(
                 $this->translator->trans('api_errors.find.page.not.found', domain: 'api_errors'),
             );
         }

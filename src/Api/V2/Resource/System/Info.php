@@ -19,6 +19,7 @@ use App\Api\V2\State\Provider\System\InfoProvider;
         operations: [
             new Get(
                 uriTemplate: '/info',
+                errors: [],
                 description: 'Nom du site et versions de Nathéo et de l\'API',
                 security: "is_granted('ROLE_READ_API')",
                 provider: InfoProvider::class,

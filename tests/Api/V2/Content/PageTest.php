@@ -215,6 +215,7 @@ class PageTest extends AppApiV2TestCase
         $content = $this->decode($this->requestV2('GET', $tagFilter . '&itemsPerPage=2'));
         $this->assertEquals('Collection', $content['@type']);
         $this->assertEquals(3, $content['totalItems']);
+        $this->assertEquals('/api/v2/pages{?locale,category,tag,slug,landing}', $content['search']['template']);
         $this->assertCount(2, $content['member']);
         $this->assertArrayHasKey('next', $content['view']);
         $member = $content['member'][0];

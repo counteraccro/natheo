@@ -12,6 +12,8 @@ namespace App\Api\V2\Resource\Content;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Post;
+use ApiPlatform\Validator\Exception\ValidationException;
+use App\Api\V2\Exception\NotFoundException;
 use App\Api\V2\State\Processor\Content\CreatePageReadProcessor;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -21,6 +23,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         operations: [
             new Post(
                 uriTemplate: '/page_reads',
+                errors: [NotFoundException::class, ValidationException::class],
                 status: 204,
                 description: 'Compte une lecture de la page',
                 denormalizationContext: ['groups' => ['page_read:write']],

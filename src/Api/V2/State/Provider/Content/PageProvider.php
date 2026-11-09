@@ -11,6 +11,7 @@ namespace App\Api\V2\State\Provider\Content;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
+use App\Api\V2\Exception\NotFoundException;
 use App\Api\V2\Filter\LocaleFilter;
 use App\Api\V2\Resource\Content\Page;
 use App\Api\V2\Mapper\Content\MenuMapper;
@@ -18,7 +19,6 @@ use App\Api\V2\Mapper\Content\PageMapper;
 use App\Service\Api\Content\Page\ApiPageService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -45,7 +45,7 @@ final readonly class PageProvider implements ProviderInterface
 
         $entity = $this->apiPageService->findPublishedPage((int) $uriVariables['id']);
         if ($entity === null) {
-            throw new NotFoundHttpException(
+            throw new NotFoundException(
                 $this->translator->trans('api_errors.find.page.not.found', domain: 'api_errors'),
             );
         }

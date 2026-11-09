@@ -13,6 +13,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\IriConverterInterface;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
+use App\Api\V2\Exception\NotFoundException;
 use App\Api\V2\Filter\LocaleFilter;
 use App\Api\V2\Mapper\Content\FaqMapper;
 use App\Api\V2\Output\Content\FaqContent;
@@ -27,7 +28,6 @@ use App\Service\Api\Content\Page\ApiPageContentService;
 use League\CommonMark\Exception\CommonMarkException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -57,7 +57,7 @@ final readonly class PageContentProvider implements ProviderInterface
         $type = PageContentType::tryFrom((int) $entity?->getType());
         $content = $type === null ? null : $this->getContent($entity, $type, $locale);
         if ($content === null) {
-            throw new NotFoundHttpException(
+            throw new NotFoundException(
                 $this->translator->trans('api_errors.find.page.content.not.found', domain: 'api_errors'),
             );
         }

@@ -12,6 +12,7 @@ namespace App\Api\V2\State\Provider\Content;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\Metadata\QueryParameter;
 use ApiPlatform\State\ProviderInterface;
+use App\Api\V2\Exception\NotFoundException;
 use App\Api\V2\Filter\LocaleFilter;
 use App\Api\V2\Filter\MenuPositionFilter;
 use App\Api\V2\Resource\Content\Menu;
@@ -19,7 +20,6 @@ use App\Api\V2\Mapper\Content\MenuMapper;
 use App\Service\Api\Content\Page\ApiPageService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -49,7 +49,7 @@ final readonly class MenuCollectionProvider implements ProviderInterface
 
         $page = $slug === '' ? null : $this->apiPageService->findPublishedPageBySlug($slug, $locale);
         if ($page === null) {
-            throw new NotFoundHttpException(
+            throw new NotFoundException(
                 $this->translator->trans('api_errors.find.page.not.found', domain: 'api_errors'),
             );
         }

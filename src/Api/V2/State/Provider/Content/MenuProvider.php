@@ -11,13 +11,13 @@ namespace App\Api\V2\State\Provider\Content;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
+use App\Api\V2\Exception\NotFoundException;
 use App\Api\V2\Filter\LocaleFilter;
 use App\Api\V2\Resource\Content\Menu;
 use App\Api\V2\Mapper\Content\MenuMapper;
 use App\Service\Api\Content\ApiMenuService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -40,7 +40,7 @@ final readonly class MenuProvider implements ProviderInterface
         $locale = $this->apiMenuService->resolveLocale(...LocaleFilter::getValues($operation));
         $menu = $this->apiMenuService->findActiveMenu((int) $uriVariables['id']);
         if ($menu === null) {
-            throw new NotFoundHttpException(
+            throw new NotFoundException(
                 $this->translator->trans('api_errors.find.menu.not.found', domain: 'api_errors'),
             );
         }
