@@ -12,11 +12,12 @@ namespace App\Api\V2\Resource\Content;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\HeaderParameter;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\QueryParameter;
 use App\Api\V2\Output\Content\MenuElement;
+use App\Api\V2\Filter\LocaleFilter;
 use App\Api\V2\Filter\MenuPositionFilter;
-use App\Api\V2\Parameter\LocaleParameter;
 use App\Api\V2\State\Provider\Content\MenuCollectionProvider;
 use App\Api\V2\State\Provider\Content\MenuProvider;
 use Symfony\Component\Serializer\Attribute\Groups;
@@ -31,7 +32,10 @@ use Symfony\Component\Serializer\Attribute\Groups;
                 normalizationContext: ['groups' => ['menu:read']],
                 security: "is_granted('ROLE_READ_API')",
                 provider: MenuProvider::class,
-                parameters: ['locale' => new LocaleParameter()],
+                parameters: [
+                    'locale' => new QueryParameter(filter: LocaleFilter::class, description: LocaleFilter::LOCALE_DESCRIPTION),
+                    LocaleFilter::HEADER => new HeaderParameter(schema: ['type' => 'string'], description: LocaleFilter::HEADER_DESCRIPTION),
+                ],
             ),
             new GetCollection(
                 uriTemplate: '/menus',
@@ -41,7 +45,8 @@ use Symfony\Component\Serializer\Attribute\Groups;
                 security: "is_granted('ROLE_READ_API')",
                 provider: MenuCollectionProvider::class,
                 parameters: [
-                    'locale' => new LocaleParameter(),
+                    'locale' => new QueryParameter(filter: LocaleFilter::class, description: LocaleFilter::LOCALE_DESCRIPTION),
+                    LocaleFilter::HEADER => new HeaderParameter(schema: ['type' => 'string'], description: LocaleFilter::HEADER_DESCRIPTION),
                     'page' => new QueryParameter(
                         schema: ['type' => 'string'],
                         description: 'URL (slug) de la page',

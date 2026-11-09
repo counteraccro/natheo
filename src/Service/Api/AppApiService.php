@@ -16,6 +16,7 @@ use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityRepository;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\HttpFoundation\AcceptHeader;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class AppApiService extends AppApiHandlerService
@@ -146,17 +147,28 @@ class AppApiService extends AppApiHandlerService
     }
 
     /**
-     * Retourne la langue demandée, ou la langue par défaut du site si absente
+     * Retourne la langue du contenu : celle demandée, sinon la première langue supportée de l'en-tête
+     * Accept-Language, sinon la langue par défaut du site
      * @param string|null $locale
+     * @param string|null $acceptLanguage
      * @return string
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function resolveLocale(?string $locale): string
+    public function resolveLocale(?string $locale, ?string $acceptLanguage = null): string
     {
         if ($locale !== null && $locale !== '') {
             return $locale;
         }
+
+        $supportedLocales = explode('|', (string) $this->getParameterBag()->get('app.supported_locales'));
+        foreach (AcceptHeader::fromString($acceptLanguage)->all() as $item) {
+            $language = strtolower(strtok(str_replace('_', '-', $item->getValue()), '-'));
+            if ($item->getQuality() > 0 && in_array($language, $supportedLocales, true)) {
+                return $language;
+            }
+        }
+
         $default = $this->getOptionSystemService()->getValueByKey(OptionSystem::OS_DEFAULT_LANGUAGE->value);
         return $default ?: (OptionSystem::OS_DEFAULT_LANGUAGE->getDefault() ?? 'fr');
     }

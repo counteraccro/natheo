@@ -73,6 +73,30 @@ class PageTest extends AppApiV2TestCase
     }
 
     /**
+     * Langue : paramètre locale prioritaire, puis Accept-Language, puis langue par défaut ; Content-Language renvoyé
+     * @return void
+     */
+    public function testLocaleNegotiation(): void
+    {
+        $page = $this->createPageAllDataDefault();
+        $path = '/pages/' . $page->getId();
+
+        $response = $this->requestV2('GET', $path, headers: ['HTTP_ACCEPT_LANGUAGE' => 'de-DE,es-ES;q=0.9,en;q=0.8']);
+        $this->assertEquals($page->getPageTranslationByLocale('es')->getTitre(), $this->decode($response)['title']);
+        $this->assertEquals('es', $response->headers->get('Content-Language'));
+        $this->assertContains('Accept-Language', $response->getVary());
+
+        $response = $this->requestV2('GET', $path . '?locale=en', headers: ['HTTP_ACCEPT_LANGUAGE' => 'es']);
+        $this->assertEquals($page->getPageTranslationByLocale('en')->getTitre(), $this->decode($response)['title']);
+        $this->assertEquals('en', $response->headers->get('Content-Language'));
+
+        $response = $this->requestV2('GET', $path, headers: ['HTTP_ACCEPT_LANGUAGE' => 'de, es;q=0']);
+        $this->assertEquals('fr', $response->headers->get('Content-Language'));
+
+        $this->assertNull($this->requestV2('GET', '/pages/999999999')->headers->get('Content-Language'));
+    }
+
+    /**
      * Recherche exacte par slug : au plus une page, en priorité celle de la langue demandée
      * @return void
      */

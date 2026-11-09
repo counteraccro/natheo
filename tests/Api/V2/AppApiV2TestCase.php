@@ -33,6 +33,7 @@ class AppApiV2TestCase extends AppApiTestCase
      * @param int $typeHeader
      * @param array|null $body
      * @param string $accept
+     * @param array<string, string> $headers en-têtes supplémentaires au format $_SERVER (HTTP_…)
      * @return Response
      */
     protected function requestV2(
@@ -41,8 +42,10 @@ class AppApiV2TestCase extends AppApiTestCase
         int $typeHeader = self::HEADER_READ,
         ?array $body = null,
         string $accept = 'application/ld+json',
+        array $headers = [],
     ): Response {
         $server = $typeHeader === self::HEADER_NONE ? [] : $this->getCustomHeaders($typeHeader);
+        $server = [...$server, ...$headers];
         $server['HTTP_ACCEPT'] = $accept;
         unset($server['HTTP_Accept'], $server['HTTP_Content-Type']);
         if ($body !== null) {

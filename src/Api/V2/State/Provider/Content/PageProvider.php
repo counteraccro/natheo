@@ -11,7 +11,7 @@ namespace App\Api\V2\State\Provider\Content;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
-use App\Api\V2\Parameter\LocaleParameter;
+use App\Api\V2\Filter\LocaleFilter;
 use App\Api\V2\Resource\Content\Page;
 use App\Api\V2\Mapper\Content\MenuMapper;
 use App\Api\V2\Mapper\Content\PageMapper;
@@ -41,7 +41,7 @@ final readonly class PageProvider implements ProviderInterface
      */
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): Page
     {
-        $locale = $this->apiPageService->resolveLocale(LocaleParameter::getValueFrom($operation));
+        $locale = $this->apiPageService->resolveLocale(...LocaleFilter::getValues($operation));
 
         $entity = $this->apiPageService->findPublishedPage((int) $uriVariables['id']);
         if ($entity === null) {

@@ -12,10 +12,12 @@ namespace App\Api\V2\Resource\Content;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\HeaderParameter;
+use ApiPlatform\Metadata\QueryParameter;
+use App\Api\V2\Filter\LocaleFilter;
 use App\Api\V2\Output\Content\FaqContent;
 use App\Api\V2\Output\Content\ListingContent;
 use App\Api\V2\Output\Content\TextContent;
-use App\Api\V2\Parameter\LocaleParameter;
 use App\Api\V2\State\Provider\Content\PageContentProvider;
 use Symfony\Component\Serializer\Attribute\Groups;
 
@@ -29,7 +31,10 @@ use Symfony\Component\Serializer\Attribute\Groups;
                 normalizationContext: ['groups' => ['page_content:read']],
                 security: "is_granted('ROLE_READ_API')",
                 provider: PageContentProvider::class,
-                parameters: ['locale' => new LocaleParameter()],
+                parameters: [
+                    'locale' => new QueryParameter(filter: LocaleFilter::class, description: LocaleFilter::LOCALE_DESCRIPTION),
+                    LocaleFilter::HEADER => new HeaderParameter(schema: ['type' => 'string'], description: LocaleFilter::HEADER_DESCRIPTION),
+                ],
             ),
         ],
     ),

@@ -13,11 +13,11 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\IriConverterInterface;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
+use App\Api\V2\Filter\LocaleFilter;
 use App\Api\V2\Mapper\Content\FaqMapper;
 use App\Api\V2\Output\Content\FaqContent;
 use App\Api\V2\Output\Content\ListingContent;
 use App\Api\V2\Output\Content\TextContent;
-use App\Api\V2\Parameter\LocaleParameter;
 use App\Api\V2\Resource\Content\Page;
 use App\Api\V2\Resource\Content\PageContent;
 use App\Entity\Admin\Content\Page\PageContent as PageContentEntity;
@@ -52,7 +52,7 @@ final readonly class PageContentProvider implements ProviderInterface
      */
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): PageContent
     {
-        $locale = $this->apiPageContentService->resolveLocale(LocaleParameter::getValueFrom($operation));
+        $locale = $this->apiPageContentService->resolveLocale(...LocaleFilter::getValues($operation));
         $entity = $this->apiPageContentService->findPublishedPageContent((int) $uriVariables['id']);
         $type = PageContentType::tryFrom((int) $entity?->getType());
         $content = $type === null ? null : $this->getContent($entity, $type, $locale);
