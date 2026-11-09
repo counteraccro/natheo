@@ -92,8 +92,11 @@ final readonly class PageContentProvider implements ProviderInterface
                 return $text === '' ? null : new TextContent($this->apiPageContentService->renderMarkdown($text));
             case PageContentType::FAQ:
                 $faq = $this->apiPageContentService->findActiveFaq((int) $entity->getTypeId());
-                $mapper = new FaqMapper($locale, $this->apiPageContentService->renderMarkdown(...));
-                return $faq === null ? null : $mapper->map($faq);
+                if ($faq === null) {
+                    return null;
+                }
+                $answers = $this->apiPageContentService->renderFaqAnswers($faq, $locale);
+                return (new FaqMapper($locale))->map($faq, $answers);
             case PageContentType::LISTING:
                 $category = PageCategory::tryFrom((int) $entity->getTypeId());
                 if ($category === null) {

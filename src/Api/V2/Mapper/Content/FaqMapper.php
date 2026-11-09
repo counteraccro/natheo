@@ -18,15 +18,15 @@ final readonly class FaqMapper
 {
     /**
      * @param string $locale
-     * @param \Closure(string): string $renderMarkdown convertit une réponse Markdown en HTML
      */
-    public function __construct(private string $locale, private \Closure $renderMarkdown) {}
+    public function __construct(private string $locale) {}
 
     /**
      * @param Faq $faq
+     * @param array<int, string> $answers réponses HTML indexées par id de question
      * @return FaqContent
      */
-    public function map(Faq $faq): FaqContent
+    public function map(Faq $faq, array $answers): FaqContent
     {
         $categories = [];
         foreach ($faq->getFaqCategories() as $faqCategory) {
@@ -42,7 +42,7 @@ final readonly class FaqMapper
                 $translation = $faqQuestion->getFaqQuestionTranslationByLocale($this->locale);
                 $questions[] = new FaqContentQuestion(
                     (string) $translation?->getTitle(),
-                    ($this->renderMarkdown)((string) $translation?->getAnswer()),
+                    $answers[(int) $faqQuestion->getId()] ?? '',
                 );
             }
 

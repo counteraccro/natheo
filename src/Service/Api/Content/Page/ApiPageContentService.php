@@ -134,6 +134,30 @@ class ApiPageContentService extends AppApiService
     }
 
     /**
+     * Réponses des questions actives d'une FAQ converties en HTML, indexées par id de question
+     * @param Faq $faq
+     * @param string $locale
+     * @return array<int, string>
+     * @throws CommonMarkException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function renderFaqAnswers(Faq $faq, string $locale): array
+    {
+        $answers = [];
+        foreach ($faq->getFaqCategories() as $faqCategory) {
+            foreach ($faqCategory->getFaqQuestions() as $faqQuestion) {
+                if ($faqCategory->isDisabled() || $faqQuestion->isDisabled()) {
+                    continue;
+                }
+                $answer = (string) $faqQuestion->getFaqQuestionTranslationByLocale($locale)?->getAnswer();
+                $answers[(int) $faqQuestion->getId()] = $this->renderMarkdown($answer);
+            }
+        }
+        return $answers;
+    }
+
+    /**
      * Titre d'un bloc listing traduit dans la langue demandée
      * @param PageCategory $category
      * @param string $locale
