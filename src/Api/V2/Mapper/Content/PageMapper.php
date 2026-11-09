@@ -16,6 +16,7 @@ use App\Api\V2\Resource\Content\Menu;
 use App\Api\V2\Resource\Content\Page;
 use App\Api\V2\Resource\Content\PageContent;
 use App\Entity\Admin\Content\Page\Page as PageEntity;
+use App\Entity\Admin\Content\Page\PageContent as PageContentEntity;
 use App\Entity\Admin\System\User;
 use App\Enum\Admin\Content\Page\PageCategory;
 use App\Enum\Admin\Content\Page\PageContentType;
@@ -29,12 +30,13 @@ final readonly class PageMapper
     public function __construct(private string $locale) {}
 
     /**
-     * Page complète, avec ses blocs et les menus fournis
+     * Page complète, avec les blocs et les menus fournis
      * @param PageEntity $entity
+     * @param PageContentEntity[] $pageContents blocs à lister
      * @param Menu[] $menus
      * @return Page
      */
-    public function map(PageEntity $entity, array $menus = []): Page
+    public function map(PageEntity $entity, array $pageContents = [], array $menus = []): Page
     {
         $page = $this->mapSummary($entity);
         $page->render = strtolower(PageRender::tryFrom((int) $entity->getRender())?->name ?? '');
@@ -50,7 +52,7 @@ final readonly class PageMapper
             );
         }
 
-        foreach ($entity->getPageContents() as $pageContent) {
+        foreach ($pageContents as $pageContent) {
             $content = new PageContent();
             $content->id = (int) $pageContent->getId();
             $content->type = strtolower(PageContentType::tryFrom((int) $pageContent->getType())?->name ?? '');

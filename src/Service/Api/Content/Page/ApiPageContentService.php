@@ -69,6 +69,43 @@ class ApiPageContentService extends AppApiService
     }
 
     /**
+     * Indique si un bloc a un contenu à servir dans la langue demandée : texte non vide, FAQ active,
+     * catégorie de listing connue
+     * @param PageContent $pageContent
+     * @param string $locale
+     * @return bool
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function isPageContentAvailable(PageContent $pageContent, string $locale): bool
+    {
+        return match (PageContentType::tryFrom((int) $pageContent->getType())) {
+            PageContentType::TEXT => (string) $pageContent->getPageContentTranslationByLocale($locale)?->getText() !== '',
+            PageContentType::FAQ => $this->findActiveFaq((int) $pageContent->getTypeId()) !== null,
+            PageContentType::LISTING => PageCategory::tryFrom((int) $pageContent->getTypeId()) !== null,
+            default => false,
+        };
+    }
+
+    /**
+     * Blocs d'une page ayant un contenu à servir dans la langue demandée
+     * @param Page $page
+     * @param string $locale
+     * @return PageContent[]
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getAvailablePageContents(Page $page, string $locale): array
+    {
+        return array_values(
+            array_filter(
+                $page->getPageContents()->toArray(),
+                fn(PageContent $pageContent) => $this->isPageContentAvailable($pageContent, $locale),
+            ),
+        );
+    }
+
+    /**
      * Retourne une FAQ active
      * @param int $id
      * @return Faq|null

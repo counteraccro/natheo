@@ -55,7 +55,8 @@ final readonly class PageContentProvider implements ProviderInterface
         $locale = $this->apiPageContentService->resolveLocale(...LocaleFilter::getValues($operation));
         $entity = $this->apiPageContentService->findPublishedPageContent((int) $uriVariables['id']);
         $type = PageContentType::tryFrom((int) $entity?->getType());
-        $content = $type === null ? null : $this->getContent($entity, $type, $locale);
+        $isAvailable = $entity !== null && $this->apiPageContentService->isPageContentAvailable($entity, $locale);
+        $content = $type === null || !$isAvailable ? null : $this->getContent($entity, $type, $locale);
         if ($content === null) {
             throw new NotFoundException(
                 $this->translator->trans('api_errors.find.page.content.not.found', domain: 'api_errors'),

@@ -62,6 +62,36 @@ class PageContentTest extends AppApiV2TestCase
     }
 
     /**
+     * Bloc sans contenu dans la langue demandée ou FAQ désactivée : absent de la page et 404
+     * @return void
+     */
+    public function testUnavailableContent(): void
+    {
+        $page = $this->createPage(customData: ['status' => PageStatus::PUBLISH->value, 'disabled' => false]);
+        foreach ($this->locales as $locale) {
+            $this->createPageTranslation($page, ['locale' => $locale]);
+        }
+        $text = $this->createPageContent($page);
+        $this->createPageContentTranslation($text, ['locale' => 'fr', 'text' => 'Texte']);
+        $this->createPageContentTranslation($text, ['locale' => 'en', 'text' => '']);
+        $faq = $this->createPageContent($page, [
+            'type' => PageContentType::FAQ->value,
+            'typeId' => $this->createFaq(customData: ['disabled' => true])->getId(),
+        ]);
+
+        $ids = fn(string $locale) => array_column(
+            $this->decode($this->requestV2('GET', '/pages/' . $page->getId() . '?locale=' . $locale))['contents'],
+            'id',
+        );
+        $this->assertEquals([$text->getId()], $ids('fr'));
+        $this->assertEquals([], $ids('en'));
+
+        $this->assertEquals(200, $this->requestV2('GET', '/page_contents/' . $text->getId() . '?locale=fr')->getStatusCode());
+        $this->assertProblem($this->requestV2('GET', '/page_contents/' . $text->getId() . '?locale=en'), 404);
+        $this->assertProblem($this->requestV2('GET', '/page_contents/' . $faq->getId() . '?locale=fr'), 404);
+    }
+
+    /**
      * Bloc d'une page au statut brouillon ou inexistant : 404
      * @return void
      */
