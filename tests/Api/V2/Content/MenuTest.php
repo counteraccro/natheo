@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Api\V2\Content;
 
+use App\Api\V2\Resource\Content\Menu as MenuResource;
 use App\Enum\Admin\Content\Menu\MenuPosition;
 use App\Tests\Api\V2\AppApiV2TestCase;
 
@@ -26,6 +27,7 @@ class MenuTest extends AppApiV2TestCase
         $this->persistAndFlush($disabled);
 
         $content = $this->decode($this->requestV2('GET', '/menus/' . $menu->getId() . '?locale=fr'));
+        $this->assertMatchesResourceItemJsonSchema(MenuResource::class);
         $this->assertEquals('/api/v2/menus/' . $menu->getId(), $content['@id']);
         $this->assertEquals(MenuPosition::from($menu->getPosition())->getApiName(), $content['position']);
 
@@ -55,6 +57,7 @@ class MenuTest extends AppApiV2TestCase
         $position = MenuPosition::from($menu->getPosition())->getApiName();
 
         $content = $this->decode($this->requestV2('GET', '/menus?page=' . $slug));
+        $this->assertMatchesResourceCollectionJsonSchema(MenuResource::class);
         $this->assertContains($menu->getId(), array_column($content['member'], 'id'));
 
         $content = $this->decode($this->requestV2('GET', '/menus?page=' . $slug . '&position=' . $position));

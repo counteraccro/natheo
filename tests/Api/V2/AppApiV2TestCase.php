@@ -9,11 +9,24 @@ declare(strict_types=1);
 
 namespace App\Tests\Api\V2;
 
+use ApiPlatform\Test\ApiTestAssertionsTrait;
+use ApiPlatform\Test\Response as ApiResponse;
 use App\Tests\Controller\Api\AppApiTestCase;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class AppApiV2TestCase extends AppApiTestCase
 {
+    // Assertions d'API Platform (schémas JSON des ressources) appliquées au client de WebTestCase
+    use ApiTestAssertionsTrait;
+
+    /**
+     * Client de la dernière requête, lu par les assertions statiques d'API Platform
+     * @var KernelBrowser|null
+     */
+    private static ?KernelBrowser $lastClient = null;
+
     /**
      * Préfixe des routes de l'API v2
      * @var string
@@ -58,6 +71,7 @@ class AppApiV2TestCase extends AppApiTestCase
             server: $server,
             content: $body === null ? null : json_encode($body),
         );
+        self::$lastClient = $this->client;
         return $this->client->getResponse();
     }
 
@@ -86,5 +100,15 @@ class AppApiV2TestCase extends AppApiTestCase
         $this->assertEquals($status, $content['status']);
         $this->assertArrayHasKey('detail', $content);
         return $content;
+    }
+
+    /**
+     * Dernière réponse du client, au format attendu par ApiTestAssertionsTrait
+     * @return ResponseInterface
+     */
+    private static function getHttpResponse(): ResponseInterface
+    {
+        $client = self::$lastClient ?? self::fail('Aucune requête envoyée avec requestV2()');
+        return new ApiResponse($client->getResponse(), $client->getInternalResponse(), []);
     }
 }

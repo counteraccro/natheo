@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Api\V2\Content;
 
+use App\Api\V2\Resource\Content\Page as PageResource;
 use App\Entity\Admin\Content\Page\Page;
 use App\Enum\Admin\Content\Page\PageStatistics;
 use App\Enum\Admin\Content\Page\PageStatus;
@@ -30,6 +31,7 @@ class PageTest extends AppApiV2TestCase
         $translation = $page->getPageTranslationByLocale('fr');
 
         $content = $this->decode($this->requestV2('GET', '/pages/' . $page->getId() . '?locale=fr'));
+        $this->assertMatchesResourceItemJsonSchema(PageResource::class);
 
         $this->assertEquals('/api/v2/pages/' . $page->getId(), $content['@id']);
         $this->assertEquals('Page', $content['@type']);
@@ -213,6 +215,7 @@ class PageTest extends AppApiV2TestCase
         $tagFilter = '/pages?tag=' . $tag->getId();
 
         $content = $this->decode($this->requestV2('GET', $tagFilter . '&itemsPerPage=2'));
+        $this->assertMatchesResourceCollectionJsonSchema(PageResource::class);
         $this->assertEquals('Collection', $content['@type']);
         $this->assertEquals(3, $content['totalItems']);
         $this->assertEquals('/api/v2/pages{?locale,category,tag,slug,landing}', $content['search']['template']);

@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Api\V2\Content;
 
+use App\Api\V2\Resource\Content\PageContent as PageContentResource;
 use App\Enum\Admin\Content\Page\PageCategory;
 use App\Enum\Admin\Content\Page\PageContentType;
 use App\Enum\Admin\Content\Page\PageStatus;
@@ -30,6 +31,7 @@ class PageContentTest extends AppApiV2TestCase
 
         foreach ($page->getPageContents() as $pageContent) {
             $content = $this->decode($this->requestV2('GET', '/page_contents/' . $pageContent->getId() . '?locale=fr'));
+            $this->assertMatchesResourceItemJsonSchema(PageContentResource::class);
             $this->assertEquals('/api/v2/page_contents/' . $pageContent->getId(), $content['@id']);
             $this->assertEquals($pageContent->getRenderBlock(), $content['position']);
 
@@ -44,6 +46,7 @@ class PageContentTest extends AppApiV2TestCase
         }
 
         $content = $this->decode($this->requestV2('GET', '/page_contents/' . $listing->getId() . '?locale=fr'));
+        $this->assertMatchesResourceItemJsonSchema(PageContentResource::class);
         $this->assertEquals('listing', $content['type']);
         $this->assertEquals('evenement', $content['content']['category']);
         $this->assertEquals(
