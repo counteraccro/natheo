@@ -69,6 +69,9 @@ class ApiPlatformTest extends AppApiV2TestCase
             $content['detail'],
         );
         $this->assertProblem($this->requestV2('GET', '/probes', self::HEADER_NONE), 403);
+        foreach (['/errors/404', '/validation_errors/8e179f1b-97aa-4560-a02f-2a8b42e49df7', '/.well-known/genid/1'] as $path) {
+            $this->assertEquals(403, $this->requestV2('GET', $path, self::HEADER_NONE)->getStatusCode(), $path);
+        }
 
         $this->assertEquals(404, $this->requestV2('GET', '/docs.jsonopenapi', self::HEADER_NONE)->getStatusCode());
         $this->assertEquals(404, $this->requestV2('GET', '/', self::HEADER_NONE)->getStatusCode());
