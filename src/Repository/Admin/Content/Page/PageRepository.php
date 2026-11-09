@@ -138,6 +138,45 @@ class PageRepository extends ServiceEntityRepository
     }
 
     /**
+     * Retourne les pages publiées et actives, filtrées par catégorie (0 = toutes) et par libellé de tag ('' = tous),
+     * les plus récemment modifiées en premier
+     * @param int $page
+     * @param int $limit
+     * @param int $categoryId
+     * @param string $tag
+     * @return Paginator
+     */
+    public function getPublishedPagesPaginate(int $page, int $limit, int $categoryId = 0, string $tag = ''): Paginator
+    {
+        $query = $this->createQueryBuilder('p')
+            ->where('p.disabled = :disabled')
+            ->setParameter('disabled', false)
+            ->andWhere('p.status = :status')
+            ->setParameter('status', PageStatus::PUBLISH->value)
+            ->orderBy('p.updateAt', \SortDirection::Descending)
+            ->addOrderBy('p.id', \SortDirection::Descending);
+
+        if ($categoryId !== 0) {
+            $query->andWhere('p.category = :categoryId')->setParameter('categoryId', $categoryId);
+        }
+
+        if ($tag !== '') {
+            $query
+                ->join('p.tags', 't')
+                ->join('t.tagTranslations', 'tt')
+                ->andWhere('LOWER(tt.label) like :tag')
+                ->setParameter('tag', '%' . addcslashes(strtolower($tag), '%_\\') . '%');
+        }
+
+        $paginator = new Paginator($query->getQuery(), true);
+        $paginator
+            ->getQuery()
+            ->setFirstResult($limit * ($page - 1))
+            ->setMaxResults($limit);
+        return $paginator;
+    }
+
+    /**
      * Retourne une liste de page en fonction du tag
      * @param int $page
      * @param int $limit

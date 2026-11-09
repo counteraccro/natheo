@@ -50,6 +50,19 @@ class ApiMenuService extends AppApiService
     }
 
     /**
+     * Retourne un menu actif et ses éléments de premier niveau en fonction de son id, [] s'il n'existe pas
+     * @param int $id
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function findMenuForApi(int $id): array
+    {
+        $menu = $this->getRepository(Menu::class)->getByIdForApi($id);
+        return $this->addMenuElements($menu);
+    }
+
+    /**
      * Retourne un menu en fonction de son id ou de pageUrl
      * @param ApiFindMenuDto $dto
      * @return array
@@ -58,19 +71,31 @@ class ApiMenuService extends AppApiService
      */
     private function getMenuByIdOrPageUrl(ApiFindMenuDto $dto): array
     {
-        $repository = $this->getRepository(Menu::class);
         if ($dto->getId() !== 0) {
-            $menu = $repository->getByIdForApi($dto->getId());
-        } else {
-            $menu = $repository->getByPageUrlAndPositionForApi($dto->getPageSlug(), $dto->getPosition());
+            return $this->findMenuForApi($dto->getId());
         }
+        $menu = $this->getRepository(Menu::class)->getByPageUrlAndPositionForApi($dto->getPageSlug(), $dto->getPosition());
+        return $this->addMenuElements($menu);
+    }
 
-        if (!empty($menu)) {
-            $menu = $menu[0];
-            $repository = $this->getRepository(MenuElement::class);
-            $menu['menuElements'] = $repository->getMenuElementByMenuAndParent($menu['id'], null, false);
+    /**
+     * Garde le premier menu trouvé et lui ajoute ses éléments de premier niveau actifs
+     * @param array $menus
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function addMenuElements(array $menus): array
+    {
+        if (empty($menus)) {
+            return [];
         }
-
+        $menu = $menus[0];
+        $menu['menuElements'] = $this->getRepository(MenuElement::class)->getMenuElementByMenuAndParent(
+            $menu['id'],
+            null,
+            false,
+        );
         return $menu;
     }
 }

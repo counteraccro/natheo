@@ -146,6 +146,22 @@ class AppApiService extends AppApiHandlerService
     }
 
     /**
+     * Retourne la langue demandée, ou la langue par défaut du site si absente
+     * @param string|null $locale
+     * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function resolveLocale(?string $locale): string
+    {
+        if ($locale !== null && $locale !== '') {
+            return $locale;
+        }
+        $default = $this->getOptionSystemService()->getValueByKey(OptionSystem::OS_DEFAULT_LANGUAGE->value);
+        return $default ?: (OptionSystem::OS_DEFAULT_LANGUAGE->getDefault() ?? 'fr');
+    }
+
+    /**
      * Indique si une page est accessible via l'API (active et dans un status autorisé)
      * @param Page|null $page
      * @param User|null $user

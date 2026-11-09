@@ -15,6 +15,7 @@ use App\Entity\Admin\Content\Faq\FaqCategory;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\Content\Page\PageContent;
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\Content\Page\PageCategory;
 use App\Enum\Admin\Content\Page\PageContentType;
 use App\Enum\Admin\System\Options\OptionUser;
 use App\Repository\Admin\Content\Page\PageRepository;
@@ -48,6 +49,61 @@ class ApiPageContentService extends AppApiService
         }
 
         return $pageContent;
+    }
+
+    /**
+     * Retourne un contenu de page si sa page est publiée et active
+     * @param int $id
+     * @return PageContent|null
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function findPublishedPageContent(int $id): ?PageContent
+    {
+        /** @var PageContent|null $pageContent */
+        $pageContent = $this->findOneById(PageContent::class, $id);
+        if ($pageContent === null || !$this->isPageVisible($pageContent->getPage())) {
+            return null;
+        }
+        return $pageContent;
+    }
+
+    /**
+     * Retourne le rendu d'un contenu de page pour l'API v2 : HTML pour un texte, structure pour une FAQ,
+     * catégorie et titre pour un listing ; null si le contenu est vide ou inconnu
+     * @param PageContent $pageContent
+     * @param string $locale
+     * @return string|array|null
+     * @throws CommonMarkException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getRenderedContent(PageContent $pageContent, string $locale): string|array|null
+    {
+        switch ($pageContent->getType()) {
+            case PageContentType::TEXT->value:
+                $text = $pageContent->getPageContentTranslationByLocale($locale)?->getText() ?? '';
+                return $text === '' ? null : $this->formatContentText($text);
+            case PageContentType::FAQ->value:
+                $faq = $this->formatContentFAq($pageContent->getTypeId(), $locale);
+                return empty($faq) ? null : $faq;
+            case PageContentType::LISTING->value:
+                $category = PageCategory::tryFrom((int) $pageContent->getTypeId());
+                if ($category === null) {
+                    return null;
+                }
+                return [
+                    'category' => $category->getSlug(),
+                    'title' => $this->getTranslator()->trans(
+                        'page.content.listing.title',
+                        parameters: ['category' => $this->getPageService()->getCategoryById($category->value)],
+                        domain: 'page',
+                        locale: $locale,
+                    ),
+                ];
+            default:
+                return null;
+        }
     }
 
     /**
