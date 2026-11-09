@@ -41,7 +41,8 @@ class PageTest extends AppApiV2TestCase
         $this->assertEquals($reads, $content['reads']);
         $this->assertNotFalse(\DateTimeImmutable::createFromFormat(\DATE_ATOM, $content['updatedAt']));
         $this->assertArrayHasKey('name', $content['author']);
-        $this->assertCount($page->getTags()->count(), $content['tags']);
+        $activeTags = $page->getTags()->filter(fn($tag) => !$tag->isDisabled());
+        $this->assertCount($activeTags->count(), $content['tags']);
         $this->assertCount($page->getPageMetas()->count(), $content['seo']);
         $this->assertEquals(['@type', 'name', 'value'], array_keys($content['seo'][0]));
 
@@ -132,39 +133,49 @@ class PageTest extends AppApiV2TestCase
     }
 
     /**
-     * Liste paginée filtrée par tag, par catégorie
+     * Liste paginée filtrée par id de tag actif et par slug de catégorie
      * @return void
      */
     public function testCollection(): void
     {
-        $tag = $this->createTag();
+        $tag = $this->createTag(customData: ['disabled' => false]);
+        $disabledTag = $this->createTag(customData: ['disabled' => true]);
         foreach ($this->locales as $locale) {
-            $this->createTagTranslation($tag, ['locale' => $locale, 'label' => 'tag-api-v2-' . $locale]);
+            $this->createTagTranslation($tag, ['locale' => $locale]);
+            $this->createTagTranslation($disabledTag, ['locale' => $locale]);
         }
         $ids = [];
         for ($i = 0; $i < 3; $i++) {
             $page = $this->createPageAllDataDefault();
             $this->createPageTag($page, $tag);
+            $this->createPageTag($page, $disabledTag);
             $ids[] = $page->getId();
         }
+        $tagFilter = '/pages?tag=' . $tag->getId();
 
-        $content = $this->decode($this->requestV2('GET', '/pages?tag=tag-api-v2-fr&itemsPerPage=2'));
+        $content = $this->decode($this->requestV2('GET', $tagFilter . '&itemsPerPage=2'));
         $this->assertEquals('Collection', $content['@type']);
         $this->assertEquals(3, $content['totalItems']);
         $this->assertCount(2, $content['member']);
         $this->assertArrayHasKey('next', $content['view']);
-        $this->assertEquals(['@id', '@type', 'id', 'slug', 'title', 'category', 'headerImage', 'author', 'tags', 'createdAt', 'updatedAt'], array_keys($content['member'][0]));
+        $member = $content['member'][0];
+        $this->assertEquals(
+            ['@id', '@type', 'id', 'slug', 'title', 'category', 'headerImage', 'author', 'tags', 'createdAt', 'updatedAt'],
+            array_keys($member),
+        );
+        $tagIds = array_column($member['tags'], 'id');
+        $this->assertContains($tag->getId(), $tagIds);
+        $this->assertNotContains($disabledTag->getId(), $tagIds);
 
-        $content = $this->decode($this->requestV2('GET', '/pages?tag=tag-api-v2-fr&itemsPerPage=2&page=2'));
+        $content = $this->decode($this->requestV2('GET', $tagFilter . '&itemsPerPage=2&page=2'));
         $this->assertCount(1, $content['member']);
-        $returned = array_column($content['member'], 'id');
-        $this->assertContains($returned[0], $ids);
+        $this->assertContains($content['member'][0]['id'], $ids);
 
-        $content = $this->decode($this->requestV2('GET', '/pages?tag=tag-api-v2-fr&category=page'));
-        $this->assertEquals(3, $content['totalItems']);
-        $content = $this->decode($this->requestV2('GET', '/pages?tag=tag-api-v2-fr&category=blog'));
-        $this->assertEquals(0, $content['totalItems']);
+        $this->assertEquals(3, $this->decode($this->requestV2('GET', $tagFilter . '&category=page'))['totalItems']);
+        $this->assertEquals(0, $this->decode($this->requestV2('GET', $tagFilter . '&category=blog'))['totalItems']);
+        $this->assertEquals(0, $this->decode($this->requestV2('GET', '/pages?tag=' . $disabledTag->getId()))['totalItems']);
 
-        $this->assertProblem($this->requestV2('GET', '/pages?category=inconnue'), 404);
+        $this->assertEquals(422, $this->requestV2('GET', '/pages?category=inconnue')->getStatusCode());
+        $this->assertEquals(422, $this->requestV2('GET', '/pages?tag=abc')->getStatusCode());
     }
 }

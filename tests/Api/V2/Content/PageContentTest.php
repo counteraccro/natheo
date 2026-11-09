@@ -34,8 +34,11 @@ class PageContentTest extends AppApiV2TestCase
             $this->assertEquals($pageContent->getRenderBlock(), $content['position']);
 
             match ($pageContent->getType()) {
-                PageContentType::TEXT->value => $this->assertStringContainsString('<p>', $content['content']),
-                PageContentType::FAQ->value => $this->assertArrayHasKey('categories', $content['content']),
+                PageContentType::TEXT->value => $this->assertStringContainsString('<p>', $content['content']['html']),
+                PageContentType::FAQ->value => $this->assertEquals(
+                    ['@type', 'title', 'categories'],
+                    array_keys($content['content']),
+                ),
                 default => null,
             };
         }
