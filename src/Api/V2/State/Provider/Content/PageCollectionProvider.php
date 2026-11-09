@@ -16,7 +16,7 @@ use ApiPlatform\State\Pagination\TraversablePaginator;
 use ApiPlatform\State\ProviderInterface;
 use App\Api\V2\Parameter\LocaleParameter;
 use App\Api\V2\Resource\Content\Page;
-use App\Formatter\Api\V2\Content\PageFormatter;
+use App\Api\V2\Mapper\Content\PageMapper;
 use App\Service\Api\Content\Page\ApiPageService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -60,10 +60,10 @@ final readonly class PageCollectionProvider implements ProviderInterface
             );
         }
 
-        $formatter = new PageFormatter($locale);
+        $mapper = new PageMapper($locale);
         $pages = [];
         foreach ($paginator as $entity) {
-            $pages[] = $formatter->formatSummary($entity);
+            $pages[] = $mapper->mapSummary($entity);
         }
         return new TraversablePaginator(new \ArrayIterator($pages), $page, $limit, $paginator->count());
     }

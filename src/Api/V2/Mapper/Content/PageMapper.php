@@ -7,7 +7,7 @@ declare(strict_types=1);
  * Convertit une page en ressource Page de l'API v2
  */
 
-namespace App\Formatter\Api\V2\Content;
+namespace App\Api\V2\Mapper\Content;
 
 use App\Api\V2\Output\Content\Author;
 use App\Api\V2\Output\Content\Meta;
@@ -24,7 +24,7 @@ use App\Enum\Admin\Content\Page\PageStatistics;
 use App\Enum\Admin\System\Options\OptionUser;
 use App\Service\Admin\System\User\PersonalData;
 
-final readonly class PageFormatter
+final readonly class PageMapper
 {
     public function __construct(private string $locale) {}
 
@@ -34,9 +34,9 @@ final readonly class PageFormatter
      * @param Menu[] $menus
      * @return Page
      */
-    public function format(PageEntity $entity, array $menus = []): Page
+    public function map(PageEntity $entity, array $menus = []): Page
     {
-        $page = $this->formatSummary($entity);
+        $page = $this->mapSummary($entity);
         $page->render = strtolower(PageRender::tryFrom((int) $entity->getRender())?->name ?? '');
         $page->landingPage = (bool) $entity->isLandingPage();
         $page->openComment = (bool) $entity->isOpenComment();
@@ -65,7 +65,7 @@ final readonly class PageFormatter
      * @param PageEntity $entity
      * @return Page
      */
-    public function formatSummary(PageEntity $entity): Page
+    public function mapSummary(PageEntity $entity): Page
     {
         $translation = $entity->getPageTranslationByLocale($this->locale);
 

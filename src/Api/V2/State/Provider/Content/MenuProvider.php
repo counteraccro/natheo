@@ -13,7 +13,7 @@ use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
 use App\Api\V2\Parameter\LocaleParameter;
 use App\Api\V2\Resource\Content\Menu;
-use App\Formatter\Api\V2\Content\MenuFormatter;
+use App\Api\V2\Mapper\Content\MenuMapper;
 use App\Service\Api\Content\ApiMenuService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -44,6 +44,6 @@ final readonly class MenuProvider implements ProviderInterface
                 $this->translator->trans('api_errors.find.menu.not.found', domain: 'api_errors'),
             );
         }
-        return (new MenuFormatter($locale))->format($data);
+        return (new MenuMapper($locale))->map($data);
     }
 }

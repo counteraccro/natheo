@@ -13,8 +13,8 @@ use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
 use App\Api\V2\Parameter\LocaleParameter;
 use App\Api\V2\Resource\Content\Page;
-use App\Formatter\Api\V2\Content\MenuFormatter;
-use App\Formatter\Api\V2\Content\PageFormatter;
+use App\Api\V2\Mapper\Content\MenuMapper;
+use App\Api\V2\Mapper\Content\PageMapper;
 use App\Service\Api\Content\ApiMenuService;
 use App\Service\Api\Content\Page\ApiPageService;
 use Psr\Container\ContainerExceptionInterface;
@@ -58,15 +58,15 @@ final readonly class PageProvider implements ProviderInterface
             );
         }
 
-        $menuFormatter = new MenuFormatter($locale);
+        $menuMapper = new MenuMapper($locale);
         $menus = [];
         foreach ($this->apiPageService->getMenuIdsForPage($entity) as $menu) {
             $data = $this->apiMenuService->findMenuForApi($menu['id']);
             if (!empty($data)) {
-                $menus[] = $menuFormatter->format($data);
+                $menus[] = $menuMapper->map($data);
             }
         }
 
-        return (new PageFormatter($locale))->format($entity, $menus);
+        return (new PageMapper($locale))->map($entity, $menus);
     }
 }

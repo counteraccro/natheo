@@ -7,7 +7,7 @@ declare(strict_types=1);
  * Convertit un menu (données de MenuRepository::getByIdForApi + éléments) en ressource Menu de l'API v2
  */
 
-namespace App\Formatter\Api\V2\Content;
+namespace App\Api\V2\Mapper\Content;
 
 use App\Api\V2\Output\Content\MenuElement;
 use App\Api\V2\Resource\Content\Menu;
@@ -16,7 +16,7 @@ use App\Enum\Admin\Content\Menu\MenuPosition;
 use App\Enum\Admin\Content\Menu\MenuType;
 use App\Enum\Admin\Content\Page\PageCategory;
 
-final readonly class MenuFormatter
+final readonly class MenuMapper
 {
     public function __construct(private string $locale) {}
 
@@ -24,13 +24,13 @@ final readonly class MenuFormatter
      * @param array{id: int, position: int, type: int, menuElements: MenuElementEntity[]} $data
      * @return Menu
      */
-    public function format(array $data): Menu
+    public function map(array $data): Menu
     {
         $menu = new Menu();
         $menu->id = (int) $data['id'];
         $menu->position = MenuPosition::tryFrom((int) $data['position'])?->getApiName() ?? '';
         $menu->type = strtolower(MenuType::tryFrom((int) $data['type'])?->name ?? '');
-        $menu->elements = $this->formatElements($data['menuElements']);
+        $menu->elements = $this->mapElements($data['menuElements']);
         return $menu;
     }
 
@@ -39,7 +39,7 @@ final readonly class MenuFormatter
      * @param iterable<MenuElementEntity> $elements
      * @return MenuElement[]
      */
-    private function formatElements(iterable $elements): array
+    private function mapElements(iterable $elements): array
     {
         $return = [];
         foreach ($elements as $element) {
@@ -58,7 +58,7 @@ final readonly class MenuFormatter
                 $page === null ? null : PageCategory::tryFrom((int) $page->getCategory())?->getSlug(),
                 (int) $element->getColumnPosition(),
                 (int) $element->getRowPosition(),
-                $this->formatElements($element->getChildren()),
+                $this->mapElements($element->getChildren()),
             );
         }
         return $return;

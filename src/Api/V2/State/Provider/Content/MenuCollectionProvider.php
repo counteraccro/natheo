@@ -15,7 +15,7 @@ use ApiPlatform\State\ProviderInterface;
 use App\Api\V2\Parameter\LocaleParameter;
 use App\Api\V2\Parameter\MenuPositionParameter;
 use App\Api\V2\Resource\Content\Menu;
-use App\Formatter\Api\V2\Content\MenuFormatter;
+use App\Api\V2\Mapper\Content\MenuMapper;
 use App\Service\Api\Content\ApiMenuService;
 use App\Service\Api\Content\Page\ApiPageService;
 use Psr\Container\ContainerExceptionInterface;
@@ -56,7 +56,7 @@ final readonly class MenuCollectionProvider implements ProviderInterface
             );
         }
 
-        $formatter = new MenuFormatter($locale);
+        $mapper = new MenuMapper($locale);
         $menus = [];
         foreach ($this->apiPageService->getMenuIdsForPage($page) as $menu) {
             if ($position !== null && $menu['position'] !== $position->value) {
@@ -64,7 +64,7 @@ final readonly class MenuCollectionProvider implements ProviderInterface
             }
             $data = $this->apiMenuService->findMenuForApi($menu['id']);
             if (!empty($data)) {
-                $menus[] = $formatter->format($data);
+                $menus[] = $mapper->map($data);
             }
         }
         return $menus;
