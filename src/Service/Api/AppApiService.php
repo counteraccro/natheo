@@ -163,7 +163,7 @@ class AppApiService extends AppApiHandlerService
 
         $supportedLocales = explode('|', (string) $this->getParameterBag()->get('app.supported_locales'));
         foreach (AcceptHeader::fromString($acceptLanguage)->all() as $item) {
-            $language = strtolower(strtok(str_replace('_', '-', $item->getValue()), '-'));
+            $language = strtolower(explode('-', str_replace('_', '-', $item->getValue()))[0]);
             if ($item->getQuality() > 0 && in_array($language, $supportedLocales, true)) {
                 return $language;
             }

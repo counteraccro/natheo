@@ -95,6 +95,12 @@ class PageTest extends AppApiV2TestCase
         $response = $this->requestV2('GET', $path, headers: ['HTTP_ACCEPT_LANGUAGE' => 'de, es;q=0']);
         $this->assertEquals('fr', $response->headers->get('Content-Language'));
 
+        foreach (['-', '_', '-;q=1', '*'] as $malformed) {
+            $response = $this->requestV2('GET', $path, headers: ['HTTP_ACCEPT_LANGUAGE' => $malformed]);
+            $this->assertEquals(200, $response->getStatusCode());
+            $this->assertEquals('fr', $response->headers->get('Content-Language'));
+        }
+
         $this->assertNull($this->requestV2('GET', '/pages/999999999')->headers->get('Content-Language'));
     }
 
