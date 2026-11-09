@@ -11,6 +11,7 @@ namespace App\Service\Api;
 
 use App\Entity\Admin\System\ApiToken;
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\System\Options\OptionSystem;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use App\Service\Global\Token\TokenHasher;
@@ -43,6 +44,20 @@ class ApiService extends AppApiService
             return false;
         }
         return true;
+    }
+
+    /**
+     * Indique si l'API est ouverte (option OS_OPEN_API)
+     * @return bool
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function isApiOpen(): bool
+    {
+        // Option absente (installation antérieure) : on applique la valeur par défaut
+        $isOpenApi = $this->getOptionSystemService()->getValueByKey(OptionSystem::OS_OPEN_API->value) ??
+            OptionSystem::OS_OPEN_API->getDefault();
+        return intval($isOpenApi) === 1;
     }
 
     /**
