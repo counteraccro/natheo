@@ -33,6 +33,8 @@ use App\Service\Admin\System\User\PersonalData;
 use Doctrine\ORM\NonUniqueResultException;
 use League\CommonMark\Exception\CommonMarkException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Doctrine\DBAL\LockMode;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\String\Slugger\AsciiSlugger;
@@ -325,11 +327,19 @@ class ApiPageService extends AppApiService
     {
         $pageStatistiqueNbPageRead = $page->getPageStatistiqueByKey(PageStatistics::NB_READ->value);
         if ($pageStatistiqueNbPageRead === null) {
-            $pageStatistiqueNbPageRead = (new PageStatistique())->setKey(PageStatistics::NB_READ->value)->setValue('0');
+            $pageStatistiqueNbPageRead = (new PageStatistique())->setKey(PageStatistics::NB_READ->value)->setValue('1');
             $page->addPageStatistique($pageStatistiqueNbPageRead);
+            $this->save($pageStatistiqueNbPageRead);
+            return;
         }
-        $pageStatistiqueNbPageRead->setValue(strval($pageStatistiqueNbPageRead->getValue() + 1));
-        $this->save($pageStatistiqueNbPageRead);
+
+        // Valeur relue sous verrou : deux lectures simultanées ne se perdent pas
+        $this->getEntityManager()->wrapInTransaction(function (EntityManagerInterface $entityManager) use (
+            $pageStatistiqueNbPageRead,
+        ): void {
+            $entityManager->refresh($pageStatistiqueNbPageRead, LockMode::PESSIMISTIC_WRITE);
+            $pageStatistiqueNbPageRead->setValue(strval((int) $pageStatistiqueNbPageRead->getValue() + 1));
+        });
     }
 
     /**
