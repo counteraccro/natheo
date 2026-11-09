@@ -9,9 +9,7 @@ declare(strict_types=1);
 
 namespace App\Security;
 
-use App\Enum\Admin\System\Options\OptionSystem;
-use App\Http\Api\ApiResponse;
-use App\Service\Admin\System\OptionSystemService;
+use App\Service\Api\ApiService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,7 +29,7 @@ class ApiAuthenticator extends AbstractAuthenticator
 
     public function __construct(
         private TranslatorInterface $translator,
-        private OptionSystemService $optionSystemService,
+        private ApiService $apiService,
     ) {}
 
     /**
@@ -89,12 +87,7 @@ class ApiAuthenticator extends AbstractAuthenticator
      */
     private function isOpenApi(): void
     {
-        // Option absente (installation antérieure) : on applique la valeur par défaut
-        $isOpenApi = intval(
-            $this->optionSystemService->getValueByKey(OptionSystem::OS_OPEN_API->value) ??
-                OptionSystem::OS_OPEN_API->getDefault(),
-        );
-        if ($isOpenApi === 0) {
+        if (!$this->apiService->isApiOpen()) {
             throw new HttpException(
                 Response::HTTP_FORBIDDEN,
                 $this->translator->trans('api_errors.api.not.open', domain: 'api_errors'),
