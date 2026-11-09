@@ -27,7 +27,7 @@ class MenuTest extends AppApiV2TestCase
 
         $content = $this->decode($this->requestV2('GET', '/menus/' . $menu->getId() . '?locale=fr'));
         $this->assertEquals('/api/v2/menus/' . $menu->getId(), $content['@id']);
-        $this->assertEquals(strtolower(MenuPosition::getStringByPosition($menu->getPosition())), $content['position']);
+        $this->assertEquals(MenuPosition::from($menu->getPosition())->getApiName(), $content['position']);
 
         // 4 éléments de premier niveau dont 1 désactivé, un enfant sous le 3e
         $this->assertCount(3, $content['elements']);
@@ -52,7 +52,7 @@ class MenuTest extends AppApiV2TestCase
         $page->addMenu($menu);
         $this->persistAndFlush($page);
         $slug = $page->getPageTranslationByLocale('fr')->getUrl();
-        $position = strtolower(MenuPosition::getStringByPosition($menu->getPosition()));
+        $position = MenuPosition::from($menu->getPosition())->getApiName();
 
         $content = $this->decode($this->requestV2('GET', '/menus?page=' . $slug));
         $this->assertContains($menu->getId(), array_column($content['member'], 'id'));

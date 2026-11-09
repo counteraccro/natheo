@@ -43,4 +43,13 @@ enum MenuPosition: int
         }
         return 'NONE';
     }
+
+    /**
+     * Nom de la position dans l'API (header, right, footer, left)
+     * @return string
+     */
+    public function getApiName(): string
+    {
+        return strtolower(self::getStringByPosition($this->value));
+    }
 }

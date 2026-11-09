@@ -13,6 +13,7 @@ use ApiPlatform\Metadata\Operation;
 use ApiPlatform\Metadata\QueryParameter;
 use ApiPlatform\State\ProviderInterface;
 use App\Api\V2\Parameter\LocaleParameter;
+use App\Api\V2\Parameter\MenuPositionParameter;
 use App\Api\V2\Resource\Content\Menu;
 use App\Formatter\Api\V2\Content\MenuFormatter;
 use App\Service\Api\Content\ApiMenuService;
@@ -46,7 +47,7 @@ final readonly class MenuCollectionProvider implements ProviderInterface
         $locale = $this->apiPageService->resolveLocale(LocaleParameter::getValueFrom($operation));
         $parameters = $operation->getParameters();
         $slug = (string) $parameters?->get('page', QueryParameter::class)?->getValue('');
-        $position = $parameters?->get('position', QueryParameter::class)?->getValue(null);
+        $position = MenuPositionParameter::getValueFrom($operation);
 
         $page = $slug === '' ? null : $this->apiPageService->findPublishedPageBySlug($slug, $locale);
         if ($page === null) {
@@ -58,7 +59,7 @@ final readonly class MenuCollectionProvider implements ProviderInterface
         $formatter = new MenuFormatter($locale);
         $menus = [];
         foreach ($this->apiPageService->getMenuIdsForPage($page) as $menu) {
-            if (is_string($position) && MenuFormatter::positionToString($menu['position']) !== $position) {
+            if ($position !== null && $menu['position'] !== $position->value) {
                 continue;
             }
             $data = $this->apiMenuService->findMenuForApi($menu['id']);

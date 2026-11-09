@@ -16,6 +16,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\QueryParameter;
 use App\Api\V2\Output\Content\MenuElement;
 use App\Api\V2\Parameter\LocaleParameter;
+use App\Api\V2\Parameter\MenuPositionParameter;
 use App\Api\V2\State\Provider\Content\MenuCollectionProvider;
 use App\Api\V2\State\Provider\Content\MenuProvider;
 use Symfony\Component\Serializer\Attribute\Groups;
@@ -46,10 +47,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
                         description: 'URL (slug) de la page',
                         required: true,
                     ),
-                    'position' => new QueryParameter(
-                        schema: ['type' => 'string', 'enum' => self::POSITIONS],
-                        description: 'Position du menu',
-                    ),
+                    'position' => new MenuPositionParameter(),
                 ],
             ),
         ],
@@ -57,12 +55,6 @@ use Symfony\Component\Serializer\Attribute\Groups;
 ]
 final class Menu
 {
-    /**
-     * Positions de menu exposées
-     * @var string[]
-     */
-    public const array POSITIONS = ['header', 'right', 'footer', 'left'];
-
     #[ApiProperty(identifier: true)]
     #[Groups(['menu:read', 'page:read'])]
     public int $id = 0;

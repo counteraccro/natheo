@@ -28,20 +28,10 @@ final readonly class MenuFormatter
     {
         $menu = new Menu();
         $menu->id = (int) $data['id'];
-        $menu->position = self::positionToString((int) $data['position']);
+        $menu->position = MenuPosition::tryFrom((int) $data['position'])?->getApiName() ?? '';
         $menu->type = strtolower(MenuType::tryFrom((int) $data['type'])?->name ?? '');
         $menu->elements = $this->formatElements($data['menuElements']);
         return $menu;
-    }
-
-    /**
-     * Nom API d'une position de menu (header, right, footer, left)
-     * @param int $position
-     * @return string
-     */
-    public static function positionToString(int $position): string
-    {
-        return strtolower(MenuPosition::getStringByPosition($position));
     }
 
     /**
