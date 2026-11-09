@@ -89,9 +89,7 @@ class LocaleSubscriber implements EventSubscriberInterface
             return;
         }
 
-        // Firewall stateless (API) : pas de session pour lire les options utilisateur
-        $isStateless = $this->security->getFirewallConfig($event->getRequest())?->isStateless() ?? false;
-        if (!$isStateless && $this->security->isGranted('ROLE_USER')) {
+        if ($this->security->isGranted('ROLE_USER')) {
             $locales = $this->optionUserService->getValueByKey(OptionUser::OU_DEFAULT_LANGUAGE->value);
         } else {
             $locales = $this->optionSystemService->getValueByKey(OptionSystem::OS_DEFAULT_LANGUAGE->value);

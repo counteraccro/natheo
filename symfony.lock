@@ -1,18 +1,4 @@
 {
-    "api-platform/symfony": {
-        "version": "5.0",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "main",
-            "version": "4.0",
-            "ref": "e9952e9f393c2d048f10a78f272cd35e807d972b"
-        },
-        "files": [
-            "config/packages/api_platform.yaml",
-            "config/routes/api_platform.yaml",
-            "src/ApiResource/.gitignore"
-        ]
-    },
     "dama/doctrine-test-bundle": {
         "version": "8.2",
         "recipe": {
@@ -318,15 +304,6 @@
             "config/packages/twig.yaml",
             "templates/base.html.twig"
         ]
-    },
-    "symfony/uid": {
-        "version": "8.1",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "main",
-            "version": "7.0",
-            "ref": "0df5844274d871b37fc3816c57a768ffc60a43a5"
-        }
     },
     "symfony/ux-twig-component": {
         "version": "v2.12.0"

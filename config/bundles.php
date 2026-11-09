@@ -17,5 +17,4 @@ return [
     Symfony\UX\TwigComponent\TwigComponentBundle::class => ['all' => true],
     DAMA\DoctrineTestBundle\DAMADoctrineTestBundle::class => ['test' => true],
     Pentatrion\ViteBundle\PentatrionViteBundle::class => ['all' => true],
-    ApiPlatform\Symfony\Bundle\ApiPlatformBundle::class => ['all' => true],
 ];
