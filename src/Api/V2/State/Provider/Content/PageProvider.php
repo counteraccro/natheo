@@ -15,7 +15,6 @@ use App\Api\V2\Parameter\LocaleParameter;
 use App\Api\V2\Resource\Content\Page;
 use App\Api\V2\Mapper\Content\MenuMapper;
 use App\Api\V2\Mapper\Content\PageMapper;
-use App\Service\Api\Content\ApiMenuService;
 use App\Service\Api\Content\Page\ApiPageService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -29,7 +28,6 @@ final readonly class PageProvider implements ProviderInterface
 {
     public function __construct(
         private ApiPageService $apiPageService,
-        private ApiMenuService $apiMenuService,
         private TranslatorInterface $translator,
     ) {}
 
@@ -59,13 +57,7 @@ final readonly class PageProvider implements ProviderInterface
         }
 
         $menuMapper = new MenuMapper($locale);
-        $menus = [];
-        foreach ($this->apiPageService->getMenuIdsForPage($entity) as $menu) {
-            $data = $this->apiMenuService->findMenuForApi($menu['id']);
-            if (!empty($data)) {
-                $menus[] = $menuMapper->map($data);
-            }
-        }
+        $menus = array_map($menuMapper->map(...), $this->apiPageService->getMenusForPage($entity));
 
         return (new PageMapper($locale))->map($entity, $menus);
     }

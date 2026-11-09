@@ -12,6 +12,9 @@ namespace App\Api\V2\Resource\Content;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
+use App\Api\V2\Output\Content\FaqContent;
+use App\Api\V2\Output\Content\ListingContent;
+use App\Api\V2\Output\Content\TextContent;
 use App\Api\V2\Parameter\LocaleParameter;
 use App\Api\V2\State\Provider\Content\PageContentProvider;
 use Symfony\Component\Serializer\Attribute\Groups;
@@ -50,10 +53,9 @@ final class PageContent
     public int $position = 0;
 
     /**
-     * text : HTML ; faq : {title, categories[{title, questions[{title, answer}]}]} ;
-     * listing : {category, title, pages} où pages est l'URL de la liste paginée
+     * Selon le type du bloc : TextContent (text), FaqContent (faq) ou ListingContent (listing)
      */
-    #[ApiProperty(openapiContext: ['oneOf' => [['type' => 'string'], ['type' => 'object']]])]
+    #[ApiProperty(genId: false)]
     #[Groups(['page_content:read'])]
-    public string|array|null $content = null;
+    public TextContent|FaqContent|ListingContent|null $content = null;
 }

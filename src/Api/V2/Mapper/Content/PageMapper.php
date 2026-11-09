@@ -80,7 +80,11 @@ final readonly class PageMapper
         $page->updatedAt = $this->toImmutable($entity->getUpdateAt());
 
         foreach ($entity->getTags() as $tag) {
+            if ($tag->isDisabled()) {
+                continue;
+            }
             $page->tags[] = new Tag(
+                (int) $tag->getId(),
                 (string) $tag->getTagTranslationByLocale($this->locale)?->getLabel(),
                 (string) $tag->getColor(),
             );

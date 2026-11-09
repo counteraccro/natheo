@@ -4,13 +4,14 @@ declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
  * @version 1.0
- * Convertit un menu (données de MenuRepository::getByIdForApi + éléments) en ressource Menu de l'API v2
+ * Convertit un menu en ressource Menu de l'API v2
  */
 
 namespace App\Api\V2\Mapper\Content;
 
 use App\Api\V2\Output\Content\MenuElement;
 use App\Api\V2\Resource\Content\Menu;
+use App\Entity\Admin\Content\Menu\Menu as MenuEntity;
 use App\Entity\Admin\Content\Menu\MenuElement as MenuElementEntity;
 use App\Enum\Admin\Content\Menu\MenuPosition;
 use App\Enum\Admin\Content\Menu\MenuType;
@@ -21,16 +22,18 @@ final readonly class MenuMapper
     public function __construct(private string $locale) {}
 
     /**
-     * @param array{id: int, position: int, type: int, menuElements: MenuElementEntity[]} $data
+     * @param MenuEntity $entity
      * @return Menu
      */
-    public function map(array $data): Menu
+    public function map(MenuEntity $entity): Menu
     {
         $menu = new Menu();
-        $menu->id = (int) $data['id'];
-        $menu->position = MenuPosition::tryFrom((int) $data['position'])?->getApiName() ?? '';
-        $menu->type = strtolower(MenuType::tryFrom((int) $data['type'])?->name ?? '');
-        $menu->elements = $this->mapElements($data['menuElements']);
+        $menu->id = (int) $entity->getId();
+        $menu->position = MenuPosition::tryFrom((int) $entity->getPosition())?->getApiName() ?? '';
+        $menu->type = strtolower(MenuType::tryFrom((int) $entity->getType())?->name ?? '');
+        $menu->elements = $this->mapElements(
+            $entity->getMenuElements()->filter(fn(MenuElementEntity $element) => $element->getParent() === null),
+        );
         return $menu;
     }
 

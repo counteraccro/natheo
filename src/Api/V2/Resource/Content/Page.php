@@ -19,10 +19,12 @@ use App\Api\V2\Output\Content\Author;
 use App\Api\V2\Output\Content\Meta;
 use App\Api\V2\Output\Content\Tag;
 use App\Api\V2\Parameter\LocaleParameter;
+use App\Api\V2\Parameter\PageCategoryParameter;
 use App\Api\V2\State\Processor\Content\ReadPageProcessor;
 use App\Api\V2\State\Provider\Content\PageCollectionProvider;
 use App\Api\V2\State\Provider\Content\PageProvider;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[
     ApiResource(
@@ -62,13 +64,11 @@ use Symfony\Component\Serializer\Attribute\Groups;
                 provider: PageCollectionProvider::class,
                 parameters: [
                     'locale' => new LocaleParameter(),
-                    'category' => new QueryParameter(
-                        schema: ['type' => 'string'],
-                        description: 'Catégorie : slug (blog, evenement…) ou libellé traduit',
-                    ),
+                    'category' => new PageCategoryParameter(),
                     'tag' => new QueryParameter(
-                        schema: ['type' => 'string'],
-                        description: 'Libellé de tag (recherche partielle, insensible à la casse)',
+                        schema: ['type' => 'integer', 'minimum' => 1],
+                        description: 'Id d\'un tag actif',
+                        constraints: [new Assert\Regex(pattern: '/^[1-9][0-9]*$/')],
                     ),
                 ],
             ),

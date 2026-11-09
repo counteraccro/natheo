@@ -15,13 +15,12 @@ use ApiPlatform\State\Pagination\Pagination;
 use ApiPlatform\State\Pagination\TraversablePaginator;
 use ApiPlatform\State\ProviderInterface;
 use App\Api\V2\Parameter\LocaleParameter;
+use App\Api\V2\Parameter\PageCategoryParameter;
 use App\Api\V2\Resource\Content\Page;
 use App\Api\V2\Mapper\Content\PageMapper;
 use App\Service\Api\Content\Page\ApiPageService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @implements ProviderInterface<Page>
@@ -31,7 +30,6 @@ final readonly class PageCollectionProvider implements ProviderInterface
     public function __construct(
         private ApiPageService $apiPageService,
         private Pagination $pagination,
-        private TranslatorInterface $translator,
     ) {}
 
     /**
@@ -48,17 +46,13 @@ final readonly class PageCollectionProvider implements ProviderInterface
         $page = $this->pagination->getPage($context);
         $limit = $this->pagination->getLimit($operation, $context);
 
+        $tag = $operation->getParameters()?->get('tag', QueryParameter::class)?->getValue(null);
         $paginator = $this->apiPageService->findPublishedPages(
             $page,
             $limit,
-            $this->getQueryValue($operation, 'category'),
-            $this->getQueryValue($operation, 'tag'),
+            PageCategoryParameter::getValueFrom($operation),
+            is_numeric($tag) ? (int) $tag : null,
         );
-        if ($paginator === null) {
-            throw new NotFoundHttpException(
-                $this->translator->trans('api_errors.find.listing.category.not.found', domain: 'api_errors'),
-            );
-        }
 
         $mapper = new PageMapper($locale);
         $pages = [];
@@ -66,16 +60,5 @@ final readonly class PageCollectionProvider implements ProviderInterface
             $pages[] = $mapper->mapSummary($entity);
         }
         return new TraversablePaginator(new \ArrayIterator($pages), $page, $limit, $paginator->count());
-    }
-
-    /**
-     * @param Operation $operation
-     * @param string $key
-     * @return string|null
-     */
-    private function getQueryValue(Operation $operation, string $key): ?string
-    {
-        $value = $operation->getParameters()?->get($key, QueryParameter::class)?->getValue(null);
-        return is_string($value) && trim($value) !== '' ? trim($value) : null;
     }
 }

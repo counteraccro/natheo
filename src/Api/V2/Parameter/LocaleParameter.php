@@ -4,7 +4,7 @@ declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
  * @version 1.0
- * Paramètre de requête « locale » des ressources de contenu de l'API v2
+ * Paramètre de requête « locale » des ressources de contenu de l'API v2 (langues de app.supported_locales)
  */
 
 namespace App\Api\V2\Parameter;
@@ -14,16 +14,11 @@ use ApiPlatform\Metadata\QueryParameter;
 
 final class LocaleParameter extends QueryParameter
 {
-    /**
-     * Langues de contenu acceptées
-     * @var string[]
-     */
-    public const array LOCALES = ['fr', 'en', 'es'];
-
     public function __construct()
     {
+        // Langues acceptées ajoutées par LocaleParameterMetadataFactory
         parent::__construct(
-            schema: ['type' => 'string', 'enum' => self::LOCALES],
+            schema: ['type' => 'string'],
             description: 'Langue du contenu, langue par défaut du site si absente',
         );
     }

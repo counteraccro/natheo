@@ -16,7 +16,6 @@ use App\Api\V2\Parameter\LocaleParameter;
 use App\Api\V2\Parameter\MenuPositionParameter;
 use App\Api\V2\Resource\Content\Menu;
 use App\Api\V2\Mapper\Content\MenuMapper;
-use App\Service\Api\Content\ApiMenuService;
 use App\Service\Api\Content\Page\ApiPageService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -30,7 +29,6 @@ final readonly class MenuCollectionProvider implements ProviderInterface
 {
     public function __construct(
         private ApiPageService $apiPageService,
-        private ApiMenuService $apiMenuService,
         private TranslatorInterface $translator,
     ) {}
 
@@ -58,13 +56,9 @@ final readonly class MenuCollectionProvider implements ProviderInterface
 
         $mapper = new MenuMapper($locale);
         $menus = [];
-        foreach ($this->apiPageService->getMenuIdsForPage($page) as $menu) {
-            if ($position !== null && $menu['position'] !== $position->value) {
-                continue;
-            }
-            $data = $this->apiMenuService->findMenuForApi($menu['id']);
-            if (!empty($data)) {
-                $menus[] = $mapper->map($data);
+        foreach ($this->apiPageService->getMenusForPage($page) as $menu) {
+            if ($position === null || $menu->getPosition() === $position->value) {
+                $menus[] = $mapper->map($menu);
             }
         }
         return $menus;

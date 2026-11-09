@@ -38,12 +38,12 @@ final readonly class MenuProvider implements ProviderInterface
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): Menu
     {
         $locale = $this->apiMenuService->resolveLocale(LocaleParameter::getValueFrom($operation));
-        $data = $this->apiMenuService->findMenuForApi((int) $uriVariables['id']);
-        if (empty($data)) {
+        $menu = $this->apiMenuService->findActiveMenu((int) $uriVariables['id']);
+        if ($menu === null) {
             throw new NotFoundHttpException(
                 $this->translator->trans('api_errors.find.menu.not.found', domain: 'api_errors'),
             );
         }
-        return (new MenuMapper($locale))->map($data);
+        return (new MenuMapper($locale))->map($menu);
     }
 }
