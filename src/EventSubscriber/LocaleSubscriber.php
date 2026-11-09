@@ -52,6 +52,12 @@ class LocaleSubscriber implements EventSubscriberInterface
     private DataBase $dataBase;
 
     /**
+     * Base installée, vérifiée une seule fois
+     * @var bool
+     */
+    private bool $installed = false;
+
+    /**
      * @param OptionUserService $optionUserService
      * @param LocaleSwitcher $localeSwitcher
      * @param Security $security
@@ -87,10 +93,7 @@ class LocaleSubscriber implements EventSubscriberInterface
         }
 
         // Lors de l'installation si pas de bdd pour éviter les crashs
-        if (
-            !$this->dataBase->check(OptionInstallation::DATABASE_EXIST->value)['success'] ||
-            !$this->dataBase->isTableExiste()
-        ) {
+        if (!$this->isInstalled()) {
             $this->localeSwitcher->setLocale('fr');
             return;
         }
@@ -109,6 +112,21 @@ class LocaleSubscriber implements EventSubscriberInterface
         }
 
         $this->localeSwitcher->setLocale($locales);
+    }
+
+    /**
+     * Indique si la base et ses tables existent ; mémorisé une fois vrai
+     * @return bool
+     * @throws Exception
+     */
+    private function isInstalled(): bool
+    {
+        if (!$this->installed) {
+            $this->installed =
+                $this->dataBase->check(OptionInstallation::DATABASE_EXIST->value)['success'] &&
+                $this->dataBase->isTableExiste();
+        }
+        return $this->installed;
     }
 
     /**
