@@ -11,6 +11,7 @@ api_errors.find.menu.not.found: Menú no disponible
 api_errors.access.unauthorized: Acceso no autorizado
 api_errors.find.page.not.found: Página no disponible
 api_errors.find.page.content.not.found: Contenido de la página no disponible
+api_errors.find.comment.not.found: 'Comentario no disponible'
 api_errors.find.listing.category.not.found: La categoría solicitada no existe
 api_errors.find.listing.tag.not.found: La etiqueta solicitada no existe
 api_errors.api.not.open: Recurso no accesible - API cerrada
