@@ -113,7 +113,6 @@ class InstallRequirementsChecker extends AppAdminService
     {
         $kernelInterface = $this->getKernel();
 
-        $filesystem = new Filesystem();
         $projectDir = $kernelInterface->getProjectDir();
 
         $directories = [
@@ -129,21 +128,25 @@ class InstallRequirementsChecker extends AppAdminService
 
         foreach ($directories as $relativePath) {
             $fullPath = $projectDir . '/' . $relativePath;
-            $results[$relativePath] = $this->isWritable($filesystem, $fullPath);
+            $results[$relativePath] = $this->isWritableDirectory($fullPath);
         }
 
         return $results;
     }
 
-    private function isWritable(Filesystem $filesystem, string $path): bool
+    /**
+     * Indique si le dossier est inscriptible, en le créant s'il n'existe pas encore
+     * (dossiers ignorés par git, absents d'un clone neuf)
+     * @param string $path Chemin absolu du dossier
+     * @return bool
+     */
+    public function isWritableDirectory(string $path): bool
     {
-        if (!$filesystem->exists($path)) {
-            return false;
-        }
-
+        $filesystem = new Filesystem();
         $testFile = $path . '/.write_test_' . uniqid();
 
         try {
+            $filesystem->mkdir($path);
             $filesystem->dumpFile($testFile, 'test');
             $filesystem->remove($testFile);
 
