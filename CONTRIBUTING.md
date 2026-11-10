@@ -63,8 +63,8 @@ Ce qui est fait automatiquement (workflow `pull-request`) :
 - au merge dans une branche d'Epic, fermeture de l'issue liée (GitHub ne le fait qu'au merge sur `master`).
 
 Les tests sont lancés automatiquement (workflow `tests`) sur chaque PR et chaque push sur `master`, `epic/**` et `release/**` :
-- **PHPUnit (MySQL)** et **PHPUnit (PostgreSQL)** : PHP 8.5, base de test créée par `natheo:install-bdd-test` dans un conteneur, puis `php bin/phpunit --display-deprecations` ;
-- **Build front** : `yarn install` puis `yarn build` (vue-tsc + vite).
+- **Build front** : `yarn install` puis `yarn build` (vue-tsc + vite) ;
+- **PHPUnit (MySQL)** et **PHPUnit (PostgreSQL)**, lancés avec le build du job précédent (CSS des mails) : PHP 8.5, base de test créée par `natheo:install-bdd-test` dans un conteneur, puis `php bin/phpunit --display-deprecations`.
 
 Un nouveau push annule le run en cours de la même branche. Les trois checks doivent être verts pour merger.
 
