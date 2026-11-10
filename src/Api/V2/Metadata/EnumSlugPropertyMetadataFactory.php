@@ -35,7 +35,7 @@ final readonly class EnumSlugPropertyMetadataFactory implements PropertyMetadata
     {
         $metadata = $this->decorated->create($resourceClass, $property, $options);
         $enum = $metadata->getExtraProperties()[self::EXTRA_PROPERTY] ?? null;
-        if (!is_string($enum) || !enum_exists($enum)) {
+        if (!is_string($enum) || !enum_exists($enum) || !method_exists($enum, 'getSlug')) {
             return $metadata;
         }
 

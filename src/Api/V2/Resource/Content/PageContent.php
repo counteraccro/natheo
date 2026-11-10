@@ -31,7 +31,9 @@ use Symfony\Component\Serializer\Attribute\Groups;
                 uriTemplate: '/page_contents/{id}',
                 errors: [NotFoundException::class, ValidationException::class],
                 requirements: ['id' => '\d+'],
-                openapi: new OpenApiOperation(summary: 'Le rendu d\'un bloc : HTML (text), questions (faq) ou catégorie à lister (listing)'),
+                openapi: new OpenApiOperation(
+                    summary: 'Le rendu d\'un bloc : HTML (text), questions (faq) ou catégorie à lister (listing)',
+                ),
                 normalizationContext: ['groups' => ['page_content:read']],
                 security: "is_granted('ROLE_READ_API')",
                 provider: PageContentProvider::class,
