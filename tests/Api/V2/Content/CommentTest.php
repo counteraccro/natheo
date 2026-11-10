@@ -143,6 +143,10 @@ class CommentTest extends AppApiV2TestCase
         $this->assertProblem($this->requestV2('GET', '/comments/' . $disabled->getId()), 404);
         $this->assertProblem($this->requestV2('GET', '/comments/' . $onDraft->getId()), 404);
         $this->assertProblem($this->requestV2('GET', '/comments/999999999'), 404);
+        $this->assertProblem(
+            $this->requestV2('GET', '/comments/' . $comment->getId(), headers: ['HTTP_X_USER_TOKEN' => 'inconnu']),
+            403,
+        );
     }
 
     /**
@@ -323,9 +327,16 @@ class CommentTest extends AppApiV2TestCase
         $this->assertEquals('validate', $content['status']);
         $this->assertEquals('Publicité', $content['moderationComment']);
 
+        $content = $this->decode(
+            $this->requestV2('PATCH', $path, self::HEADER_WRITE, ['moderationComment' => ''], headers: $headers),
+        );
+        $this->assertEquals('validate', $content['status']);
+        $this->assertNull($content['moderationComment']);
+
         $this->em->clear();
         $saved = $this->em->getRepository(Comment::class)->find($comment->getId());
         $this->assertEquals(CommentStatus::VALIDATE->value, $saved->getStatus());
+        $this->assertEmpty($saved->getModerationComment());
         $this->assertEquals($moderator->getId(), $saved->getUserModeration()->getId());
     }
 
