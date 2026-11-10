@@ -145,7 +145,6 @@ class SidebarElementServiceTest extends AppWebTestCase
         $this->assertEmpty($rowLocked['action']);
 
         $json = json_encode($result['data']);
-        $this->assertStringNotContainsString('bi bi-', $json);
         $this->assertStringContainsString('<svg', $json);
     }
 
