@@ -23,6 +23,7 @@ use App\Repository\Admin\Content\Comment\CommentRepository;
 use App\Repository\Admin\Content\Page\PageRepository;
 use App\Service\Api\AppApiService;
 use App\Factory\Admin\Global\Notification\NotificationFactory;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -120,14 +121,60 @@ class ApiCommentService extends AppApiService
             );
         }
 
-        $isOpen = boolval($this->getOptionSystemService()->getValueByKey(OptionSystem::OS_OPEN_COMMENT->value));
-
-        if (!$page->isOpenComment() || !$isOpen) {
+        if (!$this->isOpenForComments($page)) {
             throw new HttpException(
                 Response::HTTP_FORBIDDEN,
                 $translator->trans('api_errors.comment.not.open', domain: 'api_errors'),
             );
         }
+
+        return $this->createComment(
+            $page,
+            $dto->getLocale(),
+            $dto->getAuthor(),
+            $dto->getEmail(),
+            $dto->getComment(),
+            $dto->getIp() !== '' ? $dto->getIp() : $clientIp ?? '',
+            $dto->getUserAgent(),
+        );
+    }
+
+    /**
+     * Indique si la page accepte de nouveaux commentaires (option système et réglage de la page)
+     * @param Page $page
+     * @return bool
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function isOpenForComments(Page $page): bool
+    {
+        return $page->isOpenComment() &&
+            boolval($this->getOptionSystemService()->getValueByKey(OptionSystem::OS_OPEN_COMMENT->value));
+    }
+
+    /**
+     * Crée un commentaire sur la page, en attente si la page ou l'option système l'exige, et notifie l'auteur de la page
+     * @param Page $page
+     * @param string $locale langue du titre de la page dans la notification
+     * @param string $author
+     * @param string|null $email
+     * @param string $text Markdown brut
+     * @param string $ip
+     * @param string $userAgent
+     * @return Comment
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function createComment(
+        Page $page,
+        string $locale,
+        string $author,
+        ?string $email,
+        string $text,
+        string $ip,
+        string $userAgent,
+    ): Comment {
+        $translator = $this->getTranslator();
 
         $isMustValidate = boolval(
             $this->getOptionSystemService()->getValueByKey(OptionSystem::OS_NEW_COMMENT_WAIT_VALIDATION->value),
@@ -149,11 +196,11 @@ class ApiCommentService extends AppApiService
         $comment = new Comment();
         $comment->setPage($page);
         // Markdown stocké brut : assaini à l'affichage (strip_tags tronquait les textes contenant « < »)
-        $comment->setComment($dto->getComment());
-        $comment->setAuthor(strip_tags($dto->getAuthor()));
-        $comment->setEmail($dto->getEmail());
-        $comment->setIp($dto->getIp() !== '' ? $dto->getIp() : $clientIp ?? '');
-        $comment->setUserAgent($dto->getUserAgent());
+        $comment->setComment($text);
+        $comment->setAuthor(strip_tags($author));
+        $comment->setEmail($email);
+        $comment->setIp($ip);
+        $comment->setUserAgent($userAgent);
         $comment->setStatus($status);
         $comment->setDisabled(false);
         $this->save($comment);
@@ -162,29 +209,58 @@ class ApiCommentService extends AppApiService
         $notificationFactory->addNotification(Notification::NEW_COMMENT->value, [
             'author' => htmlspecialchars($comment->getAuthor(), ENT_QUOTES),
             'status' => $statusStr,
-            'page' => htmlspecialchars(
-                $page->getPageTranslationByLocale($dto->getLocale())->getTitre(),
-                ENT_QUOTES,
-            ),
+            'page' => htmlspecialchars((string) $page->getPageTranslationByLocale($locale)?->getTitre(), ENT_QUOTES),
             'id' => $comment->getId(),
         ]);
-        $user = $notificationFactory->getUser();
-
-        $this->save($user);
+        $this->save($notificationFactory->getUser());
 
         return $comment;
     }
 
     /**
      * Détermine si l'utilisateur peut modérer un commentaire (mêmes droits que l'administration)
-     * @param User $user
+     * @param User|null $user
      * @return bool
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function canModerate(User $user): bool
+    public function canModerate(?User $user): bool
     {
-        return $this->isGranted(['ROLE_CONTRIBUTEUR'], $user);
+        return $user !== null && $this->isGranted(['ROLE_CONTRIBUTEUR'], $user);
+    }
+
+    /**
+     * Retourne les commentaires actifs d'une page, paginés et triés par date de création
+     * @param Page $page
+     * @param int $pageNumber
+     * @param int $limit
+     * @param \SortDirection $direction
+     * @return Paginator<Comment>
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function findPageComments(Page $page, int $pageNumber, int $limit, \SortDirection $direction): Paginator
+    {
+        /** @var CommentRepository $repository */
+        $repository = $this->getRepository(Comment::class);
+        return $repository->getActiveCommentsByPage($page, $pageNumber, $limit, $direction);
+    }
+
+    /**
+     * Retourne un commentaire actif d'une page publiée, null sinon
+     * @param int $id
+     * @return Comment|null
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function findVisibleComment(int $id): ?Comment
+    {
+        /** @var Comment|null $comment */
+        $comment = $this->findOneById(Comment::class, $id);
+        if ($comment === null || $comment->isDisabled() || !$this->isPageVisible($comment->getPage())) {
+            return null;
+        }
+        return $comment;
     }
 
     /**
@@ -207,7 +283,26 @@ class ApiCommentService extends AppApiService
             );
         }
 
-        $comment->setModerationComment(strip_tags($dto->getModerationComment()));
+        $this->applyModeration($comment, $status, $dto->getModerationComment(), $user);
+    }
+
+    /**
+     * Applique le statut et le message de modération au commentaire
+     * @param Comment $comment
+     * @param CommentStatus $status
+     * @param string $moderationComment
+     * @param User $user modérateur
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function applyModeration(
+        Comment $comment,
+        CommentStatus $status,
+        string $moderationComment,
+        User $user,
+    ): void {
+        $comment->setModerationComment(strip_tags($moderationComment));
         $comment->setStatus($status->value);
         $comment->setUserModeration($user);
         $this->save($comment);
