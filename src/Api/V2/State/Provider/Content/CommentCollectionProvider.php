@@ -10,11 +10,11 @@ declare(strict_types=1);
 namespace App\Api\V2\State\Provider\Content;
 
 use ApiPlatform\Metadata\Operation;
-use ApiPlatform\Metadata\QueryParameter;
 use ApiPlatform\State\Pagination\Pagination;
 use ApiPlatform\State\Pagination\TraversablePaginator;
 use ApiPlatform\State\ProviderInterface;
 use App\Api\V2\Exception\NotFoundException;
+use App\Api\V2\Filter\OrderFilter;
 use App\Api\V2\Mapper\Content\CommentMapper;
 use App\Api\V2\Resource\Content\Comment;
 use App\Api\V2\Security\UserTokenResolver;
@@ -58,12 +58,11 @@ final readonly class CommentCollectionProvider implements ProviderInterface
 
         $pageNumber = $this->pagination->getPage($context);
         $limit = $this->pagination->getLimit($operation, $context);
-        $order = $operation->getParameters()?->get('order', QueryParameter::class)?->getValue(null);
         $paginator = $this->apiCommentService->findPageComments(
             $page,
             $pageNumber,
             $limit,
-            $order === 'asc' ? \SortDirection::Ascending : \SortDirection::Descending,
+            OrderFilter::getValue($operation),
         );
 
         $mapper = new CommentMapper($isModerator);

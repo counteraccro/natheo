@@ -22,6 +22,7 @@ use ApiPlatform\Validator\Exception\ValidationException;
 use App\Api\V2\Exception\ForbiddenException;
 use App\Api\V2\Exception\NotFoundException;
 use App\Api\V2\Exception\TooManyRequestsException;
+use App\Api\V2\Filter\OrderFilter;
 use App\Api\V2\Input\Content\CreateCommentInput;
 use App\Api\V2\Input\Content\ModerateCommentInput;
 use App\Api\V2\Metadata\EnumSlugPropertyMetadataFactory;
@@ -33,7 +34,6 @@ use App\Api\V2\State\Provider\Content\CommentCollectionProvider;
 use App\Api\V2\State\Provider\Content\CommentProvider;
 use App\Enum\Admin\Comment\CommentStatus;
 use Symfony\Component\Serializer\Attribute\Groups;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[
     ApiResource(
@@ -60,14 +60,14 @@ use Symfony\Component\Validator\Constraints as Assert;
                     description: 'Sans utilisateur autorisé à modérer, le texte des commentaires en attente ' .
                         'ou modérés et l\'auteur des commentaires en attente valent null.',
                 ),
-                normalizationContext: ['groups' => ['comment:read']],
+                normalizationContext: ['groups' => ['comment:list']],
                 security: "is_granted('ROLE_READ_API')",
                 provider: CommentCollectionProvider::class,
                 parameters: [
-                    'order' => new QueryParameter(
-                        schema: ['type' => 'string', 'enum' => ['asc', 'desc'], 'default' => 'desc'],
+                    OrderFilter::PARAMETER => new QueryParameter(
+                        filter: OrderFilter::class,
+                        property: 'createdAt',
                         description: 'Tri par date de création',
-                        constraints: [new Assert\Choice(choices: ['asc', 'desc'])],
                     ),
                     UserTokenResolver::HEADER => new UserTokenHeader(),
                 ],
@@ -113,11 +113,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 final class Comment
 {
     #[ApiProperty(required: true, identifier: true)]
-    #[Groups(['comment:read'])]
+    #[Groups(['comment:read', 'comment:list'])]
     public int $id = 0;
 
     #[ApiProperty(required: true)]
-    #[Groups(['comment:read'])]
+    #[Groups(['comment:read', 'comment:list'])]
     public ?Page $page = null;
 
     #[
@@ -126,32 +126,32 @@ final class Comment
             extraProperties: [EnumSlugPropertyMetadataFactory::EXTRA_PROPERTY => CommentStatus::class],
         ),
     ]
-    #[Groups(['comment:read'])]
+    #[Groups(['comment:read', 'comment:list'])]
     public string $status = '';
 
     #[ApiProperty(required: true)]
-    #[Groups(['comment:read'])]
+    #[Groups(['comment:read', 'comment:list'])]
     public ?string $author = null;
 
     /**
      * Texte en Markdown brut, à assainir avant affichage
      */
     #[ApiProperty(required: true)]
-    #[Groups(['comment:read'])]
+    #[Groups(['comment:read', 'comment:list'])]
     public ?string $comment = null;
 
     /**
      * Message de modération, renvoyé seulement à un utilisateur autorisé à modérer
      */
     #[ApiProperty(required: true)]
-    #[Groups(['comment:read'])]
+    #[Groups(['comment:read', 'comment:list'])]
     public ?string $moderationComment = null;
 
     #[ApiProperty(required: true)]
-    #[Groups(['comment:read'])]
+    #[Groups(['comment:read', 'comment:list'])]
     public ?\DateTimeInterface $createdAt = null;
 
     #[ApiProperty(required: true)]
-    #[Groups(['comment:read'])]
+    #[Groups(['comment:read', 'comment:list'])]
     public ?\DateTimeInterface $updatedAt = null;
 }
