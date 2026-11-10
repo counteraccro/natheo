@@ -37,7 +37,7 @@
 
     <div {{ vue_component('Admin/GenericGrid', {'url' : path('admin_user_load_grid_data', {'page' : page, 'limit' : limit}), 'page' : page, 'limit' : limit, 'activeSearchData' : true}) }}></div>
 
-    <twig:Admin:ModaleComponent id="help-grid-user" bgColor="bg-secondary">
+    <twig:Admin:ModaleComponent id="help-grid-user">
         <twig:block name="header">
              {{ 'user.index.modal.help.title' | trans({}, 'user') }}
         </twig:block>
