@@ -127,6 +127,19 @@ class ApiPlatformTest extends AppApiV2TestCase
         $this->assertArrayHasKey('/api/v2/info', $content['paths']);
         $this->assertArrayHasKey('Bearer', $content['components']['securitySchemes']);
 
+        foreach ($content['paths'] as $path => $operations) {
+            foreach ($operations as $method => $operation) {
+                if (!is_array($operation) || ($operation['tags'] ?? []) === ['Probe']) {
+                    continue;
+                }
+                $this->assertDoesNotMatchRegularExpression(
+                    '/^(Retrieves|Creates|Updates|Replaces|Deletes) /',
+                    $operation['summary'],
+                    $method . ' ' . $path . ' : résumé OpenAPI manquant',
+                );
+            }
+        }
+
         $response = $this->requestV2('GET', '/docs', self::HEADER_NONE, accept: 'text/html');
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertStringContainsString('swagger', strtolower((string) $response->getContent()));

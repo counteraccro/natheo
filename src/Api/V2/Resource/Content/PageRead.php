@@ -12,6 +12,7 @@ namespace App\Api\V2\Resource\Content;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Post;
+use ApiPlatform\OpenApi\Model\Operation as OpenApiOperation;
 use ApiPlatform\Validator\Exception\ValidationException;
 use App\Api\V2\Exception\NotFoundException;
 use App\Api\V2\State\Processor\Content\CreatePageReadProcessor;
@@ -25,7 +26,7 @@ use Symfony\Component\Validator\Constraints as Assert;
                 uriTemplate: '/page_reads',
                 errors: [NotFoundException::class, ValidationException::class],
                 status: 204,
-                description: 'Compte une lecture de la page',
+                openapi: new OpenApiOperation(summary: 'Compte une lecture de la page'),
                 denormalizationContext: ['groups' => ['page_read:write']],
                 security: "is_granted('ROLE_READ_API')",
                 output: false,

@@ -17,6 +17,7 @@ use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\QueryParameter;
+use ApiPlatform\OpenApi\Model\Operation as OpenApiOperation;
 use ApiPlatform\Validator\Exception\ValidationException;
 use App\Api\V2\Exception\ForbiddenException;
 use App\Api\V2\Exception\NotFoundException;
@@ -41,7 +42,7 @@ use Symfony\Component\Validator\Constraints as Assert;
                 uriTemplate: '/comments/{id}',
                 requirements: ['id' => '\d+'],
                 errors: [NotFoundException::class, ForbiddenException::class],
-                description: 'Un commentaire actif d\'une page publiée',
+                openapi: new OpenApiOperation(summary: 'Un commentaire actif d\'une page publiée'),
                 normalizationContext: ['groups' => ['comment:read']],
                 security: "is_granted('ROLE_READ_API')",
                 provider: CommentProvider::class,
@@ -54,9 +55,11 @@ use Symfony\Component\Validator\Constraints as Assert;
                 uriVariables: ['pageId' => new Link(fromClass: Page::class)],
                 requirements: ['pageId' => '\d+'],
                 errors: [NotFoundException::class, ForbiddenException::class, ValidationException::class],
-                description: 'Les commentaires actifs d\'une page publiée. ' .
-                    'Sans utilisateur autorisé à modérer, le texte des commentaires en attente ' .
-                    'ou modérés et l\'auteur des commentaires en attente valent null.',
+                openapi: new OpenApiOperation(
+                    summary: 'Les commentaires actifs d\'une page publiée',
+                    description: 'Sans utilisateur autorisé à modérer, le texte des commentaires en attente ' .
+                        'ou modérés et l\'auteur des commentaires en attente valent null.',
+                ),
                 normalizationContext: ['groups' => ['comment:read']],
                 security: "is_granted('ROLE_READ_API')",
                 provider: CommentCollectionProvider::class,
@@ -77,8 +80,10 @@ use Symfony\Component\Validator\Constraints as Assert;
                     TooManyRequestsException::class,
                     ValidationException::class,
                 ],
-                description: 'Ajoute un commentaire à une page publiée. ' .
-                    'En attente de validation si la page ou les options du site l\'exigent.',
+                openapi: new OpenApiOperation(
+                    summary: 'Ajoute un commentaire à une page publiée',
+                    description: 'En attente de validation si la page ou les options du site l\'exigent.',
+                ),
                 normalizationContext: ['groups' => ['comment:read']],
                 security: "is_granted('ROLE_WRITE_API')",
                 input: CreateCommentInput::class,
@@ -88,9 +93,11 @@ use Symfony\Component\Validator\Constraints as Assert;
                 uriTemplate: '/comments/{id}',
                 requirements: ['id' => '\d+'],
                 errors: [NotFoundException::class, ForbiddenException::class, ValidationException::class],
-                description: 'Modère un commentaire. ' .
-                    'Réservé à un utilisateur autorisé à modérer (en-tête X-User-Token). ' .
-                    'Un champ absent ou null reste inchangé ; une chaîne vide efface le message de modération.',
+                openapi: new OpenApiOperation(
+                    summary: 'Modère un commentaire',
+                    description: 'Réservé à un utilisateur autorisé à modérer (en-tête X-User-Token). ' .
+                        'Un champ absent ou null reste inchangé ; une chaîne vide efface le message de modération.',
+                ),
                 normalizationContext: ['groups' => ['comment:read']],
                 security: "is_granted('ROLE_WRITE_API')",
                 input: ModerateCommentInput::class,

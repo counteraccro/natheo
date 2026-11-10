@@ -12,6 +12,7 @@ namespace App\Api\V2\Resource\System;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
+use ApiPlatform\OpenApi\Model\Operation as OpenApiOperation;
 use App\Api\V2\State\Provider\System\InfoProvider;
 
 #[
@@ -21,7 +22,7 @@ use App\Api\V2\State\Provider\System\InfoProvider;
             new Get(
                 uriTemplate: '/info',
                 errors: [],
-                description: 'Nom du site et versions de Nathéo et de l\'API',
+                openapi: new OpenApiOperation(summary: 'Nom du site et versions de Nathéo et de l\'API'),
                 security: "is_granted('ROLE_READ_API')",
                 provider: InfoProvider::class,
             ),

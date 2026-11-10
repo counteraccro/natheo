@@ -15,6 +15,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\HeaderParameter;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\QueryParameter;
+use ApiPlatform\OpenApi\Model\Operation as OpenApiOperation;
 use ApiPlatform\Validator\Exception\ValidationException;
 use App\Api\V2\Exception\NotFoundException;
 use App\Api\V2\Output\Content\Author;
@@ -34,7 +35,7 @@ use Symfony\Component\Validator\Constraints as Assert;
                 uriTemplate: '/pages/{id}',
                 requirements: ['id' => '\d+'],
                 errors: [NotFoundException::class, ValidationException::class],
-                description: 'Une page publiée par son id',
+                openapi: new OpenApiOperation(summary: 'Une page publiée par son id'),
                 normalizationContext: ['groups' => ['page:read']],
                 security: "is_granted('ROLE_READ_API')",
                 provider: PageProvider::class,
@@ -53,7 +54,7 @@ use Symfony\Component\Validator\Constraints as Assert;
             new GetCollection(
                 uriTemplate: '/pages',
                 errors: [ValidationException::class],
-                description: 'Les pages publiées, les plus récemment modifiées en premier',
+                openapi: new OpenApiOperation(summary: 'Les pages publiées, les plus récemment modifiées en premier'),
                 normalizationContext: ['groups' => ['page:list']],
                 security: "is_granted('ROLE_READ_API')",
                 provider: PageCollectionProvider::class,
