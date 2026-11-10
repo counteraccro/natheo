@@ -13,27 +13,27 @@ use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\HeaderParameter;
 use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\QueryParameter;
-use ApiPlatform\OpenApi\Model\Parameter as OpenApiParameter;
 use ApiPlatform\Validator\Exception\ValidationException;
 use App\Api\V2\Exception\ForbiddenException;
 use App\Api\V2\Exception\NotFoundException;
 use App\Api\V2\Exception\TooManyRequestsException;
-use App\Api\V2\Input\Content\CommentInput;
-use App\Api\V2\Input\Content\CommentModerationInput;
+use App\Api\V2\Input\Content\CreateCommentInput;
+use App\Api\V2\Input\Content\ModerateCommentInput;
+use App\Api\V2\Metadata\EnumSlugPropertyMetadataFactory;
+use App\Api\V2\Security\UserTokenHeader;
 use App\Api\V2\Security\UserTokenResolver;
 use App\Api\V2\State\Processor\Content\CreateCommentProcessor;
 use App\Api\V2\State\Processor\Content\ModerateCommentProcessor;
 use App\Api\V2\State\Provider\Content\CommentCollectionProvider;
 use App\Api\V2\State\Provider\Content\CommentProvider;
+use App\Enum\Admin\Comment\CommentStatus;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-// Obligatoire dans la documentation seulement : son absence renvoie 403 et non 422
 #[
     ApiResource(
         operations: [
@@ -46,10 +46,7 @@ use Symfony\Component\Validator\Constraints as Assert;
                 security: "is_granted('ROLE_READ_API')",
                 provider: CommentProvider::class,
                 parameters: [
-                    UserTokenResolver::HEADER => new HeaderParameter(
-                        schema: ['type' => 'string'],
-                        description: UserTokenResolver::HEADER_DESCRIPTION,
-                    ),
+                    UserTokenResolver::HEADER => new UserTokenHeader(),
                 ],
             ),
             new GetCollection(
@@ -57,8 +54,9 @@ use Symfony\Component\Validator\Constraints as Assert;
                 uriVariables: ['pageId' => new Link(fromClass: Page::class)],
                 requirements: ['pageId' => '\d+'],
                 errors: [NotFoundException::class, ForbiddenException::class, ValidationException::class],
-                description: 'Les commentaires actifs d\'une page publiée. Sans utilisateur autorisé à modérer, ' .
-                    'le texte des commentaires en attente ou modérés et l\'auteur des commentaires en attente valent null',
+                description: 'Les commentaires actifs d\'une page publiée. ' .
+                    'Sans utilisateur autorisé à modérer, le texte des commentaires en attente ' .
+                    'ou modérés et l\'auteur des commentaires en attente valent null.',
                 normalizationContext: ['groups' => ['comment:read']],
                 security: "is_granted('ROLE_READ_API')",
                 provider: CommentCollectionProvider::class,
@@ -68,10 +66,7 @@ use Symfony\Component\Validator\Constraints as Assert;
                         description: 'Tri par date de création',
                         constraints: [new Assert\Choice(choices: ['asc', 'desc'])],
                     ),
-                    UserTokenResolver::HEADER => new HeaderParameter(
-                        schema: ['type' => 'string'],
-                        description: UserTokenResolver::HEADER_DESCRIPTION,
-                    ),
+                    UserTokenResolver::HEADER => new UserTokenHeader(),
                 ],
             ),
             new Post(
@@ -82,29 +77,27 @@ use Symfony\Component\Validator\Constraints as Assert;
                     TooManyRequestsException::class,
                     ValidationException::class,
                 ],
-                description: 'Ajoute un commentaire à une page publiée, en attente de validation si la page ' .
-                    'ou les options du site l\'exigent',
+                description: 'Ajoute un commentaire à une page publiée. ' .
+                    'En attente de validation si la page ou les options du site l\'exigent.',
                 normalizationContext: ['groups' => ['comment:read']],
                 security: "is_granted('ROLE_WRITE_API')",
-                input: CommentInput::class,
+                input: CreateCommentInput::class,
                 processor: CreateCommentProcessor::class,
             ),
             new Patch(
                 uriTemplate: '/comments/{id}',
                 requirements: ['id' => '\d+'],
                 errors: [NotFoundException::class, ForbiddenException::class, ValidationException::class],
-                description: 'Modère un commentaire, réservé à un utilisateur autorisé à modérer (en-tête X-User-Token)',
+                description: 'Modère un commentaire. ' .
+                    'Réservé à un utilisateur autorisé à modérer (en-tête X-User-Token). ' .
+                    'Un champ absent ou null reste inchangé ; une chaîne vide efface le message de modération.',
                 normalizationContext: ['groups' => ['comment:read']],
                 security: "is_granted('ROLE_WRITE_API')",
-                input: CommentModerationInput::class,
-                provider: CommentProvider::class,
+                input: ModerateCommentInput::class,
+                read: false,
                 processor: ModerateCommentProcessor::class,
                 parameters: [
-                    UserTokenResolver::HEADER => new HeaderParameter(
-                        schema: ['type' => 'string'],
-                        openApi: new OpenApiParameter(name: UserTokenResolver::HEADER, in: 'header', required: true),
-                        description: UserTokenResolver::HEADER_DESCRIPTION,
-                    ),
+                    UserTokenResolver::HEADER => new UserTokenHeader(documentedAsRequired: true),
                 ],
             ),
         ],
@@ -120,10 +113,12 @@ final class Comment
     #[Groups(['comment:read'])]
     public ?Page $page = null;
 
-    /**
-     * Statut : wait_validation, validate ou moderate
-     */
-    #[ApiProperty(required: true)]
+    #[
+        ApiProperty(
+            required: true,
+            extraProperties: [EnumSlugPropertyMetadataFactory::EXTRA_PROPERTY => CommentStatus::class],
+        ),
+    ]
     #[Groups(['comment:read'])]
     public string $status = '';
 

@@ -13,7 +13,7 @@ use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 use App\Api\V2\Exception\ForbiddenException;
 use App\Api\V2\Exception\NotFoundException;
-use App\Api\V2\Input\Content\CommentModerationInput;
+use App\Api\V2\Input\Content\ModerateCommentInput;
 use App\Api\V2\Mapper\Content\CommentMapper;
 use App\Api\V2\Resource\Content\Comment;
 use App\Api\V2\Security\UserTokenResolver;
@@ -24,7 +24,7 @@ use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * @implements ProcessorInterface<CommentModerationInput, Comment>
+ * @implements ProcessorInterface<ModerateCommentInput, Comment>
  */
 final readonly class ModerateCommentProcessor implements ProcessorInterface
 {
@@ -35,7 +35,7 @@ final readonly class ModerateCommentProcessor implements ProcessorInterface
     ) {}
 
     /**
-     * @param CommentModerationInput $data
+     * @param ModerateCommentInput $data
      * @param Operation $operation
      * @param array $uriVariables
      * @param array $context

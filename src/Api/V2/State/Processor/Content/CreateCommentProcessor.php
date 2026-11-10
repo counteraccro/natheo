@@ -14,7 +14,7 @@ use ApiPlatform\State\ProcessorInterface;
 use App\Api\V2\Exception\ForbiddenException;
 use App\Api\V2\Exception\NotFoundException;
 use App\Api\V2\Exception\TooManyRequestsException;
-use App\Api\V2\Input\Content\CommentInput;
+use App\Api\V2\Input\Content\CreateCommentInput;
 use App\Api\V2\Mapper\Content\CommentMapper;
 use App\Api\V2\Resource\Content\Comment;
 use App\Service\Api\Content\ApiCommentService;
@@ -27,7 +27,7 @@ use Symfony\Component\RateLimiter\RateLimiterFactoryInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * @implements ProcessorInterface<CommentInput, Comment>
+ * @implements ProcessorInterface<CreateCommentInput, Comment>
  */
 final readonly class CreateCommentProcessor implements ProcessorInterface
 {
@@ -39,7 +39,7 @@ final readonly class CreateCommentProcessor implements ProcessorInterface
     ) {}
 
     /**
-     * @param CommentInput $data
+     * @param CreateCommentInput $data
      * @param Operation $operation
      * @param array $uriVariables
      * @param array $context

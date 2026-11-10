@@ -10,15 +10,19 @@ declare(strict_types=1);
 namespace App\Api\V2\Input\Content;
 
 use ApiPlatform\Metadata\ApiProperty;
+use App\Api\V2\Metadata\EnumSlugPropertyMetadataFactory;
 use App\Enum\Admin\Comment\CommentStatus;
 use Symfony\Component\Validator\Constraints as Assert;
 
-final class CommentModerationInput
+final class ModerateCommentInput
 {
-    #[ApiProperty(schema: ['type' => 'string', 'enum' => ['wait_validation', 'validate', 'moderate']])]
+    #[ApiProperty(extraProperties: [EnumSlugPropertyMetadataFactory::EXTRA_PROPERTY => CommentStatus::class])]
     #[Assert\Choice(callback: [CommentStatus::class, 'getSlugs'])]
     public ?string $status = null;
 
+    /**
+     * Message de modération : null le laisse inchangé, une chaîne vide l'efface
+     */
     #[Assert\Length(max: 10000)]
     public ?string $moderationComment = null;
 }

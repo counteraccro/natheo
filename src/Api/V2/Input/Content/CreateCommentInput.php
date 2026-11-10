@@ -13,7 +13,7 @@ use ApiPlatform\Metadata\ApiProperty;
 use App\Api\V2\Resource\Content\Page;
 use Symfony\Component\Validator\Constraints as Assert;
 
-final class CommentInput
+final class CreateCommentInput
 {
     /**
      * Page commentée, par son IRI (/api/v2/pages/{id})
