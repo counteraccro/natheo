@@ -33,7 +33,7 @@
 
     <div {{ vue_component('Admin/GenericGrid', {'url' : path('admin_faq_load_grid_data',  {'page' : page, 'limit' : limit}), 'page' : page, 'limit' : limit, 'activeSearchData' : true, 'showFilter' : true}) }}></div>
 
-    <twig:Admin:ModaleComponent id="help-grid-faq" bgColor="bg-secondary">
+    <twig:Admin:ModaleComponent id="help-grid-faq">
         <twig:block name="header">
             {{ 'faq.index.modal.help.title' | trans({}, 'faq') }}
         </twig:block>

@@ -77,7 +77,7 @@
 
     <div {{ vue_component('Admin/GenericGrid', {'url' : path('admin_comment_load_grid_data',  {'page' : page, 'limit' : limit}), 'page' : page, 'limit' : limit, 'activeSearchData' : true, 'showFilter' : true}) }}></div>
 
-    <twig:Admin:ModaleComponent id="help-grid-comment" bgColor="bg-secondary">
+    <twig:Admin:ModaleComponent id="help-grid-comment">
         <twig:block name="header">
             {{ svg_icon('QUESTION', 'inline w-5 h-5') }} {{ 'comment.index.modal.help.title' | trans({}, 'comment') }}
         </twig:block>

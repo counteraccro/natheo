@@ -32,7 +32,7 @@
 
     <div {{ vue_component('Admin/GenericGrid', {'url' : path('admin_sql_manager_load_grid_data',  {'page' : page, 'limit' : limit}), 'page' : page, 'limit' : limit, 'activeSearchData' : true}) }}></div>
 
-    <twig:Admin:ModaleComponent id="help-grid-faq" bgColor="bg-secondary">
+    <twig:Admin:ModaleComponent id="help-grid-faq">
         <twig:block name="header">
             {{ svg_icon('QUESTION', 'inline w-5 h-5') }} {{ 'sql_manager.index.modal.help.title' | trans({}, 'sql_manager') }}
         </twig:block>

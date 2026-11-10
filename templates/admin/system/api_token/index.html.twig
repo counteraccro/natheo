@@ -27,7 +27,7 @@
 
     <div {{ vue_component('Admin/GenericGrid', {'url' : path('admin_api_token_load_grid_data', {'page' : page, 'limit' : limit}), 'page' : page, 'limit' : limit, 'activeSearchData' : true}) }}></div>
 
-    <twig:Admin:ModaleComponent id="help-grid-api-token" bgColor="bg-secondary">
+    <twig:Admin:ModaleComponent id="help-grid-api-token">
         <twig:block name="header">
              {{ 'api_token.index.modal.help.title' | trans({}, 'api_token') }}
         </twig:block>

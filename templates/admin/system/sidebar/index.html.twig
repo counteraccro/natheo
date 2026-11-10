@@ -33,7 +33,7 @@
     <div {{ vue_component('Admin/GenericGrid', {'url' : path('admin_sidebar_load_grid_data', {'page' : page, 'limit' : limit}), 'page' : page, 'limit' : limit}) }}></div>
 
 
-    <twig:Admin:ModaleComponent id="help-grid-sidebar" bgColor="bg-secondary">
+    <twig:Admin:ModaleComponent id="help-grid-sidebar">
         <twig:block name="header">{{ 'sidebar.index.modal.help.title' | trans({}, 'sidebar') }}
         </twig:block>
 
