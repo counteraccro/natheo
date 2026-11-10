@@ -54,8 +54,8 @@ class UserDataServiceTest extends AppWebTestCase
         $this->userDataService->update(UserDataKey::RESET_PASSWORD->value, $text, $user);
         $userData = $this->userDataService->findKeyAndUser(UserDataKey::RESET_PASSWORD->value, $user);
 
-        /** @var User $userCheck */
         $this->assertEquals($text, $userData->getValue());
+        $this->assertEquals($text, $user->getUserDataByKey(UserDataKey::RESET_PASSWORD->value)?->getValue());
     }
 
     /**

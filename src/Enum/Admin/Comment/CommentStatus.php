@@ -44,4 +44,37 @@ enum CommentStatus: int
     {
         return self::CONF[$this->value]['css_class'];
     }
+
+    /**
+     * Slug du statut dans l'API (ex : wait_validation)
+     * @return string
+     */
+    public function getSlug(): string
+    {
+        return strtolower($this->name);
+    }
+
+    /**
+     * Retourne le statut correspondant au slug, null si inconnu
+     * @param string|null $slug
+     * @return self|null
+     */
+    public static function tryFromSlug(?string $slug): ?self
+    {
+        foreach (self::cases() as $status) {
+            if ($status->getSlug() === $slug) {
+                return $status;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Slugs de tous les statuts
+     * @return string[]
+     */
+    public static function getSlugs(): array
+    {
+        return array_map(fn(self $status) => $status->getSlug(), self::cases());
+    }
 }

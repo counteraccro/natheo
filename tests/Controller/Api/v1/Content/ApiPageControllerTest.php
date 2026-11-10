@@ -16,7 +16,6 @@ use App\Enum\Admin\Content\Page\PageContentType;
 use App\Enum\Admin\Content\Page\PageRender;
 use App\Enum\Admin\Content\Page\PageStatistics;
 use App\Enum\Admin\Content\Page\PageStatus;
-use App\Service\Admin\System\User\UserDataService;
 use App\Tests\Controller\Api\AppApiTestCase;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -279,9 +278,7 @@ class ApiPageControllerTest extends AppApiTestCase
         $disabledPage->setDisabled(true);
         $this->persistAndFlush($draftPage);
         $this->persistAndFlush($disabledPage);
-        $userToken = $this->container
-            ->get(UserDataService::class)
-            ->generateUserToken($this->createUserContributeur(['disabled' => false, 'anonymous' => false]));
+        $userToken = $this->createUserToken($this->createUserContributeur(['disabled' => false, 'anonymous' => false]));
 
         $draftUrl = $this->router->generate('api_page_content', [
             'api_version' => self::API_VERSION,
@@ -360,9 +357,8 @@ class ApiPageControllerTest extends AppApiTestCase
         ]);
         $this->persistAndFlush($draft);
 
-        $userData = $this->container->get(UserDataService::class);
-        $ownerToken = $userData->generateUserToken($owner);
-        $otherToken = $userData->generateUserToken(
+        $ownerToken = $this->createUserToken($owner);
+        $otherToken = $this->createUserToken(
             $this->createUserContributeur(['disabled' => false, 'anonymous' => false]),
         );
 

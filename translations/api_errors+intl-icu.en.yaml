@@ -11,6 +11,7 @@ api_errors.find.menu.not.found: Menu not available
 api_errors.access.unauthorized: Unauthorized access
 api_errors.find.page.not.found: Page not available
 api_errors.find.page.content.not.found: Page content not available
+api_errors.find.comment.not.found: 'Comment not available'
 api_errors.find.listing.category.not.found: The requested category does not exist
 api_errors.find.listing.tag.not.found: The requested tag does not exist
 api_errors.api.not.open: Resource not accessible - API closed

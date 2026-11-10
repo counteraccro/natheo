@@ -15,6 +15,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\HeaderParameter;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\QueryParameter;
+use ApiPlatform\OpenApi\Model\Operation as OpenApiOperation;
 use ApiPlatform\Validator\Exception\ValidationException;
 use App\Api\V2\Exception\NotFoundException;
 use App\Api\V2\Output\Content\MenuElement;
@@ -31,7 +32,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
                 uriTemplate: '/menus/{id}',
                 errors: [NotFoundException::class, ValidationException::class],
                 requirements: ['id' => '\d+'],
-                description: 'Un menu actif et ses éléments',
+                openapi: new OpenApiOperation(summary: 'Un menu actif et ses éléments'),
                 normalizationContext: ['groups' => ['menu:read']],
                 security: "is_granted('ROLE_READ_API')",
                 provider: MenuProvider::class,
@@ -44,7 +45,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
                 uriTemplate: '/menus',
                 errors: [NotFoundException::class, ValidationException::class],
                 paginationEnabled: false,
-                description: 'Les menus affichés sur une page publiée',
+                openapi: new OpenApiOperation(summary: 'Les menus affichés sur une page publiée'),
                 normalizationContext: ['groups' => ['menu:read']],
                 security: "is_granted('ROLE_READ_API')",
                 provider: MenuCollectionProvider::class,

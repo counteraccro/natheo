@@ -14,13 +14,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 final class NotFoundException extends NotFoundHttpException implements ProblemExceptionInterface
 {
-    /**
-     * @return string
-     */
-    public function getType(): string
-    {
-        return '/errors/404';
-    }
+    use ProblemExceptionTrait;
 
     /**
      * Titre de la documentation OpenAPI, traduit dans les réponses par TranslatedErrorProvider
@@ -29,29 +23,5 @@ final class NotFoundException extends NotFoundHttpException implements ProblemEx
     public function getTitle(): ?string
     {
         return 'Not found';
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getStatus(): ?int
-    {
-        return 404;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getDetail(): ?string
-    {
-        return $this->getMessage();
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getInstance(): ?string
-    {
-        return null;
     }
 }

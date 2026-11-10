@@ -47,7 +47,8 @@ class UserDataService extends AppAdminService
         $userData = $this->findKeyAndUser($key, $user);
         if ($userData === null) {
             $userData = new UserData();
-            $userData->setUser($user)->setKey($key)->setValue($value);
+            $userData->setKey($key)->setValue($value);
+            $user->addUserData($userData);
         } else {
             $userData->setValue($value);
         }

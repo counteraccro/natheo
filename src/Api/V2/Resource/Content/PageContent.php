@@ -14,6 +14,7 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\HeaderParameter;
 use ApiPlatform\Metadata\QueryParameter;
+use ApiPlatform\OpenApi\Model\Operation as OpenApiOperation;
 use ApiPlatform\Validator\Exception\ValidationException;
 use App\Api\V2\Exception\NotFoundException;
 use App\Api\V2\Filter\LocaleFilter;
@@ -30,7 +31,9 @@ use Symfony\Component\Serializer\Attribute\Groups;
                 uriTemplate: '/page_contents/{id}',
                 errors: [NotFoundException::class, ValidationException::class],
                 requirements: ['id' => '\d+'],
-                description: 'Le rendu d\'un bloc : HTML (text), questions (faq) ou catégorie à lister (listing)',
+                openapi: new OpenApiOperation(
+                    summary: 'Le rendu d\'un bloc : HTML (text), questions (faq) ou catégorie à lister (listing)',
+                ),
                 normalizationContext: ['groups' => ['page_content:read']],
                 security: "is_granted('ROLE_READ_API')",
                 provider: PageContentProvider::class,
