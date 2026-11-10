@@ -53,7 +53,7 @@ class AppApiV2TestCase extends AppApiTestCase
         $server['HTTP_ACCEPT'] = $accept;
         unset($server['HTTP_Accept'], $server['HTTP_Content-Type']);
         if ($body !== null) {
-            $server['CONTENT_TYPE'] = 'application/ld+json';
+            $server['CONTENT_TYPE'] = $method === 'PATCH' ? 'application/merge-patch+json' : 'application/ld+json';
         }
 
         $this->client->request(
