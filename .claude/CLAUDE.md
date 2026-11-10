@@ -42,7 +42,7 @@ Directory shape under `src/` mirrors the domain, duplicated across `Controller/`
 
 `Translate/<Layer>/<Domain>/<Domain>Translate.php` classes (e.g. `src/Translate/Admin/Content/MenuTranslate.php`, extending `src/Translate/AppTranslate.php`) centralize building the translation arrays passed to Twig/Vue — controllers call these instead of calling the translator directly for anything non-trivial.
 
-`src/Overwrite/` holds controllers that override/extend a bundle or base controller for demo/override behavior (e.g. read-only demo mode).
+`src/Overwrite/` holds an example of overriding a base controller (`Controller/Admin/Tools/DemoOverwriteController.php`, extending `AppAdminController`, templates in `templates/overwrite/`).
 
 ### Where non-service code goes
 The former `src/Utils/` and `assets/utils/` catch-all folders were removed: never recreate them. Place code by role instead:
