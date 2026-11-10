@@ -48,18 +48,36 @@ class GitService extends AppAdminService
     {
         $parameterBag = $this->getParameterBag();
 
-        $root = $parameterBag->get('kernel.project_dir');
-        $gitBasePath = $root . '/.git'; // e.g in laravel: base_path().'/.git';
+        return $this->getInfoGitFromPath($parameterBag->get('kernel.project_dir') . '/.git');
+    }
 
-        $gitStr = file_get_contents($gitBasePath . '/HEAD');
-        $branche = rtrim(preg_replace('/(.*?\/){2}/', '', $gitStr));
-        $gitPathBranch = $gitBasePath . '/refs/heads/' . $branche;
+    /**
+     * Retourne les infos git du dossier .git donné, valeurs vides si elles sont introuvables
+     * (pas de dépôt, HEAD détaché sans branche, référence uniquement dans packed-refs)
+     * @param string $gitBasePath Chemin du dossier .git
+     * @return array
+     */
+    public function getInfoGitFromPath(string $gitBasePath): array
+    {
+        $head = is_file($gitBasePath . '/HEAD') ? trim((string) file_get_contents($gitBasePath . '/HEAD')) : '';
+
+        $branche = '';
+        $hash = $head;
+        $refPath = $gitBasePath . '/HEAD';
+        if (str_starts_with($head, 'ref: ')) {
+            $ref = substr($head, 5);
+            $branche = preg_replace('#^refs/heads/#', '', $ref);
+            $refPath = $gitBasePath . '/' . $ref;
+            $hash = is_file($refPath) ? trim((string) file_get_contents($refPath)) : '';
+        }
+
+        $time = is_file($refPath) ? filemtime($refPath) : false;
 
         return [
             self::KEY_BRANCHE => $branche,
-            self::KEY_HASH => file_get_contents($gitPathBranch),
-            self::KEY_LAST_COMMIT => date('d/m/Y H:i:s', filemtime($gitPathBranch)),
-            self::KEY_LAST_COMMIT_SHORT => date('d/m/Y', filemtime($gitPathBranch)),
+            self::KEY_HASH => $hash,
+            self::KEY_LAST_COMMIT => $time === false ? '' : date('d/m/Y H:i:s', $time),
+            self::KEY_LAST_COMMIT_SHORT => $time === false ? '' : date('d/m/Y', $time),
         ];
     }
 }
