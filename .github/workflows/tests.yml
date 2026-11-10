@@ -1,0 +1,137 @@
+name: Tests
+
+on:
+  pull_request:
+    branches: [master, 'release/**', 'epic/**']
+  push:
+    branches: [master, 'release/**', 'epic/**']
+
+permissions:
+  contents: read
+
+# Un nouveau push annule le run en cours de la même branche
+concurrency:
+  group: tests-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  phpunit:
+    name: PHPUnit (${{ matrix.database }})
+    # Les mails inlinent le CSS du build Vite
+    needs: front
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - database: MySQL
+            image: mysql:8.4
+            port: 3306
+            options: >-
+              -e MYSQL_ROOT_PASSWORD=root
+              --health-cmd="mysqladmin ping -h 127.0.0.1 -proot"
+              --health-interval=5s --health-timeout=5s --health-retries=20
+            database_url: mysql://root:root@127.0.0.1:3306/natheo_test?serverVersion=8.4.0&charset=utf8mb4
+          - database: PostgreSQL
+            image: postgres:16
+            port: 5432
+            options: >-
+              -e POSTGRES_PASSWORD=root
+              --health-cmd=pg_isready
+              --health-interval=5s --health-timeout=5s --health-retries=20
+            database_url: postgresql://postgres:root@127.0.0.1:5432/natheo_test?serverVersion=16&charset=utf8
+    services:
+      database:
+        image: ${{ matrix.image }}
+        ports:
+          - ${{ matrix.port }}:${{ matrix.port }}
+        options: ${{ matrix.options }}
+    env:
+      APP_ENV: test
+      DATABASE_URL: ${{ matrix.database_url }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # 2.40.0
+        with:
+          php-version: '8.5'
+          extensions: ctype, iconv, intl, mbstring, gd, pdo_mysql, pdo_pgsql
+          coverage: none
+
+      - name: Dossier du cache Composer
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: composer-${{ hashFiles('composer.lock') }}
+          restore-keys: composer-
+
+      - name: Dépendances PHP
+        run: composer install --no-interaction --no-progress --prefer-dist
+
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: build-front
+          path: public/build
+
+      # Lu par EnvFile et l'installateur, comme le .env.local d'un poste de développement
+      - name: Fichier .env.local
+        run: |
+          printf 'APP_ENV=dev\nAPP_DEBUG=1\nDATABASE_URL="%s"\n' "$DATABASE_URL" > .env.local
+
+      # Dossiers vérifiés par les prérequis de l'installation, absents d'un clone
+      - name: Dossiers inscriptibles
+        run: mkdir -p var/sessions public/assets/thumbnails
+
+      - name: Base de données de test
+        run: php bin/console --env=test natheo:install-bdd-test --no-interaction
+
+      - name: PHPUnit
+        run: php bin/phpunit --display-deprecations
+
+  front:
+    name: Build front
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # 2.40.0
+        with:
+          php-version: '8.5'
+          coverage: none
+
+      - name: Dossier du cache Composer
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: composer-${{ hashFiles('composer.lock') }}
+          restore-keys: composer-
+
+      # package.json référence les assets de stimulus-bundle et ux-vue dans vendor/
+      - name: Dépendances PHP
+        run: composer install --no-interaction --no-progress --prefer-dist --no-scripts
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24'
+          cache: yarn
+
+      - name: Dépendances front
+        run: yarn install --frozen-lockfile --non-interactive
+
+      - name: Build (vue-tsc + vite)
+        run: yarn build
+
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: build-front
+          path: public/build
+          include-hidden-files: true
+          retention-days: 1

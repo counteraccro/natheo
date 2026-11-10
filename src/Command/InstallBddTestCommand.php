@@ -43,7 +43,8 @@ class InstallBddTestCommand extends Command
 
         $io->note($this->translator->trans('command.install_test.note', domain: 'command'));
 
-        if (!$io->confirm($this->translator->trans('command.install_test.confirm', domain: 'command'), false)) {
+        // --no-interaction vaut confirmation, comme doctrine:migrations:migrate
+        if ($input->isInteractive() && !$io->confirm($this->translator->trans('command.install_test.confirm', domain: 'command'), false)) {
             $io->text($this->translator->trans('command.install_test.confirm_cancel', domain: 'command'));
 
             return Command::SUCCESS;
