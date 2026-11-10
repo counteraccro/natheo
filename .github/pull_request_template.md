@@ -17,8 +17,8 @@ _Ce que corrige ou apporte cette PR._
 _Choix discutables, effets de bord, zones à tester en priorité. Sinon : « Aucun »._
 
 ## Vérifications
-- [ ] `php bin/phpunit --display-deprecations`
-- [ ] `yarn build` (vue-tsc + vite)
+_PHPUnit (MySQL / PostgreSQL) et `yarn build` sont lancés par la CI (workflow `tests`)._
+- [ ] Nouveaux tests ajoutés pour le code modifié
 - [ ] Traductions fr / en / es à jour
 - [ ] Migration Doctrine : aucune / ajoutée
 - [ ] Fixtures et helpers de test à jour
