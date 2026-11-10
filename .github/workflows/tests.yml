@@ -82,10 +82,6 @@ jobs:
         run: |
           printf 'APP_ENV=dev\nAPP_DEBUG=1\nDATABASE_URL="%s"\n' "$DATABASE_URL" > .env.local
 
-      # Dossiers vérifiés par les prérequis de l'installation, absents d'un clone
-      - name: Dossiers inscriptibles
-        run: mkdir -p var/sessions public/assets/thumbnails
-
       - name: Base de données de test
         run: php bin/console --env=test natheo:install-bdd-test --no-interaction
 
