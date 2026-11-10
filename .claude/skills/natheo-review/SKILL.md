@@ -26,7 +26,9 @@ Argument reçu : `$ARGUMENTS`
   3. diff : `git diff <base>...<branche>`, plus les changements non commités (`git status`, `git diff HEAD`) si c'est la branche courante.
 - **`--suivi`** : seconde passe après corrections, voir § 7.
 
-Annoncer en une ligne la cible retenue (branche, base, PR éventuelle, nombre de fichiers et de commits).
+Une fois la branche connue, si `.ai/review/<branche avec / remplacés par ->.md` existe déjà, passer automatiquement en mode `--suivi`, même sans l'argument.
+
+Annoncer en une ligne la cible retenue (branche, base, PR éventuelle, nombre de fichiers et de commits, et mode `--suivi` s'il est déduit du rapport existant).
 
 ## 3. Stratégie de lecture
 
