@@ -14,6 +14,7 @@ use App\Tests\AppWebTestCase;
 use App\Enum\Api\Parameters\ApiUserAuthParameter;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use App\Service\Global\Token\TokenHasher;
+use App\Service\Admin\System\User\UserDataService;
 
 class AppApiTestCase extends AppWebTestCase
 {
@@ -75,6 +76,16 @@ class AppApiTestCase extends AppWebTestCase
             'HTTP_Content-Type' => 'application/json',
             'HTTP_Authorization' => 'Bearer ' . $token,
         ];
+    }
+
+    /**
+     * Génère un token de connexion valide pour l'utilisateur du back-office
+     * @param User $user
+     * @return string
+     */
+    protected function createUserToken(User $user): string
+    {
+        return $this->container->get(UserDataService::class)->generateUserToken($user);
     }
 
     /**

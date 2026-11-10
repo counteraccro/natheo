@@ -12,7 +12,6 @@ namespace Controller\Api\v1\Content;
 use App\Entity\Admin\Content\Comment\Comment;
 use App\Enum\Admin\Comment\CommentStatus;
 use App\Enum\Admin\Content\Page\PageStatus;
-use App\Service\Admin\System\User\UserDataService;
 use App\Tests\Controller\Api\AppApiTestCase;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -573,9 +572,7 @@ class ApiCommentControllerTest extends AppApiTestCase
     public function testModerateCommentWithoutRole(): void
     {
         $comment = $this->createComment();
-        $userToken = $this->container
-            ->get(UserDataService::class)
-            ->generateUserToken($this->createUser(['disabled' => false, 'anonymous' => false]));
+        $userToken = $this->createUserToken($this->createUser(['disabled' => false, 'anonymous' => false]));
 
         $this->client->request(
             'PUT',

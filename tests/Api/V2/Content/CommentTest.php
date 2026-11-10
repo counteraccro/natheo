@@ -9,8 +9,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Api\V2\Content;
 
-use ApiPlatform\Metadata\ApiProperty;
-use App\Api\V2\Input\Content\CommentModerationInput;
+use App\Api\V2\Input\Content\ModerateCommentInput;
 use App\Api\V2\Resource\Content\Comment as CommentResource;
 use App\Entity\Admin\Content\Comment\Comment;
 use App\Entity\Admin\System\User;
@@ -18,7 +17,6 @@ use App\Enum\Admin\Comment\CommentStatus;
 use App\Enum\Admin\Content\Page\PageStatus;
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Admin\System\OptionSystemService;
-use App\Service\Admin\System\User\UserDataService;
 use App\Tests\Api\V2\AppApiV2TestCase;
 
 class CommentTest extends AppApiV2TestCase
@@ -344,6 +342,7 @@ class CommentTest extends AppApiV2TestCase
         $moderator = ['HTTP_X_USER_TOKEN' => $this->createUserToken($this->createUserContributeur())];
 
         $this->assertProblem($this->requestV2('PATCH', $path, self::HEADER_WRITE, $body), 403);
+        $this->assertProblem($this->requestV2('PATCH', '/comments/999999', self::HEADER_WRITE, $body), 403);
         $this->assertProblem(
             $this->requestV2('PATCH', $path, self::HEADER_WRITE, $body, headers: ['HTTP_X_USER_TOKEN' => 'inconnu']),
             403,
@@ -376,24 +375,14 @@ class CommentTest extends AppApiV2TestCase
     }
 
     /**
-     * Les statuts documentés dans l'OpenAPI de la modération suivent l'enum CommentStatus
+     * Les statuts documentés dans l'OpenAPI (modération et lecture) suivent l'enum CommentStatus
      * @return void
      */
-    public function testModerationStatusSchema(): void
+    public function testStatusSchema(): void
     {
-        $attribute = (new \ReflectionProperty(CommentModerationInput::class, 'status'))
-            ->getAttributes(ApiProperty::class)[0]
-            ->newInstance();
-        $this->assertEquals(CommentStatus::getSlugs(), $attribute->getSchema()['enum']);
-    }
-
-    /**
-     * Génère un token de connexion valide pour l'utilisateur
-     * @param User $user
-     * @return string
-     */
-    private function createUserToken(User $user): string
-    {
-        return $this->container->get(UserDataService::class)->generateUserToken($user);
+        $factory = $this->container->get('api_platform.metadata.property.metadata_factory');
+        foreach ([ModerateCommentInput::class, CommentResource::class] as $class) {
+            $this->assertEquals(CommentStatus::getSlugs(), $factory->create($class, 'status')->getSchema()['enum']);
+        }
     }
 }
