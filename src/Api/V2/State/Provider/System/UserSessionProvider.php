@@ -11,7 +11,6 @@ namespace App\Api\V2\State\Provider\System;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
-use App\Api\V2\Exception\ForbiddenException;
 use App\Api\V2\Exception\NotFoundException;
 use App\Api\V2\Mapper\System\UserSessionMapper;
 use App\Api\V2\Resource\System\UserSession;
@@ -48,9 +47,7 @@ final readonly class UserSessionProvider implements ProviderInterface
      */
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): UserSession
     {
-        $current =
-            $this->currentUserResolver->getSession() ??
-            throw new ForbiddenException($this->translator->trans('api_errors.session.required', domain: 'api_errors'));
+        $current = $this->currentUserResolver->requireSession();
 
         // API Platform convertit l'identifiant en entier : current est relu dans la route
         $id = (string) ($context['request']?->attributes->get('_route_params')['id'] ?? $uriVariables['id']);

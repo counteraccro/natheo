@@ -38,7 +38,10 @@ final readonly class DeleteUserSessionProcessor implements ProcessorInterface
      */
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): null
     {
-        $session = $this->userSessionService->findActiveByUserAndId($this->currentUserResolver->getUser(), $data->id);
+        $session = $this->userSessionService->findActiveByUserAndId(
+            $this->currentUserResolver->requireSession()->getUser(),
+            $data->id,
+        );
         if ($session !== null) {
             $this->userSessionService->revoke($session);
         }

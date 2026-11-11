@@ -39,7 +39,8 @@ use Symfony\Component\Serializer\Attribute\Groups;
                     description: 'Renvoie un access token (15 min) à transmettre dans l\'en-tête Authorization à la ' .
                         'place du token d\'API, et un refresh token pour le renouveler. La session porte les rôles ' .
                         'du token d\'API de la requête. Refusée pour un utilisateur sans rôle d\'administration ; ' .
-                        'tentatives limitées par IP et email.',
+                        'tentatives limitées par IP et email. Ouverte à ROLE_READ_API, pour que le site public ' .
+                        'puisse connecter ses utilisateurs.',
                 ),
                 normalizationContext: ['groups' => ['user_session:create']],
                 security: "is_granted('ROLE_READ_API')",
@@ -76,7 +77,8 @@ use Symfony\Component\Serializer\Attribute\Groups;
                 errors: [ForbiddenException::class, NotFoundException::class],
                 openapi: new OpenApiOperation(
                     summary: 'Ferme une session de l\'utilisateur',
-                    description: 'Réservé à un access token de session ; current ferme la session de la requête.',
+                    description: 'Réservé à un access token de session ; current ferme la session de la requête. ' .
+                        'Ouvert à ROLE_READ_API : l\'utilisateur ne ferme que ses propres sessions.',
                 ),
                 security: "is_granted('ROLE_READ_API')",
                 provider: UserSessionProvider::class,

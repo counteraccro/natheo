@@ -29,7 +29,8 @@ use Symfony\Component\Validator\Constraints as Assert;
                 openapi: new OpenApiOperation(
                     summary: 'Renouvelle les tokens d\'une session',
                     description: 'Le refresh token est remplacé à chaque appel ; réutiliser un refresh token ' .
-                        'déjà remplacé ferme la session.',
+                        'déjà remplacé ferme la session. Deux renouvellements simultanés avec le même refresh ' .
+                        'token sont donc vus comme une réutilisation : le client ne doit en lancer qu\'un à la fois.',
                 ),
                 normalizationContext: ['groups' => ['user_session:create']],
                 denormalizationContext: ['groups' => ['user_session_refresh:write']],
