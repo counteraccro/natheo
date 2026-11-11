@@ -278,18 +278,29 @@ class UserSessionServiceTest extends AppWebTestCase
         );
         $session = $this->userSessionService->findByAccessToken($first);
         $this->assertSame($user->getId(), $session?->getUser()->getId());
+        $this->assertFrontLifetime($session);
         $this->assertSame(
             $first,
             $this->userSessionService->getFrontAccessToken($user, $frontToken, $phpSession, null, null),
         );
         $this->assertCount(1, $this->userSessionService->findActiveByUser($user));
 
-        // Access token proche de l'expiration : renouvelé dans la même session
-        $session->setAccessTokenExpiresAt(new \DateTimeImmutable('+1 minute'));
+        // Encore valable au-delà de la marge : réutilisé
+        $margin = UserSessionService::FRONT_RENEW_MARGIN;
+        $session->setAccessTokenExpiresAt(new \DateTimeImmutable('+' . ($margin + 1) . ' minutes'));
+        $this->persistAndFlush($session);
+        $this->assertSame(
+            $first,
+            $this->userSessionService->getFrontAccessToken($user, $frontToken, $phpSession, null, null),
+        );
+
+        // Sous la marge : renouvelé dans la même session, avec la durée du site public
+        $session->setAccessTokenExpiresAt(new \DateTimeImmutable('+' . ($margin - 1) . ' minutes'));
         $this->persistAndFlush($session);
         $renewed = $this->userSessionService->getFrontAccessToken($user, $frontToken, $phpSession, null, null);
         $this->assertNotSame($first, $renewed);
         $this->assertSame($session->getId(), $this->userSessionService->findByAccessToken($renewed)?->getId());
+        $this->assertFrontLifetime($this->userSessionService->findByAccessToken($renewed));
         $this->assertCount(1, $this->userSessionService->findActiveByUser($user));
 
         // Autre utilisateur dans la même session PHP : nouvelle session
@@ -336,6 +347,22 @@ class UserSessionServiceTest extends AppWebTestCase
             $this->createApiToken(['disabled' => false]),
             null,
             null,
+        );
+    }
+
+    /**
+     * L'access token du site public expire après sa durée propre, pas après celle des clients de l'API
+     * @param UserSession|null $session
+     * @return void
+     */
+    private function assertFrontLifetime(?UserSession $session): void
+    {
+        $expected = new \DateTimeImmutable('+' . UserSessionService::FRONT_ACCESS_TOKEN_LIFETIME . ' minutes');
+        $this->assertNotNull($session);
+        $this->assertEqualsWithDelta(
+            $expected->getTimestamp(),
+            $session->getAccessTokenExpiresAt()->getTimestamp(),
+            5,
         );
     }
 }

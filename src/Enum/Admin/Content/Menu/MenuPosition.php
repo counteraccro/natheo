@@ -9,8 +9,12 @@ declare(strict_types=1);
 
 namespace App\Enum\Admin\Content\Menu;
 
+use App\Enum\Trait\EnumSlugTrait;
+
 enum MenuPosition: int
 {
+    use EnumSlugTrait;
+
     case POSITION_HEADER = 1;
     case POSITION_RIGHT = 2;
     case POSITION_FOOTER = 3;
@@ -45,26 +49,11 @@ enum MenuPosition: int
     }
 
     /**
-     * Nom de la position dans l'API (header, right, footer, left)
+     * Slug de la position (header, right, footer, left)
      * @return string
      */
-    public function getApiName(): string
+    public function getSlug(): string
     {
         return strtolower(self::getStringByPosition($this->value));
-    }
-
-    /**
-     * Retourne la position correspondant au nom de l'API, null si inconnu
-     * @param string|null $apiName
-     * @return self|null
-     */
-    public static function tryFromApiName(?string $apiName): ?self
-    {
-        foreach (self::cases() as $position) {
-            if ($position->getApiName() === $apiName) {
-                return $position;
-            }
-        }
-        return null;
     }
 }

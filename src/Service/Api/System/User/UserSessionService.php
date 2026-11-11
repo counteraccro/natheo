@@ -49,10 +49,16 @@ class UserSessionService extends AppApiService
     public const string FRONT_SESSION_KEY = 'front_api_user_session';
 
     /**
-     * Marge avant l'expiration de l'access token sous laquelle le site public le renouvelle, en secondes
+     * Durée de vie de l'access token du site public, en minutes : le front ne sait pas le renouveler
      * @var int
      */
-    private const int FRONT_RENEW_MARGIN = 300;
+    public const int FRONT_ACCESS_TOKEN_LIFETIME = 60;
+
+    /**
+     * Durée de validité restante sous laquelle le site public renouvelle l'access token, en minutes
+     * @var int
+     */
+    public const int FRONT_RENEW_MARGIN = 45;
 
     /**
      * Longueur des tokens générés
@@ -92,17 +98,23 @@ class UserSessionService extends AppApiService
      * @param ApiToken $apiToken token d'API de la requête, dont la session porte les rôles
      * @param string|null $userAgent
      * @param string|null $ip
+     * @param int $accessTokenLifetime durée de vie de l'access token, en minutes
      * @return UserSessionTokens
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function create(User $user, ApiToken $apiToken, ?string $userAgent, ?string $ip): UserSessionTokens
-    {
+    public function create(
+        User $user,
+        ApiToken $apiToken,
+        ?string $userAgent,
+        ?string $ip,
+        int $accessTokenLifetime = self::ACCESS_TOKEN_LIFETIME,
+    ): UserSessionTokens {
         $this->getUserSessionRepository()->deleteByUser($user, true);
 
         $session = new UserSession();
         $session->setUser($user)->setApiToken($apiToken)->setUserAgent($userAgent)->setIp($ip);
-        return $this->issueTokens($session);
+        return $this->issueTokens($session, $accessTokenLifetime);
     }
 
     /**
@@ -110,11 +122,16 @@ class UserSessionService extends AppApiService
      * Un refresh token déjà remplacé révoque la session
      * @param string $refreshToken
      * @param ApiToken $apiToken token d'API de la requête, qui doit être celui de la session
+     * @param int $accessTokenLifetime durée de vie du nouvel access token, en minutes
      * @return UserSessionTokens|null null si le refresh token est inconnu, expiré, réutilisé ou d'une autre application
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function refresh(string $refreshToken, ApiToken $apiToken): ?UserSessionTokens
+    public function refresh(
+        string $refreshToken,
+        ApiToken $apiToken,
+        int $accessTokenLifetime = self::ACCESS_TOKEN_LIFETIME,
+    ): ?UserSessionTokens
     {
         $repository = $this->getUserSessionRepository();
         $hash = TokenHasher::hash($refreshToken);
@@ -137,7 +154,7 @@ class UserSessionService extends AppApiService
         }
 
         $session->setPreviousRefreshTokenHash($hash);
-        return $this->issueTokens($session);
+        return $this->issueTokens($session, $accessTokenLifetime);
     }
 
     /**
@@ -205,14 +222,18 @@ class UserSessionService extends AppApiService
         $stored = $phpSession->get(self::FRONT_SESSION_KEY);
         if (is_array($stored) && ($stored['userId'] ?? null) === $user->getId()) {
             $session = $this->findByAccessToken((string) $stored['accessToken']);
-            $renewAt = new \DateTimeImmutable('+' . self::FRONT_RENEW_MARGIN . ' seconds');
+            $renewAt = new \DateTimeImmutable('+' . self::FRONT_RENEW_MARGIN . ' minutes');
             if ($session !== null && $session->getAccessTokenExpiresAt() > $renewAt) {
                 return (string) $stored['accessToken'];
             }
-            $tokens = $this->refresh((string) $stored['refreshToken'], $frontApiToken);
+            $tokens = $this->refresh(
+                (string) $stored['refreshToken'],
+                $frontApiToken,
+                self::FRONT_ACCESS_TOKEN_LIFETIME,
+            );
         }
 
-        $tokens ??= $this->create($user, $frontApiToken, $userAgent, $ip);
+        $tokens ??= $this->create($user, $frontApiToken, $userAgent, $ip, self::FRONT_ACCESS_TOKEN_LIFETIME);
         $phpSession->set(self::FRONT_SESSION_KEY, [
             'userId' => $user->getId(),
             'accessToken' => $tokens->accessToken,
@@ -308,11 +329,12 @@ class UserSessionService extends AppApiService
     /**
      * Génère et enregistre de nouveaux tokens pour la session
      * @param UserSession $session
+     * @param int $accessTokenLifetime durée de vie de l'access token, en minutes
      * @return UserSessionTokens
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    private function issueTokens(UserSession $session): UserSessionTokens
+    private function issueTokens(UserSession $session, int $accessTokenLifetime): UserSessionTokens
     {
         $accessToken = ByteString::fromRandom(self::TOKEN_SIZE)->toString();
         $refreshToken = ByteString::fromRandom(self::TOKEN_SIZE)->toString();
@@ -320,7 +342,7 @@ class UserSessionService extends AppApiService
 
         $session
             ->setAccessTokenHash(TokenHasher::hash($accessToken))
-            ->setAccessTokenExpiresAt($now->modify('+' . self::ACCESS_TOKEN_LIFETIME . ' minutes'))
+            ->setAccessTokenExpiresAt($now->modify('+' . $accessTokenLifetime . ' minutes'))
             ->setRefreshTokenHash(TokenHasher::hash($refreshToken))
             ->setRefreshTokenExpiresAt($now->modify('+' . $this->getRefreshTokenLifetime() . ' minutes'))
             ->setLastUsedAt($now);

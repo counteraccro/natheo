@@ -18,11 +18,14 @@ use ApiPlatform\Metadata\QueryParameter;
 use ApiPlatform\OpenApi\Model\Operation as OpenApiOperation;
 use ApiPlatform\Validator\Exception\ValidationException;
 use App\Api\V2\Exception\NotFoundException;
+use App\Api\V2\Metadata\EnumSlugPropertyMetadataFactory;
 use App\Api\V2\Output\Content\MenuElement;
 use App\Api\V2\Filter\LocaleFilter;
 use App\Api\V2\Filter\MenuPositionFilter;
 use App\Api\V2\State\Provider\Content\MenuCollectionProvider;
 use App\Api\V2\State\Provider\Content\MenuProvider;
+use App\Enum\Admin\Content\Menu\MenuPosition;
+use App\Enum\Admin\Content\Menu\MenuType;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 #[
@@ -46,7 +49,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
                 errors: [NotFoundException::class, ValidationException::class],
                 paginationEnabled: false,
                 openapi: new OpenApiOperation(summary: 'Les menus affichés sur une page publiée'),
-                normalizationContext: ['groups' => ['menu:read']],
+                normalizationContext: ['groups' => ['menu:list']],
                 security: "is_granted('ROLE_READ_API')",
                 provider: MenuCollectionProvider::class,
                 parameters: [
@@ -67,27 +70,37 @@ use Symfony\Component\Serializer\Attribute\Groups;
 final class Menu
 {
     #[ApiProperty(identifier: true, required: true)]
-    #[Groups(['menu:read', 'page:read'])]
+    #[Groups(['menu:read', 'menu:list', 'page:read'])]
     public int $id = 0;
 
     /**
      * Position : header, right, footer, left
      */
-    #[ApiProperty(required: true)]
-    #[Groups(['menu:read', 'page:read'])]
+    #[
+        ApiProperty(
+            required: true,
+            extraProperties: [EnumSlugPropertyMetadataFactory::EXTRA_PROPERTY => MenuPosition::class],
+        ),
+    ]
+    #[Groups(['menu:read', 'menu:list', 'page:read'])]
     public string $position = '';
 
     /**
      * Type d'affichage (header_side_bar, footer_colonnes…)
      */
-    #[ApiProperty(required: true)]
-    #[Groups(['menu:read', 'page:read'])]
+    #[
+        ApiProperty(
+            required: true,
+            extraProperties: [EnumSlugPropertyMetadataFactory::EXTRA_PROPERTY => MenuType::class],
+        ),
+    ]
+    #[Groups(['menu:read', 'menu:list', 'page:read'])]
     public string $type = '';
 
     /**
      * @var MenuElement[]
      */
     #[ApiProperty(genId: false, required: true)]
-    #[Groups(['menu:read', 'page:read'])]
+    #[Groups(['menu:read', 'menu:list', 'page:read'])]
     public array $elements = [];
 }

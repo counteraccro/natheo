@@ -9,8 +9,12 @@ declare(strict_types=1);
 
 namespace App\Enum\Admin\Content\Page;
 
+use App\Enum\Trait\EnumSlugTrait;
+
 enum PageRender: int
 {
+    use EnumSlugTrait;
+
     /**
      *   Affichage du rendu mode 1 block
      */

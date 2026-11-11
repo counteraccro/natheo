@@ -18,10 +18,12 @@ use ApiPlatform\OpenApi\Model\Operation as OpenApiOperation;
 use ApiPlatform\Validator\Exception\ValidationException;
 use App\Api\V2\Exception\NotFoundException;
 use App\Api\V2\Filter\LocaleFilter;
+use App\Api\V2\Metadata\EnumSlugPropertyMetadataFactory;
 use App\Api\V2\Output\Content\FaqContent;
 use App\Api\V2\Output\Content\ListingContent;
 use App\Api\V2\Output\Content\TextContent;
 use App\Api\V2\State\Provider\Content\PageContentProvider;
+use App\Enum\Admin\Content\Page\PageContentType;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 #[
@@ -54,7 +56,12 @@ final class PageContent
     /**
      * Type de bloc : text, faq, listing
      */
-    #[ApiProperty(required: true)]
+    #[
+        ApiProperty(
+            required: true,
+            extraProperties: [EnumSlugPropertyMetadataFactory::EXTRA_PROPERTY => PageContentType::class],
+        ),
+    ]
     #[Groups(['page_content:read', 'page:read'])]
     public string $type = '';
 

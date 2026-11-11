@@ -7,8 +7,12 @@
 
 namespace App\Enum\Admin\Content\Page;
 
+use App\Enum\Trait\EnumSlugTrait;
+
 enum PageCategory: int
 {
+    use EnumSlugTrait;
+
     /**
      * Catégorie page
      */
@@ -53,28 +57,4 @@ enum PageCategory: int
      * Catégorie FAQ
      */
     case FAQ = 9;
-
-    /**
-     * Retourne le slug ASCII de la catégorie utilisé dans les URLs du front (ex : evenement)
-     * @return string
-     */
-    public function getSlug(): string
-    {
-        return strtolower($this->name);
-    }
-
-    /**
-     * Retourne la catégorie correspondant au slug, null si inconnu
-     * @param string|null $slug
-     * @return self|null
-     */
-    public static function tryFromSlug(?string $slug): ?self
-    {
-        foreach (self::cases() as $category) {
-            if ($category->getSlug() === $slug) {
-                return $category;
-            }
-        }
-        return null;
-    }
 }

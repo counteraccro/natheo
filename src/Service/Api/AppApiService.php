@@ -196,9 +196,10 @@ class AppApiService extends AppApiHandlerService
      */
     protected function isPageVisible(?Page $page, ?User $user = null): bool
     {
-        return $page !== null &&
-            !$page->isDisabled() &&
-            in_array($page->getStatus(), $this->getAllowedPageStatus($user), true);
+        if ($page === null || $user === null) {
+            return $page?->isPublished() ?? false;
+        }
+        return !$page->isDisabled() && in_array($page->getStatus(), $this->getAllowedPageStatus($user), true);
     }
 
     /**

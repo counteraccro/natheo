@@ -29,8 +29,8 @@ final readonly class MenuMapper
     {
         $menu = new Menu();
         $menu->id = (int) $entity->getId();
-        $menu->position = MenuPosition::tryFrom((int) $entity->getPosition())?->getApiName() ?? '';
-        $menu->type = strtolower(MenuType::tryFrom((int) $entity->getType())?->name ?? '');
+        $menu->position = MenuPosition::tryFrom((int) $entity->getPosition())?->getSlug() ?? '';
+        $menu->type = MenuType::tryFrom((int) $entity->getType())?->getSlug() ?? '';
         $menu->elements = $this->mapElements(
             $entity->getMenuElements()->filter(fn(MenuElementEntity $element) => $element->getParent() === null),
         );

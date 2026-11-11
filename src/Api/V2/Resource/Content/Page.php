@@ -18,6 +18,7 @@ use ApiPlatform\Metadata\QueryParameter;
 use ApiPlatform\OpenApi\Model\Operation as OpenApiOperation;
 use ApiPlatform\Validator\Exception\ValidationException;
 use App\Api\V2\Exception\NotFoundException;
+use App\Api\V2\Metadata\EnumSlugPropertyMetadataFactory;
 use App\Api\V2\Output\Content\Author;
 use App\Api\V2\Output\Content\Meta;
 use App\Api\V2\Output\Content\Tag;
@@ -25,6 +26,8 @@ use App\Api\V2\Filter\LocaleFilter;
 use App\Api\V2\Filter\PageCategoryFilter;
 use App\Api\V2\State\Provider\Content\PageCollectionProvider;
 use App\Api\V2\State\Provider\Content\PageProvider;
+use App\Enum\Admin\Content\Page\PageCategory;
+use App\Enum\Admin\Content\Page\PageRender;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -107,7 +110,12 @@ final class Page
     #[Groups(['page:read', 'page:list'])]
     public string $title = '';
 
-    #[ApiProperty(required: true)]
+    #[
+        ApiProperty(
+            required: true,
+            extraProperties: [EnumSlugPropertyMetadataFactory::EXTRA_PROPERTY => PageCategory::class],
+        ),
+    ]
     #[Groups(['page:read', 'page:list'])]
     public string $category = '';
 
@@ -137,7 +145,12 @@ final class Page
     /**
      * Disposition des blocs (one_block, two_block…)
      */
-    #[ApiProperty(required: true)]
+    #[
+        ApiProperty(
+            required: true,
+            extraProperties: [EnumSlugPropertyMetadataFactory::EXTRA_PROPERTY => PageRender::class],
+        ),
+    ]
     #[Groups(['page:read'])]
     public string $render = '';
 

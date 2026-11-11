@@ -39,7 +39,7 @@ final readonly class PageMapper
     public function map(PageEntity $entity, array $pageContents = [], array $menus = []): Page
     {
         $page = $this->mapSummary($entity);
-        $page->render = strtolower(PageRender::tryFrom((int) $entity->getRender())?->name ?? '');
+        $page->render = PageRender::tryFrom((int) $entity->getRender())?->getSlug() ?? '';
         $page->landingPage = (bool) $entity->isLandingPage();
         $page->openComment = (bool) $entity->isOpenComment();
         $page->reads = (int) ($entity->getPageStatistiqueByKey(PageStatistics::NB_READ->value)?->getValue() ?? 0);
@@ -55,7 +55,7 @@ final readonly class PageMapper
         foreach ($pageContents as $pageContent) {
             $content = new PageContent();
             $content->id = (int) $pageContent->getId();
-            $content->type = strtolower(PageContentType::tryFrom((int) $pageContent->getType())?->name ?? '');
+            $content->type = PageContentType::tryFrom((int) $pageContent->getType())?->getSlug() ?? '';
             $content->position = (int) $pageContent->getRenderBlock();
             $page->contents[] = $content;
         }
