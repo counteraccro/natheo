@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Admin\System;
 
+use App\Entity\Trait\LastUsedAtTrait;
 use App\Enum\Installation\DoctrineStrategy;
 use App\Repository\Admin\System\UserSessionRepository;
 use Doctrine\DBAL\Types\Types;
@@ -19,6 +20,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\HasLifecycleCallbacks]
 class UserSession
 {
+    use LastUsedAtTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: DoctrineStrategy::CURRENT)]
     #[ORM\Column]

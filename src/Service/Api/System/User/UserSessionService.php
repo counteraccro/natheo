@@ -61,12 +61,6 @@ class UserSessionService extends AppApiService
     private const int TOKEN_SIZE = 64;
 
     /**
-     * Intervalle minimal entre deux mises à jour de la date de dernière utilisation, en secondes
-     * @var int
-     */
-    private const int LAST_USED_REFRESH_INTERVAL = 60;
-
-    /**
      * Vérifie les identifiants d'un utilisateur, avec une limite de tentatives par IP et email.
      * Refuse les comptes sans rôle d'administration
      * @param string $email
@@ -260,8 +254,13 @@ class UserSessionService extends AppApiService
      */
     public function findActiveByUserAndId(User $user, int $id): ?UserSession
     {
-        $session = $this->getUserSessionRepository()->findOneBy(['id' => $id, 'user' => $user]);
-        return $session !== null && $session->getRefreshTokenExpiresAt() > new \DateTimeImmutable() ? $session : null;
+        // find() relit la session déjà chargée dans la requête sans nouvelle requête SQL
+        $session = $this->getUserSessionRepository()->find($id);
+        return $session !== null &&
+            $session->getUser()->getId() === $user->getId() &&
+            $session->getRefreshTokenExpiresAt() > new \DateTimeImmutable()
+            ? $session
+            : null;
     }
 
     /**
@@ -352,11 +351,7 @@ class UserSessionService extends AppApiService
     private function updateLastUsedAt(UserSession $session): void
     {
         $now = new \DateTimeImmutable();
-        $lastUsedAt = $session->getLastUsedAt();
-        if (
-            $lastUsedAt !== null &&
-            $now->getTimestamp() - $lastUsedAt->getTimestamp() < self::LAST_USED_REFRESH_INTERVAL
-        ) {
+        if (!$session->isLastUsedAtOutdated($now)) {
             return;
         }
 

@@ -31,12 +31,6 @@ class ApiService extends AppApiService
     public const string ATTRIBUTE_USER_SESSION = '_api_user_session';
 
     /**
-     * Intervalle minimum (en secondes) entre deux mises à jour de la date de dernière utilisation d'un token
-     * @var int
-     */
-    private const int LAST_USED_REFRESH_INTERVAL = 60;
-
-    /**
      * Détermine si on peut accéder à l'API ou non
      * @return bool
      * @throws ContainerExceptionInterface
@@ -149,13 +143,7 @@ class ApiService extends AppApiService
     private function updateLastUsedAt(ApiToken $apiToken): void
     {
         $now = new \DateTime();
-        $lastUsedAt = $apiToken->getLastUsedAt();
-
-        // Évite une écriture en base à chaque appel API
-        if (
-            $lastUsedAt !== null &&
-            $now->getTimestamp() - $lastUsedAt->getTimestamp() < self::LAST_USED_REFRESH_INTERVAL
-        ) {
+        if (!$apiToken->isLastUsedAtOutdated($now)) {
             return;
         }
 
