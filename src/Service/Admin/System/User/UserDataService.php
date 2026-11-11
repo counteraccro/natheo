@@ -191,6 +191,19 @@ class UserDataService extends AppAdminService
     }
 
     /**
+     * Date d'expiration du token utilisateur API du user
+     * @param User $user
+     * @return \DateTimeImmutable
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getUserTokenExpiresAt(User $user): \DateTimeImmutable
+    {
+        $timeValidate = $this->findKeyAndUser(UserDataKey::TIME_VALIDATE_TOKEN->value, $user);
+        return (new \DateTimeImmutable())->setTimestamp(intval($timeValidate?->getValue()));
+    }
+
+    /**
      * Révoque le token utilisateur API du user (désactivation, changement de mot de passe...)
      * @param User $user
      * @return void
