@@ -75,16 +75,11 @@ class ApiOptionSystemService extends AppApiService
      */
     public function getPublicOptions(): array
     {
-        $types = $this->getOptionTypes();
-        $optionSystemService = $this->getOptionSystemService();
+        $config = $this->getOptionSystemService()->getOptionsSystemConfig();
 
         $return = [];
-        foreach ($this->getWhiteListeOptionSystem() as $option) {
-            $value = $optionSystemService->getValueByKey($option);
-            $return[] = [
-                'key' => strtolower(substr($option, strlen(self::KEY_PREFIX))),
-                'value' => ($types[$option] ?? null) === 'boolean' && $value !== null ? $value === '1' : $value,
-            ];
+        foreach ($this->getAllOptionSystemWithValue() as $option => $value) {
+            $return[] = $this->toPublicOption($option, $value, $config);
         }
         return $return;
     }
@@ -98,28 +93,34 @@ class ApiOptionSystemService extends AppApiService
      */
     public function findPublicOption(string $key): ?array
     {
-        foreach ($this->getPublicOptions() as $option) {
-            if ($option['key'] === $key) {
-                return $option;
-            }
+        $option = self::KEY_PREFIX . strtoupper($key);
+        if ($key !== strtolower($key) || !in_array($option, $this->getWhiteListeOptionSystem(), true)) {
+            return null;
         }
-        return null;
+
+        $optionSystemService = $this->getOptionSystemService();
+        return $this->toPublicOption(
+            $option,
+            $optionSystemService->getValueByKey($option),
+            $optionSystemService->getOptionsSystemConfig(),
+        );
     }
 
     /**
-     * Type de chaque option système déclaré dans la configuration, indexé par clé
-     * @return array<string, string>
+     * Clé et valeur d'une option au format de l'API v2, booléen pour les options de type boolean
+     * @param string $option clé de l'option système (OS_SITE_NAME)
+     * @param string|null $value
+     * @param array $config configuration des options système
+     * @return array{key: string, value: bool|string|null}
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    private function getOptionTypes(): array
+    private function toPublicOption(string $option, ?string $value, array $config): array
     {
-        $types = [];
-        foreach ($this->getOptionSystemService()->getOptionsSystemConfig()['options_system'] ?? [] as $category) {
-            foreach ($category['options'] ?? [] as $key => $config) {
-                $types[$key] = (string) ($config['type'] ?? '');
-            }
-        }
-        return $types;
+        $type = $this->getOptionConfigService()->findByKey($config, $option)['type'] ?? null;
+        return [
+            'key' => strtolower(substr($option, strlen(self::KEY_PREFIX))),
+            'value' => $type === 'boolean' && $value !== null ? $value === '1' : $value,
+        ];
     }
 }

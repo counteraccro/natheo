@@ -18,19 +18,19 @@ use App\Tests\Api\V2\AppApiV2TestCase;
 class OptionSystemTest extends AppApiV2TestCase
 {
     /**
-     * Test GET /api/v2/options_systems
+     * Test GET /api/v2/option_systems
      * @return void
      */
     public function testGetCollection(): void
     {
-        $this->assertProblem($this->requestV2('GET', '/options_systems', self::HEADER_NONE), 401);
+        $this->assertProblem($this->requestV2('GET', '/option_systems', self::HEADER_NONE), 401);
 
         $optionSystemService = $this->container->get(OptionSystemService::class);
         $optionSystemService->saveValueByKee(OptionSystemKey::OS_SITE_NAME->value, 'unit-test_site');
         $optionSystemService->saveValueByKee(OptionSystemKey::OS_OPEN_COMMENT->value, '1');
         $optionSystemService->saveValueByKee(OptionSystemKey::OS_FRONT_ROBOT_NO_INDEX->value, '0');
 
-        $content = $this->decode($this->requestV2('GET', '/options_systems'));
+        $content = $this->decode($this->requestV2('GET', '/option_systems'));
         $this->assertResponseStatusCodeSame(200);
         $this->assertMatchesResourceCollectionJsonSchema(OptionSystem::class);
 
@@ -43,11 +43,11 @@ class OptionSystemTest extends AppApiV2TestCase
         $this->assertTrue($values['open_comment']);
         $this->assertFalse($values['front_robot_no_index']);
         $this->assertArrayNotHasKey('notification', $values);
-        $this->assertEquals('/api/v2/options_systems/site_name', $content['member'][0]['@id']);
+        $this->assertEquals('/api/v2/option_systems/site_name', $content['member'][0]['@id']);
     }
 
     /**
-     * Test GET /api/v2/options_systems/{key}
+     * Test GET /api/v2/option_systems/{key}
      * @return void
      */
     public function testGetItem(): void
@@ -56,7 +56,7 @@ class OptionSystemTest extends AppApiV2TestCase
             ->get(OptionSystemService::class)
             ->saveValueByKee(OptionSystemKey::OS_SITE_NAME->value, 'unit-test_site');
 
-        $content = $this->decode($this->requestV2('GET', '/options_systems/site_name'));
+        $content = $this->decode($this->requestV2('GET', '/option_systems/site_name'));
         $this->assertResponseStatusCodeSame(200);
         $this->assertMatchesResourceItemJsonSchema(OptionSystem::class);
         $this->assertEquals('OptionSystem', $content['@type']);
@@ -64,9 +64,9 @@ class OptionSystemTest extends AppApiV2TestCase
         $this->assertEquals('unit-test_site', $content['value']);
 
         $detail = $this->translator->trans('api_errors.find.option.system.not.found', domain: 'api_errors');
-        // Option existante non exposée, clé v1, clé inconnue
-        foreach (['notification', 'OS_SITE_NAME', 'azerty'] as $key) {
-            $content = $this->assertProblem($this->requestV2('GET', '/options_systems/' . $key), 404);
+        // Option non exposée, clé v1, clé en majuscules, clé inconnue
+        foreach (['notification', 'OS_SITE_NAME', 'SITE_NAME', 'azerty'] as $key) {
+            $content = $this->assertProblem($this->requestV2('GET', '/option_systems/' . $key), 404);
             $this->assertEquals($detail, $content['detail']);
         }
     }

@@ -17,22 +17,25 @@ use ApiPlatform\OpenApi\Model\Operation as OpenApiOperation;
 use App\Api\V2\Exception\NotFoundException;
 use App\Api\V2\State\Provider\System\OptionSystemCollectionProvider;
 use App\Api\V2\State\Provider\System\OptionSystemProvider;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[
     ApiResource(
         operations: [
             new Get(
-                uriTemplate: '/options_systems/{key}',
+                uriTemplate: '/option_systems/{key}',
                 errors: [NotFoundException::class],
                 openapi: new OpenApiOperation(summary: 'Une option système publique par sa clé'),
+                normalizationContext: ['groups' => ['option_system:read']],
                 security: "is_granted('ROLE_READ_API')",
                 provider: OptionSystemProvider::class,
             ),
             new GetCollection(
-                uriTemplate: '/options_systems',
+                uriTemplate: '/option_systems',
                 paginationEnabled: false,
                 errors: [],
                 openapi: new OpenApiOperation(summary: 'Les options système publiques'),
+                normalizationContext: ['groups' => ['option_system:list']],
                 security: "is_granted('ROLE_READ_API')",
                 provider: OptionSystemCollectionProvider::class,
             ),
@@ -45,10 +48,16 @@ final readonly class OptionSystem
         /**
          * Clé en minuscules (site_name, open_comment…)
          */
-        #[ApiProperty(required: true, identifier: true)] public string $key,
+        #[ApiProperty(required: true, identifier: true)] #[
+            Groups(['option_system:read', 'option_system:list']),
+        ]
+        public string $key,
         /**
          * Booléen pour les options oui / non, chaîne sinon
          */
-        #[ApiProperty(required: true)] public bool|string|null $value,
+        #[ApiProperty(required: true)] #[
+            Groups(['option_system:read', 'option_system:list']),
+        ]
+        public bool|string|null $value,
     ) {}
 }

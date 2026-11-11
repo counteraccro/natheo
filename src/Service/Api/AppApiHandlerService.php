@@ -11,6 +11,7 @@ namespace App\Service\Api;
 use App\Service\Admin\Content\Page\PageDraftService;
 use App\Service\Admin\Content\Page\PageService;
 use App\Service\Admin\MarkdownEditorService;
+use App\Service\Admin\System\OptionConfigService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Service\Api\Content\ApiMenuService;
 use App\Service\Api\Content\Page\ApiPageContentService;
@@ -44,6 +45,7 @@ class AppApiHandlerService
                 'requestStack' => RequestStack::class,
                 'parameterBag' => ParameterBagInterface::class,
                 'optionSystemService' => OptionSystemService::class,
+                'optionConfigService' => OptionConfigService::class,
                 'pageService' => PageService::class,
                 'pageDraftService' => PageDraftService::class,
                 'apiMenuService' => ApiMenuService::class,
@@ -141,6 +143,17 @@ class AppApiHandlerService
     protected function getOptionSystemService(): OptionSystemService
     {
         return $this->handlers->get('optionSystemService');
+    }
+
+    /**
+     * Retourne la class OptionConfigService
+     * @return OptionConfigService
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getOptionConfigService(): OptionConfigService
+    {
+        return $this->handlers->get('optionConfigService');
     }
 
     /**
