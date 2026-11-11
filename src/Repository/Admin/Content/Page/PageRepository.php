@@ -14,6 +14,7 @@ use App\Enum\Admin\Content\Page\PageStatus;
 use App\Enum\Admin\Content\Page\PageValidationStatus;
 use App\Repository\Trait\OrderedQueryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -158,19 +159,13 @@ class PageRepository extends ServiceEntityRepository
         ?bool $landing = null,
     ): Paginator {
         // Données du résumé chargées avec les pages
-        $query = $this->createQueryBuilder('p')
+        $query = $this->createPublishedQueryBuilder()
             ->addSelect('pt', 'u', 'ou', 'tag', 'tagt')
             ->leftJoin('p.pageTranslations', 'pt')
             ->leftJoin('p.user', 'u')
             ->leftJoin('u.optionsUser', 'ou')
             ->leftJoin('p.tags', 'tag')
-            ->leftJoin('tag.tagTranslations', 'tagt')
-            ->where('p.disabled = :disabled')
-            ->setParameter('disabled', false)
-            ->andWhere('p.status = :status')
-            ->setParameter('status', PageStatus::PUBLISH->value)
-            ->orderBy('p.updateAt', \SortDirection::Descending)
-            ->addOrderBy('p.id', \SortDirection::Descending);
+            ->leftJoin('tag.tagTranslations', 'tagt');
 
         if ($category !== null) {
             $query->andWhere('p.category = :category')->setParameter('category', $category->value);
@@ -193,12 +188,7 @@ class PageRepository extends ServiceEntityRepository
             $query->andWhere('p.landingPage = :landing')->setParameter('landing', $landing);
         }
 
-        $paginator = new Paginator($query->getQuery(), true);
-        $paginator
-            ->getQuery()
-            ->setFirstResult($limit * ($page - 1))
-            ->setMaxResults($limit);
-        return $paginator;
+        return $this->paginate($query, $page, $limit);
     }
 
     /**
@@ -209,22 +199,8 @@ class PageRepository extends ServiceEntityRepository
      */
     public function getSitemapPagesPaginate(int $page, int $limit): Paginator
     {
-        $query = $this->createQueryBuilder('p')
-            ->addSelect('pt')
-            ->leftJoin('p.pageTranslations', 'pt')
-            ->where('p.disabled = :disabled')
-            ->setParameter('disabled', false)
-            ->andWhere('p.status = :status')
-            ->setParameter('status', PageStatus::PUBLISH->value)
-            ->orderBy('p.updateAt', \SortDirection::Descending)
-            ->addOrderBy('p.id', \SortDirection::Descending);
-
-        $paginator = new Paginator($query->getQuery(), true);
-        $paginator
-            ->getQuery()
-            ->setFirstResult($limit * ($page - 1))
-            ->setMaxResults($limit);
-        return $paginator;
+        $query = $this->createPublishedQueryBuilder()->addSelect('pt')->leftJoin('p.pageTranslations', 'pt');
+        return $this->paginate($query, $page, $limit);
     }
 
     /**
@@ -387,5 +363,37 @@ class PageRepository extends ServiceEntityRepository
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * Requête des pages publiées et actives, les plus récemment modifiées en premier
+     * @return QueryBuilder
+     */
+    private function createPublishedQueryBuilder(): QueryBuilder
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.disabled = :disabled')
+            ->setParameter('disabled', false)
+            ->andWhere('p.status = :status')
+            ->setParameter('status', PageStatus::PUBLISH->value)
+            ->orderBy('p.updateAt', \SortDirection::Descending)
+            ->addOrderBy('p.id', \SortDirection::Descending);
+    }
+
+    /**
+     * Pagine une requête, en comptant les pages distinctes malgré les jointures de collections
+     * @param QueryBuilder $query
+     * @param int $page
+     * @param int $limit
+     * @return Paginator
+     */
+    private function paginate(QueryBuilder $query, int $page, int $limit): Paginator
+    {
+        $paginator = new Paginator($query->getQuery(), true);
+        $paginator
+            ->getQuery()
+            ->setFirstResult($limit * ($page - 1))
+            ->setMaxResults($limit);
+        return $paginator;
     }
 }
