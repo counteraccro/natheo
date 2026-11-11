@@ -28,7 +28,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
                     summary: 'Les pages publiées du sitemap, les plus récemment modifiées en premier',
                     description: 'Une entrée par page, avec le chemin public de chacune de ses langues (hreflang).',
                 ),
-                normalizationContext: ['groups' => ['sitemap:list']],
+                normalizationContext: ['groups' => ['sitemap_entry:list']],
                 security: "is_granted('ROLE_READ_API')",
                 provider: SitemapProvider::class,
             ),
@@ -38,17 +38,17 @@ use Symfony\Component\Serializer\Attribute\Groups;
 final class SitemapEntry
 {
     #[ApiProperty(required: true)]
-    #[Groups(['sitemap:list'])]
+    #[Groups(['sitemap_entry:list'])]
     public ?Page $page = null;
 
     #[ApiProperty(required: true)]
-    #[Groups(['sitemap:list'])]
+    #[Groups(['sitemap_entry:list'])]
     public ?\DateTimeInterface $updatedAt = null;
 
     /**
      * @var SitemapAlternate[]
      */
     #[ApiProperty(genId: false, required: true)]
-    #[Groups(['sitemap:list'])]
+    #[Groups(['sitemap_entry:list'])]
     public array $alternates = [];
 }

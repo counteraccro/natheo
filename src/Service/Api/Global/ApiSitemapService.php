@@ -15,8 +15,8 @@ use App\Enum\Admin\Content\Page\PageCategory;
 use App\Enum\Admin\Content\Page\PageStatus;
 use App\Repository\Admin\Content\Page\PageRepository;
 use App\Service\Api\AppApiService;
-use Psr\Container\ContainerExceptionInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
 class ApiSitemapService extends AppApiService
@@ -61,7 +61,21 @@ class ApiSitemapService extends AppApiService
     {
         /** @var PageRepository $pageRepo */
         $pageRepo = $this->getRepository(Page::class);
-        return $pageRepo->getPublishedPagesPaginate($page, $limit);
+        return $pageRepo->getSitemapPagesPaginate($page, $limit);
+    }
+
+    /**
+     * Chemins publics d'une page, indexés par locale
+     * @param Page $page
+     * @return array<string, string>
+     */
+    public function getPaths(Page $page): array
+    {
+        $paths = [];
+        foreach ($page->getPageTranslations() as $pageTranslation) {
+            $paths[(string) $pageTranslation->getLocale()] = $this->getPath($page, $pageTranslation);
+        }
+        return $paths;
     }
 
     /**

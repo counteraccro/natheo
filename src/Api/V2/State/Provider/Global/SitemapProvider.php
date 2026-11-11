@@ -13,8 +13,7 @@ use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\Pagination\Pagination;
 use ApiPlatform\State\Pagination\TraversablePaginator;
 use ApiPlatform\State\ProviderInterface;
-use App\Api\V2\Output\Global\SitemapAlternate;
-use App\Api\V2\Resource\Content\Page;
+use App\Api\V2\Mapper\Global\SitemapEntryMapper;
 use App\Api\V2\Resource\Global\SitemapEntry;
 use App\Service\Api\Global\ApiSitemapService;
 use Psr\Container\ContainerExceptionInterface;
@@ -41,22 +40,10 @@ final readonly class SitemapProvider implements ProviderInterface
         $limit = $this->pagination->getLimit($operation, $context);
         $paginator = $this->apiSitemapService->findSitemapPages($page, $limit);
 
+        $mapper = new SitemapEntryMapper();
         $entries = [];
         foreach ($paginator as $entity) {
-            $entry = new SitemapEntry();
-            $entry->page = new Page();
-            $entry->page->id = (int) $entity->getId();
-            $entry->updatedAt =
-                $entity->getUpdateAt() === null
-                    ? null
-                    : \DateTimeImmutable::createFromInterface($entity->getUpdateAt());
-            foreach ($entity->getPageTranslations() as $translation) {
-                $entry->alternates[] = new SitemapAlternate(
-                    (string) $translation->getLocale(),
-                    $this->apiSitemapService->getPath($entity, $translation),
-                );
-            }
-            $entries[] = $entry;
+            $entries[] = $mapper->mapSummary($entity, $this->apiSitemapService->getPaths($entity));
         }
         return new TraversablePaginator(new \ArrayIterator($entries), $page, $limit, $paginator->count());
     }

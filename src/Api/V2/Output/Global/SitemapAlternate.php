@@ -15,10 +15,10 @@ use Symfony\Component\Serializer\Attribute\Groups;
 final readonly class SitemapAlternate
 {
     public function __construct(
-        #[Groups(['sitemap:list'])] #[ApiProperty(required: true)] public string $locale,
+        #[Groups(['sitemap_entry:list'])] #[ApiProperty(required: true)] public string $locale,
         /**
          * Chemin public de la page (/<locale>/<catégorie>/<slug>)
          */
-        #[Groups(['sitemap:list'])] #[ApiProperty(required: true)] public string $path,
+        #[Groups(['sitemap_entry:list'])] #[ApiProperty(required: true)] public string $path,
     ) {}
 }

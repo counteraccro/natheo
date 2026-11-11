@@ -202,6 +202,32 @@ class PageRepository extends ServiceEntityRepository
     }
 
     /**
+     * Retourne les pages publiées et actives avec leurs traductions, les plus récemment modifiées en premier
+     * @param int $page
+     * @param int $limit
+     * @return Paginator
+     */
+    public function getSitemapPagesPaginate(int $page, int $limit): Paginator
+    {
+        $query = $this->createQueryBuilder('p')
+            ->addSelect('pt')
+            ->leftJoin('p.pageTranslations', 'pt')
+            ->where('p.disabled = :disabled')
+            ->setParameter('disabled', false)
+            ->andWhere('p.status = :status')
+            ->setParameter('status', PageStatus::PUBLISH->value)
+            ->orderBy('p.updateAt', \SortDirection::Descending)
+            ->addOrderBy('p.id', \SortDirection::Descending);
+
+        $paginator = new Paginator($query->getQuery(), true);
+        $paginator
+            ->getQuery()
+            ->setFirstResult($limit * ($page - 1))
+            ->setMaxResults($limit);
+        return $paginator;
+    }
+
+    /**
      * Retourne une liste de page en fonction du tag
      * @param int $page
      * @param int $limit
