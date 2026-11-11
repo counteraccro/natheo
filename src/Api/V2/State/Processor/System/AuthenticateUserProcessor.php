@@ -15,6 +15,7 @@ use App\Api\V2\Exception\TooManyRequestsException;
 use App\Api\V2\Exception\UnauthorizedException;
 use App\Api\V2\Input\System\AuthenticateUserInput;
 use App\Api\V2\Resource\System\UserToken;
+use App\Enum\Admin\System\User\Role;
 use App\Service\Admin\System\User\UserDataService;
 use App\Service\Admin\System\User\UserService;
 use Psr\Container\ContainerExceptionInterface;
@@ -59,7 +60,7 @@ final readonly class AuthenticateUserProcessor implements ProcessorInterface
         }
 
         $user = $this->userService->getUserByEmailAndPassword($data->email, $data->password);
-        if ($user === null || $user->getRoles() === ['ROLE_USER']) {
+        if ($user === null || $user->getRoles() === [Role::USER->value]) {
             throw new UnauthorizedException(
                 $this->translator->trans('api_errors.user.not.found', domain: 'api_errors'),
             );
