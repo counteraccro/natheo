@@ -6,6 +6,10 @@
 parameters:
     app.supported_locales: 'fr|en|es'
     app.api_version: 'v1'
+    # Dépréciation de l'API v1 : date de dépréciation (Y-m-d), date de suppression (~ si non fixée), guide de migration
+    app.api_v1.deprecated_at: '2026-12-01'
+    app.api_v1.sunset_at: ~
+    app.api_v1.migration_guide_url: 'https://counteraccro.github.io/natheo.doc/Docs/API/migration_v2.html'
     # Si true, filtre l'accès à l'API par les IP de app.ip_api_authorize.
     # Désactivé par défaut : le front appelle l'API depuis le navigateur des visiteurs
     app.ip_api_active_filter: false
