@@ -23,6 +23,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Translation\LocaleSwitcher;
+use App\Service\Global\User\AvatarUrl;
 
 #[Route('/', name: 'front_')]
 class IndexController extends AppFrontController
@@ -155,7 +156,7 @@ class IndexController extends AppFrontController
             'locale' => $locale,
             'apiToken' => $this->optionSystemFrontService->getFrontApiToken(),
             'pageCategories' => $pageCategories,
-            'pathAvatar' => $request->getBasePath() . '/' . $containerBag->get('app.path.avatar'),
+            'pathAvatar' => AvatarUrl::directory($containerBag->get('app.path.avatar'), $request->getBasePath()),
             'basePath' => $request->getBasePath(),
             'userToken' => $token,
             'userInfo' => $userInfo,

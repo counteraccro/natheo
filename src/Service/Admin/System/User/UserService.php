@@ -20,6 +20,7 @@ use Exception;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\String\ByteString;
+use App\Service\Global\User\AvatarUrl;
 
 class UserService extends AppAdminService
 {
@@ -93,11 +94,11 @@ class UserService extends AppAdminService
             $paramBag = $this->getParameterBag();
 
             $avatar = '';
-            if ($user->getAvatar() !== null) {
+            $avatarUrl = AvatarUrl::file($user->getAvatar(), $paramBag->get('app.path.avatar'));
+            if ($avatarUrl !== null) {
                 $avatar =
-                    '<span class="flex flex-col items-center"><img src="/' .
-                    $paramBag->get('app.path.avatar') .
-                    $user->getAvatar() .
+                    '<span class="flex flex-col items-center"><img src="' .
+                    $avatarUrl .
                     '" style="width: 40px; height: 40px; border-radius: 50%;" class="me-2" />';
             }
 

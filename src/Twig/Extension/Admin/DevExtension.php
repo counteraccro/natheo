@@ -23,6 +23,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Http\LoginLink\LoginLinkHandlerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Attribute\AsTwigFunction;
+use App\Service\Global\User\AvatarUrl;
 
 class DevExtension extends AppAdminExtension
 {
@@ -122,10 +123,7 @@ class DevExtension extends AppAdminExtension
             /** @var User $user */
             $url = $loginLinkHandler->createLoginLink($user);
 
-            $avatar = null;
-            if ($user->getAvatar() !== null) {
-                $avatar = '/' . $this->parameterBag->get('app.path.avatar') . $user->getAvatar();
-            }
+            $avatar = AvatarUrl::file($user->getAvatar(), $this->parameterBag->get('app.path.avatar'));
 
             $return[] = [
                 'url' => $url,

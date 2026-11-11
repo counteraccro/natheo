@@ -11,16 +11,15 @@ namespace App\Api\V2\State\Provider\System;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
-use App\Api\V2\Exception\ForbiddenException;
 use App\Api\V2\Mapper\System\MeMapper;
 use App\Api\V2\Resource\System\Me;
 use App\Api\V2\Security\CurrentUserResolver;
 use App\Service\Api\Content\ApiCommentService;
+use App\Service\Global\User\AvatarUrl;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @implements ProviderInterface<Me>
@@ -30,7 +29,6 @@ final readonly class MeProvider implements ProviderInterface
     public function __construct(
         private CurrentUserResolver $currentUserResolver,
         private ApiCommentService $apiCommentService,
-        private TranslatorInterface $translator,
         #[Autowire(param: 'app.path.avatar')] private string $avatarPath,
     ) {}
 
@@ -44,16 +42,11 @@ final readonly class MeProvider implements ProviderInterface
      */
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): Me
     {
-        $user =
-            $this->currentUserResolver->getUser() ??
-            throw new ForbiddenException($this->translator->trans('api_errors.session.required', domain: 'api_errors'));
+        $user = $this->currentUserResolver->requireSession()->getUser();
 
         /** @var Request $request */
         $request = $context['request'];
-        $avatar =
-            $user->getAvatar() === null || $user->getAvatar() === ''
-                ? null
-                : $request->getBasePath() . '/' . trim($this->avatarPath, '/') . '/' . $user->getAvatar();
+        $avatar = AvatarUrl::file($user->getAvatar(), $this->avatarPath, $request->getBasePath());
 
         return (new MeMapper())->map($user, $avatar, $this->apiCommentService->canModerate($user));
     }
