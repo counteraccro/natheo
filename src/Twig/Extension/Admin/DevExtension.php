@@ -13,6 +13,7 @@ use App\Entity\Admin\System\User;
 use App\Enum\Installation\DoctrineStrategy;
 use App\Service\Admin\Dev\GitService;
 use App\Service\Admin\GridService;
+use App\Service\Global\User\AvatarUrl;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
@@ -122,10 +123,7 @@ class DevExtension extends AppAdminExtension
             /** @var User $user */
             $url = $loginLinkHandler->createLoginLink($user);
 
-            $avatar = null;
-            if ($user->getAvatar() !== null) {
-                $avatar = '/' . $this->parameterBag->get('app.path.avatar') . $user->getAvatar();
-            }
+            $avatar = AvatarUrl::file($user->getAvatar(), $this->parameterBag->get('app.path.avatar'));
 
             $return[] = [
                 'url' => $url,

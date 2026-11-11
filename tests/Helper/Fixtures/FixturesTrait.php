@@ -23,6 +23,7 @@ use App\Tests\Helper\Fixtures\System\TranslateFixturesTrait;
 use App\Tests\Helper\Fixtures\System\User\OptionUserFixturesTrait;
 use App\Tests\Helper\Fixtures\System\User\UserDataFixturesTrait;
 use App\Tests\Helper\Fixtures\System\User\UserFixturesTrait;
+use App\Tests\Helper\Fixtures\System\User\UserSessionFixturesTrait;
 use App\Tests\Helper\Fixtures\Tools\SqlManagerFixturesTrait;
 use App\Tests\Helper\Fixtures\Content\Media\MediaFolderFixturesTrait;
 use Doctrine\ORM\EntityManagerInterface;
@@ -34,6 +35,7 @@ trait FixturesTrait
         OptionSystemFixturesTrait,
         MailFixturesTrait,
         UserDataFixturesTrait,
+        UserSessionFixturesTrait,
         NotificationFixturesTrait,
         SidebarElementFixturesTrait,
         TagFixturesTrait,

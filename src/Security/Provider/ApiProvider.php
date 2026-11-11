@@ -28,7 +28,8 @@ class ApiProvider implements UserProviderInterface
      */
     public function loadUserByIdentifier(string $identifier): UserInterface
     {
-        $user = $this->apiService->getUserByApiToken($identifier);
+        $user =
+            $this->apiService->getUserByApiToken($identifier) ?? $this->apiService->getUserBySessionToken($identifier);
         if ($user === null) {
             throw new UserNotFoundException('API Key is not correct');
         }

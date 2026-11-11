@@ -13,8 +13,10 @@ use App\Service\Admin\Content\Page\PageService;
 use App\Service\Admin\MarkdownEditorService;
 use App\Service\Admin\System\OptionConfigService;
 use App\Service\Admin\System\OptionSystemService;
+use App\Service\Admin\System\User\UserService;
 use App\Service\Api\Content\ApiMenuService;
 use App\Service\Api\Content\Page\ApiPageContentService;
+use App\Service\Api\System\User\UserSessionService;
 use App\Translate\Admin\Global\GridTranslate;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
@@ -22,13 +24,16 @@ use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\RateLimiter\RateLimiterFactoryInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
+use Symfony\Contracts\Service\Attribute\SubscribedService;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AppApiHandlerService
@@ -53,6 +58,13 @@ class AppApiHandlerService
                 'kernel' => KernelInterface::class,
                 'markdownEditorService' => MarkdownEditorService::class,
                 'accessDecisionManager' => AccessDecisionManagerInterface::class,
+                'userService' => UserService::class,
+                'userSessionService' => UserSessionService::class,
+                'apiAuthUserLimiter' => new SubscribedService(
+                    'apiAuthUserLimiter',
+                    RateLimiterFactoryInterface::class,
+                    attributes: new Autowire(service: 'limiter.api_auth_user'),
+                ),
             ]),
         ]
         protected ContainerInterface $handlers,
@@ -154,6 +166,39 @@ class AppApiHandlerService
     protected function getOptionConfigService(): OptionConfigService
     {
         return $this->handlers->get('optionConfigService');
+    }
+
+    /**
+     * Retourne la class UserService
+     * @return UserService
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getUserService(): UserService
+    {
+        return $this->handlers->get('userService');
+    }
+
+    /**
+     * Retourne la class UserSessionService
+     * @return UserSessionService
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getUserSessionService(): UserSessionService
+    {
+        return $this->handlers->get('userSessionService');
+    }
+
+    /**
+     * Retourne le limiteur des tentatives d'authentification des utilisateurs
+     * @return RateLimiterFactoryInterface
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getApiAuthUserLimiter(): RateLimiterFactoryInterface
+    {
+        return $this->handlers->get('apiAuthUserLimiter');
     }
 
     /**

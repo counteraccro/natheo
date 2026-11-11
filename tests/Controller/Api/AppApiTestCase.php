@@ -14,7 +14,6 @@ use App\Tests\AppWebTestCase;
 use App\Enum\Api\Parameters\ApiUserAuthParameter;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use App\Service\Global\Token\TokenHasher;
-use App\Service\Admin\System\User\UserDataService;
 
 class AppApiTestCase extends AppWebTestCase
 {
@@ -79,13 +78,20 @@ class AppApiTestCase extends AppWebTestCase
     }
 
     /**
-     * Génère un token de connexion valide pour l'utilisateur du back-office
+     * Génère l'access token d'une session valide pour l'utilisateur du back-office
      * @param User $user
+     * @param string $role rôle du token d'API de la session
      * @return string
      */
-    protected function createUserToken(User $user): string
+    protected function createUserToken(User $user, string $role = 'ROLE_WRITE_API'): string
     {
-        return $this->container->get(UserDataService::class)->generateUserToken($user);
+        $accessToken = self::getFaker()->uuid();
+        $this->createUserSession([
+            'user' => $user,
+            'apiToken' => $this->createApiToken(['roles' => [$role], 'disabled' => false]),
+            'accessTokenHash' => TokenHasher::hash($accessToken),
+        ]);
+        return $accessToken;
     }
 
     /**

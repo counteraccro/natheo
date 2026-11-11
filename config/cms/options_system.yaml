@@ -281,10 +281,10 @@ options_system:
                 default: '1'
             OS_API_TIME_VALIDATE_USER_TOKEN:
                 type: 'select'
-                label: 'options_system.user_token_validity.label'
-                list_value: '30:options_system.user_token_validity.value.half_hour|60:options_system.user_token_validity.value.one_hour|120:options_system.user_token_validity.value.two_hours|180:options_system.user_token_validity.value.three_hours|720:options_system.user_token_validity.value.twelve_hours|1440:options_system.user_token_validity.value.one_day'
-                help: 'options_system.user_token_validity.help'
-                default: '60'
+                label: 'options_system.user_session_validity.label'
+                list_value: '1440:options_system.user_session_validity.value.one_day|10080:options_system.user_session_validity.value.seven_days|43200:options_system.user_session_validity.value.thirty_days'
+                help: 'options_system.user_session_validity.help'
+                default: '10080'
             OS_FRONT_API_TOKEN:
                 default: ''
                 label: 'options_system.front_api_token.label'

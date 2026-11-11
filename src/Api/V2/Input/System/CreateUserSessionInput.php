@@ -4,7 +4,7 @@ declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
  * @version 1.0
- * Identifiants d'un utilisateur du back-office dans l'API v2
+ * Identifiants d'un utilisateur du back-office pour ouvrir une session
  */
 
 namespace App\Api\V2\Input\System;
@@ -12,7 +12,7 @@ namespace App\Api\V2\Input\System;
 use ApiPlatform\Metadata\ApiProperty;
 use Symfony\Component\Validator\Constraints as Assert;
 
-final class AuthenticateUserInput
+final class CreateUserSessionInput
 {
     #[ApiProperty(required: true)]
     #[Assert\NotBlank]

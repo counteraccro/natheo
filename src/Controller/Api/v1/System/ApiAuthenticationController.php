@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 1.2
  * Controller pour les authentifications via API
  */
 
@@ -12,6 +12,8 @@ namespace App\Controller\Api\v1\System;
 use App\Controller\Api\v1\AppApiController;
 use App\Dto\Api\Authentication\ApiAuthUserDto;
 use App\Resolver\Api\ApiAuthUserResolver;
+use App\Service\Api\ApiService;
+use App\Service\Api\System\User\UserSessionService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -19,7 +21,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\RateLimiter\RateLimiterFactoryInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use App\Enum\Api\ApiMessage;
@@ -58,11 +59,11 @@ class ApiAuthenticationController extends AppApiController
     }
 
     /**
-     * Permet d'authentifier un utilisateur et retourne un token si l'authentification est bonne
+     * Ouvre une session API pour un utilisateur et retourne son access token si l'authentification est bonne
      * Les tentatives sont limitées par couple IP / login (rate limiter api_auth_user)
      * @param ApiAuthUserDto $apiAuthUserDto
      * @param Request $request
-     * @param RateLimiterFactoryInterface $apiAuthUserLimiter
+     * @param UserSessionService $userSessionService
      * @return JsonResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -71,33 +72,36 @@ class ApiAuthenticationController extends AppApiController
     public function authUser(
         #[MapRequestPayload(resolver: ApiAuthUserResolver::class)] ApiAuthUserDto $apiAuthUserDto,
         Request $request,
-        RateLimiterFactoryInterface $apiAuthUserLimiter,
+        UserSessionService $userSessionService,
     ): JsonResponse {
         $translator = $this->getTranslator();
-        $userService = $this->getUserService();
-        $userDataService = $this->getUserDataService();
+        $clientIp = (string) $request->getClientIp();
 
-        $limiter = $apiAuthUserLimiter->create(
-            $request->getClientIp() . '-' . mb_strtolower($apiAuthUserDto->getUsername()),
+        $result = $userSessionService->authenticate(
+            $apiAuthUserDto->getUsername(),
+            $apiAuthUserDto->getPassword(),
+            $clientIp,
         );
-        $limit = $limiter->consume();
-        if (!$limit->isAccepted()) {
+        if ($result->isThrottled()) {
             throw new HttpException(
                 Response::HTTP_TOO_MANY_REQUESTS,
                 $translator->trans('api_errors.too.many.requests', domain: 'api_errors'),
-                headers: ['Retry-After' => strval(max(0, $limit->getRetryAfter()->getTimestamp() - time()))],
+                headers: ['Retry-After' => strval($result->retryAfter)],
             );
         }
-
-        $user = $userService->getUserByEmailAndPassword($apiAuthUserDto->getUsername(), $apiAuthUserDto->getPassword());
-        if ($user === null || (count($user->getRoles()) === 1 && $user->getRoles()[0] === 'ROLE_USER')) {
+        if ($result->user === null) {
             throw new HttpException(
                 Response::HTTP_UNAUTHORIZED,
                 $translator->trans('api_errors.user.not.found', domain: 'api_errors'),
             );
         }
-        $limiter->reset();
-        $token = $userDataService->generateUserToken($user);
-        return $this->apiResponse(ApiMessage::SUCCESS->value, ['token' => $token]);
+
+        $tokens = $userSessionService->create(
+            $result->user,
+            $request->attributes->get(ApiService::ATTRIBUTE_API_TOKEN),
+            $request->headers->get('User-Agent'),
+            $clientIp,
+        );
+        return $this->apiResponse(ApiMessage::SUCCESS->value, ['token' => $tokens->accessToken]);
     }
 }

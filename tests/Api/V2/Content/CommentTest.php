@@ -88,7 +88,7 @@ class CommentTest extends AppApiV2TestCase
                 'moderationComment' => 'Hors sujet',
             ],
         );
-        $headers = ['HTTP_X_USER_TOKEN' => $this->createUserToken($this->createUserContributeur())];
+        $headers = $this->sessionHeaders($this->createUserContributeur());
 
         $content = $this->decode($this->requestV2('GET', '/pages/' . $page->getId() . '/comments', headers: $headers));
         $members = array_column($content['member'], null, 'id');
@@ -98,13 +98,13 @@ class CommentTest extends AppApiV2TestCase
         $this->assertEquals('Hors sujet', $members[$moderated->getId()]['moderationComment']);
 
         // Un utilisateur sans droit de modération voit la liste publique
-        $headers = ['HTTP_X_USER_TOKEN' => $this->createUserToken($this->createUser())];
+        $headers = $this->sessionHeaders($this->createUser());
         $content = $this->decode($this->requestV2('GET', '/pages/' . $page->getId() . '/comments', headers: $headers));
         $this->assertNull(array_column($content['member'], null, 'id')[$pending->getId()]['comment']);
     }
 
     /**
-     * Liste : page invisible, tri invalide, token utilisateur invalide, token API absent
+     * Liste : page invisible, tri invalide, token invalide, token absent
      * @return void
      */
     public function testGetCollectionErrors(): void
@@ -118,7 +118,7 @@ class CommentTest extends AppApiV2TestCase
         $this->assertProblem($this->requestV2('GET', '/pages/' . $draft->getId() . '/comments'), 404);
         $this->assertProblem($this->requestV2('GET', '/pages/999999999/comments'), 404);
         $this->assertProblem($this->requestV2('GET', $path . '?order=random'), 422);
-        $this->assertProblem($this->requestV2('GET', $path, headers: ['HTTP_X_USER_TOKEN' => 'inconnu']), 403);
+        $this->assertProblem($this->requestV2('GET', $path, headers: ['HTTP_Authorization' => 'Bearer inconnu']), 401);
         $this->assertProblem($this->requestV2('GET', $path, self::HEADER_NONE), 401);
     }
 
@@ -144,8 +144,12 @@ class CommentTest extends AppApiV2TestCase
         $this->assertProblem($this->requestV2('GET', '/comments/' . $onDraft->getId()), 404);
         $this->assertProblem($this->requestV2('GET', '/comments/999999999'), 404);
         $this->assertProblem(
-            $this->requestV2('GET', '/comments/' . $comment->getId(), headers: ['HTTP_X_USER_TOKEN' => 'inconnu']),
-            403,
+            $this->requestV2(
+                'GET',
+                '/comments/' . $comment->getId(),
+                headers: ['HTTP_Authorization' => 'Bearer inconnu'],
+            ),
+            401,
         );
     }
 
@@ -292,7 +296,7 @@ class CommentTest extends AppApiV2TestCase
             customData: ['status' => CommentStatus::WAIT_VALIDATION->value],
         );
         $moderator = $this->createUserContributeur();
-        $headers = ['HTTP_X_USER_TOKEN' => $this->createUserToken($moderator)];
+        $headers = $this->sessionHeaders($moderator, 'ROLE_WRITE_API');
         $path = '/comments/' . $comment->getId();
 
         $response = $this->requestV2(
@@ -350,15 +354,23 @@ class CommentTest extends AppApiV2TestCase
         $disabled = $this->createComment($this->createPageAllDataDefault(), customData: ['disabled' => true]);
         $path = '/comments/' . $comment->getId();
         $body = ['status' => 'validate'];
-        $moderator = ['HTTP_X_USER_TOKEN' => $this->createUserToken($this->createUserContributeur())];
+        $moderatorUser = $this->createUserContributeur();
+        $moderator = $this->sessionHeaders($moderatorUser, 'ROLE_WRITE_API');
+        $moderatorReadOnly = $this->sessionHeaders($moderatorUser);
 
         $this->assertProblem($this->requestV2('PATCH', $path, self::HEADER_WRITE, $body), 403);
         $this->assertProblem($this->requestV2('PATCH', '/comments/999999', self::HEADER_WRITE, $body), 403);
         $this->assertProblem(
-            $this->requestV2('PATCH', $path, self::HEADER_WRITE, $body, headers: ['HTTP_X_USER_TOKEN' => 'inconnu']),
-            403,
+            $this->requestV2(
+                'PATCH',
+                $path,
+                self::HEADER_WRITE,
+                $body,
+                headers: ['HTTP_Authorization' => 'Bearer inconnu'],
+            ),
+            401,
         );
-        $user = ['HTTP_X_USER_TOKEN' => $this->createUserToken($this->createUser())];
+        $user = $this->sessionHeaders($this->createUser(), 'ROLE_WRITE_API');
         $this->assertProblem($this->requestV2('PATCH', $path, self::HEADER_WRITE, $body, headers: $user), 403);
 
         $content = $this->assertProblem(
@@ -376,7 +388,7 @@ class CommentTest extends AppApiV2TestCase
             ),
             404,
         );
-        $this->assertProblem($this->requestV2('PATCH', $path, self::HEADER_READ, $body, headers: $moderator), 403);
+        $this->assertProblem($this->requestV2('PATCH', $path, headers: $moderatorReadOnly, body: $body), 403);
 
         $this->em->clear();
         $this->assertEquals(

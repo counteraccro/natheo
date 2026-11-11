@@ -10,8 +10,6 @@ declare(strict_types=1);
 namespace App\Tests\Service\Admin\System\User;
 
 use App\Entity\Admin\System\User;
-use App\Enum\Admin\System\User\UserDataKey;
-use App\Service\Admin\System\User\UserDataService;
 use App\Service\Admin\System\User\UserService;
 use App\Tests\AppWebTestCase;
 use App\Service\Admin\System\User\Anonymous;
@@ -87,15 +85,11 @@ class UserServiceTest extends AppWebTestCase
     {
         $user = $this->createUser();
         $password = $user->getPassword();
-        $userDataService = $this->container->get(UserDataService::class);
-        $userDataService->generateUserToken($user);
         $this->userService->updatePassword($user, self::getFaker()->password());
 
         $userUpdate = $this->userService->findOneById(User::class, $user->getId());
         $this->assertNotNull($userUpdate);
         $this->assertNotEquals($password, $userUpdate->getPassword());
-        // Le changement de mot de passe révoque le token utilisateur API
-        $this->assertNull($userDataService->findKeyAndUser(UserDataKey::TOKEN_CONNEXION->value, $user));
     }
 
     /**

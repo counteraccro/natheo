@@ -14,6 +14,7 @@ use App\Entity\Admin\System\User;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
 use App\Service\Admin\System\User\Anonymous;
+use App\Service\Global\User\AvatarUrl;
 use App\Enum\Admin\System\User\Role;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Exception;
@@ -93,11 +94,11 @@ class UserService extends AppAdminService
             $paramBag = $this->getParameterBag();
 
             $avatar = '';
-            if ($user->getAvatar() !== null) {
+            $avatarUrl = AvatarUrl::file($user->getAvatar(), $paramBag->get('app.path.avatar'));
+            if ($avatarUrl !== null) {
                 $avatar =
-                    '<span class="flex flex-col items-center"><img src="/' .
-                    $paramBag->get('app.path.avatar') .
-                    $user->getAvatar() .
+                    '<span class="flex flex-col items-center"><img src="' .
+                    $avatarUrl .
                     '" style="width: 40px; height: 40px; border-radius: 50%;" class="me-2" />';
             }
 
@@ -293,7 +294,8 @@ class UserService extends AppAdminService
     }
 
     /**
-     * Met à jour le mot de passe de l'utilisateur passé en paramètre et révoque son token utilisateur API
+     * Met à jour le mot de passe de l'utilisateur passé en paramètre (ses sessions API sont révoquées par
+     * UserSessionRevocationListener)
      * @param User $user
      * @param $password
      * @return void
@@ -306,7 +308,6 @@ class UserService extends AppAdminService
 
         $user->setPassword($passwordHasher->hashPassword($user, $password));
         $this->save($user);
-        $this->getUserData()->removeUserToken($user);
     }
 
     /**

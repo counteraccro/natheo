@@ -28,7 +28,7 @@ api_platform:
         http_auth:
             Bearer:
                 scheme: 'bearer'
-                bearerFormat: 'API token'
+                bearerFormat: 'Token d''API ou access token de session utilisateur'
     defaults:
         stateless: true
         pagination_items_per_page: 20

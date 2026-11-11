@@ -17,7 +17,7 @@ use App\Api\V2\Exception\NotFoundException;
 use App\Api\V2\Filter\OrderFilter;
 use App\Api\V2\Mapper\Content\CommentMapper;
 use App\Api\V2\Resource\Content\Comment;
-use App\Api\V2\Security\UserTokenResolver;
+use App\Api\V2\Security\CurrentUserResolver;
 use App\Service\Api\Content\ApiCommentService;
 use App\Service\Api\Content\Page\ApiPageService;
 use Psr\Container\ContainerExceptionInterface;
@@ -32,7 +32,7 @@ final readonly class CommentCollectionProvider implements ProviderInterface
     public function __construct(
         private ApiCommentService $apiCommentService,
         private ApiPageService $apiPageService,
-        private UserTokenResolver $userTokenResolver,
+        private CurrentUserResolver $currentUserResolver,
         private Pagination $pagination,
         private TranslatorInterface $translator,
     ) {}
@@ -47,7 +47,7 @@ final readonly class CommentCollectionProvider implements ProviderInterface
      */
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): TraversablePaginator
     {
-        $isModerator = $this->apiCommentService->canModerate($this->userTokenResolver->getUser());
+        $isModerator = $this->apiCommentService->canModerate($this->currentUserResolver->getUser());
 
         $page = $this->apiPageService->findPublishedPage((int) $uriVariables['pageId']);
         if ($page === null) {
