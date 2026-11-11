@@ -102,11 +102,12 @@ class UserSessionService extends AppApiService
      * Renouvelle les tokens d'une session à partir de son refresh token, qui est remplacé.
      * Un refresh token déjà remplacé révoque la session
      * @param string $refreshToken
-     * @return UserSessionTokens|null null si le refresh token est inconnu, expiré ou réutilisé
+     * @param ApiToken $apiToken token d'API de la requête, qui doit être celui de la session
+     * @return UserSessionTokens|null null si le refresh token est inconnu, expiré, réutilisé ou d'une autre application
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function refresh(string $refreshToken): ?UserSessionTokens
+    public function refresh(string $refreshToken, ApiToken $apiToken): ?UserSessionTokens
     {
         $repository = $this->getUserSessionRepository();
         $hash = TokenHasher::hash($refreshToken);
@@ -120,7 +121,11 @@ class UserSessionService extends AppApiService
             return null;
         }
 
-        if ($session->getRefreshTokenExpiresAt() <= new \DateTimeImmutable() || !$this->isUsable($session)) {
+        if (
+            $session->getApiToken()->getId() !== $apiToken->getId() ||
+            $session->getRefreshTokenExpiresAt() <= new \DateTimeImmutable() ||
+            !$this->isUsable($session)
+        ) {
             return null;
         }
 
@@ -162,6 +167,20 @@ class UserSessionService extends AppApiService
     public function findActiveByUser(User $user): array
     {
         return $this->getUserSessionRepository()->findActiveByUser($user);
+    }
+
+    /**
+     * Session active de l'utilisateur par son id
+     * @param User $user
+     * @param int $id
+     * @return UserSession|null
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function findActiveByUserAndId(User $user, int $id): ?UserSession
+    {
+        $session = $this->getUserSessionRepository()->findOneBy(['id' => $id, 'user' => $user]);
+        return $session !== null && $session->getRefreshTokenExpiresAt() > new \DateTimeImmutable() ? $session : null;
     }
 
     /**

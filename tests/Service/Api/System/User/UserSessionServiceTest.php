@@ -168,7 +168,8 @@ class UserSessionServiceTest extends AppWebTestCase
         $first = $this->createSessionTokens();
         $sessionId = $first->session->getId();
 
-        $second = $this->userSessionService->refresh($first->refreshToken);
+        $apiToken = $first->session->getApiToken();
+        $second = $this->userSessionService->refresh($first->refreshToken, $apiToken);
         $this->assertNotNull($second);
         $this->assertSame($sessionId, $second->session->getId());
         $this->assertNotSame($first->accessToken, $second->accessToken);
@@ -176,12 +177,12 @@ class UserSessionServiceTest extends AppWebTestCase
         $this->assertNull($this->userSessionService->findByAccessToken($first->accessToken));
         $this->assertNotNull($this->userSessionService->findByAccessToken($second->accessToken));
 
-        $this->assertNull($this->userSessionService->refresh($first->refreshToken));
+        $this->assertNull($this->userSessionService->refresh($first->refreshToken, $apiToken));
         $this->em->clear();
         $this->assertNull($this->em->getRepository(UserSession::class)->find($sessionId));
-        $this->assertNull($this->userSessionService->refresh($second->refreshToken));
+        $this->assertNull($this->userSessionService->refresh($second->refreshToken, $apiToken));
 
-        $this->assertNull($this->userSessionService->refresh('inconnu'));
+        $this->assertNull($this->userSessionService->refresh('inconnu', $apiToken));
     }
 
     /**
@@ -193,12 +194,19 @@ class UserSessionServiceTest extends AppWebTestCase
         $tokens = $this->createSessionTokens();
         $tokens->session->setRefreshTokenExpiresAt(new \DateTimeImmutable('-1 second'));
         $this->persistAndFlush($tokens->session);
-        $this->assertNull($this->userSessionService->refresh($tokens->refreshToken));
+        $this->assertNull($this->userSessionService->refresh($tokens->refreshToken, $tokens->session->getApiToken()));
+
+        // Refresh token présenté par une autre application : refusé, session conservée
+        $tokens = $this->createSessionTokens();
+        $this->assertNull($this->userSessionService->refresh($tokens->refreshToken, $this->createApiToken()));
+        $this->assertNotNull(
+            $this->userSessionService->refresh($tokens->refreshToken, $tokens->session->getApiToken()),
+        );
 
         $tokens = $this->createSessionTokens();
         $tokens->session->getApiToken()->setDisabled(true);
         $this->persistAndFlush($tokens->session->getApiToken());
-        $this->assertNull($this->userSessionService->refresh($tokens->refreshToken));
+        $this->assertNull($this->userSessionService->refresh($tokens->refreshToken, $tokens->session->getApiToken()));
     }
 
     /**
@@ -218,6 +226,28 @@ class UserSessionServiceTest extends AppWebTestCase
         $this->userSessionService->revokeAll($user);
         $this->assertCount(0, $this->userSessionService->findActiveByUser($user));
         $this->assertCount(1, $this->userSessionService->findActiveByUser($other->getUser()));
+    }
+
+    /**
+     * Test méthode findActiveByUserAndId() : session de l'utilisateur non expirée uniquement
+     * @return void
+     */
+    public function testFindActiveByUserAndId(): void
+    {
+        $user = $this->createUserContributeur();
+        $active = $this->createUserSession(['user' => $user]);
+        $expired = $this->createUserSession([
+            'user' => $user,
+            'refreshTokenExpiresAt' => new \DateTimeImmutable('-1 second'),
+        ]);
+        $other = $this->createUserSession();
+
+        $this->assertSame(
+            $active->getId(),
+            $this->userSessionService->findActiveByUserAndId($user, $active->getId())?->getId(),
+        );
+        $this->assertNull($this->userSessionService->findActiveByUserAndId($user, $expired->getId()));
+        $this->assertNull($this->userSessionService->findActiveByUserAndId($user, $other->getId()));
     }
 
     /**
