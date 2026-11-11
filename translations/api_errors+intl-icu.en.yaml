@@ -1,4 +1,5 @@
 api_errors.authentication.failure: Invalid token
+api_errors.authentication.required: 'Missing API token'
 api_errors.access.denied: Resource not accessible
 api_errors.not.found: Resource not available
 api_errors.params.name.not.found: The expected parameter {param} is missing

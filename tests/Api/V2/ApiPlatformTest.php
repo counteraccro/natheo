@@ -17,18 +17,23 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class ApiPlatformTest extends AppApiV2TestCase
 {
     /**
-     * Sans token, avec un token invalide : 401
+     * Sans token, avec un token invalide : 401 avec WWW-Authenticate
      * @return void
      */
     public function testAuthenticationRequired(): void
     {
-        $this->assertProblem($this->requestV2('GET', '/probes', self::HEADER_NONE), 401);
-
         $translator = $this->container->get(TranslatorInterface::class);
-        $content = $this->assertProblem(
-            $this->requestV2('GET', '/probes', self::HEADER_WRONG),
-            401,
+        $response = $this->requestV2('GET', '/probes', self::HEADER_NONE);
+        $content = $this->assertProblem($response, 401);
+        $this->assertEquals('Bearer', $response->headers->get('WWW-Authenticate'));
+        $this->assertEquals(
+            $translator->trans('api_errors.authentication.required', domain: 'api_errors'),
+            $content['detail'],
         );
+
+        $response = $this->requestV2('GET', '/probes', self::HEADER_WRONG);
+        $content = $this->assertProblem($response, 401);
+        $this->assertEquals('Bearer error="invalid_token"', $response->headers->get('WWW-Authenticate'));
         $this->assertStringContainsString(
             $translator->trans('api_errors.authentication.failure', domain: 'api_errors'),
             $content['detail'],
@@ -44,7 +49,10 @@ class ApiPlatformTest extends AppApiV2TestCase
         $this->assertEquals(200, $this->requestV2('GET', '/probes', self::HEADER_READ)->getStatusCode());
 
         $this->assertProblem($this->requestV2('POST', '/probes', self::HEADER_READ, ['name' => 'test']), 403);
-        $this->assertEquals(201, $this->requestV2('POST', '/probes', self::HEADER_WRITE, ['name' => 'test'])->getStatusCode());
+        $this->assertEquals(
+            201,
+            $this->requestV2('POST', '/probes', self::HEADER_WRITE, ['name' => 'test'])->getStatusCode(),
+        );
 
         $path = '/probes/' . Probe::EXISTING_ID;
         $this->assertProblem($this->requestV2('DELETE', $path, self::HEADER_WRITE), 403);
@@ -60,16 +68,16 @@ class ApiPlatformTest extends AppApiV2TestCase
         $this->container->get(OptionSystemService::class)->saveValueByKee(OptionSystem::OS_OPEN_API->value, '0');
 
         $translator = $this->container->get(TranslatorInterface::class);
-        $content = $this->assertProblem(
-            $this->requestV2('GET', '/probes', self::HEADER_READ),
-            403,
-        );
+        $content = $this->assertProblem($this->requestV2('GET', '/probes', self::HEADER_READ), 403);
         $this->assertStringContainsString(
             $translator->trans('api_errors.api.not.open', domain: 'api_errors'),
             $content['detail'],
         );
         $this->assertProblem($this->requestV2('GET', '/probes', self::HEADER_NONE), 403);
-        foreach (['/errors/404', '/validation_errors/8e179f1b-97aa-4560-a02f-2a8b42e49df7', '/.well-known/genid/1'] as $path) {
+        foreach (
+            ['/errors/404', '/validation_errors/8e179f1b-97aa-4560-a02f-2a8b42e49df7', '/.well-known/genid/1']
+            as $path
+        ) {
             $this->assertEquals(403, $this->requestV2('GET', $path, self::HEADER_NONE)->getStatusCode(), $path);
         }
 
@@ -107,10 +115,7 @@ class ApiPlatformTest extends AppApiV2TestCase
         $this->assertEquals($translator->trans('api_errors.title.404', domain: 'api_errors'), $content['title']);
         $this->assertProblem($this->requestV2('GET', '/probes/99', accept: 'application/json'), 404);
 
-        $content = $this->assertProblem(
-            $this->requestV2('POST', '/probes', self::HEADER_WRITE, ['name' => '']),
-            422,
-        );
+        $content = $this->assertProblem($this->requestV2('POST', '/probes', self::HEADER_WRITE, ['name' => '']), 422);
         $this->assertEquals('name', $content['violations'][0]['propertyPath']);
         $this->assertEquals($translator->trans('api_errors.title.422', domain: 'api_errors'), $content['title']);
     }
@@ -121,7 +126,12 @@ class ApiPlatformTest extends AppApiV2TestCase
      */
     public function testDocumentation(): void
     {
-        $response = $this->requestV2('GET', '/docs.jsonopenapi', self::HEADER_NONE, accept: 'application/vnd.openapi+json');
+        $response = $this->requestV2(
+            'GET',
+            '/docs.jsonopenapi',
+            self::HEADER_NONE,
+            accept: 'application/vnd.openapi+json',
+        );
         $this->assertEquals(200, $response->getStatusCode());
         $content = $this->decode($response);
         $this->assertArrayHasKey('/api/v2/info', $content['paths']);

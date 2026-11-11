@@ -40,6 +40,31 @@ class ApiAuthenticationControllerTest extends AppApiTestCase
     }
 
     /**
+     * Sans token ou avec un token invalide : 401 traduit avec l'en-tête WWW-Authenticate
+     * @return void
+     */
+    public function testAuthWithoutApiToken(): void
+    {
+        $url = $this->router->generate('api_authentication_auth', ['api_version' => self::API_VERSION]);
+
+        $this->client->request('GET', $url, server: ['HTTP_Accept' => 'application/json']);
+        $response = $this->client->getResponse();
+        $this->assertEquals(401, $response->getStatusCode());
+        $this->assertEquals('Bearer', $response->headers->get('WWW-Authenticate'));
+        $content = json_decode($response->getContent(), true);
+        $this->checkStructureApiRetourError($content);
+        $this->assertEquals(
+            $this->translator->trans('api_errors.authentication.required', domain: 'api_errors'),
+            $content['errors'][0],
+        );
+
+        $this->client->request('GET', $url, server: $this->getCustomHeaders(self::HEADER_WRONG));
+        $response = $this->client->getResponse();
+        $this->assertEquals(401, $response->getStatusCode());
+        $this->assertEquals('Bearer error="invalid_token"', $response->headers->get('WWW-Authenticate'));
+    }
+
+    /**
      * Test authentification par token : hash, expiration, date de dernière utilisation et format du header
      * @return void
      */
