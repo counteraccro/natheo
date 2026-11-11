@@ -11,6 +11,7 @@ namespace App\EventSubscriber;
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Enum\Admin\System\Options\OptionUser;
 use App\Enum\Installation\OptionInstallation;
+use App\EventListener\ApiLocaleListener;
 use App\Service\Admin\System\OptionSystemService;
 use App\Service\Admin\System\OptionUserService;
 use App\Service\Global\Database\DataBase;
@@ -51,6 +52,12 @@ class LocaleSubscriber implements EventSubscriberInterface
     private DataBase $dataBase;
 
     /**
+     * Base installée, vérifiée une seule fois
+     * @var bool
+     */
+    private bool $installed = false;
+
+    /**
      * @param OptionUserService $optionUserService
      * @param LocaleSwitcher $localeSwitcher
      * @param Security $security
@@ -80,16 +87,20 @@ class LocaleSubscriber implements EventSubscriberInterface
      */
     public function onKernelController(ControllerEvent $event): void
     {
+        // Langue de l'API v2 déjà fixée par ApiLocaleListener
+        if ($event->getRequest()->attributes->has(ApiLocaleListener::ATTRIBUTE)) {
+            return;
+        }
+
         // Lors de l'installation si pas de bdd pour éviter les crashs
-        if (
-            !$this->dataBase->check(OptionInstallation::DATABASE_EXIST->value)['success'] ||
-            !$this->dataBase->isTableExiste()
-        ) {
+        if (!$this->isInstalled()) {
             $this->localeSwitcher->setLocale('fr');
             return;
         }
 
-        if ($this->security->isGranted('ROLE_USER')) {
+        // Firewall stateless (API) : pas de session pour lire les options utilisateur
+        $isStateless = $this->security->getFirewallConfig($event->getRequest())?->isStateless() ?? false;
+        if (!$isStateless && $this->security->isGranted('ROLE_USER')) {
             $locales = $this->optionUserService->getValueByKey(OptionUser::OU_DEFAULT_LANGUAGE->value);
         } else {
             $locales = $this->optionSystemService->getValueByKey(OptionSystem::OS_DEFAULT_LANGUAGE->value);
@@ -101,6 +112,21 @@ class LocaleSubscriber implements EventSubscriberInterface
         }
 
         $this->localeSwitcher->setLocale($locales);
+    }
+
+    /**
+     * Indique si la base et ses tables existent ; mémorisé une fois vrai
+     * @return bool
+     * @throws Exception
+     */
+    private function isInstalled(): bool
+    {
+        if (!$this->installed) {
+            $this->installed =
+                $this->dataBase->check(OptionInstallation::DATABASE_EXIST->value)['success'] &&
+                $this->dataBase->isTableExiste();
+        }
+        return $this->installed;
     }
 
     /**

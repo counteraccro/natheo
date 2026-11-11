@@ -9,7 +9,7 @@ context: fork
 
 Tu relis le travail de quelqu'un d'autre, sans connaître ses intentions : juge le code tel qu'il est, pas tel qu'il devait être.
 
-Relecture en lecture seule : ne modifier aucun fichier du projet, ne rien commiter, ne rien publier sur GitHub. Seule écriture autorisée : le rapport dans `var/review/`. Le rapport est rendu en français, en dernier message, tel quel : il sera affiché à l'utilisateur.
+Relecture en lecture seule : ne modifier aucun fichier du projet, ne rien commiter, ne rien publier sur GitHub. Seule écriture autorisée : le rapport dans `.ai/review/`. Le rapport est rendu en français, en dernier message, tel quel : il sera affiché à l'utilisateur.
 
 ## 1. Référentiel
 
@@ -26,7 +26,9 @@ Argument reçu : `$ARGUMENTS`
   3. diff : `git diff <base>...<branche>`, plus les changements non commités (`git status`, `git diff HEAD`) si c'est la branche courante.
 - **`--suivi`** : seconde passe après corrections, voir § 7.
 
-Annoncer en une ligne la cible retenue (branche, base, PR éventuelle, nombre de fichiers et de commits).
+Une fois la branche connue, si `.ai/review/<branche avec / remplacés par ->.md` existe déjà, passer automatiquement en mode `--suivi`, même sans l'argument.
+
+Annoncer en une ligne la cible retenue (branche, base, PR éventuelle, nombre de fichiers et de commits, et mode `--suivi` s'il est déduit du rapport existant).
 
 ## 3. Stratégie de lecture
 
@@ -116,14 +118,14 @@ Règles :
 - Identifiants `[B1]`, `[C1]`, `[D1]`, `[S1]` stables, pour la seconde passe.
 - Chaque point est vérifié dans le code (lu, pas supposé) et ancré sur `fichier:ligne` ; omettre une section vide ; pas de compliment de remplissage.
 
-Enregistrer le rapport dans `var/review/<branche avec / remplacés par ->.md` (écraser l'ancien), puis le rendre en dernier message, suivi de la question : quels points corriger ?
+Enregistrer le rapport dans `.ai/review/<branche avec / remplacés par ->.md` (écraser l'ancien), puis le rendre en dernier message, suivi de la question : quels points corriger ?
 
 ## 7. Seconde passe (`--suivi`)
 
-1. Lire le rapport précédent `var/review/<branche>.md` ; s'il n'existe pas, le dire et faire une review complète.
+1. Lire le rapport précédent `.ai/review/<branche>.md` ; s'il n'existe pas, le dire et faire une review complète.
 2. Pour chaque point du rapport, vérifier dans le code actuel : ✅ corrigé (citer la correction), ❌ toujours présent, ➖ abandonné (point non retenu par l'utilisateur, si le commit ou la conversation l'indique).
 3. Relire uniquement le code modifié depuis le rapport (`git diff` entre le commit noté dans le rapport et `HEAD`) pour repérer ce que les corrections auraient cassé ou introduit ; nouveaux points numérotés à la suite.
 4. Relancer les vérifications ciblées des fichiers modifiés depuis.
-5. Rapport court : tableau des points (id, statut, détail), puis nouveaux points éventuels, puis vérifications. Mettre à jour `var/review/<branche>.md`.
+5. Rapport court : tableau des points (id, statut, détail), puis nouveaux points éventuels, puis vérifications. Mettre à jour `.ai/review/<branche>.md`.
 
 Pour que la seconde passe fonctionne, la première ligne du rapport enregistré contient le commit relu : `<!-- commit: <sha de HEAD> -->`.

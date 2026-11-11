@@ -9,8 +9,12 @@ declare(strict_types=1);
 
 namespace App\Enum\Admin\Content\Menu;
 
+use App\Enum\Trait\EnumSlugTrait;
+
 enum MenuPosition: int
 {
+    use EnumSlugTrait;
+
     case POSITION_HEADER = 1;
     case POSITION_RIGHT = 2;
     case POSITION_FOOTER = 3;
@@ -42,5 +46,14 @@ enum MenuPosition: int
             return self::CONF[$position]['string'];
         }
         return 'NONE';
+    }
+
+    /**
+     * Slug de la position (header, right, footer, left)
+     * @return string
+     */
+    public function getSlug(): string
+    {
+        return strtolower(self::getStringByPosition($this->value));
     }
 }

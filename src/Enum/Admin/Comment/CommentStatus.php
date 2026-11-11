@@ -9,8 +9,12 @@ declare(strict_types=1);
 
 namespace App\Enum\Admin\Comment;
 
+use App\Enum\Trait\EnumSlugTrait;
+
 enum CommentStatus: int
 {
+    use EnumSlugTrait;
+
     /**
      * En attente de validation
      * @type int

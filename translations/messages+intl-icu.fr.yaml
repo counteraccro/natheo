@@ -195,14 +195,11 @@ options_system.theme_front_site.help: Définit le thème de votre site, c'est ce
 options_system.theme_front_site.label: 'Thème de votre site'
 options_system.theme_site.help: La couleur choisie sera utilisée dans l'administration et définie pour chaque nouvel utilisateur créé
 options_system.theme_site.label: "Couleur principale de l'administration"
-options_system.user_token_validity.help: Passé ce délai, le token devient obsolète et la connexion ne sera plus autorisée avec celui-ci
-options_system.user_token_validity.label: Durée de validité du token de connexion administrateur sur le front
-options_system.user_token_validity.value.half_hour: Une demi-heure
-options_system.user_token_validity.value.one_day: '24 heures'
-options_system.user_token_validity.value.one_hour: '1 heure'
-options_system.user_token_validity.value.three_hours: '3 heures'
-options_system.user_token_validity.value.twelve_hours: '12 heures'
-options_system.user_token_validity.value.two_hours: '2 heures'
+options_system.user_session_validity.help: 'Durée maximale d''une session API ouverte par un utilisateur du back-office (site public, applications) : passé ce délai sans renouvellement, il doit se reconnecter'
+options_system.user_session_validity.label: 'Durée des sessions API des utilisateurs du back-office'
+options_system.user_session_validity.value.one_day: '1 jour'
+options_system.user_session_validity.value.seven_days: '7 jours'
+options_system.user_session_validity.value.thirty_days: '30 jours'
 options_user.category.interface.description: Personnaliser l'administration avec ces options
 options_user.category.interface.label: Interface
 options_user.category.interface.title: Personnalisation de l'administration

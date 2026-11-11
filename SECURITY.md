@@ -24,6 +24,8 @@ Indiquez si possible : la version du CMS, la route ou l'écran concerné, les é
 | 2.0.x (branche `release/2.0`) | ✅ |
 | 1.x | ❌ |
 
+L'API v1 (`/api/v1`), dépréciée à partir de la 2.1, reçoit les correctifs de sécurité jusqu'à sa suppression en 3.0.
+
 ## Failles corrigées
 
 **Aucune faille connue dans la version actuelle (2.0.1).**

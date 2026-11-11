@@ -174,4 +174,30 @@ class CommentRepository extends ServiceEntityRepository
             ->setMaxResults($dto->getLimit());
         return $paginator;
     }
+
+    /**
+     * Retourne les commentaires actifs d'une page, paginés et triés par date de création
+     * @param Page $page
+     * @param int $pageNumber
+     * @param int $limit
+     * @param \SortDirection $direction
+     * @return Paginator<Comment>
+     */
+    public function getActiveCommentsByPage(
+        Page $page,
+        int $pageNumber,
+        int $limit,
+        \SortDirection $direction,
+    ): Paginator {
+        $query = $this->createQueryBuilder('c')
+            ->andWhere('c.page = :page')
+            ->setParameter('page', $page)
+            ->andWhere('c.disabled = false')
+            ->orderBy('c.createdAt', $direction)
+            ->addOrderBy('c.id', $direction)
+            ->setFirstResult($limit * ($pageNumber - 1))
+            ->setMaxResults($limit);
+
+        return new Paginator($query->getQuery(), false);
+    }
 }

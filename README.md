@@ -73,6 +73,8 @@ Voici une liste non exhaustive des nouveautés :
 - 🔒 **Une sécurité renforcée** — Audit des modules de contenu, protection CSRF des actions et droits par contenu
 - ✅ **Plus de tests** — Couverture étendue, dont un contrôle automatique des traductions
 
+> **🔌 API** : à partir de la 2.1, l'API v2 (`/api/v2`, API Platform, documentation OpenAPI sur `/api/v2/docs`) remplace l'API v1. La v1 (`/api/v1`) reste disponible mais dépréciée, jusqu'à sa suppression en 3.0 : consultez [le guide de migration](https://counteraccro.github.io/natheo.doc/Docs/API/migration_v2.html).
+
 ---
 
 ## ⚙️ Prérequis

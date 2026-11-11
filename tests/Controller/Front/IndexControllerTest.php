@@ -8,8 +8,10 @@ declare(strict_types=1);
  */
 namespace App\Tests\Controller\Front;
 
+use App\Entity\Admin\System\UserSession;
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Admin\System\OptionSystemService;
+use App\Service\Global\Token\TokenHasher;
 use App\Tests\AppWebTestCase;
 
 class IndexControllerTest extends AppWebTestCase
@@ -34,6 +36,27 @@ class IndexControllerTest extends AppWebTestCase
             $this->assertStringContainsString('Front/NatheoHorizon/Structure', $content);
             $this->assertStringContainsString('front-token-test', $content);
         }
+    }
+
+    /**
+     * Utilisateur connecté au back-office : une seule session API, réutilisée d'une page à l'autre
+     * @return void
+     */
+    public function testIndexLoggedUser(): void
+    {
+        $this->createApiToken(['token' => TokenHasher::hash('front-token-test'), 'disabled' => false]);
+        $user = $this->createUserContributeur(['disabled' => false, 'anonymous' => false]);
+        $this->generateDefaultOptionUser($user);
+        $this->client->loginUser($user, 'admin');
+        $url = $this->router->generate('front_index_2', ['locale' => 'fr', 'category' => null, 'slug' => null]);
+
+        $this->client->request('GET', $url);
+        $this->assertResponseIsSuccessful();
+        $this->client->request('GET', $url);
+        $this->assertResponseIsSuccessful();
+
+        $sessions = $this->em->getRepository(UserSession::class)->findBy(['user' => $user->getId()]);
+        $this->assertCount(1, $sessions);
     }
 
     /**

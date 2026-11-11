@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Test Service ApiUserService
  */
 
@@ -12,7 +12,6 @@ namespace Service\Api\System\User;
 use App\Entity\Admin\System\User;
 use App\Service\Api\System\User\ApiUserService;
 use App\Tests\AppWebTestCase;
-use App\Enum\Admin\System\User\UserDataKey;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\Container;
@@ -32,7 +31,7 @@ class ApiUserServiceTest extends AppWebTestCase
     }
 
     /**
-     * Test méthode getUserByUserToken()
+     * Test méthode getUserByUserToken() : access token d'une session valide uniquement
      * @return void
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -40,46 +39,39 @@ class ApiUserServiceTest extends AppWebTestCase
     public function testGetUserByUserToken(): void
     {
         $user = $this->createUserContributeur(['disabled' => false, 'anonymous' => false]);
-        $this->createUserTokenData($user, 'azerty-token', 'P10D', false);
-        $this->assertInstanceOf(User::class, $this->apiUserService->getUserByUserToken('azerty-token'));
+        $this->createSession($user, 'azerty-token');
+        $this->assertSame($user->getId(), $this->apiUserService->getUserByUserToken('azerty-token')?->getId());
         // Le hash stocké ne doit pas permettre de s'authentifier
         $this->assertNull($this->apiUserService->getUserByUserToken(TokenHasher::hash('azerty-token')));
 
-        $user = $this->createUserContributeur(['disabled' => false, 'anonymous' => false]);
-        $this->createUserTokenData($user, 'azerty-token-2', 'P10D', true);
+        $this->createSession(
+            $this->createUserContributeur(['disabled' => false, 'anonymous' => false]),
+            'azerty-token-2',
+            new \DateTimeImmutable('-1 second'),
+        );
         $this->assertNull($this->apiUserService->getUserByUserToken('azerty-token-2'));
 
-        $user = $this->createUserContributeur(['disabled' => true, 'anonymous' => false]);
-        $this->createUserTokenData($user, 'azerty-token-3', 'P10D', false);
+        $this->createSession(
+            $this->createUserContributeur(['disabled' => true, 'anonymous' => false]),
+            'azerty-token-3',
+        );
         $this->assertNull($this->apiUserService->getUserByUserToken('azerty-token-3'));
-
-        $user = $this->createUserContributeur(['disabled' => false, 'anonymous' => false]);
-        $this->createUserData($user, [
-            'key' => UserDataKey::TOKEN_CONNEXION->value,
-            'value' => TokenHasher::hash('azerty-token-4'),
-        ]);
-        $this->assertNull($this->apiUserService->getUserByUserToken('azerty-token-4'));
     }
 
     /**
-     * Crée le token utilisateur (hashé) et sa date de validité
+     * Crée une session dont l'access token est connu
      * @param User $user
-     * @param string $token
-     * @param string $interval
-     * @param bool $expired
+     * @param string $accessToken
+     * @param \DateTimeImmutable|null $expiresAt
      * @return void
      */
-    private function createUserTokenData(User $user, string $token, string $interval, bool $expired): void
+    private function createSession(User $user, string $accessToken, ?\DateTimeImmutable $expiresAt = null): void
     {
-        $this->createUserData($user, [
-            'key' => UserDataKey::TOKEN_CONNEXION->value,
-            'value' => TokenHasher::hash($token),
-        ]);
-        $date = new \DateTime();
-        $expired ? $date->sub(new \DateInterval($interval)) : $date->add(new \DateInterval($interval));
-        $this->createUserData($user, [
-            'key' => UserDataKey::TIME_VALIDATE_TOKEN->value,
-            'value' => strval($date->getTimestamp()),
+        $this->createUserSession([
+            'user' => $user,
+            'apiToken' => $this->createApiToken(['disabled' => false]),
+            'accessTokenHash' => TokenHasher::hash($accessToken),
+            'accessTokenExpiresAt' => $expiresAt ?? new \DateTimeImmutable('+15 minutes'),
         ]);
     }
 }

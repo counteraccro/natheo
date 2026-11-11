@@ -78,6 +78,23 @@ class AppApiTestCase extends AppWebTestCase
     }
 
     /**
+     * Génère l'access token d'une session valide pour l'utilisateur du back-office
+     * @param User $user
+     * @param string $role rôle du token d'API de la session
+     * @return string
+     */
+    protected function createUserToken(User $user, string $role = 'ROLE_WRITE_API'): string
+    {
+        $accessToken = self::getFaker()->uuid();
+        $this->createUserSession([
+            'user' => $user,
+            'apiToken' => $this->createApiToken(['roles' => [$role], 'disabled' => false]),
+            'accessTokenHash' => TokenHasher::hash($accessToken),
+        ]);
+        return $accessToken;
+    }
+
+    /**
      * Verification bad token
      * @param string $route
      * @param array $params

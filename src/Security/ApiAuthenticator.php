@@ -3,15 +3,13 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * authenticate pour API
  */
 
 namespace App\Security;
 
-use App\Enum\Admin\System\Options\OptionSystem;
-use App\Http\Api\ApiResponse;
-use App\Service\Admin\System\OptionSystemService;
+use App\Service\Api\ApiService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,24 +21,26 @@ use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
+use Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class ApiAuthenticator extends AbstractAuthenticator
+class ApiAuthenticator extends AbstractAuthenticator implements AuthenticationEntryPointInterface
 {
     private const string BEARER_PREFIX = 'Bearer ';
 
-    public function __construct(
-        private TranslatorInterface $translator,
-        private OptionSystemService $optionSystemService,
-    ) {}
+    public function __construct(private TranslatorInterface $translator, private ApiService $apiService) {}
 
     /**
+     * Requête avec un token, ou toute requête quand l'API est fermée (refusée dans authenticate())
      * @param Request $request
      * @return bool|null
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function supports(Request $request): ?bool
     {
-        return str_starts_with((string) $request->headers->get('Authorization'), self::BEARER_PREFIX);
+        return str_starts_with((string) $request->headers->get('Authorization'), self::BEARER_PREFIX) ||
+            !$this->apiService->isApiOpen();
     }
 
     /**
@@ -78,6 +78,22 @@ class ApiAuthenticator extends AbstractAuthenticator
         throw new HttpException(
             Response::HTTP_UNAUTHORIZED,
             $this->translator->trans('api_errors.authentication.failure', domain: 'api_errors'),
+            headers: ['WWW-Authenticate' => 'Bearer error="invalid_token"'],
+        );
+    }
+
+    /**
+     * Requête sans token sur une route protégée
+     * @param Request $request
+     * @param AuthenticationException|null $authException
+     * @return Response
+     */
+    public function start(Request $request, ?AuthenticationException $authException = null): Response
+    {
+        throw new HttpException(
+            Response::HTTP_UNAUTHORIZED,
+            $this->translator->trans('api_errors.authentication.required', domain: 'api_errors'),
+            headers: ['WWW-Authenticate' => 'Bearer'],
         );
     }
 
@@ -89,12 +105,7 @@ class ApiAuthenticator extends AbstractAuthenticator
      */
     private function isOpenApi(): void
     {
-        // Option absente (installation antérieure) : on applique la valeur par défaut
-        $isOpenApi = intval(
-            $this->optionSystemService->getValueByKey(OptionSystem::OS_OPEN_API->value) ??
-                OptionSystem::OS_OPEN_API->getDefault(),
-        );
-        if ($isOpenApi === 0) {
+        if (!$this->apiService->isApiOpen()) {
             throw new HttpException(
                 Response::HTTP_FORBIDDEN,
                 $this->translator->trans('api_errors.api.not.open', domain: 'api_errors'),

@@ -195,14 +195,11 @@ options_system.theme_front_site.help: Sets the theme of your site, this is the t
 options_system.theme_front_site.label: Theme of your site
 options_system.theme_site.help: The chosen color will be used in the administration and set for every new user created
 options_system.theme_site.label: Main color of the administration
-options_system.user_token_validity.help: After this period, the token expires and logging in with it will no longer be allowed
-options_system.user_token_validity.label: Validity period of the administrator login token on the front
-options_system.user_token_validity.value.half_hour: Half an hour
-options_system.user_token_validity.value.one_day: 24 hours
-options_system.user_token_validity.value.one_hour: 1 hour
-options_system.user_token_validity.value.three_hours: 3 hours
-options_system.user_token_validity.value.twelve_hours: 12 hours
-options_system.user_token_validity.value.two_hours: 2 hours
+options_system.user_session_validity.help: 'Maximum lifetime of an API session opened by a back-office user (public site, applications): after this period without renewal, they must log in again'
+options_system.user_session_validity.label: 'Lifetime of back-office users'' API sessions'
+options_system.user_session_validity.value.one_day: '1 day'
+options_system.user_session_validity.value.seven_days: '7 days'
+options_system.user_session_validity.value.thirty_days: '30 days'
 options_user.category.interface.description: Customize the administration with these options
 options_user.category.interface.label: Interface
 options_user.category.interface.title: Administration customization

@@ -33,6 +33,8 @@ use App\Service\Admin\System\User\PersonalData;
 use Doctrine\ORM\NonUniqueResultException;
 use League\CommonMark\Exception\CommonMarkException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Doctrine\DBAL\LockMode;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\String\Slugger\AsciiSlugger;
@@ -65,15 +67,7 @@ class ApiPageService extends AppApiService
 
         // Les prévisualisations de brouillons par un contributeur ne comptent pas comme des lectures
         if ($page->getStatus() === PageStatus::PUBLISH->value) {
-            $pageStatistiqueNbPageRead = $page->getPageStatistiqueByKey(PageStatistics::NB_READ->value);
-            if ($pageStatistiqueNbPageRead === null) {
-                $pageStatistiqueNbPageRead = (new PageStatistique())
-                    ->setKey(PageStatistics::NB_READ->value)
-                    ->setValue('0');
-                $page->addPageStatistique($pageStatistiqueNbPageRead);
-            }
-            $pageStatistiqueNbPageRead->setValue(strval($pageStatistiqueNbPageRead->getValue() + 1));
-            $this->save($pageStatistiqueNbPageRead);
+            $this->incrementReadCount($page);
         }
 
         return $this->formatPageForApi($page, $dto);
@@ -151,49 +145,51 @@ class ApiPageService extends AppApiService
         /** @var MenuRepository $menuRepo */
         $menuRepo = $apiMenuService->getRepository(Menu::class);
 
-        $tmp = $menuRepo->getDefaultForApi();
-        $tabDefault = [];
-        foreach ($tmp as $default) {
-            $tabDefault[$default['position']] = $default['id'];
-        }
-
-        $isRightMenu = $isLeftMenu = false;
-        foreach ($page->getMenus() as $menu) {
-            if ($menu->isDisabled()) {
-                continue;
-            }
-            unset($tabDefault[$menu->getPosition()]);
-            if ($menu->getPosition() === MenuPosition::POSITION_RIGHT->value) {
-                $isRightMenu = true;
-            }
-
-            if ($menu->getPosition() === MenuPosition::POSITION_LEFT->value) {
-                $isLeftMenu = true;
-            }
-
+        foreach ($this->getMenusForPage($page) as $menu) {
             if (!$this->isMenuPositionRequested($menu->getPosition(), $dto)) {
                 continue;
             }
             $pageApi = $this->getFormatedMenu($menu->getId(), $dto->getLocale(), $pageApi, $apiMenuService, $menuRepo);
         }
-
-        if (!empty($tabDefault)) {
-            foreach ($tabDefault as $position => $id) {
-                if ($position === MenuPosition::POSITION_LEFT->value && $isRightMenu) {
-                    continue;
-                }
-
-                if ($position === MenuPosition::POSITION_RIGHT->value && $isLeftMenu) {
-                    continue;
-                }
-
-                if (!$this->isMenuPositionRequested($position, $dto)) {
-                    continue;
-                }
-                $pageApi = $this->getFormatedMenu($id, $dto->getLocale(), $pageApi, $apiMenuService, $menuRepo);
-            }
-        }
         return $pageApi;
+    }
+
+    /**
+     * Retourne les menus affichés sur une page, dans l'ordre d'affichage : ceux de la page puis les menus par défaut
+     * des positions libres (pas de menu gauche par défaut si la page a un menu droit, et inversement)
+     * @param Page $page
+     * @return Menu[]
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getMenusForPage(Page $page): array
+    {
+        $menus = [];
+        $usedPositions = [];
+        foreach ($page->getMenus() as $menu) {
+            if ($menu->isDisabled()) {
+                continue;
+            }
+            $menus[] = $menu;
+            $usedPositions[$menu->getPosition()] = true;
+        }
+
+        $sides = [MenuPosition::POSITION_LEFT->value, MenuPosition::POSITION_RIGHT->value];
+        $hasSideMenu = isset($usedPositions[$sides[0]]) || isset($usedPositions[$sides[1]]);
+
+        /** @var MenuRepository $menuRepo */
+        $menuRepo = $this->getRepository(Menu::class);
+        $defaults = [];
+        foreach ($menuRepo->findActiveDefaults() as $default) {
+            $defaults[$default->getPosition()] = $default;
+        }
+        foreach ($defaults as $position => $default) {
+            if (isset($usedPositions[$position]) || ($hasSideMenu && in_array($position, $sides, true))) {
+                continue;
+            }
+            $menus[] = $default;
+        }
+        return $menus;
     }
 
     /**
@@ -225,23 +221,7 @@ class ApiPageService extends AppApiService
             'rows' => 0,
         ];
 
-        // Comparaison insensible à la casse et aux accents, sur le libellé traduit ou le slug (ex : evenement)
-        $slugger = new AsciiSlugger();
-        $search = $slugger
-            ->slug(trim($dto->getCategory()))
-            ->lower()
-            ->toString();
-        $idCategory = 0;
-        foreach ($this->getPageService()->getAllCategories() as $id => $label) {
-            if (
-                $search === $slugger->slug($label)->lower()->toString() ||
-                $search === PageCategory::from($id)->getSlug()
-            ) {
-                $idCategory = $id;
-                break;
-            }
-        }
-
+        $idCategory = $this->findCategoryId($dto->getCategory());
         if ($idCategory === 0) {
             return [];
         }
@@ -334,6 +314,116 @@ class ApiPageService extends AppApiService
         $return['menus'][$menuApi['position']] = $menuApi;
 
         return $return;
+    }
+
+    /**
+     * Incrémente le compteur de lectures d'une page
+     * @param Page $page
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function incrementReadCount(Page $page): void
+    {
+        $pageStatistiqueNbPageRead = $page->getPageStatistiqueByKey(PageStatistics::NB_READ->value);
+        if ($pageStatistiqueNbPageRead === null) {
+            $pageStatistiqueNbPageRead = (new PageStatistique())->setKey(PageStatistics::NB_READ->value)->setValue('1');
+            $page->addPageStatistique($pageStatistiqueNbPageRead);
+            $this->save($pageStatistiqueNbPageRead);
+            return;
+        }
+
+        // Valeur relue sous verrou : deux lectures simultanées ne se perdent pas
+        $this->getEntityManager()->wrapInTransaction(function (EntityManagerInterface $entityManager) use (
+            $pageStatistiqueNbPageRead,
+        ): void {
+            $entityManager->refresh($pageStatistiqueNbPageRead, LockMode::PESSIMISTIC_WRITE);
+            $pageStatistiqueNbPageRead->setValue(strval((int) $pageStatistiqueNbPageRead->getValue() + 1));
+        });
+    }
+
+    /**
+     * Retourne une page publiée et active en fonction de son id
+     * @param int $id
+     * @return Page|null
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function findPublishedPage(int $id): ?Page
+    {
+        /** @var Page|null $page */
+        $page = $this->findOneById(Page::class, $id);
+        return $this->isPageVisible($page) ? $page : null;
+    }
+
+    /**
+     * Retourne une page publiée et active en fonction de son slug, la page d'accueil si le slug est vide
+     * @param string $slug
+     * @param string $locale
+     * @return Page|null
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function findPublishedPageBySlug(string $slug, string $locale): ?Page
+    {
+        return $this->getPageBySlug($slug, $locale);
+    }
+
+    /**
+     * Retourne les pages publiées, filtrées par catégorie, tag actif, slug ou page d'accueil.
+     * Le slug désigne au plus une page, en priorité celle dont le slug est celui de $locale
+     * @param int $page
+     * @param int $limit
+     * @param string $locale
+     * @param PageCategory|null $category
+     * @param int|null $tagId
+     * @param string|null $slug
+     * @param bool|null $landing
+     * @return Paginator
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function findPublishedPages(
+        int $page,
+        int $limit,
+        string $locale,
+        ?PageCategory $category = null,
+        ?int $tagId = null,
+        ?string $slug = null,
+        ?bool $landing = null,
+    ): Paginator {
+        $pageId = null;
+        if ($slug !== null) {
+            // Slug inconnu : id 0, aucune page
+            $pageId = $slug === '' ? 0 : $this->getPageBySlug($slug, $locale)?->getId() ?? 0;
+        }
+
+        /** @var PageRepository $pageRepository */
+        $pageRepository = $this->getRepository(Page::class);
+        return $pageRepository->getPublishedPagesPaginate($page, $limit, $category, $tagId, $pageId, $landing);
+    }
+
+    /**
+     * Retourne l'id de la catégorie correspondant au libellé traduit ou au slug, 0 si aucune.
+     * Comparaison insensible à la casse et aux accents (ex : evenement)
+     * @param string $category
+     * @return int
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function findCategoryId(string $category): int
+    {
+        $slugger = new AsciiSlugger();
+        $search = $slugger->slug(trim($category))->lower()->toString();
+        foreach ($this->getPageService()->getAllCategories() as $id => $label) {
+            if (
+                $search === $slugger->slug($label)->lower()->toString() ||
+                $search === PageCategory::from($id)->getSlug()
+            ) {
+                return $id;
+            }
+        }
+        return 0;
     }
 
     /**

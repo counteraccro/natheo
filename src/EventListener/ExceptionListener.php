@@ -33,7 +33,8 @@ class ExceptionListener
             ]),
         ]
         protected ContainerInterface $handlers,
-        #[Autowire('%kernel.debug%')] private readonly bool $debug = false,
+        #[Autowire('%kernel.debug%')] private readonly bool $debug,
+        #[Autowire('%app.api_v2.prefix%')] private readonly string $apiPlatformPrefix,
     ) {}
 
     /**
@@ -46,6 +47,11 @@ class ExceptionListener
     {
         $exception = $event->getThrowable();
         $request = $event->getRequest();
+
+        // Les erreurs de l'API v2 sont rendues par API Platform (problem+json)
+        if (str_starts_with($request->getPathInfo(), $this->apiPlatformPrefix)) {
+            return;
+        }
 
         if (
             in_array('application/json', $request->getAcceptableContentTypes()) ||

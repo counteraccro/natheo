@@ -9,8 +9,12 @@ declare(strict_types=1);
 
 namespace App\Enum\Admin\Content\Menu;
 
+use App\Enum\Trait\EnumSlugTrait;
+
 enum MenuType: int
 {
+    use EnumSlugTrait;
+
     /**
      * Menu header de type side bar
      * @var integer

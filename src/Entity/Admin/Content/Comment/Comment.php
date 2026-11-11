@@ -183,7 +183,7 @@ class Comment
 
     public function setCreatedAt(\DateTimeInterface $createdAt): static
     {
-        $this->$createdAt = $createdAt;
+        $this->createdAt = $createdAt;
 
         return $this;
     }

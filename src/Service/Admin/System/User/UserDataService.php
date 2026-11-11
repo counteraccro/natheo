@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.2
+ * @version 1.3
  * Service gérant les données de l'utilisateur
  */
 
@@ -11,28 +11,15 @@ namespace App\Service\Admin\System\User;
 
 use App\Entity\Admin\System\User;
 use App\Entity\Admin\System\UserData;
-use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Admin\AppAdminService;
 use App\Enum\Admin\System\User\UserDataKey;
 use DateTime;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\String\ByteString;
-use App\Service\Global\Token\TokenHasher;
 
 class UserDataService extends AppAdminService
 {
-    /**
-     * Longueur du token utilisateur de l'API
-     */
-    private const int USER_TOKEN_SIZE = 32;
-
-    /**
-     * Durée de validité maximale (en minutes) du token utilisateur API
-     * @var int
-     */
-    public const int USER_TOKEN_MAX_VALIDITY = 1440;
-
     /**
      * Met à jour une dataUser avec value en fonction de sa clé et du user
      * @param string $key
@@ -47,7 +34,8 @@ class UserDataService extends AppAdminService
         $userData = $this->findKeyAndUser($key, $user);
         if ($userData === null) {
             $userData = new UserData();
-            $userData->setUser($user)->setKey($key)->setValue($value);
+            $userData->setKey($key)->setValue($value);
+            $user->addUserData($userData);
         } else {
             $userData->setValue($value);
         }
@@ -159,51 +147,6 @@ class UserDataService extends AppAdminService
         if ($userData !== null) {
             $user->removeUserData($userData);
             $this->remove($userData);
-        }
-    }
-
-    /**
-     * Génère un token avec une date de validation pour le user.
-     * Seul le hash du token est stocké, le token en clair est retourné à l'appelant
-     * @param User $user
-     * @return string
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    public function generateUserToken(User $user): string
-    {
-        $token = ByteString::fromRandom(self::USER_TOKEN_SIZE)->toString();
-        $this->update(UserDataKey::TOKEN_CONNEXION->value, TokenHasher::hash($token), $user);
-
-        $optionSystem = $this->getOptionSystemService();
-        $minutes = intval($optionSystem->getValueByKey(OptionSystem::OS_API_TIME_VALIDATE_USER_TOKEN->value));
-
-        // Ancienne valeur "sans limite" (-1) ou valeur hors bornes : on applique le plafond
-        if ($minutes <= 0 || $minutes > self::USER_TOKEN_MAX_VALIDITY) {
-            $minutes = self::USER_TOKEN_MAX_VALIDITY;
-        }
-
-        $expireAt = time() + $minutes * 60;
-        $this->update(UserDataKey::TIME_VALIDATE_TOKEN->value, strval($expireAt), $user);
-
-        return $token;
-    }
-
-    /**
-     * Révoque le token utilisateur API du user (désactivation, changement de mot de passe...)
-     * @param User $user
-     * @return void
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    public function removeUserToken(User $user): void
-    {
-        foreach ([UserDataKey::TOKEN_CONNEXION, UserDataKey::TIME_VALIDATE_TOKEN] as $key) {
-            $userData = $this->findKeyAndUser($key->value, $user);
-            if ($userData !== null) {
-                $user->removeUserData($userData);
-                $this->remove($userData);
-            }
         }
     }
 }

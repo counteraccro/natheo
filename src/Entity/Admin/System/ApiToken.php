@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Admin\System;
 
+use App\Entity\Trait\LastUsedAtTrait;
 use App\Enum\Installation\DoctrineStrategy;
 use App\Repository\Admin\System\ApiTokenRepository;
 use Doctrine\DBAL\Types\Types;
@@ -14,6 +15,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\HasLifecycleCallbacks]
 class ApiToken
 {
+    use LastUsedAtTrait;
+
     public const string DEFAULT_ALIAS = 'api_token';
 
     public const array ALLOWED_ORDER_FIELDS = ['id', 'name', 'createdAt', 'updateAt'];

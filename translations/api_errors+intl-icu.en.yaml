@@ -1,4 +1,5 @@
 api_errors.authentication.failure: Invalid token
+api_errors.authentication.required: 'Missing API token'
 api_errors.access.denied: Resource not accessible
 api_errors.not.found: Resource not available
 api_errors.params.name.not.found: The expected parameter {param} is missing
@@ -11,6 +12,7 @@ api_errors.find.menu.not.found: Menu not available
 api_errors.access.unauthorized: Unauthorized access
 api_errors.find.page.not.found: Page not available
 api_errors.find.page.content.not.found: Page content not available
+api_errors.find.comment.not.found: 'Comment not available'
 api_errors.find.listing.category.not.found: The requested category does not exist
 api_errors.find.listing.tag.not.found: The requested tag does not exist
 api_errors.api.not.open: Resource not accessible - API closed
@@ -33,3 +35,19 @@ api_errors.comment.moderate_forbidden: You are not allowed to moderate this comm
 api_errors.params.not.boolean: The parameter {param} must be a boolean (true/false, 1/0)
 api_errors.access.role.denied: The API token rights do not allow access to this resource
 api_errors.comment.wait.validation_author: Anonymous
+api_errors.title.400: 'Bad request'
+api_errors.title.401: 'Authentication required'
+api_errors.title.403: 'Access denied'
+api_errors.title.404: 'Resource not found'
+api_errors.title.405: 'Method not allowed'
+api_errors.title.406: 'Format not available'
+api_errors.title.409: 'Conflict'
+api_errors.title.415: 'Unsupported content format'
+api_errors.title.422: 'Invalid data'
+api_errors.title.429: 'Too many requests'
+api_errors.title.500: 'Internal server error'
+api_errors.title.default: 'An error occurred'
+api_errors.session.invalid_credentials: 'Invalid credentials'
+api_errors.session.invalid_refresh_token: 'Invalid, expired or already used refresh token'
+api_errors.session.required: 'Operation reserved for a user session (session access token)'
+api_errors.find.session.not.found: 'Session not found'

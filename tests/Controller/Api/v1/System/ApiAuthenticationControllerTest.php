@@ -12,6 +12,7 @@ namespace App\Tests\Controller\Api\v1\System;
 use App\Entity\Admin\System\ApiToken;
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Admin\System\OptionSystemService;
+use App\Service\Api\System\User\UserSessionService;
 use App\Tests\Controller\Api\AppApiTestCase;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use App\Service\Global\Token\TokenHasher;
@@ -37,6 +38,31 @@ class ApiAuthenticationControllerTest extends AppApiTestCase
         $content = json_decode($response->getContent(), true);
         $this->checkStructureApiRetour($content);
         $this->assertContains('ROLE_WRITE_API', $content['data']['roles']);
+    }
+
+    /**
+     * Sans token ou avec un token invalide : 401 traduit avec l'en-tête WWW-Authenticate
+     * @return void
+     */
+    public function testAuthWithoutApiToken(): void
+    {
+        $url = $this->router->generate('api_authentication_auth', ['api_version' => self::API_VERSION]);
+
+        $this->client->request('GET', $url, server: ['HTTP_Accept' => 'application/json']);
+        $response = $this->client->getResponse();
+        $this->assertEquals(401, $response->getStatusCode());
+        $this->assertEquals('Bearer', $response->headers->get('WWW-Authenticate'));
+        $content = json_decode($response->getContent(), true);
+        $this->checkStructureApiRetourError($content);
+        $this->assertEquals(
+            $this->translator->trans('api_errors.authentication.required', domain: 'api_errors'),
+            $content['errors'][0],
+        );
+
+        $this->client->request('GET', $url, server: $this->getCustomHeaders(self::HEADER_WRONG));
+        $response = $this->client->getResponse();
+        $this->assertEquals(401, $response->getStatusCode());
+        $this->assertEquals('Bearer error="invalid_token"', $response->headers->get('WWW-Authenticate'));
     }
 
     /**
@@ -88,7 +114,7 @@ class ApiAuthenticationControllerTest extends AppApiTestCase
      */
     public function testAuthUser(): void
     {
-        // User classique
+        // Contributeur : le token renvoyé est l'access token d'une session
         $this->client->request(
             'POST',
             $this->router->generate('api_authentication_auth_user', ['api_version' => self::API_VERSION]),
@@ -101,6 +127,9 @@ class ApiAuthenticationControllerTest extends AppApiTestCase
 
         $content = json_decode($response->getContent(), true);
         $this->checkStructureApiRetour($content);
+        $session = $this->container->get(UserSessionService::class)->findByAccessToken($content['data']['token']);
+        $this->assertNotNull($session);
+        $this->assertContains('ROLE_READ_API', $session->getApiToken()->getRoles());
 
         // Admin
         $password = self::getFaker()->password();

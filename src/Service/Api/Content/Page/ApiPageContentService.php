@@ -15,6 +15,7 @@ use App\Entity\Admin\Content\Faq\FaqCategory;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\Content\Page\PageContent;
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\Content\Page\PageCategory;
 use App\Enum\Admin\Content\Page\PageContentType;
 use App\Enum\Admin\System\Options\OptionUser;
 use App\Repository\Admin\Content\Page\PageRepository;
@@ -48,6 +49,130 @@ class ApiPageContentService extends AppApiService
         }
 
         return $pageContent;
+    }
+
+    /**
+     * Retourne un contenu de page si sa page est publiée et active
+     * @param int $id
+     * @return PageContent|null
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function findPublishedPageContent(int $id): ?PageContent
+    {
+        /** @var PageContent|null $pageContent */
+        $pageContent = $this->findOneById(PageContent::class, $id);
+        if ($pageContent === null || !$this->isPageVisible($pageContent->getPage())) {
+            return null;
+        }
+        return $pageContent;
+    }
+
+    /**
+     * Indique si un bloc a un contenu à servir dans la langue demandée : texte non vide, FAQ active,
+     * catégorie de listing connue
+     * @param PageContent $pageContent
+     * @param string $locale
+     * @return bool
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function isPageContentAvailable(PageContent $pageContent, string $locale): bool
+    {
+        return match (PageContentType::tryFrom((int) $pageContent->getType())) {
+            PageContentType::TEXT => (string) $pageContent->getPageContentTranslationByLocale($locale)?->getText() !== '',
+            PageContentType::FAQ => $this->findActiveFaq((int) $pageContent->getTypeId()) !== null,
+            PageContentType::LISTING => PageCategory::tryFrom((int) $pageContent->getTypeId()) !== null,
+            default => false,
+        };
+    }
+
+    /**
+     * Blocs d'une page ayant un contenu à servir dans la langue demandée
+     * @param Page $page
+     * @param string $locale
+     * @return PageContent[]
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getAvailablePageContents(Page $page, string $locale): array
+    {
+        return array_values(
+            array_filter(
+                $page->getPageContents()->toArray(),
+                fn(PageContent $pageContent) => $this->isPageContentAvailable($pageContent, $locale),
+            ),
+        );
+    }
+
+    /**
+     * Retourne une FAQ active
+     * @param int $id
+     * @return Faq|null
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function findActiveFaq(int $id): ?Faq
+    {
+        /** @var Faq|null $faq */
+        $faq = $this->findOneByCriteria(Faq::class, ['id' => $id, 'disabled' => false]);
+        return $faq;
+    }
+
+    /**
+     * Convertit un texte Markdown en HTML, liens internes résolus
+     * @param string $markdown
+     * @return string
+     * @throws CommonMarkException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function renderMarkdown(string $markdown): string
+    {
+        $markdownService = new MarkdownService();
+        return $markdownService->convertMarkdownToHtml($this->getMarkdownEditorService()->parseMarkdown($markdown));
+    }
+
+    /**
+     * Réponses des questions actives d'une FAQ converties en HTML, indexées par id de question
+     * @param Faq $faq
+     * @param string $locale
+     * @return array<int, string>
+     * @throws CommonMarkException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function renderFaqAnswers(Faq $faq, string $locale): array
+    {
+        $answers = [];
+        foreach ($faq->getFaqCategories() as $faqCategory) {
+            foreach ($faqCategory->getFaqQuestions() as $faqQuestion) {
+                if ($faqCategory->isDisabled() || $faqQuestion->isDisabled()) {
+                    continue;
+                }
+                $answer = (string) $faqQuestion->getFaqQuestionTranslationByLocale($locale)?->getAnswer();
+                $answers[(int) $faqQuestion->getId()] = $this->renderMarkdown($answer);
+            }
+        }
+        return $answers;
+    }
+
+    /**
+     * Titre d'un bloc listing traduit dans la langue demandée
+     * @param PageCategory $category
+     * @param string $locale
+     * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getListingTitle(PageCategory $category, string $locale): string
+    {
+        return $this->getTranslator()->trans(
+            'page.content.listing.title',
+            parameters: ['category' => $this->getPageService()->getCategoryById($category->value)],
+            domain: 'page',
+            locale: $locale,
+        );
     }
 
     /**
@@ -105,9 +230,7 @@ class ApiPageContentService extends AppApiService
      */
     private function formatContentText(string $text): string
     {
-        $markdown = new MarkdownService();
-        $text = $this->getMarkdownEditorService()->parseMarkdown($text);
-        return $markdown->convertMarkdownToHtml($text);
+        return $this->renderMarkdown($text);
     }
 
     /**
