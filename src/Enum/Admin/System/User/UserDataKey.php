@@ -28,16 +28,4 @@ enum UserDataKey: string
      * @var string
      */
     case HELP_FIRST_CONNEXION = 'KEY_HELP_FIRST_CONNEXION';
-
-    /**
-     * Clé pour définir le token de connexion
-     * @var string
-     */
-    case TOKEN_CONNEXION = 'KEY_TOKEN_CONNEXION';
-
-    /**
-     * Clé pour définir le temps de validité du token
-     * @var string
-     */
-    case TIME_VALIDATE_TOKEN = 'TIME_VALIDATE_TOKEN';
 }
