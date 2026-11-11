@@ -18,11 +18,14 @@ use ApiPlatform\Metadata\QueryParameter;
 use ApiPlatform\OpenApi\Model\Operation as OpenApiOperation;
 use ApiPlatform\Validator\Exception\ValidationException;
 use App\Api\V2\Exception\NotFoundException;
+use App\Api\V2\Metadata\EnumSlugPropertyMetadataFactory;
 use App\Api\V2\Output\Content\MenuElement;
 use App\Api\V2\Filter\LocaleFilter;
 use App\Api\V2\Filter\MenuPositionFilter;
 use App\Api\V2\State\Provider\Content\MenuCollectionProvider;
 use App\Api\V2\State\Provider\Content\MenuProvider;
+use App\Enum\Admin\Content\Menu\MenuPosition;
+use App\Enum\Admin\Content\Menu\MenuType;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 #[
@@ -73,14 +76,24 @@ final class Menu
     /**
      * Position : header, right, footer, left
      */
-    #[ApiProperty(required: true)]
+    #[
+        ApiProperty(
+            required: true,
+            extraProperties: [EnumSlugPropertyMetadataFactory::EXTRA_PROPERTY => MenuPosition::class],
+        ),
+    ]
     #[Groups(['menu:read', 'page:read'])]
     public string $position = '';
 
     /**
      * Type d'affichage (header_side_bar, footer_colonnes…)
      */
-    #[ApiProperty(required: true)]
+    #[
+        ApiProperty(
+            required: true,
+            extraProperties: [EnumSlugPropertyMetadataFactory::EXTRA_PROPERTY => MenuType::class],
+        ),
+    ]
     #[Groups(['menu:read', 'page:read'])]
     public string $type = '';
 

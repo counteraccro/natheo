@@ -28,7 +28,7 @@ final class PageCategoryFilter implements FilterInterface, JsonSchemaFilterInter
     {
         return [
             'type' => 'string',
-            'enum' => array_map(fn(PageCategory $category) => $category->getSlug(), PageCategory::cases()),
+            'enum' => PageCategory::getSlugs(),
         ];
     }
 

@@ -64,7 +64,7 @@ final readonly class PageContentProvider implements ProviderInterface
 
         $pageContent = new PageContent();
         $pageContent->id = (int) $entity->getId();
-        $pageContent->type = strtolower($type->name);
+        $pageContent->type = $type->getSlug();
         $pageContent->position = (int) $entity->getRenderBlock();
         $pageContent->content = $content;
         return $pageContent;

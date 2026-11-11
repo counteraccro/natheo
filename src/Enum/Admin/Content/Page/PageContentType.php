@@ -7,8 +7,12 @@
 
 namespace App\Enum\Admin\Content\Page;
 
+use App\Enum\Trait\EnumSlugTrait;
+
 enum PageContentType: int
 {
+    use EnumSlugTrait;
+
     /**
      * Type texte pour les pages contents
      */

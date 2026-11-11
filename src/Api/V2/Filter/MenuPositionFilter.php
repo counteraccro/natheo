@@ -28,7 +28,7 @@ final class MenuPositionFilter implements FilterInterface, JsonSchemaFilterInter
     {
         return [
             'type' => 'string',
-            'enum' => array_map(fn(MenuPosition $position) => $position->getApiName(), MenuPosition::cases()),
+            'enum' => MenuPosition::getSlugs(),
         ];
     }
 
@@ -40,6 +40,6 @@ final class MenuPositionFilter implements FilterInterface, JsonSchemaFilterInter
     public static function getValue(Operation $operation): ?MenuPosition
     {
         $value = $operation->getParameters()?->get('position')?->getValue(null);
-        return MenuPosition::tryFromApiName(is_string($value) ? $value : null);
+        return MenuPosition::tryFromSlug(is_string($value) ? $value : null);
     }
 }
