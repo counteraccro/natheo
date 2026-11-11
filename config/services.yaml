@@ -6,6 +6,7 @@
 parameters:
     app.supported_locales: 'fr|en|es'
     app.api_version: 'v1'
+    app.api_v2.prefix: '/api/v2' # préfixe des routes d'API Platform
     # Dépréciation de l'API v1 : date de dépréciation (Y-m-d), date de suppression (~ si non fixée), guide de migration
     app.api_v1.deprecated_at: '2026-12-01'
     app.api_v1.sunset_at: ~
