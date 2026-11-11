@@ -26,8 +26,6 @@ use App\Api\V2\Filter\OrderFilter;
 use App\Api\V2\Input\Content\CreateCommentInput;
 use App\Api\V2\Input\Content\ModerateCommentInput;
 use App\Api\V2\Metadata\EnumSlugPropertyMetadataFactory;
-use App\Api\V2\Security\UserTokenHeader;
-use App\Api\V2\Security\UserTokenResolver;
 use App\Api\V2\State\Processor\Content\CreateCommentProcessor;
 use App\Api\V2\State\Processor\Content\ModerateCommentProcessor;
 use App\Api\V2\State\Provider\Content\CommentCollectionProvider;
@@ -46,9 +44,6 @@ use Symfony\Component\Serializer\Attribute\Groups;
                 normalizationContext: ['groups' => ['comment:read']],
                 security: "is_granted('ROLE_READ_API')",
                 provider: CommentProvider::class,
-                parameters: [
-                    UserTokenResolver::HEADER => new UserTokenHeader(),
-                ],
             ),
             new GetCollection(
                 uriTemplate: '/pages/{pageId}/comments',
@@ -69,7 +64,6 @@ use Symfony\Component\Serializer\Attribute\Groups;
                         property: 'createdAt',
                         description: 'Tri par date de création',
                     ),
-                    UserTokenResolver::HEADER => new UserTokenHeader(),
                 ],
             ),
             new Post(
@@ -95,7 +89,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
                 errors: [NotFoundException::class, ForbiddenException::class, ValidationException::class],
                 openapi: new OpenApiOperation(
                     summary: 'Modère un commentaire',
-                    description: 'Réservé à un utilisateur autorisé à modérer (en-tête X-User-Token). ' .
+                    description: 'Réservé à un utilisateur autorisé à modérer, authentifié par l\'access token de sa session. ' .
                         'Un champ absent ou null reste inchangé ; une chaîne vide efface le message de modération.',
                 ),
                 normalizationContext: ['groups' => ['comment:read']],
@@ -103,9 +97,6 @@ use Symfony\Component\Serializer\Attribute\Groups;
                 input: ModerateCommentInput::class,
                 read: false,
                 processor: ModerateCommentProcessor::class,
-                parameters: [
-                    UserTokenResolver::HEADER => new UserTokenHeader(documentedAsRequired: true),
-                ],
             ),
         ],
     ),

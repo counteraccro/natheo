@@ -16,6 +16,7 @@ use App\Service\Admin\System\OptionSystemService;
 use App\Service\Admin\System\User\UserService;
 use App\Service\Api\Content\ApiMenuService;
 use App\Service\Api\Content\Page\ApiPageContentService;
+use App\Service\Api\System\User\UserSessionService;
 use App\Translate\Admin\Global\GridTranslate;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
@@ -58,6 +59,7 @@ class AppApiHandlerService
                 'markdownEditorService' => MarkdownEditorService::class,
                 'accessDecisionManager' => AccessDecisionManagerInterface::class,
                 'userService' => UserService::class,
+                'userSessionService' => UserSessionService::class,
                 'apiAuthUserLimiter' => new SubscribedService(
                     'apiAuthUserLimiter',
                     RateLimiterFactoryInterface::class,
@@ -175,6 +177,17 @@ class AppApiHandlerService
     protected function getUserService(): UserService
     {
         return $this->handlers->get('userService');
+    }
+
+    /**
+     * Retourne la class UserSessionService
+     * @return UserSessionService
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getUserSessionService(): UserSessionService
+    {
+        return $this->handlers->get('userSessionService');
     }
 
     /**

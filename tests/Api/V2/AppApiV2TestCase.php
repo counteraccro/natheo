@@ -12,6 +12,8 @@ namespace App\Tests\Api\V2;
 use ApiPlatform\JsonSchema\BackwardCompatibleSchemaFactory;
 use ApiPlatform\JsonSchema\Schema;
 use ApiPlatform\Test\Constraint\MatchesJsonSchema;
+use App\Entity\Admin\System\User;
+use App\Service\Global\Token\TokenHasher;
 use App\Tests\Controller\Api\AppApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -66,6 +68,24 @@ class AppApiV2TestCase extends AppApiTestCase
     }
 
     /**
+     * En-tête Authorization avec l'access token d'une nouvelle session de l'utilisateur, à passer dans $headers
+     * de requestV2()
+     * @param User $user
+     * @param string $role rôle du token d'API de la session
+     * @return array<string, string>
+     */
+    protected function sessionHeaders(User $user, string $role = 'ROLE_READ_API'): array
+    {
+        $accessToken = self::getFaker()->uuid();
+        $this->createUserSession([
+            'user' => $user,
+            'apiToken' => $this->createApiToken(['roles' => [$role], 'disabled' => false]),
+            'accessTokenHash' => TokenHasher::hash($accessToken),
+        ]);
+        return ['HTTP_Authorization' => 'Bearer ' . $accessToken];
+    }
+
+    /**
      * Décode le contenu JSON d'une réponse
      * @param Response $response
      * @return array
@@ -109,8 +129,10 @@ class AppApiV2TestCase extends AppApiTestCase
      * @param string|null $operationName opération de collection par défaut si null
      * @return void
      */
-    protected function assertMatchesResourceCollectionJsonSchema(string $resourceClass, ?string $operationName = null): void
-    {
+    protected function assertMatchesResourceCollectionJsonSchema(
+        string $resourceClass,
+        ?string $operationName = null,
+    ): void {
         $this->assertMatchesResourceJsonSchema($resourceClass, $operationName, true);
     }
 
@@ -121,8 +143,11 @@ class AppApiV2TestCase extends AppApiTestCase
      * @param bool $collection
      * @return void
      */
-    private function assertMatchesResourceJsonSchema(string $resourceClass, ?string $operationName, bool $collection): void
-    {
+    private function assertMatchesResourceJsonSchema(
+        string $resourceClass,
+        ?string $operationName,
+        bool $collection,
+    ): void {
         $operation = $this->container
             ->get('api_platform.metadata.resource.metadata_collection_factory')
             ->create($resourceClass)
@@ -135,7 +160,9 @@ class AppApiV2TestCase extends AppApiTestCase
                 Schema::TYPE_OUTPUT,
                 $operation,
                 null,
-                ($operation->getNormalizationContext() ?? []) + [BackwardCompatibleSchemaFactory::SCHEMA_DRAFT4_VERSION => true],
+                ($operation->getNormalizationContext() ?? []) + [
+                    BackwardCompatibleSchemaFactory::SCHEMA_DRAFT4_VERSION => true,
+                ],
             );
 
         $this->assertThat($this->decode($this->client->getResponse()), new MatchesJsonSchema($schema->getArrayCopy()));

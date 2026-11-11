@@ -11,6 +11,7 @@ namespace App\Tests\Api\V2;
 
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Admin\System\OptionSystemService;
+use App\Service\Global\Token\TokenHasher;
 use App\Tests\Api\V2\Resource\Probe;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -38,6 +39,35 @@ class ApiPlatformTest extends AppApiV2TestCase
             $translator->trans('api_errors.authentication.failure', domain: 'api_errors'),
             $content['detail'],
         );
+    }
+
+    /**
+     * Access token de session : rôles du token d'API de la session, refusé si la session n'est plus valide
+     * @return void
+     */
+    public function testSessionAccessToken(): void
+    {
+        $user = $this->createUserContributeur(['disabled' => false, 'anonymous' => false]);
+        $read = $this->sessionHeaders($user);
+        $write = $this->sessionHeaders($user, 'ROLE_WRITE_API');
+
+        $this->assertEquals(200, $this->requestV2('GET', '/probes', headers: $read)->getStatusCode());
+        $this->assertProblem($this->requestV2('POST', '/probes', body: ['name' => 'test'], headers: $read), 403);
+        $this->assertEquals(
+            201,
+            $this->requestV2('POST', '/probes', body: ['name' => 'test'], headers: $write)->getStatusCode(),
+        );
+
+        $expired = $this->createUserSession(['accessTokenExpiresAt' => new \DateTimeImmutable('-1 second')]);
+        $token = self::getFaker()->uuid();
+        $expired->setAccessTokenHash(TokenHasher::hash($token));
+        $this->persistAndFlush($expired);
+        $response = $this->requestV2('GET', '/probes', headers: ['HTTP_Authorization' => 'Bearer ' . $token]);
+        $this->assertProblem($response, 401);
+        $this->assertEquals('Bearer error="invalid_token"', $response->headers->get('WWW-Authenticate'));
+
+        $this->container->get(OptionSystemService::class)->saveValueByKee(OptionSystem::OS_OPEN_API->value, '0');
+        $this->assertProblem($this->requestV2('GET', '/probes', headers: $read), 403);
     }
 
     /**

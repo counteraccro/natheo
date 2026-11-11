@@ -16,7 +16,7 @@ use App\Api\V2\Exception\NotFoundException;
 use App\Api\V2\Input\Content\ModerateCommentInput;
 use App\Api\V2\Mapper\Content\CommentMapper;
 use App\Api\V2\Resource\Content\Comment;
-use App\Api\V2\Security\UserTokenResolver;
+use App\Api\V2\Security\CurrentUserResolver;
 use App\Enum\Admin\Comment\CommentStatus;
 use App\Service\Api\Content\ApiCommentService;
 use Psr\Container\ContainerExceptionInterface;
@@ -30,7 +30,7 @@ final readonly class ModerateCommentProcessor implements ProcessorInterface
 {
     public function __construct(
         private ApiCommentService $apiCommentService,
-        private UserTokenResolver $userTokenResolver,
+        private CurrentUserResolver $currentUserResolver,
         private TranslatorInterface $translator,
     ) {}
 
@@ -45,7 +45,7 @@ final readonly class ModerateCommentProcessor implements ProcessorInterface
      */
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): Comment
     {
-        $user = $this->userTokenResolver->getUser();
+        $user = $this->currentUserResolver->getUser();
         if ($user === null || !$this->apiCommentService->canModerate($user)) {
             throw new ForbiddenException(
                 $this->translator->trans('api_errors.comment.moderate_forbidden', domain: 'api_errors'),
