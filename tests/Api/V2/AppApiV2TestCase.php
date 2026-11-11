@@ -13,7 +13,6 @@ use ApiPlatform\JsonSchema\BackwardCompatibleSchemaFactory;
 use ApiPlatform\JsonSchema\Schema;
 use ApiPlatform\Test\Constraint\MatchesJsonSchema;
 use App\Entity\Admin\System\User;
-use App\Service\Global\Token\TokenHasher;
 use App\Tests\Controller\Api\AppApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -76,13 +75,7 @@ class AppApiV2TestCase extends AppApiTestCase
      */
     protected function sessionHeaders(User $user, string $role = 'ROLE_READ_API'): array
     {
-        $accessToken = self::getFaker()->uuid();
-        $this->createUserSession([
-            'user' => $user,
-            'apiToken' => $this->createApiToken(['roles' => [$role], 'disabled' => false]),
-            'accessTokenHash' => TokenHasher::hash($accessToken),
-        ]);
-        return ['HTTP_Authorization' => 'Bearer ' . $accessToken];
+        return ['HTTP_Authorization' => 'Bearer ' . $this->createUserToken($user, $role)];
     }
 
     /**
