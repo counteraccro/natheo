@@ -25,6 +25,20 @@ class UserSessionRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param UserSession $entity
+     * @param bool $flush
+     * @return void
+     */
+    public function save(UserSession $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    /**
      * Sessions de l'utilisateur dont le refresh token n'a pas expiré, la plus récemment utilisée en premier
      * @param User $user
      * @return UserSession[]
