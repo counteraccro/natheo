@@ -39,7 +39,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
             new Get(
                 uriTemplate: '/comments/{id}',
                 requirements: ['id' => '\d+'],
-                errors: [NotFoundException::class, ForbiddenException::class],
+                errors: [NotFoundException::class],
                 openapi: new OpenApiOperation(summary: 'Un commentaire actif d\'une page publiée'),
                 normalizationContext: ['groups' => ['comment:read']],
                 security: "is_granted('ROLE_READ_API')",
@@ -49,7 +49,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
                 uriTemplate: '/pages/{pageId}/comments',
                 uriVariables: ['pageId' => new Link(fromClass: Page::class)],
                 requirements: ['pageId' => '\d+'],
-                errors: [NotFoundException::class, ForbiddenException::class, ValidationException::class],
+                errors: [NotFoundException::class, ValidationException::class],
                 openapi: new OpenApiOperation(
                     summary: 'Les commentaires actifs d\'une page publiée',
                     description: 'Sans utilisateur autorisé à modérer, le texte des commentaires en attente ' .

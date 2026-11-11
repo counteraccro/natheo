@@ -49,7 +49,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
                 errors: [NotFoundException::class, ValidationException::class],
                 paginationEnabled: false,
                 openapi: new OpenApiOperation(summary: 'Les menus affichés sur une page publiée'),
-                normalizationContext: ['groups' => ['menu:read']],
+                normalizationContext: ['groups' => ['menu:list']],
                 security: "is_granted('ROLE_READ_API')",
                 provider: MenuCollectionProvider::class,
                 parameters: [
@@ -70,7 +70,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
 final class Menu
 {
     #[ApiProperty(identifier: true, required: true)]
-    #[Groups(['menu:read', 'page:read'])]
+    #[Groups(['menu:read', 'menu:list', 'page:read'])]
     public int $id = 0;
 
     /**
@@ -82,7 +82,7 @@ final class Menu
             extraProperties: [EnumSlugPropertyMetadataFactory::EXTRA_PROPERTY => MenuPosition::class],
         ),
     ]
-    #[Groups(['menu:read', 'page:read'])]
+    #[Groups(['menu:read', 'menu:list', 'page:read'])]
     public string $position = '';
 
     /**
@@ -94,13 +94,13 @@ final class Menu
             extraProperties: [EnumSlugPropertyMetadataFactory::EXTRA_PROPERTY => MenuType::class],
         ),
     ]
-    #[Groups(['menu:read', 'page:read'])]
+    #[Groups(['menu:read', 'menu:list', 'page:read'])]
     public string $type = '';
 
     /**
      * @var MenuElement[]
      */
     #[ApiProperty(genId: false, required: true)]
-    #[Groups(['menu:read', 'page:read'])]
+    #[Groups(['menu:read', 'menu:list', 'page:read'])]
     public array $elements = [];
 }
