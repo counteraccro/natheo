@@ -17,6 +17,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\Security\Http\Event\LogoutEvent;
+use Symfony\Component\Security\Http\EventListener\SessionLogoutListener;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class UserSessionLogoutListenerTest extends AppWebTestCase
 {
@@ -44,5 +46,26 @@ class UserSessionLogoutListenerTest extends AppWebTestCase
 
         $this->assertNull($phpSession->get(UserSessionService::FRONT_SESSION_KEY));
         $this->assertNull($userSessionService->findByAccessToken($accessToken));
+    }
+
+    /**
+     * Le listener passe avant SessionLogoutListener, qui vide la session PHP où est gardée la session API
+     * @return void
+     */
+    public function testListenerRunsBeforeSessionInvalidation(): void
+    {
+        /** @var EventDispatcherInterface $dispatcher */
+        $dispatcher = $this->container->get('security.event_dispatcher.admin');
+
+        $classes = array_map(
+            fn($listener) => is_array($listener) ? $listener[0]::class : $listener::class,
+            $dispatcher->getListeners(LogoutEvent::class),
+        );
+        $listenerIndex = array_search(UserSessionLogoutListener::class, $classes, true);
+        $sessionIndex = array_search(SessionLogoutListener::class, $classes, true);
+
+        $this->assertIsInt($listenerIndex);
+        $this->assertIsInt($sessionIndex);
+        $this->assertLessThan($sessionIndex, $listenerIndex);
     }
 }
