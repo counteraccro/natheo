@@ -14,6 +14,7 @@ use App\Entity\Admin\System\User;
 use App\Enum\Admin\Content\Page\PageCategory;
 use App\Service\Api\Global\ApiSitemapService;
 use App\Service\Api\System\User\UserSessionService;
+use App\Service\Global\User\AvatarUrl;
 use App\Translate\Front\FrontTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -23,7 +24,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Translation\LocaleSwitcher;
-use App\Service\Global\User\AvatarUrl;
 
 #[Route('/', name: 'front_')]
 class IndexController extends AppFrontController

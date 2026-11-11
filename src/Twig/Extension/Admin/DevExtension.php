@@ -13,6 +13,7 @@ use App\Entity\Admin\System\User;
 use App\Enum\Installation\DoctrineStrategy;
 use App\Service\Admin\Dev\GitService;
 use App\Service\Admin\GridService;
+use App\Service\Global\User\AvatarUrl;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
@@ -23,7 +24,6 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Http\LoginLink\LoginLinkHandlerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Attribute\AsTwigFunction;
-use App\Service\Global\User\AvatarUrl;
 
 class DevExtension extends AppAdminExtension
 {

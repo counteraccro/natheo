@@ -14,13 +14,13 @@ use App\Entity\Admin\System\User;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
 use App\Service\Admin\System\User\Anonymous;
+use App\Service\Global\User\AvatarUrl;
 use App\Enum\Admin\System\User\Role;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Exception;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\String\ByteString;
-use App\Service\Global\User\AvatarUrl;
 
 class UserService extends AppAdminService
 {
