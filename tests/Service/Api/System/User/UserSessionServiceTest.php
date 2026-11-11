@@ -16,6 +16,8 @@ use App\Service\Api\System\User\UserSessionService;
 use App\Service\Api\System\User\UserSessionTokens;
 use App\Service\Global\Token\TokenHasher;
 use App\Tests\AppWebTestCase;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 class UserSessionServiceTest extends AppWebTestCase
 {
@@ -248,6 +250,60 @@ class UserSessionServiceTest extends AppWebTestCase
         );
         $this->assertNull($this->userSessionService->findActiveByUserAndId($user, $expired->getId()));
         $this->assertNull($this->userSessionService->findActiveByUserAndId($user, $other->getId()));
+    }
+
+    /**
+     * Test méthode getFrontAccessToken() : création, réutilisation, renouvellement, autre utilisateur, token d'API invalide
+     * @return void
+     */
+    public function testGetFrontAccessToken(): void
+    {
+        $user = $this->createUserContributeur(['disabled' => false, 'anonymous' => false]);
+        $frontToken = self::getFaker()->uuid();
+        $this->createApiToken(['token' => TokenHasher::hash($frontToken), 'disabled' => false]);
+        $phpSession = new Session(new MockArraySessionStorage());
+
+        $this->assertSame('', $this->userSessionService->getFrontAccessToken($user, '', $phpSession, null, null));
+        $this->assertSame(
+            '',
+            $this->userSessionService->getFrontAccessToken($user, 'inconnu', $phpSession, null, null),
+        );
+
+        $first = $this->userSessionService->getFrontAccessToken(
+            $user,
+            $frontToken,
+            $phpSession,
+            'Navigateur',
+            '127.0.0.1',
+        );
+        $session = $this->userSessionService->findByAccessToken($first);
+        $this->assertSame($user->getId(), $session?->getUser()->getId());
+        $this->assertSame(
+            $first,
+            $this->userSessionService->getFrontAccessToken($user, $frontToken, $phpSession, null, null),
+        );
+        $this->assertCount(1, $this->userSessionService->findActiveByUser($user));
+
+        // Access token proche de l'expiration : renouvelé dans la même session
+        $session->setAccessTokenExpiresAt(new \DateTimeImmutable('+1 minute'));
+        $this->persistAndFlush($session);
+        $renewed = $this->userSessionService->getFrontAccessToken($user, $frontToken, $phpSession, null, null);
+        $this->assertNotSame($first, $renewed);
+        $this->assertSame($session->getId(), $this->userSessionService->findByAccessToken($renewed)?->getId());
+        $this->assertCount(1, $this->userSessionService->findActiveByUser($user));
+
+        // Autre utilisateur dans la même session PHP : nouvelle session
+        $other = $this->createUserContributeur(['disabled' => false, 'anonymous' => false]);
+        $otherToken = $this->userSessionService->getFrontAccessToken($other, $frontToken, $phpSession, null, null);
+        $this->assertSame(
+            $other->getId(),
+            $this->userSessionService->findByAccessToken($otherToken)?->getUser()->getId(),
+        );
+
+        $this->userSessionService->revokeFrontSession($phpSession);
+        $this->assertNull($phpSession->get(UserSessionService::FRONT_SESSION_KEY));
+        $this->assertNull($this->userSessionService->findByAccessToken($otherToken));
+        $this->assertNotNull($this->userSessionService->findByAccessToken($renewed));
     }
 
     /**

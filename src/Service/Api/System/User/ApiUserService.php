@@ -3,25 +3,20 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Service pour les User pour les API
  */
 namespace App\Service\Api\System\User;
 
 use App\Entity\Admin\System\User;
-use App\Entity\Admin\System\UserData;
-use App\Repository\Admin\System\UserRepository;
 use App\Service\Api\AppApiService;
-use App\Enum\Admin\System\User\UserDataKey;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use App\Service\Global\Token\TokenHasher;
 
 class ApiUserService extends AppApiService
 {
     /**
-     * Retourne un utilisateur en fonction de son token si celui ci est valide
-     * et si le compte est toujours actif
+     * Retourne l'utilisateur d'un access token de session valide (compte actif, token d'API actif)
      * @param string $userToken
      * @return User|null
      * @throws ContainerExceptionInterface
@@ -29,21 +24,6 @@ class ApiUserService extends AppApiService
      */
     public function getUserByUserToken(string $userToken): ?User
     {
-        $repository = $this->getRepository(UserData::class);
-        $userData = $repository->findByKeyValue(UserDataKey::TOKEN_CONNEXION->value, TokenHasher::hash($userToken));
-        if (is_null($userData)) {
-            return null;
-        }
-        /** @var User $user */
-        $user = $userData->getUser();
-        if ($user->isDisabled() || $user->isAnonymous()) {
-            return null;
-        }
-
-        $timeValidate = $user->getUserDataByKey(UserDataKey::TIME_VALIDATE_TOKEN->value);
-        if ($timeValidate === null || intval($timeValidate->getValue()) <= time()) {
-            return null;
-        }
-        return $user;
+        return $this->getUserSessionService()->findByAccessToken($userToken)?->getUser();
     }
 }

@@ -12,8 +12,8 @@ namespace App\Controller\Front;
 use App\Entity\Admin\Content\Page\PageMeta;
 use App\Entity\Admin\System\User;
 use App\Enum\Admin\Content\Page\PageCategory;
-use App\Service\Admin\System\User\UserDataService;
 use App\Service\Api\Global\ApiSitemapService;
+use App\Service\Api\System\User\UserSessionService;
 use App\Translate\Front\FrontTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -61,7 +61,7 @@ class IndexController extends AppFrontController
     /**
      * Affiche une page du site
      * @param Request $request
-     * @param UserDataService $userDataService
+     * @param UserSessionService $userSessionService
      * @param FrontTranslate $frontTranslate
      * @param ContainerBagInterface $containerBag
      * @param string $locale
@@ -83,7 +83,7 @@ class IndexController extends AppFrontController
     ]
     public function index(
         Request $request,
-        UserDataService $userDataService,
+        UserSessionService $userSessionService,
         FrontTranslate $frontTranslate,
         ContainerBagInterface $containerBag,
         string $locale,
@@ -130,7 +130,13 @@ class IndexController extends AppFrontController
         $token = '';
         $userInfo = null;
         if ($user != null) {
-            $token = $userDataService->generateUserToken($user);
+            $token = $userSessionService->getFrontAccessToken(
+                $user,
+                $this->optionSystemFrontService->getFrontApiToken(),
+                $request->getSession(),
+                $request->headers->get('User-Agent'),
+                $request->getClientIp(),
+            );
             $userInfo = [
                 'login' => $user->getLogin(),
                 'avatarImg' => $user->getAvatar(),

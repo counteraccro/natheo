@@ -19,6 +19,7 @@ use App\Service\Api\AppApiService;
 use App\Service\Global\Token\TokenHasher;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\String\ByteString;
 
 class UserSessionService extends AppApiService
@@ -40,6 +41,18 @@ class UserSessionService extends AppApiService
      * @var int
      */
     public const int DEFAULT_REFRESH_TOKEN_LIFETIME = 10080;
+
+    /**
+     * Clé de la session PHP qui garde la session API d'un utilisateur du back-office sur le site public
+     * @var string
+     */
+    public const string FRONT_SESSION_KEY = 'front_api_user_session';
+
+    /**
+     * Marge avant l'expiration de l'access token sous laquelle le site public le renouvelle, en secondes
+     * @var int
+     */
+    private const int FRONT_RENEW_MARGIN = 300;
 
     /**
      * Longueur des tokens générés
@@ -167,6 +180,74 @@ class UserSessionService extends AppApiService
     public function findActiveByUser(User $user): array
     {
         return $this->getUserSessionRepository()->findActiveByUser($user);
+    }
+
+    /**
+     * Access token d'un utilisateur du back-office qui consulte le site public. La session API est gardée dans la
+     * session PHP, renouvelée quand l'access token approche de son expiration, créée s'il n'y en a pas
+     * @param User $user
+     * @param string $apiToken token d'API du site public, en clair
+     * @param SessionInterface $phpSession
+     * @param string|null $userAgent
+     * @param string|null $ip
+     * @return string chaîne vide si le token d'API du site public est absent ou invalide
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getFrontAccessToken(
+        User $user,
+        string $apiToken,
+        SessionInterface $phpSession,
+        ?string $userAgent,
+        ?string $ip,
+    ): string {
+        /** @var ApiToken|null $frontApiToken */
+        $frontApiToken = $this->findOneBy(ApiToken::class, 'token', TokenHasher::hash($apiToken));
+        if ($frontApiToken === null || $frontApiToken->isDisabled() || $frontApiToken->isExpired()) {
+            return '';
+        }
+
+        $tokens = null;
+        $stored = $phpSession->get(self::FRONT_SESSION_KEY);
+        if (is_array($stored) && ($stored['userId'] ?? null) === $user->getId()) {
+            $session = $this->findByAccessToken((string) $stored['accessToken']);
+            $renewAt = new \DateTimeImmutable('+' . self::FRONT_RENEW_MARGIN . ' seconds');
+            if ($session !== null && $session->getAccessTokenExpiresAt() > $renewAt) {
+                return (string) $stored['accessToken'];
+            }
+            $tokens = $this->refresh((string) $stored['refreshToken'], $frontApiToken);
+        }
+
+        $tokens ??= $this->create($user, $frontApiToken, $userAgent, $ip);
+        $phpSession->set(self::FRONT_SESSION_KEY, [
+            'userId' => $user->getId(),
+            'accessToken' => $tokens->accessToken,
+            'refreshToken' => $tokens->refreshToken,
+        ]);
+        return $tokens->accessToken;
+    }
+
+    /**
+     * Révoque la session API gardée dans la session PHP par le site public
+     * @param SessionInterface $phpSession
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function revokeFrontSession(SessionInterface $phpSession): void
+    {
+        $stored = $phpSession->get(self::FRONT_SESSION_KEY);
+        $phpSession->remove(self::FRONT_SESSION_KEY);
+        if (!is_array($stored)) {
+            return;
+        }
+
+        $session = $this->getUserSessionRepository()->findOneBy([
+            'refreshTokenHash' => TokenHasher::hash((string) ($stored['refreshToken'] ?? '')),
+        ]);
+        if ($session !== null) {
+            $this->revoke($session);
+        }
     }
 
     /**
