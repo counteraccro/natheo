@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * authenticate pour API
  */
 
@@ -21,16 +21,14 @@ use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
+use Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class ApiAuthenticator extends AbstractAuthenticator
+class ApiAuthenticator extends AbstractAuthenticator implements AuthenticationEntryPointInterface
 {
     private const string BEARER_PREFIX = 'Bearer ';
 
-    public function __construct(
-        private TranslatorInterface $translator,
-        private ApiService $apiService,
-    ) {}
+    public function __construct(private TranslatorInterface $translator, private ApiService $apiService) {}
 
     /**
      * Requête avec un token, ou toute requête quand l'API est fermée (refusée dans authenticate())
@@ -80,6 +78,22 @@ class ApiAuthenticator extends AbstractAuthenticator
         throw new HttpException(
             Response::HTTP_UNAUTHORIZED,
             $this->translator->trans('api_errors.authentication.failure', domain: 'api_errors'),
+            headers: ['WWW-Authenticate' => 'Bearer error="invalid_token"'],
+        );
+    }
+
+    /**
+     * Requête sans token sur une route protégée
+     * @param Request $request
+     * @param AuthenticationException|null $authException
+     * @return Response
+     */
+    public function start(Request $request, ?AuthenticationException $authException = null): Response
+    {
+        throw new HttpException(
+            Response::HTTP_UNAUTHORIZED,
+            $this->translator->trans('api_errors.authentication.required', domain: 'api_errors'),
+            headers: ['WWW-Authenticate' => 'Bearer'],
         );
     }
 

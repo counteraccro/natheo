@@ -1,4 +1,5 @@
 api_errors.authentication.failure: Token invalide
+api_errors.authentication.required: 'Token d''API manquant'
 api_errors.access.denied: 'Ressource non accessible'
 api_errors.not.found: 'Ressource non disponible'
 api_errors.access.unauthorized: 'Accès non autorisé'

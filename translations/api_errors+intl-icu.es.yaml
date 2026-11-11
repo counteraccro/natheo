@@ -1,4 +1,5 @@
 api_errors.authentication.failure: Token no válido
+api_errors.authentication.required: 'Falta el token de la API'
 api_errors.access.denied: Recurso no accesible
 api_errors.not.found: Recurso no disponible
 api_errors.params.name.not.found: Falta el parámetro esperado {param}
