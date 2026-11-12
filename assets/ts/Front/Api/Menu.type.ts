@@ -6,7 +6,7 @@
 import type { JsonLdResource } from '@/ts/Front/Api/Hydra.type';
 import type { PageCategory } from '@/ts/Front/Api/Page.type';
 
-export type MenuPosition = 'position_header' | 'position_right' | 'position_footer' | 'position_left';
+export type MenuPosition = 'header' | 'right' | 'footer' | 'left';
 
 export type MenuType =
   | 'header_side_bar'

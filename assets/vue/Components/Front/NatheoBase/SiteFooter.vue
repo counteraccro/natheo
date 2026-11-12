@@ -8,7 +8,7 @@ import { computed, toRef } from 'vue';
 import { useFrontContext } from '@/vue/Composables/Front/useFrontContext';
 import { useMenus } from '@/vue/Composables/Front/useMenus';
 import { useSiteOptions } from '@/vue/Composables/Front/useSiteOptions';
-import MenuList from '@/vue/Components/Front/NatheoBase/MenuList.vue';
+import FooterMenu from '@/vue/Components/Front/NatheoBase/Menu/FooterMenu.vue';
 import type { Page } from '@/ts/Front/Api/Page.type';
 import type { SiteOptions } from '@/ts/Front/Api/OptionSystem.type';
 
@@ -47,7 +47,7 @@ const languages = computed(() => {
 <template>
   <footer class="border-t border-gray-200 dark:border-gray-700 text-sm">
     <div class="max-w-5xl mx-auto px-4 py-6 space-y-4">
-      <MenuList v-if="menus.position_footer" :elements="menus.position_footer.elements" horizontal />
+      <FooterMenu v-if="menus.footer" :menu="menus.footer" />
       <p v-if="options?.front_footer_texte">{{ options.front_footer_texte }}</p>
       <ul v-if="socials.length" class="flex flex-wrap gap-4">
         <li v-for="social in socials" :key="social.label">
