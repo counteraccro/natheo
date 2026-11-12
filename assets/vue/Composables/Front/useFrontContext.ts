@@ -3,7 +3,7 @@
  * @version 1.0
  * Contexte du site public partagé par les composables : props du thème, client API et cache des chargements
  */
-import { inject, provide, type InjectionKey } from 'vue';
+import { getCurrentInstance, inject, type InjectionKey } from 'vue';
 import { ApiClient } from '@/vue/Composables/Front/Api/ApiClient';
 import { ApiError } from '@/vue/Composables/Front/Api/ApiError';
 import { API_CLIENT_KEY } from '@/vue/Composables/Front/Api/useApi';
@@ -62,8 +62,13 @@ export function createFrontContext(props: FrontThemeProps): FrontContext {
     },
   };
 
-  provide(FRONT_CONTEXT_KEY, context);
-  provide(API_CLIENT_KEY, api);
+  // Fourni à l'application montée et non au composant : le composant racine l'utilise lui-même
+  const app = getCurrentInstance()?.appContext.app;
+  if (app === undefined) {
+    throw new Error('createFrontContext() doit être appelé dans le setup du composant racine du thème');
+  }
+  app.provide(FRONT_CONTEXT_KEY, context);
+  app.provide(API_CLIENT_KEY, api);
   return context;
 }
 
