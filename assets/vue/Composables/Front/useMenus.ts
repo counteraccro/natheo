@@ -1,7 +1,7 @@
 /**
  * @author Gourdon Aymeric
  * @version 1.0
- * Menus de la page par position, et lien de chaque élément
+ * Menus de la page par position, et lien de chaque élément (page facultative pour le seul calcul des liens)
  */
 import { computed, type ComputedRef, type Ref } from 'vue';
 import { useFrontContext } from '@/vue/Composables/Front/useFrontContext';
@@ -14,10 +14,10 @@ export interface Menus {
   hrefOf(element: MenuElement): string | null;
 }
 
-export function useMenus(page: Ref<Page | null>): Menus {
+export function useMenus(page?: Ref<Page | null>): Menus {
   const context = useFrontContext();
 
-  const menus = computed(() => Object.fromEntries((page.value?.menus ?? []).map((menu) => [menu.position, menu])));
+  const menus = computed(() => Object.fromEntries((page?.value?.menus ?? []).map((menu) => [menu.position, menu])));
 
   function hrefOf(element: MenuElement): string | null {
     if (element.url) {

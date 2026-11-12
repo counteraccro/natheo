@@ -3,6 +3,7 @@ front.footer.template.version: '{version}'
 front.footer.admin.link: Administración
 front.footer.github.link: GitHub
 front.page.title: Cargando...
+front.page.edit_link: 'Editar esta página'
 front.footer.sitemap.link: Mapa del sitio
 front.header.login: Iniciar sesión
 front.header.logout: Cerrar sesión

@@ -1,0 +1,15 @@
+{% extends 'front/front_base.html.twig' %}
+
+{% block meta %}
+    {% for meta in metaSeo %}
+        <meta name="{{ meta.name }}" content="{{ meta.value }}">
+    {% endfor %}
+{% endblock %}
+
+{% block body %}
+    <div {{ vue_component('Front/NatheoBase/App', {
+        'datas': datas,
+        'urls': urls,
+        'translate': translate
+    }) }}></div>
+{% endblock %}

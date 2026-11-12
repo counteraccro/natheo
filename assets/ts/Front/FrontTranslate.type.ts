@@ -60,6 +60,8 @@ export interface FrontListingTranslate {
 export interface FrontMainTranslate {
   articleFooter: FrontArticleFooterTranslate;
   breadcrumb: string;
+  editLink: string;
+  loading: string;
   headerImgAlt: string;
   listing: FrontListingTranslate;
   pagination: FrontPaginationTranslate;

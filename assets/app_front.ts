@@ -6,4 +6,4 @@
 import './styles/app_front_natheo_horizon.css';
 import { startVueControllers } from './bootstrap';
 
-startVueControllers(import.meta.glob('./vue/controllers/Front/**/*.vue'));
+startVueControllers(import.meta.glob('./vue/controllers/Front/NatheoHorizon/**/*.vue'));
