@@ -22,3 +22,4 @@ _PHPUnit (MySQL / PostgreSQL) et `yarn build` sont lancés par la CI (workflow `
 - [ ] Traductions fr / en / es à jour
 - [ ] Migration Doctrine : aucune / ajoutée
 - [ ] Fixtures et helpers de test à jour
+- [ ] `CHANGELOG.md` : ligne ajoutée dans « Non publié » / sans objet

@@ -6,7 +6,7 @@ PHP:
 
 TypeScript:
   - changed-files:
-      - any-glob-to-any-file: ["assets/**/*.ts", "assets/**/*.vue", "tsconfig.json", "vite.config.ts"]
+      - any-glob-to-any-file: ["assets/**/*.ts", "assets/**/*.vue", "tsconfig.json", "vite.config.mts"]
 
 JavaScript:
   - changed-files:
