@@ -19,6 +19,7 @@ Le format suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), avec un
 - API v2 avec API Platform sous `/api/v2` : JSON-LD / Hydra ou JSON, erreurs `application/problem+json`, documentation Swagger sur `/api/v2/docs` quand l'API est ouverte ([#469](https://github.com/counteraccro/natheo/issues/469))
 - Ressources de l'API v2 : pages, contenus et menus ([#470](https://github.com/counteraccro/natheo/issues/470)), commentaires ([#471](https://github.com/counteraccro/natheo/issues/471)), options système et sitemap ([#472](https://github.com/counteraccro/natheo/issues/472))
 - Sessions API des utilisateurs : connexion, access token de 15 minutes dans `Authorization: Bearer`, renouvellement par refresh token, liste des sessions, déconnexion et `/me` ([#505](https://github.com/counteraccro/natheo/issues/505))
+- Site public : socle commun aux thèmes sur l'API v2 et thème Natheo-Base (HTML sémantique sans design), sélectionnable dans les options système, avec prévisualisation des brouillons et lien « Modifier cette page » ([#463](https://github.com/counteraccro/natheo/issues/463))
 
 ### Modifié
 
