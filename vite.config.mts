@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite';
-import { resolve } from 'path';
+import { fileURLToPath } from 'node:url';
 import vue from '@vitejs/plugin-vue';
 import symfonyPlugin from 'vite-plugin-symfony';
 
@@ -46,7 +46,7 @@ export default defineConfig(({ command }) => ({
 
   resolve: {
     alias: {
-      '@': resolve(__dirname, './assets'),
+      '@': fileURLToPath(new URL('./assets', import.meta.url)),
       // Alias pour Vue 3 avec support complet (Options API + Composition API + template compiler)
       vue: 'vue/dist/vue.esm-bundler.js',
     },
