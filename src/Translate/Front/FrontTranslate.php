@@ -53,6 +53,8 @@ class FrontTranslate extends AppTranslate
             'main' => [
                 'articleFooter' => $this->getTranslateArticleFooter(),
                 'breadcrumb' => $this->trans('front.breadcrumb.index'),
+                'editLink' => $this->trans('front.page.edit_link'),
+                'loading' => $this->trans('front.page.title'),
                 'headerImgAlt' => $this->trans('front.article.header.img.alt'),
                 'listing' => $this->getTranslateListing(),
                 'pagination' => $this->getTranslatePagination(),

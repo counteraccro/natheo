@@ -12,10 +12,14 @@ namespace App\Controller\Front;
 use App\Entity\Admin\Content\Page\PageMeta;
 use App\Entity\Admin\System\User;
 use App\Enum\Admin\Content\Page\PageCategory;
+use App\Enum\Front\Template;
+use App\Service\Api\Content\Page\ApiPageService;
 use App\Service\Api\Global\ApiSitemapService;
 use App\Service\Api\System\User\UserSessionService;
+use App\Service\Front\FrontPreviewService;
 use App\Service\Global\User\AvatarUrl;
 use App\Translate\Front\FrontTranslate;
+use League\CommonMark\Exception\CommonMarkException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
@@ -23,6 +27,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Translation\LocaleSwitcher;
 
 #[Route('/', name: 'front_')]
@@ -41,7 +46,7 @@ class IndexController extends AppFrontController
     {
         $hostname = $request->getSchemeAndHttpHost();
 
-        $xml = $this->renderView($this->getPathTemplate() . DIRECTORY_SEPARATOR . 'sitemap.xml.twig', [
+        $xml = $this->renderView('front/sitemap.xml.twig', [
             'urls' => $apiSitemapService->getSitemap(),
             'hostname' => $hostname,
         ]);
@@ -63,6 +68,8 @@ class IndexController extends AppFrontController
      * Affiche une page du site
      * @param Request $request
      * @param UserSessionService $userSessionService
+     * @param ApiPageService $apiPageService
+     * @param FrontPreviewService $frontPreviewService
      * @param FrontTranslate $frontTranslate
      * @param ContainerBagInterface $containerBag
      * @param string $locale
@@ -71,6 +78,8 @@ class IndexController extends AppFrontController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      * @throws \DateMalformedStringException
+     * @throws CommonMarkException
+     * @throws ExceptionInterface
      */
     #[
         Route(
@@ -85,6 +94,8 @@ class IndexController extends AppFrontController
     public function index(
         Request $request,
         UserSessionService $userSessionService,
+        ApiPageService $apiPageService,
+        FrontPreviewService $frontPreviewService,
         FrontTranslate $frontTranslate,
         ContainerBagInterface $containerBag,
         string $locale,
@@ -106,6 +117,114 @@ class IndexController extends AppFrontController
             );
         }
 
+        // Ancien thème, encore sur l'API v1
+        if ($this->optionSystemFrontService->getTemplate() === Template::NATHEO_HORIZON) {
+            return $this->renderLegacyTheme(
+                $request,
+                $userSessionService,
+                $frontTranslate,
+                $containerBag,
+                $locale,
+                $slug,
+            );
+        }
+
+        /** @var User|null $user */
+        $user = $this->getUser();
+        $editablePage = $user === null ? null : $apiPageService->findEditablePageBySlug((string) $slug, $locale, $user);
+        $avatarPath = (string) $containerBag->get('app.path.avatar');
+        $locales = explode('|', (string) $this->getParameter('app.supported_locales'));
+
+        $urls = [
+            'api' => $this->getParameter('app.api_v2.prefix'),
+            'adminAuth' => $this->generateUrl('admin_dashboard_index'),
+            'sitemap' => $this->generateUrl('front_sitemap'),
+            'logout' => $this->generateUrl('auth_logout'),
+            'home' => array_combine(
+                $locales,
+                array_map(
+                    fn(string $homeLocale) => $this->generateUrl('front_index_2', [
+                        'locale' => $homeLocale,
+                        'category' => null,
+                        'slug' => null,
+                    ]),
+                    $locales,
+                ),
+            ),
+        ];
+
+        $datas = [
+            'slug' => $slug,
+            'locale' => $locale,
+            'locales' => $locales,
+            'apiToken' => $this->optionSystemFrontService->getFrontApiToken(),
+            'userToken' => '',
+            'user' => null,
+            'pathAvatar' => AvatarUrl::directory($avatarPath, $request->getBasePath()),
+            'preview' => null,
+        ];
+
+        if ($user !== null) {
+            $datas['userToken'] = $userSessionService->getFrontAccessToken(
+                $user,
+                $datas['apiToken'],
+                $request->getSession(),
+                $request->headers->get('User-Agent'),
+                $request->getClientIp(),
+            );
+            $datas['user'] = [
+                'login' => $user->getLogin(),
+                'avatar' => AvatarUrl::file($user->getAvatar(), $avatarPath, $request->getBasePath()),
+                'canModerate' => $this->isGranted('ROLE_CONTRIBUTEUR'),
+                'editUrl' =>
+                    $editablePage === null
+                        ? null
+                        : $this->generateUrl('admin_page_update', [
+                            '_locale' => $locale,
+                            'id' => $editablePage->getId(),
+                        ]),
+            ];
+        }
+
+        if ($editablePage !== null) {
+            $datas['preview'] = $frontPreviewService->getPreview(
+                $editablePage,
+                $locale,
+                $request->query->getBoolean('preview'),
+            );
+        }
+
+        return $this->render($this->getPathTemplate() . DIRECTORY_SEPARATOR . 'index.html.twig', [
+            'urls' => $urls,
+            'datas' => $datas,
+            'translate' => $frontTranslate->getTranslate($locale),
+            'scriptsTag' => $this->getScriptTags(),
+            'metaSeo' => $this->getMetaSeo($locale, $slug),
+            'locale' => $locale,
+        ]);
+    }
+
+    /**
+     * Affiche une page avec l'ancien thème Natheo-Horizon, qui appelle l'API v1
+     * @param Request $request
+     * @param UserSessionService $userSessionService
+     * @param FrontTranslate $frontTranslate
+     * @param ContainerBagInterface $containerBag
+     * @param string $locale
+     * @param string|null $slug
+     * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws \DateMalformedStringException
+     */
+    private function renderLegacyTheme(
+        Request $request,
+        UserSessionService $userSessionService,
+        FrontTranslate $frontTranslate,
+        ContainerBagInterface $containerBag,
+        string $locale,
+        ?string $slug,
+    ): Response {
         $version = $this->getParameter('app.api_version');
 
         $urls = [
@@ -163,18 +282,27 @@ class IndexController extends AppFrontController
             'preview' => $request->query->getBoolean('preview'),
         ];
 
-        $seoRobots = $this->optionSystemFrontService->getMetaRobots(true);
-        $pageMetaRepo = $this->getRepository(PageMeta::class);
-        $seoPage = $pageMetaRepo->getMetasByPageAndLocale($locale, $slug);
-        $seo = array_merge($seoPage, $seoRobots);
-
         return $this->render($this->getPathTemplate() . DIRECTORY_SEPARATOR . 'index.html.twig', [
             'urls' => $urls,
             'datas' => $datas,
             'translate' => $frontTranslate->getTranslate($locale),
             'scriptsTag' => $this->getScriptTags(),
-            'metaSeo' => $seo,
+            'metaSeo' => $this->getMetaSeo($locale, $slug),
             'locale' => $locale,
         ]);
+    }
+
+    /**
+     * Balises meta de la page (SEO de la page et consignes aux robots)
+     * @param string $locale
+     * @param string|null $slug
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function getMetaSeo(string $locale, ?string $slug): array
+    {
+        $seoPage = $this->getRepository(PageMeta::class)->getMetasByPageAndLocale($locale, $slug);
+        return array_merge($seoPage, $this->optionSystemFrontService->getMetaRobots(true));
     }
 }
