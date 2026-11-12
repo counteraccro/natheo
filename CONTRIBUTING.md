@@ -68,6 +68,15 @@ Les tests sont lancés automatiquement (workflow `tests`) sur chaque PR et chaqu
 
 Un nouveau push annule le run en cours de la même branche. Les trois checks doivent être verts pour merger.
 
+### 4. Le journal des modifications
+
+[`CHANGELOG.md`](CHANGELOG.md) suit le format [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), avec une rubrique **Rupture** en plus.
+
+- Toute PR qui change ce que voit un utilisateur, un intégrateur ou un hébergeur ajoute sa ligne dans la section `[Non publié]`, dans la bonne rubrique (Rupture, Ajouté, Modifié, Déprécié, Supprimé, Corrigé, Sécurité), avec le lien de l'issue.
+- Une PR sans effet visible (CI, outillage, refactoring, tests) n'y ajoute rien : la case du template se coche « sans objet ».
+- Un changement incompatible (API, schéma, option supprimée…) va toujours dans **Rupture**, avec ce qu'il faut faire pour s'adapter.
+- À la sortie, `[Non publié]` devient `## [x.y.z] - AAAA-MM-JJ`, une section `[Non publié]` vide est recréée en tête, les liens de comparaison du bas sont mis à jour, et la section sert de base au texte de la release GitHub.
+
 ### Branche d'Epic
 
 Les issues d'une Epic ne passent pas une à une sur `master` :
