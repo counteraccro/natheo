@@ -72,6 +72,15 @@ export interface FrontHeaderTranslate {
   logout: string;
   openMenu: string;
   darkMode: string;
+  skipLink: string;
+  closeMenu: string;
+  localeLabel: string;
+}
+
+export interface FrontMenuTranslate {
+  headerLabel: string;
+  sideLabel: string;
+  footerLabel: string;
 }
 
 export interface FrontFooterTranslate {
@@ -83,6 +92,7 @@ export interface FrontFooterTranslate {
   frLink: string;
   esLink: string;
   enLink: string;
+  socialLabel: string;
 }
 
 export interface FrontErrorApiTranslate {
@@ -96,5 +106,6 @@ export interface FrontTranslate {
   errorApi: FrontErrorApiTranslate;
   footer: FrontFooterTranslate;
   header: FrontHeaderTranslate;
+  menu: FrontMenuTranslate;
   main: FrontMainTranslate;
 }

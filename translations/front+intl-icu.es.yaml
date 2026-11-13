@@ -60,3 +60,10 @@ front.pagination.first: Primera página
 front.pagination.previous: Página anterior
 front.pagination.next: Página siguiente
 front.pagination.last: Última página
+front.header.skip_link: "Ir al contenido"
+front.header.close_menu: "Cerrar el menú"
+front.header.locale_label: "Idioma"
+front.menu.header_label: "Menú principal"
+front.menu.side_label: "Menú secundario"
+front.menu.footer_label: "Menú del pie de página"
+front.footer.social_label: "Redes sociales"

@@ -50,6 +50,11 @@ class FrontTranslate extends AppTranslate
             'errorApi' => $this->getTranslateErrorApi(),
             'footer' => $this->getTranslateFooter(),
             'header' => $this->getTranslateHeader(),
+            'menu' => [
+                'headerLabel' => $this->trans('front.menu.header_label'),
+                'sideLabel' => $this->trans('front.menu.side_label'),
+                'footerLabel' => $this->trans('front.menu.footer_label'),
+            ],
             'main' => [
                 'articleFooter' => $this->getTranslateArticleFooter(),
                 'breadcrumb' => $this->trans('front.breadcrumb.index'),
@@ -135,6 +140,7 @@ class FrontTranslate extends AppTranslate
             'frLink' => $this->translator->trans('front.footer.fr.link', domain: 'front', locale: $this->locale),
             'esLink' => $this->translator->trans('front.footer.es.link', domain: 'front', locale: $this->locale),
             'enLink' => $this->translator->trans('front.footer.en.link', domain: 'front', locale: $this->locale),
+            'socialLabel' => $this->trans('front.footer.social_label'),
         ];
     }
 
@@ -149,6 +155,9 @@ class FrontTranslate extends AppTranslate
             'logout' => $this->translator->trans('front.header.logout', domain: 'front', locale: $this->locale),
             'openMenu' => $this->trans('front.header.open.menu'),
             'darkMode' => $this->trans('front.header.dark.mode'),
+            'skipLink' => $this->trans('front.header.skip_link'),
+            'closeMenu' => $this->trans('front.header.close_menu'),
+            'localeLabel' => $this->trans('front.header.locale_label'),
         ];
     }
 
