@@ -1,0 +1,55 @@
+/*!
+ * Author : Gourdon Aymeric
+ * Version : 2.0
+ * Jetons de couleur du thème Natheo-Horizon, clair et sombre (contrastes WCAG 2.2 AA)
+ */
+
+:root {
+    --bg: #ffffff;
+    --surface: #f5f3fc;
+    --fg: #13112a;
+    --fg-muted: #4f4a6b;
+    --line: #e3e0f0;
+    --field-border: #8a84a8;
+    --primary: #4b22c9;
+    --on-primary: #ffffff;
+    --focus: var(--primary);
+    --code-bg: #13112a;
+
+    /* En-tête, bandeau et pied de page */
+    --night: #241056;
+    --on-night: #ffffff;
+    --on-night-muted: #d6ccff;
+    --night-line: rgb(201 184 255 / 0.2);
+    --focus-on-night: #5cc8f0;
+
+    /* Couleur de chaque taille de bloc (texte posé dessus : --fg clair) */
+    --mod-full: #c9b8ff;
+    --mod-half: #8f6cff;
+    --mod-third: #5cc8f0;
+    --on-mod: #13112a;
+
+    /* Statut « en attente » et bandeau de prévisualisation */
+    --notice-bg: #fff3c4;
+    --notice-fg: #3d2c00;
+
+    --radius: 4px;
+    --radius-lg: 6px;
+    --font: 'Schibsted Grotesk Variable', ui-sans-serif, system-ui, sans-serif;
+    --font-mono: ui-monospace, 'SF Mono', Menlo, monospace;
+    color-scheme: light;
+}
+
+:root.dark {
+    --bg: #0f0a24;
+    --surface: #181134;
+    --fg: #ece8fb;
+    --fg-muted: #a9a2c8;
+    --line: #2c2452;
+    --field-border: #6f6896;
+    --primary: #b3a0ff;
+    --on-primary: #0f0a24;
+    --code-bg: #070413;
+    --night: #1a0c44;
+    color-scheme: dark;
+}

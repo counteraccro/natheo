@@ -1,0 +1,52 @@
+/*!
+ * Author : Gourdon Aymeric
+ * Version : 2.0
+ * Jetons du thème Natheo-Horizon exposés à Tailwind (bg-surface, text-fg, bg-night, bg-mod-half…)
+ */
+
+@theme inline {
+    --font-sans: var(--font);
+    --font-mono: var(--font-mono);
+
+    --color-bg: var(--bg);
+    --color-surface: var(--surface);
+    --color-fg: var(--fg);
+    --color-fg-muted: var(--fg-muted);
+    --color-line: var(--line);
+    --color-field: var(--field-border);
+    --color-primary: var(--primary);
+    --color-on-primary: var(--on-primary);
+    --color-code: var(--code-bg);
+    --color-night: var(--night);
+    --color-on-night: var(--on-night);
+    --color-on-night-muted: var(--on-night-muted);
+    --color-night-line: var(--night-line);
+    --color-focus-night: var(--focus-on-night);
+    --color-mod-full: var(--mod-full);
+    --color-mod-half: var(--mod-half);
+    --color-mod-third: var(--mod-third);
+    --color-on-mod: var(--on-mod);
+    --color-notice: var(--notice-bg);
+    --color-on-notice: var(--notice-fg);
+
+    --radius-nh: var(--radius);
+    --radius-nh-lg: var(--radius-lg);
+}
+
+@theme {
+    --animate-rise: nh-rise 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+    --animate-breathe: nh-breathe 1.4s ease-in-out infinite alternate;
+
+    @keyframes nh-rise {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+    }
+
+    @keyframes nh-breathe {
+        to {
+            opacity: 0.45;
+        }
+    }
+}
