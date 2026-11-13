@@ -1,49 +1,25 @@
 tag:
-    Tag_natheo:
-        color: '#6F42C1'
-        label:
-            fr: Natheo CMS
-            es: Natheo CMS
-            en: Natheo CMS
-    Tag_dev:
-        color: '#7A86B8'
-        label:
-            fr: Développement
-            es: Desarrollo
-            en: Development
-    Tag_article:
-        color: '#1188b4'
-        label:
-            fr: Article
-            es: Artículo
-            en: Article
-    Tag_evolution:
-        color: '#b61114'
-        label:
-            fr: Evolution
-            es: Evolución
-            en: Evolution
-    Tag_faq:
-        color: '#262cdf'
-        label:
-            fr: FAQ
-            es: Preguntas frecuentes
-            en: FAQ
-    Tag_page:
-        color: '#23e515'
-        label:
-            fr: Page
-            es: Página
-            en: Page
-    Tag_blog:
-        color: '#b8db0a'
-        label:
-            fr: Blog
-            es: Blog
-            en: Blog
-    Tag_demo:
-        color: '#F0C847'
-        label:
-            fr: Démo
-            es: Manifestación
-            en: Demo
+    tag-version:
+        color: '#6530e0'
+        label: { fr: 'Version', en: 'Release', es: 'Versión' }
+    tag-announce:
+        color: '#be123c'
+        label: { fr: 'Annonce', en: 'Announcement', es: 'Anuncio' }
+    tag-tutorial:
+        color: '#0f766e'
+        label: { fr: 'Tutoriel', en: 'Tutorial', es: 'Tutorial' }
+    tag-api:
+        color: '#0369a1'
+        label: { fr: 'API', en: 'API', es: 'API' }
+    tag-themes:
+        color: '#a21caf'
+        label: { fr: 'Thèmes', en: 'Themes', es: 'Temas' }
+    tag-languages:
+        color: '#b45309'
+        label: { fr: 'Multilingue', en: 'Multilingual', es: 'Multilingüe' }
+    tag-security:
+        color: '#15803d'
+        label: { fr: 'Sécurité', en: 'Security', es: 'Seguridad' }
+    tag-database:
+        color: '#475569'
+        label: { fr: 'Base de données', en: 'Database', es: 'Base de datos' }

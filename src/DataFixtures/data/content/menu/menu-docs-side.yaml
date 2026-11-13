@@ -1,0 +1,15 @@
+menu-docs-side:
+    name: 'Sommaire de la documentation'
+    type: LEFT_RIGHT_SIDE_BAR
+    position: POSITION_LEFT
+    elements:
+        -   page: docs
+            label: { fr: 'Sommaire', en: 'Contents', es: 'Índice' }
+            children:
+                -   page: docs-install
+                -   page: docs-config
+                -   page: docs-theme
+                -   page: docs-api
+        -   label: { fr: 'Documentation complète', en: 'Full documentation', es: 'Documentación completa' }
+            url: 'https://counteraccro.github.io/natheo.doc/'
+            newTab: true

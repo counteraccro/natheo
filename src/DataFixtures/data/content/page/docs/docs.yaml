@@ -1,0 +1,24 @@
+docs:
+    user: R-Admin
+    render: TWO_BLOCK_BOTTOM
+    category: PAGE
+    status: PUBLISH
+    date: '-4 days'
+    isOpenComment: false
+    ruleComment: VALIDATE
+    headerImg: hdr-docs
+    tags: [tag-tutorial]
+    menus: [menu-docs-header, menu-docs-side, menu-docs-footer]
+    stats: { visitors: 720, reads: 640 }
+    translations:
+        fr: { titre: 'Documentation', url: documentation }
+        en: { titre: 'Documentation', url: documentation }
+        es: { titre: 'Documentación', url: documentacion }
+    metas:
+        description:
+            fr: 'Installer, configurer et étendre Nathéo.'
+            en: 'Install, configure and extend Nathéo.'
+            es: 'Instalar, configurar y ampliar Nathéo.'
+    blocks:
+        - { block: 1, type: TEXT }
+        - { block: 2, type: LISTING, listing: DOCUMENTATION }

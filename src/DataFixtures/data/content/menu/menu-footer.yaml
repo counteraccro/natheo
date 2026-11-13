@@ -1,0 +1,29 @@
+menu-footer:
+    name: 'Pied de page'
+    type: FOOTER_COLONNES
+    position: POSITION_FOOTER
+    defaultMenu: true
+    elements:
+        -   label: { fr: 'Produit', en: 'Product', es: 'Producto' }
+            children:
+                -   page: features
+                -   page: feature-api
+                -   page: roadmap
+        -   label: { fr: 'Ressources', en: 'Resources', es: 'Recursos' }
+            children:
+                -   page: docs
+                -   page: faq
+                -   page: blog
+        -   label: { fr: 'Communauté', en: 'Community', es: 'Comunidad' }
+            children:
+                -   page: contribute
+                -   label: { fr: 'Discord', en: 'Discord', es: 'Discord' }
+                    url: 'https://discord.gg/CgcMCcbmaR'
+                    newTab: true
+                -   label: { fr: 'GitHub', en: 'GitHub', es: 'GitHub' }
+                    url: 'https://github.com/counteraccro/natheo'
+                    newTab: true
+        -   label: { fr: 'Légal', en: 'Legal', es: 'Legal' }
+            children:
+                -   page: legal
+                -   page: license

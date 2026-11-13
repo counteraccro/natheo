@@ -1,0 +1,29 @@
+home:
+    user: User
+    render: ONE_TWO_BLOCK
+    category: PAGE
+    status: PUBLISH
+    date: '-1 day'
+    landingPage: true
+    isOpenComment: false
+    ruleComment: VALIDATE
+    headerImg: hdr-home
+    tags: [tag-version]
+    stats: { visitors: 1840, reads: 1620 }
+    translations:
+        fr: { titre: 'Nathéo, le CMS libre construit sur Symfony', url: accueil }
+        en: { titre: 'Nathéo, the open-source CMS built on Symfony', url: home }
+        es: { titre: 'Nathéo, el CMS libre construido sobre Symfony', url: inicio }
+    metas:
+        description:
+            fr: 'Nathéo est un CMS libre et multilingue construit sur Symfony 8, avec une API v2 et des thèmes modulables.'
+            en: 'Nathéo is an open-source, multilingual CMS built on Symfony 8, with an API v2 and modular themes.'
+            es: 'Nathéo es un CMS libre y multilingüe construido sobre Symfony 8, con una API v2 y temas modulares.'
+        keywords:
+            fr: 'CMS, Symfony, multilingue, API, logiciel libre'
+            en: 'CMS, Symfony, multilingual, API, open source'
+            es: 'CMS, Symfony, multilingüe, API, software libre'
+    blocks:
+        - { block: 1, type: TEXT }
+        - { block: 2, type: TEXT }
+        - { block: 3, type: TEXT }

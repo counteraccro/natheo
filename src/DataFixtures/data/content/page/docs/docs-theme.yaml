@@ -1,0 +1,22 @@
+docs-theme:
+    user: R-Admin
+    render: ONE_BLOCK
+    category: DOCUMENTATION
+    status: PUBLISH
+    date: '-4 days'
+    isOpenComment: false
+    ruleComment: VALIDATE
+    tags: [tag-tutorial, tag-themes]
+    menus: [menu-docs-header, menu-docs-side, menu-docs-footer]
+    stats: { visitors: 290, reads: 250 }
+    translations:
+        fr: { titre: 'Créer un thème', url: creer-un-theme }
+        en: { titre: 'Creating a theme', url: creating-a-theme }
+        es: { titre: 'Crear un tema', url: crear-un-tema }
+    metas:
+        description:
+            fr: 'Ajouter un thème au site public à partir de Natheo-Base.'
+            en: 'Add a theme to the public site starting from Natheo-Base.'
+            es: 'Añadir un tema al sitio público a partir de Natheo-Base.'
+    blocks:
+        - { block: 1, type: TEXT }

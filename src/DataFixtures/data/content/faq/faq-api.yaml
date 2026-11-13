@@ -1,0 +1,53 @@
+faq-api:
+    user: R-Admin
+    title:
+        fr: 'Questions sur l''API v2'
+        en: 'API v2 questions'
+        es: 'Preguntas sobre la API v2'
+    categories:
+        -   title: { fr: 'Utiliser l''API', en: 'Using the API', es: 'Usar la API' }
+            questions:
+                -   title:
+                        fr: 'Comment m''authentifier ?'
+                        en: 'How do I authenticate?'
+                        es: '¿Cómo me autentico?'
+                    answer:
+                        fr: |
+                            Envoyez un token d'API dans l'en-tête `Authorization: Bearer <token>`. Les tokens se créent dans le back-office, avec un rôle de lecture, d'écriture ou d'administration.
+                        en: |
+                            Send an API token in the `Authorization: Bearer <token>` header. Tokens are created in the back office, with a read, write or admin role.
+                        es: |
+                            Envía un token de API en la cabecera `Authorization: Bearer <token>`. Los tokens se crean en el back-office, con un rol de lectura, escritura o administración.
+                -   title:
+                        fr: 'Quel format renvoie l''API ?'
+                        en: 'Which format does the API return?'
+                        es: '¿Qué formato devuelve la API?'
+                    answer:
+                        fr: |
+                            Du JSON-LD / Hydra par défaut, ou du JSON simple avec `Accept: application/json`. Les erreurs suivent le format `application/problem+json`.
+                        en: |
+                            JSON-LD / Hydra by default, or plain JSON with `Accept: application/json`. Errors use the `application/problem+json` format.
+                        es: |
+                            JSON-LD / Hydra por defecto, o JSON simple con `Accept: application/json`. Los errores siguen el formato `application/problem+json`.
+                -   title:
+                        fr: 'Comment choisir la langue des contenus ?'
+                        en: 'How do I choose the content language?'
+                        es: '¿Cómo elijo el idioma de los contenidos?'
+                    answer:
+                        fr: |
+                            Avec le paramètre `locale` ou l'en-tête `Accept-Language`. Sans l'un ni l'autre, l'API répond dans la langue par défaut du site, indiquée dans l'en-tête `Content-Language`.
+                        en: |
+                            With the `locale` parameter or the `Accept-Language` header. Without either, the API answers in the site's default language, given in the `Content-Language` header.
+                        es: |
+                            Con el parámetro `locale` o la cabecera `Accept-Language`. Sin ninguno de los dos, la API responde en el idioma por defecto del sitio, indicado en la cabecera `Content-Language`.
+                -   title:
+                        fr: 'Où trouver la documentation des ressources ?'
+                        en: 'Where is the resource documentation?'
+                        es: '¿Dónde está la documentación de los recursos?'
+                    answer:
+                        fr: |
+                            Sur `/api/v2/docs` (Swagger UI), tant que l'option système « Ouvrir l'API ? » est activée.
+                        en: |
+                            On `/api/v2/docs` (Swagger UI), as long as the "Open the API?" system option is on.
+                        es: |
+                            En `/api/v2/docs` (Swagger UI), mientras la opción del sistema «¿Abrir la API?» esté activada.

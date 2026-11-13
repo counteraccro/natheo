@@ -1,0 +1,23 @@
+feature-languages:
+    user: R-Admin
+    render: ONE_BLOCK
+    category: PAGE
+    status: PUBLISH
+    date: '-6 days'
+    isOpenComment: false
+    ruleComment: VALIDATE
+    headerImg: hdr-languages
+    tags: [tag-languages]
+    menus: [menu-features-header]
+    stats: { visitors: 290, reads: 250 }
+    translations:
+        fr: { titre: 'Multilingue', url: multilingue }
+        en: { titre: 'Multilingual', url: multilingual }
+        es: { titre: 'Multilingüe', url: multilingue }
+    metas:
+        description:
+            fr: 'Contenus et interface en français, anglais et espagnol.'
+            en: 'Content and interface in French, English and Spanish.'
+            es: 'Contenidos e interfaz en francés, inglés y español.'
+    blocks:
+        - { block: 1, type: TEXT }

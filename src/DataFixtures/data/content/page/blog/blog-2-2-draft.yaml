@@ -1,0 +1,20 @@
+blog-2-2-draft:
+    user: R-Contributeur
+    render: ONE_BLOCK
+    category: BLOG
+    status: DRAFT
+    date: '-1 day'
+    isOpenComment: true
+    ruleComment: WAIT_VALIDATION
+    validationStatus: PENDING
+    validationUser: R-Contributeur
+    validationAt: -1 day
+    tags: [tag-version]
+    menus: [menu-blog-header, menu-blog-side]
+    stats: { visitors: 0, reads: 0 }
+    translations:
+        fr: { titre: 'Nathéo 2.2 : premières pistes', url: natheo-2-2-premieres-pistes }
+        en: { titre: 'Nathéo 2.2: first ideas', url: natheo-2-2-first-ideas }
+        es: { titre: 'Nathéo 2.2: primeras ideas', url: natheo-2-2-primeras-ideas }
+    blocks:
+        - { block: 1, type: TEXT }

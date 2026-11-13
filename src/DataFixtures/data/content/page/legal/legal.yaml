@@ -1,0 +1,16 @@
+legal:
+    user: R-Admin
+    render: ONE_BLOCK
+    category: PAGE
+    status: PUBLISH
+    date: '-30 days'
+    isOpenComment: false
+    ruleComment: VALIDATE
+    menus: [menu-legal-footer]
+    stats: { visitors: 90, reads: 70 }
+    translations:
+        fr: { titre: 'Mentions légales', url: mentions-legales }
+        en: { titre: 'Legal notice', url: legal-notice }
+        es: { titre: 'Aviso legal', url: aviso-legal }
+    blocks:
+        - { block: 1, type: TEXT }

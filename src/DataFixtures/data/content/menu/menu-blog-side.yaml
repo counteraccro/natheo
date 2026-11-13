@@ -1,0 +1,18 @@
+menu-blog-side:
+    name: 'Parcourir le blog'
+    type: LEFT_RIGHT_SIDE_BAR_ACCORDEON
+    position: POSITION_RIGHT
+    elements:
+        -   label: { fr: 'Par version', en: 'By release', es: 'Por versión' }
+            children:
+                -   page: blog-2-1
+                -   page: blog-2-0
+                -   page: blog-1-0
+        -   label: { fr: 'Par sujet', en: 'By topic', es: 'Por tema' }
+            children:
+                -   page: blog-databases
+                -   page: feature-api
+                    label: { fr: 'API v2', en: 'API v2', es: 'API v2' }
+                -   page: docs-theme
+        -   page: blog
+            label: { fr: 'Tous les articles', en: 'All posts', es: 'Todos los artículos' }

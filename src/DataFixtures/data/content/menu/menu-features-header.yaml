@@ -1,0 +1,34 @@
+menu-features-header:
+    name: 'Fonctionnalités (méga menu 4 colonnes)'
+    type: HEADER_MENU_DEROULANT_BIG_MENU_4_COLONNES
+    position: POSITION_HEADER
+    elements:
+        -   page: home
+            label: { fr: 'Accueil', en: 'Home', es: 'Inicio' }
+        -   page: features
+            children:
+                -   label: { fr: 'Contenu', en: 'Content', es: 'Contenido' }
+                    children:
+                        -   page: feature-pages
+                        -   page: feature-menus
+                        -   page: feature-faq
+                        -   page: feature-media
+                -   label: { fr: 'International', en: 'International', es: 'Internacional' }
+                    children:
+                        -   page: feature-languages
+                -   label: { fr: 'Collaboration', en: 'Collaboration', es: 'Colaboración' }
+                    children:
+                        -   page: feature-rights
+                -   label: { fr: 'Technique', en: 'Technical', es: 'Técnica' }
+                    children:
+                        -   page: feature-api
+                        -   page: docs-theme
+        -   page: docs
+        -   page: blog
+        -   page: faq
+            label: { fr: 'FAQ', en: 'FAQ', es: 'FAQ' }
+        -   page: about
+            label: { fr: 'Projet', en: 'Project', es: 'Proyecto' }
+        -   label: { fr: 'GitHub', en: 'GitHub', es: 'GitHub' }
+            url: 'https://github.com/counteraccro/natheo'
+            newTab: true

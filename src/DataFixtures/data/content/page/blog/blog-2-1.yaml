@@ -1,0 +1,23 @@
+blog-2-1:
+    user: R-Contributeur
+    render: ONE_BLOCK
+    category: BLOG
+    status: PUBLISH
+    date: '2026-11-12 08:45'
+    isOpenComment: true
+    ruleComment: WAIT_VALIDATION
+    headerImg: hdr-blog-2-1
+    tags: [tag-version, tag-api, tag-themes]
+    menus: [menu-blog-header, menu-blog-side]
+    stats: { visitors: 640, reads: 590 }
+    translations:
+        fr: { titre: 'Ce qui arrive dans Nathéo 2.1', url: ce-qui-arrive-dans-natheo-2-1 }
+        en: { titre: 'What''s coming in Nathéo 2.1', url: whats-coming-in-natheo-2-1 }
+        es: { titre: 'Lo que llega en Nathéo 2.1', url: lo-que-llega-en-natheo-2-1 }
+    metas:
+        description:
+            fr: 'Brouillons, validation des pages, API v2 et nouveau site public : le programme de la 2.1.'
+            en: 'Drafts, page validation, API v2 and a new public site: the 2.1 roadmap.'
+            es: 'Borradores, validación de páginas, API v2 y nuevo sitio público: el programa de la 2.1.'
+    blocks:
+        - { block: 1, type: TEXT }

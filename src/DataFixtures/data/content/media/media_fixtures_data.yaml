@@ -1,71 +1,141 @@
 media:
-    media-1:
-        folder: Folder_paysage
+    hdr-home:
+        folder: Folder_headers
         user: User
-        description: 'un désert dans le désert'
-        image: 'the-desert.png'
-    media-2:
-        folder: Folder_paysage
+        description: 'Le site public sur écran, portable, tablette et téléphone'
+        image: hdr-home.jpg
+    hdr-features:
+        folder: Folder_headers
         user: User
-        description: 'Soleil levant sur la plage'
-        image: 'beach.jpg'
-    media-3:
-        folder: Folder_paysage
+        description: 'Les écrans du back-office en perspective'
+        image: hdr-features.jpg
+    hdr-pages:
+        folder: Folder_headers
         user: User
-        description: 'Plage ensoleillé'
-        image: 'beach-sun.jpg'
-    media-4:
-        folder: Folder_paysage
+        description: 'L''édition d''une page et ses dispositions'
+        image: hdr-pages.jpg
+    hdr-menus:
+        folder: Folder_headers
         user: User
-        description: 'Chemin dans la foret'
-        image: 'forest-road.jpg'
-    media-5:
-        folder: Folder_paysage
+        description: 'L''éditeur de menu et le méga menu du site'
+        image: hdr-menus.jpg
+    hdr-faq:
+        folder: Folder_headers
         user: User
-        description: 'Voie de chemin de fer'
-        image: 'railroad.jpg'
-    media-6:
-        folder: Folder_paysage
+        description: 'L''édition d''une FAQ'
+        image: hdr-faq.jpg
+    hdr-languages:
+        folder: Folder_headers
         user: User
-        description: 'Route'
-        image: 'road.jpg'
-    media-7:
-        folder: Folder_paysage
+        description: 'Une page en français, anglais et espagnol'
+        image: hdr-languages.jpg
+    hdr-media:
+        folder: Folder_headers
         user: User
-        description: 'Vagues'
-        image: 'wave.jpg'
-    media-8:
-        folder: Folder_CV
+        description: 'La médiathèque'
+        image: hdr-media.jpg
+    hdr-rights:
+        folder: Folder_headers
         user: User
-        description: 'Recrutement'
-        image: 'interview.png'
-    media-9:
-        folder: ''
+        description: 'Les pages en attente de validation sur le tableau de bord'
+        image: hdr-rights.jpg
+    hdr-api:
+        folder: Folder_headers
         user: User
-        description: 'Tasse de café'
-        image: 'cup-of-coffee.jpg'
-    media-10:
-        folder: ''
+        description: 'La documentation OpenAPI de l''API v2'
+        image: hdr-api.jpg
+    hdr-docs:
+        folder: Folder_headers
         user: User
-        description: 'Code'
-        image: 'technology.jpg'
-    media-11:
-        folder: ''
+        description: 'La documentation sur téléphone et tablette'
+        image: hdr-docs.jpg
+    hdr-blog:
+        folder: Folder_headers
         user: User
-        description: 'Bureau'
-        image: 'workspace.jpg'
-    media-12:
-        folder: Folder_documentation
+        description: 'Le blog en mode clair et en mode sombre'
+        image: hdr-blog.jpg
+    hdr-blog-2-1:
+        folder: Folder_headers
         user: User
-        description: 'Documentation de Natheo CMS'
-        image: 'documentation-natheo.docx'
-    media-13:
-        folder: Folder_documentation
+        description: 'Le thème Natheo-Horizon incliné'
+        image: hdr-blog-2-1.jpg
+    hdr-blog-2-0:
+        folder: Folder_headers
         user: User
-        description: 'Documentation de Natheo CMS en PDF'
-        image: 'documentation-natheo.pdf'
-    media-14:
-        folder: Folder_documentation
+        description: 'Le tableau de bord du back-office'
+        image: hdr-blog-2-0.jpg
+    hdr-blog-db:
+        folder: Folder_headers
         user: User
-        description: 'Historique des versions de Natheo CMS'
-        image: 'Versions-natheo.xlsx'
+        description: 'Les options système'
+        image: hdr-blog-db.jpg
+    hdr-blog-1-0:
+        folder: Folder_headers
+        user: User
+        description: 'Le thème Natheo-Base'
+        image: hdr-blog-1-0.jpg
+    hdr-faq-page:
+        folder: Folder_headers
+        user: User
+        description: 'La FAQ sur téléphone'
+        image: hdr-faq-page.jpg
+    hdr-about:
+        folder: Folder_headers
+        user: User
+        description: 'Le back-office et le site public côte à côte'
+        image: hdr-about.jpg
+    cap-admin-dashboard:
+        folder: Folder_captures_admin
+        user: User
+        description: 'Tableau de bord'
+        image: cap-admin-dashboard.jpg
+    cap-admin-page:
+        folder: Folder_captures_admin
+        user: User
+        description: 'Édition d''une page'
+        image: cap-admin-page.jpg
+    cap-admin-menu:
+        folder: Folder_captures_admin
+        user: User
+        description: 'Édition d''un menu'
+        image: cap-admin-menu.jpg
+    cap-admin-faq:
+        folder: Folder_captures_admin
+        user: User
+        description: 'Édition d''une FAQ'
+        image: cap-admin-faq.jpg
+    cap-admin-media:
+        folder: Folder_captures_admin
+        user: User
+        description: 'Médiathèque'
+        image: cap-admin-media.jpg
+    cap-admin-options:
+        folder: Folder_captures_admin
+        user: User
+        description: 'Options système'
+        image: cap-admin-options.jpg
+    cap-api-docs:
+        folder: Folder_captures_admin
+        user: User
+        description: 'Documentation OpenAPI de l''API v2'
+        image: cap-api-docs.jpg
+    cap-front-horizon:
+        folder: Folder_captures_front
+        user: User
+        description: 'Natheo-Horizon, mode clair'
+        image: cap-front-horizon.jpg
+    cap-front-horizon-dark:
+        folder: Folder_captures_front
+        user: User
+        description: 'Natheo-Horizon, mode sombre'
+        image: cap-front-horizon-dark.jpg
+    cap-front-base:
+        folder: Folder_captures_front
+        user: User
+        description: 'Natheo-Base'
+        image: cap-front-base.jpg
+    doc-product-sheet:
+        folder: Folder_documents
+        user: User
+        description: 'Fiche produit de Nathéo (PDF, en anglais)'
+        image: natheo-product-sheet.pdf

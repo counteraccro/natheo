@@ -1,0 +1,24 @@
+blog-databases:
+    user: R-Contributeur
+    render: TWO_BLOCK
+    category: BLOG
+    status: PUBLISH
+    date: '2026-11-09 10:30'
+    isOpenComment: true
+    ruleComment: WAIT_VALIDATION
+    headerImg: hdr-blog-db
+    tags: [tag-database]
+    menus: [menu-blog-header, menu-blog-side]
+    stats: { visitors: 430, reads: 400 }
+    translations:
+        fr: { titre: 'Une base, deux plateformes', url: une-base-deux-plateformes }
+        en: { titre: 'One database, two platforms', url: one-database-two-platforms }
+        es: { titre: 'Una base, dos plataformas', url: una-base-dos-plataformas }
+    metas:
+        description:
+            fr: 'Comment Nathéo supporte MySQL / MariaDB et PostgreSQL avec les mêmes entités.'
+            en: 'How Nathéo supports MySQL / MariaDB and PostgreSQL with the same entities.'
+            es: 'Cómo Nathéo admite MySQL / MariaDB y PostgreSQL con las mismas entidades.'
+    blocks:
+        - { block: 1, type: TEXT }
+        - { block: 2, type: TEXT }

@@ -1,0 +1,24 @@
+menu-help-header:
+    name: 'Aide (méga menu 1 colonne)'
+    type: HEADER_MENU_DEROULANT_BIG_MENU
+    position: POSITION_HEADER
+    elements:
+        -   page: home
+            label: { fr: 'Accueil', en: 'Home', es: 'Inicio' }
+        -   page: features
+        -   page: docs
+        -   page: blog
+        -   label: { fr: 'Aide', en: 'Help', es: 'Ayuda' }
+            children:
+                -   label: { fr: 'Besoin d''aide ?', en: 'Need help?', es: '¿Necesitas ayuda?' }
+                    children:
+                        -   page: faq
+                        -   page: docs-install
+                        -   label: { fr: 'Poser une question sur Discord', en: 'Ask on Discord', es: 'Preguntar en Discord' }
+                            url: 'https://discord.gg/CgcMCcbmaR'
+                            newTab: true
+        -   page: about
+            label: { fr: 'Projet', en: 'Project', es: 'Proyecto' }
+        -   label: { fr: 'GitHub', en: 'GitHub', es: 'GitHub' }
+            url: 'https://github.com/counteraccro/natheo'
+            newTab: true

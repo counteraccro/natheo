@@ -1,0 +1,23 @@
+blog-2-0:
+    user: R-Contributeur
+    render: ONE_BLOCK
+    category: BLOG
+    status: PUBLISH
+    date: '2026-11-07 09:00'
+    isOpenComment: true
+    ruleComment: WAIT_VALIDATION
+    headerImg: hdr-blog-2-0
+    tags: [tag-version, tag-announce, tag-security]
+    menus: [menu-blog-header, menu-blog-side]
+    stats: { visitors: 910, reads: 860 }
+    translations:
+        fr: { titre: 'Nathéo 2.0 est disponible', url: natheo-2-0-est-disponible }
+        en: { titre: 'Nathéo 2.0 is out', url: natheo-2-0-is-out }
+        es: { titre: 'Nathéo 2.0 ya está disponible', url: natheo-2-0-ya-esta-disponible }
+    metas:
+        description:
+            fr: 'Nouveau back-office, PostgreSQL, interface traduite et audit de sécurité : la 2.0 est sortie le 7 novembre 2026.'
+            en: 'New back office, PostgreSQL, translated interface and security audit: 2.0 was released on 7 November 2026.'
+            es: 'Nuevo back-office, PostgreSQL, interfaz traducida y auditoría de seguridad: la 2.0 salió el 7 de noviembre de 2026.'
+    blocks:
+        - { block: 1, type: TEXT }

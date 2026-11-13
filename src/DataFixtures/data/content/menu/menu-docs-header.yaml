@@ -1,0 +1,35 @@
+menu-docs-header:
+    name: 'Documentation (barre latérale)'
+    type: HEADER_SIDE_BAR
+    position: POSITION_HEADER
+    elements:
+        -   page: home
+            label: { fr: 'Accueil', en: 'Home', es: 'Inicio' }
+        -   page: features
+            children:
+                -   page: feature-pages
+                -   page: feature-menus
+                -   page: feature-faq
+                -   page: feature-media
+                -   page: feature-languages
+                -   page: feature-rights
+                -   page: feature-api
+        -   page: docs
+            children:
+                -   page: docs
+                -   page: docs-install
+                -   page: docs-config
+                -   page: docs-theme
+                -   page: docs-api
+        -   page: blog
+        -   page: faq
+            label: { fr: 'FAQ', en: 'FAQ', es: 'FAQ' }
+        -   page: about
+            label: { fr: 'Projet', en: 'Project', es: 'Proyecto' }
+            children:
+                -   page: about
+                -   page: contribute
+                -   page: roadmap
+        -   label: { fr: 'GitHub', en: 'GitHub', es: 'GitHub' }
+            url: 'https://github.com/counteraccro/natheo'
+            newTab: true

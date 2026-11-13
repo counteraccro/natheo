@@ -1,0 +1,23 @@
+feature-pages:
+    user: R-Admin
+    render: TWO_BLOCK
+    category: PAGE
+    status: PUBLISH
+    date: '-6 days'
+    isOpenComment: false
+    ruleComment: VALIDATE
+    headerImg: hdr-pages
+    menus: [menu-features-header]
+    stats: { visitors: 540, reads: 470 }
+    translations:
+        fr: { titre: 'Pages et dispositions', url: pages-et-dispositions }
+        en: { titre: 'Pages and layouts', url: pages-and-layouts }
+        es: { titre: 'Páginas y disposiciones', url: paginas-y-disposiciones }
+    metas:
+        description:
+            fr: 'Composer une page avec huit dispositions et trois types de blocs, la modifier dans un brouillon.'
+            en: 'Build a page with eight layouts and three block types, edit it in a draft.'
+            es: 'Componer una página con ocho disposiciones y tres tipos de bloques, modificarla en un borrador.'
+    blocks:
+        - { block: 1, type: TEXT }
+        - { block: 2, type: TEXT }

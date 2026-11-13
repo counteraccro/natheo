@@ -1,0 +1,26 @@
+feature-api:
+    user: R-Admin
+    render: TWO_TWO_BLOCK
+    category: PAGE
+    status: PUBLISH
+    date: '-6 days'
+    isOpenComment: false
+    ruleComment: VALIDATE
+    headerImg: hdr-api
+    tags: [tag-api]
+    menus: [menu-features-header]
+    stats: { visitors: 480, reads: 430 }
+    translations:
+        fr: { titre: 'API v2', url: api-v2 }
+        en: { titre: 'API v2', url: api-v2 }
+        es: { titre: 'API v2', url: api-v2 }
+    metas:
+        description:
+            fr: 'L''API v2 de Nathéo : API Platform, JSON-LD / Hydra, sessions utilisateur et OpenAPI.'
+            en: 'Nathéo''s API v2: API Platform, JSON-LD / Hydra, user sessions and OpenAPI.'
+            es: 'La API v2 de Nathéo: API Platform, JSON-LD / Hydra, sesiones de usuario y OpenAPI.'
+    blocks:
+        - { block: 1, type: TEXT }
+        - { block: 2, type: TEXT }
+        - { block: 3, type: TEXT }
+        - { block: 4, type: TEXT }
