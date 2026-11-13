@@ -6,6 +6,10 @@
 
 @import 'tailwindcss' source(none);
 @import '@fontsource-variable/schibsted-grotesk';
+@import './front/natheoHorizon/variables.css';
+@import './front/natheoHorizon/theme.css';
+@import './front/natheoHorizon/base.css';
+@import './front/natheoHorizon/prose.css';
 
 /* Seuls les fichiers du thème sont scannés */
 @source '../vue/controllers/Front/NatheoHorizon';
@@ -13,8 +17,3 @@
 @source '../../templates/front/natheo_horizon';
 
 @custom-variant dark (&:where(.dark, .dark *));
-
-@import './front/natheoHorizon/variables.css';
-@import './front/natheoHorizon/theme.css';
-@import './front/natheoHorizon/base.css';
-@import './front/natheoHorizon/prose.css';
