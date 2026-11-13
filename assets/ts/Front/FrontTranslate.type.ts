@@ -15,6 +15,11 @@ export interface FrontPaginationTranslate {
 
 export interface FrontCommentTranslate {
   title: string;
+  sortLabel: string;
+  sortDesc: string;
+  sortAsc: string;
+  statusWait: string;
+  statusModerate: string;
   nbComments: string;
   timeAgo: string;
   validate: string;
@@ -63,6 +68,9 @@ export interface FrontMainTranslate {
   editLink: string;
   loading: string;
   headerImgAlt: string;
+  updatedAt: string;
+  readingTime: string;
+  tagsLabel: string;
   listing: FrontListingTranslate;
   pagination: FrontPaginationTranslate;
 }

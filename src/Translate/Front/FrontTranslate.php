@@ -61,6 +61,9 @@ class FrontTranslate extends AppTranslate
                 'editLink' => $this->trans('front.page.edit_link'),
                 'loading' => $this->trans('front.page.title'),
                 'headerImgAlt' => $this->trans('front.article.header.img.alt'),
+                'updatedAt' => $this->trans('front.page.updated_at'),
+                'readingTime' => $this->trans('front.page.reading_time'),
+                'tagsLabel' => $this->trans('front.page.tags_label'),
                 'listing' => $this->getTranslateListing(),
                 'pagination' => $this->getTranslatePagination(),
             ],
@@ -213,6 +216,11 @@ class FrontTranslate extends AppTranslate
     {
         return [
             'title' => $this->translator->trans('front.comment.title', domain: 'front', locale: $this->locale),
+            'sortLabel' => $this->trans('front.comment.sort_label'),
+            'sortDesc' => $this->trans('front.comment.sort_desc'),
+            'sortAsc' => $this->trans('front.comment.sort_asc'),
+            'statusWait' => $this->trans('front.comment.status_wait'),
+            'statusModerate' => $this->trans('front.comment.status_moderate'),
             'nbComments' => $this->translator->trans(
                 'front.comment.nb_comments',
                 domain: 'front',
