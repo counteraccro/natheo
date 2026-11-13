@@ -25,7 +25,7 @@ use Symfony\Component\DomCrawler\Crawler;
 class IndexControllerTest extends AppWebTestCase
 {
     /**
-     * Page d'accueil par locale : rendu du composant Vue avec le token API du front
+     * Page d'accueil par locale avec le thème par défaut Natheo-Horizon : composant Vue sur l'API v2
      * @return void
      */
     public function testIndex(): void
@@ -40,9 +40,14 @@ class IndexControllerTest extends AppWebTestCase
             $this->assertResponseIsSuccessful();
             $this->assertSelectorExists('html[lang="' . $locale . '"]');
 
-            $content = (string) $this->client->getResponse()->getContent();
-            $this->assertStringContainsString('Front/NatheoHorizon/Structure', $content);
-            $this->assertStringContainsString('front-token-test', $content);
+            $crawler = $this->client->getCrawler();
+            $this->assertStringContainsString('Front/NatheoHorizon/App', (string) $this->client->getResponse()->getContent());
+
+            $props = $this->getVueProps($crawler);
+            $this->assertEquals($this->container->getParameter('app.api_v2.prefix'), $props['urls']['api']);
+            $this->assertEquals($locale, $props['datas']['locale']);
+            $this->assertEquals('front-token-test', $props['datas']['apiToken']);
+            $this->assertArrayNotHasKey('apiPageFind', $props['urls']);
         }
     }
 

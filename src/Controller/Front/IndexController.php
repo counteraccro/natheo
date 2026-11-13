@@ -11,8 +11,6 @@ namespace App\Controller\Front;
 
 use App\Entity\Admin\Content\Page\PageMeta;
 use App\Entity\Admin\System\User;
-use App\Enum\Admin\Content\Page\PageCategory;
-use App\Enum\Front\Template;
 use App\Service\Api\Content\Page\ApiPageService;
 use App\Service\Api\Global\ApiSitemapService;
 use App\Service\Api\System\User\UserSessionService;
@@ -117,18 +115,6 @@ class IndexController extends AppFrontController
             );
         }
 
-        // Ancien thème, encore sur l'API v1
-        if ($this->optionSystemFrontService->getTemplate() === Template::NATHEO_HORIZON) {
-            return $this->renderLegacyTheme(
-                $request,
-                $userSessionService,
-                $frontTranslate,
-                $containerBag,
-                $locale,
-                $slug,
-            );
-        }
-
         /** @var User|null $user */
         $user = $this->getUser();
         $editablePage = $user === null ? null : $apiPageService->findEditablePageBySlug((string) $slug, $locale, $user);
@@ -193,94 +179,6 @@ class IndexController extends AppFrontController
                 $request->query->getBoolean('preview'),
             );
         }
-
-        return $this->render($this->getPathTemplate() . DIRECTORY_SEPARATOR . 'index.html.twig', [
-            'urls' => $urls,
-            'datas' => $datas,
-            'translate' => $frontTranslate->getTranslate($locale),
-            'scriptsTag' => $this->getScriptTags(),
-            'metaSeo' => $this->getMetaSeo($locale, $slug),
-            'locale' => $locale,
-        ]);
-    }
-
-    /**
-     * Affiche une page avec l'ancien thème Natheo-Horizon, qui appelle l'API v1
-     * @param Request $request
-     * @param UserSessionService $userSessionService
-     * @param FrontTranslate $frontTranslate
-     * @param ContainerBagInterface $containerBag
-     * @param string $locale
-     * @param string|null $slug
-     * @return Response
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     * @throws \DateMalformedStringException
-     */
-    private function renderLegacyTheme(
-        Request $request,
-        UserSessionService $userSessionService,
-        FrontTranslate $frontTranslate,
-        ContainerBagInterface $containerBag,
-        string $locale,
-        ?string $slug,
-    ): Response {
-        $version = $this->getParameter('app.api_version');
-
-        $urls = [
-            'apiPageFind' => $this->generateUrl('api_page_find', ['api_version' => $version]),
-            'apiOptionsSystems' => $this->generateUrl('api_options_systems_listing', ['api_version' => $version]),
-            'apiPageContent' => $this->generateUrl('api_page_content', ['api_version' => $version]),
-            'adminAuth' => $this->generateUrl('admin_dashboard_index'),
-            'sitemap' => $this->generateUrl('front_sitemap'),
-            'logout' => $this->generateUrl('auth_logout'),
-            'indexFr' => $this->generateUrl('front_index_2', ['locale' => 'fr', 'category' => null, 'slug' => null]),
-            'indexEs' => $this->generateUrl('front_index_2', ['locale' => 'es', 'category' => null, 'slug' => null]),
-            'indexEn' => $this->generateUrl('front_index_2', ['locale' => 'en', 'category' => null, 'slug' => null]),
-            'apiCommentsByPage' => $this->generateUrl('api_comment_by_page', ['api_version' => $version]),
-            'apiAddComment' => $this->generateUrl('api_comment_add_comment', ['api_version' => $version]),
-            'apiModerateComment' => $this->generateUrl('api_comment_moderate_comment', [
-                'api_version' => $version,
-                'id' => 0,
-            ]),
-        ];
-
-        /** @var User $user */
-        $user = $this->getUser();
-        $token = '';
-        $userInfo = null;
-        if ($user != null) {
-            $token = $userSessionService->getFrontAccessToken(
-                $user,
-                $this->optionSystemFrontService->getFrontApiToken(),
-                $request->getSession(),
-                $request->headers->get('User-Agent'),
-                $request->getClientIp(),
-            );
-            $userInfo = [
-                'login' => $user->getLogin(),
-                'avatarImg' => $user->getAvatar(),
-                'avatar' => substr(ucfirst($user->getLogin()), 0, 1),
-                'canModerate' => $this->isGranted('ROLE_CONTRIBUTEUR'),
-            ];
-        }
-
-        $pageCategories = [];
-        foreach (PageCategory::cases() as $category) {
-            $pageCategories[$category->value] = $category->getSlug();
-        }
-
-        $datas = [
-            'slug' => $slug,
-            'locale' => $locale,
-            'apiToken' => $this->optionSystemFrontService->getFrontApiToken(),
-            'pageCategories' => $pageCategories,
-            'pathAvatar' => AvatarUrl::directory($containerBag->get('app.path.avatar'), $request->getBasePath()),
-            'basePath' => $request->getBasePath(),
-            'userToken' => $token,
-            'userInfo' => $userInfo,
-            'preview' => $request->query->getBoolean('preview'),
-        ];
 
         return $this->render($this->getPathTemplate() . DIRECTORY_SEPARATOR . 'index.html.twig', [
             'urls' => $urls,

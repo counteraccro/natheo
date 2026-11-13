@@ -1,24 +1,17 @@
 {% extends 'front/front_base.html.twig' %}
 
 {% block meta %}
-
     {% for meta in metaSeo %}
         <meta name="{{ meta.name }}" content="{{ meta.value }}">
     {% endfor %}
-
 {% endblock %}
 
-{% block body_class %}bg-theme-1-50{% endblock %}
+{% block body_class %}bg-bg text-fg{% endblock %}
 
 {% block body %}
-<div class="container px-6 py-8 mx-auto">
-
-<div class="mx-2" {{ vue_component('Front/NatheoHorizon/Structure', {
-    'datas' : datas,
-    'urls' : urls,
-    'translate' : translate
-}) }}></div>
-
-
-</div>
+    <div {{ vue_component('Front/NatheoHorizon/App', {
+        'datas': datas,
+        'urls': urls,
+        'translate': translate
+    }) }}></div>
 {% endblock %}
