@@ -33,14 +33,15 @@ const SIZES: Record<BlockSize, string> = {
   third: 'col-span-6 md:col-span-2 before:bg-mod-third',
 };
 
+// Avec deux menus, celui de droite passe sous le contenu jusqu'à 1280 px
 const columns = computed(() => {
   if (menus.value.left && menus.value.right) {
-    return 'lg:grid-cols-[240px_minmax(0,1fr)_240px]';
+    return 'lg:grid-cols-[220px_minmax(0,1fr)] xl:grid-cols-[220px_minmax(0,1fr)_220px]';
   }
   if (menus.value.left) {
-    return 'lg:grid-cols-[240px_minmax(0,1fr)]';
+    return 'lg:grid-cols-[220px_minmax(0,1fr)]';
   }
-  return menus.value.right ? 'lg:grid-cols-[minmax(0,1fr)_240px]' : '';
+  return menus.value.right ? 'lg:grid-cols-[minmax(0,1fr)_220px]' : '';
 });
 
 const showComments = computed(() => options.value?.open_comment === true && props.page.openComment && !datas.preview);
@@ -48,7 +49,7 @@ const showComments = computed(() => options.value?.open_comment === true && prop
 
 <template>
   <PageHero :page="page" :reading-time="readingTime" />
-  <div class="mx-auto grid w-full max-w-page items-start gap-14 px-5 pt-16 pb-20" :class="columns">
+  <div class="mx-auto grid w-full max-w-page items-start gap-10 px-5 pt-16 pb-20" :class="columns">
     <SideMenu v-if="menus.left" :menu="menus.left" />
     <div class="min-w-0">
       <div class="grid grid-cols-6 gap-x-10 gap-y-14">
@@ -66,6 +67,10 @@ const showComments = computed(() => options.value?.open_comment === true && prop
       </div>
       <CommentSection v-if="showComments" :page="page" />
     </div>
-    <SideMenu v-if="menus.right" :menu="menus.right" />
+    <SideMenu
+      v-if="menus.right"
+      :menu="menus.right"
+      :class="{ 'lg:col-start-2 xl:col-start-auto': menus.left }"
+    />
   </div>
 </template>
