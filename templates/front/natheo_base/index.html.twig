@@ -6,6 +6,8 @@
     {% endfor %}
 {% endblock %}
 
+{% block body_class %}bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100{% endblock %}
+
 {% block body %}
     <div {{ vue_component('Front/NatheoBase/App', {
         'datas': datas,

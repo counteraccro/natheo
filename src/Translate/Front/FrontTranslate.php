@@ -50,12 +50,20 @@ class FrontTranslate extends AppTranslate
             'errorApi' => $this->getTranslateErrorApi(),
             'footer' => $this->getTranslateFooter(),
             'header' => $this->getTranslateHeader(),
+            'menu' => [
+                'headerLabel' => $this->trans('front.menu.header_label'),
+                'sideLabel' => $this->trans('front.menu.side_label'),
+                'footerLabel' => $this->trans('front.menu.footer_label'),
+            ],
             'main' => [
                 'articleFooter' => $this->getTranslateArticleFooter(),
                 'breadcrumb' => $this->trans('front.breadcrumb.index'),
                 'editLink' => $this->trans('front.page.edit_link'),
                 'loading' => $this->trans('front.page.title'),
                 'headerImgAlt' => $this->trans('front.article.header.img.alt'),
+                'updatedAt' => $this->trans('front.page.updated_at'),
+                'readingTime' => $this->trans('front.page.reading_time'),
+                'tagsLabel' => $this->trans('front.page.tags_label'),
                 'listing' => $this->getTranslateListing(),
                 'pagination' => $this->getTranslatePagination(),
             ],
@@ -122,11 +130,6 @@ class FrontTranslate extends AppTranslate
                 locale: $this->locale,
             ),
             'adminLink' => $this->translator->trans('front.footer.admin.link', domain: 'front', locale: $this->locale),
-            'githubLink' => $this->translator->trans(
-                'front.footer.github.link',
-                domain: 'front',
-                locale: $this->locale,
-            ),
             'sitemapLink' => $this->translator->trans(
                 'front.footer.sitemap.link',
                 domain: 'front',
@@ -135,6 +138,7 @@ class FrontTranslate extends AppTranslate
             'frLink' => $this->translator->trans('front.footer.fr.link', domain: 'front', locale: $this->locale),
             'esLink' => $this->translator->trans('front.footer.es.link', domain: 'front', locale: $this->locale),
             'enLink' => $this->translator->trans('front.footer.en.link', domain: 'front', locale: $this->locale),
+            'socialLabel' => $this->trans('front.footer.social_label'),
         ];
     }
 
@@ -149,6 +153,9 @@ class FrontTranslate extends AppTranslate
             'logout' => $this->translator->trans('front.header.logout', domain: 'front', locale: $this->locale),
             'openMenu' => $this->trans('front.header.open.menu'),
             'darkMode' => $this->trans('front.header.dark.mode'),
+            'skipLink' => $this->trans('front.header.skip_link'),
+            'closeMenu' => $this->trans('front.header.close_menu'),
+            'localeLabel' => $this->trans('front.header.locale_label'),
         ];
     }
 
@@ -159,7 +166,6 @@ class FrontTranslate extends AppTranslate
     private function getTranslateListing(): array
     {
         return [
-            'noImage' => $this->trans('front.listing.no.image'),
             'by' => $this->trans('front.listing.by'),
             'empty' => $this->trans('front.listing.empty'),
             'nbPages' => $this->trans('front.listing.nb.pages'),
@@ -204,12 +210,11 @@ class FrontTranslate extends AppTranslate
     {
         return [
             'title' => $this->translator->trans('front.comment.title', domain: 'front', locale: $this->locale),
-            'nbComments' => $this->translator->trans(
-                'front.comment.nb_comments',
-                domain: 'front',
-                locale: $this->locale,
-            ),
-            'timeAgo' => $this->translator->trans('front.comment.time_ago', domain: 'front', locale: $this->locale),
+            'sortLabel' => $this->trans('front.comment.sort_label'),
+            'sortDesc' => $this->trans('front.comment.sort_desc'),
+            'sortAsc' => $this->trans('front.comment.sort_asc'),
+            'statusWait' => $this->trans('front.comment.status_wait'),
+            'statusModerate' => $this->trans('front.comment.status_moderate'),
             'validate' => $this->translator->trans('front.comment.validate', domain: 'front', locale: $this->locale),
             'moderate' => $this->translator->trans('front.comment.moderate', domain: 'front', locale: $this->locale),
             'waiting' => $this->translator->trans('front.comment.waiting', domain: 'front', locale: $this->locale),
@@ -253,11 +258,6 @@ class FrontTranslate extends AppTranslate
                 domain: 'front',
                 locale: $this->locale,
             ),
-            'btnNewCommentCancel' => $this->translator->trans(
-                'front.comment.button.new.comment_cancel',
-                domain: 'front',
-                locale: $this->locale,
-            ),
             'btnNewCommentSubmit' => $this->translator->trans(
                 'front.comment.button.new.comment_submit',
                 domain: 'front',
@@ -270,11 +270,6 @@ class FrontTranslate extends AppTranslate
             ),
             'formNewCommentPseudoPlaceholder' => $this->translator->trans(
                 'front.comment.form.new.comment.pseudo.placeholder',
-                domain: 'front',
-                locale: $this->locale,
-            ),
-            'formNewCommentPseudoError' => $this->translator->trans(
-                'front.comment.form.new.comment.pseudo.error',
                 domain: 'front',
                 locale: $this->locale,
             ),
@@ -295,11 +290,6 @@ class FrontTranslate extends AppTranslate
             ),
             'formNewCommentCommentPlaceholder' => $this->translator->trans(
                 'front.comment.form.new.comment.comment.placeholder',
-                domain: 'front',
-                locale: $this->locale,
-            ),
-            'formNewCommentCommentError' => $this->translator->trans(
-                'front.comment.form.new.comment.error',
                 domain: 'front',
                 locale: $this->locale,
             ),

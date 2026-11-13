@@ -1,7 +1,6 @@
 front.footer.credit: 2023-{year} — Powered by Nathéo CMS {version}
 front.footer.template.version: '{version}'
 front.footer.admin.link: Administration
-front.footer.github.link: GitHub
 front.page.title: Loading...
 front.page.edit_link: 'Edit this page'
 front.footer.sitemap.link: Sitemap
@@ -16,8 +15,6 @@ front.article.footer.edit: 'On'
 front.article.footer.stat_publication: view(s)
 front.article.footer.info.draft: This page is a draft, only you can read it for now
 front.comment.title: Comments
-front.comment.nb_comments: comment(s)
-front.comment.time_ago: Posted
 front.comment.validate: Approve
 front.comment.moderate: Moderate
 front.comment.waiting: Unapprove
@@ -29,7 +26,6 @@ front.comment.success.validate: Comment approved successfully
 front.comment.success.moderate: Comment moderated successfully
 front.comment.success.waiting: Comment unapproved successfully
 front.comment.button.new.comment: Leave a comment
-front.comment.button.new.comment_cancel: Cancel
 front.comment.button.new.comment_submit: Post
 front.comment.form.new.comment.pseudo.label: Nickname
 front.comment.form.new.comment.pseudo.placeholder: Your nickname
@@ -37,8 +33,6 @@ front.comment.form.new.comment.email.label: Email address
 front.comment.form.new.comment.email.placeholder: Your email address
 front.comment.form.new.comment.comment.label: Comment
 front.comment.form.new.comment.comment.placeholder: Leave a little comment ;)
-front.comment.form.new.comment.pseudo.error: Please enter a nickname
-front.comment.form.new.comment.error: The comment must not be empty
 front.comment.new.success.message: Comment added successfully
 front.error.api.modal.error.404: The requested page does not exist
 front.error.api.modal.error.429: Too many requests, please try again in a few minutes
@@ -50,7 +44,6 @@ front.header.dark.mode: Toggle dark mode
 front.breadcrumb.index: Home
 front.article.header.img.alt: Page header image
 front.comment.moderation.prefix: 'Moderation:'
-front.listing.no.image: No image
 front.listing.by: By
 front.listing.empty: No item found
 front.listing.nb.pages: page(s)
@@ -60,3 +53,18 @@ front.pagination.first: First page
 front.pagination.previous: Previous page
 front.pagination.next: Next page
 front.pagination.last: Last page
+front.header.skip_link: "Skip to content"
+front.header.close_menu: "Close the menu"
+front.header.locale_label: "Language"
+front.menu.header_label: "Main menu"
+front.menu.side_label: "Secondary menu"
+front.menu.footer_label: "Footer menu"
+front.footer.social_label: "Social networks"
+front.page.updated_at: "Updated on"
+front.page.reading_time: "min read"
+front.page.tags_label: "Tags"
+front.comment.sort_label: "Comment order"
+front.comment.sort_desc: "Newest first"
+front.comment.sort_asc: "Oldest first"
+front.comment.status_wait: "Awaiting approval"
+front.comment.status_moderate: "Moderated"

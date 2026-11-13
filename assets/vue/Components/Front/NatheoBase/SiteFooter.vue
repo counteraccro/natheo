@@ -8,12 +8,13 @@ import { computed, toRef } from 'vue';
 import { useFrontContext } from '@/vue/Composables/Front/useFrontContext';
 import { useMenus } from '@/vue/Composables/Front/useMenus';
 import { useSiteOptions } from '@/vue/Composables/Front/useSiteOptions';
+import { useLanguages } from '@/vue/Composables/Front/useLanguages';
 import FooterMenu from '@/vue/Components/Front/NatheoBase/Menu/FooterMenu.vue';
 import type { Page } from '@/ts/Front/Api/Page.type';
 import type { SiteOptions } from '@/ts/Front/Api/OptionSystem.type';
 
 const props = defineProps<{ page: Page | null }>();
-const { urls, datas, translate } = useFrontContext();
+const { urls, translate } = useFrontContext();
 const { data: options } = useSiteOptions();
 const { menus } = useMenus(toRef(props, 'page'));
 
@@ -34,14 +35,7 @@ const socials = computed(() =>
   })
 );
 
-const languages = computed(() => {
-  const labels: Record<string, string> = {
-    fr: translate.footer.frLink,
-    en: translate.footer.enLink,
-    es: translate.footer.esLink,
-  };
-  return datas.locales.map((locale) => ({ locale, label: labels[locale] ?? locale, url: urls.home[locale] }));
-});
+const languages = useLanguages();
 </script>
 
 <template>
@@ -56,7 +50,7 @@ const languages = computed(() => {
       </ul>
       <ul class="flex flex-wrap gap-4">
         <li v-for="language in languages" :key="language.locale">
-          <a :href="language.url" :hreflang="language.locale" :aria-current="language.locale === datas.locale">
+          <a :href="language.url" :hreflang="language.locale" :aria-current="language.current">
             {{ language.label }}
           </a>
         </li>

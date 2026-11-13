@@ -98,6 +98,11 @@
   dependencies:
     tslib "^2.4.0"
 
+"@fontsource-variable/schibsted-grotesk@^5.3.0":
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/@fontsource-variable/schibsted-grotesk/-/schibsted-grotesk-5.3.0.tgz#0d2e4f8af8b7c95583f6377f57e0a1b922b8aa54"
+  integrity sha512-ndS6H/KICWANchlHF3q4UdZD+xrZ3Ji0rUobIuXlgvDUzDfqZDsVuXPXZb636nJZMHE9zZ9Fmwgqazm8hMB50Q==
+
 "@hotwired/stimulus@^3.0.0":
   version "3.2.2"
   resolved "https://registry.yarnpkg.com/@hotwired/stimulus/-/stimulus-3.2.2.tgz#071aab59c600fed95b97939e605ff261a4251608"
@@ -377,7 +382,7 @@
     picomatch "^4.0.2"
 
 "@symfony/stimulus-bundle@file:vendor/symfony/stimulus-bundle/assets":
-  version "3.6.0"
+  version "3.7.0"
 
 "@symfony/ux-vue@file:vendor/symfony/ux-vue/assets":
   version "2.35.0"

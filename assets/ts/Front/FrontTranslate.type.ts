@@ -15,8 +15,11 @@ export interface FrontPaginationTranslate {
 
 export interface FrontCommentTranslate {
   title: string;
-  nbComments: string;
-  timeAgo: string;
+  sortLabel: string;
+  sortDesc: string;
+  sortAsc: string;
+  statusWait: string;
+  statusModerate: string;
   validate: string;
   moderate: string;
   waiting: string;
@@ -28,16 +31,13 @@ export interface FrontCommentTranslate {
   successModerate: string;
   successWaiting: string;
   btnNewComment: string;
-  btnNewCommentCancel: string;
   btnNewCommentSubmit: string;
   formNewCommentPseudoLabel: string;
   formNewCommentPseudoPlaceholder: string;
-  formNewCommentPseudoError: string;
   formNewCommentEmailLabel: string;
   formNewCommentEmailPlaceholder: string;
   formNewCommentCommentLabel: string;
   formNewCommentCommentPlaceholder: string;
-  formNewCommentCommentError: string;
   formNewCommentSuccessMessage: string;
   moderationPrefix: string;
   pagination: FrontPaginationTranslate;
@@ -51,7 +51,6 @@ export interface FrontArticleFooterTranslate {
 }
 
 export interface FrontListingTranslate {
-  noImage: string;
   by: string;
   empty: string;
   nbPages: string;
@@ -63,6 +62,9 @@ export interface FrontMainTranslate {
   editLink: string;
   loading: string;
   headerImgAlt: string;
+  updatedAt: string;
+  readingTime: string;
+  tagsLabel: string;
   listing: FrontListingTranslate;
   pagination: FrontPaginationTranslate;
 }
@@ -72,17 +74,26 @@ export interface FrontHeaderTranslate {
   logout: string;
   openMenu: string;
   darkMode: string;
+  skipLink: string;
+  closeMenu: string;
+  localeLabel: string;
+}
+
+export interface FrontMenuTranslate {
+  headerLabel: string;
+  sideLabel: string;
+  footerLabel: string;
 }
 
 export interface FrontFooterTranslate {
   credit: string;
   templateVersion: string;
   adminLink: string;
-  githubLink: string;
   sitemapLink: string;
   frLink: string;
   esLink: string;
   enLink: string;
+  socialLabel: string;
 }
 
 export interface FrontErrorApiTranslate {
@@ -96,5 +107,6 @@ export interface FrontTranslate {
   errorApi: FrontErrorApiTranslate;
   footer: FrontFooterTranslate;
   header: FrontHeaderTranslate;
+  menu: FrontMenuTranslate;
   main: FrontMainTranslate;
 }

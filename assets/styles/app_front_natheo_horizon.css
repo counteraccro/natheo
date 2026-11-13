@@ -1,7 +1,19 @@
 /*!
  * Author : Gourdon Aymeric
- * Version : 1.0
- * Point d'entrée pour le design front
+ * Version : 2.0
+ * Point d'entrée du design du thème Natheo-Horizon
  */
 
-@import url(front/natheoHorizon/global.css);
+@import 'tailwindcss' source(none);
+@import '@fontsource-variable/schibsted-grotesk';
+@import './front/natheoHorizon/variables.css';
+@import './front/natheoHorizon/theme.css';
+@import './front/natheoHorizon/base.css';
+@import './front/natheoHorizon/prose.css';
+
+/* Seuls les fichiers du thème sont scannés */
+@source '../vue/controllers/Front/NatheoHorizon';
+@source '../vue/Components/Front/NatheoHorizon';
+@source '../../templates/front/natheo_horizon';
+
+@custom-variant dark (&:where(.dark, .dark *));
