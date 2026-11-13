@@ -10,7 +10,7 @@
     <script>
         {# Même règle que useColorScheme(), appliquée avant le rendu pour éviter un flash du thème clair #}
         try {
-            var theme = localStorage.getItem('theme');
+            var theme = localStorage.getItem('frontColorScheme');
             if (theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
                 document.documentElement.classList.add('dark');
             }

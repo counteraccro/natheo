@@ -8,7 +8,7 @@ import { onBeforeUnmount, readonly, shallowRef, type Ref } from 'vue';
 export type ColorScheme = 'light' | 'dark';
 
 /** Clé lue aussi par le script de front_base.html.twig avant le rendu */
-const STORAGE_KEY = 'theme';
+const STORAGE_KEY = 'frontColorScheme';
 
 export interface ColorSchemeState {
   scheme: Readonly<Ref<ColorScheme>>;
