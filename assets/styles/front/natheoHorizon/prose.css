@@ -13,6 +13,15 @@
         margin-top: 1.1rem;
     }
 
+    .nh-prose > :first-child {
+        margin-top: 0;
+    }
+
+    .nh-prose h1 {
+        font-size: clamp(1.75rem, 2.8vw, 2.3rem);
+        margin-top: 2.6rem;
+    }
+
     .nh-prose h2 {
         font-size: clamp(1.5rem, 2.4vw, 2rem);
         margin-top: 2.4rem;
