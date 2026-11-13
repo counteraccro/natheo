@@ -20,7 +20,7 @@ const { menus } = useMenus(page);
 </script>
 
 <template>
-  <div class="min-h-screen flex flex-col bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100">
+  <div class="min-h-screen flex flex-col">
     <SiteHeader :page="page" />
     <div class="flex-1 w-full max-w-6xl mx-auto px-4 py-8 flex flex-col md:flex-row gap-8">
       <aside v-if="menus.left" class="md:w-56 shrink-0 md:order-1">
