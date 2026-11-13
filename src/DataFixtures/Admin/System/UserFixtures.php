@@ -12,6 +12,7 @@ namespace App\DataFixtures\Admin\System;
 use App\DataFixtures\AppFixtures;
 use App\Entity\Admin\System\User;
 use App\Enum\Admin\Global\Notification\Notification;
+use App\Enum\Admin\System\Options\OptionUser;
 use App\Service\Admin\NotificationService;
 use App\Service\Admin\System\OptionUserService;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
@@ -88,7 +89,7 @@ class UserFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
 
         foreach ($data['user'] as $ref => $data) {
             $user = new User();
-            $exclude = ['roles', 'password'];
+            $exclude = ['roles', 'password', 'personalDataRender'];
             foreach ($data as $key => $value) {
                 if (in_array($key, $exclude)) {
                     switch ($key) {
@@ -108,6 +109,11 @@ class UserFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
                 }
             }
             $user = $this->optionUserService->createOptionsUser($user);
+            if (isset($data['personalDataRender'])) {
+                $user
+                    ->getOptionUserByKey(OptionUser::OU_DEFAULT_PERSONAL_DATA_RENDER->value)
+                    ?->setValue($data['personalDataRender']);
+            }
             $user = $this->notificationService->addForFixture($user, Notification::WELCOME->value, [
                 'login' => $user->getLogin(),
                 'role' => $user->getRoles()[0],
