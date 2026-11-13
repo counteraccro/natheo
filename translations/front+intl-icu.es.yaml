@@ -1,7 +1,6 @@
 front.footer.credit: 2023-{year} — Desarrollado con Nathéo CMS {version}
 front.footer.template.version: '{version}'
 front.footer.admin.link: Administración
-front.footer.github.link: GitHub
 front.page.title: Cargando...
 front.page.edit_link: 'Editar esta página'
 front.footer.sitemap.link: Mapa del sitio
@@ -16,8 +15,6 @@ front.article.footer.edit: El
 front.article.footer.stat_publication: lectura(s)
 front.article.footer.info.draft: Esta página es un borrador, por ahora solo usted puede leerla
 front.comment.title: Comentarios
-front.comment.nb_comments: comentario(s)
-front.comment.time_ago: Hace
 front.comment.validate: Validar
 front.comment.moderate: Moderar
 front.comment.waiting: Invalidar
@@ -29,7 +26,6 @@ front.comment.success.validate: Comentario validado correctamente
 front.comment.success.moderate: Comentario moderado correctamente
 front.comment.success.waiting: Comentario invalidado correctamente
 front.comment.button.new.comment: Dejar un comentario
-front.comment.button.new.comment_cancel: Cancelar
 front.comment.button.new.comment_submit: Publicar
 front.comment.form.new.comment.pseudo.label: Seudónimo
 front.comment.form.new.comment.pseudo.placeholder: Su seudónimo
@@ -37,8 +33,6 @@ front.comment.form.new.comment.email.label: Correo electrónico
 front.comment.form.new.comment.email.placeholder: Su correo electrónico
 front.comment.form.new.comment.comment.label: Comentario
 front.comment.form.new.comment.comment.placeholder: Deje un pequeño comentario ;)
-front.comment.form.new.comment.pseudo.error: Introduzca un seudónimo
-front.comment.form.new.comment.error: El comentario no puede estar vacío
 front.comment.new.success.message: Comentario añadido correctamente
 front.error.api.modal.error.404: La página solicitada no existe
 front.error.api.modal.error.429: Demasiadas solicitudes, inténtelo de nuevo en unos minutos
@@ -50,7 +44,6 @@ front.header.dark.mode: Cambiar al modo oscuro
 front.breadcrumb.index: Inicio
 front.article.header.img.alt: Imagen de cabecera de la página
 front.comment.moderation.prefix: 'Moderación:'
-front.listing.no.image: Sin imagen
 front.listing.by: Por
 front.listing.empty: No se ha encontrado ningún elemento
 front.listing.nb.pages: página(s)

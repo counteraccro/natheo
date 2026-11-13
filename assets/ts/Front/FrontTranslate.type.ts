@@ -20,8 +20,6 @@ export interface FrontCommentTranslate {
   sortAsc: string;
   statusWait: string;
   statusModerate: string;
-  nbComments: string;
-  timeAgo: string;
   validate: string;
   moderate: string;
   waiting: string;
@@ -33,16 +31,13 @@ export interface FrontCommentTranslate {
   successModerate: string;
   successWaiting: string;
   btnNewComment: string;
-  btnNewCommentCancel: string;
   btnNewCommentSubmit: string;
   formNewCommentPseudoLabel: string;
   formNewCommentPseudoPlaceholder: string;
-  formNewCommentPseudoError: string;
   formNewCommentEmailLabel: string;
   formNewCommentEmailPlaceholder: string;
   formNewCommentCommentLabel: string;
   formNewCommentCommentPlaceholder: string;
-  formNewCommentCommentError: string;
   formNewCommentSuccessMessage: string;
   moderationPrefix: string;
   pagination: FrontPaginationTranslate;
@@ -56,7 +51,6 @@ export interface FrontArticleFooterTranslate {
 }
 
 export interface FrontListingTranslate {
-  noImage: string;
   by: string;
   empty: string;
   nbPages: string;
@@ -95,7 +89,6 @@ export interface FrontFooterTranslate {
   credit: string;
   templateVersion: string;
   adminLink: string;
-  githubLink: string;
   sitemapLink: string;
   frLink: string;
   esLink: string;

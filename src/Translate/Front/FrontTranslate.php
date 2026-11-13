@@ -130,11 +130,6 @@ class FrontTranslate extends AppTranslate
                 locale: $this->locale,
             ),
             'adminLink' => $this->translator->trans('front.footer.admin.link', domain: 'front', locale: $this->locale),
-            'githubLink' => $this->translator->trans(
-                'front.footer.github.link',
-                domain: 'front',
-                locale: $this->locale,
-            ),
             'sitemapLink' => $this->translator->trans(
                 'front.footer.sitemap.link',
                 domain: 'front',
@@ -171,7 +166,6 @@ class FrontTranslate extends AppTranslate
     private function getTranslateListing(): array
     {
         return [
-            'noImage' => $this->trans('front.listing.no.image'),
             'by' => $this->trans('front.listing.by'),
             'empty' => $this->trans('front.listing.empty'),
             'nbPages' => $this->trans('front.listing.nb.pages'),
@@ -221,12 +215,6 @@ class FrontTranslate extends AppTranslate
             'sortAsc' => $this->trans('front.comment.sort_asc'),
             'statusWait' => $this->trans('front.comment.status_wait'),
             'statusModerate' => $this->trans('front.comment.status_moderate'),
-            'nbComments' => $this->translator->trans(
-                'front.comment.nb_comments',
-                domain: 'front',
-                locale: $this->locale,
-            ),
-            'timeAgo' => $this->translator->trans('front.comment.time_ago', domain: 'front', locale: $this->locale),
             'validate' => $this->translator->trans('front.comment.validate', domain: 'front', locale: $this->locale),
             'moderate' => $this->translator->trans('front.comment.moderate', domain: 'front', locale: $this->locale),
             'waiting' => $this->translator->trans('front.comment.waiting', domain: 'front', locale: $this->locale),
@@ -270,11 +258,6 @@ class FrontTranslate extends AppTranslate
                 domain: 'front',
                 locale: $this->locale,
             ),
-            'btnNewCommentCancel' => $this->translator->trans(
-                'front.comment.button.new.comment_cancel',
-                domain: 'front',
-                locale: $this->locale,
-            ),
             'btnNewCommentSubmit' => $this->translator->trans(
                 'front.comment.button.new.comment_submit',
                 domain: 'front',
@@ -287,11 +270,6 @@ class FrontTranslate extends AppTranslate
             ),
             'formNewCommentPseudoPlaceholder' => $this->translator->trans(
                 'front.comment.form.new.comment.pseudo.placeholder',
-                domain: 'front',
-                locale: $this->locale,
-            ),
-            'formNewCommentPseudoError' => $this->translator->trans(
-                'front.comment.form.new.comment.pseudo.error',
                 domain: 'front',
                 locale: $this->locale,
             ),
@@ -312,11 +290,6 @@ class FrontTranslate extends AppTranslate
             ),
             'formNewCommentCommentPlaceholder' => $this->translator->trans(
                 'front.comment.form.new.comment.comment.placeholder',
-                domain: 'front',
-                locale: $this->locale,
-            ),
-            'formNewCommentCommentError' => $this->translator->trans(
-                'front.comment.form.new.comment.error',
                 domain: 'front',
                 locale: $this->locale,
             ),
