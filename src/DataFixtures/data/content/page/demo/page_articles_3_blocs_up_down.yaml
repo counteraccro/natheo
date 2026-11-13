@@ -1,0 +1,40 @@
+page_articles_3_blocs_up_down:
+    user: User
+    render: THREE_BLOCK_BOTTOM
+    category: ARTICLE
+    status: PUBLISH
+    landingPage: false
+    isOpenComment: true
+    ruleComment: VALIDATE
+    headerImg: media-2
+    tags: [Tag_article, Tag_demo]
+    menus: [menu_article_right, menu_default_left]
+    stats:
+        visitors: 0
+        reads: 0
+    translations:
+        fr:
+            titre: Article - 3 blocs verticals
+            url: article-3-blocs-verticals
+        es:
+            titre: Artículo - 3 bloques verticales
+            url: artículo-3-bloques-verticales
+        en:
+            titre: Article - 3 vertical blocks
+            url: Article-3-vertical-blocks
+    metas:
+        description:
+            fr: Article - 3 blocs verticals
+            es: Artículo - 3 bloques verticales
+            en: Article - 3 vertical blocks
+        keywords:
+            fr: Natheo-CMS, articles
+            es: Natheo-CMS, artículos
+            en: Natheo-CMS, articles
+    blocks:
+    -   block: 1
+        type: TEXT
+    -   block: 2
+        type: TEXT
+    -   block: 3
+        type: TEXT

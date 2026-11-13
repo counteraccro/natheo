@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 2.0
  * Fixtures pour les commentaires
  */
 namespace App\DataFixtures\Admin\Content\Comment;
@@ -12,6 +12,7 @@ use App\DataFixtures\AppFixtures;
 use App\Entity\Admin\Content\Comment\Comment;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\Comment\CommentStatus;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -34,6 +35,7 @@ class CommentFixtures extends AppFixtures implements FixtureGroupInterface, Orde
             return;
         }
 
+        $nbValidated = [];
         foreach ($data['comments'] as $ref => $commentData) {
             $comment = new Comment();
             foreach ($commentData as $key => $value) {
@@ -44,12 +46,22 @@ class CommentFixtures extends AppFixtures implements FixtureGroupInterface, Orde
                     case 'page':
                         $comment->setPage($this->getReference($value, Page::class));
                         break;
+                    case 'status':
+                        $comment->setStatus($this->enumValue(CommentStatus::class, $value));
+                        break;
                     default:
                         $this->setData($key, $value, $comment);
                 }
             }
+            if ($comment->getStatus() === CommentStatus::VALIDATE->value) {
+                $nbValidated[$commentData['page']] = ($nbValidated[$commentData['page']] ?? 0) + 1;
+            }
             $manager->persist($comment);
             $this->addReference($ref, $comment);
+        }
+
+        foreach ($nbValidated as $pageRef => $nb) {
+            $this->getReference($pageRef, Page::class)->setNbComment($nb);
         }
         $manager->flush();
     }

@@ -1,0 +1,31 @@
+menu_blog_right:
+    name: Menu Droite du blog généré lors de l'installation
+    type: LEFT_RIGHT_SIDE_BAR_ACCORDEON
+    position: POSITION_RIGHT
+    elements:
+    -   page: page_list_blog
+        label:
+            fr: Mon blog
+            en: My blog
+            es: Mi blog
+        children:
+        -   page: page_list_blog
+            label:
+                fr: Mon blog
+                en: My blog
+                es: Mi blog
+        -   page: page_blog_1_bloc
+            label:
+                fr: Blog - 1 bloc
+                en: Blog - 1 block
+                es: Blog - 1 bloque
+        -   page: page_blog_2_bloc_together
+            label:
+                fr: Blog - 2 blocs côte à côte
+                en: Blog - 2 blocks side by side
+                es: Blog - 2 bloques lado a lado
+        -   page: page_blog_3_blocs_together
+            label:
+                fr: Blog - 3 blocs côte à côte
+                en: Blog - 3 blocks side by side
+                es: Blog - 3 bloques lado a lado

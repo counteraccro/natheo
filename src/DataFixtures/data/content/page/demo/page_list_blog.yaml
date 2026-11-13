@@ -1,0 +1,39 @@
+page_list_blog:
+    user: User
+    render: TWO_BLOCK_BOTTOM
+    category: BLOG
+    status: PUBLISH
+    landingPage: false
+    isOpenComment: true
+    ruleComment: VALIDATE
+    headerImg: media-5
+    tags: [Tag_blog, Tag_demo]
+    menus: [menu_blog_right, menu_default_left]
+    stats:
+        visitors: 0
+        reads: 0
+    translations:
+        fr:
+            titre: Mon blog
+            url: blog
+        es:
+            titre: Mi blog
+            url: blog
+        en:
+            titre: My blog
+            url: blog
+    metas:
+        description:
+            fr: les articles du blog
+            es: artículos de blog
+            en: blog articles
+        keywords:
+            fr: Natheo-CMS, liste, blog, articles
+            es: Natheo-CMS, lista, blog, artículos
+            en: Natheo-CMS, list, blog, articles
+    blocks:
+    -   block: 1
+        type: TEXT
+    -   block: 2
+        type: LISTING
+        listing: BLOG

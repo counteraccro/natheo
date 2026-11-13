@@ -1,81 +1,49 @@
 tag:
     Tag_natheo:
         color: '#6F42C1'
-        user: User
-        translate:
-            - locale: fr
-              label: 'Natheo CMS'
-            - locale: es
-              label: 'Natheo CMS'
-            - locale: en
-              label: 'Natheo CMS'
+        label:
+            fr: Natheo CMS
+            es: Natheo CMS
+            en: Natheo CMS
     Tag_dev:
         color: '#7A86B8'
-        user: User
-        translate:
-            - locale: fr
-              label: 'Développement'
-            - locale: es
-              label: 'Desarrollo'
-            - locale: en
-              label: 'Development'
+        label:
+            fr: Développement
+            es: Desarrollo
+            en: Development
     Tag_article:
         color: '#1188b4'
-        user: User
-        translate:
-            - locale: fr
-              label: 'Article'
-            - locale: es
-              label: 'Artículo'
-            - locale: en
-              label: 'Article'
+        label:
+            fr: Article
+            es: Artículo
+            en: Article
     Tag_evolution:
         color: '#b61114'
-        user: User
-        translate:
-            - locale: fr
-              label: 'Evolution'
-            - locale: es
-              label: 'Evolución'
-            - locale: en
-              label: 'Evolution'
+        label:
+            fr: Evolution
+            es: Evolución
+            en: Evolution
     Tag_faq:
         color: '#262cdf'
-        user: User
-        translate:
-            - locale: fr
-              label: 'FAQ'
-            - locale: es
-              label: 'Preguntas frecuentes'
-            - locale: en
-              label: 'FAQ'
+        label:
+            fr: FAQ
+            es: Preguntas frecuentes
+            en: FAQ
     Tag_page:
         color: '#23e515'
-        user: User
-        translate:
-            - locale: fr
-              label: 'Page'
-            - locale: es
-              label: 'Página'
-            - locale: en
-              label: 'Page'
+        label:
+            fr: Page
+            es: Página
+            en: Page
     Tag_blog:
         color: '#b8db0a'
-        user: User
-        translate:
-            - locale: fr
-              label: 'Blog'
-            - locale: es
-              label: 'Blog'
-            - locale: en
-              label: 'Blog'
+        label:
+            fr: Blog
+            es: Blog
+            en: Blog
     Tag_demo:
         color: '#F0C847'
-        user: User
-        translate:
-            - locale: fr
-              label: 'Démo'
-            - locale: es
-              label: 'Manifestación'
-            - locale: en
-              label: 'Demo'
+        label:
+            fr: Démo
+            es: Manifestación
+            en: Demo

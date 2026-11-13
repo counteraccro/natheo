@@ -1,0 +1,41 @@
+menu_article_right:
+    name: Menu Droite des articles généré lors de l'installation
+    type: LEFT_RIGHT_SIDE_BAR_ACCORDEON
+    position: POSITION_RIGHT
+    elements:
+    -   page: page_list_articles
+        label:
+            fr: Articles
+            en: Articles
+            es: Artículos
+        children:
+        -   page: page_list_articles
+            label:
+                fr: Articles
+                en: Articles
+                es: Artículos
+        -   page: page_articles_2_blocs_up_down
+            label:
+                fr: Article - 2 blocs verticals
+                en: Article - 2 vertical blocks
+                es: Artículo - 2 bloques verticales
+        -   page: page_articles_3_blocs_up_down
+            label:
+                fr: Article - 3 blocs verticals
+                en: Article - 3 vertical blocks
+                es: Artículo - 3 bloques verticales
+        -   page: page_articles_1_blocs_up_2_blocs_down
+            label:
+                fr: Article - 1 bloc + 2 blocs
+                en: Article - 1 block + 2 blocks
+                es: Artículo - 1 bloque + 2 bloques
+        -   page: page_articles_2_blocs_up_1_bloc_down
+            label:
+                fr: Article - 2 blocs + 1 bloc
+                en: Article - 2 blocks + 1 block
+                es: Artículo - 2 bloques + 1 bloque
+        -   page: page_articles_2_blocs_up_2_bloc_down
+            label:
+                fr: Article - 2 blocs + 2 blocs
+                en: Article - 2 blocks + 2 blocks
+                es: Artículo - 2 bloques + 2 bloques

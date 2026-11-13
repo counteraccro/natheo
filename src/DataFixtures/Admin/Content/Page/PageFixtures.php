@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.3
+ * @version 2.0
  * Fixtures pour générer des pages
  */
 namespace App\DataFixtures\Admin\Content\Page;
@@ -21,6 +21,13 @@ use App\Entity\Admin\Content\Page\PageTranslation;
 use App\Entity\Admin\Content\Tag\Tag;
 use App\Entity\Admin\System\OptionSystem;
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\Comment\CommentStatus;
+use App\Enum\Admin\Content\Page\PageCategory;
+use App\Enum\Admin\Content\Page\PageContentType;
+use App\Enum\Admin\Content\Page\PageRender;
+use App\Enum\Admin\Content\Page\PageStatistics;
+use App\Enum\Admin\Content\Page\PageStatus;
+use App\Enum\Admin\Content\Page\PageValidationStatus;
 use App\Service\Admin\Content\Page\PageHistory;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
@@ -31,8 +38,15 @@ use Symfony\Component\Yaml\Yaml;
 
 class PageFixtures extends AppFixtures implements FixtureGroupInterface, OrderedFixtureInterface
 {
-    const PAGE_FIXTURES_DATA_FILE =
-        'content' . DIRECTORY_SEPARATOR . 'page' . DIRECTORY_SEPARATOR . 'page_fixtures_data.yaml';
+    /**
+     * Dossier des pages : un fichier YAML par page, textes des blocs dans <page>/<locale>/<bloc>.md
+     */
+    const PAGE_FIXTURES_FOLDER = 'content' . DIRECTORY_SEPARATOR . 'page' . DIRECTORY_SEPARATOR;
+
+    /**
+     * Valeurs communes à toutes les pages
+     */
+    const PAGE_DEFAULTS_FILE = '_defaults.yaml';
 
     /**
      * @throws ContainerExceptionInterface
@@ -40,71 +54,104 @@ class PageFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
      */
     public function load(ObjectManager $manager): void
     {
-        $data = Yaml::parseFile($this->pathDataFixtures . self::PAGE_FIXTURES_DATA_FILE);
-
         $pageHistory = new PageHistory($this->container, new User());
         $pageHistory->removePageHistoryFolder();
 
-        if ($data === null) {
-            return;
-        }
+        $folder = $this->pathDataFixtures . self::PAGE_FIXTURES_FOLDER;
+        $defaults = Yaml::parseFile($folder . self::PAGE_DEFAULTS_FILE);
 
-        foreach ($data['pages'] as $ref => $data) {
-            $page = new Page();
-            foreach ($data as $key => $value) {
-                switch ($key) {
-                    case 'user':
-                        $page->setUser($this->getUserReference($value));
-                        break;
-                    case 'validationUser':
-                        $page->setValidationUser($this->getUserReference($value));
-                        break;
-                    case 'validationAt':
-                        $page->setValidationAt(new \DateTime($value));
-                        break;
-                    case 'tags':
-                        $this->addTag($page, $value);
-                        break;
-                    case 'headerImg':
-                        $media = $this->getReference($value, Media::class);
-                        $optionOsAdresseSite = $this->getReference('OS_ADRESSE_SITE', OptionSystem::class);
-                        $optionOsMediaPath = $this->getReference('OS_MEDIA_PATH', OptionSystem::class);
-                        $page->setHeaderImg(
-                            $optionOsAdresseSite->getValue() .
-                                '/assets/' .
-                                $optionOsMediaPath->getValue() .
-                                '/' .
-                                $media->getPath(),
-                        );
-                        break;
-                    case 'pageTranslation':
-                        foreach ($value as $pageTrans) {
-                            $page->addPageTranslation($this->populateEntity($pageTrans, new PageTranslation()));
-                        }
-                        break;
-                    case 'pageContent':
-                        foreach ($value as $pageCont) {
-                            $page->addPageContent($this->createPageContent($pageCont));
-                        }
-                        break;
-                    case 'pageStatistique':
-                        foreach ($value as $pageStat) {
-                            $page->addPageStatistique($this->populateEntity($pageStat, new PageStatistique()));
-                        }
-                        break;
-                    case 'pageMeta':
-                        foreach ($value as $pageMet) {
-                            $page->addPageMeta($this->createPageMeta($pageMet));
-                        }
-                        break;
-                    default:
-                        $this->setData($key, $value, $page);
-                }
-            }
+        foreach ($this->loadYamlFolder($folder) as $ref => $file) {
+            $page = $this->createPage($ref, $file['data'], $file['dir'], $defaults);
             $manager->persist($page);
             $this->addReference($ref, $page);
         }
         $manager->flush();
+    }
+
+    /**
+     * Crée la page $ref
+     * @param string $ref
+     * @param array $data
+     * @param string $dir dossier du fichier YAML de la page
+     * @param array $defaults
+     * @return Page
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function createPage(string $ref, array $data, string $dir, array $defaults): Page
+    {
+        $page = new Page();
+        $page->setUser($this->getUserReference($data['user'] ?? 'User'));
+
+        foreach ($data as $key => $value) {
+            switch ($key) {
+                case 'user':
+                case 'menus':
+                case 'metas':
+                    break;
+                case 'render':
+                    $page->setRender($this->enumValue(PageRender::class, $value));
+                    break;
+                case 'category':
+                    $page->setCategory($this->enumValue(PageCategory::class, $value));
+                    break;
+                case 'status':
+                    $page->setStatus($this->enumValue(PageStatus::class, $value));
+                    break;
+                case 'ruleComment':
+                    $page->setRuleComment($this->enumValue(CommentStatus::class, $value));
+                    break;
+                case 'validationStatus':
+                    $page->setValidationStatus($this->enumValue(PageValidationStatus::class, $value));
+                    break;
+                case 'validationUser':
+                    $page->setValidationUser($this->getUserReference($value));
+                    break;
+                case 'validationAt':
+                    $page->setValidationAt(new \DateTime($value));
+                    break;
+                case 'tags':
+                    foreach ($value as $tag) {
+                        $page->addTag($this->getReference($tag, Tag::class));
+                    }
+                    break;
+                case 'headerImg':
+                    $page->setHeaderImg($this->getMediaUrl($value));
+                    break;
+                case 'translations':
+                    foreach ($value as $locale => $translation) {
+                        $page->addPageTranslation(
+                            $this->populateEntity(['locale' => $locale] + $translation, new PageTranslation()),
+                        );
+                    }
+                    break;
+                case 'blocks':
+                    foreach ($value as $block) {
+                        $page->addPageContent(
+                            $this->createPageContent(
+                                $block,
+                                $dir . DIRECTORY_SEPARATOR . $ref,
+                                array_keys($data['translations']),
+                            ),
+                        );
+                    }
+                    break;
+                case 'stats':
+                    $page->addPageStatistique(
+                        $this->createStatistique(PageStatistics::NB_VISITEUR, $value['visitors']),
+                    );
+                    $page->addPageStatistique($this->createStatistique(PageStatistics::NB_READ, $value['reads']));
+                    break;
+                default:
+                    $this->setData($key, $value, $page);
+            }
+        }
+
+        foreach (array_merge($defaults['metas'], $data['metas'] ?? []) as $name => $values) {
+            $page->addPageMeta($this->createPageMeta($name, $values));
+        }
+
+        return $page;
     }
 
     /**
@@ -121,64 +168,91 @@ class PageFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
     }
 
     /**
-     * Ajoute des tags à une page
-     * @param Page $page
-     * @param array $tabTags
-     * @return void
+     * Retourne l'URL publique du média $ref
+     * @param string $ref
+     * @return string
      */
-    private function addTag(Page $page, array $tabTags): void
+    private function getMediaUrl(string $ref): string
     {
-        foreach ($tabTags as $tag) {
-            $page->addTag($this->getReference($tag, Tag::class));
-        }
+        $media = $this->getReference($ref, Media::class);
+        $siteAddress = $this->getReference('OS_ADRESSE_SITE', OptionSystem::class)->getValue();
+        $mediaPath = $this->getReference('OS_MEDIA_PATH', OptionSystem::class)->getValue();
+
+        return $siteAddress . '/assets/' . $mediaPath . '/' . $media->getPath();
     }
 
     /**
-     * Permet de créer un nouveau PageContent
+     * Crée un bloc de page. Un bloc texte lit son contenu dans $textDir/<locale>/<fichier>.md,
+     * où <fichier> vaut « file » ou, par défaut, le numéro du bloc (suivi de « -<order> » au-delà du premier)
      * @param array $data
+     * @param string $textDir
+     * @param string[] $locales
      * @return PageContent
      */
-    private function createPageContent(array $data): PageContent
+    private function createPageContent(array $data, string $textDir, array $locales): PageContent
     {
+        $order = $data['order'] ?? 1;
+        $type = $this->enumCase(PageContentType::class, $data['type']);
+
         $pageContent = new PageContent();
-        foreach ($data as $key => $value) {
-            if ($key === 'pageContentTranslation') {
-                foreach ($value as $pageContTrans) {
-                    $pageContent->addPageContentTranslation(
-                        $this->populateEntity($pageContTrans, new PageContentTranslation()),
-                    );
+        $pageContent->setRenderBlock($data['block']);
+        $pageContent->setRenderOrder($order);
+        $pageContent->setType($type->value);
+
+        switch ($type) {
+            case PageContentType::FAQ:
+                $pageContent->setTypeId($this->getReference($data['faq'], Faq::class)->getId());
+                break;
+            case PageContentType::LISTING:
+                $pageContent->setTypeId($this->enumValue(PageCategory::class, $data['listing']));
+                break;
+            case PageContentType::TEXT:
+                $fileName = $data['file'] ?? $data['block'] . ($order > 1 ? '-' . $order : '');
+                foreach ($locales as $locale) {
+                    $path = $textDir . DIRECTORY_SEPARATOR . $locale . DIRECTORY_SEPARATOR . $fileName . '.md';
+                    if (!is_file($path)) {
+                        throw new \RuntimeException(sprintf('Texte du bloc introuvable : %s', $path));
+                    }
+                    $translation = new PageContentTranslation();
+                    $translation->setLocale($locale);
+                    $translation->setText(file_get_contents($path));
+                    $pageContent->addPageContentTranslation($translation);
                 }
-            } elseif ($key === 'typeId') {
-                // Possible que la référence soit un id en dur
-                if ($this->hasReference(strval($value), Faq::class)) {
-                    $pageContent->setTypeId($this->getReference($value, Faq::class)->getId());
-                } else {
-                    $pageContent->setTypeId($value);
-                }
-            } else {
-                $this->setData($key, $value, $pageContent);
-            }
+                break;
         }
 
         return $pageContent;
     }
 
     /**
-     * Permet de créer un nouveau pageMeta
-     * @param array $data
+     * Crée une statistique de page
+     * @param PageStatistics $key
+     * @param int $value
+     * @return PageStatistique
+     */
+    private function createStatistique(PageStatistics $key, int $value): PageStatistique
+    {
+        $statistique = new PageStatistique();
+        $statistique->setKey($key->value);
+        $statistique->setValue((string) $value);
+        return $statistique;
+    }
+
+    /**
+     * Crée la meta $name, traduite avec $values (locale => valeur)
+     * @param string $name
+     * @param array $values
      * @return PageMeta
      */
-    private function createPageMeta(array $data): PageMeta
+    private function createPageMeta(string $name, array $values): PageMeta
     {
         $pageMeta = new PageMeta();
-        foreach ($data as $key => $value) {
-            if ($key === 'pageMetaTranslation') {
-                foreach ($value as $pageMetaTrans) {
-                    $pageMeta->addPageMetaTranslation($this->populateEntity($pageMetaTrans, new PageMetaTranslation()));
-                }
-            } else {
-                $this->setData($key, $value, $pageMeta);
-            }
+        $pageMeta->setName($name);
+        foreach ($values as $locale => $value) {
+            $translation = new PageMetaTranslation();
+            $translation->setLocale($locale);
+            $translation->setValue($value);
+            $pageMeta->addPageMetaTranslation($translation);
         }
         return $pageMeta;
     }

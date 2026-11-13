@@ -1,0 +1,36 @@
+page_blog_1_bloc:
+    user: User
+    render: ONE_BLOCK
+    category: BLOG
+    status: PUBLISH
+    landingPage: false
+    isOpenComment: true
+    ruleComment: VALIDATE
+    headerImg: media-1
+    tags: [Tag_blog, Tag_demo]
+    menus: [menu_blog_right, menu_default_left]
+    stats:
+        visitors: 0
+        reads: 0
+    translations:
+        fr:
+            titre: Blog - 1 bloc
+            url: blog-1-bloc
+        en:
+            titre: Blog - 1 block
+            url: blog-1-block
+        es:
+            titre: Blog - 1 bloque
+            url: blog-1-bloque
+    metas:
+        description:
+            fr: Blog - 1 bloc
+            es: Blog - 1 bloque
+            en: Blog - 1 block
+        keywords:
+            fr: Natheo-CMS, blog, demo, exemple
+            es: Natheo-CMS, blog, demostración, ejemplo
+            en: Natheo-CMS, blog, demo, example
+    blocks:
+    -   block: 1
+        type: TEXT

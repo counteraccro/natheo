@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 2.0
  * Fixtures pour la génération des tags
  */
 
@@ -31,16 +31,12 @@ class TagFixtures extends AppFixtures implements FixtureGroupInterface, OrderedF
         $data = Yaml::parseFile($this->pathDataFixtures . self::TAG_FIXTURES_DATA_FILE);
         foreach ($data['tag'] as $ref => $dataTag) {
             $tag = new Tag();
-            foreach ($dataTag as $key => $value) {
-                if ($key === 'translate') {
-                    foreach ($value as $translate) {
-                        $tag->addTagTranslation($this->populateEntity($translate, new TagTranslation()));
-                    }
-                } elseif ($key === 'user') {
-                    $tag->setUser($this->getReference($value, User::class));
-                } else {
-                    $this->setData($key, $value, $tag);
-                }
+            $tag->setUser($this->getReference($dataTag['user'] ?? 'User', User::class));
+            $tag->setColor($dataTag['color']);
+            foreach ($dataTag['label'] as $locale => $label) {
+                $tag->addTagTranslation(
+                    $this->populateEntity(['locale' => $locale, 'label' => $label], new TagTranslation()),
+                );
             }
             $manager->persist($tag);
             $this->addReference($ref, $tag);

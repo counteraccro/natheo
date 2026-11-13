@@ -1,0 +1,40 @@
+page_faq:
+    user: User
+    render: THREE_BLOCK_BOTTOM
+    category: FAQ
+    status: PUBLISH
+    landingPage: false
+    isOpenComment: true
+    ruleComment: VALIDATE
+    headerImg: media-6
+    tags: [Tag_faq, Tag_demo]
+    stats:
+        visitors: 0
+        reads: 0
+    translations:
+        fr:
+            titre: La Faq de Natheo CMS
+            url: faq-natheo-cms
+        es:
+            titre: Preguntas frecuentes sobre Natheo CMS
+            url: faq-natheo-cms
+        en:
+            titre: The Natheo CMS FAQ
+            url: faq-natheo-cms
+    metas:
+        description:
+            fr: La Faq de Natheo CMS
+            es: Preguntas frecuentes sobre Natheo CMS
+            en: The Natheo CMS FAQ
+        keywords:
+            fr: Natheo-CMS, demo, FAQ
+            es: Natheo-CMS, demo, FAQ
+            en: Natheo-CMS, demo, FAQ
+    blocks:
+    -   block: 1
+        type: TEXT
+    -   block: 2
+        type: FAQ
+        faq: faq-1
+    -   block: 3
+        type: TEXT
