@@ -14,7 +14,6 @@ use App\Entity\Admin\Content\Menu\Menu;
 use App\Entity\Admin\Content\Menu\MenuElement;
 use App\Entity\Admin\Content\Menu\MenuElementTranslation;
 use App\Entity\Admin\Content\Page\Page;
-use App\Entity\Admin\System\User;
 use App\Enum\Admin\Content\Menu\MenuLinkTarget;
 use App\Enum\Admin\Content\Menu\MenuPosition;
 use App\Enum\Admin\Content\Menu\MenuType;
@@ -35,7 +34,7 @@ class MenuFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
             $data = $file['data'];
 
             $menu = new Menu();
-            $menu->setUser($this->getReference($data['user'] ?? 'User', User::class));
+            $menu->setUser($this->getUserReference($data['user'] ?? 'User'));
             $menu->setName($data['name']);
             $menu->setType($this->enumValue(MenuType::class, $data['type']));
             $menu->setPosition($this->enumValue(MenuPosition::class, $data['position']));

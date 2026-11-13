@@ -17,7 +17,6 @@ use App\Entity\Admin\Content\Faq\FaqQuestion;
 use App\Entity\Admin\Content\Faq\FaqQuestionTranslation;
 use App\Entity\Admin\Content\Faq\FaqStatistique;
 use App\Entity\Admin\Content\Faq\FaqTranslation;
-use App\Entity\Admin\System\User;
 use App\Enum\Admin\Content\Faq\FaqStatistiqueKey;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
@@ -36,7 +35,7 @@ class FaqFixtures extends AppFixtures implements FixtureGroupInterface, OrderedF
             $data = $file['data'];
 
             $faq = new Faq();
-            $faq->setUser($this->getReference($data['user'] ?? 'User', User::class));
+            $faq->setUser($this->getUserReference($data['user'] ?? 'User'));
             $faq->setDisabled($data['disabled'] ?? false);
             foreach ($data['title'] as $locale => $title) {
                 $faq->addFaqTranslation(

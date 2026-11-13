@@ -12,7 +12,6 @@ namespace App\DataFixtures\Admin\Content;
 use App\DataFixtures\AppFixtures;
 use App\Entity\Admin\Content\Tag\Tag;
 use App\Entity\Admin\Content\Tag\TagTranslation;
-use App\Entity\Admin\System\User;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -31,7 +30,7 @@ class TagFixtures extends AppFixtures implements FixtureGroupInterface, OrderedF
         $data = Yaml::parseFile($this->pathDataFixtures . self::TAG_FIXTURES_DATA_FILE);
         foreach ($data['tag'] as $ref => $dataTag) {
             $tag = new Tag();
-            $tag->setUser($this->getReference($dataTag['user'] ?? 'User', User::class));
+            $tag->setUser($this->getUserReference($dataTag['user'] ?? 'User'));
             $tag->setColor($dataTag['color']);
             foreach ($dataTag['label'] as $locale => $label) {
                 $tag->addTagTranslation(

@@ -9,7 +9,9 @@ declare(strict_types=1);
 
 namespace App\DataFixtures;
 
+use App\Entity\Admin\System\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
@@ -244,6 +246,44 @@ class AppFixtures extends Fixture
             }
         }
         return $return;
+    }
+
+    /**
+     * Retourne l'utilisateur $ref, ou le fondateur quand les comptes de démonstration ne sont pas chargés
+     * @param string $ref
+     * @return User
+     */
+    protected function getUserReference(string $ref): User
+    {
+        if (!$this->hasReference($ref, User::class)) {
+            $ref = 'User';
+        }
+        return $this->getReference($ref, User::class);
+    }
+
+    /**
+     * Antidate les entités de $dates (création et modification), sans passer par leurs callbacks de cycle de vie
+     * @param ObjectManager $manager
+     * @param array<array{0: object, 1: string}> $dates entité persistée et date lisible par \DateTime
+     * @return void
+     */
+    protected function backdate(ObjectManager $manager, array $dates): void
+    {
+        if (!($manager instanceof EntityManagerInterface)) {
+            return;
+        }
+        foreach ($dates as [$entity, $date]) {
+            $manager
+                ->createQueryBuilder()
+                ->update($entity::class, 'e')
+                ->set('e.createdAt', ':date')
+                ->set('e.updateAt', ':date')
+                ->where('e.id = :id')
+                ->setParameter('date', new \DateTime($date))
+                ->setParameter('id', $entity->getId())
+                ->getQuery()
+                ->execute();
+        }
     }
 
     /**

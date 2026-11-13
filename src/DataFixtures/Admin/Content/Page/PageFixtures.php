@@ -82,12 +82,14 @@ class PageFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
     {
         $page = new Page();
         $page->setUser($this->getUserReference($data['user'] ?? 'User'));
+        $page->setLandingPage(false);
 
         foreach ($data as $key => $value) {
             switch ($key) {
                 case 'user':
                 case 'menus':
                 case 'metas':
+                case 'date':
                     break;
                 case 'render':
                     $page->setRender($this->enumValue(PageRender::class, $value));
@@ -152,19 +154,6 @@ class PageFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
         }
 
         return $page;
-    }
-
-    /**
-     * Retourne l'utilisateur $ref, ou le fondateur quand les comptes de démonstration ne sont pas chargés
-     * @param string $ref
-     * @return User
-     */
-    private function getUserReference(string $ref): User
-    {
-        if (!$this->hasReference($ref, User::class)) {
-            $ref = 'User';
-        }
-        return $this->getReference($ref, User::class);
     }
 
     /**
