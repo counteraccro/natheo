@@ -107,26 +107,115 @@ class OptionSystemService extends AppAdminService
 
     /**
      * Met à jour une option depuis l'interface d'administration.
-     * Refuse les clés absentes de la config, les options désactivées et les valeurs invalides
+     * Refuse les clés absentes de la config, les options désactivées et les valeurs invalides.
+     * Une option traduisible demande une langue du site : seule la valeur de cette langue est remplacée
      * @param string $key
      * @param string $value
+     * @param string|null $locale langue de la valeur, pour une option traduisible uniquement
      * @return bool
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function updateValueFromAdmin(string $key, string $value): bool
+    public function updateValueFromAdmin(string $key, string $value, ?string $locale = null): bool
     {
         $optionConfigService = $this->getOptionConfigService();
         $optionConfig = $this->getOptionConfigByKey($key);
         if (
             !$optionConfigService->isEditable($optionConfig) ||
-            !$optionConfigService->isValidValue($optionConfig, $value)
+            $optionConfigService->isTranslatable($optionConfig) !== ($locale !== null)
         ) {
             return false;
         }
 
-        $this->saveValueByKee($key, $value);
+        if ($locale === null) {
+            if (!$optionConfigService->isValidValue($optionConfig, $value)) {
+                return false;
+            }
+            $this->saveValueByKee($key, $value);
+            return true;
+        }
+
+        if (!in_array($locale, $this->getSupportedLocales(), true)) {
+            return false;
+        }
+        // Seule la langue par défaut est obligatoire, les autres reprennent sa valeur
+        if ($locale !== $this->getDefaultLanguage()) {
+            unset($optionConfig['required']);
+        }
+        if (!$optionConfigService->isValidValue($optionConfig, $value)) {
+            return false;
+        }
+
+        $translations = $this->decodeTranslations($this->getValueByKey($key));
+        $translations[$locale] = $value;
+        $this->saveValueByKee($key, json_encode($translations, JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR));
         return true;
+    }
+
+    /**
+     * Valeur d'une option dans une langue. Pour une option traduisible, une langue vide reprend la valeur
+     * de la langue par défaut ; une option non traduisible renvoie sa valeur telle quelle
+     * @param string $key
+     * @param string|null $locale langue voulue, langue par défaut du site si null
+     * @return string|null null si l'option n'est pas en base
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getTranslatedValueByKey(string $key, ?string $locale = null): ?string
+    {
+        $value = $this->getValueByKey($key);
+        if ($value === null || !$this->getOptionConfigService()->isTranslatable($this->getOptionConfigByKey($key))) {
+            return $value;
+        }
+
+        $translations = $this->decodeTranslations($value);
+        $default = $this->getDefaultLanguage();
+        $translated = $translations[$locale ?? $default] ?? '';
+        return $translated !== '' ? $translated : $translations[$default] ?? '';
+    }
+
+    /**
+     * Valeurs par langue d'une option traduisible, stockées en objet JSON.
+     * Une valeur qui n'est pas un objet JSON (enregistrée avant que l'option soit traduisible) est celle de la langue par défaut
+     * @param string|null $value
+     * @return array<string, string>
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function decodeTranslations(?string $value): array
+    {
+        if ($value === null || $value === '') {
+            return [];
+        }
+
+        $decoded = json_decode($value, true);
+        if (is_array($decoded) && $decoded !== [] && !array_is_list($decoded)) {
+            return array_filter($decoded, 'is_string');
+        }
+        return [$this->getDefaultLanguage() => $value];
+    }
+
+    /**
+     * Langue par défaut du site (option OS_DEFAULT_LANGUAGE)
+     * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getDefaultLanguage(): string
+    {
+        return $this->getValueByKey(OptionSystemEnum::OS_DEFAULT_LANGUAGE->value) ?:
+            OptionSystemEnum::OS_DEFAULT_LANGUAGE->getDefault() ?? 'fr';
+    }
+
+    /**
+     * Langues du site (paramètre app.supported_locales)
+     * @return string[]
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getSupportedLocales(): array
+    {
+        return explode('|', (string) $this->getParameterBag()->get('app.supported_locales'));
     }
 
     /**

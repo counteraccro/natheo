@@ -109,6 +109,33 @@ class OptionSystemControllerTest extends AppWebTestCase
     }
 
     /**
+     * Test méthode update() sur une option traduisible
+     * @return void
+     */
+    public function testUpdateTranslatable(): void
+    {
+        $this->client->loginUser($this->createUserSuperAdmin(), 'admin');
+        $server = ['HTTP_X-CSRF-TOKEN' => $this->getCsrfToken()];
+        $key = OptionSystem::OS_FRONT_FOOTER_TEXTE->value;
+
+        /** @var OptionSystemService $optionSystemService */
+        $optionSystemService = $this->container->get(OptionSystemService::class);
+
+        $content = $this->postUpdate(['key' => $key, 'value' => 'Texte espagnol', 'locale' => 'es'], $server);
+        $this->assertResponseIsSuccessful();
+        $this->assertTrue($content['success']);
+        $this->assertEquals('Texte espagnol', $optionSystemService->getTranslatedValueByKey($key, 'es'));
+
+        $content = $this->postUpdate(['key' => $key, 'value' => 'Sans langue'], $server);
+        $this->assertFalse($content['success']);
+
+        $content = $this->postUpdate(['key' => $key, 'value' => 'Langue en tableau', 'locale' => ['es']], $server);
+        $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
+        $this->assertFalse($content['success']);
+        $this->assertEquals('Texte espagnol', $optionSystemService->getTranslatedValueByKey($key, 'es'));
+    }
+
+    /**
      * Désactiver la validation des pages remet les pages en attente en brouillon, sans les publier
      * @return void
      */
