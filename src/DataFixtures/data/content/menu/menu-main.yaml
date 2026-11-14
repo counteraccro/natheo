@@ -19,9 +19,11 @@ menu-main:
             children:
                 -   page: docs
                 -   page: docs-install
-                -   page: docs-config
+                    children:
+                        -   page: docs-config
                 -   page: docs-theme
-                -   page: docs-api
+                    children:
+                        -   page: docs-api
         -   page: blog
         -   page: faq
             label: { fr: 'FAQ', en: 'FAQ', es: 'FAQ' }

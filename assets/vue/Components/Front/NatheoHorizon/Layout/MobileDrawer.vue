@@ -1,7 +1,7 @@
 <script setup lang="ts">
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Tiroir de navigation : menu de l'en-tête en accordéon, langues et déconnexion
  * (petits écrans, et tous les écrans pour un menu d'en-tête en barre latérale)
  */
@@ -12,6 +12,7 @@ import { useMenus } from '@/vue/Composables/Front/useMenus';
 import BrandLogo from '@/vue/Components/Front/NatheoHorizon/Layout/BrandLogo.vue';
 import HorizonIcon from '@/vue/Components/Front/NatheoHorizon/Layout/HorizonIcon.vue';
 import MenuLink from '@/vue/Components/Front/NatheoHorizon/Menu/MenuLink.vue';
+import NestedMenuList from '@/vue/Components/Front/NatheoHorizon/Menu/NestedMenuList.vue';
 import type { Menu } from '@/ts/Front/Api/Menu.type';
 
 defineProps<{ id: string; menu: Menu | null; siteName: string }>();
@@ -98,14 +99,13 @@ const subLink = 'flex min-h-11 items-center gap-2.5 font-medium text-on-night-mu
                 {{ element.label }}
                 <HorizonIcon name="chevron-down" class="size-5.5 transition-transform group-open:rotate-180" />
               </summary>
-              <ul class="pb-2.5 pl-4">
-                <template v-for="child in element.children" :key="child.id">
-                  <li><MenuLink :element="child" dot="bg-mod-third" :class="subLink" /></li>
-                  <li v-for="grandchild in child.children" :key="grandchild.id" class="pl-4">
-                    <MenuLink :element="grandchild" dot="bg-mod-third" :class="subLink" />
-                  </li>
-                </template>
-              </ul>
+              <NestedMenuList
+                :elements="element.children"
+                :link-class="subLink"
+                nested-class="ml-1 border-l border-night-line pl-3"
+                dot="bg-mod-third"
+                class="pb-2.5 pl-4"
+              />
             </details>
             <MenuLink v-else :element="element" dot="bg-mod-third" :class="link" />
           </li>

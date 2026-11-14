@@ -1,27 +1,82 @@
+<script lang="ts">
+import type { InjectionKey, Ref } from 'vue';
+
+/** État d'ouverture du panneau, lu par son contenu (sous-panneaux à refermer avec lui) */
+export const NAV_PANEL_OPEN: InjectionKey<Readonly<Ref<boolean>>> = Symbol('natheo.horizon.navPanel.open');
+
+// Fermeture du panneau ouvert : un seul panneau de l'en-tête affiché à la fois
+let closeOpenPanel: (() => void) | null = null;
+</script>
+
 <script setup lang="ts">
 /**
  * @author Gourdon Aymeric
- * @version 1.0
- * Bouton de l'en-tête qui ouvre un panneau (sous-menu, langues) : clic, Échap, flèches haut / bas
+ * @version 1.1
+ * Bouton de l'en-tête qui ouvre un panneau (sous-menu, langues) : clic, survol à la souris si demandé, Échap,
+ * flèches haut / bas ; un seul panneau ouvert à la fois
  */
-import { nextTick, onBeforeUnmount, onMounted, ref, useId } from 'vue';
+import { nextTick, onBeforeUnmount, onMounted, provide, readonly, ref, useId, watch } from 'vue';
+import { isMouse, useHoverDelay } from '@/vue/Composables/Front/useHoverDelay';
 import HorizonIcon from '@/vue/Components/Front/NatheoHorizon/Layout/HorizonIcon.vue';
 
-const props = defineProps<{ label?: string; current?: boolean; align?: 'left' | 'right' }>();
+const props = defineProps<{ label?: string; current?: boolean; align?: 'left' | 'right'; hover?: boolean }>();
 const id = useId();
 const open = ref(false);
 const root = ref<HTMLElement | null>(null);
 const button = ref<HTMLButtonElement | null>(null);
 const panel = ref<HTMLElement | null>(null);
+const openedByHover = ref(false);
+const hoverClose = useHoverDelay(() => close());
+
+provide(NAV_PANEL_OPEN, readonly(open));
+
+watch(open, (isOpen) => {
+  if (isOpen) {
+    if (closeOpenPanel !== close) {
+      closeOpenPanel?.();
+    }
+    closeOpenPanel = close;
+  } else if (closeOpenPanel === close) {
+    closeOpenPanel = null;
+  }
+});
 
 function links(): HTMLElement[] {
-  return [...(panel.value?.querySelectorAll<HTMLElement>('a[href]') ?? [])];
+  // Les liens des sous-panneaux fermés sont masqués : ils ne prennent pas le focus
+  return [...(panel.value?.querySelectorAll<HTMLElement>('a[href]') ?? [])].filter(
+    (link) => link.offsetParent !== null
+  );
 }
 
 function close(focusButton = false): void {
+  hoverClose.cancel();
   open.value = false;
+  openedByHover.value = false;
   if (focusButton) {
     button.value?.focus();
+  }
+}
+
+// Un clic sur un panneau ouvert au survol le garde ouvert au lieu de le refermer
+function onButtonClick(): void {
+  open.value = openedByHover.value || !open.value;
+  openedByHover.value = false;
+}
+
+function onPointerenter(event: PointerEvent): void {
+  if (!props.hover || !isMouse(event)) {
+    return;
+  }
+  hoverClose.cancel();
+  if (!open.value) {
+    open.value = true;
+    openedByHover.value = true;
+  }
+}
+
+function onPointerleave(event: PointerEvent): void {
+  if (openedByHover.value && isMouse(event)) {
+    hoverClose.schedule();
   }
 }
 
@@ -65,11 +120,23 @@ function onDocumentClick(event: MouseEvent): void {
 }
 
 onMounted(() => document.addEventListener('click', onDocumentClick));
-onBeforeUnmount(() => document.removeEventListener('click', onDocumentClick));
+onBeforeUnmount(() => {
+  document.removeEventListener('click', onDocumentClick);
+  if (closeOpenPanel === close) {
+    closeOpenPanel = null;
+  }
+});
 </script>
 
 <template>
-  <div ref="root" class="relative" @keydown="onKeydown" @focusout="onFocusout">
+  <div
+    ref="root"
+    class="relative"
+    @keydown="onKeydown"
+    @focusout="onFocusout"
+    @pointerenter="onPointerenter"
+    @pointerleave="onPointerleave"
+  >
     <button
       ref="button"
       type="button"
@@ -77,7 +144,7 @@ onBeforeUnmount(() => document.removeEventListener('click', onDocumentClick));
       :class="props.current ? 'text-on-night' : 'text-on-night-muted'"
       :aria-expanded="open"
       :aria-controls="id"
-      @click="open = !open"
+      @click="onButtonClick"
       @keydown="onButtonKeydown"
     >
       <span v-if="props.current" class="size-2 rounded-[2px] bg-mod-third" aria-hidden="true" />
