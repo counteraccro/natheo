@@ -6,6 +6,7 @@
  */
 import { computed, toRef } from 'vue';
 import { useFrontContext } from '@/vue/Composables/Front/useFrontContext';
+import { useFormat } from '@/vue/Composables/Front/useFormat';
 import { useBreadcrumb } from '@/vue/Composables/Front/useBreadcrumb';
 import { useEditLink } from '@/vue/Composables/Front/useEditLink';
 import { usePageBlocks, type BlockSize } from '@/vue/Composables/Front/usePageBlocks';
@@ -31,9 +32,8 @@ const SIZES: Record<BlockSize, string> = {
 };
 
 const showComments = computed(() => options.value?.open_comment === true && props.page.openComment);
-const updatedAt = computed(() =>
-  props.page.updatedAt ? new Date(props.page.updatedAt).toLocaleDateString(datas.locale) : null
-);
+const format = useFormat();
+const updatedAt = computed(() => format.date(props.page.updatedAt, 'short'));
 </script>
 
 <template>

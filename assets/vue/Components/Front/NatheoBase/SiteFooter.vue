@@ -4,36 +4,21 @@
  * @version 1.0
  * Pied de page du thème Natheo-Base : menu, texte et réseaux sociaux du site, langues, liens utiles
  */
-import { computed, toRef } from 'vue';
+import { toRef } from 'vue';
 import { useFrontContext } from '@/vue/Composables/Front/useFrontContext';
 import { useMenus } from '@/vue/Composables/Front/useMenus';
 import { useSiteOptions } from '@/vue/Composables/Front/useSiteOptions';
 import { useLanguages } from '@/vue/Composables/Front/useLanguages';
+import { useSocialLinks } from '@/vue/Composables/Front/useSocialLinks';
 import FooterMenu from '@/vue/Components/Front/NatheoBase/Menu/FooterMenu.vue';
 import type { Page } from '@/ts/Front/Api/Page.type';
-import type { SiteOptions } from '@/ts/Front/Api/OptionSystem.type';
 
 const props = defineProps<{ page: Page | null }>();
 const { urls, translate } = useFrontContext();
 const { data: options } = useSiteOptions();
 const { menus } = useMenus(toRef(props, 'page'));
 
-const SOCIALS: Record<string, keyof SiteOptions> = {
-  Facebook: 'front_footer_social_facebook_url',
-  Instagram: 'front_footer_social_instagram_url',
-  GitHub: 'front_footer_social_github_url',
-  TikTok: 'front_footer_social_tiktok_url',
-  LinkedIn: 'front_footer_social_linkedin_url',
-  YouTube: 'front_footer_social_youtube_url',
-  X: 'front_footer_social_x_url',
-};
-
-const socials = computed(() =>
-  Object.entries(SOCIALS).flatMap(([label, key]) => {
-    const url = options.value?.[key];
-    return typeof url === 'string' && url !== '' ? [{ label, url }] : [];
-  })
-);
+const socials = useSocialLinks();
 
 const languages = useLanguages();
 </script>
@@ -44,7 +29,7 @@ const languages = useLanguages();
       <FooterMenu v-if="menus.footer" :menu="menus.footer" />
       <p v-if="options?.front_footer_texte">{{ options.front_footer_texte }}</p>
       <ul v-if="socials.length" class="flex flex-wrap gap-4">
-        <li v-for="social in socials" :key="social.label">
+        <li v-for="social in socials" :key="social.network">
           <a :href="social.url" target="_blank" rel="noopener" class="underline">{{ social.label }}</a>
         </li>
       </ul>

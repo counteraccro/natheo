@@ -4,31 +4,16 @@
  * @version 1.0
  * Formulaire d'envoi d'un commentaire
  */
-import { reactive, ref, useId } from 'vue';
+import { useId } from 'vue';
 import { useFrontContext } from '@/vue/Composables/Front/useFrontContext';
+import { useCommentForm } from '@/vue/Composables/Front/useCommentForm';
 import type { NewComment } from '@/ts/Front/Api/Comment.type';
 
 const props = defineProps<{ send: (comment: Omit<NewComment, 'page' | 'userAgent'>) => Promise<unknown> }>();
 const context = useFrontContext();
 const t = context.translate.main.articleFooter.comment;
 const id = useId();
-const form = reactive({ author: context.datas.user?.login ?? '', email: '', comment: '' });
-const message = ref<string | null>(null);
-const sending = ref(false);
-
-async function submit(): Promise<void> {
-  sending.value = true;
-  message.value = null;
-  try {
-    await props.send({ author: form.author, email: form.email || null, comment: form.comment });
-    form.comment = '';
-    message.value = t.formNewCommentSuccessMessage;
-  } catch (error) {
-    message.value = context.errorLabel(error);
-  } finally {
-    sending.value = false;
-  }
-}
+const { form, message, sending, submit } = useCommentForm(props.send);
 </script>
 
 <template>
