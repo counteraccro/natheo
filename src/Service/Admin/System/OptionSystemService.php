@@ -154,7 +154,7 @@ class OptionSystemService extends AppAdminService
 
     /**
      * Valeur d'une option dans une langue. Pour une option traduisible, une langue vide reprend la valeur
-     * de la langue par défaut ; une option non traduisible renvoie sa valeur telle quelle
+     * de la langue par défaut, puis la première valeur renseignée ; une option non traduisible renvoie sa valeur telle quelle
      * @param string $key
      * @param string|null $locale langue voulue, langue par défaut du site si null
      * @return string|null null si l'option n'est pas en base
@@ -170,8 +170,13 @@ class OptionSystemService extends AppAdminService
 
         $translations = $this->decodeTranslations($value);
         $default = $this->getDefaultLanguage();
-        $translated = $translations[$locale ?? $default] ?? '';
-        return $translated !== '' ? $translated : $translations[$default] ?? '';
+        $candidates = [$translations[$locale ?? $default] ?? '', $translations[$default] ?? '', ...$translations];
+        foreach ($candidates as $candidate) {
+            if ($candidate !== '') {
+                return $candidate;
+            }
+        }
+        return '';
     }
 
     /**

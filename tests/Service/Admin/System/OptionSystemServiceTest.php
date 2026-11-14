@@ -289,6 +289,12 @@ class OptionSystemServiceTest extends AppWebTestCase
         $this->optionSystemService->saveValueByKee($key, 'Texte unique');
         $this->assertEquals('Texte unique', $this->optionSystemService->getTranslatedValueByKey($key, 'es'));
 
+        // Langue par défaut changée après la saisie : la valeur renseignée reste servie
+        $this->optionSystemService->saveValueByKee($key, json_encode(['fr' => 'Mon texte']));
+        $this->optionSystemService->saveValueByKee(OptionSystemEnum::OS_DEFAULT_LANGUAGE->value, 'en');
+        $this->assertEquals('Mon texte', $this->optionSystemService->getTranslatedValueByKey($key, 'es'));
+        $this->assertEquals('Mon texte', $this->optionSystemService->getTranslatedValueByKey($key, 'en'));
+
         $siteName = OptionSystemEnum::OS_SITE_NAME->value;
         $this->assertEquals(
             $this->optionSystemService->getValueByKey($siteName),
