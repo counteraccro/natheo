@@ -225,6 +225,10 @@ class IndexControllerTest extends AppWebTestCase
         $this->assertEquals(-1, $preview['contents'][0]['id']);
         $this->assertEquals('text', $preview['contents'][0]['type']);
         $this->assertStringContainsString('Texte du brouillon', $preview['contents'][0]['content']['html']);
+        $english = $page->getPageTranslationByLocale('en');
+        $translations = array_column($preview['page']['translations'], null, 'locale');
+        $this->assertEquals($english->getUrl(), $translations['en']['slug']);
+        $this->assertEquals($english->getTitre(), $translations['en']['title']);
 
         $preview = $this->getVueProps($this->client->request('GET', $this->pageUrl($unpublished)))['datas']['preview'];
         $this->assertEquals($unpublished->getId(), $preview['page']['id']);

@@ -76,6 +76,8 @@ class FrontPreviewService extends AppFrontService
         }
 
         $resource->id = (int) $page->getId();
+        // Slugs de la page enregistrée : seuls ceux-là ont une adresse publique
+        $resource->translations = (new PageMapper($locale))->mapTranslations($page);
         $pageData = $this->normalizer->normalize($resource, 'jsonld', [
             'groups' => ['page:read'],
             'resource_class' => PageResource::class,
