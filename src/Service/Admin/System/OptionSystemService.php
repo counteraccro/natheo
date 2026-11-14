@@ -22,6 +22,12 @@ class OptionSystemService extends AppAdminService
     const OPTION_SYSTEM_CONFIG_FILE = 'options_system.yaml';
 
     /**
+     * Configuration des options système, lue une seule fois
+     * @var array|null
+     */
+    private ?array $optionsSystemConfig = null;
+
+    /**
      * Retourne l'ensemble des options systèmes
      * @return array|object[]
      * @throws ContainerExceptionInterface
@@ -90,7 +96,7 @@ class OptionSystemService extends AppAdminService
      */
     public function getOptionsSystemConfig(): array
     {
-        return Yaml::parseFile($this->getPathConfig());
+        return $this->optionsSystemConfig ??= Yaml::parseFile($this->getPathConfig());
     }
 
     /**
