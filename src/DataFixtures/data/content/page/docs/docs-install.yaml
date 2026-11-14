@@ -7,7 +7,7 @@ docs-install:
     isOpenComment: false
     ruleComment: VALIDATE
     tags: [tag-tutorial]
-    menus: [menu-docs-header, menu-docs-side, menu-docs-footer]
+    menus: [menu-docs-side, menu-docs-footer]
     stats: { visitors: 610, reads: 540 }
     translations:
         fr: { titre: 'Installation', url: installation }

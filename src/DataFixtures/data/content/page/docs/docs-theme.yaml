@@ -7,7 +7,7 @@ docs-theme:
     isOpenComment: false
     ruleComment: VALIDATE
     tags: [tag-tutorial, tag-themes]
-    menus: [menu-docs-header, menu-docs-side, menu-docs-footer]
+    menus: [menu-docs-side, menu-docs-footer]
     stats: { visitors: 290, reads: 250 }
     translations:
         fr: { titre: 'Créer un thème', url: creer-un-theme }

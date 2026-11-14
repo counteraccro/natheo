@@ -1,5 +1,5 @@
-menu-docs-header:
-    name: 'Documentation (barre latérale)'
+menu-legal-header:
+    name: 'Pages légales (barre latérale)'
     type: HEADER_SIDE_BAR
     position: POSITION_HEADER
     elements:

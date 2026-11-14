@@ -7,7 +7,7 @@ docs-api:
     isOpenComment: false
     ruleComment: VALIDATE
     tags: [tag-tutorial, tag-api]
-    menus: [menu-docs-header, menu-docs-side, menu-docs-footer]
+    menus: [menu-docs-side, menu-docs-footer]
     stats: { visitors: 340, reads: 300 }
     translations:
         fr: { titre: 'Utiliser l''API', url: utiliser-l-api }

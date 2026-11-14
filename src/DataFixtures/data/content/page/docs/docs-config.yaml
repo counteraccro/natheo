@@ -7,7 +7,7 @@ docs-config:
     isOpenComment: false
     ruleComment: VALIDATE
     tags: [tag-tutorial]
-    menus: [menu-docs-header, menu-docs-side, menu-docs-footer]
+    menus: [menu-docs-side, menu-docs-footer]
     stats: { visitors: 380, reads: 330 }
     translations:
         fr: { titre: 'Configuration', url: configuration }

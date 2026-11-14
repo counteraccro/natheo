@@ -6,7 +6,7 @@ legal:
     date: '-30 days'
     isOpenComment: false
     ruleComment: VALIDATE
-    menus: [menu-legal-footer]
+    menus: [menu-legal-header, menu-legal-footer]
     stats: { visitors: 90, reads: 70 }
     translations:
         fr: { titre: 'Mentions légales', url: mentions-legales }

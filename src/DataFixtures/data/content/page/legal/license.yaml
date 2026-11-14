@@ -6,7 +6,7 @@ license:
     date: '-30 days'
     isOpenComment: false
     ruleComment: VALIDATE
-    menus: [menu-legal-footer]
+    menus: [menu-legal-header, menu-legal-footer]
     stats: { visitors: 120, reads: 100 }
     translations:
         fr: { titre: 'Licence', url: licence }

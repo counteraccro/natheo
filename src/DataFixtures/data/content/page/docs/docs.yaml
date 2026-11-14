@@ -8,7 +8,7 @@ docs:
     ruleComment: VALIDATE
     headerImg: hdr-docs
     tags: [tag-tutorial]
-    menus: [menu-docs-header, menu-docs-side, menu-docs-footer]
+    menus: [menu-docs-side, menu-docs-footer]
     stats: { visitors: 720, reads: 640 }
     translations:
         fr: { titre: 'Documentation', url: documentation }
