@@ -88,7 +88,7 @@ export interface FrontMenuTranslate {
   headerLabel: string;
   sideLabel: string;
   footerLabel: string;
-  /** Libellé du bouton qui ouvre un sous-menu */
+  /** Libellé du bouton qui ouvre un sous-menu, « {label} » à la place du libellé de l'élément */
   submenu: string;
 }
 

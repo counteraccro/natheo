@@ -54,7 +54,8 @@ class FrontTranslate extends AppTranslate
                 'headerLabel' => $this->trans('front.menu.header_label'),
                 'sideLabel' => $this->trans('front.menu.side_label'),
                 'footerLabel' => $this->trans('front.menu.footer_label'),
-                'submenu' => $this->trans('front.menu.submenu'),
+                // Paramètre laissé tel quel : le libellé de l'élément est placé dans le navigateur
+                'submenu' => $this->trans('front.menu.submenu', ['label' => '{label}']),
             ],
             'main' => [
                 'articleFooter' => $this->getTranslateArticleFooter(),
@@ -74,11 +75,12 @@ class FrontTranslate extends AppTranslate
     /**
      * Traduction d'une clé du domaine front dans la locale courante
      * @param string $key
+     * @param array<string, string> $parameters
      * @return string
      */
-    private function trans(string $key): string
+    private function trans(string $key, array $parameters = []): string
     {
-        return $this->translator->trans($key, domain: 'front', locale: $this->locale);
+        return $this->translator->trans($key, $parameters, 'front', $this->locale);
     }
 
     /**
