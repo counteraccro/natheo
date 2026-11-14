@@ -13,39 +13,97 @@ faq-product:
                         es: '¿Qué necesito para instalar Nathéo?'
                     answer:
                         fr: |
-                            PHP 8.4 ou supérieur, Composer, Yarn et une base de données : **MySQL 8.2**, **MariaDB 10.11** ou **PostgreSQL 15.2**, au minimum.
-                            La commande `php bin/console natheo:install` crée ensuite la base, le schéma et les données de démonstration.
+                            PHP 8.4 ou plus récent, Composer 2.8, Yarn 1.22 et une base de données parmi MySQL 8.2, MariaDB 10.11 et PostgreSQL 15.2, au minimum. Les extensions PHP demandées sont listées dans le [guide d'installation](/fr/documentation/installation).
+
+                            En développement, la commande `php bin/console natheo:install` crée la base, son schéma et ce site de démonstration. En production, l'installation passe par l'assistant d'installation.
                         en: |
-                            PHP 8.4 or higher, Composer, Yarn and a database: at least **MySQL 8.2**, **MariaDB 10.11** or **PostgreSQL 15.2**.
-                            The `php bin/console natheo:install` command then creates the database, the schema and the demo data.
+                            PHP 8.4 or later, Composer 2.8, Yarn 1.22 and a database among MySQL 8.2, MariaDB 10.11 and PostgreSQL 15.2, at least. The required PHP extensions are listed in the [installation guide](/en/documentation/installation).
+
+                            For development, the `php bin/console natheo:install` command creates the database, its schema and this demo site. In production, installation goes through the installation wizard.
                         es: |
-                            PHP 8.4 o superior, Composer, Yarn y una base de datos: como mínimo **MySQL 8.2**, **MariaDB 10.11** o **PostgreSQL 15.2**.
-                            Después, el comando `php bin/console natheo:install` crea la base, el esquema y los datos de demostración.
+                            PHP 8.4 o superior, Composer 2.8, Yarn 1.22 y una base de datos entre MySQL 8.2, MariaDB 10.11 y PostgreSQL 15.2, como mínimo. Las extensiones de PHP necesarias se indican en la [guía de instalación](/es/documentation/instalacion).
+
+                            En desarrollo, el comando `php bin/console natheo:install` crea la base, su esquema y este sitio de demostración. En producción, la instalación se hace con el asistente de instalación.
                 -   title:
                         fr: 'Nathéo fonctionne-t-il avec PostgreSQL ?'
                         en: 'Does Nathéo work with PostgreSQL?'
                         es: '¿Nathéo funciona con PostgreSQL?'
                     answer:
                         fr: |
-                            Oui. Depuis la 2.0, MySQL / MariaDB et PostgreSQL sont supportés à égalité : chaque migration existe pour les deux plateformes, et les tests tournent sur les deux.
+                            Oui, depuis la 2.0. PostgreSQL est supporté au même niveau que MySQL et MariaDB. Chaque migration de la base existe en deux versions, une par plateforme, et Nathéo charge celle qui correspond à votre connexion. Les tests automatisés tournent sur les deux bases à chaque modification du code.
+
+                            L'article [Une base, deux plateformes](/fr/page/une-base-deux-plateformes) explique comment c'est organisé.
                         en: |
-                            Yes. Since 2.0, MySQL / MariaDB and PostgreSQL are equally supported: every migration exists for both platforms, and the tests run on both.
+                            Yes, since 2.0. PostgreSQL is supported on the same level as MySQL and MariaDB. Each database migration exists in two versions, one per platform, and Nathéo loads the one that matches your connection. The automated tests run on both databases each time the code changes.
+
+                            The post [One database, two platforms](/en/page/one-database-two-platforms) explains how it is organized.
                         es: |
-                            Sí. Desde la 2.0, MySQL / MariaDB y PostgreSQL tienen el mismo soporte: cada migración existe para las dos plataformas y las pruebas se ejecutan en ambas.
+                            Sí, desde la 2.0. PostgreSQL tiene el mismo soporte que MySQL y MariaDB. Cada migración de la base existe en dos versiones, una por plataforma, y Nathéo carga la que corresponde a su conexión. Las pruebas automáticas se ejecutan en las dos bases con cada cambio en el código.
+
+                            El artículo [Una base, dos plataformas](/es/page/una-base-dos-plataformas) explica cómo está organizado.
+                -   title:
+                        fr: 'Mon hébergeur propose une version plus ancienne de MySQL ou MariaDB. Est-ce que Nathéo fonctionnera ?'
+                        en: 'My host offers an older version of MySQL or MariaDB. Will Nathéo work?'
+                        es: 'Mi proveedor de alojamiento ofrece una versión más antigua de MySQL o MariaDB. ¿Funcionará Nathéo?'
+                    answer:
+                        fr: |
+                            Les versions minimales sont MySQL 8.2, MariaDB 10.11 et PostgreSQL 15.2. Nathéo n'est pas testé sur des versions plus anciennes, et elles ne sont pas supportées. Demandez à votre hébergeur s'il propose une version plus récente, ou s'il fournit PostgreSQL.
+                        en: |
+                            The minimum versions are MySQL 8.2, MariaDB 10.11 and PostgreSQL 15.2. Nathéo is not tested on older versions, and they are not supported. Ask your host whether they offer a more recent version, or whether they provide PostgreSQL.
+                        es: |
+                            Las versiones mínimas son MySQL 8.2, MariaDB 10.11 y PostgreSQL 15.2. Nathéo no se prueba en versiones más antiguas, y no tienen soporte. Pregunte a su proveedor si ofrece una versión más reciente, o si dispone de PostgreSQL.
                 -   title:
                         fr: 'Comment mettre à jour Nathéo ?'
                         en: 'How do I update Nathéo?'
                         es: '¿Cómo actualizo Nathéo?'
                     answer:
                         fr: |
-                            Récupérez la nouvelle version, lancez `composer install`, puis `php bin/console doctrine:migrations:migrate` pour mettre la base à jour et `yarn build` pour les assets.
-                            Le [journal des modifications](https://github.com/counteraccro/natheo/blob/master/CHANGELOG.md) liste les changements incompatibles de chaque version.
+                            Récupérez la nouvelle version, puis lancez ces commandes dans le dossier du projet.
+
+                            ```bash
+                            composer install
+                            php bin/console doctrine:migrations:migrate
+                            yarn install
+                            yarn build
+                            php bin/console cache:clear
+                            ```
+
+                            Les migrations mettent la base à jour, sur MySQL comme sur PostgreSQL. Avant de commencer, lisez la rubrique « Rupture » du [journal des modifications](https://github.com/counteraccro/natheo/blob/master/CHANGELOG.md), qui liste les changements incompatibles et ce qu'il faut adapter.
                         en: |
-                            Fetch the new release, run `composer install`, then `php bin/console doctrine:migrations:migrate` to update the database and `yarn build` for the assets.
-                            The [changelog](https://github.com/counteraccro/natheo/blob/master/CHANGELOG.md) lists the breaking changes of each release.
+                            Get the new release, then run these commands in the project folder.
+
+                            ```bash
+                            composer install
+                            php bin/console doctrine:migrations:migrate
+                            yarn install
+                            yarn build
+                            php bin/console cache:clear
+                            ```
+
+                            The migrations update the database, on MySQL as on PostgreSQL. Before starting, read the "Rupture" section (breaking changes) of the [changelog](https://github.com/counteraccro/natheo/blob/master/CHANGELOG.md), which lists the incompatible changes and what to adapt.
                         es: |
-                            Descarga la nueva versión, ejecuta `composer install`, luego `php bin/console doctrine:migrations:migrate` para actualizar la base y `yarn build` para los assets.
-                            El [registro de cambios](https://github.com/counteraccro/natheo/blob/master/CHANGELOG.md) indica los cambios incompatibles de cada versión.
+                            Descargue la nueva versión y ejecute estos comandos en la carpeta del proyecto.
+
+                            ```bash
+                            composer install
+                            php bin/console doctrine:migrations:migrate
+                            yarn install
+                            yarn build
+                            php bin/console cache:clear
+                            ```
+
+                            Las migraciones actualizan la base, tanto en MySQL como en PostgreSQL. Antes de empezar, lea la sección «Rupture» (cambios incompatibles) del [registro de cambios](https://github.com/counteraccro/natheo/blob/master/CHANGELOG.md), que indica los cambios incompatibles y lo que hay que adaptar.
+                -   title:
+                        fr: 'Puis-je passer d''un site en 1.0 à la 2.x ?'
+                        en: 'Can I move a 1.0 site to 2.x?'
+                        es: '¿Puedo pasar un sitio de la 1.0 a la 2.x?'
+                    answer:
+                        fr: |
+                            Pas automatiquement. Le schéma de la base a été entièrement revu en 2.0, et il n'existe pas de migration depuis la 1.0. Il faut installer la nouvelle version à neuf, puis reprendre les contenus. À partir de la 2.0, les mises à jour passent par les migrations Doctrine.
+                        en: |
+                            Not automatically. The database schema was completely redesigned in 2.0, and there is no migration from 1.0. You need a fresh installation of the new version, then to bring your content over. From 2.0 onwards, updates go through Doctrine migrations.
+                        es: |
+                            No de forma automática. El esquema de la base se rehízo por completo en la 2.0, y no hay migración desde la 1.0. Hay que instalar la nueva versión desde cero y después recuperar los contenidos. A partir de la 2.0, las actualizaciones pasan por las migraciones Doctrine.
         -   title: { fr: 'Contenu', en: 'Content', es: 'Contenido' }
             questions:
                 -   title:
@@ -54,33 +112,44 @@ faq-product:
                         es: '¿Puedo modificar una página publicada sin que los visitantes vean mis cambios?'
                     answer:
                         fr: |
-                            Oui : les modifications d'une page publiée sont enregistrées dans un **brouillon**. La version en ligne ne change pas tant que vous ne publiez pas le brouillon, que vous pouvez prévisualiser à tout moment.
+                            Oui. Quand une page est publiée, vos enregistrements vont dans un brouillon et la version en ligne ne change pas. Un bandeau en haut de l'éditeur signale ce brouillon. Vous pouvez le prévisualiser sur le site, le publier pour remplacer la version en ligne, ou l'abandonner.
                         en: |
-                            Yes: changes to a published page are saved in a **draft**. The live version stays the same until you publish the draft, which you can preview at any time.
+                            Yes. When a page is published, your saves go into a draft and the live version does not change. A banner at the top of the editor flags this draft. You can preview it on the site, publish it to replace the live version, or discard it.
                         es: |
-                            Sí: los cambios de una página publicada se guardan en un **borrador**. La versión en línea no cambia hasta que publicas el borrador, que puedes previsualizar en cualquier momento.
+                            Sí. Cuando una página está publicada, lo que guarda va a un borrador y la versión en línea no cambia. Una franja en la parte superior del editor señala este borrador. Puede previsualizarlo en el sitio, publicarlo para sustituir la versión en línea o descartarlo.
                 -   title:
                         fr: 'Dans quelles langues puis-je publier ?'
                         en: 'Which languages can I publish in?'
                         es: '¿En qué idiomas puedo publicar?'
                     answer:
                         fr: |
-                            Chaque contenu (page, menu, FAQ, tag) se traduit en **français**, **anglais** et **espagnol**. L'interface d'administration est elle aussi disponible dans ces trois langues.
+                            En français, en anglais et en espagnol. Les pages, leurs blocs, les menus, les FAQ et les tags se traduisent dans les trois langues, et chaque page a une adresse et des informations SEO dans chaque langue. L'administration est elle aussi traduite, et chaque utilisateur choisit sa langue dans ses options.
                         en: |
-                            Every piece of content (page, menu, FAQ, tag) is translated into **French**, **English** and **Spanish**. The administration interface is also available in these three languages.
+                            French, English and Spanish. Pages, their blocks, menus, FAQs and tags are translated into the three languages, and each page has an address and SEO information in each language. The administration is translated too, and each user picks their language in their options.
                         es: |
-                            Cada contenido (página, menú, FAQ, etiqueta) se traduce al **francés**, **inglés** y **español**. La interfaz de administración también está disponible en estos tres idiomas.
+                            En francés, inglés y español. Las páginas, sus bloques, los menús, las FAQ y las etiquetas se traducen a los tres idiomas, y cada página tiene una dirección y una información SEO en cada idioma. La administración también está traducida, y cada usuario elige su idioma en sus opciones.
                 -   title:
                         fr: 'Qui peut publier une page ?'
                         en: 'Who can publish a page?'
                         es: '¿Quién puede publicar una página?'
                     answer:
                         fr: |
-                            Avec l'option « Validation des pages », un contributeur soumet sa page et un administrateur la valide ou la refuse. Sans cette option, chacun publie ses propres pages.
+                            Sans l'option « Validation des pages », chaque utilisateur publie ses propres pages, et un administrateur peut publier celles de tout le monde. Avec cette option, un contributeur soumet sa page. Un administrateur la retrouve dans le bloc « Pages à valider » du tableau de bord, puis la valide ou la refuse en indiquant un motif.
                         en: |
-                            With the "Page validation" option, a contributor submits their page and an administrator approves or rejects it. Without it, everyone publishes their own pages.
+                            Without the "Page validation" option, each user publishes their own pages, and an administrator can publish everyone's. With this option, a contributor submits their page. An administrator finds it in the "Pages to review" block of the dashboard, then approves it or rejects it with a reason.
                         es: |
-                            Con la opción «Validación de páginas», un colaborador envía su página y un administrador la valida o la rechaza. Sin esta opción, cada uno publica sus propias páginas.
+                            Sin la opción «Validación de páginas», cada usuario publica sus propias páginas, y un administrador puede publicar las de todos. Con esta opción, un colaborador envía su página. Un administrador la encuentra en el bloque «Páginas por validar» del panel de control y luego la valida o la rechaza indicando un motivo.
+                -   title:
+                        fr: 'Comment les commentaires sont-ils modérés ?'
+                        en: 'How are comments moderated?'
+                        es: '¿Cómo se moderan los comentarios?'
+                    answer:
+                        fr: |
+                            Les commentaires s'ouvrent pour tout le site dans les options système, puis page par page. Chaque page indique si un nouveau commentaire est publié tout de suite ou s'il attend une validation, et l'option « Forcer la validation des nouveaux commentaires » impose la validation partout. La modération se fait dans l'écran « Commentaires » de l'administration, ou directement sous la page pour un administrateur connecté.
+                        en: |
+                            Comments are opened for the whole site in the system options, then page by page. Each page says whether a new comment is published right away or waits for approval, and the "Require approval of new comments" option enforces approval everywhere. Moderation happens in the "Comments" screen of the administration, or directly under the page for a logged-in administrator.
+                        es: |
+                            Los comentarios se abren para todo el sitio en las opciones de sistema, y después página por página. Cada página indica si un comentario nuevo se publica en el acto o espera una validación, y la opción «Exigir la validación de los nuevos comentarios» impone la validación en todas partes. La moderación se hace en la pantalla «Comentarios» de la administración, o directamente debajo de la página para un administrador conectado.
         -   title: { fr: 'API et thèmes', en: 'API and themes', es: 'API y temas' }
             questions:
                 -   title:
@@ -89,30 +158,41 @@ faq-product:
                         es: '¿Puedo usar Nathéo sin su sitio público?'
                     answer:
                         fr: |
-                            Oui. Le site public n'est qu'un client de l'**API v2** : vous pouvez construire votre propre front (application mobile, site statique, autre framework) sur les mêmes ressources.
+                            Oui. Le site public récupère toutes ses données par l'API v2, comme le ferait une autre application. Vous pouvez donc construire votre propre front, par exemple une application mobile ou un site dans un autre framework, sur les mêmes ressources. Pour les actions faites au nom d'un utilisateur, comme poster un commentaire, l'API propose des sessions avec un access token.
                         en: |
-                            Yes. The public site is just a client of the **API v2**: you can build your own front end (mobile app, static site, another framework) on the same resources.
+                            Yes. The public site gets all its data from the API v2, as another application would. You can build your own front end, for example a mobile app or a site in another framework, on the same resources. For actions made on behalf of a user, such as posting a comment, the API offers sessions with an access token.
                         es: |
-                            Sí. El sitio público es solo un cliente de la **API v2**: puedes construir tu propio front (aplicación móvil, sitio estático, otro framework) sobre los mismos recursos.
+                            Sí. El sitio público obtiene todos sus datos de la API v2, igual que lo haría otra aplicación. Puede construir su propio front, por ejemplo una aplicación móvil o un sitio con otro framework, sobre los mismos recursos. Para las acciones hechas en nombre de un usuario, como publicar un comentario, la API ofrece sesiones con un access token.
                 -   title:
                         fr: 'Combien de thèmes sont fournis ?'
                         en: 'How many themes are included?'
                         es: '¿Cuántos temas se incluyen?'
                     answer:
                         fr: |
-                            Deux : **Natheo-Horizon**, le thème par défaut, et **Natheo-Base**, un thème en HTML sémantique sans design qui sert de modèle pour créer le vôtre. Le thème actif se choisit dans les options système.
+                            Trois. Natheo-Horizon est le thème par défaut, celui de ce site. StormFront est un deuxième thème complet. Natheo-Base affiche tout le contenu en HTML sémantique, sans style, et sert de point de départ pour écrire votre propre thème. Le thème actif se choisit dans l'option « Thème de votre site », et le guide [Créer un thème](/fr/documentation/creer-un-theme) explique comment en ajouter un.
                         en: |
-                            Two: **Natheo-Horizon**, the default theme, and **Natheo-Base**, a semantic HTML theme without design that serves as a starting point for your own. The active theme is chosen in the system options.
+                            Three. Natheo-Horizon is the default theme, the one on this site. StormFront is a second complete theme. Natheo-Base displays all the content in semantic HTML, without styling, and is the starting point for writing your own theme. The active theme is chosen in the "Theme of your site" option, and the [Creating a theme](/en/documentation/creating-a-theme) guide explains how to add one.
                         es: |
-                            Dos: **Natheo-Horizon**, el tema por defecto, y **Natheo-Base**, un tema en HTML semántico sin diseño que sirve de modelo para crear el tuyo. El tema activo se elige en las opciones del sistema.
+                            Tres. Natheo-Horizon es el tema por defecto, el de este sitio. StormFront es un segundo tema completo. Natheo-Base muestra todo el contenido en HTML semántico, sin estilo, y sirve de punto de partida para escribir su propio tema. El tema activo se elige en la opción «Tema de su sitio», y la guía [Crear un tema](/es/documentation/crear-un-tema) explica cómo añadir uno.
+                -   title:
+                        fr: 'Puis-je modifier un écran de l''administration ?'
+                        en: 'Can I change an administration screen?'
+                        es: '¿Puedo modificar una pantalla de la administración?'
+                    answer:
+                        fr: |
+                            Oui, sans toucher au code de Nathéo. Un contrôleur placé dans `src/Overwrite/Controller/` peut remplacer un écran existant, et la correspondance entre l'ancienne route et la nouvelle se déclare dans `config/cms/overwrite.yaml`. Le guide de [configuration](/fr/documentation/configuration) donne un exemple.
+                        en: |
+                            Yes, without touching Nathéo's code. A controller placed in `src/Overwrite/Controller/` can replace an existing screen, and the mapping between the old route and the new one is declared in `config/cms/overwrite.yaml`. The [configuration](/en/documentation/configuration) guide gives an example.
+                        es: |
+                            Sí, sin tocar el código de Nathéo. Un controlador colocado en `src/Overwrite/Controller/` puede sustituir una pantalla existente, y la correspondencia entre la ruta antigua y la nueva se declara en `config/cms/overwrite.yaml`. La guía de [configuración](/es/documentation/configuracion) da un ejemplo.
                 -   title:
                         fr: 'Nathéo est-il gratuit ?'
                         en: 'Is Nathéo free?'
                         es: '¿Nathéo es gratuito?'
                     answer:
                         fr: |
-                            Oui, Nathéo est un logiciel libre distribué sous licence GNU GPL v3. Son code est sur [GitHub](https://github.com/counteraccro/natheo).
+                            Oui. Nathéo est un logiciel libre distribué sous licence GNU GPL v3, utilisable pour un site personnel comme pour un site commercial. Le code est publié sur [GitHub](https://github.com/counteraccro/natheo), et la page [Licence](/fr/page/licence) résume ce que la licence permet.
                         en: |
-                            Yes, Nathéo is free software released under the GNU GPL v3 license. Its code is on [GitHub](https://github.com/counteraccro/natheo).
+                            Yes. Nathéo is free software released under the GNU GPL v3 license, usable for a personal site as well as a commercial one. The code is published on [GitHub](https://github.com/counteraccro/natheo), and the [License](/en/page/license) page sums up what the license allows.
                         es: |
-                            Sí, Nathéo es software libre distribuido bajo la licencia GNU GPL v3. Su código está en [GitHub](https://github.com/counteraccro/natheo).
+                            Sí. Nathéo es software libre distribuido bajo la licencia GNU GPL v3, que se puede usar tanto para un sitio personal como para uno comercial. El código está publicado en [GitHub](https://github.com/counteraccro/natheo), y la página [Licencia](/es/page/licencia) resume lo que permite la licencia.
