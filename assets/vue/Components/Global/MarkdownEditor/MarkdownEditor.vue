@@ -602,7 +602,7 @@ export default defineComponent({
     >
       <svg
         style="width: 0.875rem; height: 0.875rem; flex-shrink: 0"
-        :class="showRequiredError ? 'text-[var(--error-text)]' : 'text-fg-subtle'"
+        :class="showRequiredError ? 'text-error-text' : 'text-fg-subtle'"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
@@ -615,7 +615,7 @@ export default defineComponent({
         <line x1="12" y1="8" x2="12" y2="12" />
         <line x1="12" y1="16" x2="12.01" y2="16" />
       </svg>
-      <span v-if="showRequiredError" class="text-[var(--error-text)]">
+      <span v-if="showRequiredError" class="text-error-text">
         {{ t('msgEmptyContent') }}
       </span>
       <span v-else>
