@@ -13,12 +13,11 @@ use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\HeaderParameter;
-use ApiPlatform\Metadata\QueryParameter;
 use ApiPlatform\OpenApi\Model\Operation as OpenApiOperation;
 use ApiPlatform\Validator\Exception\ValidationException;
 use App\Api\V2\Exception\NotFoundException;
-use App\Api\V2\Filter\LocaleFilter;
+use App\Api\V2\Metadata\AcceptLanguageParameter;
+use App\Api\V2\Metadata\LocaleParameter;
 use App\Api\V2\State\Provider\System\OptionSystemCollectionProvider;
 use App\Api\V2\State\Provider\System\OptionSystemProvider;
 use Symfony\Component\Serializer\Attribute\Groups;
@@ -34,15 +33,8 @@ use Symfony\Component\Serializer\Attribute\Groups;
                 security: "is_granted('ROLE_READ_API')",
                 provider: OptionSystemProvider::class,
                 parameters: [
-                    'locale' => new QueryParameter(
-                        filter: LocaleFilter::class,
-                        property: 'locale',
-                        description: LocaleFilter::LOCALE_DESCRIPTION,
-                    ),
-                    LocaleFilter::HEADER => new HeaderParameter(
-                        schema: ['type' => 'string'],
-                        description: LocaleFilter::HEADER_DESCRIPTION,
-                    ),
+                    new LocaleParameter(),
+                    new AcceptLanguageParameter(),
                 ],
             ),
             new GetCollection(
@@ -54,15 +46,8 @@ use Symfony\Component\Serializer\Attribute\Groups;
                 security: "is_granted('ROLE_READ_API')",
                 provider: OptionSystemCollectionProvider::class,
                 parameters: [
-                    'locale' => new QueryParameter(
-                        filter: LocaleFilter::class,
-                        property: 'locale',
-                        description: LocaleFilter::LOCALE_DESCRIPTION,
-                    ),
-                    LocaleFilter::HEADER => new HeaderParameter(
-                        schema: ['type' => 'string'],
-                        description: LocaleFilter::HEADER_DESCRIPTION,
-                    ),
+                    new LocaleParameter(),
+                    new AcceptLanguageParameter(),
                 ],
             ),
         ],

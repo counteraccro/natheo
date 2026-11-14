@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Entity\Admin\System\User;
-use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Admin\GridService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Formatter\Global\FileSizeFormatter;
@@ -384,7 +383,7 @@ class LoggerService extends AppService
         $optionSystemService = $this->handlers->get('optionSystemService');
 
         $currentLocale = $localeAware->getLocale();
-        $localeAware->setLocale($optionSystemService->getValueByKey(OptionSystem::OS_DEFAULT_LANGUAGE->value));
+        $localeAware->setLocale($optionSystemService->getDefaultLanguage());
         try {
             $callback();
         } finally {

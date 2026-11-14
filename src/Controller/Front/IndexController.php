@@ -11,6 +11,7 @@ namespace App\Controller\Front;
 
 use App\Entity\Admin\Content\Page\PageMeta;
 use App\Entity\Admin\System\User;
+use App\Service\Admin\System\OptionSystemService;
 use App\Service\Api\Content\ApiCommentService;
 use App\Service\Api\Content\Page\ApiPageService;
 use App\Service\Api\Global\ApiSitemapService;
@@ -72,6 +73,7 @@ class IndexController extends AppFrontController
      * @param FrontPreviewService $frontPreviewService
      * @param FrontTranslate $frontTranslate
      * @param ContainerBagInterface $containerBag
+     * @param OptionSystemService $optionSystemService
      * @param string $locale
      * @param string|null $slug
      * @return Response
@@ -99,6 +101,7 @@ class IndexController extends AppFrontController
         FrontPreviewService $frontPreviewService,
         FrontTranslate $frontTranslate,
         ContainerBagInterface $containerBag,
+        OptionSystemService $optionSystemService,
         string $locale,
         ?string $slug = null,
     ): Response {
@@ -122,7 +125,7 @@ class IndexController extends AppFrontController
         $user = $this->getUser();
         $editablePage = $user === null ? null : $apiPageService->findEditablePageBySlug((string) $slug, $locale, $user);
         $avatarPath = (string) $containerBag->get('app.path.avatar');
-        $locales = explode('|', (string) $this->getParameter('app.supported_locales'));
+        $locales = $optionSystemService->getSupportedLocales();
 
         $urls = [
             'api' => $this->getParameter('app.api_v2.prefix'),

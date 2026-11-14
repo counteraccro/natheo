@@ -12,19 +12,19 @@ namespace App\Api\V2\Resource\Content;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\HeaderParameter;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\QueryParameter;
 use ApiPlatform\OpenApi\Model\Operation as OpenApiOperation;
 use ApiPlatform\Validator\Exception\ValidationException;
 use App\Api\V2\Exception\NotFoundException;
+use App\Api\V2\Filter\PageCategoryFilter;
+use App\Api\V2\Metadata\AcceptLanguageParameter;
 use App\Api\V2\Metadata\EnumSlugPropertyMetadataFactory;
+use App\Api\V2\Metadata\LocaleParameter;
 use App\Api\V2\Output\Content\Author;
 use App\Api\V2\Output\Content\Meta;
 use App\Api\V2\Output\Content\PageTranslation;
 use App\Api\V2\Output\Content\Tag;
-use App\Api\V2\Filter\LocaleFilter;
-use App\Api\V2\Filter\PageCategoryFilter;
 use App\Api\V2\State\Provider\Content\PageCollectionProvider;
 use App\Api\V2\State\Provider\Content\PageProvider;
 use App\Enum\Admin\Content\Page\PageCategory;
@@ -44,15 +44,8 @@ use Symfony\Component\Validator\Constraints as Assert;
                 security: "is_granted('ROLE_READ_API')",
                 provider: PageProvider::class,
                 parameters: [
-                    'locale' => new QueryParameter(
-                        filter: LocaleFilter::class,
-                        property: 'locale',
-                        description: LocaleFilter::LOCALE_DESCRIPTION,
-                    ),
-                    LocaleFilter::HEADER => new HeaderParameter(
-                        schema: ['type' => 'string'],
-                        description: LocaleFilter::HEADER_DESCRIPTION,
-                    ),
+                    new LocaleParameter(),
+                    new AcceptLanguageParameter(),
                 ],
             ),
             new GetCollection(
@@ -63,15 +56,8 @@ use Symfony\Component\Validator\Constraints as Assert;
                 security: "is_granted('ROLE_READ_API')",
                 provider: PageCollectionProvider::class,
                 parameters: [
-                    'locale' => new QueryParameter(
-                        filter: LocaleFilter::class,
-                        property: 'locale',
-                        description: LocaleFilter::LOCALE_DESCRIPTION,
-                    ),
-                    LocaleFilter::HEADER => new HeaderParameter(
-                        schema: ['type' => 'string'],
-                        description: LocaleFilter::HEADER_DESCRIPTION,
-                    ),
+                    new LocaleParameter(),
+                    new AcceptLanguageParameter(),
                     'category' => new QueryParameter(
                         filter: PageCategoryFilter::class,
                         description: 'Catégorie des pages',
