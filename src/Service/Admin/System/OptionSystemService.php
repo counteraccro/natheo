@@ -208,17 +208,6 @@ class OptionSystemService extends AppAdminService
     }
 
     /**
-     * Langues du site (paramètre app.supported_locales)
-     * @return string[]
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    public function getSupportedLocales(): array
-    {
-        return explode('|', (string) $this->getParameterBag()->get('app.supported_locales'));
-    }
-
-    /**
      * Permet de sauvegarder la valeur d'une clé.
      * Si l'option est déclarée dans la config mais absente en base (ajoutée après l'installation), elle est créée
      * @param string $key
