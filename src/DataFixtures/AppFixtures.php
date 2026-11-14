@@ -11,6 +11,7 @@ namespace App\DataFixtures;
 
 use App\DataFixtures\Admin\System\UserFixtures;
 use App\Entity\Admin\System\User;
+use App\Service\Global\SupportedLocales;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -20,6 +21,7 @@ use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\Yaml\Yaml;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class AppFixtures extends Fixture
 {
@@ -141,6 +143,12 @@ class AppFixtures extends Fixture
      * @var ContainerInterface
      */
     protected ContainerInterface $container;
+
+    /**
+     * Injecté par setter, indépendant du locator du constructeur
+     * @var SupportedLocales
+     */
+    private SupportedLocales $supportedLocales;
 
     /**
      * @param ContainerInterface $handlers
@@ -300,12 +308,22 @@ class AppFixtures extends Fixture
     }
 
     /**
+     * @param SupportedLocales $supportedLocales
+     * @return void
+     */
+    #[Required]
+    public function setSupportedLocales(SupportedLocales $supportedLocales): void
+    {
+        $this->supportedLocales = $supportedLocales;
+    }
+
+    /**
      * Retourne les langues supportées
      * @return string[]
      */
     protected function getLocales(): array
     {
-        return explode('|', $this->container->get('app.supported_locales'));
+        return $this->supportedLocales->getAll();
     }
 
     public function load(ObjectManager $manager): void
