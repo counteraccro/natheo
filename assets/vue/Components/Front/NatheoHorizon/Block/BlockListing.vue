@@ -6,26 +6,27 @@
  */
 import { computed } from 'vue';
 import { useFrontContext } from '@/vue/Composables/Front/useFrontContext';
+import { useFormat } from '@/vue/Composables/Front/useFormat';
 import { useListing } from '@/vue/Composables/Front/useListing';
 import PaginationNav from '@/vue/Components/Front/NatheoHorizon/Page/PaginationNav.vue';
 import type { BlockSize } from '@/vue/Composables/Front/usePageBlocks';
 import type { ListingContent } from '@/ts/Front/Api/PageContent.type';
 
 const props = defineProps<{ content: ListingContent; size: BlockSize }>();
-const { datas, translate } = useFrontContext();
+const { translate } = useFrontContext();
 const { data: pages, loading, page, goTo, pageUrl } = useListing(props.content);
 const compact = computed(() => props.size !== 'full');
 
-function date(value: string | null): string | null {
-  return value ? new Date(value).toLocaleDateString(datas.locale, { day: 'numeric', month: 'long', year: 'numeric' }) : null;
-}
+const format = useFormat();
 </script>
 
 <template>
   <div class="@container" :aria-busy="loading">
     <div class="flex items-baseline justify-between gap-4">
       <h2 class="mb-4 text-[clamp(1.5rem,2.4vw,2rem)]">{{ content.title }}</h2>
-      <p v-if="pages" class="shrink-0 text-[0.95rem] text-fg-muted">{{ pages.total }} {{ translate.main.listing.nbPages }}</p>
+      <p v-if="pages" class="shrink-0 text-[0.95rem] text-fg-muted">
+        {{ format.plural(pages.total, translate.main.listing.pages) }}
+      </p>
     </div>
     <template v-if="pages">
       <p v-if="pages.total === 0" class="text-fg-muted">{{ translate.main.listing.empty }}</p>
@@ -63,7 +64,7 @@ function date(value: string | null): string | null {
           </h3>
           <p class="text-[0.92rem] text-fg-muted">
             <template v-if="summary.author">{{ translate.main.listing.by }} {{ summary.author.name }}, </template>
-            {{ date(summary.createdAt) }}
+            {{ format.date(summary.createdAt) }}
           </p>
         </li>
       </ul>

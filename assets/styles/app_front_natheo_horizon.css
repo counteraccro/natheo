@@ -5,7 +5,6 @@
  */
 
 @import 'tailwindcss' source(none);
-@import '@fontsource-variable/schibsted-grotesk';
 @import './front/natheoHorizon/variables.css';
 @import './front/natheoHorizon/theme.css';
 @import './front/natheoHorizon/base.css';

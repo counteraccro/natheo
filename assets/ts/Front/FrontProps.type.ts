@@ -40,7 +40,6 @@ export interface FrontThemeDatas {
   /** Access token de la session API de l'utilisateur connecté, chaîne vide sinon */
   userToken: string;
   user: FrontUser | null;
-  pathAvatar: string;
   preview: FrontPreview | null;
 }
 

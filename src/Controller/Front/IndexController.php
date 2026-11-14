@@ -11,6 +11,7 @@ namespace App\Controller\Front;
 
 use App\Entity\Admin\Content\Page\PageMeta;
 use App\Entity\Admin\System\User;
+use App\Service\Api\Content\ApiCommentService;
 use App\Service\Api\Content\Page\ApiPageService;
 use App\Service\Api\Global\ApiSitemapService;
 use App\Service\Api\System\User\UserSessionService;
@@ -67,6 +68,7 @@ class IndexController extends AppFrontController
      * @param Request $request
      * @param UserSessionService $userSessionService
      * @param ApiPageService $apiPageService
+     * @param ApiCommentService $apiCommentService
      * @param FrontPreviewService $frontPreviewService
      * @param FrontTranslate $frontTranslate
      * @param ContainerBagInterface $containerBag
@@ -93,6 +95,7 @@ class IndexController extends AppFrontController
         Request $request,
         UserSessionService $userSessionService,
         ApiPageService $apiPageService,
+        ApiCommentService $apiCommentService,
         FrontPreviewService $frontPreviewService,
         FrontTranslate $frontTranslate,
         ContainerBagInterface $containerBag,
@@ -146,7 +149,6 @@ class IndexController extends AppFrontController
             'apiToken' => $this->optionSystemFrontService->getFrontApiToken(),
             'userToken' => '',
             'user' => null,
-            'pathAvatar' => AvatarUrl::directory($avatarPath, $request->getBasePath()),
             'preview' => null,
         ];
 
@@ -161,7 +163,7 @@ class IndexController extends AppFrontController
             $datas['user'] = [
                 'login' => $user->getLogin(),
                 'avatar' => AvatarUrl::file($user->getAvatar(), $avatarPath, $request->getBasePath()),
-                'canModerate' => $this->isGranted('ROLE_CONTRIBUTEUR'),
+                'canModerate' => $apiCommentService->canModerate($user),
                 'editUrl' =>
                     $editablePage === null
                         ? null

@@ -4,9 +4,11 @@
  * @version 1.0
  * Commentaires de la page dans le thème Natheo-Base : liste, envoi et modération
  */
-import { reactive, ref } from 'vue';
+import { ref } from 'vue';
 import { useFrontContext } from '@/vue/Composables/Front/useFrontContext';
 import { useComments } from '@/vue/Composables/Front/useComments';
+import { useCommentForm } from '@/vue/Composables/Front/useCommentForm';
+import { useFormat } from '@/vue/Composables/Front/useFormat';
 import PaginationNav from '@/vue/Components/Front/NatheoBase/PaginationNav.vue';
 import type { Page } from '@/ts/Front/Api/Page.type';
 import type { Comment, CommentStatus } from '@/ts/Front/Api/Comment.type';
@@ -16,29 +18,16 @@ const context = useFrontContext();
 const t = context.translate.main.articleFooter.comment;
 const { data: comments, page, load, add, moderate, canModerate } = useComments(props.page);
 
-const form = reactive({ author: context.datas.user?.login ?? '', email: '', comment: '' });
-const message = ref<string | null>(null);
-const sending = ref(false);
-
-async function submit(): Promise<void> {
-  sending.value = true;
-  message.value = null;
-  try {
-    await add({ author: form.author, email: form.email || null, comment: form.comment });
-    form.comment = '';
-    message.value = t.formNewCommentSuccessMessage;
-  } catch (error) {
-    message.value = context.errorLabel(error);
-  } finally {
-    sending.value = false;
-  }
-}
+const { form, message, sending, submit } = useCommentForm(add);
+const moderationError = ref<string | null>(null);
+const format = useFormat();
 
 async function changeStatus(comment: Comment, status: CommentStatus): Promise<void> {
+  moderationError.value = null;
   try {
     await moderate(comment, status);
   } catch (error) {
-    message.value = context.errorLabel(error);
+    moderationError.value = context.errorLabel(error);
   }
 }
 </script>
@@ -49,13 +38,12 @@ async function changeStatus(comment: Comment, status: CommentStatus): Promise<vo
       {{ t.title }} <span v-if="comments" class="text-gray-500">({{ comments.total }})</span>
     </h2>
 
+    <p v-if="moderationError" role="alert">{{ moderationError }}</p>
     <ul v-if="comments" class="space-y-4">
-      <li v-for="comment in comments.members" :key="comment.id" class="border border-gray-200 p-3">
+      <li v-for="comment in comments.members" :key="comment.id" class="border border-gray-200 dark:border-gray-700 p-3">
         <p class="text-sm text-gray-500">
           {{ comment.author }}
-          <span v-if="comment.createdAt">
-            · {{ new Date(comment.createdAt).toLocaleString(context.datas.locale) }}</span
-          >
+          <span v-if="comment.createdAt"> · {{ format.dateTime(comment.createdAt) }}</span>
         </p>
         <p v-if="comment.comment" class="whitespace-pre-line">{{ comment.comment }}</p>
         <p v-if="comment.moderationComment" class="text-sm italic">

@@ -19,17 +19,6 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 class AppFrontService extends AppFrontHandlerService
 {
     /**
-     * Retourne le thème actif, valeur de l'option system OS_THEME_FRONT_SITE
-     * @return Template
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    public function getTemplate(): Template
-    {
-        return $this->resolveTemplate('front_error.index.no_template');
-    }
-
-    /**
      * Retourne le path du template en fonction de l'option system OS_THEME_FRONT_SITE
      * @return string
      * @throws ContainerExceptionInterface
@@ -41,7 +30,7 @@ class AppFrontService extends AppFrontHandlerService
     }
 
     /**
-     * Retourne la cle scriptTag pour les scripts et css côté front, si template null, retourne le template courant
+     * Retourne la clé de l'entrée Vite du thème actif (front_<thème>), pour ses scripts et ses styles
      * @return string
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface

@@ -4,16 +4,16 @@
  * @version 1.0
  * Pied de page du thème Natheo-Horizon : nom et texte du site, réseaux sociaux, menu, langues et liens utiles
  */
-import { computed, toRef } from 'vue';
+import { toRef } from 'vue';
 import { useFrontContext } from '@/vue/Composables/Front/useFrontContext';
 import { useLanguages } from '@/vue/Composables/Front/useLanguages';
 import { useMenus } from '@/vue/Composables/Front/useMenus';
 import { useSiteOptions } from '@/vue/Composables/Front/useSiteOptions';
+import { useSocialLinks, type SocialNetwork } from '@/vue/Composables/Front/useSocialLinks';
 import BrandLogo from '@/vue/Components/Front/NatheoHorizon/Layout/BrandLogo.vue';
 import HorizonIcon, { type IconName } from '@/vue/Components/Front/NatheoHorizon/Layout/HorizonIcon.vue';
 import FooterMenu from '@/vue/Components/Front/NatheoHorizon/Menu/FooterMenu.vue';
 import type { Page } from '@/ts/Front/Api/Page.type';
-import type { SiteOptions } from '@/ts/Front/Api/OptionSystem.type';
 
 const props = defineProps<{ page: Page | null }>();
 const { urls, datas, translate } = useFrontContext();
@@ -21,23 +21,18 @@ const { data: options } = useSiteOptions();
 const { menus } = useMenus(toRef(props, 'page'));
 const languages = useLanguages();
 
-// TikTok n'a pas d'icône dans Flowbite : globe générique
-const SOCIALS: { label: string; key: keyof SiteOptions; icon: IconName }[] = [
-  { label: 'GitHub', key: 'front_footer_social_github_url', icon: 'github' },
-  { label: 'LinkedIn', key: 'front_footer_social_linkedin_url', icon: 'linkedin' },
-  { label: 'YouTube', key: 'front_footer_social_youtube_url', icon: 'youtube' },
-  { label: 'X', key: 'front_footer_social_x_url', icon: 'x' },
-  { label: 'Facebook', key: 'front_footer_social_facebook_url', icon: 'facebook' },
-  { label: 'Instagram', key: 'front_footer_social_instagram_url', icon: 'instagram' },
-  { label: 'TikTok', key: 'front_footer_social_tiktok_url', icon: 'globe' },
-];
+const socials = useSocialLinks();
 
-const socials = computed(() =>
-  SOCIALS.flatMap((social) => {
-    const url = options.value?.[social.key];
-    return typeof url === 'string' && url !== '' ? [{ ...social, url }] : [];
-  })
-);
+// TikTok n'a pas d'icône dans Flowbite : globe générique
+const ICONS: Record<SocialNetwork, IconName> = {
+  github: 'github',
+  linkedin: 'linkedin',
+  youtube: 'youtube',
+  x: 'x',
+  facebook: 'facebook',
+  instagram: 'instagram',
+  tiktok: 'globe',
+};
 </script>
 
 <template>
@@ -56,7 +51,7 @@ const socials = computed(() =>
             {{ options.front_footer_texte }}
           </p>
           <ul v-if="socials.length" class="mt-5 flex flex-wrap gap-1.5" :aria-label="translate.footer.socialLabel">
-            <li v-for="social in socials" :key="social.key">
+            <li v-for="social in socials" :key="social.network">
               <a
                 :href="social.url"
                 target="_blank"
@@ -64,7 +59,7 @@ const socials = computed(() =>
                 class="grid size-11 place-items-center rounded-nh text-on-night shadow-[inset_0_0_0_1.5px_rgb(201_184_255/0.35)] hover:shadow-[inset_0_0_0_1.5px_#fff]"
               >
                 <span class="sr-only">{{ social.label }}</span>
-                <HorizonIcon :name="social.icon" class="size-5.5" />
+                <HorizonIcon :name="ICONS[social.network]" class="size-5.5" />
               </a>
             </li>
           </ul>
@@ -87,8 +82,12 @@ const socials = computed(() =>
               {{ language.label }}
             </a>
           </li>
-          <li><a :href="urls.sitemap" class="text-on-night-muted">{{ translate.footer.sitemapLink }}</a></li>
-          <li><a :href="urls.adminAuth" class="text-on-night-muted">{{ translate.footer.adminLink }}</a></li>
+          <li>
+            <a :href="urls.sitemap" class="text-on-night-muted">{{ translate.footer.sitemapLink }}</a>
+          </li>
+          <li>
+            <a :href="urls.adminAuth" class="text-on-night-muted">{{ translate.footer.adminLink }}</a>
+          </li>
         </ul>
         <p>{{ translate.footer.credit }} · {{ translate.footer.templateVersion }}</p>
       </div>

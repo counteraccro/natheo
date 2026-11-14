@@ -2,6 +2,7 @@ front.footer.credit: 2023-{year} — Desarrollado con Nathéo CMS {version}
 front.footer.template.version: '{version}'
 front.footer.admin.link: Administración
 front.page.title: Cargando...
+front.page.loading: "Cargando…"
 front.page.edit_link: 'Editar esta página'
 front.footer.sitemap.link: Mapa del sitio
 front.header.login: Iniciar sesión
@@ -11,8 +12,8 @@ front.footer.es.link: Español
 front.footer.en.link: English
 front.error.api.modal.error.401: El token de acceso a la API no es válido o ha caducado
 front.error.api.modal.error.403: El recurso solicitado no es accesible
-front.article.footer.edit: El
-front.article.footer.stat_publication: lectura(s)
+front.article.footer.reads_one: "# lectura"
+front.article.footer.reads_other: "# lecturas"
 front.article.footer.info.draft: Esta página es un borrador, por ahora solo usted puede leerla
 front.comment.title: Comentarios
 front.comment.validate: Validar
@@ -46,7 +47,8 @@ front.article.header.img.alt: Imagen de cabecera de la página
 front.comment.moderation.prefix: 'Moderación:'
 front.listing.by: Por
 front.listing.empty: No se ha encontrado ningún elemento
-front.listing.nb.pages: página(s)
+front.listing.pages_one: "# página"
+front.listing.pages_other: "# páginas"
 front.pagination.of: de
 front.pagination.label: Paginación
 front.pagination.first: Primera página
@@ -61,7 +63,8 @@ front.menu.side_label: "Menú secundario"
 front.menu.footer_label: "Menú del pie de página"
 front.footer.social_label: "Redes sociales"
 front.page.updated_at: "Actualizado el"
-front.page.reading_time: "min de lectura"
+front.page.reading_time_one: "# min de lectura"
+front.page.reading_time_other: "# min de lectura"
 front.page.tags_label: "Etiquetas"
 front.comment.sort_label: "Orden de los comentarios"
 front.comment.sort_desc: "Los más recientes primero"

@@ -59,10 +59,10 @@ class FrontTranslate extends AppTranslate
                 'articleFooter' => $this->getTranslateArticleFooter(),
                 'breadcrumb' => $this->trans('front.breadcrumb.index'),
                 'editLink' => $this->trans('front.page.edit_link'),
-                'loading' => $this->trans('front.page.title'),
+                'loading' => $this->trans('front.page.loading'),
                 'headerImgAlt' => $this->trans('front.article.header.img.alt'),
                 'updatedAt' => $this->trans('front.page.updated_at'),
-                'readingTime' => $this->trans('front.page.reading_time'),
+                'readingTime' => $this->transPlural('front.page.reading_time'),
                 'tagsLabel' => $this->trans('front.page.tags_label'),
                 'listing' => $this->getTranslateListing(),
                 'pagination' => $this->getTranslatePagination(),
@@ -78,6 +78,16 @@ class FrontTranslate extends AppTranslate
     private function trans(string $key): string
     {
         return $this->translator->trans($key, domain: 'front', locale: $this->locale);
+    }
+
+    /**
+     * Formes d'un libellé accordé à un nombre (clés <$key>_one et <$key>_other), avec « # » à la place du nombre
+     * @param string $key
+     * @return array{one: string, other: string}
+     */
+    private function transPlural(string $key): array
+    {
+        return ['one' => $this->trans($key . '_one'), 'other' => $this->trans($key . '_other')];
     }
 
     /**
@@ -168,7 +178,7 @@ class FrontTranslate extends AppTranslate
         return [
             'by' => $this->trans('front.listing.by'),
             'empty' => $this->trans('front.listing.empty'),
-            'nbPages' => $this->trans('front.listing.nb.pages'),
+            'pages' => $this->transPlural('front.listing.pages'),
         ];
     }
 
@@ -191,12 +201,7 @@ class FrontTranslate extends AppTranslate
     private function getTranslateArticleFooter(): array
     {
         return [
-            'edit' => $this->translator->trans('front.article.footer.edit', domain: 'front', locale: $this->locale),
-            'statPublication' => $this->translator->trans(
-                'front.article.footer.stat_publication',
-                domain: 'front',
-                locale: $this->locale,
-            ),
+            'reads' => $this->transPlural('front.article.footer.reads'),
             'infoDraft' => $this->translator->trans(
                 'front.article.footer.info.draft',
                 domain: 'front',

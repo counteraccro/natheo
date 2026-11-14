@@ -30,7 +30,7 @@ options_system:
             OS_THEME_FRONT_SITE:
                 type: 'select'
                 label: 'options_system.theme_front_site.label'
-                list_value: 'natheo_horizon:Natheo-Horizon|natheo_storm:FrontStorm|natheo_base:Natheo-Base'
+                list_value: 'natheo_horizon:Natheo-Horizon|natheo_base:Natheo-Base'
                 help: 'options_system.theme_front_site.help'
                 default: 'natheo_horizon'
             OS_DEFAULT_LANGUAGE:

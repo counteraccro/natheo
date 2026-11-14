@@ -6,6 +6,7 @@
  */
 import { computed, toRef } from 'vue';
 import { useFrontContext } from '@/vue/Composables/Front/useFrontContext';
+import { useFormat } from '@/vue/Composables/Front/useFormat';
 import { useBreadcrumb } from '@/vue/Composables/Front/useBreadcrumb';
 import { useEditLink } from '@/vue/Composables/Front/useEditLink';
 import { usePageBlocks, type BlockSize } from '@/vue/Composables/Front/usePageBlocks';
@@ -31,9 +32,8 @@ const SIZES: Record<BlockSize, string> = {
 };
 
 const showComments = computed(() => options.value?.open_comment === true && props.page.openComment);
-const updatedAt = computed(() =>
-  props.page.updatedAt ? new Date(props.page.updatedAt).toLocaleDateString(datas.locale) : null
-);
+const format = useFormat();
+const updatedAt = computed(() => format.date(props.page.updatedAt, 'short'));
 </script>
 
 <template>
@@ -59,8 +59,8 @@ const updatedAt = computed(() =>
       </div>
       <p class="text-sm text-gray-500">
         <span v-if="page.author">{{ translate.main.listing.by }} {{ page.author.name }}</span>
-        <span v-if="updatedAt"> · {{ translate.main.articleFooter.edit }} {{ updatedAt }}</span>
-        <span> · {{ page.reads }} {{ translate.main.articleFooter.statPublication }}</span>
+        <span v-if="updatedAt"> · {{ translate.main.updatedAt }} {{ updatedAt }}</span>
+        <span> · {{ format.plural(page.reads, translate.main.articleFooter.reads) }}</span>
       </p>
       <img
         v-if="page.headerImage"

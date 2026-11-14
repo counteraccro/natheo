@@ -6,6 +6,7 @@
  */
 import { computed, toRef } from 'vue';
 import { useFrontContext } from '@/vue/Composables/Front/useFrontContext';
+import { useFormat } from '@/vue/Composables/Front/useFormat';
 import { useBreadcrumb } from '@/vue/Composables/Front/useBreadcrumb';
 import { useEditLink } from '@/vue/Composables/Front/useEditLink';
 import HorizonIcon from '@/vue/Components/Front/NatheoHorizon/Layout/HorizonIcon.vue';
@@ -16,11 +17,8 @@ const { datas, translate } = useFrontContext();
 const breadcrumb = useBreadcrumb(toRef(props, 'page'));
 const editLink = useEditLink();
 
-const updatedAt = computed(() =>
-  props.page.updatedAt
-    ? new Date(props.page.updatedAt).toLocaleDateString(datas.locale, { day: 'numeric', month: 'long', year: 'numeric' })
-    : null
-);
+const format = useFormat();
+const updatedAt = computed(() => format.date(props.page.updatedAt));
 </script>
 
 <template>
@@ -42,21 +40,30 @@ const updatedAt = computed(() =>
           </ol>
         </nav>
 
-        <p v-if="datas.preview" role="status" class="mb-6 max-w-[60ch] rounded-nh bg-notice px-4 py-3 text-[0.95rem] font-medium text-on-notice">
+        <p
+          v-if="datas.preview"
+          role="status"
+          class="mb-6 max-w-[60ch] rounded-nh bg-notice px-4 py-3 text-[0.95rem] font-medium text-on-notice"
+        >
           {{ translate.main.articleFooter.infoDraft }}
         </p>
 
-        <h1 id="page-title" class="max-w-[16ch] text-[clamp(2.4rem,5.2vw,4.25rem)] leading-[1.02] motion-safe:animate-rise">
+        <h1
+          id="page-title"
+          class="max-w-[16ch] text-[clamp(2.4rem,5.2vw,4.25rem)] leading-[1.02] motion-safe:animate-rise"
+        >
           {{ page.title }}
         </h1>
 
-        <div class="mt-6 flex flex-wrap gap-x-6 gap-y-1 text-[0.98rem] text-on-night-muted motion-safe:animate-rise motion-safe:[animation-delay:80ms]">
+        <div
+          class="mt-6 flex flex-wrap gap-x-6 gap-y-1 text-[0.98rem] text-on-night-muted motion-safe:animate-rise motion-safe:[animation-delay:80ms]"
+        >
           <p v-if="page.author">
             {{ translate.main.listing.by }} <strong class="font-semibold text-on-night">{{ page.author.name }}</strong>
           </p>
           <p v-if="updatedAt">{{ translate.main.updatedAt }} {{ updatedAt }}</p>
-          <p v-if="readingTime">{{ readingTime }} {{ translate.main.readingTime }}</p>
-          <p>{{ page.reads }} {{ translate.main.articleFooter.statPublication }}</p>
+          <p v-if="readingTime">{{ format.plural(readingTime, translate.main.readingTime) }}</p>
+          <p>{{ format.plural(page.reads, translate.main.articleFooter.reads) }}</p>
         </div>
 
         <ul
