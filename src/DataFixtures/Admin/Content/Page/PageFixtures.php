@@ -167,11 +167,11 @@ class PageFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
         $siteAddress = $this->getReference('OS_ADRESSE_SITE', OptionSystem::class)->getValue();
         $mediaPath = $this->getReference('OS_MEDIA_PATH', OptionSystem::class)->getValue();
 
-        return $siteAddress . '/assets/' . $mediaPath . '/' . $media->getPath();
+        return $siteAddress . '/assets/' . $mediaPath . '/' . ltrim((string) $media->getPath(), '/');
     }
 
     /**
-     * Crée un bloc de page. Un bloc texte lit son contenu dans $textDir/<fichier>.<locale>.md,
+     * Crée un bloc de page. Un bloc texte lit son contenu dans $textDir/<fichier>.<locale>.md, avec ses {{media:<ref>}} remplacés,
      * où <fichier> vaut « file » ou, par défaut, le numéro du bloc (suivi de « -<order> » au-delà du premier)
      * @param array $data
      * @param string $textDir
@@ -204,13 +204,27 @@ class PageFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
                     }
                     $translation = new PageContentTranslation();
                     $translation->setLocale($locale);
-                    $translation->setText(file_get_contents($path));
+                    $translation->setText($this->replaceMediaTags(file_get_contents($path)));
                     $pageContent->addPageContentTranslation($translation);
                 }
                 break;
         }
 
         return $pageContent;
+    }
+
+    /**
+     * Remplace chaque {{media:<ref>}} de $text par l'URL publique du média <ref>
+     * @param string $text
+     * @return string
+     */
+    private function replaceMediaTags(string $text): string
+    {
+        return preg_replace_callback(
+            '/\{\{media:([a-z0-9-]+)\}\}/',
+            fn(array $match): string => $this->getMediaUrl($match[1]),
+            $text,
+        );
     }
 
     /**
