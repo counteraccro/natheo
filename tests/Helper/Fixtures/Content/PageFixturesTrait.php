@@ -13,6 +13,7 @@ use App\Entity\Admin\Content\Menu\Menu;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\Content\Page\PageContent;
 use App\Entity\Admin\Content\Page\PageContentTranslation;
+use App\Entity\Admin\Content\Page\PageDraft;
 use App\Entity\Admin\Content\Page\PageMeta;
 use App\Entity\Admin\Content\Page\PageMetaTranslation;
 use App\Entity\Admin\Content\Page\PageStatistique;
@@ -356,5 +357,47 @@ trait PageFixturesTrait
             'value' => strval(self::getFaker()->randomNumber(3)),
         ]);
         return $page;
+    }
+
+    /**
+     * Brouillon d'une page publiée : titres « Brouillon <locale> » et un seul bloc texte
+     * @param Page $page
+     * @param int[] $menuIds menus du brouillon
+     * @return PageDraft
+     */
+    public function createPageDraft(Page $page, array $menuIds = []): PageDraft
+    {
+        $translations = [];
+        $contentTranslations = [];
+        foreach ($page->getPageTranslations() as $translation) {
+            $translations[] = [
+                'locale' => $translation->getLocale(),
+                'titre' => 'Brouillon ' . $translation->getLocale(),
+                'url' => $translation->getUrl(),
+            ];
+            $contentTranslations[] = ['locale' => $translation->getLocale(), 'text' => 'Texte du brouillon'];
+        }
+        $draft = (new PageDraft())->setPage($page)->setData([
+            'id' => $page->getId(),
+            'render' => PageRender::ONE_BLOCK->value,
+            'status' => PageStatus::PUBLISH->value,
+            'category' => $page->getCategory(),
+            'ruleComment' => $page->getRuleComment(),
+            'landingPage' => false,
+            'isOpenComment' => true,
+            'pageTranslations' => $translations,
+            'pageContents' => [
+                [
+                    'renderBlock' => 1,
+                    'renderOrder' => 1,
+                    'type' => PageContentType::TEXT->value,
+                    'pageContentTranslations' => $contentTranslations,
+                ],
+            ],
+            'tags' => [],
+            'menus' => $menuIds,
+        ]);
+        $this->persistAndFlush($draft);
+        return $draft;
     }
 }

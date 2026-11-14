@@ -9,11 +9,8 @@ declare(strict_types=1);
 namespace App\Tests\Controller\Front;
 
 use App\Entity\Admin\Content\Page\Page;
-use App\Entity\Admin\Content\Page\PageDraft;
 use App\Entity\Admin\System\UserSession;
 use App\Enum\Admin\Content\Page\PageCategory;
-use App\Enum\Admin\Content\Page\PageContentType;
-use App\Enum\Admin\Content\Page\PageRender;
 use App\Enum\Admin\Content\Page\PageStatus;
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Enum\Front\Template;
@@ -41,7 +38,10 @@ class IndexControllerTest extends AppWebTestCase
             $this->assertSelectorExists('html[lang="' . $locale . '"]');
 
             $crawler = $this->client->getCrawler();
-            $this->assertStringContainsString('Front/NatheoHorizon/App', (string) $this->client->getResponse()->getContent());
+            $this->assertStringContainsString(
+                'Front/NatheoHorizon/App',
+                (string) $this->client->getResponse()->getContent(),
+            );
 
             $props = $this->getVueProps($crawler);
             $this->assertEquals($this->container->getParameter('app.api_v2.prefix'), $props['urls']['api']);
@@ -203,7 +203,7 @@ class IndexControllerTest extends AppWebTestCase
         $page = $this->createPageAllDataDefault($owner);
         $unpublished = $this->createPageAllDataDefault($owner);
         $this->persistAndFlush($unpublished->setStatus(PageStatus::DRAFT->value));
-        $this->createDraft($page);
+        $this->createPageDraft($page);
         $this->setTheme(Template::NATHEO_BASE);
         $url = $this->pageUrl($page);
 
@@ -277,45 +277,5 @@ class IndexControllerTest extends AppWebTestCase
             'category' => PageCategory::from($page->getCategory())->getSlug(),
             'slug' => $page->getPageTranslationByLocale('fr')->getUrl(),
         ]);
-    }
-
-    /**
-     * Brouillon d'une page publiée : titres « Brouillon <locale> » et un seul bloc texte
-     * @param Page $page
-     * @return void
-     */
-    private function createDraft(Page $page): void
-    {
-        $translations = [];
-        $contentTranslations = [];
-        foreach ($page->getPageTranslations() as $translation) {
-            $translations[] = [
-                'locale' => $translation->getLocale(),
-                'titre' => 'Brouillon ' . $translation->getLocale(),
-                'url' => $translation->getUrl(),
-            ];
-            $contentTranslations[] = ['locale' => $translation->getLocale(), 'text' => 'Texte du brouillon'];
-        }
-        $draft = (new PageDraft())->setPage($page)->setData([
-            'id' => $page->getId(),
-            'render' => PageRender::ONE_BLOCK->value,
-            'status' => PageStatus::PUBLISH->value,
-            'category' => $page->getCategory(),
-            'ruleComment' => $page->getRuleComment(),
-            'landingPage' => false,
-            'isOpenComment' => true,
-            'pageTranslations' => $translations,
-            'pageContents' => [
-                [
-                    'renderBlock' => 1,
-                    'renderOrder' => 1,
-                    'type' => PageContentType::TEXT->value,
-                    'pageContentTranslations' => $contentTranslations,
-                ],
-            ],
-            'tags' => [],
-            'menus' => [],
-        ]);
-        $this->persistAndFlush($draft);
     }
 }
