@@ -10,6 +10,7 @@ Le format suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), avec un
 
 - Authentification des utilisateurs par l'API en sessions : les anciens tokens utilisateur sont invalidés par la migration, le token renvoyé par `POST /api/v1/authentication/user` est valable 15 minutes ([#505](https://github.com/counteraccro/natheo/issues/505))
 - Option système de durée des sessions API (`OS_API_TIME_VALIDATE_USER_TOKEN`) limitée à 1, 7 ou 30 jours, ramenée à 1 jour par la migration ([#505](https://github.com/counteraccro/natheo/issues/505))
+- Les médias de démonstration ne sont plus versionnés dans `public/assets/natheotheque`, dossier désormais ignoré par git : une mise à jour par `git pull` supprime les 14 fichiers de l'ancienne démo (`workspace.jpg`, `medias/paysage/…`, `documentations/…`). Si votre médiathèque les utilise, copiez-les hors du dépôt avant la mise à jour puis remettez-les en place ; les fichiers que vous avez ajoutés vous-même ne sont pas touchés ([#521](https://github.com/counteraccro/natheo/issues/521))
 
 ### Ajouté
 
