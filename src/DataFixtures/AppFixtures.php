@@ -20,8 +20,8 @@ use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
-use Symfony\Contracts\Service\Attribute\Required;
 use Symfony\Component\Yaml\Yaml;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class AppFixtures extends Fixture
 {
@@ -145,7 +145,7 @@ class AppFixtures extends Fixture
     protected ContainerInterface $container;
 
     /**
-     * Injecté par setter : les fixtures filles passent leur propre locator au constructeur
+     * Injecté par setter, indépendant du locator du constructeur
      * @var SupportedLocales
      */
     private SupportedLocales $supportedLocales;
