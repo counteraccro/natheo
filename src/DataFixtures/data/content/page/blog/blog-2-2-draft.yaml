@@ -3,6 +3,7 @@ blog-2-2-draft:
     render: ONE_BLOCK
     category: BLOG
     status: DRAFT
+    headerImg: hdr-blog-2-2
     date: '-1 day'
     isOpenComment: true
     ruleComment: WAIT_VALIDATION

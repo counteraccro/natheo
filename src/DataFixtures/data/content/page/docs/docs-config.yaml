@@ -3,6 +3,7 @@ docs-config:
     render: ONE_BLOCK
     category: DOCUMENTATION
     status: PUBLISH
+    headerImg: hdr-docs-config
     date: '-4 days'
     isOpenComment: false
     ruleComment: VALIDATE

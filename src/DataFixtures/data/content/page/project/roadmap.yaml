@@ -3,6 +3,7 @@ roadmap:
     render: ONE_BLOCK
     category: PAGE
     status: PUBLISH
+    headerImg: hdr-roadmap
     date: '-2 days'
     isOpenComment: false
     ruleComment: VALIDATE

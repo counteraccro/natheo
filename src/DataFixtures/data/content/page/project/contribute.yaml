@@ -3,6 +3,7 @@ contribute:
     render: ONE_BLOCK
     category: PAGE
     status: PUBLISH
+    headerImg: hdr-contribute
     date: '-12 days'
     isOpenComment: false
     ruleComment: VALIDATE

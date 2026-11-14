@@ -3,6 +3,7 @@ docs-theme:
     render: ONE_BLOCK
     category: DOCUMENTATION
     status: PUBLISH
+    headerImg: hdr-docs-theme
     date: '-4 days'
     isOpenComment: false
     ruleComment: VALIDATE

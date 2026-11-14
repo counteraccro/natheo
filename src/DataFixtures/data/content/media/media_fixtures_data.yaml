@@ -84,6 +84,41 @@ media:
         user: User
         description: 'Le back-office et le site public côte à côte'
         image: hdr-about.jpg
+    hdr-docs-install:
+        folder: Folder_headers
+        user: User
+        description: 'Le guide d''installation sur un portable'
+        image: hdr-docs-install.jpg
+    hdr-docs-config:
+        folder: Folder_headers
+        user: User
+        description: 'Le guide de configuration et les options système'
+        image: hdr-docs-config.jpg
+    hdr-docs-theme:
+        folder: Folder_headers
+        user: User
+        description: 'Natheo-Base et Natheo-Horizon côte à côte'
+        image: hdr-docs-theme.jpg
+    hdr-docs-api:
+        folder: Folder_headers
+        user: User
+        description: 'Le guide de l''API sur écran et sur téléphone'
+        image: hdr-docs-api.jpg
+    hdr-roadmap:
+        folder: Folder_headers
+        user: User
+        description: 'La feuille de route sur écran et sur téléphone'
+        image: hdr-roadmap.jpg
+    hdr-contribute:
+        folder: Folder_headers
+        user: User
+        description: 'La page Contribuer en mode sombre et sur tablette'
+        image: hdr-contribute.jpg
+    hdr-blog-2-2:
+        folder: Folder_headers
+        user: User
+        description: 'Un article soumis à validation dans l''éditeur'
+        image: hdr-blog-2-2.jpg
     cap-admin-dashboard-fr:
         folder: Folder_captures_admin
         user: User

@@ -3,6 +3,7 @@ docs-install:
     render: ONE_BLOCK
     category: DOCUMENTATION
     status: PUBLISH
+    headerImg: hdr-docs-install
     date: '-4 days'
     isOpenComment: false
     ruleComment: VALIDATE
