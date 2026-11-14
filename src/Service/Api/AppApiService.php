@@ -158,8 +158,7 @@ class AppApiService extends AppApiHandlerService
      */
     public function resolveLocale(?string $locale, ?string $acceptLanguage = null): string
     {
-        $optionSystemService = $this->getOptionSystemService();
-        $supportedLocales = $optionSystemService->getSupportedLocales();
+        $supportedLocales = $this->getSupportedLocales();
         if (in_array($locale, $supportedLocales, true)) {
             return $locale;
         }
@@ -171,7 +170,7 @@ class AppApiService extends AppApiHandlerService
             }
         }
 
-        return $optionSystemService->getDefaultLanguage();
+        return $this->getOptionSystemService()->getDefaultLanguage();
     }
 
     /**

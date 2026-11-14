@@ -11,12 +11,12 @@ namespace App\Controller\Front;
 
 use App\Entity\Admin\Content\Page\PageMeta;
 use App\Entity\Admin\System\User;
-use App\Service\Admin\System\OptionSystemService;
 use App\Service\Api\Content\ApiCommentService;
 use App\Service\Api\Content\Page\ApiPageService;
 use App\Service\Api\Global\ApiSitemapService;
 use App\Service\Api\System\User\UserSessionService;
 use App\Service\Front\FrontPreviewService;
+use App\Service\Global\SupportedLocales;
 use App\Service\Global\User\AvatarUrl;
 use App\Translate\Front\FrontTranslate;
 use League\CommonMark\Exception\CommonMarkException;
@@ -73,7 +73,7 @@ class IndexController extends AppFrontController
      * @param FrontPreviewService $frontPreviewService
      * @param FrontTranslate $frontTranslate
      * @param ContainerBagInterface $containerBag
-     * @param OptionSystemService $optionSystemService
+     * @param SupportedLocales $supportedLocales
      * @param string $locale
      * @param string|null $slug
      * @return Response
@@ -101,7 +101,7 @@ class IndexController extends AppFrontController
         FrontPreviewService $frontPreviewService,
         FrontTranslate $frontTranslate,
         ContainerBagInterface $containerBag,
-        OptionSystemService $optionSystemService,
+        SupportedLocales $supportedLocales,
         string $locale,
         ?string $slug = null,
     ): Response {
@@ -125,7 +125,7 @@ class IndexController extends AppFrontController
         $user = $this->getUser();
         $editablePage = $user === null ? null : $apiPageService->findEditablePageBySlug((string) $slug, $locale, $user);
         $avatarPath = (string) $containerBag->get('app.path.avatar');
-        $locales = $optionSystemService->getSupportedLocales();
+        $locales = $supportedLocales->getAll();
 
         $urls = [
             'api' => $this->getParameter('app.api_v2.prefix'),
