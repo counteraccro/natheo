@@ -2,12 +2,13 @@
 /**
  * @author Gourdon Aymeric
  * @version 1.1
- * Menu de l'en-tête sur grand écran : sous-menus déroulants ou méga menu en colonnes, ouverts au survol ou au clic
+ * Menu de l'en-tête sur grand écran : sous-menus déroulants en cascade ou méga menu en colonnes, ouverts au survol ou au clic
  */
 import { computed } from 'vue';
 import { useFrontContext } from '@/vue/Composables/Front/useFrontContext';
 import { useMenus } from '@/vue/Composables/Front/useMenus';
 import NavPanel from '@/vue/Components/Front/NatheoHorizon/Layout/NavPanel.vue';
+import CascadeMenuList from '@/vue/Components/Front/NatheoHorizon/Menu/CascadeMenuList.vue';
 import MenuLink from '@/vue/Components/Front/NatheoHorizon/Menu/MenuLink.vue';
 import NestedMenuList from '@/vue/Components/Front/NatheoHorizon/Menu/NestedMenuList.vue';
 import type { Menu, MenuElement } from '@/ts/Front/Api/Menu.type';
@@ -44,13 +45,7 @@ function megaColumns(element: MenuElement): string {
               />
             </div>
           </div>
-          <NestedMenuList
-            v-else
-            :elements="element.children"
-            link-class="flex min-h-11 items-center gap-2.5 rounded-nh px-3 text-fg no-underline hover:bg-surface"
-            nested-class="mb-1 ml-4 border-l border-line pl-1"
-            class="min-w-57 p-1.5"
-          />
+          <CascadeMenuList v-else :elements="element.children" class="min-w-57 p-1.5" />
         </NavPanel>
       </li>
     </ul>

@@ -20,7 +20,10 @@ const openedByHover = ref(false);
 let closeTimer: ReturnType<typeof setTimeout> | undefined;
 
 function links(): HTMLElement[] {
-  return [...(panel.value?.querySelectorAll<HTMLElement>('a[href]') ?? [])];
+  // Les liens des sous-panneaux fermés sont masqués : ils ne prennent pas le focus
+  return [...(panel.value?.querySelectorAll<HTMLElement>('a[href]') ?? [])].filter(
+    (link) => link.offsetParent !== null
+  );
 }
 
 function close(focusButton = false): void {
