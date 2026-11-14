@@ -1,0 +1,29 @@
+menu-blog-header:
+    name: 'Blog (méga menu 2 colonnes)'
+    type: HEADER_MENU_DEROULANT_BIG_MENU_2_COLONNES
+    position: POSITION_HEADER
+    elements:
+        -   page: home
+            label: { fr: 'Accueil', en: 'Home', es: 'Inicio' }
+        -   page: features
+        -   page: docs
+        -   page: blog
+            children:
+                -   page: blog-2-1
+                    label: { fr: 'Versions', en: 'Releases', es: 'Versiones' }
+                    children:
+                        -   page: blog-2-1
+                        -   page: blog-2-0
+                        -   page: blog-1-0
+                -   page: blog
+                    label: { fr: 'Articles', en: 'Articles', es: 'Artículos' }
+                    children:
+                        -   page: blog-databases
+                        -   page: blog
+        -   page: faq
+            label: { fr: 'FAQ', en: 'FAQ', es: 'FAQ' }
+        -   page: about
+            label: { fr: 'Projet', en: 'Project', es: 'Proyecto' }
+        -   label: { fr: 'GitHub', en: 'GitHub', es: 'GitHub' }
+            url: 'https://github.com/counteraccro/natheo'
+            newTab: true

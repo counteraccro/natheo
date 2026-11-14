@@ -1,0 +1,43 @@
+menu-project-header:
+    name: 'Projet (méga menu 3 colonnes)'
+    type: HEADER_MENU_DEROULANT_BIG_MENU_3_COLONNES
+    position: POSITION_HEADER
+    elements:
+        -   page: home
+            label: { fr: 'Accueil', en: 'Home', es: 'Inicio' }
+        -   page: features
+        -   page: docs
+        -   page: blog
+        -   page: faq
+            label: { fr: 'FAQ', en: 'FAQ', es: 'FAQ' }
+        -   page: about
+            label: { fr: 'Projet', en: 'Project', es: 'Proyecto' }
+            children:
+                -   page: about
+                    label: { fr: 'Le projet', en: 'The project', es: 'El proyecto' }
+                    children:
+                        -   page: about
+                        -   page: roadmap
+                -   page: contribute
+                    label: { fr: 'Communauté', en: 'Community', es: 'Comunidad' }
+                    children:
+                        -   page: contribute
+                        -   label: { fr: 'Discord', en: 'Discord', es: 'Discord' }
+                            url: 'https://discord.gg/CgcMCcbmaR'
+                            newTab: true
+                        -   label: { fr: 'GitHub', en: 'GitHub', es: 'GitHub' }
+                            url: 'https://github.com/counteraccro/natheo'
+                            newTab: true
+                -   page: docs
+                    label: { fr: 'Ressources', en: 'Resources', es: 'Recursos' }
+                    children:
+                        -   label: { fr: 'Documentation en ligne', en: 'Online documentation', es: 'Documentación en línea' }
+                            url: 'https://counteraccro.github.io/natheo.doc/'
+                            newTab: true
+                        -   label: { fr: 'Journal des modifications', en: 'Changelog', es: 'Registro de cambios' }
+                            url: 'https://github.com/counteraccro/natheo/blob/master/CHANGELOG.md'
+                            newTab: true
+                        -   page: license
+        -   label: { fr: 'GitHub', en: 'GitHub', es: 'GitHub' }
+            url: 'https://github.com/counteraccro/natheo'
+            newTab: true

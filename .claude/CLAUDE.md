@@ -90,6 +90,15 @@ Buttons use the classes of `assets/styles/admin/global/button.scss` (`btn` + a s
 ### Tests
 `tests/AppWebTestCase` (extends Symfony's `WebTestCase`, uses `FixturesTrait`) is the base class for controller/service tests and provides helpers such as `checkNoAccess()`, `createUser*()`, and domain fixture factories (e.g. `createPage()`) from `tests/Helper/Fixtures/`. It boots the client against locale `fr` and seeds default system options in `setUp()`. Test structure under `tests/` mirrors `src/` (`Controller/Admin/Content/...`, `Service/Admin/...`, etc.).
 
+### Demo fixtures
+`natheo:install` and `doctrine:fixtures:load` load the demo site from `src/DataFixtures/data/` (the test DB uses the helpers of `tests/Helper/Fixtures/` instead). Content files under `content/` follow these rules:
+- **One YAML file per entity**, its root key being the reference used everywhere else: `page/<section>/<ref>.yaml`, `menu/<ref>.yaml`, `faq/<ref>.yaml`; tags, comments and medias stay in one file each. Enums are written by case name (`render: TWO_BLOCK_BOTTOM`, `status: PUBLISH`).
+- **Pages**: `page/_defaults.yaml` holds the metas shared by every page, merged with the page's `metas`. `date` takes a relative (`'-6 days'`) or absolute date, applied last by `PageDateFixtures`; `menus` lists the page's menus, `headerImg` a media reference, `stats` the visitor and read counts.
+- **Blocks**: `{ block: 1, type: TEXT }` reads its text in `<page>/<block>.<locale>.md` next to the YAML (`<block>-<order>` beyond the first order, or the name given by `file`), one file per locale of `translations`. `FAQ` blocks take `faq: <ref>`, `LISTING` blocks `listing: <PageCategory case>`.
+- **Images in texts**: `{{media:<ref>}}` is replaced by the media's web path without host (`/assets/<OS_MEDIA_PATH>/…`), so the demo works on any host; an unknown reference stops the loading.
+- **Menus**: elements are a tree (`children`) pointing to `page: <ref>` or an external `url`, positions follow the YAML order; `label` overrides the page title per locale.
+- **Users**: `user` names an account of `system/user_demo_fixtures_data.yaml` (`R-Admin`, `R-Contributeur`…). Without debug mode only the founder is created and replaces every demo account; any other unknown name stops the loading.
+
 ### Multilingual content vs. UI locale
 Content entities (Page, Menu, Faq, Comment, ...) store per-locale data via `*Translation` child entities/tables (e.g. `PageTranslation`, `MenuElementTranslation`), while UI/interface strings live in `translations/<domain>+intl-icu.<locale>.yaml` (or `<domain>.<locale>.yaml`), one domain per feature area, loaded via Symfony's translator with an explicit `domain:` on every `trans()` call. Supported UI locales are `fr`, `en`, `es`.
 

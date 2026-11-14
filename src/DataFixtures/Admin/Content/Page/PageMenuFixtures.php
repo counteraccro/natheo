@@ -3,39 +3,28 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
- * Fixtures pour lier les menus aux pages
+ * @version 2.0
+ * Fixtures pour lier les menus aux pages (clé « menus » de chaque page)
  */
 namespace App\DataFixtures\Admin\Content\Page;
 
 use App\DataFixtures\AppFixtures;
 use App\Entity\Admin\Content\Menu\Menu;
 use App\Entity\Admin\Content\Page\Page;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Symfony\Component\Yaml\Yaml;
 
 class PageMenuFixtures extends AppFixtures implements FixtureGroupInterface, OrderedFixtureInterface
 {
-    const PAGE_MENU_FIXTURES_DATA_FILE =
-        'content' . DIRECTORY_SEPARATOR . 'page' . DIRECTORY_SEPARATOR . 'page_menu_fixtures_data.yaml';
-
     public function load(ObjectManager $manager): void
     {
-        $data = Yaml::parseFile($this->pathDataFixtures . self::PAGE_MENU_FIXTURES_DATA_FILE);
-
-        if ($data === null) {
-            return;
-        }
-
-        foreach ($data['pageMenu'] as $ref => $dataMenu) {
-            $page = $this->getReference($dataMenu['page'], Page::class);
-            $menu = $this->getReference($dataMenu['menu'], Menu::class);
-
-            $page->addMenu($menu);
-            $manager->persist($page);
+        $pages = $this->loadYamlFolder($this->pathDataFixtures . PageFixtures::PAGE_FIXTURES_FOLDER);
+        foreach ($pages as $ref => $file) {
+            $page = $this->getReference($ref, Page::class);
+            foreach ($file['data']['menus'] ?? [] as $menuRef) {
+                $page->addMenu($this->getReference($menuRef, Menu::class));
+            }
         }
         $manager->flush();
     }
