@@ -27,6 +27,7 @@ Le format suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), avec un
 - Passage à Symfony 8.1.11
 - Nouveau thème Natheo-Horizon, thème par défaut du site public, réécrit sur l'API v2 : nouvelle identité (logo en grille de blocs, violet, police Schibsted Grotesk), vrai mode sombre, accessibilité WCAG 2.2 AA, temps de lecture et barre de progression ; le site public n'appelle plus l'API v1 ([#464](https://github.com/counteraccro/natheo/issues/464))
 - Données de démonstration installées par `natheo:install` : le site vitrine de Nathéo, avec un vrai contenu en français, anglais et espagnol, toutes les dispositions de page, les onze types de menus, des commentaires dans chaque statut et des captures du CMS en images d'en-tête ([#521](https://github.com/counteraccro/natheo/issues/521))
+- Le favicon reprend le logo en grille de blocs sur le site public, l'administration et l'installation ([#521](https://github.com/counteraccro/natheo/issues/521))
 
 ### Déprécié
 
