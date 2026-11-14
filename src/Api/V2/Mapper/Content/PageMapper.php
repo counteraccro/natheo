@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Convertit une page en ressource Page de l'API v2
  */
 
@@ -65,7 +65,7 @@ final readonly class PageMapper
     }
 
     /**
-     * Traductions d'une page ayant un slug
+     * Traductions d'une page ayant un slug, triées par langue
      * @param PageEntity $entity
      * @return PageTranslation[]
      */
@@ -82,6 +82,7 @@ final readonly class PageMapper
                 (string) $translation->getTitre(),
             );
         }
+        usort($translations, fn(PageTranslation $a, PageTranslation $b) => strcmp($a->locale, $b->locale));
         return $translations;
     }
 

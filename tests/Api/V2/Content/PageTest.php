@@ -60,7 +60,7 @@ class PageTest extends AppApiV2TestCase
     }
 
     /**
-     * Traductions de la page complète, sans celles sans slug ; absentes des listes
+     * Traductions de la page complète triées par langue, sans celles sans slug ; absentes des listes
      * @return void
      */
     public function testGetTranslations(): void
@@ -71,11 +71,11 @@ class PageTest extends AppApiV2TestCase
 
         $content = $this->decode($this->requestV2('GET', '/pages/' . $page->getId() . '?locale=fr'));
         $this->assertMatchesResourceItemJsonSchema(PageResource::class);
-        $this->assertEquals(['fr', 'en'], array_column($content['translations'], 'locale'));
+        $this->assertEquals(['en', 'fr'], array_column($content['translations'], 'locale'));
         $english = $page->getPageTranslationByLocale('en');
         $this->assertEquals(
             ['locale' => 'en', 'slug' => $english->getUrl(), 'title' => $english->getTitre()],
-            array_diff_key($content['translations'][1], ['@type' => true]),
+            array_diff_key($content['translations'][0], ['@type' => true]),
         );
 
         $content = $this->decode($this->requestV2('GET', '/pages?slug=' . $english->getUrl()));
