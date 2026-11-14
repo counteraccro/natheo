@@ -10,12 +10,13 @@ declare(strict_types=1);
 
 namespace App\Service\Front;
 
+use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\IriConverterInterface;
 use App\Api\V2\Mapper\Content\MenuMapper;
+use App\Api\V2\Mapper\Content\PageContentMapper;
 use App\Api\V2\Mapper\Content\PageMapper;
 use App\Api\V2\Resource\Content\Page as PageResource;
 use App\Api\V2\Resource\Content\PageContent;
-use App\Api\V2\State\Provider\Content\PageContentResourceBuilder;
 use App\Entity\Admin\Content\Page\Page;
 use App\Service\Api\Content\Page\ApiPageContentService;
 use App\Service\Api\Content\Page\ApiPageService;
@@ -30,7 +31,6 @@ final readonly class FrontPreviewService
     public function __construct(
         private ApiPageService $apiPageService,
         private ApiPageContentService $apiPageContentService,
-        private PageContentResourceBuilder $pageContentResourceBuilder,
         private NormalizerInterface $normalizer,
         private IriConverterInterface $iriConverter,
     ) {}
@@ -104,11 +104,13 @@ final readonly class FrontPreviewService
     {
         $contents = [];
         $newId = 0;
+        $mapper = new PageContentMapper($locale);
+        $pagesIri = $this->iriConverter->getIriFromResource(PageResource::class, operation: new GetCollection());
         foreach ($this->apiPageContentService->getAvailablePageContents($preview, $locale) as $entity) {
             $id = $entity->getId() ?? --$newId;
-            $content = $this->pageContentResourceBuilder->build($entity, $locale, $id);
-            if ($content !== null) {
-                $contents[] = $content;
+            $rendered = $this->apiPageContentService->getRenderedContent($entity, $locale);
+            if ($rendered !== null) {
+                $contents[] = $mapper->map($entity, $rendered, $pagesIri, $id);
             }
         }
         return $contents;

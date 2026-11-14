@@ -9,9 +9,13 @@ declare(strict_types=1);
 
 namespace App\Api\V2\State\Provider\Content;
 
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\IriConverterInterface;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
 use App\Api\V2\Exception\NotFoundException;
+use App\Api\V2\Mapper\Content\PageContentMapper;
+use App\Api\V2\Resource\Content\Page;
 use App\Api\V2\Resource\Content\PageContent;
 use App\Service\Api\Content\Page\ApiPageContentService;
 use League\CommonMark\Exception\CommonMarkException;
@@ -26,7 +30,7 @@ final readonly class PageContentProvider implements ProviderInterface
 {
     public function __construct(
         private ApiPageContentService $apiPageContentService,
-        private PageContentResourceBuilder $pageContentResourceBuilder,
+        private IriConverterInterface $iriConverter,
         private TranslatorInterface $translator,
     ) {}
 
@@ -43,12 +47,13 @@ final readonly class PageContentProvider implements ProviderInterface
     {
         $locale = $this->apiPageContentService->getContentLocale();
         $entity = $this->apiPageContentService->findPublishedPageContent((int) $uriVariables['id']);
-        $pageContent = $entity === null ? null : $this->pageContentResourceBuilder->build($entity, $locale);
-        if ($pageContent === null) {
+        $rendered = $entity === null ? null : $this->apiPageContentService->getRenderedContent($entity, $locale);
+        if ($rendered === null) {
             throw new NotFoundException(
                 $this->translator->trans('api_errors.find.page.content.not.found', domain: 'api_errors'),
             );
         }
-        return $pageContent;
+        $pagesIri = $this->iriConverter->getIriFromResource(Page::class, operation: new GetCollection());
+        return (new PageContentMapper($locale))->map($entity, $rendered, $pagesIri);
     }
 }
