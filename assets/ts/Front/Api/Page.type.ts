@@ -38,6 +38,13 @@ export interface Meta {
   value: string;
 }
 
+/** Traduction d'une page */
+export interface PageTranslation {
+  locale: string;
+  slug: string;
+  title: string;
+}
+
 /** Page dans une collection (groupe page:list) */
 export interface PageSummary extends JsonLdResource {
   id: number;
@@ -58,6 +65,7 @@ export interface Page extends PageSummary {
   openComment: boolean;
   reads: number;
   seo: Meta[];
+  translations: PageTranslation[];
   contents: PageContentSummary[];
   menus: Menu[];
 }

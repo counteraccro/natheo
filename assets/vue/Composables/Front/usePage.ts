@@ -17,6 +17,7 @@ export function usePage(): AsyncState<Page> {
     .then((page) => {
       if (page !== null) {
         document.title = page.title;
+        context.page.value = page;
       }
     });
   return state;
