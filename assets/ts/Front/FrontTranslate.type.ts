@@ -1,6 +1,6 @@
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Traductions du site public (FrontTranslate), communes à tous les thèmes
  */
 
@@ -88,6 +88,8 @@ export interface FrontMenuTranslate {
   headerLabel: string;
   sideLabel: string;
   footerLabel: string;
+  /** Libellé du bouton qui ouvre un sous-menu */
+  submenu: string;
 }
 
 export interface FrontFooterTranslate {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 /**
  * Class pour la génération des traductions pour les scripts vue du front
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  */
 
 namespace App\Translate\Front;
@@ -54,6 +54,7 @@ class FrontTranslate extends AppTranslate
                 'headerLabel' => $this->trans('front.menu.header_label'),
                 'sideLabel' => $this->trans('front.menu.side_label'),
                 'footerLabel' => $this->trans('front.menu.footer_label'),
+                'submenu' => $this->trans('front.menu.submenu'),
             ],
             'main' => [
                 'articleFooter' => $this->getTranslateArticleFooter(),
