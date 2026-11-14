@@ -13,6 +13,7 @@ namespace App\Twig\Extension\Admin\System;
 use App\Entity\Admin\System\OptionSystem;
 use App\Service\Admin\System\OptionSystemService;
 use App\Service\Admin\System\OptionUserService;
+use App\Service\Global\SupportedLocales;
 use App\Twig\Extension\Admin\AppAdminExtension;
 use Exception;
 use Psr\Container\ContainerExceptionInterface;
@@ -59,6 +60,7 @@ class OptionExtension extends AppAdminExtension
                 'router' => RouterInterface::class,
                 'optionUserService' => OptionUserService::class,
                 'optionSystemService' => OptionSystemService::class,
+                'supportedLocales' => SupportedLocales::class,
             ]),
         ]
         private readonly ContainerInterface $handlers,
@@ -339,7 +341,7 @@ class OptionExtension extends AppAdminExtension
     private function generateTranslatableTextarea(string $key, array $element): string
     {
         $default = $this->optionSystemService->getDefaultLanguage();
-        $locales = array_unique([$default, ...$this->optionSystemService->getSupportedLocales()]);
+        $locales = array_unique([$default, ...$this->handlers->get('supportedLocales')->getAll()]);
         $translations = $this->optionSystemService->decodeTranslations($this->getValueByKey($key));
 
         $html = '<fieldset><legend class="form-label">' . $this->translator->trans($element['label']) . '</legend>';
