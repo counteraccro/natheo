@@ -1,7 +1,7 @@
 <script setup lang="ts">
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Menu de l'en-tête sur grand écran : sous-menus déroulants ou méga menu en colonnes
  */
 import { computed } from 'vue';
@@ -48,7 +48,7 @@ function megaColumns(element: MenuElement): string {
           <ul v-else class="min-w-57 p-1.5">
             <li v-for="child in element.children" :key="child.id">
               <MenuLink :element="child" class="flex min-h-11 items-center gap-2.5 rounded-nh px-3 text-fg no-underline hover:bg-surface" />
-              <ul v-if="child.children.length" class="pl-3.5">
+              <ul v-if="child.children.length" class="mb-1 ml-4 border-l border-line pl-1">
                 <li v-for="grandchild in child.children" :key="grandchild.id">
                   <MenuLink
                     :element="grandchild"

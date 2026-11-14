@@ -1,7 +1,7 @@
 <script setup lang="ts">
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Tiroir de navigation : menu de l'en-tête en accordéon, langues et déconnexion
  * (petits écrans, et tous les écrans pour un menu d'en-tête en barre latérale)
  */
@@ -101,7 +101,7 @@ const subLink = 'flex min-h-11 items-center gap-2.5 font-medium text-on-night-mu
               <ul class="pb-2.5 pl-4">
                 <template v-for="child in element.children" :key="child.id">
                   <li><MenuLink :element="child" dot="bg-mod-third" :class="subLink" /></li>
-                  <li v-for="grandchild in child.children" :key="grandchild.id" class="pl-4">
+                  <li v-for="grandchild in child.children" :key="grandchild.id" class="ml-1 border-l border-night-line pl-3">
                     <MenuLink :element="grandchild" dot="bg-mod-third" :class="subLink" />
                   </li>
                 </template>
