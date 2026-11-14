@@ -5,9 +5,11 @@
  * Liste d'un menu déroulant dont chaque sous-niveau s'ouvre dans un panneau à côté : survol à la souris,
  * bouton chevron au clic ou au doigt, flèches droite / gauche au clavier
  */
-import { nextTick, onBeforeUnmount, ref } from 'vue';
+import { inject, nextTick, ref, watch } from 'vue';
 import { useFrontContext } from '@/vue/Composables/Front/useFrontContext';
+import { isMouse, useHoverDelay } from '@/vue/Composables/Front/useHoverDelay';
 import { useMenus } from '@/vue/Composables/Front/useMenus';
+import { NAV_PANEL_OPEN } from '@/vue/Components/Front/NatheoHorizon/Layout/NavPanel.vue';
 import HorizonIcon from '@/vue/Components/Front/NatheoHorizon/Layout/HorizonIcon.vue';
 import MenuLink from '@/vue/Components/Front/NatheoHorizon/Menu/MenuLink.vue';
 import type { MenuElement } from '@/ts/Front/Api/Menu.type';
@@ -15,18 +17,27 @@ import type { MenuElement } from '@/ts/Front/Api/Menu.type';
 defineOptions({ name: 'CascadeMenuList' });
 defineProps<{ elements: MenuElement[] }>();
 
-// Délai avant fermeture : laisse le temps de passer de l'élément à son panneau
-const HOVER_CLOSE_DELAY = 150;
 const { translate } = useFrontContext();
 const { isActive } = useMenus();
 const openId = ref<number | null>(null);
+const openedByHover = ref(false);
 // Panneau ouvert vers la gauche quand il dépasse de l'écran à droite
 const toLeft = ref(false);
 const panels = ref<Record<number, HTMLElement | null>>({});
-let closeTimer: ReturnType<typeof setTimeout> | undefined;
+const hoverClose = useHoverDelay(() => close());
+
+// Les sous-panneaux se referment avec le panneau de l'en-tête qui les contient
+const panelOpen = inject(NAV_PANEL_OPEN, null);
+if (panelOpen !== null) {
+  watch(panelOpen, (isOpen) => {
+    if (!isOpen) {
+      close();
+    }
+  });
+}
 
 async function open(element: MenuElement): Promise<void> {
-  clearTimeout(closeTimer);
+  hoverClose.cancel();
   if (openId.value === element.id) {
     return;
   }
@@ -38,29 +49,36 @@ async function open(element: MenuElement): Promise<void> {
 }
 
 function close(): void {
-  clearTimeout(closeTimer);
+  hoverClose.cancel();
   openId.value = null;
+  openedByHover.value = false;
 }
 
+// Un clic sur un panneau ouvert au survol le garde ouvert au lieu de le refermer
 function toggle(element: MenuElement): void {
-  if (openId.value === element.id) {
+  if (openId.value === element.id && !openedByHover.value) {
     close();
   } else {
     open(element);
   }
+  openedByHover.value = false;
 }
 
 function onPointerenter(event: PointerEvent, element: MenuElement): void {
-  if (event.pointerType === 'mouse' && element.children.length) {
+  if (!isMouse(event)) {
+    return;
+  }
+  if (element.children.length) {
+    openedByHover.value = openedByHover.value || openId.value !== element.id;
     open(element);
-  } else if (event.pointerType === 'mouse') {
-    closeTimer = setTimeout(close, HOVER_CLOSE_DELAY);
+  } else if (openedByHover.value) {
+    hoverClose.schedule();
   }
 }
 
 function onPointerleave(event: PointerEvent): void {
-  if (event.pointerType === 'mouse' && openId.value !== null) {
-    closeTimer = setTimeout(close, HOVER_CLOSE_DELAY);
+  if (isMouse(event) && openedByHover.value) {
+    hoverClose.schedule();
   }
 }
 
@@ -92,8 +110,6 @@ function onFocusout(event: FocusEvent, element: MenuElement): void {
     close();
   }
 }
-
-onBeforeUnmount(() => clearTimeout(closeTimer));
 </script>
 
 <template>
@@ -120,12 +136,16 @@ onBeforeUnmount(() => clearTimeout(closeTimer));
           v-if="element.children.length"
           type="button"
           class="inline-flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-nh text-fg-muted"
-          :aria-label="translate.menu.submenu"
+          :aria-label="translate.menu.submenu.replace('{label}', element.label)"
           :aria-expanded="openId === element.id"
           :aria-controls="`cascade-${element.id}`"
           @click="toggle(element)"
         >
-          <HorizonIcon name="chevron-down" class="size-4 -rotate-90" />
+          <HorizonIcon
+            name="chevron-down"
+            class="size-4"
+            :class="toLeft && openId === element.id ? 'rotate-90' : '-rotate-90'"
+          />
         </button>
       </div>
       <div

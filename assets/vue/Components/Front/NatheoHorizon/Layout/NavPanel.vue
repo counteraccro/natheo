@@ -1,23 +1,45 @@
+<script lang="ts">
+import type { InjectionKey, Ref } from 'vue';
+
+/** État d'ouverture du panneau, lu par son contenu (sous-panneaux à refermer avec lui) */
+export const NAV_PANEL_OPEN: InjectionKey<Readonly<Ref<boolean>>> = Symbol('natheo.horizon.navPanel.open');
+
+// Fermeture du panneau ouvert : un seul panneau de l'en-tête affiché à la fois
+let closeOpenPanel: (() => void) | null = null;
+</script>
+
 <script setup lang="ts">
 /**
  * @author Gourdon Aymeric
  * @version 1.1
  * Bouton de l'en-tête qui ouvre un panneau (sous-menu, langues) : clic, survol à la souris si demandé, Échap,
- * flèches haut / bas
+ * flèches haut / bas ; un seul panneau ouvert à la fois
  */
-import { nextTick, onBeforeUnmount, onMounted, ref, useId } from 'vue';
+import { nextTick, onBeforeUnmount, onMounted, provide, readonly, ref, useId, watch } from 'vue';
+import { isMouse, useHoverDelay } from '@/vue/Composables/Front/useHoverDelay';
 import HorizonIcon from '@/vue/Components/Front/NatheoHorizon/Layout/HorizonIcon.vue';
 
 const props = defineProps<{ label?: string; current?: boolean; align?: 'left' | 'right'; hover?: boolean }>();
-// Délai avant fermeture : laisse le temps de passer du bouton au panneau
-const HOVER_CLOSE_DELAY = 150;
 const id = useId();
 const open = ref(false);
 const root = ref<HTMLElement | null>(null);
 const button = ref<HTMLButtonElement | null>(null);
 const panel = ref<HTMLElement | null>(null);
 const openedByHover = ref(false);
-let closeTimer: ReturnType<typeof setTimeout> | undefined;
+const hoverClose = useHoverDelay(() => close());
+
+provide(NAV_PANEL_OPEN, readonly(open));
+
+watch(open, (isOpen) => {
+  if (isOpen) {
+    if (closeOpenPanel !== close) {
+      closeOpenPanel?.();
+    }
+    closeOpenPanel = close;
+  } else if (closeOpenPanel === close) {
+    closeOpenPanel = null;
+  }
+});
 
 function links(): HTMLElement[] {
   // Les liens des sous-panneaux fermés sont masqués : ils ne prennent pas le focus
@@ -27,7 +49,7 @@ function links(): HTMLElement[] {
 }
 
 function close(focusButton = false): void {
-  clearTimeout(closeTimer);
+  hoverClose.cancel();
   open.value = false;
   openedByHover.value = false;
   if (focusButton) {
@@ -42,10 +64,10 @@ function onButtonClick(): void {
 }
 
 function onPointerenter(event: PointerEvent): void {
-  if (!props.hover || event.pointerType !== 'mouse') {
+  if (!props.hover || !isMouse(event)) {
     return;
   }
-  clearTimeout(closeTimer);
+  hoverClose.cancel();
   if (!open.value) {
     open.value = true;
     openedByHover.value = true;
@@ -53,8 +75,8 @@ function onPointerenter(event: PointerEvent): void {
 }
 
 function onPointerleave(event: PointerEvent): void {
-  if (openedByHover.value && event.pointerType === 'mouse') {
-    closeTimer = setTimeout(close, HOVER_CLOSE_DELAY);
+  if (openedByHover.value && isMouse(event)) {
+    hoverClose.schedule();
   }
 }
 
@@ -100,7 +122,9 @@ function onDocumentClick(event: MouseEvent): void {
 onMounted(() => document.addEventListener('click', onDocumentClick));
 onBeforeUnmount(() => {
   document.removeEventListener('click', onDocumentClick);
-  clearTimeout(closeTimer);
+  if (closeOpenPanel === close) {
+    closeOpenPanel = null;
+  }
 });
 </script>
 
