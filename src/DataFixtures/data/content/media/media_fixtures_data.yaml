@@ -84,31 +84,111 @@ media:
         user: User
         description: 'Le back-office et le site public côte à côte'
         image: hdr-about.jpg
-    cap-admin-dashboard:
+    cap-admin-dashboard-fr:
         folder: Folder_captures_admin
         user: User
-        description: 'Tableau de bord'
-        image: cap-admin-dashboard.jpg
-    cap-admin-page:
+        description: 'Tableau de bord, interface en français'
+        image: cap-admin-dashboard-fr.jpg
+    cap-admin-dashboard-en:
         folder: Folder_captures_admin
         user: User
-        description: 'Édition d''une page'
-        image: cap-admin-page.jpg
-    cap-admin-menu:
+        description: 'Tableau de bord, interface en anglais'
+        image: cap-admin-dashboard-en.jpg
+    cap-admin-dashboard-es:
         folder: Folder_captures_admin
         user: User
-        description: 'Édition d''un menu'
-        image: cap-admin-menu.jpg
-    cap-admin-faq:
+        description: 'Tableau de bord, interface en espagnol'
+        image: cap-admin-dashboard-es.jpg
+    cap-admin-page-fr:
         folder: Folder_captures_admin
         user: User
-        description: 'Édition d''une FAQ'
-        image: cap-admin-faq.jpg
-    cap-admin-media:
+        description: 'Édition d''une page, interface en français'
+        image: cap-admin-page-fr.jpg
+    cap-admin-page-en:
         folder: Folder_captures_admin
         user: User
-        description: 'Médiathèque'
-        image: cap-admin-media.jpg
+        description: 'Édition d''une page, interface en anglais'
+        image: cap-admin-page-en.jpg
+    cap-admin-page-es:
+        folder: Folder_captures_admin
+        user: User
+        description: 'Édition d''une page, interface en espagnol'
+        image: cap-admin-page-es.jpg
+    cap-admin-menu-fr:
+        folder: Folder_captures_admin
+        user: User
+        description: 'Édition d''un menu, interface en français'
+        image: cap-admin-menu-fr.jpg
+    cap-admin-menu-en:
+        folder: Folder_captures_admin
+        user: User
+        description: 'Édition d''un menu, interface en anglais'
+        image: cap-admin-menu-en.jpg
+    cap-admin-menu-es:
+        folder: Folder_captures_admin
+        user: User
+        description: 'Édition d''un menu, interface en espagnol'
+        image: cap-admin-menu-es.jpg
+    cap-admin-faq-fr:
+        folder: Folder_captures_admin
+        user: User
+        description: 'Édition d''une FAQ, interface en français'
+        image: cap-admin-faq-fr.jpg
+    cap-admin-faq-en:
+        folder: Folder_captures_admin
+        user: User
+        description: 'Édition d''une FAQ, interface en anglais'
+        image: cap-admin-faq-en.jpg
+    cap-admin-faq-es:
+        folder: Folder_captures_admin
+        user: User
+        description: 'Édition d''une FAQ, interface en espagnol'
+        image: cap-admin-faq-es.jpg
+    cap-admin-media-fr:
+        folder: Folder_captures_admin
+        user: User
+        description: 'Médiathèque, interface en français'
+        image: cap-admin-media-fr.jpg
+    cap-admin-media-en:
+        folder: Folder_captures_admin
+        user: User
+        description: 'Médiathèque, interface en anglais'
+        image: cap-admin-media-en.jpg
+    cap-admin-media-es:
+        folder: Folder_captures_admin
+        user: User
+        description: 'Médiathèque, interface en espagnol'
+        image: cap-admin-media-es.jpg
+    cap-admin-translate-fr:
+        folder: Folder_captures_admin
+        user: User
+        description: 'Outil de traduction, interface en français'
+        image: cap-admin-translate-fr.jpg
+    cap-admin-translate-en:
+        folder: Folder_captures_admin
+        user: User
+        description: 'Outil de traduction, interface en anglais'
+        image: cap-admin-translate-en.jpg
+    cap-admin-translate-es:
+        folder: Folder_captures_admin
+        user: User
+        description: 'Outil de traduction, interface en espagnol'
+        image: cap-admin-translate-es.jpg
+    cap-front-megamenu-fr:
+        folder: Folder_captures_front
+        user: User
+        description: 'Méga menu des fonctionnalités, interface en français'
+        image: cap-front-megamenu-fr.jpg
+    cap-front-megamenu-en:
+        folder: Folder_captures_front
+        user: User
+        description: 'Méga menu des fonctionnalités, interface en anglais'
+        image: cap-front-megamenu-en.jpg
+    cap-front-megamenu-es:
+        folder: Folder_captures_front
+        user: User
+        description: 'Méga menu des fonctionnalités, interface en espagnol'
+        image: cap-front-megamenu-es.jpg
     cap-admin-options:
         folder: Folder_captures_admin
         user: User
