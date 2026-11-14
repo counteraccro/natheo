@@ -1,27 +1,57 @@
 <script setup lang="ts">
 /**
  * @author Gourdon Aymeric
- * @version 1.0
- * Bouton de l'en-tête qui ouvre un panneau (sous-menu, langues) : clic, Échap, flèches haut / bas
+ * @version 1.1
+ * Bouton de l'en-tête qui ouvre un panneau (sous-menu, langues) : clic, survol à la souris si demandé, Échap,
+ * flèches haut / bas
  */
 import { nextTick, onBeforeUnmount, onMounted, ref, useId } from 'vue';
 import HorizonIcon from '@/vue/Components/Front/NatheoHorizon/Layout/HorizonIcon.vue';
 
-const props = defineProps<{ label?: string; current?: boolean; align?: 'left' | 'right' }>();
+const props = defineProps<{ label?: string; current?: boolean; align?: 'left' | 'right'; hover?: boolean }>();
+// Délai avant fermeture : laisse le temps de passer du bouton au panneau
+const HOVER_CLOSE_DELAY = 150;
 const id = useId();
 const open = ref(false);
 const root = ref<HTMLElement | null>(null);
 const button = ref<HTMLButtonElement | null>(null);
 const panel = ref<HTMLElement | null>(null);
+const openedByHover = ref(false);
+let closeTimer: ReturnType<typeof setTimeout> | undefined;
 
 function links(): HTMLElement[] {
   return [...(panel.value?.querySelectorAll<HTMLElement>('a[href]') ?? [])];
 }
 
 function close(focusButton = false): void {
+  clearTimeout(closeTimer);
   open.value = false;
+  openedByHover.value = false;
   if (focusButton) {
     button.value?.focus();
+  }
+}
+
+// Un clic sur un panneau ouvert au survol le garde ouvert au lieu de le refermer
+function onButtonClick(): void {
+  open.value = openedByHover.value || !open.value;
+  openedByHover.value = false;
+}
+
+function onPointerenter(event: PointerEvent): void {
+  if (!props.hover || event.pointerType !== 'mouse') {
+    return;
+  }
+  clearTimeout(closeTimer);
+  if (!open.value) {
+    open.value = true;
+    openedByHover.value = true;
+  }
+}
+
+function onPointerleave(event: PointerEvent): void {
+  if (openedByHover.value && event.pointerType === 'mouse') {
+    closeTimer = setTimeout(close, HOVER_CLOSE_DELAY);
   }
 }
 
@@ -65,11 +95,21 @@ function onDocumentClick(event: MouseEvent): void {
 }
 
 onMounted(() => document.addEventListener('click', onDocumentClick));
-onBeforeUnmount(() => document.removeEventListener('click', onDocumentClick));
+onBeforeUnmount(() => {
+  document.removeEventListener('click', onDocumentClick);
+  clearTimeout(closeTimer);
+});
 </script>
 
 <template>
-  <div ref="root" class="relative" @keydown="onKeydown" @focusout="onFocusout">
+  <div
+    ref="root"
+    class="relative"
+    @keydown="onKeydown"
+    @focusout="onFocusout"
+    @pointerenter="onPointerenter"
+    @pointerleave="onPointerleave"
+  >
     <button
       ref="button"
       type="button"
@@ -77,7 +117,7 @@ onBeforeUnmount(() => document.removeEventListener('click', onDocumentClick));
       :class="props.current ? 'text-on-night' : 'text-on-night-muted'"
       :aria-expanded="open"
       :aria-controls="id"
-      @click="open = !open"
+      @click="onButtonClick"
       @keydown="onButtonKeydown"
     >
       <span v-if="props.current" class="size-2 rounded-[2px] bg-mod-third" aria-hidden="true" />

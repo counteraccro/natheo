@@ -2,7 +2,7 @@
 /**
  * @author Gourdon Aymeric
  * @version 1.1
- * Menu de l'en-tête sur grand écran : sous-menus déroulants ou méga menu en colonnes
+ * Menu de l'en-tête sur grand écran : sous-menus déroulants ou méga menu en colonnes, ouverts au survol ou au clic
  */
 import { computed } from 'vue';
 import { useFrontContext } from '@/vue/Composables/Front/useFrontContext';
@@ -32,7 +32,7 @@ function megaColumns(element: MenuElement): string {
           dot="bg-mod-third"
           class="inline-flex min-h-11 items-center gap-1.5 rounded-nh px-3 font-medium text-on-night-muted no-underline hover:bg-white/10 aria-[current=page]:text-on-night"
         />
-        <NavPanel v-else :label="element.label" :current="isActive(element)">
+        <NavPanel v-else :label="element.label" :current="isActive(element)" hover>
           <div v-if="layout.kind === 'mega'" class="grid gap-6 p-5" :style="{ gridTemplateColumns: megaColumns(element) }">
             <div v-for="child in element.children" :key="child.id">
               <MenuLink :element="child" class="mb-1 flex items-center gap-2 text-[0.95rem] font-bold text-fg no-underline" />
