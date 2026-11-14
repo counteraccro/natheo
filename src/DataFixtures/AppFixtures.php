@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace App\DataFixtures;
 
+use App\DataFixtures\Admin\System\UserFixtures;
 use App\Entity\Admin\System\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\ORM\EntityManagerInterface;
@@ -27,6 +28,12 @@ class AppFixtures extends Fixture
      * @var string
      */
     protected string $pathDataFixtures = '';
+
+    /**
+     * Comptes de démonstration, indexés par référence
+     * @var array|null
+     */
+    private ?array $demoUsers = null;
 
     /**
      * Lié à toutes les données user
@@ -249,13 +256,19 @@ class AppFixtures extends Fixture
     }
 
     /**
-     * Retourne l'utilisateur $ref, ou le fondateur quand les comptes de démonstration ne sont pas chargés
+     * Retourne l'utilisateur $ref, ou le fondateur quand $ref est un compte de démonstration non chargé
      * @param string $ref
      * @return User
+     * @throws \RuntimeException si $ref n'est ni chargé ni un compte de démonstration
      */
     protected function getUserReference(string $ref): User
     {
         if (!$this->hasReference($ref, User::class)) {
+            $demoFile = $this->pathDataFixtures . UserFixtures::USER_FIXTURES_DATA_FILE_DEMO;
+            $this->demoUsers ??= Yaml::parseFile($demoFile)['user'];
+            if (!isset($this->demoUsers[$ref])) {
+                throw new \RuntimeException(sprintf('Utilisateur inconnu dans les fixtures : %s', $ref));
+            }
             $ref = 'User';
         }
         return $this->getReference($ref, User::class);
