@@ -1,19 +1,22 @@
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Contexte du site public partagé par les composables : props du thème, client API et cache des chargements
  */
-import { getCurrentInstance, inject, type InjectionKey } from 'vue';
+import { getCurrentInstance, inject, shallowRef, type InjectionKey, type ShallowRef } from 'vue';
 import { ApiClient } from '@/vue/Composables/Front/Api/ApiClient';
 import { ApiError } from '@/vue/Composables/Front/Api/ApiError';
 import type { FrontThemeDatas, FrontThemeProps, FrontThemeUrls } from '@/ts/Front/FrontProps.type';
 import type { FrontTranslate } from '@/ts/Front/FrontTranslate.type';
+import type { Page } from '@/ts/Front/Api/Page.type';
 
 export interface FrontContext {
   urls: FrontThemeUrls;
   datas: FrontThemeDatas;
   translate: FrontTranslate;
   api: ApiClient;
+  /** Page affichée, renseignée par usePage() une fois chargée */
+  page: ShallowRef<Page | null>;
   /** Chargement partagé : un seul appel par clé, quel que soit le nombre de composants qui le demandent */
   once<T>(key: string, loader: () => Promise<T>): Promise<T>;
   /** URL publique d'une page */
@@ -41,6 +44,7 @@ export function createFrontContext(props: FrontThemeProps): FrontContext {
     datas: props.datas,
     translate: props.translate,
     api,
+    page: shallowRef<Page | null>(null),
     once<T>(key: string, loader: () => Promise<T>): Promise<T> {
       if (!loads.has(key)) {
         loads.set(key, loader());
