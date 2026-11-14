@@ -16,7 +16,6 @@ use App\Enum\Admin\Content\Faq\FaqCsrfToken;
 use App\Enum\Admin\Content\Faq\FaqStatistiqueAction;
 use App\Enum\Admin\Content\Faq\FaqStatistiqueKey;
 use App\Enum\Admin\Content\Page\PageContentType;
-use App\Enum\Admin\System\Options\OptionSystem;
 use App\Repository\Admin\Content\Page\PageContentRepository;
 use App\Security\Voter\ContentVoter;
 use App\Service\Admin\AppAdminService;
@@ -254,20 +253,5 @@ class FaqService extends AppAdminService
         };
         $faqStat->setValue(strval($val));
         $this->save($faqStat, $flush);
-    }
-
-    /**
-     * Retourne la locale de la requête courante, ou la langue par défaut hors requête
-     * @return string
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    private function getCurrentLocale(): string
-    {
-        $request = $this->getRequestStack()->getCurrentRequest();
-        if ($request !== null) {
-            return $request->getLocale();
-        }
-        return (string) $this->getOptionSystemService()->getValueByKey(OptionSystem::OS_DEFAULT_LANGUAGE->value);
     }
 }

@@ -373,7 +373,7 @@ class MailService extends AppAdminService
      */
     public function getDefaultParams(Mail $mail, array $tabKeyWord, ?string $locale = null): array
     {
-        $locale ??= $this->getOptionSystemService()->getValueByKey(OptionSystem::OS_DEFAULT_LANGUAGE->value);
+        $locale ??= $this->getOptionSystemService()->getDefaultLanguage();
 
         $mailTranslation = $mail->getMailTranslationByLocale($locale) ?? $mail->getMailTranslations()->first();
         if ($mailTranslation === false) {

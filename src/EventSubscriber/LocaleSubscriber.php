@@ -8,7 +8,6 @@ declare(strict_types=1);
  */
 namespace App\EventSubscriber;
 
-use App\Enum\Admin\System\Options\OptionSystem;
 use App\Enum\Admin\System\Options\OptionUser;
 use App\Enum\Installation\OptionInstallation;
 use App\EventListener\ApiLocaleListener;
@@ -100,16 +99,11 @@ class LocaleSubscriber implements EventSubscriberInterface
 
         // Firewall stateless (API) : pas de session pour lire les options utilisateur
         $isStateless = $this->security->getFirewallConfig($event->getRequest())?->isStateless() ?? false;
+        $locales = null;
         if (!$isStateless && $this->security->isGranted('ROLE_USER')) {
             $locales = $this->optionUserService->getValueByKey(OptionUser::OU_DEFAULT_LANGUAGE->value);
-        } else {
-            $locales = $this->optionSystemService->getValueByKey(OptionSystem::OS_DEFAULT_LANGUAGE->value);
         }
-
-        // TODO à faire de façon plus propre
-        if ($locales === null) {
-            $locales = 'fr';
-        }
+        $locales = $locales ?: $this->optionSystemService->getDefaultLanguage();
 
         $this->localeSwitcher->setLocale($locales);
     }
