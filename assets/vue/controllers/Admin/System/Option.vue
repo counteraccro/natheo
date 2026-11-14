@@ -79,7 +79,11 @@ export default defineComponent({
         error?.classList.remove('hidden');
       };
 
-      const payload: OptionUpdatePayload = { key: id, value: value };
+      // Champ d'une langue d'une option traduisible : la clé et la langue sont portées par data-*
+      const payload: OptionUpdatePayload = { key: element.dataset.key ?? id, value: value };
+      if (element.dataset.locale) {
+        payload.locale = element.dataset.locale;
+      }
 
       axios
         .post<OptionUpdateResponse>(this.url_update, payload, withCsrf(this.csrf_token))

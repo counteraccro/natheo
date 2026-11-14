@@ -58,6 +58,29 @@ class OptionSystemControllerTest extends AppWebTestCase
     }
 
     /**
+     * Test qu'une option traduisible affiche un champ échappé par langue
+     * @return void
+     */
+    public function testIndexTranslatable(): void
+    {
+        $key = OptionSystem::OS_FRONT_FOOTER_TEXTE->value;
+        $this->container
+            ->get(OptionSystemService::class)
+            ->saveValueByKee($key, json_encode(['fr' => 'Texte FR', 'es' => '<b>ES</b>']));
+
+        $this->client->loginUser($this->createUserSuperAdmin(), 'admin');
+        $crawler = $this->client->request('GET', $this->router->generate('admin_option-system_change'));
+        $this->assertResponseIsSuccessful();
+
+        $this->assertCount(0, $crawler->filter('#' . $key));
+        $this->assertSelectorTextSame('#' . $key . '-fr', 'Texte FR');
+        $this->assertSelectorTextSame('#' . $key . '-en', '');
+        $this->assertSelectorTextSame('#' . $key . '-es', '<b>ES</b>');
+        $this->assertEquals('es', $crawler->filter('#' . $key . '-es')->attr('data-locale'));
+        $this->assertEquals($key, $crawler->filter('#' . $key . '-es')->attr('data-key'));
+    }
+
+    /**
      * Test méthode update()
      * @return void
      */

@@ -183,7 +183,9 @@ class OptionExtension extends AppAdminExtension
                         $html .= $this->generateRadioButton($keyOption, $element);
                         break;
                     case 'textarea':
-                        $html .= $this->generateTextarea($keyOption, $element);
+                        $html .= empty($element['translatable'])
+                            ? $this->generateTextarea($keyOption, $element)
+                            : $this->generateTranslatableTextarea($keyOption, $element);
                         break;
                     case 'select':
                         $html .= $this->generateSelect($keyOption, $element);
@@ -351,6 +353,67 @@ class OptionExtension extends AppAdminExtension
 
         $html .= $this->getSuccess($key, $element);
         $html .= $this->getSpinner($key);
+        $html .= $this->getHelp($key, $element);
+
+        return $html;
+    }
+
+    /**
+     * Génère un champ textarea par langue du site pour une option traduisible, la langue par défaut en premier
+     * @param string $key
+     * @param array $element
+     * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function generateTranslatableTextarea(string $key, array $element): string
+    {
+        $placeholder = '';
+        if (isset($element['placeholder'])) {
+            $placeholder = 'placeholder="' . $this->escape($this->translator->trans($element['placeholder'])) . '"';
+        }
+        $disabled = isset($element['disabled']) ? 'disabled' : '';
+
+        $default = $this->optionSystemService->getDefaultLanguage();
+        $locales = array_unique([$default, ...$this->optionSystemService->getSupportedLocales()]);
+        $translations = $this->optionSystemService->decodeTranslations($this->getValueByKey($key));
+
+        $html = '<fieldset><legend class="form-label">' . $this->translator->trans($element['label']) . '</legend>';
+        foreach ($locales as $locale) {
+            $id = $key . '-' . $locale;
+            $require = $labelRequire = '';
+            if (isset($element['required']) && $locale === $default) {
+                $require = 'required="required"';
+                $labelRequire = ' <span class="text-[var(--error-text)]">*</span>';
+            }
+
+            $html .=
+                '<div class="mt-3"><label for="' .
+                $id .
+                '" class="form-label text-fg-muted">' .
+                $this->translator->trans('global.locale.' . $locale) .
+                $labelRequire .
+                '</label><textarea class="form-input no-control event-input" rows="3" id="' .
+                $id .
+                '" data-key="' .
+                $key .
+                '" data-locale="' .
+                $locale .
+                '" ' .
+                $require .
+                ' ' .
+                $placeholder .
+                ' ' .
+                $disabled .
+                '>' .
+                $this->escape($translations[$locale] ?? '') .
+                '</textarea>';
+            $html .= $this->getError($id, $element);
+            $html .= $this->getSuccess($id, $element);
+            $html .= $this->getSpinner($id);
+            $html .= '</div>';
+        }
+        $html .= '</fieldset>';
         $html .= $this->getHelp($key, $element);
 
         return $html;
