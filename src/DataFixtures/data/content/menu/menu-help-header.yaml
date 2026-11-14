@@ -8,9 +8,11 @@ menu-help-header:
         -   page: features
         -   page: docs
         -   page: blog
-        -   label: { fr: 'Aide', en: 'Help', es: 'Ayuda' }
+        -   page: faq
+            label: { fr: 'Aide', en: 'Help', es: 'Ayuda' }
             children:
-                -   label: { fr: 'Besoin d''aide ?', en: 'Need help?', es: '¿Necesitas ayuda?' }
+                -   page: faq
+                    label: { fr: 'Besoin d''aide ?', en: 'Need help?', es: '¿Necesitas ayuda?' }
                     children:
                         -   page: faq
                         -   page: docs-install

@@ -4,17 +4,20 @@ menu-footer:
     position: POSITION_FOOTER
     defaultMenu: true
     elements:
-        -   label: { fr: 'Produit', en: 'Product', es: 'Producto' }
+        -   page: features
+            label: { fr: 'Produit', en: 'Product', es: 'Producto' }
             children:
                 -   page: features
                 -   page: feature-api
                 -   page: roadmap
-        -   label: { fr: 'Ressources', en: 'Resources', es: 'Recursos' }
+        -   page: docs
+            label: { fr: 'Ressources', en: 'Resources', es: 'Recursos' }
             children:
                 -   page: docs
                 -   page: faq
                 -   page: blog
-        -   label: { fr: 'Communauté', en: 'Community', es: 'Comunidad' }
+        -   page: contribute
+            label: { fr: 'Communauté', en: 'Community', es: 'Comunidad' }
             children:
                 -   page: contribute
                 -   label: { fr: 'Discord', en: 'Discord', es: 'Discord' }
@@ -23,7 +26,8 @@ menu-footer:
                 -   label: { fr: 'GitHub', en: 'GitHub', es: 'GitHub' }
                     url: 'https://github.com/counteraccro/natheo'
                     newTab: true
-        -   label: { fr: 'Légal', en: 'Legal', es: 'Legal' }
+        -   page: legal
+            label: { fr: 'Légal', en: 'Legal', es: 'Legal' }
             children:
                 -   page: legal
                 -   page: license

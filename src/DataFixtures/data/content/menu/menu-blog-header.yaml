@@ -9,12 +9,14 @@ menu-blog-header:
         -   page: docs
         -   page: blog
             children:
-                -   label: { fr: 'Versions', en: 'Releases', es: 'Versiones' }
+                -   page: blog-2-1
+                    label: { fr: 'Versions', en: 'Releases', es: 'Versiones' }
                     children:
                         -   page: blog-2-1
                         -   page: blog-2-0
                         -   page: blog-1-0
-                -   label: { fr: 'Articles', en: 'Articles', es: 'Artículos' }
+                -   page: blog
+                    label: { fr: 'Articles', en: 'Articles', es: 'Artículos' }
                     children:
                         -   page: blog-databases
                         -   page: blog
