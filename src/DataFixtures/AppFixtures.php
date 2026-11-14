@@ -11,6 +11,7 @@ namespace App\DataFixtures;
 
 use App\DataFixtures\Admin\System\UserFixtures;
 use App\Entity\Admin\System\User;
+use App\Service\Global\SupportedLocales;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -151,6 +152,7 @@ class AppFixtures extends Fixture
         #[
             AutowireLocator([
                 'container' => ContainerBagInterface::class,
+                'supportedLocales' => SupportedLocales::class,
             ]),
         ]
         private readonly ContainerInterface $handlers,
@@ -302,10 +304,12 @@ class AppFixtures extends Fixture
     /**
      * Retourne les langues supportées
      * @return string[]
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     protected function getLocales(): array
     {
-        return explode('|', $this->container->get('app.supported_locales'));
+        return $this->handlers->get('supportedLocales')->getAll();
     }
 
     public function load(ObjectManager $manager): void
