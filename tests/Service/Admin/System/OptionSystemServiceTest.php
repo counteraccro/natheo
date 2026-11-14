@@ -238,4 +238,85 @@ class OptionSystemServiceTest extends AppWebTestCase
 
         $this->assertFalse($this->optionSystemService->updateValueFromAdmin('OS_KEY_NOT_EXIST', 'value'));
     }
+
+    /**
+     * Test méthode updateValueFromAdmin() sur une option traduisible
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testUpdateValueFromAdminTranslatable(): void
+    {
+        $key = OptionSystemEnum::OS_FRONT_FOOTER_TEXTE->value;
+
+        $this->assertFalse($this->optionSystemService->updateValueFromAdmin($key, 'Sans langue'));
+        $this->assertFalse($this->optionSystemService->updateValueFromAdmin($key, 'Langue inconnue', 'de'));
+        $this->assertFalse(
+            $this->optionSystemService->updateValueFromAdmin(OptionSystemEnum::OS_SITE_NAME->value, 'Nom', 'fr'),
+        );
+        $this->assertNull($this->optionSystemService->getValueByKey($key));
+
+        $this->assertTrue($this->optionSystemService->updateValueFromAdmin($key, 'Texte « français »', 'fr'));
+        $this->assertTrue($this->optionSystemService->updateValueFromAdmin($key, 'English text', 'en'));
+        $this->assertEquals(
+            ['fr' => 'Texte « français »', 'en' => 'English text'],
+            json_decode($this->optionSystemService->getValueByKey($key), true),
+        );
+
+        $this->assertTrue($this->optionSystemService->updateValueFromAdmin($key, 'Texte modifié', 'fr'));
+        $this->assertEquals('Texte modifié', $this->optionSystemService->getTranslatedValueByKey($key, 'fr'));
+        $this->assertEquals('English text', $this->optionSystemService->getTranslatedValueByKey($key, 'en'));
+    }
+
+    /**
+     * Test méthode getTranslatedValueByKey()
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testGetTranslatedValueByKey(): void
+    {
+        $key = OptionSystemEnum::OS_FRONT_FOOTER_TEXTE->value;
+        $this->assertNull($this->optionSystemService->getTranslatedValueByKey($key, 'fr'));
+
+        $this->optionSystemService->saveValueByKee($key, json_encode(['fr' => 'Bonjour', 'en' => '', 'es' => 'Hola']));
+        $this->assertEquals('Bonjour', $this->optionSystemService->getTranslatedValueByKey($key, 'fr'));
+        $this->assertEquals('Hola', $this->optionSystemService->getTranslatedValueByKey($key, 'es'));
+        $this->assertEquals('Bonjour', $this->optionSystemService->getTranslatedValueByKey($key, 'en'));
+        $this->assertEquals('Bonjour', $this->optionSystemService->getTranslatedValueByKey($key));
+
+        // Valeur enregistrée avant que l'option soit traduisible
+        $this->optionSystemService->saveValueByKee($key, 'Texte unique');
+        $this->assertEquals('Texte unique', $this->optionSystemService->getTranslatedValueByKey($key, 'es'));
+
+        // Langue par défaut changée après la saisie : la valeur renseignée reste servie
+        $this->optionSystemService->saveValueByKee($key, json_encode(['fr' => 'Mon texte']));
+        $this->optionSystemService->saveValueByKee(OptionSystemEnum::OS_DEFAULT_LANGUAGE->value, 'en');
+        $this->assertEquals('Mon texte', $this->optionSystemService->getTranslatedValueByKey($key, 'es'));
+        $this->assertEquals('Mon texte', $this->optionSystemService->getTranslatedValueByKey($key, 'en'));
+
+        $siteName = OptionSystemEnum::OS_SITE_NAME->value;
+        $this->assertEquals(
+            $this->optionSystemService->getValueByKey($siteName),
+            $this->optionSystemService->getTranslatedValueByKey($siteName, 'en'),
+        );
+    }
+
+    /**
+     * Test méthode decodeTranslations()
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testDecodeTranslations(): void
+    {
+        $this->assertEquals([], $this->optionSystemService->decodeTranslations(null));
+        $this->assertEquals([], $this->optionSystemService->decodeTranslations(''));
+        $this->assertEquals(
+            ['fr' => 'a', 'en' => 'b'],
+            $this->optionSystemService->decodeTranslations('{"fr":"a","en":"b"}'),
+        );
+        $this->assertEquals(['fr' => '["a"]'], $this->optionSystemService->decodeTranslations('["a"]'));
+        $this->assertEquals(['fr' => '42'], $this->optionSystemService->decodeTranslations('42'));
+    }
 }

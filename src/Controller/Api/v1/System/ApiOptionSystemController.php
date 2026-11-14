@@ -76,7 +76,7 @@ class ApiOptionSystemController extends AppApiController
         }
         return $this->apiResponse(ApiMessage::SUCCESS->value, [
             'key' => $key,
-            'value' => $optionSystemService->getValueByKey($key),
+            'value' => $optionSystemService->getTranslatedValueByKey($key),
         ]);
     }
 }

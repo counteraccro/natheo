@@ -183,7 +183,9 @@ class OptionExtension extends AppAdminExtension
                         $html .= $this->generateRadioButton($keyOption, $element);
                         break;
                     case 'textarea':
-                        $html .= $this->generateTextarea($keyOption, $element);
+                        $html .= empty($element['translatable'])
+                            ? $this->generateTextarea($keyOption, $element)
+                            : $this->generateTranslatableTextarea($keyOption, $element);
                         break;
                     case 'select':
                         $html .= $this->generateSelect($keyOption, $element);
@@ -213,7 +215,7 @@ class OptionExtension extends AppAdminExtension
         $msgError = $this->getError($key, $element);
         if (isset($element['required'])) {
             $require = 'required="required"';
-            $labelRequire = ' <span class="text-[var(--error-text)]">*</span>';
+            $labelRequire = ' <span class="text-error-text">*</span>';
         }
 
         if (isset($element['placeholder'])) {
@@ -309,51 +311,115 @@ class OptionExtension extends AppAdminExtension
      * @param string $key
      * @param array $element
      * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     private function generateTextarea(string $key, array $element): string
     {
-        $require = $placeholder = $labelRequire = '';
-        $msgError = $this->getError($key, $element);
-        if (isset($element['required'])) {
-            $require = 'required="required"';
-            $labelRequire = ' <span class="text-[var(--error-text)]">*</span>';
-        }
-
-        if (isset($element['placeholder'])) {
-            $placeholder = 'placeholder="' . $this->translator->trans($element['placeholder']) . '"';
-        }
-
-        $disabled = '';
-        if (isset($element['disabled'])) {
-            $disabled = 'disabled';
-        }
-
-        $html =
-            '<label for="' .
-            $key .
-            '" class="form-label">' .
-            $this->translator->trans($element['label']) .
-            $labelRequire .
-            '</label>
-            <textarea class="form-input no-control event-input" rows="5"
-            id="' .
-            $key .
-            '" ' .
-            $require .
-            ' ' .
-            $placeholder .
-            ' ' .
-            $disabled .
-            '>' .
-            $this->escape($this->getValueByKey($key)) .
-            '</textarea>' .
-            $msgError;
-
-        $html .= $this->getSuccess($key, $element);
-        $html .= $this->getSpinner($key);
+        $html = $this->renderTextarea(
+            $key,
+            $this->translator->trans($element['label']),
+            $this->getValueByKey($key),
+            $element,
+            isset($element['required']),
+        );
         $html .= $this->getHelp($key, $element);
 
         return $html;
+    }
+
+    /**
+     * Génère un champ textarea par langue du site pour une option traduisible, la langue par défaut en premier
+     * @param string $key
+     * @param array $element
+     * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function generateTranslatableTextarea(string $key, array $element): string
+    {
+        $default = $this->optionSystemService->getDefaultLanguage();
+        $locales = array_unique([$default, ...$this->optionSystemService->getSupportedLocales()]);
+        $translations = $this->optionSystemService->decodeTranslations($this->getValueByKey($key));
+
+        $html = '<fieldset><legend class="form-label">' . $this->translator->trans($element['label']) . '</legend>';
+        foreach ($locales as $locale) {
+            $html .=
+                '<div class="mt-3">' .
+                $this->renderTextarea(
+                    $key . '-' . $locale,
+                    $this->translator->trans('global.locale.' . $locale),
+                    $translations[$locale] ?? '',
+                    $element,
+                    isset($element['required']) && $locale === $default,
+                    ['data-key' => $key, 'data-locale' => $locale],
+                    3,
+                    'form-label text-fg-muted',
+                ) .
+                '</div>';
+        }
+        $html .= '</fieldset>';
+        $html .= $this->getHelp($key, $element);
+
+        return $html;
+    }
+
+    /**
+     * Rendu d'un label et de son textarea, suivis des messages d'erreur, de succès et du spinner
+     * @param string $id id du textarea
+     * @param string $label libellé déjà traduit
+     * @param string $value
+     * @param array $element configuration de l'option
+     * @param bool $required
+     * @param array<string, string> $attributes attributs supplémentaires du textarea
+     * @param int $rows
+     * @param string $labelClass
+     * @return string
+     */
+    private function renderTextarea(
+        string $id,
+        string $label,
+        string $value,
+        array $element,
+        bool $required,
+        array $attributes = [],
+        int $rows = 5,
+        string $labelClass = 'form-label',
+    ): string {
+        if ($required) {
+            $attributes['required'] = 'required';
+        }
+        if (isset($element['placeholder'])) {
+            $attributes['placeholder'] = $this->translator->trans($element['placeholder']);
+        }
+
+        $htmlAttributes = '';
+        foreach ($attributes as $name => $attributeValue) {
+            $htmlAttributes .= ' ' . $name . '="' . $this->escape($attributeValue) . '"';
+        }
+        if (isset($element['disabled'])) {
+            $htmlAttributes .= ' disabled';
+        }
+
+        return '<label for="' .
+            $id .
+            '" class="' .
+            $labelClass .
+            '">' .
+            $label .
+            ($required ? ' <span class="text-error-text">*</span>' : '') .
+            '</label><textarea class="form-input no-control event-input" rows="' .
+            $rows .
+            '" id="' .
+            $id .
+            '"' .
+            $htmlAttributes .
+            '>' .
+            $this->escape($value) .
+            '</textarea>' .
+            $this->getError($id, $element) .
+            $this->getSuccess($id, $element) .
+            $this->getSpinner($id);
     }
 
     /**

@@ -58,6 +58,29 @@ class OptionSystemControllerTest extends AppWebTestCase
     }
 
     /**
+     * Test qu'une option traduisible affiche un champ échappé par langue
+     * @return void
+     */
+    public function testIndexTranslatable(): void
+    {
+        $key = OptionSystem::OS_FRONT_FOOTER_TEXTE->value;
+        $this->container
+            ->get(OptionSystemService::class)
+            ->saveValueByKee($key, json_encode(['fr' => 'Texte FR', 'es' => '<b>ES</b>']));
+
+        $this->client->loginUser($this->createUserSuperAdmin(), 'admin');
+        $crawler = $this->client->request('GET', $this->router->generate('admin_option-system_change'));
+        $this->assertResponseIsSuccessful();
+
+        $this->assertCount(0, $crawler->filter('#' . $key));
+        $this->assertSelectorTextSame('#' . $key . '-fr', 'Texte FR');
+        $this->assertSelectorTextSame('#' . $key . '-en', '');
+        $this->assertSelectorTextSame('#' . $key . '-es', '<b>ES</b>');
+        $this->assertEquals('es', $crawler->filter('#' . $key . '-es')->attr('data-locale'));
+        $this->assertEquals($key, $crawler->filter('#' . $key . '-es')->attr('data-key'));
+    }
+
+    /**
      * Test méthode update()
      * @return void
      */
@@ -106,6 +129,33 @@ class OptionSystemControllerTest extends AppWebTestCase
             $this->assertFalse($content['success'], $data['key']);
             $this->assertEquals($before, $optionSystemService->getValueByKey($data['key']), $data['key']);
         }
+    }
+
+    /**
+     * Test méthode update() sur une option traduisible
+     * @return void
+     */
+    public function testUpdateTranslatable(): void
+    {
+        $this->client->loginUser($this->createUserSuperAdmin(), 'admin');
+        $server = ['HTTP_X-CSRF-TOKEN' => $this->getCsrfToken()];
+        $key = OptionSystem::OS_FRONT_FOOTER_TEXTE->value;
+
+        /** @var OptionSystemService $optionSystemService */
+        $optionSystemService = $this->container->get(OptionSystemService::class);
+
+        $content = $this->postUpdate(['key' => $key, 'value' => 'Texte espagnol', 'locale' => 'es'], $server);
+        $this->assertResponseIsSuccessful();
+        $this->assertTrue($content['success']);
+        $this->assertEquals('Texte espagnol', $optionSystemService->getTranslatedValueByKey($key, 'es'));
+
+        $content = $this->postUpdate(['key' => $key, 'value' => 'Sans langue'], $server);
+        $this->assertFalse($content['success']);
+
+        $content = $this->postUpdate(['key' => $key, 'value' => 'Langue en tableau', 'locale' => ['es']], $server);
+        $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
+        $this->assertFalse($content['success']);
+        $this->assertEquals('Texte espagnol', $optionSystemService->getTranslatedValueByKey($key, 'es'));
     }
 
     /**

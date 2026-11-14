@@ -80,11 +80,20 @@ class OptionSystemController extends AppAdminController
         }
 
         $data = json_decode($request->getContent(), true);
-        if (!is_array($data) || !is_string($data['key'] ?? null) || !is_scalar($data['value'] ?? null)) {
+        if (
+            !is_array($data) ||
+            !is_string($data['key'] ?? null) ||
+            !is_scalar($data['value'] ?? null) ||
+            !is_string($data['locale'] ?? '')
+        ) {
             return $this->json($optionSystemService->getResponseAjax(), Response::HTTP_BAD_REQUEST);
         }
 
-        $updated = $optionSystemService->updateValueFromAdmin($data['key'], strval($data['value']));
+        $updated = $optionSystemService->updateValueFromAdmin(
+            $data['key'],
+            strval($data['value']),
+            $data['locale'] ?? null,
+        );
         // Désactiver la validation ne publie pas les pages en attente : elles redeviennent modifiables
         if (
             $updated &&

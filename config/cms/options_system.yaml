@@ -41,6 +41,7 @@ options_system:
                 default: 'fr'
             OS_FRONT_FOOTER_TEXTE:
                 type: 'textarea'
+                translatable: true
                 label: 'options_system.front_footer_text.label'
                 help: 'options_system.front_footer_text.help'
                 placeholder: 'options_system.front_footer_text.placeholder'

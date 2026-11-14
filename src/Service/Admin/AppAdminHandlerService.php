@@ -156,6 +156,17 @@ class AppAdminHandlerService
     }
 
     /**
+     * Langues du site (paramètre app.supported_locales)
+     * @return string[]
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getSupportedLocales(): array
+    {
+        return explode('|', (string) $this->getParameterBag()->get('app.supported_locales'));
+    }
+
+    /**
      * Retourne la class MarkdownEditorService
      * @return MarkdownEditorService
      * @throws ContainerExceptionInterface
