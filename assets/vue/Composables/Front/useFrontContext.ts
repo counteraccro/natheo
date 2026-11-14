@@ -6,7 +6,6 @@
 import { getCurrentInstance, inject, type InjectionKey } from 'vue';
 import { ApiClient } from '@/vue/Composables/Front/Api/ApiClient';
 import { ApiError } from '@/vue/Composables/Front/Api/ApiError';
-import { API_CLIENT_KEY } from '@/vue/Composables/Front/Api/useApi';
 import type { FrontThemeDatas, FrontThemeProps, FrontThemeUrls } from '@/ts/Front/FrontProps.type';
 import type { FrontTranslate } from '@/ts/Front/FrontTranslate.type';
 
@@ -68,7 +67,6 @@ export function createFrontContext(props: FrontThemeProps): FrontContext {
     throw new Error('createFrontContext() doit être appelé dans le setup du composant racine du thème');
   }
   app.provide(FRONT_CONTEXT_KEY, context);
-  app.provide(API_CLIENT_KEY, api);
   return context;
 }
 
