@@ -221,6 +221,7 @@ class IndexControllerTest extends AppWebTestCase
         $this->assertEquals('one_block', $preview['page']['render']);
         $this->assertCount(1, $preview['page']['contents']);
         $this->assertEquals(-1, $preview['page']['contents'][0]['id']);
+        $this->assertEquals('_:page_content-1', $preview['page']['contents'][0]['@id']);
         $this->assertEquals(-1, $preview['contents'][0]['id']);
         $this->assertEquals('text', $preview['contents'][0]['type']);
         $this->assertStringContainsString('Texte du brouillon', $preview['contents'][0]['content']['html']);

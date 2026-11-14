@@ -22,18 +22,30 @@ use App\Service\Api\Content\Page\ApiPageContentService;
 use App\Service\Api\Content\Page\ApiPageService;
 use League\CommonMark\Exception\CommonMarkException;
 use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-final readonly class FrontPreviewService
+class FrontPreviewService extends AppFrontService
 {
+    /**
+     * @param ContainerInterface $handlers
+     * @param ApiPageService $apiPageService
+     * @param ApiPageContentService $apiPageContentService
+     * @param NormalizerInterface $normalizer
+     * @param IriConverterInterface $iriConverter
+     */
     public function __construct(
-        private ApiPageService $apiPageService,
-        private ApiPageContentService $apiPageContentService,
-        private NormalizerInterface $normalizer,
-        private IriConverterInterface $iriConverter,
-    ) {}
+        #[AutowireLocator(self::HANDLERS)] ContainerInterface $handlers,
+        private readonly ApiPageService $apiPageService,
+        private readonly ApiPageContentService $apiPageContentService,
+        private readonly NormalizerInterface $normalizer,
+        private readonly IriConverterInterface $iriConverter,
+    ) {
+        parent::__construct($handlers);
+    }
 
     /**
      * Page à prévisualiser (brouillon si demandé, page non publiée sinon) et ses blocs complets ;
@@ -117,17 +129,12 @@ final readonly class FrontPreviewService
     }
 
     /**
-     * IRI d'un bloc ; celui d'un bloc de brouillon suit le même format, sa route n'acceptant pas d'identifiant négatif
+     * IRI d'un bloc ; un bloc de brouillon, sans adresse dans l'API, reçoit un identifiant de nœud anonyme JSON-LD
      * @param PageContent $content
      * @return string
      */
     private function contentIri(PageContent $content): string
     {
-        if ($content->id > 0) {
-            return $this->iriConverter->getIriFromResource($content);
-        }
-        $model = clone $content;
-        $model->id = 1;
-        return (string) preg_replace('#/1$#', '/' . $content->id, $this->iriConverter->getIriFromResource($model));
+        return $content->id > 0 ? $this->iriConverter->getIriFromResource($content) : '_:page_content' . $content->id;
     }
 }
