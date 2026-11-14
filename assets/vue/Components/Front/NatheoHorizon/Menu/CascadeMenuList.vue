@@ -106,16 +106,20 @@ onBeforeUnmount(() => clearTimeout(closeTimer));
       @pointerleave="onPointerleave"
       @focusout="onFocusout($event, element)"
     >
-      <div class="flex items-center" @keydown="onKeydown($event, element)">
+      <div
+        class="flex items-center rounded-nh hover:bg-surface"
+        :class="{ 'bg-surface': openId === element.id }"
+        @keydown="onKeydown($event, element)"
+      >
         <MenuLink
           :element="element"
-          class="flex min-h-11 grow items-center gap-2.5 rounded-nh px-3 text-fg no-underline hover:bg-surface"
+          class="flex min-h-11 grow items-center gap-2.5 rounded-nh px-3 text-fg no-underline"
           :class="{ 'font-semibold': element.children.length && isActive(element) }"
         />
         <button
           v-if="element.children.length"
           type="button"
-          class="inline-flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-nh text-fg-muted hover:bg-surface"
+          class="inline-flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-nh text-fg-muted"
           :aria-label="translate.menu.submenu"
           :aria-expanded="openId === element.id"
           :aria-controls="`cascade-${element.id}`"
