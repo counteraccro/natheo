@@ -44,6 +44,11 @@ const columns = computed(() => {
   return menus.value.right ? 'lg:grid-cols-[minmax(0,1fr)_220px]' : '';
 });
 
+// Article : une seule colonne de lecture, sauf si un listing a besoin de la largeur
+const reading = computed(
+  () => blocks.value.length > 0 && blocks.value.every((block) => block.size === 'full' && block.type !== 'listing')
+);
+
 const showComments = computed(() => options.value?.open_comment === true && props.page.openComment && !datas.preview);
 </script>
 
@@ -51,7 +56,7 @@ const showComments = computed(() => options.value?.open_comment === true && prop
   <PageHero :page="page" :reading-time="readingTime" />
   <div class="mx-auto grid w-full max-w-page items-start gap-10 px-5 pt-16 pb-20" :class="columns">
     <SideMenu v-if="menus.left" :menu="menus.left" />
-    <div class="min-w-0">
+    <div class="min-w-0" :class="{ 'mx-auto w-full max-w-[70ch]': reading }">
       <div class="grid grid-cols-6 gap-x-10 gap-y-14">
         <section
           v-for="block in blocks"
