@@ -64,7 +64,10 @@ const showComments = computed(() => options.value?.open_comment === true && prop
           class="relative min-w-0 pt-6 before:absolute before:top-0 before:left-0 before:h-1 before:w-14 before:rounded-sm before:content-['']"
           :class="SIZES[block.size]"
         >
-          <component :is="block.component" v-if="block.content?.content" :content="block.content.content"
+          <component
+            :is="block.component"
+            v-if="block.content?.content"
+            :content="block.content.content"
             v-bind="block.type === 'listing' ? { size: block.size } : {}"
           />
           <p v-else-if="block.error" role="alert" class="text-fg-muted">{{ translate.errorApi.default }}</p>
@@ -72,10 +75,6 @@ const showComments = computed(() => options.value?.open_comment === true && prop
       </div>
       <CommentSection v-if="showComments" :page="page" />
     </div>
-    <SideMenu
-      v-if="menus.right"
-      :menu="menus.right"
-      :class="{ 'lg:col-start-2 xl:col-start-auto': menus.left }"
-    />
+    <SideMenu v-if="menus.right" :menu="menus.right" :class="{ 'lg:col-start-2 xl:col-start-auto': menus.left }" />
   </div>
 </template>
