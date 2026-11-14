@@ -22,5 +22,4 @@ class SupportedLocalesTest extends TestCase
     {
         $this->assertSame(['fr', 'en', 'es'], (new SupportedLocales('fr|en|es'))->getAll());
     }
-
 }

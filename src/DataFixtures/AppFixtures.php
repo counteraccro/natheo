@@ -20,6 +20,7 @@ use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
+use Symfony\Contracts\Service\Attribute\Required;
 use Symfony\Component\Yaml\Yaml;
 
 class AppFixtures extends Fixture
@@ -144,6 +145,12 @@ class AppFixtures extends Fixture
     protected ContainerInterface $container;
 
     /**
+     * Injecté par setter : les fixtures filles passent leur propre locator au constructeur
+     * @var SupportedLocales
+     */
+    private SupportedLocales $supportedLocales;
+
+    /**
      * @param ContainerInterface $handlers
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -152,7 +159,6 @@ class AppFixtures extends Fixture
         #[
             AutowireLocator([
                 'container' => ContainerBagInterface::class,
-                'supportedLocales' => SupportedLocales::class,
             ]),
         ]
         private readonly ContainerInterface $handlers,
@@ -302,14 +308,22 @@ class AppFixtures extends Fixture
     }
 
     /**
+     * @param SupportedLocales $supportedLocales
+     * @return void
+     */
+    #[Required]
+    public function setSupportedLocales(SupportedLocales $supportedLocales): void
+    {
+        $this->supportedLocales = $supportedLocales;
+    }
+
+    /**
      * Retourne les langues supportées
      * @return string[]
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
     protected function getLocales(): array
     {
-        return $this->handlers->get('supportedLocales')->getAll();
+        return $this->supportedLocales->getAll();
     }
 
     public function load(ObjectManager $manager): void
