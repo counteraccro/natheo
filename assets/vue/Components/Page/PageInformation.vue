@@ -4,7 +4,7 @@
  * @author Gourdon Aymeric
  * @version 2.0
  */
-import { PageStatus } from '@/vue/Composables/Front/Const/PageStatus';
+import { PageStatus } from '@/vue/Composables/Admin/Page/PageStatus';
 import { defineComponent, PropType } from 'vue';
 import { Locales, Page, PageData, PageTranslationItem, PageTranslations, Urls } from '@/ts/Page/Page.type';
 import axios from 'axios';

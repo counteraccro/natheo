@@ -1,0 +1,10 @@
+menu-legal-footer:
+    name: 'Pied de page légal'
+    type: FOOTER_1_ROW_RIGHT
+    position: POSITION_FOOTER
+    elements:
+        -   page: home
+            label: { fr: 'Accueil', en: 'Home', es: 'Inicio' }
+        -   page: legal
+        -   page: license
+        -   page: contribute

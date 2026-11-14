@@ -1,0 +1,26 @@
+contribute:
+    user: R-Admin
+    render: ONE_BLOCK
+    category: PAGE
+    status: PUBLISH
+    headerImg: hdr-contribute
+    date: '-12 days'
+    isOpenComment: false
+    ruleComment: VALIDATE
+    menus: [menu-project-header]
+    stats: { visitors: 230, reads: 210 }
+    translations:
+        fr: { titre: 'Contribuer', url: contribuer }
+        en: { titre: 'Contribute', url: contribute }
+        es: { titre: 'Contribuir', url: contribuir }
+    metas:
+        description:
+            fr: 'Signaler un bug, proposer une fonctionnalité ou contribuer au code de Nathéo.'
+            en: 'Report a bug, suggest a feature or contribute to Nathéo''s code.'
+            es: 'Informar de un error, proponer una funcionalidad o contribuir al código de Nathéo.'
+        keywords:
+            fr: 'contribuer, issue, pull request, GitHub, sécurité'
+            en: 'contribute, issue, pull request, GitHub, security'
+            es: 'contribuir, issue, pull request, GitHub, seguridad'
+    blocks:
+        - { block: 1, type: TEXT }

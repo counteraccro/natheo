@@ -1,0 +1,27 @@
+docs-install:
+    user: R-Admin
+    render: ONE_BLOCK
+    category: DOCUMENTATION
+    status: PUBLISH
+    headerImg: hdr-docs-install
+    date: '-4 days'
+    isOpenComment: false
+    ruleComment: VALIDATE
+    tags: [tag-tutorial]
+    menus: [menu-docs-side, menu-docs-footer]
+    stats: { visitors: 610, reads: 540 }
+    translations:
+        fr: { titre: 'Installation', url: installation }
+        en: { titre: 'Installation', url: installation }
+        es: { titre: 'Instalación', url: instalacion }
+    metas:
+        description:
+            fr: 'Installer Nathéo en développement en quelques commandes.'
+            en: 'Install Nathéo for development in a few commands.'
+            es: 'Instalar Nathéo en desarrollo con unos pocos comandos.'
+        keywords:
+            fr: 'installation, prérequis, Composer, natheo:install'
+            en: 'installation, requirements, Composer, natheo:install'
+            es: 'instalación, requisitos, Composer, natheo:install'
+    blocks:
+        - { block: 1, type: TEXT }

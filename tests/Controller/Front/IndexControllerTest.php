@@ -8,16 +8,21 @@ declare(strict_types=1);
  */
 namespace App\Tests\Controller\Front;
 
+use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\System\UserSession;
+use App\Enum\Admin\Content\Page\PageCategory;
+use App\Enum\Admin\Content\Page\PageStatus;
 use App\Enum\Admin\System\Options\OptionSystem;
+use App\Enum\Front\Template;
 use App\Service\Admin\System\OptionSystemService;
 use App\Service\Global\Token\TokenHasher;
 use App\Tests\AppWebTestCase;
+use Symfony\Component\DomCrawler\Crawler;
 
 class IndexControllerTest extends AppWebTestCase
 {
     /**
-     * Page d'accueil par locale : rendu du composant Vue avec le token API du front
+     * Page d'accueil par locale avec le thème par défaut Natheo-Horizon : composant Vue sur l'API v2
      * @return void
      */
     public function testIndex(): void
@@ -32,9 +37,17 @@ class IndexControllerTest extends AppWebTestCase
             $this->assertResponseIsSuccessful();
             $this->assertSelectorExists('html[lang="' . $locale . '"]');
 
-            $content = (string) $this->client->getResponse()->getContent();
-            $this->assertStringContainsString('Front/NatheoHorizon/Structure', $content);
-            $this->assertStringContainsString('front-token-test', $content);
+            $crawler = $this->client->getCrawler();
+            $this->assertStringContainsString(
+                'Front/NatheoHorizon/App',
+                (string) $this->client->getResponse()->getContent(),
+            );
+
+            $props = $this->getVueProps($crawler);
+            $this->assertEquals($this->container->getParameter('app.api_v2.prefix'), $props['urls']['api']);
+            $this->assertEquals($locale, $props['datas']['locale']);
+            $this->assertEquals('front-token-test', $props['datas']['apiToken']);
+            $this->assertArrayNotHasKey('apiPageFind', $props['urls']);
         }
     }
 
@@ -125,5 +138,148 @@ class IndexControllerTest extends AppWebTestCase
         $content = (string) $this->client->getResponse()->getContent();
         $this->assertStringContainsString('<urlset', $content);
         $this->assertStringNotContainsString('http://localhosthttp', $content);
+    }
+
+    /**
+     * Thème sur l'API v2 : props communes, sans utilisateur ni prévisualisation pour un visiteur
+     * @return void
+     */
+    public function testIndexApiV2Theme(): void
+    {
+        $this->createUser();
+        $this->setTheme(Template::NATHEO_BASE);
+
+        $crawler = $this->client->request(
+            'GET',
+            $this->router->generate('front_index_2', ['locale' => 'en', 'category' => null, 'slug' => null]),
+        );
+        $this->assertResponseIsSuccessful();
+        $this->assertStringContainsString('Front/NatheoBase/App', (string) $this->client->getResponse()->getContent());
+
+        $props = $this->getVueProps($crawler);
+        $this->assertEquals($this->container->getParameter('app.api_v2.prefix'), $props['urls']['api']);
+        $this->assertEquals('/fr/', $props['urls']['home']['fr']);
+        $this->assertEquals('en', $props['datas']['locale']);
+        $this->assertEquals(['fr', 'en', 'es'], $props['datas']['locales']);
+        $this->assertEquals('front-token-test', $props['datas']['apiToken']);
+        $this->assertEquals('', $props['datas']['userToken']);
+        $this->assertNull($props['datas']['user']);
+        $this->assertNull($props['datas']['preview']);
+        $this->assertArrayNotHasKey('apiPageFind', $props['urls']);
+    }
+
+    /**
+     * Lien « Modifier cette page » : seulement pour un utilisateur qui peut modifier la page affichée
+     * @return void
+     */
+    public function testIndexApiV2ThemeEditLink(): void
+    {
+        $owner = $this->createUserContributeur(['disabled' => false, 'anonymous' => false]);
+        $other = $this->createUserContributeur(['disabled' => false, 'anonymous' => false]);
+        $page = $this->createPageAllDataDefault($owner);
+        $this->setTheme(Template::NATHEO_BASE);
+        $url = $this->pageUrl($page);
+        $editUrl = $this->router->generate('admin_page_update', ['_locale' => 'fr', 'id' => $page->getId()]);
+
+        $this->client->loginUser($owner, 'admin');
+        $props = $this->getVueProps($this->client->request('GET', $url));
+        $this->assertEquals($editUrl, $props['datas']['user']['editUrl']);
+        $this->assertEquals($owner->getLogin(), $props['datas']['user']['login']);
+
+        $this->client->loginUser($other, 'admin');
+        $props = $this->getVueProps($this->client->request('GET', $url));
+        $this->assertNull($props['datas']['user']['editUrl']);
+    }
+
+    /**
+     * Prévisualisation : brouillon d'une page publiée sur demande, page non publiée directement,
+     * uniquement pour un utilisateur qui peut la modifier
+     * @return void
+     */
+    public function testIndexApiV2ThemePreview(): void
+    {
+        $owner = $this->createUserContributeur(['disabled' => false, 'anonymous' => false]);
+        $other = $this->createUserContributeur(['disabled' => false, 'anonymous' => false]);
+        $page = $this->createPageAllDataDefault($owner);
+        $unpublished = $this->createPageAllDataDefault($owner);
+        $this->persistAndFlush($unpublished->setStatus(PageStatus::DRAFT->value));
+        $this->createPageDraft($page);
+        $this->setTheme(Template::NATHEO_BASE);
+        $url = $this->pageUrl($page);
+
+        // Sans demande de prévisualisation ou sans droit : la page en ligne, servie par l'API
+        $this->client->loginUser($owner, 'admin');
+        $this->assertNull($this->getVueProps($this->client->request('GET', $url))['datas']['preview']);
+        $this->client->loginUser($other, 'admin');
+        $this->assertNull($this->getVueProps($this->client->request('GET', $url . '?preview=1'))['datas']['preview']);
+
+        $this->client->loginUser($owner, 'admin');
+        $preview = $this->getVueProps($this->client->request('GET', $url . '?preview=1'))['datas']['preview'];
+        $this->assertEquals('Brouillon fr', $preview['page']['title']);
+        $this->assertEquals($page->getId(), $preview['page']['id']);
+        $this->assertEquals('/api/v2/pages/' . $page->getId(), $preview['page']['@id']);
+        $this->assertEquals('one_block', $preview['page']['render']);
+        $this->assertCount(1, $preview['page']['contents']);
+        $this->assertEquals(-1, $preview['page']['contents'][0]['id']);
+        $this->assertEquals('_:page_content-1', $preview['page']['contents'][0]['@id']);
+        $this->assertEquals(-1, $preview['contents'][0]['id']);
+        $this->assertEquals('text', $preview['contents'][0]['type']);
+        $this->assertStringContainsString('Texte du brouillon', $preview['contents'][0]['content']['html']);
+        $english = $page->getPageTranslationByLocale('en');
+        $translations = array_column($preview['page']['translations'], null, 'locale');
+        $this->assertEquals($english->getUrl(), $translations['en']['slug']);
+        $this->assertEquals($english->getTitre(), $translations['en']['title']);
+
+        $preview = $this->getVueProps($this->client->request('GET', $this->pageUrl($unpublished)))['datas']['preview'];
+        $this->assertEquals($unpublished->getId(), $preview['page']['id']);
+        $this->assertEquals(count($preview['page']['contents']), count($preview['contents']));
+
+        // La page en ligne et ses blocs ne sont pas modifiés par la prévisualisation
+        $this->em->clear();
+        $pageOnline = $this->em->getRepository(Page::class)->find($page->getId());
+        $this->assertNotEquals('Brouillon fr', $pageOnline->getPageTranslationByLocale('fr')->getTitre());
+        $this->assertNotCount(1, $pageOnline->getPageContents());
+    }
+
+    /**
+     * Active un thème du site public
+     * @param Template $template
+     * @return void
+     */
+    private function setTheme(Template $template): void
+    {
+        $this->container
+            ->get(OptionSystemService::class)
+            ->saveValueByKee(OptionSystem::OS_THEME_FRONT_SITE->value, $template->value);
+    }
+
+    /**
+     * Props passées au composant Vue racine du thème
+     * @param Crawler $crawler
+     * @return array
+     */
+    private function getVueProps(Crawler $crawler): array
+    {
+        $this->assertResponseIsSuccessful();
+        return json_decode(
+            (string) $crawler
+                ->filter('[data-symfony--ux-vue--vue-props-value]')
+                ->attr('data-symfony--ux-vue--vue-props-value'),
+            true,
+        );
+    }
+
+    /**
+     * URL publique d'une page en français
+     * @param Page $page
+     * @return string
+     */
+    private function pageUrl(Page $page): string
+    {
+        return $this->router->generate('front_index_2', [
+            'locale' => 'fr',
+            'category' => PageCategory::from($page->getCategory())->getSlug(),
+            'slug' => $page->getPageTranslationByLocale('fr')->getUrl(),
+        ]);
     }
 }

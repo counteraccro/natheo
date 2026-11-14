@@ -1,0 +1,27 @@
+blog:
+    user: R-Contributeur
+    render: TWO_BLOCK_BOTTOM
+    category: PAGE
+    status: PUBLISH
+    date: '-2 days'
+    isOpenComment: false
+    ruleComment: VALIDATE
+    headerImg: hdr-blog
+    menus: [menu-blog-header, menu-blog-side]
+    stats: { visitors: 880, reads: 790 }
+    translations:
+        fr: { titre: 'Blog', url: blog }
+        en: { titre: 'Blog', url: blog }
+        es: { titre: 'Blog', url: blog }
+    metas:
+        description:
+            fr: 'Les nouveautés de Nathéo, version après version.'
+            en: 'What''s new in Nathéo, release after release.'
+            es: 'Las novedades de Nathéo, versión tras versión.'
+        keywords:
+            fr: 'blog, versions, nouveautés, Nathéo'
+            en: 'blog, releases, news, Nathéo'
+            es: 'blog, versiones, novedades, Nathéo'
+    blocks:
+        - { block: 1, type: TEXT }
+        - { block: 2, type: LISTING, listing: BLOG }

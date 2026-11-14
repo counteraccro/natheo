@@ -1,0 +1,27 @@
+docs-api:
+    user: R-Admin
+    render: ONE_BLOCK
+    category: DOCUMENTATION
+    status: PUBLISH
+    headerImg: hdr-docs-api
+    date: '-4 days'
+    isOpenComment: false
+    ruleComment: VALIDATE
+    tags: [tag-tutorial, tag-api]
+    menus: [menu-docs-side, menu-docs-footer]
+    stats: { visitors: 340, reads: 300 }
+    translations:
+        fr: { titre: 'Utiliser l''API', url: utiliser-l-api }
+        en: { titre: 'Using the API', url: using-the-api }
+        es: { titre: 'Usar la API', url: usar-la-api }
+    metas:
+        description:
+            fr: 'Premiers appels à l''API v2 de Nathéo.'
+            en: 'First calls to Nathéo''s API v2.'
+            es: 'Primeras llamadas a la API v2 de Nathéo.'
+        keywords:
+            fr: 'API v2, token, Hydra, curl'
+            en: 'API v2, token, Hydra, curl'
+            es: 'API v2, token, Hydra, curl'
+    blocks:
+        - { block: 1, type: TEXT }

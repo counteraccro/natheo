@@ -3,59 +3,64 @@ user:
         email: user@natheo.com
         password: user@natheo.com
         login: user
-        firstname: user-demo
-        lastname: the-demo
+        firstname: Léa
+        lastname: Dubois
         roles: ROLE_USER
         disabled: false
         anonymous: false
         founder: false
         avatar: 'avatar-1.png'
-        description: "Je suis un compte de démonstration généré à l'installation du CMS"
+        description: "Lectrice du site de démonstration de Nathéo."
+        personalDataRender: name
     R-Contributeur:
         email: contributeur@natheo.com
         password: contributeur@natheo.com
         login: contributeur
-        firstname: contributeur-demo
-        lastname: the-demo
+        firstname: Hugo
+        lastname: Martin
         roles: ROLE_CONTRIBUTEUR
         disabled: false
         anonymous: false
         founder: false
         avatar: 'avatar-3.png'
-        description: "Je suis un compte de démonstration généré à l'installation du CMS"
+        description: "Rédige le blog de Nathéo : annonces de versions et coulisses techniques."
+        personalDataRender: name
     R-Admin:
         email: admin@natheo.com
         password: admin@natheo.com
         login: admin
-        firstname: admin-demo
-        lastname: the-demo
+        firstname: Claire
+        lastname: Rousseau
         roles: ROLE_ADMIN
         disabled: false
         anonymous: false
         founder: false
         avatar: 'avatar-4.png'
-        description: "Je suis un compte de démonstration généré à l'installation du CMS"
+        description: "Administre le site de démonstration et rédige la documentation de Nathéo."
+        personalDataRender: name
     R-SuperAdmin:
         email: superadmin@natheo.com
         password: superadmin@natheo.com
         login: super-admin
-        firstname: super-admin-demo
-        lastname: the-demo
+        firstname: Antoine
+        lastname: Lambert
         roles: ROLE_SUPER_ADMIN
         disabled: false
         anonymous: false
         founder: false
         avatar: 'avatar-5.png'
-        description: "Je suis un compte de démonstration généré à l'installation du CMS"
+        description: "Super administrateur du site de démonstration de Nathéo."
+        personalDataRender: name
     User:
         email: user.demo@mail.fr
         password: user.demo@mail.fr
         login: user-demo
-        firstname: User
-        lastname: Demo
+        firstname: Nathéo
+        lastname: Équipe
         roles: ROLE_SUPER_ADMIN
         disabled: false
         anonymous: false
         founder: true
         avatar: 'avatar-2.png'
-        description: "Je suis un compte de démonstration généré à l'installation du CMS"
+        description: "L'équipe qui développe Nathéo, le CMS libre construit sur Symfony."
+        personalDataRender: name

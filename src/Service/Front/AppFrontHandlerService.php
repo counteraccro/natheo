@@ -26,23 +26,23 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AppFrontHandlerService
 {
-    public function __construct(
-        #[
-            AutowireLocator([
-                'logger' => LoggerInterface::class,
-                'entityManager' => EntityManagerInterface::class,
-                'containerBag' => ContainerBagInterface::class,
-                'translator' => TranslatorInterface::class,
-                'router' => UrlGeneratorInterface::class,
-                'security' => Security::class,
-                'requestStack' => RequestStack::class,
-                'parameterBag' => ParameterBagInterface::class,
-                'optionSystemService' => OptionSystemService::class,
-                'kernel' => KernelInterface::class,
-            ]),
-        ]
-        protected ContainerInterface $handlers,
-    ) {}
+    /**
+     * Handler
+     */
+    public const array HANDLERS = [
+        'logger' => LoggerInterface::class,
+        'entityManager' => EntityManagerInterface::class,
+        'containerBag' => ContainerBagInterface::class,
+        'translator' => TranslatorInterface::class,
+        'router' => UrlGeneratorInterface::class,
+        'security' => Security::class,
+        'requestStack' => RequestStack::class,
+        'parameterBag' => ParameterBagInterface::class,
+        'optionSystemService' => OptionSystemService::class,
+        'kernel' => KernelInterface::class,
+    ];
+
+    public function __construct(#[AutowireLocator(self::HANDLERS)] protected ContainerInterface $handlers) {}
 
     /**
      * Retourne l'interface LoggerInterface

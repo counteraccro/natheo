@@ -11,11 +11,14 @@ namespace App\Controller\Front;
 
 use App\Entity\Admin\Content\Page\PageMeta;
 use App\Entity\Admin\System\User;
-use App\Enum\Admin\Content\Page\PageCategory;
+use App\Service\Api\Content\ApiCommentService;
+use App\Service\Api\Content\Page\ApiPageService;
 use App\Service\Api\Global\ApiSitemapService;
 use App\Service\Api\System\User\UserSessionService;
+use App\Service\Front\FrontPreviewService;
 use App\Service\Global\User\AvatarUrl;
 use App\Translate\Front\FrontTranslate;
+use League\CommonMark\Exception\CommonMarkException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
@@ -23,6 +26,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Translation\LocaleSwitcher;
 
 #[Route('/', name: 'front_')]
@@ -41,7 +45,7 @@ class IndexController extends AppFrontController
     {
         $hostname = $request->getSchemeAndHttpHost();
 
-        $xml = $this->renderView($this->getPathTemplate() . DIRECTORY_SEPARATOR . 'sitemap.xml.twig', [
+        $xml = $this->renderView('front/sitemap.xml.twig', [
             'urls' => $apiSitemapService->getSitemap(),
             'hostname' => $hostname,
         ]);
@@ -63,6 +67,9 @@ class IndexController extends AppFrontController
      * Affiche une page du site
      * @param Request $request
      * @param UserSessionService $userSessionService
+     * @param ApiPageService $apiPageService
+     * @param ApiCommentService $apiCommentService
+     * @param FrontPreviewService $frontPreviewService
      * @param FrontTranslate $frontTranslate
      * @param ContainerBagInterface $containerBag
      * @param string $locale
@@ -71,6 +78,8 @@ class IndexController extends AppFrontController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      * @throws \DateMalformedStringException
+     * @throws CommonMarkException
+     * @throws ExceptionInterface
      */
     #[
         Route(
@@ -85,6 +94,9 @@ class IndexController extends AppFrontController
     public function index(
         Request $request,
         UserSessionService $userSessionService,
+        ApiPageService $apiPageService,
+        ApiCommentService $apiCommentService,
+        FrontPreviewService $frontPreviewService,
         FrontTranslate $frontTranslate,
         ContainerBagInterface $containerBag,
         string $locale,
@@ -106,75 +118,91 @@ class IndexController extends AppFrontController
             );
         }
 
-        $version = $this->getParameter('app.api_version');
+        /** @var User|null $user */
+        $user = $this->getUser();
+        $editablePage = $user === null ? null : $apiPageService->findEditablePageBySlug((string) $slug, $locale, $user);
+        $avatarPath = (string) $containerBag->get('app.path.avatar');
+        $locales = explode('|', (string) $this->getParameter('app.supported_locales'));
 
         $urls = [
-            'apiPageFind' => $this->generateUrl('api_page_find', ['api_version' => $version]),
-            'apiOptionsSystems' => $this->generateUrl('api_options_systems_listing', ['api_version' => $version]),
-            'apiPageContent' => $this->generateUrl('api_page_content', ['api_version' => $version]),
+            'api' => $this->getParameter('app.api_v2.prefix'),
             'adminAuth' => $this->generateUrl('admin_dashboard_index'),
             'sitemap' => $this->generateUrl('front_sitemap'),
             'logout' => $this->generateUrl('auth_logout'),
-            'indexFr' => $this->generateUrl('front_index_2', ['locale' => 'fr', 'category' => null, 'slug' => null]),
-            'indexEs' => $this->generateUrl('front_index_2', ['locale' => 'es', 'category' => null, 'slug' => null]),
-            'indexEn' => $this->generateUrl('front_index_2', ['locale' => 'en', 'category' => null, 'slug' => null]),
-            'apiCommentsByPage' => $this->generateUrl('api_comment_by_page', ['api_version' => $version]),
-            'apiAddComment' => $this->generateUrl('api_comment_add_comment', ['api_version' => $version]),
-            'apiModerateComment' => $this->generateUrl('api_comment_moderate_comment', [
-                'api_version' => $version,
-                'id' => 0,
-            ]),
+            'home' => array_combine(
+                $locales,
+                array_map(
+                    fn(string $homeLocale) => $this->generateUrl('front_index_2', [
+                        'locale' => $homeLocale,
+                        'category' => null,
+                        'slug' => null,
+                    ]),
+                    $locales,
+                ),
+            ),
         ];
-
-        /** @var User $user */
-        $user = $this->getUser();
-        $token = '';
-        $userInfo = null;
-        if ($user != null) {
-            $token = $userSessionService->getFrontAccessToken(
-                $user,
-                $this->optionSystemFrontService->getFrontApiToken(),
-                $request->getSession(),
-                $request->headers->get('User-Agent'),
-                $request->getClientIp(),
-            );
-            $userInfo = [
-                'login' => $user->getLogin(),
-                'avatarImg' => $user->getAvatar(),
-                'avatar' => substr(ucfirst($user->getLogin()), 0, 1),
-                'canModerate' => $this->isGranted('ROLE_CONTRIBUTEUR'),
-            ];
-        }
-
-        $pageCategories = [];
-        foreach (PageCategory::cases() as $category) {
-            $pageCategories[$category->value] = $category->getSlug();
-        }
 
         $datas = [
             'slug' => $slug,
             'locale' => $locale,
+            'locales' => $locales,
             'apiToken' => $this->optionSystemFrontService->getFrontApiToken(),
-            'pageCategories' => $pageCategories,
-            'pathAvatar' => AvatarUrl::directory($containerBag->get('app.path.avatar'), $request->getBasePath()),
-            'basePath' => $request->getBasePath(),
-            'userToken' => $token,
-            'userInfo' => $userInfo,
-            'preview' => $request->query->getBoolean('preview'),
+            'userToken' => '',
+            'user' => null,
+            'preview' => null,
         ];
 
-        $seoRobots = $this->optionSystemFrontService->getMetaRobots(true);
-        $pageMetaRepo = $this->getRepository(PageMeta::class);
-        $seoPage = $pageMetaRepo->getMetasByPageAndLocale($locale, $slug);
-        $seo = array_merge($seoPage, $seoRobots);
+        if ($user !== null) {
+            $datas['userToken'] = $userSessionService->getFrontAccessToken(
+                $user,
+                $datas['apiToken'],
+                $request->getSession(),
+                $request->headers->get('User-Agent'),
+                $request->getClientIp(),
+            );
+            $datas['user'] = [
+                'login' => $user->getLogin(),
+                'avatar' => AvatarUrl::file($user->getAvatar(), $avatarPath, $request->getBasePath()),
+                'canModerate' => $apiCommentService->canModerate($user),
+                'editUrl' =>
+                    $editablePage === null
+                        ? null
+                        : $this->generateUrl('admin_page_update', [
+                            '_locale' => $locale,
+                            'id' => $editablePage->getId(),
+                        ]),
+            ];
+        }
+
+        if ($editablePage !== null) {
+            $datas['preview'] = $frontPreviewService->getPreview(
+                $editablePage,
+                $locale,
+                $request->query->getBoolean('preview'),
+            );
+        }
 
         return $this->render($this->getPathTemplate() . DIRECTORY_SEPARATOR . 'index.html.twig', [
             'urls' => $urls,
             'datas' => $datas,
             'translate' => $frontTranslate->getTranslate($locale),
             'scriptsTag' => $this->getScriptTags(),
-            'metaSeo' => $seo,
+            'metaSeo' => $this->getMetaSeo($locale, $slug),
             'locale' => $locale,
         ]);
+    }
+
+    /**
+     * Balises meta de la page (SEO de la page et consignes aux robots)
+     * @param string $locale
+     * @param string|null $slug
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function getMetaSeo(string $locale, ?string $slug): array
+    {
+        $seoPage = $this->getRepository(PageMeta::class)->getMetasByPageAndLocale($locale, $slug);
+        return array_merge($seoPage, $this->optionSystemFrontService->getMetaRobots(true));
     }
 }

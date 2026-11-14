@@ -5,11 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     {% block meta %}{% endblock %}
     <title>{% block title %}{{ 'front.page.title'|trans({}, 'front', locale|default(null)) }}{% endblock %}</title>
-    <link rel="icon" type="image/x-icon" href="{{ asset('assets/natheo/favico/favicon.ico') }}">
+    <link rel="icon" type="image/svg+xml" href="{{ asset('assets/natheo/favico/favicon.svg') }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset('assets/natheo/favico/favicon.ico') }}" sizes="any">
     <script>
-        {# Appliqué avant le rendu pour éviter un flash du thème clair #}
+        {# Même règle que useColorScheme(), appliquée avant le rendu pour éviter un flash du thème clair #}
         try {
-            if (localStorage.getItem('theme') === 'dark') {
+            var theme = localStorage.getItem('frontColorScheme');
+            if (theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
                 document.documentElement.classList.add('dark');
             }
         } catch (e) {}
@@ -23,9 +25,7 @@
         {{ vite_entry_script_tags(scriptsTag) }}
     {% endblock %}
 </head>
-<body class="bg-theme-1-50">
-<div class="container px-6 py-8 mx-auto">
+<body class="{% block body_class %}{% endblock %}">
 {% block body %}{% endblock %}
-</div>
 </body>
 </html>

@@ -1,0 +1,27 @@
+blog-1-0:
+    user: R-Contributeur
+    render: ONE_BLOCK
+    category: BLOG
+    status: PUBLISH
+    date: '2025-10-07 09:00'
+    isOpenComment: true
+    ruleComment: WAIT_VALIDATION
+    headerImg: hdr-blog-1-0
+    tags: [tag-version, tag-announce]
+    menus: [menu-blog-header, menu-blog-side]
+    stats: { visitors: 380, reads: 350 }
+    translations:
+        fr: { titre: 'Nathéo 1.0, le socle', url: natheo-1-0-le-socle }
+        en: { titre: 'Nathéo 1.0, the foundation', url: natheo-1-0-the-foundation }
+        es: { titre: 'Nathéo 1.0, la base', url: natheo-1-0-la-base }
+    metas:
+        description:
+            fr: 'Retour sur la première version stable de Nathéo, sortie le 7 octobre 2025.'
+            en: 'A look back at Nathéo''s first stable release, published on 7 October 2025.'
+            es: 'Repaso de la primera versión estable de Nathéo, publicada el 7 de octubre de 2025.'
+        keywords:
+            fr: 'Nathéo 1.0, version stable, Vite, Natheo-Horizon'
+            en: 'Nathéo 1.0, stable release, Vite, Natheo-Horizon'
+            es: 'Nathéo 1.0, versión estable, Vite, Natheo-Horizon'
+    blocks:
+        - { block: 1, type: TEXT }

@@ -10,6 +10,8 @@ Le format suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), avec un
 
 - Authentification des utilisateurs par l'API en sessions : les anciens tokens utilisateur sont invalidés par la migration, le token renvoyé par `POST /api/v1/authentication/user` est valable 15 minutes ([#505](https://github.com/counteraccro/natheo/issues/505))
 - Option système de durée des sessions API (`OS_API_TIME_VALIDATE_USER_TOKEN`) limitée à 1, 7 ou 30 jours, ramenée à 1 jour par la migration ([#505](https://github.com/counteraccro/natheo/issues/505))
+- Les médias de démonstration ne sont plus versionnés dans `public/assets/natheotheque`, dossier désormais ignoré par git : une mise à jour par `git pull` supprime les 14 fichiers de l'ancienne démo (`workspace.jpg`, `medias/paysage/…`, `documentations/…`). Si votre médiathèque les utilise, copiez-les hors du dépôt avant la mise à jour puis remettez-les en place ; les fichiers que vous avez ajoutés vous-même ne sont pas touchés ([#521](https://github.com/counteraccro/natheo/issues/521))
+- Le thème Natheo-Horizon est réécrit : ses anciens composants (`Front/NatheoHorizon/Structure`, `Main`, `Nav`, `Footer`), `FrontApi.ts`, `UtilsFront.ts` et les constantes de `Composables/Front/Const/` sont supprimés, le conteneur `div.container` de `front_base.html.twig` est retiré et l'entrée Vite `front_natheo_horizon` pointe sur `assets/front_natheo_horizon.ts` au lieu de `assets/app_front.ts`. Une surcharge de ces fichiers est à refaire à partir du thème Natheo-Base ([#464](https://github.com/counteraccro/natheo/issues/464))
 
 ### Ajouté
 
@@ -19,11 +21,18 @@ Le format suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), avec un
 - API v2 avec API Platform sous `/api/v2` : JSON-LD / Hydra ou JSON, erreurs `application/problem+json`, documentation Swagger sur `/api/v2/docs` quand l'API est ouverte ([#469](https://github.com/counteraccro/natheo/issues/469))
 - Ressources de l'API v2 : pages, contenus et menus ([#470](https://github.com/counteraccro/natheo/issues/470)), commentaires ([#471](https://github.com/counteraccro/natheo/issues/471)), options système et sitemap ([#472](https://github.com/counteraccro/natheo/issues/472))
 - Sessions API des utilisateurs : connexion, access token de 15 minutes dans `Authorization: Bearer`, renouvellement par refresh token, liste des sessions, déconnexion et `/me` ([#505](https://github.com/counteraccro/natheo/issues/505))
+- Site public : socle commun aux thèmes sur l'API v2 et thème Natheo-Base (HTML sémantique sans design), sélectionnable dans les options système, avec prévisualisation des brouillons et lien « Modifier cette page » ([#463](https://github.com/counteraccro/natheo/issues/463))
+- API v2 : la ressource `Page` donne ses traductions (`translations` : langue, slug et titre) ([#524](https://github.com/counteraccro/natheo/issues/524))
+- Natheo-Horizon : sous-menus de l'en-tête ouverts au survol de la souris, sous-niveaux du menu déroulant en cascade, menus de l'en-tête et menu mobile sur autant de niveaux que nécessaire ; la démo montre un menu sur trois niveaux ([#531](https://github.com/counteraccro/natheo/issues/531))
 
 ### Modifié
 
 - Site public : l'utilisateur connecté passe par une session API (access token de 60 minutes, renouvelé automatiquement), révoquée à la déconnexion ([#505](https://github.com/counteraccro/natheo/issues/505), [#510](https://github.com/counteraccro/natheo/issues/510))
 - Passage à Symfony 8.1.11
+- Nouveau thème Natheo-Horizon, thème par défaut du site public, réécrit sur l'API v2 : nouvelle identité (logo en grille de blocs, violet, police Schibsted Grotesk), vrai mode sombre, accessibilité WCAG 2.2 AA, temps de lecture et barre de progression ; le site public n'appelle plus l'API v1 ([#464](https://github.com/counteraccro/natheo/issues/464))
+- Natheo-Horizon : une page dont tous les blocs sont pleine largeur, sans listing, s'affiche dans une colonne de lecture centrée ([#525](https://github.com/counteraccro/natheo/issues/525))
+- Données de démonstration installées par `natheo:install` : le site vitrine de Nathéo, avec un vrai contenu en français, anglais et espagnol, toutes les dispositions de page, les onze types de menus, des commentaires dans chaque statut et des captures du CMS en images d'en-tête ([#521](https://github.com/counteraccro/natheo/issues/521))
+- Le favicon reprend le logo en grille de blocs sur le site public, l'administration et l'installation ([#521](https://github.com/counteraccro/natheo/issues/521))
 
 ### Déprécié
 
@@ -32,6 +41,8 @@ Le format suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), avec un
 ### Corrigé
 
 - Installation : les dossiers inscriptibles absents d'un clone neuf sont créés ([#501](https://github.com/counteraccro/natheo/issues/501))
+- Options système : Natheo-Storm, qui provoquait une erreur 500 une fois choisi, est retiré de la liste des thèmes du site public ([#528](https://github.com/counteraccro/natheo/issues/528))
+- Site public : le sélecteur de langue mène à la page affichée dans la langue choisie, et à l'accueil quand elle n'y est pas traduite ([#524](https://github.com/counteraccro/natheo/issues/524))
 
 ### Sécurité
 

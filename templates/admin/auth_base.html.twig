@@ -5,7 +5,8 @@
     {% include "/admin/includes/theme_init.html.twig" %}
     <title>{% block title %} {{ "user.login.title" | trans({}, 'user') }}{% endblock %}</title>
 
-    <link rel="icon" type="image/jpg" href="{{ asset('assets/natheo/favico/favicon.ico') }}">
+    <link rel="icon" type="image/svg+xml" href="{{ asset('assets/natheo/favico/favicon.svg') }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset('assets/natheo/favico/favicon.ico') }}" sizes="any">
 
     {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
     {% block stylesheets %}
