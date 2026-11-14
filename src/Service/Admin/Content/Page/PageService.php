@@ -66,7 +66,7 @@ class PageService extends AppAdminService
     {
         $translator = $this->getTranslator();
         $gridService = $this->getGridService();
-        $locale = $this->getRequestStack()->getCurrentRequest()->getLocale();
+        $locale = $this->getCurrentLocale();
         $csrfTokenManager = $this->getCsrfTokenManager();
         $csrfTokens = [];
         foreach (
@@ -423,9 +423,7 @@ class PageService extends AppAdminService
      */
     public function getTags(Collection $tags): string
     {
-        $requestStack = $this->getRequestStack();
-
-        $locale = $requestStack->getCurrentRequest()->getLocale();
+        $locale = $this->getCurrentLocale();
         $tagRender = $this->getTagRender();
         $return = '';
         foreach ($tags as $tag) {

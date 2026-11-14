@@ -38,7 +38,6 @@ class CommentService extends AppAdminService
     {
         $translator = $this->getTranslator();
         $gridService = $this->getGridService();
-        $requestStack = $this->getRequestStack();
         $router = $this->getRouter();
 
         $column = [
@@ -56,7 +55,7 @@ class CommentService extends AppAdminService
         $nb = $dataPaginate->count();
         $data = [];
         $markdown = new MarkdownService();
-        $locale = $requestStack->getCurrentRequest()->getLocale();
+        $locale = $this->getCurrentLocale();
         foreach ($dataPaginate as $element) {
             /* @var Comment $element */
 
