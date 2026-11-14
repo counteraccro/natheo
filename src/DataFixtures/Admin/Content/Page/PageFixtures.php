@@ -19,7 +19,6 @@ use App\Entity\Admin\Content\Page\PageMetaTranslation;
 use App\Entity\Admin\Content\Page\PageStatistique;
 use App\Entity\Admin\Content\Page\PageTranslation;
 use App\Entity\Admin\Content\Tag\Tag;
-use App\Entity\Admin\System\OptionSystem;
 use App\Entity\Admin\System\User;
 use App\Enum\Admin\Comment\CommentStatus;
 use App\Enum\Admin\Content\Page\PageCategory;
@@ -118,7 +117,7 @@ class PageFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
                     }
                     break;
                 case 'headerImg':
-                    $page->setHeaderImg($this->getMediaUrl($value));
+                    $page->setHeaderImg($this->getMediaPath($value));
                     break;
                 case 'translations':
                     foreach ($value as $locale => $translation) {
@@ -157,17 +156,14 @@ class PageFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
     }
 
     /**
-     * Retourne l'URL publique du média $ref
+     * Retourne le chemin public du média $ref, sans l'hôte, pour que la démo s'affiche quelle que soit l'adresse du site
      * @param string $ref
      * @return string
      */
-    private function getMediaUrl(string $ref): string
+    private function getMediaPath(string $ref): string
     {
-        $media = $this->getReference($ref, Media::class);
-        $siteAddress = $this->getReference('OS_ADRESSE_SITE', OptionSystem::class)->getValue();
-        $mediaPath = $this->getReference('OS_MEDIA_PATH', OptionSystem::class)->getValue();
-
-        return $siteAddress . '/assets/' . $mediaPath . '/' . ltrim((string) $media->getPath(), '/');
+        $webPath = (string) $this->getReference($ref, Media::class)->getWebPath();
+        return (string) parse_url($webPath, PHP_URL_PATH);
     }
 
     /**
@@ -214,15 +210,21 @@ class PageFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
     }
 
     /**
-     * Remplace chaque {{media:<ref>}} de $text par l'URL publique du média <ref>
+     * Remplace chaque {{media:<ref>}} de $text par le chemin public du média <ref>
      * @param string $text
      * @return string
+     * @throws \RuntimeException si <ref> n'est pas une référence de média valide
      */
     private function replaceMediaTags(string $text): string
     {
         return preg_replace_callback(
-            '/\{\{media:([a-z0-9-]+)\}\}/',
-            fn(array $match): string => $this->getMediaUrl($match[1]),
+            '/\{\{media:([^}]*)\}\}/',
+            function (array $match): string {
+                if (!preg_match('/^[a-z0-9-]+$/', $match[1]) || !$this->hasReference($match[1], Media::class)) {
+                    throw new \RuntimeException(sprintf('Média inconnu dans un texte de bloc : %s', $match[0]));
+                }
+                return $this->getMediaPath($match[1]);
+            },
             $text,
         );
     }
