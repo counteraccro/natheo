@@ -59,8 +59,8 @@ const updatedAt = computed(() => format.date(props.page.updatedAt, 'short'));
       </div>
       <p class="text-sm text-gray-500">
         <span v-if="page.author">{{ translate.main.listing.by }} {{ page.author.name }}</span>
-        <span v-if="updatedAt"> · {{ translate.main.articleFooter.edit }} {{ updatedAt }}</span>
-        <span> · {{ page.reads }} {{ translate.main.articleFooter.statPublication }}</span>
+        <span v-if="updatedAt"> · {{ translate.main.updatedAt }} {{ updatedAt }}</span>
+        <span> · {{ format.plural(page.reads, translate.main.articleFooter.reads) }}</span>
       </p>
       <img
         v-if="page.headerImage"

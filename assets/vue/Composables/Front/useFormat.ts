@@ -4,12 +4,7 @@
  * Mise en forme des dates et des nombres dans la langue de la page
  */
 import { useFrontContext } from '@/vue/Composables/Front/useFrontContext';
-
-/** Formes d'un libellé selon le nombre, « # » remplacé par le nombre */
-export interface PluralForms {
-  one: string;
-  other: string;
-}
+import type { FrontPluralTranslate } from '@/ts/Front/FrontTranslate.type';
 
 export interface Format {
   /** Date seule, en toutes lettres (long) ou en chiffres (short) ; null pour une valeur vide */
@@ -17,7 +12,7 @@ export interface Format {
   /** Date et heure ; null pour une valeur vide */
   dateTime(value: string | null): string | null;
   /** Libellé accordé au nombre */
-  plural(count: number, forms: PluralForms): string;
+  plural(count: number, forms: FrontPluralTranslate): string;
 }
 
 const DATE_STYLES: Record<'long' | 'short', Intl.DateTimeFormatOptions> = {

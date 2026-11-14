@@ -43,9 +43,14 @@ export interface FrontCommentTranslate {
   pagination: FrontPaginationTranslate;
 }
 
+/** Formes d'un libellé accordé à un nombre, « # » remplacé par le nombre */
+export interface FrontPluralTranslate {
+  one: string;
+  other: string;
+}
+
 export interface FrontArticleFooterTranslate {
-  edit: string;
-  statPublication: string;
+  reads: FrontPluralTranslate;
   infoDraft: string;
   comment: FrontCommentTranslate;
 }
@@ -53,7 +58,7 @@ export interface FrontArticleFooterTranslate {
 export interface FrontListingTranslate {
   by: string;
   empty: string;
-  nbPages: string;
+  pages: FrontPluralTranslate;
 }
 
 export interface FrontMainTranslate {
@@ -63,7 +68,7 @@ export interface FrontMainTranslate {
   loading: string;
   headerImgAlt: string;
   updatedAt: string;
-  readingTime: string;
+  readingTime: FrontPluralTranslate;
   tagsLabel: string;
   listing: FrontListingTranslate;
   pagination: FrontPaginationTranslate;

@@ -2,6 +2,7 @@ front.footer.credit: '2023-{year} — Propulsé par Nathéo CMS {version}'
 front.footer.template.version: '{version}'
 front.footer.admin.link: Administration
 front.page.title: Chargement...
+front.page.loading: "Chargement…"
 front.page.edit_link: 'Modifier cette page'
 front.footer.sitemap.link: Sitemap
 front.header.login: Connexion
@@ -11,8 +12,8 @@ front.footer.es.link: Español
 front.footer.en.link: English
 front.error.api.modal.error.403: La ressource demandée n'est pas accessible
 front.error.api.modal.error.401: Le token d'accès à l'API est invalide ou expiré
-front.article.footer.edit: Le
-front.article.footer.stat_publication: lecture(s)
+front.article.footer.reads_one: "# lecture"
+front.article.footer.reads_other: "# lectures"
 front.article.footer.info.draft: 'Cette page est en brouillon, vous seul pouvez la lire actuellement'
 front.comment.title: Commentaires
 front.comment.validate: Valider
@@ -46,7 +47,8 @@ front.article.header.img.alt: "Image d'en-tête de la page"
 front.comment.moderation.prefix: "Modération :"
 front.listing.by: "Par"
 front.listing.empty: "Aucun élément trouvé"
-front.listing.nb.pages: "page(s)"
+front.listing.pages_one: "# page"
+front.listing.pages_other: "# pages"
 front.pagination.of: "sur"
 front.pagination.label: "Pagination"
 front.pagination.first: "Première page"
@@ -61,7 +63,8 @@ front.menu.side_label: "Menu secondaire"
 front.menu.footer_label: "Menu du pied de page"
 front.footer.social_label: "Réseaux sociaux"
 front.page.updated_at: "Mis à jour le"
-front.page.reading_time: "min de lecture"
+front.page.reading_time_one: "# min de lecture"
+front.page.reading_time_other: "# min de lecture"
 front.page.tags_label: "Étiquettes"
 front.comment.sort_label: "Ordre des commentaires"
 front.comment.sort_desc: "Les plus récents d'abord"

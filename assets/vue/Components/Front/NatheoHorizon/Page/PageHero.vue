@@ -62,8 +62,8 @@ const updatedAt = computed(() => format.date(props.page.updatedAt));
             {{ translate.main.listing.by }} <strong class="font-semibold text-on-night">{{ page.author.name }}</strong>
           </p>
           <p v-if="updatedAt">{{ translate.main.updatedAt }} {{ updatedAt }}</p>
-          <p v-if="readingTime">{{ readingTime }} {{ translate.main.readingTime }}</p>
-          <p>{{ page.reads }} {{ translate.main.articleFooter.statPublication }}</p>
+          <p v-if="readingTime">{{ format.plural(readingTime, translate.main.readingTime) }}</p>
+          <p>{{ format.plural(page.reads, translate.main.articleFooter.reads) }}</p>
         </div>
 
         <ul

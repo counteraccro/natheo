@@ -25,7 +25,7 @@ const format = useFormat();
     <div class="flex items-baseline justify-between gap-4">
       <h2 class="mb-4 text-[clamp(1.5rem,2.4vw,2rem)]">{{ content.title }}</h2>
       <p v-if="pages" class="shrink-0 text-[0.95rem] text-fg-muted">
-        {{ pages.total }} {{ translate.main.listing.nbPages }}
+        {{ format.plural(pages.total, translate.main.listing.pages) }}
       </p>
     </div>
     <template v-if="pages">
