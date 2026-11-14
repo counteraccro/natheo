@@ -19,6 +19,10 @@ feature-rights:
             fr: 'Rôles, validation des pages par un administrateur et modération des commentaires.'
             en: 'Roles, page validation by an administrator and comment moderation.'
             es: 'Roles, validación de páginas por un administrador y moderación de comentarios.'
+        keywords:
+            fr: 'droits, rôles, validation, modération, commentaires'
+            en: 'rights, roles, validation, moderation, comments'
+            es: 'derechos, roles, validación, moderación, comentarios'
     blocks:
         - { block: 1, type: TEXT }
         - { block: 2, type: TEXT }

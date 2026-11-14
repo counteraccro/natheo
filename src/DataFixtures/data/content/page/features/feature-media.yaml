@@ -18,5 +18,9 @@ feature-media:
             fr: 'Images et fichiers rangés en dossiers, avec corbeille.'
             en: 'Images and files organised in folders, with a trash.'
             es: 'Imágenes y archivos organizados en carpetas, con papelera.'
+        keywords:
+            fr: 'médiathèque, images, documents, dossiers, corbeille'
+            en: 'media library, images, documents, folders, trash'
+            es: 'mediateca, imágenes, documentos, carpetas, papelera'
     blocks:
         - { block: 1, type: TEXT }

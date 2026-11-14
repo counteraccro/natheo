@@ -19,6 +19,10 @@ feature-api:
             fr: 'L''API v2 de Nathéo : API Platform, JSON-LD / Hydra, sessions utilisateur et OpenAPI.'
             en: 'Nathéo''s API v2: API Platform, JSON-LD / Hydra, user sessions and OpenAPI.'
             es: 'La API v2 de Nathéo: API Platform, JSON-LD / Hydra, sesiones de usuario y OpenAPI.'
+        keywords:
+            fr: 'API, API Platform, Hydra, OpenAPI, token'
+            en: 'API, API Platform, Hydra, OpenAPI, token'
+            es: 'API, API Platform, Hydra, OpenAPI, token'
     blocks:
         - { block: 1, type: TEXT }
         - { block: 2, type: TEXT }

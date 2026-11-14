@@ -18,6 +18,10 @@ feature-faq:
             fr: 'Créer des FAQ par catégories et les placer dans n''importe quelle page.'
             en: 'Create FAQs by category and place them in any page.'
             es: 'Crear FAQ por categorías y colocarlas en cualquier página.'
+        keywords:
+            fr: 'FAQ, questions, catégories, bloc FAQ'
+            en: 'FAQ, questions, categories, FAQ block'
+            es: 'FAQ, preguntas, categorías, bloque FAQ'
     blocks:
         - { block: 1, type: TEXT }
         - { block: 2, type: TEXT }

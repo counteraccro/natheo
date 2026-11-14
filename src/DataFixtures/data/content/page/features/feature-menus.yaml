@@ -18,6 +18,10 @@ feature-menus:
             fr: 'Onze types de menus, quatre positions, un menu par défaut ou propre à une page.'
             en: 'Eleven menu types, four positions, a default menu or one specific to a page.'
             es: 'Once tipos de menús, cuatro posiciones, un menú por defecto o propio de una página.'
+        keywords:
+            fr: 'menu, méga menu, navigation, en-tête, pied de page'
+            en: 'menu, mega menu, navigation, header, footer'
+            es: 'menú, mega menú, navegación, cabecera, pie de página'
     blocks:
         - { block: 1, type: TEXT }
         - { block: 2, type: TEXT }

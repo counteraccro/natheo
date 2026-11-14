@@ -19,5 +19,9 @@ feature-languages:
             fr: 'Contenus et interface en français, anglais et espagnol.'
             en: 'Content and interface in French, English and Spanish.'
             es: 'Contenidos e interfaz en francés, inglés y español.'
+        keywords:
+            fr: 'multilingue, traduction, langues, Accept-Language'
+            en: 'multilingual, translation, languages, Accept-Language'
+            es: 'multilingüe, traducción, idiomas, Accept-Language'
     blocks:
         - { block: 1, type: TEXT }
