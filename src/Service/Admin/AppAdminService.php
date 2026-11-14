@@ -270,7 +270,7 @@ class AppAdminService extends AppAdminHandlerService
             $current = $optionSystemService->getValueByKey(OptionSystem::OS_DEFAULT_LANGUAGE->value);
         }
 
-        $locales = explode('|', $this->getParameterBag()->get('app.supported_locales'));
+        $locales = $this->getSupportedLocales();
         array_unshift($locales, $current);
         $localesTranslate = [];
 
