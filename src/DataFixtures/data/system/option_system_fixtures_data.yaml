@@ -89,7 +89,10 @@ option_system:
         value: 'natheo_horizon'
     OS_FRONT_FOOTER_TEXTE:
         key: 'OS_FRONT_FOOTER_TEXTE'
-        value: 'Nathéo est un CMS libre et multilingue construit sur Symfony, avec une API v2 et des thèmes modulables. Ce site de démonstration est installé avec lui.'
+        value:
+            fr: 'Nathéo est un CMS libre et multilingue construit sur Symfony, avec une API v2 et des thèmes modulables. Ce site de démonstration est installé avec lui.'
+            en: 'Nathéo is a free, multilingual CMS built on Symfony, with an API v2 and modular themes. This demo site is installed with it.'
+            es: 'Nathéo es un CMS libre y multilingüe construido sobre Symfony, con una API v2 y temas modulares. Este sitio de demostración se instala con él.'
     OS_FRONT_FOOTER_SOCIAL_GITHUB_URL:
         key: 'OS_FRONT_FOOTER_SOCIAL_GITHUB_URL'
         value: https://github.com/counteraccro/natheo
