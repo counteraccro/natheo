@@ -60,6 +60,29 @@ class PageTest extends AppApiV2TestCase
     }
 
     /**
+     * Traductions de la page complète, sans celles sans slug ; absentes des listes
+     * @return void
+     */
+    public function testGetTranslations(): void
+    {
+        $page = $this->createPageAllDataDefault();
+        $page->getPageTranslationByLocale('es')->setUrl('');
+        $this->persistAndFlush($page);
+
+        $content = $this->decode($this->requestV2('GET', '/pages/' . $page->getId() . '?locale=fr'));
+        $this->assertMatchesResourceItemJsonSchema(PageResource::class);
+        $this->assertEquals(['fr', 'en'], array_column($content['translations'], 'locale'));
+        $english = $page->getPageTranslationByLocale('en');
+        $this->assertEquals(
+            ['locale' => 'en', 'slug' => $english->getUrl(), 'title' => $english->getTitre()],
+            array_diff_key($content['translations'][1], ['@type' => true]),
+        );
+
+        $content = $this->decode($this->requestV2('GET', '/pages?slug=' . $english->getUrl()));
+        $this->assertArrayNotHasKey('translations', $content['member'][0]);
+    }
+
+    /**
      * Page par son id, dans la langue demandée
      * @return void
      */

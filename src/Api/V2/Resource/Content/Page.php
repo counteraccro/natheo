@@ -21,6 +21,7 @@ use App\Api\V2\Exception\NotFoundException;
 use App\Api\V2\Metadata\EnumSlugPropertyMetadataFactory;
 use App\Api\V2\Output\Content\Author;
 use App\Api\V2\Output\Content\Meta;
+use App\Api\V2\Output\Content\PageTranslation;
 use App\Api\V2\Output\Content\Tag;
 use App\Api\V2\Filter\LocaleFilter;
 use App\Api\V2\Filter\PageCategoryFilter;
@@ -172,6 +173,14 @@ final class Page
     #[ApiProperty(genId: false, required: true)]
     #[Groups(['page:read'])]
     public array $seo = [];
+
+    /**
+     * Traductions de la page, langue affichée comprise
+     * @var PageTranslation[]
+     */
+    #[ApiProperty(genId: false, required: true)]
+    #[Groups(['page:read'])]
+    public array $translations = [];
 
     /**
      * @var PageContent[]
