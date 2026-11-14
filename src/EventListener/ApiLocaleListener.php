@@ -73,7 +73,7 @@ readonly class ApiLocaleListener
         $response = $event->getResponse();
         $isContent =
             $operation instanceof HttpOperation &&
-            ($operation->getParameters()?->has('locale', LocaleParameter::class) ?? false);
+            ($operation->getParameters()?->has(LocaleParameter::KEY, LocaleParameter::class) ?? false);
 
         // Les erreurs sont traduites dans la langue demandée, quelle que soit la ressource
         if ($isContent || !$response->isSuccessful()) {

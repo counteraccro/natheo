@@ -10,12 +10,21 @@ declare(strict_types=1);
 namespace App\Api\V2\Metadata;
 
 use ApiPlatform\Metadata\HeaderParameter;
-use App\Api\V2\Filter\LocaleFilter;
 
 final class AcceptLanguageParameter extends HeaderParameter
 {
+    /**
+     * Nom de l'en-tête
+     * @var string
+     */
+    public const string KEY = 'Accept-Language';
+
     public function __construct()
     {
-        parent::__construct(schema: ['type' => 'string'], description: LocaleFilter::HEADER_DESCRIPTION);
+        parent::__construct(
+            key: self::KEY,
+            schema: ['type' => 'string'],
+            description: 'Langues acceptées (ex : en-US,en;q=0.9), langue par défaut du site si aucune n\'est supportée',
+        );
     }
 }

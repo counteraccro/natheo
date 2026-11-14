@@ -16,7 +16,6 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\OpenApi\Model\Operation as OpenApiOperation;
 use ApiPlatform\Validator\Exception\ValidationException;
 use App\Api\V2\Exception\NotFoundException;
-use App\Api\V2\Filter\LocaleFilter;
 use App\Api\V2\Metadata\AcceptLanguageParameter;
 use App\Api\V2\Metadata\LocaleParameter;
 use App\Api\V2\State\Provider\System\OptionSystemCollectionProvider;
@@ -34,8 +33,8 @@ use Symfony\Component\Serializer\Attribute\Groups;
                 security: "is_granted('ROLE_READ_API')",
                 provider: OptionSystemProvider::class,
                 parameters: [
-                    'locale' => new LocaleParameter(),
-                    LocaleFilter::HEADER => new AcceptLanguageParameter(),
+                    new LocaleParameter(),
+                    new AcceptLanguageParameter(),
                 ],
             ),
             new GetCollection(
@@ -47,8 +46,8 @@ use Symfony\Component\Serializer\Attribute\Groups;
                 security: "is_granted('ROLE_READ_API')",
                 provider: OptionSystemCollectionProvider::class,
                 parameters: [
-                    'locale' => new LocaleParameter(),
-                    LocaleFilter::HEADER => new AcceptLanguageParameter(),
+                    new LocaleParameter(),
+                    new AcceptLanguageParameter(),
                 ],
             ),
         ],

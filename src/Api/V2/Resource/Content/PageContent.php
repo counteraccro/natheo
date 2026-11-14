@@ -15,10 +15,9 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\OpenApi\Model\Operation as OpenApiOperation;
 use ApiPlatform\Validator\Exception\ValidationException;
 use App\Api\V2\Exception\NotFoundException;
-use App\Api\V2\Filter\LocaleFilter;
 use App\Api\V2\Metadata\AcceptLanguageParameter;
-use App\Api\V2\Metadata\LocaleParameter;
 use App\Api\V2\Metadata\EnumSlugPropertyMetadataFactory;
+use App\Api\V2\Metadata\LocaleParameter;
 use App\Api\V2\Output\Content\FaqContent;
 use App\Api\V2\Output\Content\ListingContent;
 use App\Api\V2\Output\Content\TextContent;
@@ -40,8 +39,8 @@ use Symfony\Component\Serializer\Attribute\Groups;
                 security: "is_granted('ROLE_READ_API')",
                 provider: PageContentProvider::class,
                 parameters: [
-                    'locale' => new LocaleParameter(),
-                    LocaleFilter::HEADER => new AcceptLanguageParameter(),
+                    new LocaleParameter(),
+                    new AcceptLanguageParameter(),
                 ],
             ),
         ],
