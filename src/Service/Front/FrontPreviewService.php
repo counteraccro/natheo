@@ -118,11 +118,10 @@ class FrontPreviewService extends AppFrontService
         $newId = 0;
         $mapper = new PageContentMapper($locale);
         $pagesIri = $this->iriConverter->getIriFromResource(PageResource::class, operation: new GetCollection());
-        foreach ($this->apiPageContentService->getAvailablePageContents($preview, $locale) as $entity) {
-            $id = $entity->getId() ?? --$newId;
+        foreach ($preview->getPageContents() as $entity) {
             $rendered = $this->apiPageContentService->getRenderedContent($entity, $locale);
             if ($rendered !== null) {
-                $contents[] = $mapper->map($entity, $rendered, $pagesIri, $id);
+                $contents[] = $mapper->map($entity, $rendered, $pagesIri, $entity->getId() ?? --$newId);
             }
         }
         return $contents;
