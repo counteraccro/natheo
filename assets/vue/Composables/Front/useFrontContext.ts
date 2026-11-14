@@ -1,6 +1,6 @@
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Contexte du site public partagé par les composables : props du thème, client API et cache des chargements
  */
 import { getCurrentInstance, inject, shallowRef, type InjectionKey, type ShallowRef } from 'vue';

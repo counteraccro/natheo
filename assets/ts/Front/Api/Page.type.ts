@@ -1,6 +1,6 @@
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Ressource Page de l'API v2
  */
 import type { JsonLdResource } from '@/ts/Front/Api/Hydra.type';

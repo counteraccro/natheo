@@ -1,6 +1,6 @@
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Page affichée : par son slug, page d'accueil sans slug, ou brouillon prévisualisé
  */
 import { useFrontContext, type FrontContext } from '@/vue/Composables/Front/useFrontContext';
