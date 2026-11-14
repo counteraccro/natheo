@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Prévisualisation d'une page sur le site public : la page et ses blocs au format de l'API v2, servis en props
  * car un brouillon ou une page non publiée ne sont pas exposés par l'API
  */
@@ -66,18 +66,19 @@ class FrontPreviewService extends AppFrontService
             return null;
         }
 
+        $pageMapper = new PageMapper($locale);
         try {
             $contents = $this->buildContents($preview, $locale);
             $menuMapper = new MenuMapper($locale);
             $menus = array_map($menuMapper->map(...), $this->apiPageService->getMenusForPage($preview));
-            $resource = (new PageMapper($locale))->map($preview, menus: $menus);
+            $resource = $pageMapper->map($preview, menus: $menus);
         } finally {
             $this->apiPageService->releasePreviewPage($preview, $page);
         }
 
         $resource->id = (int) $page->getId();
         // Slugs de la page enregistrée : seuls ceux-là ont une adresse publique
-        $resource->translations = (new PageMapper($locale))->mapTranslations($page);
+        $resource->translations = $pageMapper->mapTranslations($page);
         $pageData = $this->normalizer->normalize($resource, 'jsonld', [
             'groups' => ['page:read'],
             'resource_class' => PageResource::class,
