@@ -19,5 +19,9 @@ docs-theme:
             fr: 'Ajouter un thème au site public à partir de Natheo-Base.'
             en: 'Add a theme to the public site starting from Natheo-Base.'
             es: 'Añadir un tema al sitio público a partir de Natheo-Base.'
+        keywords:
+            fr: 'thème, Vue 3, composables, Natheo-Base'
+            en: 'theme, Vue 3, composables, Natheo-Base'
+            es: 'tema, Vue 3, composables, Natheo-Base'
     blocks:
         - { block: 1, type: TEXT }

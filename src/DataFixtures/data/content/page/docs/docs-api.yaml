@@ -19,5 +19,9 @@ docs-api:
             fr: 'Premiers appels à l''API v2 de Nathéo.'
             en: 'First calls to Nathéo''s API v2.'
             es: 'Primeras llamadas a la API v2 de Nathéo.'
+        keywords:
+            fr: 'API v2, token, Hydra, curl'
+            en: 'API v2, token, Hydra, curl'
+            es: 'API v2, token, Hydra, curl'
     blocks:
         - { block: 1, type: TEXT }

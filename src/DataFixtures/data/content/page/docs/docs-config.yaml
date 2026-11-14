@@ -19,5 +19,9 @@ docs-config:
             fr: 'Options système, langue par défaut, thème et ouverture du site.'
             en: 'System options, default language, theme and site opening.'
             es: 'Opciones del sistema, idioma por defecto, tema y apertura del sitio.'
+        keywords:
+            fr: 'configuration, options système, PostgreSQL, Messenger'
+            en: 'configuration, system options, PostgreSQL, Messenger'
+            es: 'configuración, opciones del sistema, PostgreSQL, Messenger'
     blocks:
         - { block: 1, type: TEXT }
