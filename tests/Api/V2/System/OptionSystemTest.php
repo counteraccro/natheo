@@ -70,4 +70,39 @@ class OptionSystemTest extends AppApiV2TestCase
             $this->assertEquals($detail, $content['detail']);
         }
     }
+
+    /**
+     * Option traduisible : valeur dans la langue de `locale` puis d'`Accept-Language`, repli sur la langue par défaut
+     * @return void
+     */
+    public function testTranslatableValue(): void
+    {
+        $this->container
+            ->get(OptionSystemService::class)
+            ->saveValueByKee(
+                OptionSystemKey::OS_FRONT_FOOTER_TEXTE->value,
+                json_encode(['fr' => 'Texte FR', 'en' => 'Text EN', 'es' => '']),
+            );
+
+        $cases = [
+            ['?locale=en', [], 'Text EN'],
+            ['', ['HTTP_ACCEPT_LANGUAGE' => 'en-GB,en;q=0.9'], 'Text EN'],
+            ['?locale=fr', ['HTTP_ACCEPT_LANGUAGE' => 'en'], 'Texte FR'],
+            ['?locale=es', [], 'Texte FR'],
+            ['', [], 'Texte FR'],
+        ];
+        foreach ($cases as [$query, $headers, $expected]) {
+            $content = $this->decode(
+                $this->requestV2('GET', '/option_systems/front_footer_texte' . $query, headers: $headers),
+            );
+            $this->assertResponseStatusCodeSame(200);
+            $this->assertSame($expected, $content['value'], $query . json_encode($headers));
+
+            $content = $this->decode($this->requestV2('GET', '/option_systems' . $query, headers: $headers));
+            $this->assertMatchesResourceCollectionJsonSchema(OptionSystem::class);
+            $this->assertSame($expected, array_column($content['member'], 'value', 'key')['front_footer_texte']);
+        }
+
+        $this->assertProblem($this->requestV2('GET', '/option_systems?locale=de'), 422);
+    }
 }

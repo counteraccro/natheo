@@ -13,8 +13,12 @@ use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\HeaderParameter;
+use ApiPlatform\Metadata\QueryParameter;
 use ApiPlatform\OpenApi\Model\Operation as OpenApiOperation;
+use ApiPlatform\Validator\Exception\ValidationException;
 use App\Api\V2\Exception\NotFoundException;
+use App\Api\V2\Filter\LocaleFilter;
 use App\Api\V2\State\Provider\System\OptionSystemCollectionProvider;
 use App\Api\V2\State\Provider\System\OptionSystemProvider;
 use Symfony\Component\Serializer\Attribute\Groups;
@@ -24,20 +28,42 @@ use Symfony\Component\Serializer\Attribute\Groups;
         operations: [
             new Get(
                 uriTemplate: '/option_systems/{key}',
-                errors: [NotFoundException::class],
+                errors: [NotFoundException::class, ValidationException::class],
                 openapi: new OpenApiOperation(summary: 'Une option système publique par sa clé'),
                 normalizationContext: ['groups' => ['option_system:read']],
                 security: "is_granted('ROLE_READ_API')",
                 provider: OptionSystemProvider::class,
+                parameters: [
+                    'locale' => new QueryParameter(
+                        filter: LocaleFilter::class,
+                        property: 'locale',
+                        description: LocaleFilter::LOCALE_DESCRIPTION,
+                    ),
+                    LocaleFilter::HEADER => new HeaderParameter(
+                        schema: ['type' => 'string'],
+                        description: LocaleFilter::HEADER_DESCRIPTION,
+                    ),
+                ],
             ),
             new GetCollection(
                 uriTemplate: '/option_systems',
                 paginationEnabled: false,
-                errors: [],
+                errors: [ValidationException::class],
                 openapi: new OpenApiOperation(summary: 'Les options système publiques'),
                 normalizationContext: ['groups' => ['option_system:list']],
                 security: "is_granted('ROLE_READ_API')",
                 provider: OptionSystemCollectionProvider::class,
+                parameters: [
+                    'locale' => new QueryParameter(
+                        filter: LocaleFilter::class,
+                        property: 'locale',
+                        description: LocaleFilter::LOCALE_DESCRIPTION,
+                    ),
+                    LocaleFilter::HEADER => new HeaderParameter(
+                        schema: ['type' => 'string'],
+                        description: LocaleFilter::HEADER_DESCRIPTION,
+                    ),
+                ],
             ),
         ],
     ),
@@ -53,7 +79,7 @@ final readonly class OptionSystem
         ]
         public string $key,
         /**
-         * Booléen pour les options oui / non, chaîne sinon
+         * Booléen pour les options oui / non, chaîne sinon ; texte dans la langue demandée pour une option traduisible
          */
         #[ApiProperty(required: true)] #[
             Groups(['option_system:read', 'option_system:list']),
