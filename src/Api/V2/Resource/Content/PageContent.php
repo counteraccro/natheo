@@ -12,12 +12,12 @@ namespace App\Api\V2\Resource\Content;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\HeaderParameter;
-use ApiPlatform\Metadata\QueryParameter;
 use ApiPlatform\OpenApi\Model\Operation as OpenApiOperation;
 use ApiPlatform\Validator\Exception\ValidationException;
 use App\Api\V2\Exception\NotFoundException;
 use App\Api\V2\Filter\LocaleFilter;
+use App\Api\V2\Metadata\AcceptLanguageParameter;
+use App\Api\V2\Metadata\LocaleParameter;
 use App\Api\V2\Metadata\EnumSlugPropertyMetadataFactory;
 use App\Api\V2\Output\Content\FaqContent;
 use App\Api\V2\Output\Content\ListingContent;
@@ -40,8 +40,8 @@ use Symfony\Component\Serializer\Attribute\Groups;
                 security: "is_granted('ROLE_READ_API')",
                 provider: PageContentProvider::class,
                 parameters: [
-                    'locale' => new QueryParameter(filter: LocaleFilter::class, property: 'locale', description: LocaleFilter::LOCALE_DESCRIPTION),
-                    LocaleFilter::HEADER => new HeaderParameter(schema: ['type' => 'string'], description: LocaleFilter::HEADER_DESCRIPTION),
+                    'locale' => new LocaleParameter(),
+                    LocaleFilter::HEADER => new AcceptLanguageParameter(),
                 ],
             ),
         ],

@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace App\EventListener;
 
 use ApiPlatform\Metadata\HttpOperation;
+use App\Api\V2\Metadata\LocaleParameter;
 use App\Service\Api\ApiService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -70,7 +71,9 @@ readonly class ApiLocaleListener
 
         $operation = $request->attributes->get('_api_operation');
         $response = $event->getResponse();
-        $isContent = $operation instanceof HttpOperation && $operation->getParameters()?->get('locale') !== null;
+        $isContent =
+            $operation instanceof HttpOperation &&
+            ($operation->getParameters()?->has('locale', LocaleParameter::class) ?? false);
 
         // Les erreurs sont traduites dans la langue demandée, quelle que soit la ressource
         if ($isContent || !$response->isSuccessful()) {
