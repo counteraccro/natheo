@@ -23,7 +23,7 @@ Le format suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), avec un
 - Sessions API des utilisateurs : connexion, access token de 15 minutes dans `Authorization: Bearer`, renouvellement par refresh token, liste des sessions, déconnexion et `/me` ([#505](https://github.com/counteraccro/natheo/issues/505))
 - Site public : socle commun aux thèmes sur l'API v2 et thème Natheo-Base (HTML sémantique sans design), sélectionnable dans les options système, avec prévisualisation des brouillons et lien « Modifier cette page » ([#463](https://github.com/counteraccro/natheo/issues/463))
 - API v2 : la ressource `Page` donne ses traductions (`translations` : langue, slug et titre) ([#524](https://github.com/counteraccro/natheo/issues/524))
-- Natheo-Horizon : sous-menus de l'en-tête ouverts au survol de la souris, menus de l'en-tête et menu mobile sur autant de niveaux que nécessaire ; la démo montre un menu sur trois niveaux ([#531](https://github.com/counteraccro/natheo/issues/531))
+- Natheo-Horizon : sous-menus de l'en-tête ouverts au survol de la souris, sous-niveaux du menu déroulant en cascade, menus de l'en-tête et menu mobile sur autant de niveaux que nécessaire ; la démo montre un menu sur trois niveaux ([#531](https://github.com/counteraccro/natheo/issues/531))
 
 ### Modifié
 
