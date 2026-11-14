@@ -18,5 +18,9 @@ roadmap:
             fr: 'Les prochaines versions de Nathéo.'
             en: 'The next Nathéo releases.'
             es: 'Las próximas versiones de Nathéo.'
+        keywords:
+            fr: 'feuille de route, version 2.1, API v2, Nathéo 3.0'
+            en: 'roadmap, version 2.1, API v2, Nathéo 3.0'
+            es: 'hoja de ruta, versión 2.1, API v2, Nathéo 3.0'
     blocks:
         - { block: 1, type: TEXT }

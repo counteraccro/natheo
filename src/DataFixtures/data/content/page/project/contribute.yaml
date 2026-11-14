@@ -18,5 +18,9 @@ contribute:
             fr: 'Signaler un bug, proposer une fonctionnalité ou contribuer au code de Nathéo.'
             en: 'Report a bug, suggest a feature or contribute to Nathéo''s code.'
             es: 'Informar de un error, proponer una funcionalidad o contribuir al código de Nathéo.'
+        keywords:
+            fr: 'contribuer, issue, pull request, GitHub, sécurité'
+            en: 'contribute, issue, pull request, GitHub, security'
+            es: 'contribuir, issue, pull request, GitHub, seguridad'
     blocks:
         - { block: 1, type: TEXT }

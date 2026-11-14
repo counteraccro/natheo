@@ -18,6 +18,10 @@ about:
             fr: 'L''histoire de Nathéo et ses choix techniques.'
             en: 'Nathéo''s story and its technical choices.'
             es: 'La historia de Nathéo y sus decisiones técnicas.'
+        keywords:
+            fr: 'historique, Symfony, Vue 3, API Platform, PostgreSQL'
+            en: 'history, Symfony, Vue 3, API Platform, PostgreSQL'
+            es: 'historia, Symfony, Vue 3, API Platform, PostgreSQL'
     blocks:
         - { block: 1, type: TEXT }
         - { block: 2, type: TEXT }
