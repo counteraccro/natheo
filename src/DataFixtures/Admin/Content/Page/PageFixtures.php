@@ -39,7 +39,7 @@ use Symfony\Component\Yaml\Yaml;
 class PageFixtures extends AppFixtures implements FixtureGroupInterface, OrderedFixtureInterface
 {
     /**
-     * Dossier des pages : un fichier YAML par page, textes des blocs dans <page>/<locale>/<bloc>.md
+     * Dossier des pages : un fichier YAML par page, textes des blocs dans <page>/<bloc>.<locale>.md
      */
     const PAGE_FIXTURES_FOLDER = 'content' . DIRECTORY_SEPARATOR . 'page' . DIRECTORY_SEPARATOR;
 
@@ -171,7 +171,7 @@ class PageFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
     }
 
     /**
-     * Crée un bloc de page. Un bloc texte lit son contenu dans $textDir/<locale>/<fichier>.md,
+     * Crée un bloc de page. Un bloc texte lit son contenu dans $textDir/<fichier>.<locale>.md,
      * où <fichier> vaut « file » ou, par défaut, le numéro du bloc (suivi de « -<order> » au-delà du premier)
      * @param array $data
      * @param string $textDir
@@ -198,7 +198,7 @@ class PageFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
             case PageContentType::TEXT:
                 $fileName = $data['file'] ?? $data['block'] . ($order > 1 ? '-' . $order : '');
                 foreach ($locales as $locale) {
-                    $path = $textDir . DIRECTORY_SEPARATOR . $locale . DIRECTORY_SEPARATOR . $fileName . '.md';
+                    $path = $textDir . DIRECTORY_SEPARATOR . $fileName . '.' . $locale . '.md';
                     if (!is_file($path)) {
                         throw new \RuntimeException(sprintf('Texte du bloc introuvable : %s', $path));
                     }
