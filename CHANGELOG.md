@@ -39,6 +39,7 @@ Le format suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), avec un
 
 - Installation : les dossiers inscriptibles absents d'un clone neuf sont créés ([#501](https://github.com/counteraccro/natheo/issues/501))
 - Options système : Natheo-Storm, qui provoquait une erreur 500 une fois choisi, est retiré de la liste des thèmes du site public ([#528](https://github.com/counteraccro/natheo/issues/528))
+- Site public : le sélecteur de langue mène à la page affichée dans la langue choisie, et à l'accueil quand elle n'y est pas traduite ; la ressource `Page` de l'API v2 donne ses traductions (`translations`) ([#524](https://github.com/counteraccro/natheo/issues/524))
 
 ### Sécurité
 
