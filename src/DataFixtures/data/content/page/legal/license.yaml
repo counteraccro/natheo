@@ -12,5 +12,14 @@ license:
         fr: { titre: 'Licence', url: licence }
         en: { titre: 'License', url: license }
         es: { titre: 'Licencia', url: licencia }
+    metas:
+        description:
+            fr: 'Nathéo est distribué sous licence GNU GPL v3.'
+            en: 'Nathéo is released under the GNU GPL v3 license.'
+            es: 'Nathéo se distribuye bajo la licencia GNU GPL v3.'
+        keywords:
+            fr: 'licence, GNU GPL v3, logiciel libre, MIT'
+            en: 'license, GNU GPL v3, free software, MIT'
+            es: 'licencia, GNU GPL v3, software libre, MIT'
     blocks:
         - { block: 1, type: TEXT }

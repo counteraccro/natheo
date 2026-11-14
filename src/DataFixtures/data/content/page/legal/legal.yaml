@@ -12,5 +12,14 @@ legal:
         fr: { titre: 'Mentions légales', url: mentions-legales }
         en: { titre: 'Legal notice', url: legal-notice }
         es: { titre: 'Aviso legal', url: aviso-legal }
+    metas:
+        description:
+            fr: 'Les mentions légales du site de démonstration et les données personnelles enregistrées par Nathéo.'
+            en: 'The legal notice of the demo site and the personal data stored by Nathéo.'
+            es: 'El aviso legal del sitio de demostración y los datos personales que guarda Nathéo.'
+        keywords:
+            fr: 'mentions légales, données personnelles, RGPD, commentaires'
+            en: 'legal notice, personal data, GDPR, comments'
+            es: 'aviso legal, datos personales, RGPD, comentarios'
     blocks:
         - { block: 1, type: TEXT }
