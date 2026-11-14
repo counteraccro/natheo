@@ -19,5 +19,9 @@ blog-2-0:
             fr: 'Nouveau back-office, PostgreSQL, interface traduite et audit de sécurité : la 2.0 est sortie le 7 novembre 2026.'
             en: 'New back office, PostgreSQL, translated interface and security audit: 2.0 was released on 7 November 2026.'
             es: 'Nuevo back-office, PostgreSQL, interfaz traducida y auditoría de seguridad: la 2.0 salió el 7 de noviembre de 2026.'
+        keywords:
+            fr: 'Nathéo 2.0, Tailwind CSS, PostgreSQL, audit de sécurité'
+            en: 'Nathéo 2.0, Tailwind CSS, PostgreSQL, security audit'
+            es: 'Nathéo 2.0, Tailwind CSS, PostgreSQL, auditoría de seguridad'
     blocks:
         - { block: 1, type: TEXT }
