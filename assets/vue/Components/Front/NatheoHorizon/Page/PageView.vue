@@ -44,6 +44,11 @@ const columns = computed(() => {
   return menus.value.right ? 'lg:grid-cols-[minmax(0,1fr)_220px]' : '';
 });
 
+// Article : une seule colonne de lecture, sauf si un listing a besoin de la largeur
+const reading = computed(
+  () => blocks.value.length > 0 && blocks.value.every((block) => block.size === 'full' && block.type !== 'listing')
+);
+
 const showComments = computed(() => options.value?.open_comment === true && props.page.openComment && !datas.preview);
 </script>
 
@@ -51,7 +56,7 @@ const showComments = computed(() => options.value?.open_comment === true && prop
   <PageHero :page="page" :reading-time="readingTime" />
   <div class="mx-auto grid w-full max-w-page items-start gap-10 px-5 pt-16 pb-20" :class="columns">
     <SideMenu v-if="menus.left" :menu="menus.left" />
-    <div class="min-w-0">
+    <div class="min-w-0" :class="{ 'mx-auto w-full max-w-[70ch]': reading }">
       <div class="grid grid-cols-6 gap-x-10 gap-y-14">
         <section
           v-for="block in blocks"
@@ -59,7 +64,10 @@ const showComments = computed(() => options.value?.open_comment === true && prop
           class="relative min-w-0 pt-6 before:absolute before:top-0 before:left-0 before:h-1 before:w-14 before:rounded-sm before:content-['']"
           :class="SIZES[block.size]"
         >
-          <component :is="block.component" v-if="block.content?.content" :content="block.content.content"
+          <component
+            :is="block.component"
+            v-if="block.content?.content"
+            :content="block.content.content"
             v-bind="block.type === 'listing' ? { size: block.size } : {}"
           />
           <p v-else-if="block.error" role="alert" class="text-fg-muted">{{ translate.errorApi.default }}</p>
@@ -67,10 +75,6 @@ const showComments = computed(() => options.value?.open_comment === true && prop
       </div>
       <CommentSection v-if="showComments" :page="page" />
     </div>
-    <SideMenu
-      v-if="menus.right"
-      :menu="menus.right"
-      :class="{ 'lg:col-start-2 xl:col-start-auto': menus.left }"
-    />
+    <SideMenu v-if="menus.right" :menu="menus.right" :class="{ 'lg:col-start-2 xl:col-start-auto': menus.left }" />
   </div>
 </template>
