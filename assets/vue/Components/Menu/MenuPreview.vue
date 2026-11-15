@@ -82,7 +82,7 @@ export default defineComponent({
         this.sendScheme();
         this.sendMenu();
       } else if (message?.type === 'height') {
-        this.height = Math.max(MIN_HEIGHT, message.height);
+        this.height = message.height;
       }
     },
 

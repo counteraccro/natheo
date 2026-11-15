@@ -21,11 +21,7 @@ const LINES = ['w-2/5', 'w-[min(640px,90%)]', 'w-[min(560px,80%)]', 'w-[min(600p
 
 <template>
   <template v-if="menu">
-    <template v-if="menu.position === 'header'">
-      <SiteHeader :page="page" />
-      <!-- Place laissée aux sous-menus, qui s'ouvrent par-dessus le contenu -->
-      <div class="min-h-110" aria-hidden="true" />
-    </template>
+    <SiteHeader v-if="menu.position === 'header'" :page="page" />
     <SiteFooter v-else-if="menu.position === 'footer'" :page="page" />
     <div
       v-else

@@ -2,7 +2,7 @@
  * @author Gourdon Aymeric
  * @version 1.0
  * Aperçu d'un menu au design du thème, affiché dans une iframe de l'éditeur de menu : menu reçu de l'éditeur,
- * hauteur renvoyée pour ajuster le cadre, liens sans navigation
+ * hauteur renvoyée pour ajuster le cadre (sous-menus ouverts compris), liens sans navigation
  */
 import { computed, onBeforeUnmount, onMounted, shallowRef, type ComputedRef, type ShallowRef } from 'vue';
 import { postMenuPreviewMessage, readMenuPreviewMessage } from '@/vue/Composables/Global/menuPreviewMessage';
@@ -43,15 +43,50 @@ function menuPreviewPage(menu: Menu): Page {
   };
 }
 
+/**
+ * Hauteur du contenu, sous-menus ouverts compris : ils sont positionnés par-dessus la page et ne comptent pas dans
+ * la hauteur du body. Un panneau fixe (menu latéral) compte pour la hauteur de son contenu.
+ */
+function contentHeight(): number {
+  let bottom = document.body.getBoundingClientRect().bottom;
+  for (const element of Array.from(document.body.querySelectorAll<HTMLElement>('*'))) {
+    const rect = element.getBoundingClientRect();
+    if (rect.height === 0) {
+      continue;
+    }
+    const position = getComputedStyle(element).position;
+    if (position === 'fixed') {
+      bottom = Math.max(bottom, rect.top + element.scrollHeight);
+    } else if (position === 'absolute') {
+      bottom = Math.max(bottom, rect.bottom);
+    }
+  }
+  return Math.ceil(bottom + window.scrollY);
+}
+
 export function useMenuPreview(): MenuPreview {
   const menu = shallowRef<Menu | null>(null);
   const page = computed(() => (menu.value === null ? null : menuPreviewPage(menu.value)));
-  const observer = new ResizeObserver(() => {
-    postMenuPreviewMessage(window.parent, {
-      type: 'height',
-      height: Math.ceil(document.body.getBoundingClientRect().height),
-    });
-  });
+  let frame = 0;
+  let sentHeight = 0;
+  const resize = new ResizeObserver(scheduleHeight);
+  const mutations = new MutationObserver(scheduleHeight);
+
+  // Une mesure par image, quel que soit le nombre de changements
+  function scheduleHeight(): void {
+    if (frame === 0) {
+      frame = requestAnimationFrame(sendHeight);
+    }
+  }
+
+  function sendHeight(): void {
+    frame = 0;
+    const height = contentHeight();
+    if (height !== sentHeight) {
+      sentHeight = height;
+      postMenuPreviewMessage(window.parent, { type: 'height', height });
+    }
+  }
 
   function onMessage(event: MessageEvent): void {
     const message = readMenuPreviewMessage(event, window.parent);
@@ -72,14 +107,23 @@ export function useMenuPreview(): MenuPreview {
   onMounted(() => {
     window.addEventListener('message', onMessage);
     document.addEventListener('click', onClick, true);
-    observer.observe(document.body);
+    resize.observe(document.body);
+    mutations.observe(document.body, {
+      subtree: true,
+      childList: true,
+      attributes: true,
+      attributeFilter: ['class', 'style', 'open'],
+    });
+    scheduleHeight();
     postMenuPreviewMessage(window.parent, { type: 'ready' });
   });
 
   onBeforeUnmount(() => {
     window.removeEventListener('message', onMessage);
     document.removeEventListener('click', onClick, true);
-    observer.disconnect();
+    resize.disconnect();
+    mutations.disconnect();
+    cancelAnimationFrame(frame);
   });
 
   return { menu, page };
