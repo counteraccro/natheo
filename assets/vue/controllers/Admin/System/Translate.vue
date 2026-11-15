@@ -107,6 +107,8 @@ export default defineComponent({
       this.currentLanguage = (event.target as HTMLSelectElement).value;
       this.currentFile = '';
       this.file = {};
+      this.tabTmpTranslate = [];
+      this.errors = {};
       if (this.currentLanguage !== '') {
         this.loadTranslateListeFile();
       }
