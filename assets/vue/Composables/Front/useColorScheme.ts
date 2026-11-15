@@ -1,7 +1,8 @@
 /**
  * @author Gourdon Aymeric
- * @version 1.0
- * Mode clair / sombre du site public : choix mémorisé du visiteur, sinon préférence du système
+ * @version 1.1
+ * Mode clair / sombre du site public : choix mémorisé du visiteur, sinon préférence du système ; dans l'aperçu de
+ * l'éditeur de menu, mode imposé par l'éditeur et jamais mémorisé
  */
 import { onBeforeUnmount, readonly, shallowRef, type Ref } from 'vue';
 
@@ -15,25 +16,36 @@ export interface ColorSchemeState {
   toggle: () => void;
 }
 
+/** Un seul mode par page affichée, partagé par tous les composants */
+const scheme = shallowRef<ColorScheme>(document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+let previewMode = false;
+
+function apply(value: ColorScheme): void {
+  scheme.value = value;
+  document.documentElement.classList.toggle('dark', value === 'dark');
+}
+
+function stored(): string | null {
+  try {
+    return localStorage.getItem(STORAGE_KEY);
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Mode imposé par l'éditeur de menu à son aperçu : le choix du visiteur n'est plus lu ni écrit
+ */
+export function setPreviewColorScheme(value: ColorScheme): void {
+  previewMode = true;
+  apply(value);
+}
+
 export function useColorScheme(): ColorSchemeState {
   const media = window.matchMedia('(prefers-color-scheme: dark)');
-  const scheme = shallowRef<ColorScheme>(document.documentElement.classList.contains('dark') ? 'dark' : 'light');
-
-  const apply = (value: ColorScheme): void => {
-    scheme.value = value;
-    document.documentElement.classList.toggle('dark', value === 'dark');
-  };
-
-  const stored = (): string | null => {
-    try {
-      return localStorage.getItem(STORAGE_KEY);
-    } catch {
-      return null;
-    }
-  };
 
   const onSystemChange = (event: MediaQueryListEvent): void => {
-    if (stored() === null) {
+    if (!previewMode && stored() === null) {
       apply(event.matches ? 'dark' : 'light');
     }
   };
@@ -43,6 +55,9 @@ export function useColorScheme(): ColorSchemeState {
   const toggle = (): void => {
     const value: ColorScheme = scheme.value === 'dark' ? 'light' : 'dark';
     apply(value);
+    if (previewMode) {
+      return;
+    }
     try {
       localStorage.setItem(STORAGE_KEY, value);
     } catch {

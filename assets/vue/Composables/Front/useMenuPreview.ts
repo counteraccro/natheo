@@ -5,6 +5,7 @@
  * hauteur renvoyée pour ajuster le cadre (sous-menus ouverts compris), liens sans navigation
  */
 import { computed, onBeforeUnmount, onMounted, shallowRef, type ComputedRef, type ShallowRef } from 'vue';
+import { setPreviewColorScheme } from '@/vue/Composables/Front/useColorScheme';
 import { postMenuPreviewMessage, readMenuPreviewMessage } from '@/vue/Composables/Global/menuPreviewMessage';
 import type { Menu } from '@/ts/Front/Api/Menu.type';
 import type { Page } from '@/ts/Front/Api/Page.type';
@@ -93,7 +94,7 @@ export function useMenuPreview(): MenuPreview {
     if (message?.type === 'menu') {
       menu.value = message.menu;
     } else if (message?.type === 'scheme') {
-      document.documentElement.classList.toggle('dark', message.dark);
+      setPreviewColorScheme(message.dark ? 'dark' : 'light');
     }
   }
 
@@ -103,6 +104,9 @@ export function useMenuPreview(): MenuPreview {
       event.preventDefault();
     }
   }
+
+  // Clair par défaut, comme la barre d'outils de l'éditeur, en attendant son choix
+  setPreviewColorScheme('light');
 
   onMounted(() => {
     window.addEventListener('message', onMessage);
