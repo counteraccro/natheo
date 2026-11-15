@@ -42,12 +42,13 @@ export default defineComponent({
   },
   methods: {
     /**
-     * Suit les formulaires Symfony marqués data-leave-guard, libérés à leur soumission
+     * Suit les formulaires Symfony marqués data-leave-guard, libérés à leur soumission ;
+     * data-leave-guard="dirty" marque un formulaire réaffiché après une erreur de validation
      */
     trackSymfonyForms(): void {
       document.querySelectorAll<HTMLFormElement>(FORM_SELECTOR).forEach((form, index) => {
         const key = 'symfony-form-' + index;
-        leaveGuard.track(key, () => this.serializeForm(form));
+        leaveGuard.track(key, () => this.serializeForm(form), form.dataset.leaveGuard === 'dirty');
         form.addEventListener('submit', () => leaveGuard.untrack(key));
         this.formKeys.push(key);
       });

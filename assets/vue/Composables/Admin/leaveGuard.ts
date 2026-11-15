@@ -20,10 +20,12 @@ const serialize = (source: () => unknown): string =>
  * Suit les données d'un formulaire, leur état actuel servant de référence
  * @param key identifiant unique du formulaire dans la page
  * @param source fonction retournant les données du formulaire
+ * @param dirty true si les données affichées ne sont pas sauvegardées (formulaire réaffiché après une erreur)
  */
-const track = (key: string, source: () => unknown): void => {
+const track = (key: string, source: () => unknown, dirty: boolean = false): void => {
   sources.set(key, source);
-  snapshots[key] = serialize(source);
+  // Une sérialisation JSON n'est jamais vide : le formulaire reste modifié jusqu'à sa sauvegarde
+  snapshots[key] = dirty ? '' : serialize(source);
 };
 
 /**
