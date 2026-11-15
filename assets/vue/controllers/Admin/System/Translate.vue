@@ -7,7 +7,7 @@
 
 import { defineComponent, type PropType } from 'vue';
 import axios from 'axios';
-import { emitter } from '@/vue/Composables/Global/useEvent';
+import { leaveGuard } from '@/vue/Composables/Admin/leaveGuard';
 import SkeletonText from '@/vue/Components/Skeleton/Text.vue';
 import SkeletonTable from '@/vue/Components/Skeleton/Table.vue';
 import type {
@@ -20,6 +20,8 @@ import type {
   TranslateUpdate,
 } from '@/ts/Translate/Translate.type';
 import { toastSuccess, toastError } from '@/vue/Composables/Global/toast';
+
+const LEAVE_GUARD_KEY = 'translate';
 
 export default defineComponent({
   name: 'Translate',
@@ -72,7 +74,11 @@ export default defineComponent({
     },
   },
   mounted() {
+    leaveGuard.track(LEAVE_GUARD_KEY, () => this.tabTmpTranslate);
     this.loadListeLanguages();
+  },
+  beforeUnmount() {
+    leaveGuard.untrack(LEAVE_GUARD_KEY);
   },
   methods: {
     /**
@@ -140,7 +146,6 @@ export default defineComponent({
      * Charge le contenu du fichier sélectionné
      */
     loadFile(): void {
-      emitter.emit('reset-check-confirm');
       this.loading = true;
       axios
         .get<TranslateFileResponse>(this.url_translate_file + '/' + this.currentFile)

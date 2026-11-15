@@ -8,7 +8,6 @@
 import { defineComponent } from 'vue';
 import axios from 'axios';
 import { withCsrf } from '@/vue/Composables/Admin/csrf';
-import { emitter } from '@/vue/Composables/Global/useEvent';
 import type { OptionField, OptionUpdatePayload, OptionUpdateResponse } from '@/ts/Option/Option.type';
 
 export default defineComponent({
@@ -105,9 +104,6 @@ export default defineComponent({
           spinner?.classList.add('hidden');
           showError();
           console.error(e);
-        })
-        .finally(() => {
-          emitter.emit('reset-check-confirm');
         });
     },
   },

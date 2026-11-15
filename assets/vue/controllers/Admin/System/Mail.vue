@@ -9,7 +9,7 @@ import { defineComponent } from 'vue';
 import axios from 'axios';
 import { withCsrf } from '@/vue/Composables/Admin/csrf';
 import MarkdownEditor from '@/vue/Components/Global/MarkdownEditor/MarkdownEditor.vue';
-import { emitter } from '@/vue/Composables/Global/useEvent';
+import { leaveGuard } from '@/vue/Composables/Admin/leaveGuard';
 import SkeletonForm from '@/vue/Components/Skeleton/Form.vue';
 import SkeletonText from '@/vue/Components/Skeleton/Text.vue';
 import { InternalLinkModule } from '@/ts/MarkdownEditor/modules/internalLink';
@@ -24,6 +24,8 @@ import type {
   MailTranslate,
 } from '@/ts/Mail/Mail.type';
 import { toastSuccess, toastError } from '@/vue/Composables/Global/toast';
+
+const LEAVE_GUARD_KEY = 'mail';
 
 export default defineComponent({
   name: 'Mail',
@@ -63,6 +65,10 @@ export default defineComponent({
     this.loadData();
   },
 
+  beforeUnmount() {
+    leaveGuard.untrack(LEAVE_GUARD_KEY);
+  },
+
   methods: {
     loadData(): void {
       this.loading = true;
@@ -86,6 +92,7 @@ export default defineComponent({
         })
         .finally(() => {
           this.loading = false;
+          this.$nextTick(() => leaveGuard.track(LEAVE_GUARD_KEY, () => this.mail));
         });
     },
 
@@ -135,10 +142,14 @@ export default defineComponent({
       this.sending = true;
       axios
         .post<MailAjaxResponse>(this.url_save, this.getPayload(), withCsrf(this.csrf_token_save))
-        .then((response) => this.handleResponse(response.data))
+        .then((response) => {
+          if (response.data.success) {
+            leaveGuard.commit(LEAVE_GUARD_KEY);
+          }
+          this.handleResponse(response.data);
+        })
         .catch((error: unknown) => this.showError(error, this.translate.msg_cant_save))
         .finally(() => {
-          emitter.emit('reset-check-confirm');
           this.sending = false;
         });
     },
