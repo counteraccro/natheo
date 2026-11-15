@@ -11,7 +11,6 @@ namespace App\Service\Admin;
 
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\Content\Page\PageTranslation;
-use App\Enum\Admin\Content\Page\PageStatus;
 use App\Enum\Admin\System\Options\OptionSystem;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -108,7 +107,7 @@ class MarkdownEditorService extends AppAdminService
     {
         /** @var Page|null $page */
         $page = $this->findOneById(Page::class, $id);
-        if ($page === null || $page->isDisabled() || $page->getStatus() !== PageStatus::PUBLISH->value) {
+        if ($page === null || !$page->isPublished()) {
             return '#';
         }
 

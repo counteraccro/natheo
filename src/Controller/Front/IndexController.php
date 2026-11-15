@@ -16,7 +16,7 @@ use App\Service\Api\Content\Page\ApiPageService;
 use App\Service\Api\Global\ApiSitemapService;
 use App\Service\Api\System\User\UserSessionService;
 use App\Service\Front\FrontPreviewService;
-use App\Service\Global\SupportedLocales;
+use App\Service\Front\FrontThemeService;
 use App\Service\Global\User\AvatarUrl;
 use App\Translate\Front\FrontTranslate;
 use League\CommonMark\Exception\CommonMarkException;
@@ -73,7 +73,7 @@ class IndexController extends AppFrontController
      * @param FrontPreviewService $frontPreviewService
      * @param FrontTranslate $frontTranslate
      * @param ContainerBagInterface $containerBag
-     * @param SupportedLocales $supportedLocales
+     * @param FrontThemeService $frontThemeService
      * @param string $locale
      * @param string|null $slug
      * @return Response
@@ -101,7 +101,7 @@ class IndexController extends AppFrontController
         FrontPreviewService $frontPreviewService,
         FrontTranslate $frontTranslate,
         ContainerBagInterface $containerBag,
-        SupportedLocales $supportedLocales,
+        FrontThemeService $frontThemeService,
         string $locale,
         ?string $slug = null,
     ): Response {
@@ -125,35 +125,9 @@ class IndexController extends AppFrontController
         $user = $this->getUser();
         $editablePage = $user === null ? null : $apiPageService->findEditablePageBySlug((string) $slug, $locale, $user);
         $avatarPath = (string) $containerBag->get('app.path.avatar');
-        $locales = $supportedLocales->getAll();
 
-        $urls = [
-            'api' => $this->getParameter('app.api_v2.prefix'),
-            'adminAuth' => $this->generateUrl('admin_dashboard_index'),
-            'sitemap' => $this->generateUrl('front_sitemap'),
-            'logout' => $this->generateUrl('auth_logout'),
-            'home' => array_combine(
-                $locales,
-                array_map(
-                    fn(string $homeLocale) => $this->generateUrl('front_index_2', [
-                        'locale' => $homeLocale,
-                        'category' => null,
-                        'slug' => null,
-                    ]),
-                    $locales,
-                ),
-            ),
-        ];
-
-        $datas = [
-            'slug' => $slug,
-            'locale' => $locale,
-            'locales' => $locales,
-            'apiToken' => $this->optionSystemFrontService->getFrontApiToken(),
-            'userToken' => '',
-            'user' => null,
-            'preview' => null,
-        ];
+        $urls = $frontThemeService->getUrls();
+        $datas = $frontThemeService->getDatas($locale, $slug);
 
         if ($user !== null) {
             $datas['userToken'] = $userSessionService->getFrontAccessToken(
@@ -188,7 +162,6 @@ class IndexController extends AppFrontController
         // Une prévisualisation n'exécute aucun script, et n'a donc pas de bandeau
         $frontScripts = [];
         $consentRequired = false;
-        $datas['consent'] = null;
         if ($datas['preview'] === null) {
             $frontScripts = $this->optionSystemFrontService->getFrontScripts();
             $consentRequired = $this->optionSystemFrontService->isConsentRequired($frontScripts);

@@ -287,7 +287,7 @@ class PageService extends AppAdminService
      */
     public function canBeLandingPage(Page $page): bool
     {
-        return $page->getStatus() === PageStatus::PUBLISH->value && !$page->isDisabled();
+        return $page->isPublished();
     }
 
     /**
@@ -595,6 +595,28 @@ class PageService extends AppAdminService
             'type' => $typeStr,
             'info' => $info,
         ];
+    }
+
+    /**
+     * Catégorie (slug de l'API v2) et état publié de chaque page, pour l'aperçu des menus : [idPage] => [category, published]
+     * @return array<int, array{category: ?string, published: bool}>
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getMenuPreviewPages(): array
+    {
+        /** @var PageRepository $repository */
+        $repository = $this->getRepository(Page::class);
+
+        $return = [];
+        /** @var Page $page */
+        foreach ($repository->findAll() as $page) {
+            $return[$page->getId()] = [
+                'category' => PageCategory::tryFrom((int) $page->getCategory())?->getSlug(),
+                'published' => $page->isPublished(),
+            ];
+        }
+        return $return;
     }
 
     /**

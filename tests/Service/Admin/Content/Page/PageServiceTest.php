@@ -347,6 +347,31 @@ class PageServiceTest extends AppWebTestCase
     }
 
     /**
+     * Test méthode getMenuPreviewPages() : catégorie en slug, publiée seulement si active et au statut publié
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testGetMenuPreviewPages(): void
+    {
+        $published = $this->createPage(
+            customData: [
+                'category' => PageCategory::BLOG->value,
+                'status' => PageStatus::PUBLISH->value,
+                'disabled' => false,
+            ],
+        );
+        $draft = $this->createPage(customData: ['status' => PageStatus::DRAFT->value, 'disabled' => false]);
+        $disabled = $this->createPage(customData: ['status' => PageStatus::PUBLISH->value, 'disabled' => true]);
+
+        $result = $this->pageService->getMenuPreviewPages();
+        $this->assertCount(3, $result);
+        $this->assertSame(['category' => 'blog', 'published' => true], $result[$published->getId()]);
+        $this->assertFalse($result[$draft->getId()]['published']);
+        $this->assertFalse($result[$disabled->getId()]['published']);
+    }
+
+    /**
      * Test méthode switchLandingPage()
      * @return void
      * @throws ContainerExceptionInterface

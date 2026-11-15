@@ -244,6 +244,15 @@ class MenuService extends AppAdminService
     }
 
     /**
+     * Slug de l'API v2 de chaque type et de chaque position, par valeur, pour l'aperçu du menu
+     * @return array{types: array<int, string>, positions: array<int, string>}
+     */
+    public function getPreviewSlugs(): array
+    {
+        return ['types' => MenuType::getSlugsByValue(), 'positions' => MenuPosition::getSlugsByValue()];
+    }
+
+    /**
      * Retourne une liste de type de menu
      * @return array[]
      * @throws ContainerExceptionInterface

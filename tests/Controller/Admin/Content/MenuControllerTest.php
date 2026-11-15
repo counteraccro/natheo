@@ -14,7 +14,10 @@ use App\Entity\Admin\Content\Menu\MenuElement;
 use App\Entity\Admin\Content\Page\Page;
 use App\Enum\Admin\Content\Menu\MenuPosition;
 use App\Enum\Admin\Content\Menu\MenuType;
+use App\Enum\Admin\System\Options\OptionSystem;
+use App\Enum\Front\Template;
 use App\Service\Admin\Content\Menu\MenuService;
+use App\Service\Admin\System\OptionSystemService;
 use App\Tests\AppWebTestCase;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -280,6 +283,58 @@ class MenuControllerTest extends AppWebTestCase
     }
 
     /**
+     * Test méthode preview() : accès contributeur, thème actif servi sans scripts du site, repli sur Natheo-Base
+     * @return void
+     */
+    public function testPreview(): void
+    {
+        $this->checkNoAccess('admin_menu_preview', ['locale' => 'fr']);
+        $this->container
+            ->get(OptionSystemService::class)
+            ->saveValueByKee(OptionSystem::OS_FRONT_SCRIPT_TOP->value, '<script>window.scriptSite = true;</script>');
+
+        $this->client->loginUser($this->createUserContributeur(), 'admin');
+        foreach ($this->locales as $locale) {
+            $crawler = $this->client->request(
+                'GET',
+                $this->router->generate('admin_menu_preview', ['locale' => $locale]),
+            );
+            $this->assertResponseIsSuccessful();
+            $this->assertResponseHeaderSame('X-Robots-Tag', 'noindex');
+            $this->assertStringNotContainsString('scriptSite', (string) $this->client->getResponse()->getContent());
+            $this->assertSelectorExists('html[lang="' . $locale . '"]');
+            $this->assertStringContainsString(
+                'Front/NatheoHorizon/MenuPreview',
+                (string) $this->client->getResponse()->getContent(),
+            );
+
+            $props = json_decode(
+                (string) $crawler
+                    ->filter('[data-symfony--ux-vue--vue-props-value]')
+                    ->attr('data-symfony--ux-vue--vue-props-value'),
+                true,
+            );
+            $this->assertSame($locale, $props['datas']['locale']);
+            $this->assertNull($props['datas']['user']);
+            $this->assertNull($props['datas']['consent']);
+            $this->assertArrayHasKey($locale, $props['urls']['home']);
+        }
+
+        $this->client->request('GET', '/admin/fr/menu/preview/de');
+        $this->assertResponseStatusCodeSame(404);
+
+        $this->container
+            ->get(OptionSystemService::class)
+            ->saveValueByKee(OptionSystem::OS_THEME_FRONT_SITE->value, Template::NATHEO_STORM->value);
+        $this->client->request('GET', $this->router->generate('admin_menu_preview', ['locale' => 'fr']));
+        $this->assertResponseIsSuccessful();
+        $this->assertStringContainsString(
+            'Front/NatheoBase/MenuPreview',
+            (string) $this->client->getResponse()->getContent(),
+        );
+    }
+
+    /**
      * Test méthode load_menu() : son menu, menu d'un autre refusé
      * @return void
      */
@@ -298,6 +353,8 @@ class MenuControllerTest extends AppWebTestCase
         $this->assertArrayHasKey('menu', $content);
         $this->assertArrayHasKey('data', $content);
         $this->assertSame([], $content['menu']['pageMenu'], 'Plus de valeur magique -1');
+        $this->assertArrayHasKey('preview_pages', $content['data']);
+        $this->assertArrayNotHasKey('url_site', $content['data']);
 
         $otherMenu = $this->createMenuAllDataDefault();
         $this->client->request('GET', $this->router->generate('admin_menu_load_menu', ['id' => $otherMenu->getId()]));
@@ -466,7 +523,10 @@ class MenuControllerTest extends AppWebTestCase
      */
     private function getGridCsrfToken(string $urlPart): string
     {
-        $this->client->request('GET', $this->router->generate('admin_menu_load_grid_data', ['page' => 1, 'limit' => 50]));
+        $this->client->request(
+            'GET',
+            $this->router->generate('admin_menu_load_grid_data', ['page' => 1, 'limit' => 50]),
+        );
         $content = json_decode($this->client->getResponse()->getContent(), true);
         foreach ($content['data'] as $row) {
             foreach ($row['action'] as $action) {

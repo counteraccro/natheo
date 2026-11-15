@@ -35,6 +35,7 @@ Le format suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), avec un
 - Options système : le texte du pied de page du site public se saisit dans chaque langue et s'affiche dans la langue de la page. La valeur est désormais stockée en JSON (`{"fr": "…", "en": "…"}`) dans `option_system.value`, la migration place le texte actuel sous la langue par défaut ; l'API v1 renvoie toujours une chaîne, celle de la langue par défaut ([#526](https://github.com/counteraccro/natheo/issues/526))
 - Données de démonstration installées par `natheo:install` : le site vitrine de Nathéo, avec un vrai contenu en français, anglais et espagnol, toutes les dispositions de page, les onze types de menus, des commentaires dans chaque statut et des captures du CMS en images d'en-tête ([#521](https://github.com/counteraccro/natheo/issues/521))
 - Le favicon reprend le logo en grille de blocs sur le site public, l'administration et l'installation ([#521](https://github.com/counteraccro/natheo/issues/521))
+- Menus : l'aperçu de l'éditeur affiche le menu avec le thème du site public (en-tête, menu de côté ou pied de page), suit les modifications avant l'enregistrement, en largeur ordinateur ou mobile et en mode clair ou sombre. Un thème fournit son aperçu avec `menu_preview.html.twig`, à défaut celui de Natheo-Base est utilisé ([#533](https://github.com/counteraccro/natheo/issues/533))
 
 ### Déprécié
 
