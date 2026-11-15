@@ -655,7 +655,7 @@ export default defineComponent({
         <div class="form-group px-5 pt-5">
           <div class="form-switch form-switch-inline">
             <input
-              class="switch-input no-control event-input"
+              class="switch-input event-input"
               type="checkbox"
               role="switch"
               id="disabled_faq"

@@ -307,7 +307,7 @@ export default defineComponent({
           <label for="input-password-current" class="form-label">{{ translate.password_current }}</label>
           <input
             type="password"
-            class="form-input no-control"
+            class="form-input"
             id="input-password-current"
             autocomplete="current-password"
             v-model="currentPassword"
@@ -319,7 +319,7 @@ export default defineComponent({
           }}</label>
           <input
             type="password"
-            class="form-input no-control"
+            class="form-input"
             :class="classPassword"
             id="input-password-1"
             v-model="password"
@@ -330,7 +330,7 @@ export default defineComponent({
           <label for="input-password-2" class="form-label">{{ translate.password_2 }}</label>
           <input
             type="password"
-            class="form-input no-control"
+            class="form-input"
             :class="classPasswordConfirm"
             id="input-password-2"
             v-model="passwordConfirm"

@@ -230,7 +230,7 @@ export default defineComponent({
                 <li>
                   <a
                     href="#"
-                    class="no-control flex items-center gap-2.5 px-3 py-2.5 transition-colors duration-150 text-fg"
+                    class="flex items-center gap-2.5 px-3 py-2.5 transition-colors duration-150 text-fg"
                     @click="$emit('show-info', media, 'show')"
                     @mouseover="onMenuHover($event, 'var(--bg-hover)')"
                     @mouseleave="onMenuHover($event, '')"
@@ -254,7 +254,7 @@ export default defineComponent({
                 <li>
                   <a
                     href="#"
-                    class="no-control flex items-center gap-2.5 px-3 py-2.5 transition-colors duration-150 text-fg"
+                    class="flex items-center gap-2.5 px-3 py-2.5 transition-colors duration-150 text-fg"
                     @click="$emit('edit', media, 'edit')"
                     @mouseover="onMenuHover($event, 'var(--bg-hover)')"
                     @mouseleave="onMenuHover($event, '')"
@@ -278,7 +278,7 @@ export default defineComponent({
                 <li>
                   <a
                     href="#"
-                    class="no-control flex items-center gap-2.5 px-3 py-2.5 transition-colors duration-150 text-fg"
+                    class="flex items-center gap-2.5 px-3 py-2.5 transition-colors duration-150 text-fg"
                     @click="$emit('move', media, 'move')"
                     @mouseover="onMenuHover($event, 'var(--bg-hover)')"
                     @mouseleave="onMenuHover($event, '')"
@@ -303,7 +303,7 @@ export default defineComponent({
                   <a
                     href="#"
                     @click="askTrash(media.id)"
-                    class="no-control flex items-center gap-2.5 px-3 py-2.5 transition-colors duration-150 text-red-500"
+                    class="flex items-center gap-2.5 px-3 py-2.5 transition-colors duration-150 text-red-500"
                     @mouseover="onMenuHover($event, '#fef2f2')"
                     @mouseleave="onMenuHover($event, '')"
                   >
@@ -381,7 +381,7 @@ export default defineComponent({
           <td class="hidden sm:table-cell px-4 py-3 text-fg-muted">{{ media.date }}</td>
           <td class="px-4 py-3 text-right">
             <button
-              class="no-control btn btn-ghost-primary btn-icon"
+              class="btn btn-ghost-primary btn-icon"
               style="color: var(--text-primary)"
               @click="$emit('show-info', media, 'show')"
               @mouseover="onMenuHover($event, 'var(--bg-hover)')"
@@ -398,7 +398,7 @@ export default defineComponent({
             </button>
 
             <button
-              class="no-control btn btn-ghost-primary btn-icon"
+              class="btn btn-ghost-primary btn-icon"
               style="color: var(--text-primary)"
               @click="$emit('edit', media, 'edit')"
               @mouseover="onMenuHover($event, 'var(--bg-hover)')"
@@ -415,7 +415,7 @@ export default defineComponent({
             </button>
 
             <button
-              class="no-control btn btn-ghost-primary btn-icon"
+              class="btn btn-ghost-primary btn-icon"
               style="color: var(--text-primary)"
               @click="$emit('move', media, 'move')"
               @mouseover="onMenuHover($event, 'var(--bg-hover)')"
@@ -434,7 +434,7 @@ export default defineComponent({
             <button
               v-if="canDelete"
               @click="$emit('trash', true, media.id, media.type)"
-              class="no-control btn btn-ghost-danger btn-icon"
+              class="btn btn-ghost-danger btn-icon"
               @mouseover="onMenuHover($event, '#fef2f2')"
               @mouseleave="onMenuHover($event, '')"
             >

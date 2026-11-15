@@ -216,7 +216,7 @@ export default defineComponent({
       <div class="basis-full lg:basis-auto lg:ml-auto flex items-end gap-2">
         <div>
           <select
-            class="form-input form-input-sm no-control"
+            class="form-input form-input-sm"
             id="select-language"
             :aria-label="translate.listLanguage"
             :title="translate.listLanguage"

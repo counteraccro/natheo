@@ -791,7 +791,7 @@ export default defineComponent({
             <div>
               <div class="form-switch form-switch-inline">
                 <input
-                  class="switch-input no-control event-input"
+                  class="switch-input event-input"
                   type="checkbox"
                   role="switch"
                   id="default_menu"
@@ -816,7 +816,7 @@ export default defineComponent({
             <div>
               <div class="form-switch form-switch-inline">
                 <input
-                  class="switch-input no-control event-input"
+                  class="switch-input event-input"
                   type="checkbox"
                   role="switch"
                   id="disabled_menu"

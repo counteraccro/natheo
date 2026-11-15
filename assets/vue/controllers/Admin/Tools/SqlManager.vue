@@ -7,7 +7,6 @@
 
 import { defineComponent, PropType } from 'vue';
 import axios from 'axios';
-import { emitter } from '@/vue/Composables/Global/useEvent';
 import SkeletonText from '@/vue/Components/Skeleton/Text.vue';
 import SkeletonTabs from '@/vue/Components/Skeleton/Tabs.vue';
 import SkeletonSearchResult from '@/vue/Components/Skeleton/SearchResult.vue';
@@ -193,7 +192,6 @@ export default defineComponent({
         })
         .finally(() => {
           this.saving = false;
-          emitter.emit('reset-check-confirm');
         });
     },
 
