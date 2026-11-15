@@ -45,23 +45,31 @@ function menuPreviewPage(menu: Menu): Page {
 }
 
 /**
- * Hauteur du contenu, sous-menus et tiroirs ouverts compris : positionnés par-dessus la page, ils ne comptent pas dans
- * la hauteur du body. Un panneau fixe compte pour la hauteur de son contenu.
+ * Éléments positionnés en absolu ou en fixe : sous-menus et tiroirs, posés par-dessus la page, hors de la hauteur du body
  */
-function contentHeight(): number {
-  let bottom = document.body.getBoundingClientRect().bottom;
-  for (const element of Array.from(document.body.querySelectorAll<HTMLElement>('*'))) {
-    const rect = element.getBoundingClientRect();
+function positionedElements(): HTMLElement[] {
+  return Array.from(document.body.querySelectorAll<HTMLElement>('*')).filter((element) => {
     // La barre de débogage de Symfony (développement) est fixée en bas du cadre et le bloquerait à sa hauteur
-    if (rect.height === 0 || element.closest('.sf-toolbar') !== null) {
-      continue;
+    if (element.closest('.sf-toolbar') !== null) {
+      return false;
     }
     const position = getComputedStyle(element).position;
-    if (position === 'fixed') {
-      bottom = Math.max(bottom, rect.top + element.scrollHeight);
-    } else if (position === 'absolute') {
-      bottom = Math.max(bottom, rect.bottom);
+    return position === 'fixed' || position === 'absolute';
+  });
+}
+
+/**
+ * Hauteur du contenu, éléments positionnés visibles compris. Un panneau fixe compte pour la hauteur de son contenu.
+ */
+function contentHeight(positioned: HTMLElement[]): number {
+  let bottom = document.body.getBoundingClientRect().bottom;
+  for (const element of positioned) {
+    const rect = element.getBoundingClientRect();
+    if (rect.height === 0) {
+      continue;
     }
+    const fixed = getComputedStyle(element).position === 'fixed';
+    bottom = Math.max(bottom, fixed ? rect.top + element.scrollHeight : rect.bottom);
   }
   return Math.ceil(bottom + window.scrollY);
 }
@@ -71,8 +79,18 @@ export function useMenuPreview(): MenuPreview {
   const page = computed(() => (menu.value === null ? null : menuPreviewPage(menu.value)));
   let frame = 0;
   let sentHeight = 0;
-  const resize = new ResizeObserver(scheduleHeight);
-  const mutations = new MutationObserver(scheduleHeight);
+  let positioned: HTMLElement[] | null = null;
+  const resize = new ResizeObserver(() => {
+    positioned = null;
+    scheduleHeight();
+  });
+  // Un changement de style seul (v-show, animation) ne déplace pas d'élément hors du flux : la liste est gardée
+  const mutations = new MutationObserver((records) => {
+    if (records.some((record) => record.attributeName !== 'style')) {
+      positioned = null;
+    }
+    scheduleHeight();
+  });
 
   // Une mesure par image, quel que soit le nombre de changements
   function scheduleHeight(): void {
@@ -83,7 +101,8 @@ export function useMenuPreview(): MenuPreview {
 
   function sendHeight(): void {
     frame = 0;
-    const height = contentHeight();
+    positioned ??= positionedElements();
+    const height = contentHeight(positioned);
     if (height !== sentHeight) {
       sentHeight = height;
       postMenuPreviewMessage(window.parent, { type: 'height', height });
