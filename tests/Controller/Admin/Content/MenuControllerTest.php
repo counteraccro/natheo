@@ -350,6 +350,7 @@ class MenuControllerTest extends AppWebTestCase
         $this->assertArrayHasKey('data', $content);
         $this->assertSame([], $content['menu']['pageMenu'], 'Plus de valeur magique -1');
         $this->assertArrayHasKey('preview_pages', $content['data']);
+        $this->assertArrayNotHasKey('url_site', $content['data']);
 
         $otherMenu = $this->createMenuAllDataDefault();
         $this->client->request('GET', $this->router->generate('admin_menu_load_menu', ['id' => $otherMenu->getId()]));

@@ -15,14 +15,12 @@ use App\Entity\Admin\Content\Menu\MenuElement;
 use App\Enum\Admin\Content\Menu\MenuCsrfToken;
 use App\Enum\Admin\Content\Menu\MenuLinkTarget;
 use App\Enum\Admin\Global\Breadcrumb;
-use App\Enum\Admin\System\Options\OptionSystem;
 use App\Enum\Admin\System\Options\OptionUser;
 use App\Populate\Admin\Content\Menu\MenuPopulate;
 use App\Security\Voter\ContentVoter;
 use App\Service\Admin\Content\Menu\MenuConvertToArray;
 use App\Service\Admin\Content\Menu\MenuService;
 use App\Service\Admin\Content\Page\PageService;
-use App\Service\Admin\System\OptionSystemService;
 use App\Service\Front\FrontThemeService;
 use App\Translate\Admin\Content\MenuTranslate;
 use App\Translate\Front\FrontTranslate;
@@ -317,7 +315,6 @@ class MenuController extends AppAdminController
      * Charge un menu en fonction de son id
      * @param MenuConvertToArray $menuJson
      * @param MenuService $menuService
-     * @param OptionSystemService $optionSystemService
      * @param PageService $pageService
      * @param int|null $id
      * @return JsonResponse
@@ -328,7 +325,6 @@ class MenuController extends AppAdminController
     public function getMenuById(
         MenuConvertToArray $menuJson,
         MenuService $menuService,
-        OptionSystemService $optionSystemService,
         PageService $pageService,
         ?int $id = null,
     ): JsonResponse {
@@ -349,8 +345,6 @@ class MenuController extends AppAdminController
             return $this->json(['menu' => []]);
         }
 
-        $name = $optionSystemService->getValueByKey(OptionSystem::OS_SITE_NAME->value);
-        $urlSite = $optionSystemService->getValueByKey(OptionSystem::OS_ADRESSE_SITE->value);
         $allElement = [];
         if (isset($menu['allElements'])) {
             $allElement = $menu['allElements'];
@@ -361,8 +355,6 @@ class MenuController extends AppAdminController
             'menu' => $menu,
             'data' => [
                 'all_elements' => $allElement,
-                'name' => $name,
-                'url_site' => $urlSite,
                 'pages' => $pageService->getAllTitleAndUrlPage(),
                 'preview_pages' => $pageService->getMenuPreviewPages(),
             ],

@@ -12,9 +12,7 @@ import Sortable from 'sortablejs';
 import Modal from '@/vue/Components/Global/Modal.vue';
 import MenuElementForm from '@/vue/Components/Menu/MenuElementForm.vue';
 import { emitter } from '@/vue/Composables/Global/useEvent';
-import MenuHeader from '@/vue/Components/Menu/MenuType/MenuHeader.vue';
-import MenuFooter from '@/vue/Components/Menu/MenuType/MenuFooter.vue';
-import MenuLeftRight from '@/vue/Components/Menu/MenuType/MenuLeftRight.vue';
+import MenuPreview from '@/vue/Components/Menu/MenuPreview.vue';
 import { toastSuccess, toastError, toastRequestError } from '@/vue/Composables/Global/toast';
 
 export default defineComponent({
@@ -26,9 +24,7 @@ export default defineComponent({
     SkeletonArchitectureMenu,
     SkeletonFormMenu,
     SkeletonRenderMenu,
-    MenuHeader,
-    MenuFooter,
-    MenuLeftRight,
+    MenuPreview,
   },
   props: {
     urls: {
@@ -71,7 +67,6 @@ export default defineComponent({
       showModalConfirmDelete: false,
       localeValidationState: {} as Record<string, boolean>,
       noSaveElementIds: [] as number[],
-      selectComponent: '',
       errors: {
         name: false,
       } as Record<string, boolean>,
@@ -129,28 +124,6 @@ export default defineComponent({
     },
 
     /**
-     * Permet de changer de composant
-     * @param idPosition
-     */
-    switchComposant(idPosition: number) {
-      switch (idPosition) {
-        case 1:
-          this.selectComponent = 'MenuHeader';
-          break;
-        case 2:
-        case 4:
-          this.selectComponent = 'MenuLeftRight';
-          break;
-        case 3:
-          this.selectComponent = 'MenuFooter';
-          break;
-        default:
-          this.selectComponent = 'MenuHeader';
-          break;
-      }
-    },
-
-    /**
      * Normalise récursivement les children undefined → []
      */
     normalizeElements(elements: MenuElement[]): void {
@@ -187,8 +160,6 @@ export default defineComponent({
         const first = Object.entries(this.listTypeByPosition)[0];
         this.menu.type = Number(first[0]);
       }
-
-      this.switchComposant(parseInt(position.toString()));
     },
 
     /**
@@ -593,13 +564,14 @@ export default defineComponent({
         </div>
       </div>
       <div class="p-5">
-        <Component
-          v-if="selectComponent"
-          :is="selectComponent"
+        <MenuPreview
           :menu="menu"
-          :type="Number(menu.type)"
-          :locale="currentLocale"
-          :data="dataMenu"
+          :locale="currentLocale || locales.current"
+          :urls="urls.preview"
+          :slugs="menu_datas.preview_slugs"
+          :pages="dataMenu.pages"
+          :preview-pages="dataMenu.preview_pages"
+          :translate="translate.preview"
         />
         <p class="text-xs mt-2 flex items-center gap-1.5 text-fg-subtle">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
