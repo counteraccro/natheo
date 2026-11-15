@@ -814,7 +814,7 @@ export default defineComponent({
               <select
                 id="menu-position"
                 class="form-input"
-                v-model="menu.position"
+                v-model.number="menu.position"
                 @change="selectListTypeByPosition(menu.position)"
               >
                 <option v-for="(position, key) in menu_datas.list_position" :value="key">
@@ -825,7 +825,7 @@ export default defineComponent({
 
             <div class="form-group">
               <label class="form-label" for="menu-title">{{ translate.select_type_label }}</label>
-              <select id="menu-type" class="form-input" v-model="menu.type">
+              <select id="menu-type" class="form-input" v-model.number="menu.type">
                 <option v-for="(position, key) in listTypeByPosition" :value="key">{{ position }}</option>
               </select>
             </div>
