@@ -37,7 +37,14 @@ menu.left.right.type.sidebar: Sidebar menu
 menu.left.right.type.sidebar_accordion: Sidebar menu with accordions
 menu.footer.type.col: Footer with columns
 menu.title.demo: Menu preview
-menu.title.demo_warning: This preview shows the structure and may differ from how it looks on your site
+menu.title.demo_warning: Preview with the public site theme. Links are disabled, disabled items and unpublished pages are hidden.
+menu.preview.iframe_title: Menu preview with the public site theme
+menu.preview.width_label: Preview width
+menu.preview.width_desktop: Desktop
+menu.preview.width_mobile: Mobile
+menu.preview.scheme_label: Preview mode
+menu.preview.scheme_light: Light
+menu.preview.scheme_dark: Dark
 menu.title.architecture: Menu structure
 menu.button.save: Save
 menu.button.new: New menu

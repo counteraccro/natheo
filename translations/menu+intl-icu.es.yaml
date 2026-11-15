@@ -37,7 +37,14 @@ menu.left.right.type.sidebar: Menú lateral
 menu.left.right.type.sidebar_accordion: Menú lateral con acordeones
 menu.footer.type.col: Pie de página en columnas
 menu.title.demo: Vista previa del menú
-menu.title.demo_warning: Esta vista previa muestra la estructura y puede diferir de cómo se ve en su sitio
+menu.title.demo_warning: Vista previa con el tema del sitio público. Los enlaces están desactivados y se ocultan los elementos desactivados y las páginas no publicadas.
+menu.preview.iframe_title: Vista previa del menú con el tema del sitio público
+menu.preview.width_label: Ancho de la vista previa
+menu.preview.width_desktop: Ordenador
+menu.preview.width_mobile: Móvil
+menu.preview.scheme_label: Modo de la vista previa
+menu.preview.scheme_light: Claro
+menu.preview.scheme_dark: Oscuro
 menu.title.architecture: Estructura del menú
 menu.button.save: Guardar
 menu.button.new: Nuevo menú
