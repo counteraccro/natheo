@@ -89,8 +89,9 @@ export default defineComponent({
         return null;
       }
       const current = new URL(document.location.href);
+      // url.hash vaut '' pour un lien « # » : on teste la présence du fragment dans href
       if (
-        url.hash !== '' &&
+        url.href.includes('#') &&
         url.origin + url.pathname + url.search === current.origin + current.pathname + current.search
       ) {
         return null;

@@ -12,10 +12,11 @@ type TrackedForm = {
 const forms = new Map<string, TrackedForm>();
 
 /**
- * Sérialise les données d'un formulaire pour les comparer
+ * Sérialise les données d'un formulaire pour les comparer, un champ vidé valant un champ jamais rempli
  * @param source
  */
-const serialize = (source: () => unknown): string => JSON.stringify(source());
+const serialize = (source: () => unknown): string =>
+  JSON.stringify(source(), (_key, value) => (value === null ? '' : value));
 
 /**
  * Suit les données d'un formulaire, leur état actuel servant de référence
