@@ -1,11 +1,12 @@
 <script setup lang="ts">
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Pied de page du thème Natheo-Horizon : nom et texte du site, réseaux sociaux, menu, langues et liens utiles
  */
 import { toRef } from 'vue';
 import { useFrontContext } from '@/vue/Composables/Front/useFrontContext';
+import { useConsent } from '@/vue/Composables/Front/useConsent';
 import { useLanguages } from '@/vue/Composables/Front/useLanguages';
 import { useMenus } from '@/vue/Composables/Front/useMenus';
 import { useSiteOptions } from '@/vue/Composables/Front/useSiteOptions';
@@ -20,6 +21,7 @@ const { urls, datas, translate } = useFrontContext();
 const { data: options } = useSiteOptions();
 const { menus } = useMenus(toRef(props, 'page'));
 const languages = useLanguages();
+const consent = useConsent();
 
 const socials = useSocialLinks();
 
@@ -87,6 +89,11 @@ const ICONS: Record<SocialNetwork, IconName> = {
           </li>
           <li>
             <a :href="urls.adminAuth" class="text-on-night-muted">{{ translate.footer.adminLink }}</a>
+          </li>
+          <li v-if="consent.required">
+            <button type="button" class="cursor-pointer text-on-night-muted underline" @click="consent.reopen()">
+              {{ translate.footer.consentLink }}
+            </button>
           </li>
         </ul>
         <p>{{ translate.footer.credit }} · {{ translate.footer.templateVersion }}</p>

@@ -319,4 +319,20 @@ class OptionSystemServiceTest extends AppWebTestCase
         $this->assertEquals(['fr' => '["a"]'], $this->optionSystemService->decodeTranslations('["a"]'));
         $this->assertEquals(['fr' => '42'], $this->optionSystemService->decodeTranslations('42'));
     }
+
+    /**
+     * Test qu'une option traduisible est rangée dans une catégorie multilingue, la seule à avoir le sélecteur de langue
+     * @return void
+     */
+    public function testTranslatableOptionsInMultilingualCategory(): void
+    {
+        $config = $this->optionSystemService->getOptionsSystemConfig();
+        foreach (reset($config) as $name => $category) {
+            foreach ($category['options'] as $key => $option) {
+                if (!empty($option['translatable'])) {
+                    $this->assertTrue(!empty($category['multilingual']), $key . ' dans ' . $name);
+                }
+            }
+        }
+    }
 }

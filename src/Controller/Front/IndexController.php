@@ -185,11 +185,25 @@ class IndexController extends AppFrontController
             );
         }
 
+        // Une prévisualisation n'exécute aucun script, et n'a donc pas de bandeau
+        $frontScripts = [];
+        $consentRequired = false;
+        $datas['consent'] = null;
+        if ($datas['preview'] === null) {
+            $frontScripts = $this->optionSystemFrontService->getFrontScripts();
+            $consentRequired = $this->optionSystemFrontService->isConsentRequired($frontScripts);
+            if ($consentRequired) {
+                $datas['consent'] = $this->optionSystemFrontService->getConsent($locale);
+            }
+        }
+
         return $this->render($this->getPathTemplate() . DIRECTORY_SEPARATOR . 'index.html.twig', [
             'urls' => $urls,
             'datas' => $datas,
             'translate' => $frontTranslate->getTranslate($locale),
             'scriptsTag' => $this->getScriptTags(),
+            'frontScripts' => $frontScripts,
+            'consentRequired' => $consentRequired,
             'metaSeo' => $this->getMetaSeo($locale, $slug),
             'locale' => $locale,
         ]);

@@ -66,6 +66,9 @@ options_system.category.mail.title: Gestión de los correos electrónicos
 options_system.category.media.description: Gestionar las opciones de la mediateca
 options_system.category.media.label: Mediateca
 options_system.category.media.title: Gestión de la mediateca
+options_system.category.multilingual.description: 'Textos mostrados en el sitio público, escritos en cada idioma. El selector elige el idioma que se edita.'
+options_system.category.multilingual.label: 'Opciones multilingües'
+options_system.category.multilingual.title: 'Textos del sitio por idioma'
 options_system.category.notification.description: Gestionar las notificaciones del CMS
 options_system.category.notification.label: Notificaciones
 options_system.category.notification.title: Gestión de las notificaciones
@@ -85,6 +88,23 @@ options_system.front_api_token.help: Token enviado por el front para llamar a la
 options_system.front_api_token.label: Token API utilizado por el front del sitio
 options_system.front_api_token.placeholder: "xxxxxxxx.xxxxxxxx.xxxxxxxx.xxxxxxxx"
 options_system.front_api_token.success: El token API del front se ha actualizado
+options_system.front_consent_accept_label.help: 'Si se deja vacío, el tema muestra su propio texto.'
+options_system.front_consent_accept_label.label: 'Texto del botón de aceptación'
+options_system.front_consent_accept_label.placeholder: 'Aceptar'
+options_system.front_consent_enabled.help: 'Los scripts de las opciones « Script en la etiqueta HEAD », « Script justo después de la apertura de la etiqueta BODY » y « Script justo antes del cierre de la etiqueta BODY » se cargan tras el acuerdo del visitante. Sin ningún script, el banner no se muestra.'
+options_system.front_consent_enabled.label: 'Activar el banner de consentimiento'
+options_system.front_consent_refuse_label.help: 'Si se deja vacío, el tema muestra su propio texto.'
+options_system.front_consent_refuse_label.label: 'Texto del botón de rechazo'
+options_system.front_consent_refuse_label.placeholder: 'Rechazar'
+options_system.front_consent_reset_at.button: 'Volver a pedir el consentimiento a todos los visitantes'
+options_system.front_consent_reset_at.help: 'Fuerza de nuevo la visualización del banner, incluso para quienes ya lo han validado. Para usar tras un cambio de política.'
+options_system.front_consent_reset_at.label: 'Volver a pedir el consentimiento'
+options_system.front_consent_reset_at.last: 'Última solicitud: {date, date, short} a las {date, time, short}'
+options_system.front_consent_reset_at.never: 'Última solicitud: nunca'
+options_system.front_consent_reset_at.success: 'El banner se mostrará de nuevo a todos los visitantes'
+options_system.front_consent_text.help: 'Texto en Markdown, que puede contener un enlace a su aviso legal.'
+options_system.front_consent_text.label: 'Texto del banner de consentimiento'
+options_system.front_consent_text.placeholder: 'Este sitio usa scripts de medición de audiencia. ¿Acepta que se carguen?'
 options_system.front_footer_social_facebook_url.help: Déjelo vacío para no mostrar nada; si no, la URL aparecerá en el pie de página
 options_system.front_footer_social_facebook_url.label: URL de su cuenta de Facebook
 options_system.front_footer_social_facebook_url.placeholder: URL de su cuenta de Facebook
@@ -158,6 +178,12 @@ options_system.media_url.help: Cámbiela solo si utiliza un almacenamiento exter
 options_system.media_url.label: URL pública de acceso a las imágenes almacenadas
 options_system.media_url.placeholder: URL pública con el formato http://
 options_system.media_url.success: URL de los medios cambiada correctamente
+options_system.multilingual.empty_count_label: 'Campos sin traducir:'
+options_system.multilingual.empty_fallback_default: 'Sin traducir: se mostrará el texto en {language}.'
+options_system.multilingual.empty_fallback_other: 'Sin traducir: se mostrará el texto de otro idioma.'
+options_system.multilingual.empty_nothing: 'Vacío: no se mostrará nada.'
+options_system.multilingual.empty_theme_label: 'Vacío: se mostrará el texto por defecto del tema.'
+options_system.multilingual.switch_label: 'Idioma de edición'
 options_system.nb_element.help: El valor elegido se definirá para cada nuevo usuario creado
 options_system.nb_element.label: Número de elementos por página en las tablas de datos
 options_system.new_comment_wait_validation.help: Si es así, cada nuevo comentario deberá validarse manualmente para ser visible en el sitio

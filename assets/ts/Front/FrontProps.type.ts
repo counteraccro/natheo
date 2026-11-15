@@ -32,6 +32,16 @@ export interface FrontPreview {
   contents: PageContent[];
 }
 
+/** Bandeau de consentement aux scripts des options système, libellé vide quand le thème affiche le sien */
+export interface FrontConsent {
+  /** Texte déjà converti en HTML par le serveur */
+  text: string;
+  accept: string;
+  refuse: string;
+  /** Date ISO 8601 de la dernière demande de consentement, null si elle n'a jamais été faite */
+  resetAt: string | null;
+}
+
 export interface FrontThemeDatas {
   slug: string | null;
   locale: string;
@@ -41,6 +51,8 @@ export interface FrontThemeDatas {
   userToken: string;
   user: FrontUser | null;
   preview: FrontPreview | null;
+  /** Null quand le bandeau n'est pas nécessaire (désactivé, aucun script, prévisualisation) */
+  consent: FrontConsent | null;
 }
 
 export interface FrontThemeProps {

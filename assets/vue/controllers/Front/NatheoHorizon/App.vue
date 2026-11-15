@@ -1,11 +1,12 @@
 <script setup lang="ts">
 /**
  * @author Gourdon Aymeric
- * @version 2.0
+ * @version 2.1
  * Composant racine du thème Natheo-Horizon : installe le contexte du site public et compose la page
  */
 import { createFrontContext } from '@/vue/Composables/Front/useFrontContext';
 import { usePage } from '@/vue/Composables/Front/usePage';
+import ConsentBanner from '@/vue/Components/Front/NatheoHorizon/Layout/ConsentBanner.vue';
 import ReadingProgress from '@/vue/Components/Front/NatheoHorizon/Layout/ReadingProgress.vue';
 import SiteHeader from '@/vue/Components/Front/NatheoHorizon/Layout/SiteHeader.vue';
 import SiteFooter from '@/vue/Components/Front/NatheoHorizon/Layout/SiteFooter.vue';
@@ -26,6 +27,7 @@ const { data: page, loading, error } = usePage();
   >
     {{ translate.header.skipLink }}
   </a>
+  <ConsentBanner />
   <ReadingProgress />
   <SiteHeader :page="page" />
   <main id="contenu" tabindex="-1" class="outline-none">

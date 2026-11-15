@@ -24,8 +24,22 @@
     {% block javascripts %}
         {{ vite_entry_script_tags(scriptsTag) }}
     {% endblock %}
+    {{ _self.front_script(frontScripts.top|default(''), consentRequired|default(false)) }}
 </head>
 <body class="{% block body_class %}{% endblock %}">
+{{ _self.front_script(frontScripts.startBody|default(''), consentRequired|default(false)) }}
 {% block body %}{% endblock %}
+{{ _self.front_script(frontScripts.endBody|default(''), consentRequired|default(false)) }}
 </body>
 </html>
+
+{# Script d'une option système, inerte dans un <template> tant que le visiteur n'a pas donné son accord #}
+{% macro front_script(html, consent) %}
+    {%- if html is not empty -%}
+        {%- if consent -%}
+            <template data-consent-script>{{ html|raw }}</template>
+        {%- else -%}
+            {{ html|raw }}
+        {%- endif -%}
+    {%- endif -%}
+{% endmacro %}

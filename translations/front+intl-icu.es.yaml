@@ -72,3 +72,7 @@ front.comment.sort_desc: "Los más recientes primero"
 front.comment.sort_asc: "Los más antiguos primero"
 front.comment.status_wait: "Pendiente de validación"
 front.comment.status_moderate: "Moderado"
+front.consent.region_label: 'Elección de cookies'
+front.consent.accept: Aceptar
+front.consent.refuse: Rechazar
+front.footer.consent_link: 'Gestión de cookies'

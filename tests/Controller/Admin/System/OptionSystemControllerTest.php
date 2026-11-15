@@ -78,6 +78,41 @@ class OptionSystemControllerTest extends AppWebTestCase
         $this->assertSelectorTextSame('#' . $key . '-es', '<b>ES</b>');
         $this->assertEquals('es', $crawler->filter('#' . $key . '-es')->attr('data-locale'));
         $this->assertEquals($key, $crawler->filter('#' . $key . '-es')->attr('data-key'));
+        $this->assertCount(1, $crawler->filter('#fallback-' . $key . '-en'));
+
+        $label = OptionSystem::OS_FRONT_CONSENT_ACCEPT_LABEL->value;
+        $this->assertEquals('input', $crawler->filter('#' . $label . '-en')->nodeName());
+        $this->assertEquals('1', $crawler->filter('#' . $label . '-en')->attr('data-fallback-label'));
+    }
+
+    /**
+     * Test que l'onglet multilingue affiche le sélecteur de langue, seuls les champs de la langue par défaut visibles
+     * @return void
+     */
+    public function testIndexMultilingualTab(): void
+    {
+        $this->client->loginUser($this->createUserSuperAdmin(), 'admin');
+        $crawler = $this->client->request('GET', $this->router->generate('admin_option-system_change'));
+        $this->assertResponseIsSuccessful();
+
+        $panel = $crawler->filter('[data-option-multilingual]');
+        $this->assertCount(1, $panel);
+        $this->assertEquals('fr', $panel->attr('data-default-locale'));
+        $this->assertStringContainsString('Français', (string) $panel->attr('data-msg-fallback-default'));
+
+        $buttons = $panel->filter('[data-option-locale-button]');
+        $this->assertEquals(
+            ['fr', 'en', 'es'],
+            $buttons->each(fn($button) => $button->attr('data-option-locale-button')),
+        );
+        $this->assertEquals('true', $buttons->first()->attr('aria-pressed'));
+
+        $key = OptionSystem::OS_FRONT_CONSENT_TEXT->value;
+        $this->assertCount(1, $panel->filter('#' . $key . '-fr'));
+        $this->assertCount(0, $panel->filter('div.hidden[data-option-locale="fr"] #' . $key . '-fr'));
+        $this->assertCount(1, $panel->filter('div.hidden[data-option-locale="en"] #' . $key . '-en'));
+        $this->assertCount(1, $panel->filter('#' . OptionSystem::OS_FRONT_CONSENT_ENABLED->value));
+        $this->assertCount(1, $panel->filter('#' . OptionSystem::OS_FRONT_FOOTER_TEXTE->value . '-es'));
     }
 
     /**
@@ -129,6 +164,49 @@ class OptionSystemControllerTest extends AppWebTestCase
             $this->assertFalse($content['success'], $data['key']);
             $this->assertEquals($before, $optionSystemService->getValueByKey($data['key']), $data['key']);
         }
+    }
+
+    /**
+     * Test méthode resetConsent() : date enregistrée, jamais modifiable par la route update()
+     * @return void
+     */
+    public function testResetConsent(): void
+    {
+        $this->checkNoAccess('admin_option-system_ajax_consent_reset', methode: 'POST');
+        $key = OptionSystem::OS_FRONT_CONSENT_RESET_AT->value;
+        $url = $this->router->generate('admin_option-system_ajax_consent_reset');
+        /** @var OptionSystemService $optionSystemService */
+        $optionSystemService = $this->container->get(OptionSystemService::class);
+
+        $this->client->loginUser($this->createUserSuperAdmin(), 'admin');
+        $crawler = $this->client->request('GET', $this->router->generate('admin_option-system_change'));
+        $this->assertCount(1, $crawler->filter('[data-option-action="' . $key . '"]'));
+        $this->assertSelectorTextContains('#last-' . $key, 'jamais');
+        $props = json_decode(
+            (string) $crawler
+                ->filter('[data-symfony--ux-vue--vue-component-value="Admin/System/Option"]')
+                ->attr('data-symfony--ux-vue--vue-props-value'),
+            true,
+        );
+        $this->assertEquals($url, $props['url_actions'][$key]);
+
+        $this->client->request('POST', $url, server: ['HTTP_X-CSRF-TOKEN' => 'jeton-invalide']);
+        $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
+        $this->assertNull($optionSystemService->getValueByKey($key));
+
+        $this->client->request('POST', $url, server: ['HTTP_X-CSRF-TOKEN' => $props['csrf_token']]);
+        $this->assertResponseIsSuccessful();
+        $content = json_decode((string) $this->client->getResponse()->getContent(), true);
+        $this->assertTrue($content['success']);
+        $this->assertStringContainsString('Dernière demande', $content['last']);
+        $value = (string) $optionSystemService->getValueByKey($key);
+        $this->assertNotFalse(\DateTimeImmutable::createFromFormat(DATE_ATOM, $value));
+
+        $content = $this->postUpdate(['key' => $key, 'value' => '2000-01-01T00:00:00+00:00'], [
+            'HTTP_X-CSRF-TOKEN' => $props['csrf_token'],
+        ]);
+        $this->assertFalse($content['success']);
+        $this->assertEquals($value, $optionSystemService->getValueByKey($key));
     }
 
     /**

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Test controller front Index
  */
 namespace App\Tests\Controller\Front;
@@ -239,6 +239,144 @@ class IndexControllerTest extends AppWebTestCase
         $pageOnline = $this->em->getRepository(Page::class)->find($page->getId());
         $this->assertNotEquals('Brouillon fr', $pageOnline->getPageTranslationByLocale('fr')->getTitre());
         $this->assertNotCount(1, $pageOnline->getPageContents());
+    }
+
+    /**
+     * Scripts des options système à leur place pour chaque thème : fin du <head>, début et fin du <body>
+     * @return void
+     */
+    public function testIndexFrontScripts(): void
+    {
+        $this->createUser();
+        $this->setScripts();
+
+        foreach ([Template::NATHEO_HORIZON, Template::NATHEO_BASE] as $template) {
+            $this->setTheme($template);
+            $crawler = $this->client->request('GET', $this->homeUrl());
+            $this->assertResponseIsSuccessful();
+
+            $this->assertCount(1, $crawler->filter('head > script[data-test="top"]'), $template->value);
+            $this->assertSame('top', $crawler->filter('head > *')->last()->attr('data-test'));
+            $this->assertSame('start', $crawler->filter('body > *')->first()->attr('data-test'));
+            $this->assertSame('end', $crawler->filter('body > *')->last()->attr('data-test'));
+            $this->assertCount(0, $crawler->filter('template[data-consent-script]'));
+            $this->assertNull($this->getVueProps($crawler)['datas']['consent']);
+        }
+    }
+
+    /**
+     * Options de script vides ou réduites à des blancs : aucune balise ajoutée, pas de bandeau même activé
+     * @return void
+     */
+    public function testIndexFrontScriptsEmpty(): void
+    {
+        $this->createUser();
+        $this->setOption(OptionSystem::OS_FRONT_CONSENT_ENABLED, '1');
+        $this->setOption(OptionSystem::OS_FRONT_SCRIPT_START_BODY, "\n  \n");
+
+        $crawler = $this->client->request('GET', $this->homeUrl());
+        $this->assertResponseIsSuccessful();
+        $this->assertCount(0, $crawler->filter('body script'));
+        $this->assertCount(0, $crawler->filter('template[data-consent-script]'));
+        $this->assertNull($this->getVueProps($crawler)['datas']['consent']);
+    }
+
+    /**
+     * Bandeau activé : scripts servis inertes dans un <template>, texte et libellés dans la langue de la page
+     * @return void
+     */
+    public function testIndexConsent(): void
+    {
+        $this->createUser();
+        $this->setScripts();
+        $this->setOption(OptionSystem::OS_FRONT_CONSENT_ENABLED, '1');
+        $this->setOption(
+            OptionSystem::OS_FRONT_CONSENT_TEXT,
+            json_encode(['fr' => 'Texte FR', 'en' => 'See the [legal notice](/en/page/legal-notice) <b>now</b>']),
+        );
+        $this->setOption(OptionSystem::OS_FRONT_CONSENT_ACCEPT_LABEL, json_encode(['fr' => 'Oui', 'en' => 'Yes']));
+
+        foreach ([Template::NATHEO_HORIZON, Template::NATHEO_BASE] as $template) {
+            $this->setTheme($template);
+            $crawler = $this->client->request('GET', $this->homeUrl('en'));
+            $this->assertResponseIsSuccessful();
+            $content = (string) $this->client->getResponse()->getContent();
+
+            foreach (['top', 'start', 'end'] as $script) {
+                $this->assertStringContainsString(
+                    '<template data-consent-script><script data-test="' . $script . '">',
+                    $content,
+                    $template->value,
+                );
+            }
+            $this->assertCount(3, $crawler->filter('template[data-consent-script]'));
+
+            $consent = $this->getVueProps($crawler)['datas']['consent'];
+            $this->assertStringContainsString('<a href="/en/page/legal-notice">legal notice</a>', $consent['text']);
+            $this->assertStringContainsString('&lt;b&gt;', $consent['text']);
+            $this->assertSame('Yes', $consent['accept']);
+            $this->assertSame('', $consent['refuse']);
+            $this->assertNull($consent['resetAt']);
+        }
+
+        $this->setOption(OptionSystem::OS_FRONT_CONSENT_RESET_AT, '2026-11-15T10:00:00+00:00');
+        $consent = $this->getVueProps($this->client->request('GET', $this->homeUrl()))['datas']['consent'];
+        $this->assertSame('2026-11-15T10:00:00+00:00', $consent['resetAt']);
+    }
+
+    /**
+     * Prévisualisation d'un brouillon : aucun script injecté, pas de bandeau
+     * @return void
+     */
+    public function testIndexPreviewWithoutScripts(): void
+    {
+        $owner = $this->createUserContributeur(['disabled' => false, 'anonymous' => false]);
+        $page = $this->createPageAllDataDefault($owner);
+        $this->createPageDraft($page);
+        $this->setScripts();
+        $this->setOption(OptionSystem::OS_FRONT_CONSENT_ENABLED, '1');
+
+        $this->client->loginUser($owner, 'admin');
+        $crawler = $this->client->request('GET', $this->pageUrl($page) . '?preview=1');
+        $props = $this->getVueProps($crawler);
+        $this->assertNotNull($props['datas']['preview']);
+        $this->assertNull($props['datas']['consent']);
+        $this->assertStringNotContainsString('data-test=', (string) $this->client->getResponse()->getContent());
+
+        $this->client->request('GET', $this->pageUrl($page));
+        $this->assertStringContainsString('data-test="top"', (string) $this->client->getResponse()->getContent());
+    }
+
+    /**
+     * Renseigne les trois options de script, chacune repérable par son attribut data-test
+     * @return void
+     */
+    private function setScripts(): void
+    {
+        $this->setOption(OptionSystem::OS_FRONT_SCRIPT_TOP, '<script data-test="top">var top = 1;</script>');
+        $this->setOption(OptionSystem::OS_FRONT_SCRIPT_START_BODY, '<script data-test="start">var start = 1;</script>');
+        $this->setOption(OptionSystem::OS_FRONT_SCRIPT_END_BODY, '<script data-test="end">var end = 1;</script>');
+    }
+
+    /**
+     * Enregistre la valeur d'une option système
+     * @param OptionSystem $option
+     * @param string $value
+     * @return void
+     */
+    private function setOption(OptionSystem $option, string $value): void
+    {
+        $this->container->get(OptionSystemService::class)->saveValueByKee($option->value, $value);
+    }
+
+    /**
+     * URL de l'accueil dans une langue
+     * @param string $locale
+     * @return string
+     */
+    private function homeUrl(string $locale = 'fr'): string
+    {
+        return $this->router->generate('front_index_2', ['locale' => $locale, 'category' => null, 'slug' => null]);
     }
 
     /**

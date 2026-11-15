@@ -105,4 +105,38 @@ class OptionSystemTest extends AppApiV2TestCase
 
         $this->assertProblem($this->requestV2('GET', '/option_systems?locale=de'), 422);
     }
+
+    /**
+     * Bandeau de consentement : activation, texte Markdown et libellés dans la langue de la requête
+     * @return void
+     */
+    public function testConsentOptions(): void
+    {
+        $optionSystemService = $this->container->get(OptionSystemService::class);
+        $optionSystemService->saveValueByKee(OptionSystemKey::OS_FRONT_CONSENT_ENABLED->value, '1');
+        $optionSystemService->saveValueByKee(
+            OptionSystemKey::OS_FRONT_CONSENT_TEXT->value,
+            json_encode(['fr' => 'Texte *FR*', 'en' => 'Text *EN*']),
+        );
+        $optionSystemService->saveValueByKee(
+            OptionSystemKey::OS_FRONT_CONSENT_ACCEPT_LABEL->value,
+            json_encode(['fr' => 'Accepter', 'en' => 'Accept']),
+        );
+        $optionSystemService->saveValueByKee(
+            OptionSystemKey::OS_FRONT_CONSENT_REFUSE_LABEL->value,
+            json_encode(['fr' => 'Refuser', 'en' => 'Refuse']),
+        );
+
+        $content = $this->decode($this->requestV2('GET', '/option_systems?locale=en'));
+        $this->assertMatchesResourceCollectionJsonSchema(OptionSystem::class);
+        $values = array_column($content['member'], 'value', 'key');
+        $this->assertTrue($values['front_consent_enabled']);
+        $this->assertArrayHasKey('front_consent_reset_at', $values);
+        $this->assertSame('Text *EN*', $values['front_consent_text']);
+        $this->assertSame('Accept', $values['front_consent_accept_label']);
+        $this->assertSame('Refuse', $values['front_consent_refuse_label']);
+
+        $content = $this->decode($this->requestV2('GET', '/option_systems/front_consent_text?locale=fr'));
+        $this->assertSame('Texte *FR*', $content['value']);
+    }
 }

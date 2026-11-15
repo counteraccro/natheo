@@ -66,6 +66,9 @@ options_system.category.mail.title: Email management
 options_system.category.media.description: Manage the media library options
 options_system.category.media.label: Media library
 options_system.category.media.title: Media library management
+options_system.category.multilingual.description: 'Texts shown on the public site, entered in each language. The selector picks the language being edited.'
+options_system.category.multilingual.label: 'Multilingual options'
+options_system.category.multilingual.title: 'Site texts by language'
 options_system.category.notification.description: Manage the notifications of the CMS
 options_system.category.notification.label: Notifications
 options_system.category.notification.title: Notification management
@@ -85,6 +88,23 @@ options_system.front_api_token.help: Token sent by the front to call the API, ge
 options_system.front_api_token.label: API token used by the site front
 options_system.front_api_token.placeholder: "xxxxxxxx.xxxxxxxx.xxxxxxxx.xxxxxxxx"
 options_system.front_api_token.success: The front API token has been updated
+options_system.front_consent_accept_label.help: 'Left empty, the theme shows its own label.'
+options_system.front_consent_accept_label.label: 'Accept button label'
+options_system.front_consent_accept_label.placeholder: 'Accept'
+options_system.front_consent_enabled.help: 'The scripts of the options « Script in the HEAD tag », « Script just after the opening BODY tag » and « Script just before the closing BODY tag » load once the visitor agrees. Without any script, the banner is not shown.'
+options_system.front_consent_enabled.label: 'Enable the consent banner'
+options_system.front_consent_refuse_label.help: 'Left empty, the theme shows its own label.'
+options_system.front_consent_refuse_label.label: 'Refuse button label'
+options_system.front_consent_refuse_label.placeholder: 'Refuse'
+options_system.front_consent_reset_at.button: 'Ask all visitors for consent again'
+options_system.front_consent_reset_at.help: 'Forces the banner to show again, even for visitors who already answered it. Use it after a policy change.'
+options_system.front_consent_reset_at.label: 'Ask for consent again'
+options_system.front_consent_reset_at.last: 'Last request: {date, date, short} at {date, time, short}'
+options_system.front_consent_reset_at.never: 'Last request: never'
+options_system.front_consent_reset_at.success: 'The banner will be shown again to all visitors'
+options_system.front_consent_text.help: 'Markdown text, which can contain a link to your legal notice.'
+options_system.front_consent_text.label: 'Consent banner text'
+options_system.front_consent_text.placeholder: 'This site uses audience measurement scripts. Do you accept them?'
 options_system.front_footer_social_facebook_url.help: Leave empty to display nothing, otherwise the URL will appear in the footer
 options_system.front_footer_social_facebook_url.label: URL of your Facebook account
 options_system.front_footer_social_facebook_url.placeholder: URL of your Facebook account
@@ -158,6 +178,12 @@ options_system.media_url.help: Only change it if you use external storage for yo
 options_system.media_url.label: Public URL to access the stored images
 options_system.media_url.placeholder: Public URL in the http:// format
 options_system.media_url.success: Media URL changed successfully
+options_system.multilingual.empty_count_label: 'Untranslated fields:'
+options_system.multilingual.empty_fallback_default: 'Not translated: the {language} text will be shown.'
+options_system.multilingual.empty_fallback_other: 'Not translated: the text of another language will be shown.'
+options_system.multilingual.empty_nothing: 'Empty: nothing will be shown.'
+options_system.multilingual.empty_theme_label: 'Empty: the theme''s default label will be shown.'
+options_system.multilingual.switch_label: 'Editing language'
 options_system.nb_element.help: The chosen value will be set for every new user created
 options_system.nb_element.label: Number of items per page in data tables
 options_system.new_comment_wait_validation.help: If yes, every new comment will have to be approved manually to be visible on the site

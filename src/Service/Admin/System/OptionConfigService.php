@@ -62,6 +62,9 @@ class OptionConfigService extends AppAdminService
         }
 
         switch ($optionConfig['type']) {
+            // Valeur posée par sa propre action, jamais saisie
+            case 'action':
+                return false;
             case 'boolean':
                 return in_array($value, ['0', '1'], true);
             case 'select':

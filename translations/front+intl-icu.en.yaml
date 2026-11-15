@@ -72,3 +72,7 @@ front.comment.sort_desc: "Newest first"
 front.comment.sort_asc: "Oldest first"
 front.comment.status_wait: "Awaiting approval"
 front.comment.status_moderate: "Moderated"
+front.consent.region_label: 'Cookie choice'
+front.consent.accept: Accept
+front.consent.refuse: Refuse
+front.footer.consent_link: 'Cookie settings'

@@ -1,3 +1,8 @@
 option_system.index.title: System options
 option_system.index.description: Manage the CMS configuration
 option_system.error.csrf: Invalid security token, reload the page and try again.
+option_system.consent_reset.title: 'Ask for consent again'
+option_system.consent_reset.body: 'The consent banner will be shown again to all visitors, including those who already made their choice.'
+option_system.consent_reset.cancel: Cancel
+option_system.consent_reset.confirm: Confirm
+option_system.consent_reset.error: 'The request could not be saved, reload the page and try again.'
