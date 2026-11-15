@@ -32,6 +32,7 @@ Le format suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), avec un
 ### Corrigé
 
 - Installation : les dossiers inscriptibles absents d'un clone neuf sont créés ([#501](https://github.com/counteraccro/natheo/issues/501))
+- Éditeur de page : la barre de statut indique « Aucune modification » à l'ouverture au lieu de « Modifications non sauvegardées », dans la langue de l'interface ([#523](https://github.com/counteraccro/natheo/issues/523))
 
 ### Sécurité
 

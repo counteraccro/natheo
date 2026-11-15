@@ -61,7 +61,7 @@ export default defineComponent({
   data() {
     return {
       autoSaveTimeout: null as ReturnType<typeof setTimeout> | null,
-      autoSaveStatus: 'idle' as 'idle' | 'saving' | 'saved' | 'error',
+      autoSaveStatus: 'idle' as 'idle' | 'pending' | 'saving' | 'saved' | 'error',
       autoSaveTime: '' as string,
       restoreStatus: 'idle' as 'idle' | 'restored',
       restoreTime: '' as string,
@@ -92,7 +92,7 @@ export default defineComponent({
           clearTimeout(this.autoSaveTimeout);
         }
 
-        this.autoSaveStatus = 'idle';
+        this.autoSaveStatus = 'pending';
 
         this.autoSaveTimeout = setTimeout(() => {
           this.triggerAutoSave();
@@ -293,9 +293,13 @@ export default defineComponent({
           <span class="w-2 h-2 rounded-full inline-block shrink-0 bg-btn-danger"></span>
           {{ translate.auto_save_error }}
         </p>
-        <p v-else class="text-xs flex items-center gap-2 text-gray-500 dark:text-gray-400 shrink-0">
+        <p v-else-if="autoSaveStatus === 'pending'" class="text-xs flex items-center gap-2 shrink-0 text-fg-muted">
           <span class="w-2 h-2 rounded-full inline-block shrink-0 bg-amber-500"></span>
-          Modifications non sauvegardées
+          {{ translate.auto_save_pending }}
+        </p>
+        <p v-else class="text-xs flex items-center gap-2 shrink-0 text-fg-muted">
+          <span class="w-2 h-2 rounded-full inline-block shrink-0 bg-fg-subtle"></span>
+          {{ translate.auto_save_none }}
         </p>
       </template>
 
