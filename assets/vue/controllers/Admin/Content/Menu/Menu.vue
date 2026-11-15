@@ -11,9 +11,11 @@ import MenuTree from '@/vue/Components/Menu/MenuTree.vue';
 import Sortable from 'sortablejs';
 import Modal from '@/vue/Components/Global/Modal.vue';
 import MenuElementForm from '@/vue/Components/Menu/MenuElementForm.vue';
-import { emitter } from '@/vue/Composables/Global/useEvent';
+import { leaveGuard } from '@/vue/Composables/Admin/leaveGuard';
 import MenuPreview from '@/vue/Components/Menu/MenuPreview.vue';
 import { toastSuccess, toastError, toastRequestError } from '@/vue/Composables/Global/toast';
+
+const LEAVE_GUARD_KEY = 'menu';
 
 export default defineComponent({
   name: 'Menu',
@@ -60,7 +62,6 @@ export default defineComponent({
       sortableRoot: null as Sortable | null,
       currentLocale: '',
       listTypeByPosition: {} as Record<string, string>,
-      updateNoSave: false,
       idSelected: 0,
       menuElementSelected: null as MenuElement | null,
       nodeToOpen: 0,
@@ -84,8 +85,18 @@ export default defineComponent({
     this.loadMenu();
     this.currentLocale = this.locales.current;
   },
+  beforeUnmount() {
+    leaveGuard.untrack(LEAVE_GUARD_KEY);
+  },
 
   computed: {
+    /**
+     * Retourne true si le menu diffère de sa dernière version sauvegardée
+     */
+    updateNoSave(): boolean {
+      return leaveGuard.isDirty(LEAVE_GUARD_KEY);
+    },
+
     /**
      * Retourne les ids des éléments invalides (toutes locales confondues)
      */
@@ -120,6 +131,7 @@ export default defineComponent({
         .finally(() => {
           this.loading = false;
           this.loadDraggable();
+          this.$nextTick(() => leaveGuard.track(LEAVE_GUARD_KEY, () => this.menu));
         });
     },
 
@@ -193,7 +205,6 @@ export default defineComponent({
             });
 
             this.menu.menuElements = items;
-            this.updateNoSave = true;
           },
         });
       });
@@ -218,8 +229,6 @@ export default defineComponent({
       siblings.forEach((el, index) => {
         el.columnPosition = index + 1;
       });
-
-      this.updateNoSave = true;
     },
 
     /**
@@ -301,7 +310,6 @@ export default defineComponent({
       this.idSelected = newElement.id;
       this.menuElementSelected = newElement;
       this.nodeToOpen = parentId ?? 0;
-      this.updateNoSave = true;
 
       this.$nextTick(() => {
         this.loadDraggable();
@@ -363,8 +371,6 @@ export default defineComponent({
         this.idSelected = 0;
         this.menuElementSelected = null;
       }
-
-      this.updateNoSave = true;
     },
 
     /**
@@ -389,7 +395,6 @@ export default defineComponent({
       const element = this.findElement(this.menu.menuElements, id);
       if (element !== null) {
         this.toggleVisibilityRecursive(element, !element.disabled);
-        this.updateNoSave = true;
       }
     },
 
@@ -415,7 +420,6 @@ export default defineComponent({
           this.noSaveElementIds = this.noSaveElementIds.filter((el) => el !== menuElement.id);
         }
 
-        this.updateNoSave = this.noSaveElementIds.length > 0;
         this.menuElementSelected = null;
       }
     },
@@ -450,7 +454,6 @@ export default defineComponent({
       if (!this.noSaveElementIds.includes(id)) {
         this.noSaveElementIds.push(id);
       }
-      this.updateNoSave = true;
     },
 
     /**
@@ -469,13 +472,13 @@ export default defineComponent({
         .then((response) => {
           if (response.data.success === true) {
             toastSuccess(response.data.msg);
+            leaveGuard.commit(LEAVE_GUARD_KEY);
             // Cas première page, on force la redirection pour passer en mode édition
             if (response.data.redirect === true) {
               window.location.replace(response.data.url);
             }
 
             this.noSaveElementIds = [];
-            this.updateNoSave = false;
           } else {
             toastError(response.data.msg);
           }
@@ -490,7 +493,6 @@ export default defineComponent({
         })
         .finally(() => {
           this.loading = false;
-          emitter.emit('reset-check-confirm');
         });
     },
 
@@ -746,10 +748,7 @@ export default defineComponent({
                 id="menu-title"
                 v-model="menu.name"
                 :placeholder="translate.input_name_placeholder"
-                @input="
-                  errors.name = !menu.name.trim();
-                  errors.name ? '' : (updateNoSave = true);
-                "
+                @input="errors.name = !menu.name.trim()"
               />
               <span v-if="errors.name" class="form-text text-error">✗ {{ translate.input_name_error }}</span>
             </div>
@@ -757,12 +756,11 @@ export default defineComponent({
             <div>
               <div class="form-switch form-switch-inline">
                 <input
-                  class="switch-input no-control event-input"
+                  class="switch-input event-input"
                   type="checkbox"
                   role="switch"
                   id="default_menu"
                   v-model="menu.defaultMenu"
-                  @input="updateNoSave = true"
                 />
                 <label class="switch-toggle" for="default_menu"></label>
                 <label class="swith-label" for="default_menu"
@@ -782,12 +780,11 @@ export default defineComponent({
             <div>
               <div class="form-switch form-switch-inline">
                 <input
-                  class="switch-input no-control event-input"
+                  class="switch-input event-input"
                   type="checkbox"
                   role="switch"
                   id="disabled_menu"
                   v-model="menu.disabled"
-                  @input="updateNoSave = true"
                 />
                 <label class="switch-toggle" for="disabled_menu"></label>
                 <label class="swith-label" for="disabled_menu"
@@ -808,7 +805,6 @@ export default defineComponent({
                 class="form-input"
                 v-model="menu.position"
                 @change="selectListTypeByPosition(menu.position)"
-                @input="updateNoSave = true"
               >
                 <option v-for="(position, key) in menu_datas.list_position" :value="key">
                   {{ position }}
@@ -818,7 +814,7 @@ export default defineComponent({
 
             <div class="form-group">
               <label class="form-label" for="menu-title">{{ translate.select_type_label }}</label>
-              <select id="menu-type" class="form-input" v-model="menu.type" @input="updateNoSave = true">
+              <select id="menu-type" class="form-input" v-model="menu.type">
                 <option v-for="(position, key) in listTypeByPosition" :value="key">{{ position }}</option>
               </select>
             </div>

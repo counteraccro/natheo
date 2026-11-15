@@ -490,12 +490,7 @@ export default defineComponent({
     <div class="border-b border-line">
       <ul class="flex flex-wrap -mb-px text-sm font-medium text-center px-4 sm:px-6" id="default-tab" role="tablist">
         <li class="me-2" role="presentation">
-          <input
-            type="checkbox"
-            class="form-check-input ms-3 no-control"
-            id="check-all"
-            @change="checkedAllNotification"
-          />
+          <input type="checkbox" class="form-check-input ms-3" id="check-all" @change="checkedAllNotification" />
           <button
             class="inline-block p-3 border-b-2 cursor-pointer"
             :class="tabClass('all')"

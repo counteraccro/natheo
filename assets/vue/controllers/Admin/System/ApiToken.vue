@@ -10,7 +10,7 @@ import axios from 'axios';
 import { withCsrf } from '@/vue/Composables/Admin/csrf';
 import Modal from '@/vue/Components/Global/Modal.vue';
 import { copyToClipboard } from '@/vue/Composables/Global/copyToClipboard';
-import { emitter } from '@/vue/Composables/Global/useEvent';
+import { leaveGuard } from '@/vue/Composables/Admin/leaveGuard';
 import SkeletonForm from '@/vue/Components/Skeleton/Form.vue';
 import AlertWarning from '@/vue/Components/Alert/Warning.vue';
 import type {
@@ -24,6 +24,8 @@ import type {
   ApiTokenValidation,
 } from '@/ts/ApiToken/ApiToken.type';
 import { toastSuccess, toastError } from '@/vue/Composables/Global/toast';
+
+const LEAVE_GUARD_KEY = 'api-token';
 
 export default defineComponent({
   name: 'ApiToken',
@@ -56,6 +58,12 @@ export default defineComponent({
         },
       } as ApiTokenValidation,
     };
+  },
+  mounted() {
+    leaveGuard.track(LEAVE_GUARD_KEY, () => this.apiToken);
+  },
+  beforeUnmount() {
+    leaveGuard.untrack(LEAVE_GUARD_KEY);
   },
   methods: {
     /**
@@ -116,6 +124,9 @@ export default defineComponent({
         )
         .then((response) => {
           this.showResponseToast(response.data);
+          if (response.data.success) {
+            leaveGuard.commit(LEAVE_GUARD_KEY);
+          }
           if (response.data.success && response.data.token !== '') {
             this.plainToken = response.data.token;
           }
@@ -126,7 +137,6 @@ export default defineComponent({
         })
         .finally(() => {
           this.loading = false;
-          emitter.emit('reset-check-confirm');
         });
     },
 
@@ -142,6 +152,7 @@ export default defineComponent({
         .then((response) => {
           this.showResponseToast(response.data);
           if (response.data.success) {
+            leaveGuard.untrack(LEAVE_GUARD_KEY);
             setTimeout(() => {
               window.location.href = this.urls.index_api_token;
             }, 1500);

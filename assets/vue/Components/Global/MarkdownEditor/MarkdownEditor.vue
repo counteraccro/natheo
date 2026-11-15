@@ -432,7 +432,7 @@ export default defineComponent({
           <div v-if="name === 'heading'" class="relative">
             <button
               type="button"
-              class="tb-btn no-control"
+              class="tb-btn"
               style="padding: 0 0.625rem"
               :title="t('btnHeading', 'Titres')"
               :aria-label="t('btnHeading', 'Titres')"
@@ -457,17 +457,12 @@ export default defineComponent({
             <div v-if="openDropdown === 'heading'" class="tb-dropdown-menu" style="min-width: 12rem">
               <ul class="py-1" role="menu">
                 <li v-for="level in [1, 2, 3, 4, 5, 6]" :key="level" role="none">
-                  <button
-                    type="button"
-                    role="menuitem"
-                    class="tb-dropdown-item no-control"
-                    @click="insertHeading(level)"
-                  >
-                    <span class="item-badge no-control">H{{ level }}</span>
-                    <span class="item-label no-control" :class="`h-preview-${level}`">{{
+                  <button type="button" role="menuitem" class="tb-dropdown-item" @click="insertHeading(level)">
+                    <span class="item-badge">H{{ level }}</span>
+                    <span class="item-label" :class="`h-preview-${level}`">{{
                       t(`titreH${level}` as 'titreH1', `Titre ${level}`)
                     }}</span>
-                    <span class="item-shortcut no-control">{{ '#'.repeat(level) + ' ' }}</span>
+                    <span class="item-shortcut">{{ '#'.repeat(level) + ' ' }}</span>
                   </button>
                 </li>
               </ul>
@@ -478,7 +473,7 @@ export default defineComponent({
           <div v-else-if="name === 'keywords'" class="relative">
             <button
               type="button"
-              class="tb-btn no-control"
+              class="tb-btn"
               style="padding: 0 0.75rem"
               aria-haspopup="menu"
               :aria-expanded="openDropdown === 'keywords'"
@@ -516,15 +511,10 @@ export default defineComponent({
             <div v-if="openDropdown === 'keywords'" class="tb-dropdown-menu w-max" style="min-width: 13rem">
               <ul class="py-1" role="menu">
                 <li v-for="kw in meKeyWords" :key="kw.keyword" role="none">
-                  <button
-                    type="button"
-                    role="menuitem"
-                    class="tb-dropdown-item no-control"
-                    @click="insertKeyword(kw.keyword)"
-                  >
-                    <span class="item-badge no-control">@</span>
-                    <span class="item-label no-control">{{ kw.label }}</span>
-                    <span class="item-shortcut no-control">{{ kw.keyword }}</span>
+                  <button type="button" role="menuitem" class="tb-dropdown-item" @click="insertKeyword(kw.keyword)">
+                    <span class="item-badge">@</span>
+                    <span class="item-label">{{ kw.label }}</span>
+                    <span class="item-shortcut">{{ kw.keyword }}</span>
                   </button>
                 </li>
               </ul>
@@ -620,7 +610,7 @@ export default defineComponent({
       </span>
       <span v-else>
         {{ t('help') }}
-        <a href="https://www.markdownguide.org" class="no-control" target="_blank" rel="noopener">Markdown</a>
+        <a href="https://www.markdownguide.org" target="_blank" rel="noopener">Markdown</a>
       </span>
 
       <span class="md-footer-counts">

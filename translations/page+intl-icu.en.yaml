@@ -16,6 +16,8 @@ page.page.no.exist.text: This page does not exist or has been deleted. You can g
 page.button.back: Back
 page.button.new: New page
 page.message.auto_save.error: An error occurred during the auto-save
+page.message.auto_save.none: 'No changes'
+page.message.auto_save.pending: 'Unsaved changes'
 page.page_seo.title: Page SEO
 page.page_seo.input.meta_description.label: Meta tag "description"
 page.page_seo.input.meta_description.help: A short description of your page

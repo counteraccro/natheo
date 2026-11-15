@@ -20,7 +20,7 @@
                     </svg>
                 </div>
                 <form id="form-global-search" class="flex" role="search" action="{{ path('admin_search_index') }}" method="post">
-                <input type="search" name="global-search-input" class="search-input w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary no-control" placeholder="{{ 'global.header.search.placeholder' | trans({}, 'global') }}">
+                <input type="search" name="global-search-input" class="search-input w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="{{ 'global.header.search.placeholder' | trans({}, 'global') }}">
                 </form>
             </div>
         </div>
@@ -41,10 +41,10 @@
                     <div class="mb-4">
                         <h3 class="text-sm font-semibold mb-3 text-fg">{{ 'global.header.theme.title' | trans({}, 'global') }}</h3>
                         <div class="flex items-center justify-between gap-3">
-                            <button class="theme-btn theme-violet active no-control" onclick="setTheme('violet')" title="Violet"></button>
-                            <button class="theme-btn theme-blue no-control" onclick="setTheme('blue')" title="Bleu"></button>
-                            <button class="theme-btn theme-green no-control" onclick="setTheme('green')" title="Vert"></button>
-                            <button class="theme-btn theme-red no-control" onclick="setTheme('red')" title="Rouge"></button>
+                            <button class="theme-btn theme-violet active" onclick="setTheme('violet')" title="Violet"></button>
+                            <button class="theme-btn theme-blue" onclick="setTheme('blue')" title="Bleu"></button>
+                            <button class="theme-btn theme-green" onclick="setTheme('green')" title="Vert"></button>
+                            <button class="theme-btn theme-red" onclick="setTheme('red')" title="Rouge"></button>
                         </div>
                     </div>
 

@@ -87,6 +87,12 @@ Buttons use the classes of `assets/styles/admin/global/button.scss` (`btn` + a s
 - **Colors**: `btn-primary` for the main action, `btn-outline-dark` for secondary actions, `btn-success` only for a positive action that does not save (preview, run, send a test), `btn-ghost-*` for icon-only action buttons in grids and lists. No `btn-secondary`.
 - **Icons**: every text button of an action has an icon, `icon` in `btn-sm` buttons, `icon-sm` in `btn-xs` and icon-only (`btn-icon`) buttons.
 
+### Admin leave confirmation
+A form is protected against leaving the page with unsaved changes only when it declares itself to the registry `leaveGuard` (`assets/vue/Composables/Admin/leaveGuard.ts`), read by `Admin/Global/LeaveGuard.vue` (mounted in `admin_base.html.twig`, option `OS_CONFIRM_LEAVE_FORM`) on sidebar/link clicks and on `beforeunload`:
+- **Vue form**: `leaveGuard.track(KEY, () => this.data)` once the data is loaded (in `$nextTick` when an editor normalizes it on mount), `leaveGuard.commit(KEY)` only after a successful save, `leaveGuard.untrack(KEY)` in `beforeUnmount`. A "not saved" indicator is a computed `leaveGuard.isDirty(KEY)`, never a hand-maintained flag.
+- **Symfony form**: `form_start(form, {'attr': {'data-leave-guard': form.vars.submitted and not form.vars.valid ? 'dirty' : ''}})`; `dirty` keeps a form redisplayed after a validation error marked as modified.
+- Forms that save on each action (upload, toggles, grids) are not tracked.
+
 ### Tests
 `tests/AppWebTestCase` (extends Symfony's `WebTestCase`, uses `FixturesTrait`) is the base class for controller/service tests and provides helpers such as `checkNoAccess()`, `createUser*()`, and domain fixture factories (e.g. `createPage()`) from `tests/Helper/Fixtures/`. It boots the client against locale `fr` and seeds default system options in `setUp()`. Test structure under `tests/` mirrors `src/` (`Controller/Admin/Content/...`, `Service/Admin/...`, etc.).
 

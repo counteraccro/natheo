@@ -13,6 +13,9 @@ import type {
   PasswordRuleState,
   PasswordRules,
 } from '@/ts/User/ChangePassword.type';
+import { leaveGuard } from '@/vue/Composables/Admin/leaveGuard';
+
+const LEAVE_GUARD_KEY = 'change-password';
 
 const ICON_INVALID = 'm15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z';
 const ICON_VALID = 'M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z';
@@ -70,6 +73,12 @@ export default defineComponent({
         special: '(?=.*?[#?!@$%^&*-])',
       } as PasswordRules,
     };
+  },
+  mounted() {
+    leaveGuard.track(LEAVE_GUARD_KEY, () => [this.currentPassword, this.password, this.passwordConfirm]);
+  },
+  beforeUnmount() {
+    leaveGuard.untrack(LEAVE_GUARD_KEY);
   },
   computed: {
     progress(): number {
@@ -307,7 +316,7 @@ export default defineComponent({
           <label for="input-password-current" class="form-label">{{ translate.password_current }}</label>
           <input
             type="password"
-            class="form-input no-control"
+            class="form-input"
             id="input-password-current"
             autocomplete="current-password"
             v-model="currentPassword"
@@ -319,7 +328,7 @@ export default defineComponent({
           }}</label>
           <input
             type="password"
-            class="form-input no-control"
+            class="form-input"
             :class="classPassword"
             id="input-password-1"
             v-model="password"
@@ -330,7 +339,7 @@ export default defineComponent({
           <label for="input-password-2" class="form-label">{{ translate.password_2 }}</label>
           <input
             type="password"
-            class="form-input no-control"
+            class="form-input"
             :class="classPasswordConfirm"
             id="input-password-2"
             v-model="passwordConfirm"

@@ -36,6 +36,15 @@
     {% include "/admin/includes/debug_bar.html.twig" %}
 </div>
     <div {{ vue_component('Admin/Global/ToastContainer') }}></div>
+    <div {{ vue_component('Admin/Global/LeaveGuard', {
+        'option': get_option_system_value_by_key(os_confirm_leave_form),
+        'translate': {
+            'title': 'global.leave_form.title' | trans,
+            'body': 'global.leave_form.body' | trans,
+            'button_stay': 'global.leave_form.button_no' | trans,
+            'button_leave': 'global.leave_form.button_yes' | trans
+        }
+    }) }}></div>
     {% include "/admin/includes/ui_translate.html.twig" %}
     {% include "/admin/includes/scripts.html.twig" %}
 
