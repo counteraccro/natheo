@@ -20,7 +20,7 @@ export interface MenuPreviewPage {
 }
 
 /** Données dont la conversion du menu au format de l'API v2 a besoin */
-export interface MenuPreviewSource {
+export interface MenuPreviewInput {
   menu: Menu;
   locale: string;
   slugs: MenuPreviewSlugs;

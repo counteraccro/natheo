@@ -289,6 +289,9 @@ class MenuControllerTest extends AppWebTestCase
     public function testPreview(): void
     {
         $this->checkNoAccess('admin_menu_preview', ['locale' => 'fr']);
+        $this->container
+            ->get(OptionSystemService::class)
+            ->saveValueByKee(OptionSystem::OS_FRONT_SCRIPT_TOP->value, '<script>window.scriptSite = true;</script>');
 
         $this->client->loginUser($this->createUserContributeur(), 'admin');
         foreach ($this->locales as $locale) {
@@ -298,6 +301,7 @@ class MenuControllerTest extends AppWebTestCase
             );
             $this->assertResponseIsSuccessful();
             $this->assertResponseHeaderSame('X-Robots-Tag', 'noindex');
+            $this->assertStringNotContainsString('scriptSite', (string) $this->client->getResponse()->getContent());
             $this->assertSelectorExists('html[lang="' . $locale . '"]');
             $this->assertStringContainsString(
                 'Front/NatheoHorizon/MenuPreview',
