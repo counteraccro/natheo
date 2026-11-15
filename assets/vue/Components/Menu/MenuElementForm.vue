@@ -323,7 +323,7 @@ export default defineComponent({
     <div class="pt-2 border-t border-(--border-color)">
       <div class="form-switch form-switch-inline">
         <input
-          class="switch-input no-control event-input"
+          class="switch-input event-input"
           type="checkbox"
           role="switch"
           id="menuElement_disabled"

@@ -32,7 +32,7 @@ import PageTag from '@/vue/Components/Page/PageTag.vue';
 import PageMenu from '@/vue/Components/Page/PageMenu.vue';
 import PageComment from '@/vue/Components/Page/PageComment.vue';
 import PageInformation from '@/vue/Components/Page/PageInformation.vue';
-import { emitter } from '@/vue/Composables/Global/useEvent';
+import { leaveGuard } from '@/vue/Composables/Admin/leaveGuard';
 import AlertSuccess from '@/vue/Components/Alert/Success.vue';
 import AlertWarning from '@/vue/Components/Alert/Warning.vue';
 import AlertInfo from '@/vue/Components/Alert/Info.vue';
@@ -40,6 +40,8 @@ import AlertPrimary from '@/vue/Components/Alert/Primary.vue';
 import { toastSuccess, toastError, toastRequestError } from '@/vue/Composables/Global/toast';
 import Modal from '@/vue/Components/Global/Modal.vue';
 import { PageValidationStatus } from '@/vue/Composables/Admin/Page/PageValidationStatus';
+
+const LEAVE_GUARD_KEY = 'page';
 
 const DEFAULT_STATE: PageState = {
   is_published: false,
@@ -163,6 +165,9 @@ export default defineComponent({
     this.loadPage();
     this.currentLocale = this.locales.current;
   },
+  beforeUnmount() {
+    leaveGuard.untrack(LEAVE_GUARD_KEY);
+  },
   computed: {
     /**
      * Erreur onglet Informations
@@ -217,6 +222,7 @@ export default defineComponent({
           (this.$refs.statusBar as InstanceType<typeof PageStatusBar>)?.notifyPageReady();
           this.$nextTick(() => {
             initFlowbite();
+            leaveGuard.track(LEAVE_GUARD_KEY, () => this.page);
           });
         });
     },
@@ -412,6 +418,7 @@ export default defineComponent({
         .then((response) => {
           if (response.data.success === true) {
             toastSuccess(response.data.msg);
+            leaveGuard.commit(LEAVE_GUARD_KEY);
             if (response.data.state) {
               this.state = response.data.state;
             }
@@ -434,7 +441,6 @@ export default defineComponent({
           this.$nextTick(() => {
             initFlowbite();
           });
-          emitter.emit('reset-check-confirm');
         });
     },
 
@@ -448,6 +454,7 @@ export default defineComponent({
         .put(this.getDraftUrl(this.urls.publish_draft), { page: this.page }, withCsrf(this.csrfTokenPublishDraft))
         .then((response) => {
           toastSuccess(response.data.msg);
+          leaveGuard.commit(LEAVE_GUARD_KEY);
           if (response.data.state) {
             this.state = response.data.state;
           }
@@ -460,7 +467,6 @@ export default defineComponent({
           this.$nextTick(() => {
             initFlowbite();
           });
-          emitter.emit('reset-check-confirm');
         });
     },
 
@@ -537,6 +543,9 @@ export default defineComponent({
         .put(this.getDraftUrl(url), data, withCsrf(csrfToken))
         .then((response) => {
           toastSuccess(response.data.msg);
+          if ('page' in data) {
+            leaveGuard.commit(LEAVE_GUARD_KEY);
+          }
           if (response.data.state) {
             this.state = response.data.state;
           }
@@ -549,7 +558,6 @@ export default defineComponent({
           this.$nextTick(() => {
             initFlowbite();
           });
-          emitter.emit('reset-check-confirm');
         });
     },
 

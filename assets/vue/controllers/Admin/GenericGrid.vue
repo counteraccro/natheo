@@ -416,7 +416,7 @@ export default defineComponent({
               </div>
               <input
                 type="search"
-                class="form-input input-icon-left no-control"
+                class="form-input input-icon-left"
                 :placeholder="searchPlaceholder"
                 v-model="searchQuery"
               />
@@ -562,11 +562,7 @@ export default defineComponent({
               </div>
               <ul class="py-2 text-sm" aria-labelledby="dropdownDefaultButton">
                 <li>
-                  <a
-                    href="#"
-                    class="no-control px-4 py-2 hover:bg-gray-100 flex item-center"
-                    @click="changeSearchMode('table')"
-                  >
+                  <a href="#" class="px-4 py-2 hover:bg-gray-100 flex item-center" @click="changeSearchMode('table')">
                     <svg
                       class="w-5 h-5 mr-3 text-primary"
                       aria-hidden="true"
@@ -587,11 +583,7 @@ export default defineComponent({
                   >
                 </li>
                 <li>
-                  <a
-                    href="#"
-                    class="no-control flex items-center px-4 py-2 hover:bg-gray-100"
-                    @click="changeSearchMode('bdd')"
-                  >
+                  <a href="#" class="flex items-center px-4 py-2 hover:bg-gray-100" @click="changeSearchMode('bdd')">
                     <svg
                       class="w-5 h-5 mr-3 text-primary"
                       aria-hidden="true"
@@ -617,7 +609,7 @@ export default defineComponent({
               <div class="py-2">
                 <a
                   href="#"
-                  class="no-control flex items-center px-4 py-2 text-sm hover:bg-gray-100"
+                  class="flex items-center px-4 py-2 text-sm hover:bg-gray-100"
                   @click="showQuery ? showQueryRun(false) : showQueryRun(true)"
                 >
                   <svg
@@ -636,17 +628,13 @@ export default defineComponent({
                     />
                   </svg>
 
-                  <span class="no-control" v-if="!showQuery">{{ translate.textShowQuery }}</span>
-                  <span class="no-control" v-else>{{ translate.textHideQuery }}</span>
+                  <span v-if="!showQuery">{{ translate.textShowQuery }}</span>
+                  <span v-else>{{ translate.textHideQuery }}</span>
                 </a>
               </div>
               <ul v-if="showFilter" class="py-2 text-sm">
                 <li>
-                  <a
-                    class="no-control flex items-center px-4 py-2 text-sm hover:bg-gray-100"
-                    href="#"
-                    @click="changeFilter('me')"
-                  >
+                  <a class="flex items-center px-4 py-2 text-sm hover:bg-gray-100" href="#" @click="changeFilter('me')">
                     <svg
                       class="w-5 h-5 mr-3 text-primary"
                       aria-hidden="true"
@@ -667,7 +655,7 @@ export default defineComponent({
                 </li>
                 <li>
                   <a
-                    class="no-control flex items-center px-4 py-2 text-sm hover:bg-gray-100"
+                    class="flex items-center px-4 py-2 text-sm hover:bg-gray-100"
                     href="#"
                     @click="changeFilter('all')"
                   >
@@ -693,7 +681,7 @@ export default defineComponent({
                 </li>
                 <li v-if="showFilterPendingValidation">
                   <a
-                    class="no-control flex items-center px-4 py-2 text-sm hover:bg-gray-100"
+                    class="flex items-center px-4 py-2 text-sm hover:bg-gray-100"
                     href="#"
                     @click="changeFilter('pending_validation')"
                   >
@@ -721,7 +709,7 @@ export default defineComponent({
               <div class="py-2">
                 <a
                   href="#"
-                  class="no-control flex items-center px-4 py-2 text-sm hover:bg-gray-100"
+                  class="flex items-center px-4 py-2 text-sm hover:bg-gray-100"
                   @click="showMoreOption ? showMoreOptionBloc(false) : showMoreOptionBloc(true)"
                 >
                   <svg
@@ -746,8 +734,8 @@ export default defineComponent({
                       d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
                     />
                   </svg>
-                  <span class="no-control" v-if="!showMoreOption">{{ translate.textShowTrieOption }}</span>
-                  <span class="no-control" v-else>{{ translate.textHideTrieOption }}</span>
+                  <span v-if="!showMoreOption">{{ translate.textShowTrieOption }}</span>
+                  <span v-else>{{ translate.textHideTrieOption }}</span>
                 </a>
               </div>
             </div>

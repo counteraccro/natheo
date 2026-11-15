@@ -69,6 +69,8 @@ class PageTranslate extends AppTranslate
             'btn_new' => $this->translator->trans('page.button.new', domain: 'page'),
             'auto_save_success' => $this->translator->trans('page.message.auto_save.success', domain: 'page'),
             'auto_save_error' => $this->translator->trans('page.message.auto_save.error', domain: 'page'),
+            'auto_save_none' => $this->translator->trans('page.message.auto_save.none', domain: 'page'),
+            'auto_save_pending' => $this->translator->trans('page.message.auto_save.pending', domain: 'page'),
             'page_content_form' => $this->getTranslatePageContentForm(),
             'page_content' => $this->getTranslatePageContent(),
             'page_history' => $this->getTranslatePageHistory(),

@@ -16,6 +16,8 @@ page.page.no.exist.text: Esta página no existe o ha sido eliminada. Puede volve
 page.button.back: Volver
 page.button.new: Nueva página
 page.message.auto_save.error: Se ha producido un error durante el guardado automático
+page.message.auto_save.none: 'Sin cambios'
+page.message.auto_save.pending: 'Cambios sin guardar'
 page.page_seo.title: SEO de la página
 page.page_seo.input.meta_description.label: Metaetiqueta "description"
 page.page_seo.input.meta_description.help: Una breve descripción de su página

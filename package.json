@@ -31,7 +31,6 @@
         "@fontsource-variable/schibsted-grotesk": "^5.3.0",
         "axios": "^1.8.4",
         "dompurify": "^3",
-        "emittery": "^1.0.1",
         "flowbite": "^3.1.2",
         "marked": "^18.1.0",
         "sortablejs": "^1.15.7"

@@ -44,7 +44,7 @@
         </twig:block>
     </twig:Admin:PageHeaderComponent>
 
-    {{ form_start(form) }}
+    {{ form_start(form, {'attr': {'data-leave-guard': form.vars.submitted and not form.vars.valid ? 'dirty' : ''}}) }}
 
     <div class="card mb-4">
         <div class="card-header">

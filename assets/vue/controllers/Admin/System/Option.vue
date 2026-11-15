@@ -10,7 +10,6 @@ import { defineComponent, type PropType } from 'vue';
 import Modal from '@/vue/Components/Global/Modal.vue';
 import axios from 'axios';
 import { withCsrf } from '@/vue/Composables/Admin/csrf';
-import { emitter } from '@/vue/Composables/Global/useEvent';
 import type {
   OptionField,
   OptionActionResponse,
@@ -270,9 +269,6 @@ export default defineComponent({
           spinner?.classList.add('hidden');
           showError();
           console.error(e);
-        })
-        .finally(() => {
-          emitter.emit('reset-check-confirm');
         });
     },
   },

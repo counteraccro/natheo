@@ -172,7 +172,7 @@ export default {
                   <a
                     href="#"
                     @click="$emit('revert-trash', false, media.id, media.type)"
-                    class="no-control flex items-center gap-2.5 px-3 py-2.5 transition-colors duration-150 text-fg"
+                    class="flex items-center gap-2.5 px-3 py-2.5 transition-colors duration-150 text-fg"
                     @mouseover="onMenuHover($event, 'var(--bg-hover)')"
                     @mouseleave="onMenuHover($event, '')"
                   >
@@ -196,7 +196,7 @@ export default {
                   <a
                     href="#"
                     @click="askDelete(media.id)"
-                    class="no-control flex items-center gap-2.5 px-3 py-2.5 transition-colors duration-150 text-red-500"
+                    class="flex items-center gap-2.5 px-3 py-2.5 transition-colors duration-150 text-red-500"
                     @mouseover="onMenuHover($event, '#fef2f2')"
                     @mouseleave="onMenuHover($event, '')"
                   >

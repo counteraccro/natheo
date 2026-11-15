@@ -140,6 +140,8 @@ export interface PageTranslations {
   btn_new: string;
   auto_save_success: string;
   auto_save_error: string;
+  auto_save_none: string;
+  auto_save_pending: string;
   page_content_form: PageContentFormTranslate;
   page_content: PageContentTranslate;
   page_history: PageHistoryTranslate;

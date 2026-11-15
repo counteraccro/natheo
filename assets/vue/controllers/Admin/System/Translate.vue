@@ -7,7 +7,7 @@
 
 import { defineComponent, type PropType } from 'vue';
 import axios from 'axios';
-import { emitter } from '@/vue/Composables/Global/useEvent';
+import { leaveGuard } from '@/vue/Composables/Admin/leaveGuard';
 import SkeletonText from '@/vue/Components/Skeleton/Text.vue';
 import SkeletonTable from '@/vue/Components/Skeleton/Table.vue';
 import type {
@@ -20,6 +20,8 @@ import type {
   TranslateUpdate,
 } from '@/ts/Translate/Translate.type';
 import { toastSuccess, toastError } from '@/vue/Composables/Global/toast';
+
+const LEAVE_GUARD_KEY = 'translate';
 
 export default defineComponent({
   name: 'Translate',
@@ -72,7 +74,11 @@ export default defineComponent({
     },
   },
   mounted() {
+    leaveGuard.track(LEAVE_GUARD_KEY, () => this.tabTmpTranslate);
     this.loadListeLanguages();
+  },
+  beforeUnmount() {
+    leaveGuard.untrack(LEAVE_GUARD_KEY);
   },
   methods: {
     /**
@@ -101,6 +107,8 @@ export default defineComponent({
       this.currentLanguage = (event.target as HTMLSelectElement).value;
       this.currentFile = '';
       this.file = {};
+      this.tabTmpTranslate = [];
+      this.errors = {};
       if (this.currentLanguage !== '') {
         this.loadTranslateListeFile();
       }
@@ -140,7 +148,6 @@ export default defineComponent({
      * Charge le contenu du fichier sélectionné
      */
     loadFile(): void {
-      emitter.emit('reset-check-confirm');
       this.loading = true;
       axios
         .get<TranslateFileResponse>(this.url_translate_file + '/' + this.currentFile)
@@ -312,12 +319,7 @@ export default defineComponent({
         <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4">
           <div class="form-group">
             <label class="form-label" for="select-file">{{ translate.translate_select_language_label }}</label>
-            <select
-              class="form-input no-control"
-              id="select-file"
-              @change="selectLanguage($event)"
-              v-model="currentLanguage"
-            >
+            <select class="form-input" id="select-file" @change="selectLanguage($event)" v-model="currentLanguage">
               <option value="">{{ translate.translate_select_language }}</option>
               <option v-for="(language, key) in languages" v-bind:value="key">{{ language }}</option>
             </select>
@@ -325,7 +327,7 @@ export default defineComponent({
           <div class="form-group">
             <label class="form-label" for="select-time">{{ translate.translate_select_file_label }}</label>
             <select
-              class="form-input no-control"
+              class="form-input"
               id="select-time"
               @change="selectFile($event)"
               :disabled="!hasFiles"
@@ -423,7 +425,7 @@ export default defineComponent({
         <div class="flex flex-col md:flex-row md:items-center gap-4 p-5 border-b-1 border-b-line">
           <input
             type="search"
-            class="form-input no-control md:max-w-md"
+            class="form-input md:max-w-md"
             v-model="search"
             :placeholder="translate.translate_search_placeholder"
             :aria-label="translate.translate_search_placeholder"
@@ -431,7 +433,7 @@ export default defineComponent({
           <div class="form-switch form-switch-inline mb-0! md:ml-auto">
             <input
               type="checkbox"
-              class="switch-input no-control"
+              class="switch-input"
               id="translate-only-untranslated"
               role="switch"
               v-model="onlyUntranslated"
@@ -482,7 +484,7 @@ export default defineComponent({
 
             <div :data-id="key + '-help'" class="form-text text-warning mt-2" :class="isChangeHelp(key)">
               ⚠ {{ translate.translate_info_edit }}
-              <a href="#" onclick="return false;" @click="revertValue(key)" class="text-warning float-end no-control">{{
+              <a href="#" onclick="return false;" @click="revertValue(key)" class="text-warning float-end">{{
                 translate.translate_link_revert
               }}</a>
             </div>

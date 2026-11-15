@@ -86,7 +86,7 @@ export default defineComponent({
         <a
           href="#"
           @click.prevent="[$emit('change-page-event', 1, cLimit), updateCurrentPage(1)]"
-          class="no-control flex items-center justify-center px-3 h-8 ms-0 leading-tight text-primary bg-white border border-e-0 border-primary-hover rounded-s-lg hover:bg-primary-hover hover:text-white dark:bg-btn-dark"
+          class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-primary bg-white border border-e-0 border-primary-hover rounded-s-lg hover:bg-primary-hover hover:text-white dark:bg-btn-dark"
           :class="{ 'opacity-50 pointer-events-none': cPage === 1 }"
         >
           <span class="sr-only">{{ uiTrans('first') }}</span>
@@ -107,7 +107,7 @@ export default defineComponent({
         <a
           href="#"
           @click.prevent="[$emit('change-page-event', cPage - 1, cLimit), updateCurrentPage(cPage - 1)]"
-          class="no-control flex items-center justify-center px-3 h-8 leading-tight text-primary bg-white border border-primary-hover hover:bg-primary-hover hover:text-white dark:bg-btn-dark"
+          class="flex items-center justify-center px-3 h-8 leading-tight text-primary bg-white border border-primary-hover hover:bg-primary-hover hover:text-white dark:bg-btn-dark"
           :class="{ 'opacity-50 pointer-events-none': cPage === 1 }"
         >
           <span class="sr-only">{{ uiTrans('previous') }}</span>
@@ -134,7 +134,7 @@ export default defineComponent({
         <a
           v-if="page === '...'"
           href="#"
-          class="no-control flex items-center justify-center px-3 h-8 leading-tight text-primary bg-white border border-primary-hover cursor-default dark:bg-btn-dark"
+          class="flex items-center justify-center px-3 h-8 leading-tight text-primary bg-white border border-primary-hover cursor-default dark:bg-btn-dark"
         >
           ...
         </a>
@@ -143,7 +143,7 @@ export default defineComponent({
           v-else
           href="#"
           @click.prevent="[$emit('change-page-event', page, cLimit), updateCurrentPage(page)]"
-          class="no-control flex items-center justify-center px-3 h-8 leading-tight border border-primary-hover hover:bg-primary-hover hover:text-white dark:bg-btn-dark"
+          class="flex items-center justify-center px-3 h-8 leading-tight border border-primary-hover hover:bg-primary-hover hover:text-white dark:bg-btn-dark"
           :class="cPage === page ? 'bg-primary-hover text-white' : 'bg-white text-primary'"
         >
           {{ page }}
@@ -155,7 +155,7 @@ export default defineComponent({
         <a
           href="#"
           @click.prevent="[$emit('change-page-event', cPage + 1, cLimit), updateCurrentPage(cPage + 1)]"
-          class="no-control flex items-center justify-center px-3 h-8 leading-tight text-primary bg-white border border-primary-hover hover:bg-primary-hover hover:text-white dark:bg-btn-dark"
+          class="flex items-center justify-center px-3 h-8 leading-tight text-primary bg-white border border-primary-hover hover:bg-primary-hover hover:text-white dark:bg-btn-dark"
           :class="{ 'opacity-50 pointer-events-none': cPage === nbPages }"
         >
           <span class="sr-only">{{ uiTrans('next') }}</span>
@@ -182,7 +182,7 @@ export default defineComponent({
         <a
           href="#"
           @click.prevent="[$emit('change-page-event', nbPages, cLimit), updateCurrentPage(nbPages)]"
-          class="no-control flex items-center justify-center px-3 h-8 leading-tight rounded-e-lg text-primary bg-white border border-primary-hover hover:bg-primary-hover hover:text-white dark:bg-btn-dark"
+          class="flex items-center justify-center px-3 h-8 leading-tight rounded-e-lg text-primary bg-white border border-primary-hover hover:bg-primary-hover hover:text-white dark:bg-btn-dark"
           :class="{ 'opacity-50 pointer-events-none': cPage === nbPages }"
         >
           <span class="sr-only">{{ uiTrans('last') }}</span>
@@ -200,11 +200,7 @@ export default defineComponent({
     </ul>
 
     <div v-if="Object.keys(listLimit).length > 0">
-      <select
-        class="no-control form-input form-input-sm"
-        v-model="cLimit"
-        @change="$emit('change-page-event', 1, cLimit)"
-      >
+      <select class="form-input form-input-sm" v-model="cLimit" @change="$emit('change-page-event', 1, cLimit)">
         <option v-for="i in listLimit" :key="i" :value="i">{{ i }}</option>
       </select>
     </div>
