@@ -205,6 +205,9 @@ class OptionExtension extends AppAdminExtension
                     case 'select':
                         $html .= $this->generateSelect($keyOption, $element);
                         break;
+                    case 'action':
+                        $html .= $this->generateAction($keyOption, $element);
+                        break;
                 }
 
                 $html .= '</div>';
@@ -423,7 +426,7 @@ class OptionExtension extends AppAdminExtension
                 ($selected ? 'true' : 'false') .
                 '">' .
                 $this->translator->trans('global.locale.' . $locale) .
-                '<span class="hidden rounded-full bg-alert-warning-bg px-1.5 text-xs text-alert-warning-text" data-option-locale-count="' .
+                '<span class="hidden rounded-full bg-alert-warning-bg px-1.5 text-xs text-alert-warning-text" aria-hidden="true" data-option-locale-count="' .
                 $locale .
                 '"></span><span class="sr-only" data-option-locale-count-label="' .
                 $locale .
@@ -552,6 +555,40 @@ class OptionExtension extends AppAdminExtension
             $this->getError($id, $element) .
             $this->getSuccess($id, $element) .
             $this->getSpinner($id);
+    }
+
+    /**
+     * Génère une option de type action : un bouton qui pose la valeur par sa propre route, et la date de la dernière
+     * action
+     * @param string $key
+     * @param array $element
+     * @return string
+     */
+    private function generateAction(string $key, array $element): string
+    {
+        $value = $this->getValueByKey($key);
+        $timestamp = $value === '' ? false : strtotime($value);
+        $last =
+            $timestamp === false
+                ? $this->translator->trans($element['never'])
+                : $this->translator->trans($element['last'], ['date' => $timestamp]);
+
+        $html =
+            '<p class="form-label">' .
+            $this->translator->trans($element['label']) .
+            '</p><button type="button" class="btn btn-sm btn-outline-dark" data-option-action="' .
+            $key .
+            '"><svg class="icon" aria-hidden="true" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.651 7.65a7.131 7.131 0 0 0-12.68 3.15M18.001 4v4h-4m-7.652 8.35a7.13 7.13 0 0 0 12.68-3.15M6 20v-4h4"/></svg>' .
+            $this->translator->trans($element['button']) .
+            '</button><p id="last-' .
+            $key .
+            '" class="form-text">' .
+            $last .
+            '</p>';
+        $html .= $this->getSuccess($key, $element);
+        $html .= $this->getHelp($key, $element);
+
+        return $html;
     }
 
     /**

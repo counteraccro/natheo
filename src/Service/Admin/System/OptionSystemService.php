@@ -243,6 +243,19 @@ class OptionSystemService extends AppAdminService
     }
 
     /**
+     * Redemande le consentement aux scripts du site public : les choix faits avant maintenant ne valent plus
+     * @return \DateTimeImmutable date enregistrée
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function resetFrontConsent(): \DateTimeImmutable
+    {
+        $date = new \DateTimeImmutable();
+        $this->saveValueByKee(OptionSystemEnum::OS_FRONT_CONSENT_RESET_AT->value, $date->format(DATE_ATOM));
+        return $date;
+    }
+
+    /**
      * Renvoi true ou false en fonction de l'option OS_MAIL_NOTIFICATION
      * @return bool
      * @throws ContainerExceptionInterface

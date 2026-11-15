@@ -167,6 +167,49 @@ class OptionSystemControllerTest extends AppWebTestCase
     }
 
     /**
+     * Test méthode resetConsent() : date enregistrée, jamais modifiable par la route update()
+     * @return void
+     */
+    public function testResetConsent(): void
+    {
+        $this->checkNoAccess('admin_option-system_ajax_consent_reset', methode: 'POST');
+        $key = OptionSystem::OS_FRONT_CONSENT_RESET_AT->value;
+        $url = $this->router->generate('admin_option-system_ajax_consent_reset');
+        /** @var OptionSystemService $optionSystemService */
+        $optionSystemService = $this->container->get(OptionSystemService::class);
+
+        $this->client->loginUser($this->createUserSuperAdmin(), 'admin');
+        $crawler = $this->client->request('GET', $this->router->generate('admin_option-system_change'));
+        $this->assertCount(1, $crawler->filter('[data-option-action="' . $key . '"]'));
+        $this->assertSelectorTextContains('#last-' . $key, 'jamais');
+        $props = json_decode(
+            (string) $crawler
+                ->filter('[data-symfony--ux-vue--vue-component-value="Admin/System/Option"]')
+                ->attr('data-symfony--ux-vue--vue-props-value'),
+            true,
+        );
+        $this->assertEquals($url, $props['url_actions'][$key]);
+
+        $this->client->request('POST', $url, server: ['HTTP_X-CSRF-TOKEN' => 'jeton-invalide']);
+        $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
+        $this->assertNull($optionSystemService->getValueByKey($key));
+
+        $this->client->request('POST', $url, server: ['HTTP_X-CSRF-TOKEN' => $props['csrf_token']]);
+        $this->assertResponseIsSuccessful();
+        $content = json_decode((string) $this->client->getResponse()->getContent(), true);
+        $this->assertTrue($content['success']);
+        $this->assertStringContainsString('Dernière demande', $content['last']);
+        $value = (string) $optionSystemService->getValueByKey($key);
+        $this->assertNotFalse(\DateTimeImmutable::createFromFormat(DATE_ATOM, $value));
+
+        $content = $this->postUpdate(['key' => $key, 'value' => '2000-01-01T00:00:00+00:00'], [
+            'HTTP_X-CSRF-TOKEN' => $props['csrf_token'],
+        ]);
+        $this->assertFalse($content['success']);
+        $this->assertEquals($value, $optionSystemService->getValueByKey($key));
+    }
+
+    /**
      * Test méthode update() sur une option traduisible
      * @return void
      */

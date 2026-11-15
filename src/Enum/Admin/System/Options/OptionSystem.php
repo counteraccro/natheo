@@ -200,6 +200,11 @@ enum OptionSystem: string
     case OS_FRONT_CONSENT_ENABLED = 'OS_FRONT_CONSENT_ENABLED';
 
     /**
+     * Clé option front, date à partir de laquelle les choix de consentement antérieurs sont redemandés
+     */
+    case OS_FRONT_CONSENT_RESET_AT = 'OS_FRONT_CONSENT_RESET_AT';
+
+    /**
      * Clé option front, texte Markdown du bandeau de consentement
      */
     case OS_FRONT_CONSENT_TEXT = 'OS_FRONT_CONSENT_TEXT';
