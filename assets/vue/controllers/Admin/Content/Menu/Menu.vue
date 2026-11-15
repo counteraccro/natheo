@@ -62,6 +62,8 @@ export default defineComponent({
       sortableRoot: null as Sortable | null,
       currentLocale: '',
       listTypeByPosition: {} as Record<string, string>,
+      /** Dernier type choisi pour chaque position, repris en revenant sur cette position */
+      typeByPosition: {} as Record<string, number>,
       idSelected: 0,
       menuElementSelected: null as MenuElement | null,
       nodeToOpen: 0,
@@ -80,6 +82,13 @@ export default defineComponent({
         },
       },
     };
+  },
+  watch: {
+    'menu.type'(type: number | undefined): void {
+      if (type !== undefined && this.menu.position !== undefined) {
+        this.typeByPosition[String(this.menu.position)] = Number(type);
+      }
+    },
   },
   mounted() {
     this.loadMenu();
@@ -169,8 +178,10 @@ export default defineComponent({
       }
 
       if (!isFirstLoad && !(this.menu.type in this.listTypeByPosition)) {
+        const remembered = this.typeByPosition[position.toString()];
         const first = Object.entries(this.listTypeByPosition)[0];
-        this.menu.type = Number(first[0]);
+        this.menu.type =
+          remembered !== undefined && remembered in this.listTypeByPosition ? remembered : Number(first[0]);
       }
     },
 
