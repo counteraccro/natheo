@@ -10,3 +10,6 @@ export interface OptionUpdateResponse {
 }
 
 export type OptionField = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
+
+/** Champ d'une langue d'une option traduisible */
+export type OptionTranslatableField = HTMLInputElement | HTMLTextAreaElement;

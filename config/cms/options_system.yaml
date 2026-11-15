@@ -39,13 +39,6 @@ options_system:
                 list_value: 'fr:global.locale.fr|en:global.locale.en|es:global.locale.es'
                 help: 'options_system.default_language.help'
                 default: 'fr'
-            OS_FRONT_FOOTER_TEXTE:
-                type: 'textarea'
-                translatable: true
-                label: 'options_system.front_footer_text.label'
-                help: 'options_system.front_footer_text.help'
-                placeholder: 'options_system.front_footer_text.placeholder'
-                default: ''
             OS_FRONT_FOOTER_SOCIAL_GITHUB_URL:
                 validation: 'url'
                 default: ''
@@ -119,6 +112,47 @@ options_system:
                 label: 'options_system.front_script_end_body.label'
                 help: 'options_system.front_script_end_body.help'
                 placeholder: 'options_system.front_script_end_body.placeholder'
+                default: ''
+    options_system.category.multilingual.label:
+        title: 'options_system.category.multilingual.title'
+        description: 'options_system.category.multilingual.description'
+        multilingual: true
+        icon: 'm13 19 3.5-9 3.5 9m-6.125-2h5.25M3 7h7m0 0h2m-2 0c0 1.63-.793 3.926-2.239 5.655M7.5 6.818V5m.261 7.655C6.79 13.82 5.521 14.725 4 15m3.761-2.345L5 10m2.761 2.655L10.2 15'
+        options:
+            OS_FRONT_CONSENT_ENABLED:
+                type: 'boolean'
+                label: 'options_system.front_consent_enabled.label'
+                help: 'options_system.front_consent_enabled.help'
+                default: '0'
+            OS_FRONT_CONSENT_TEXT:
+                type: 'textarea'
+                translatable: true
+                label: 'options_system.front_consent_text.label'
+                help: 'options_system.front_consent_text.help'
+                placeholder: 'options_system.front_consent_text.placeholder'
+                default: ''
+            OS_FRONT_CONSENT_ACCEPT_LABEL:
+                type: 'text'
+                translatable: true
+                fallback_label: true
+                label: 'options_system.front_consent_accept_label.label'
+                help: 'options_system.front_consent_accept_label.help'
+                placeholder: 'options_system.front_consent_accept_label.placeholder'
+                default: ''
+            OS_FRONT_CONSENT_REFUSE_LABEL:
+                type: 'text'
+                translatable: true
+                fallback_label: true
+                label: 'options_system.front_consent_refuse_label.label'
+                help: 'options_system.front_consent_refuse_label.help'
+                placeholder: 'options_system.front_consent_refuse_label.placeholder'
+                default: ''
+            OS_FRONT_FOOTER_TEXTE:
+                type: 'textarea'
+                translatable: true
+                label: 'options_system.front_footer_text.label'
+                help: 'options_system.front_footer_text.help'
+                placeholder: 'options_system.front_footer_text.placeholder'
                 default: ''
     options_system.category.seo.label:
         title: 'options_system.category.seo.title'

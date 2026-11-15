@@ -152,7 +152,14 @@ class OptionExtension extends AppAdminExtension
         $html = '<div id="nav-tab-option-system-content" class="card">';
 
         foreach ($categories as $key => $category) {
-            $html .= '<div class="hidden" id="tab-' . $key . '" role="tabpanel" aria-labelledby="profile-tab">';
+            $html .=
+                '<div class="hidden" id="tab-' .
+                $key .
+                '" role="tabpanel" aria-labelledby="profile-tab"' .
+                ($this->isMultilingual($optionsConfig[$this->globalKey][$category])
+                    ? $this->getMultilingualAttributes()
+                    : '') .
+                '>';
 
             $html .= '<div class="card-header">';
 
@@ -172,6 +179,10 @@ class OptionExtension extends AppAdminExtension
 
             $html .= '</div>';
 
+            if ($this->isMultilingual($optionsConfig[$this->globalKey][$category])) {
+                $html .= $this->generateLocaleSwitch();
+            }
+
             $html .= '</div>';
 
             foreach ($optionsConfig[$this->globalKey][$category]['options'] as $keyOption => $element) {
@@ -179,7 +190,9 @@ class OptionExtension extends AppAdminExtension
 
                 switch ($element['type']) {
                     case 'text':
-                        $html .= $this->generateInputText($keyOption, $element);
+                        $html .= empty($element['translatable'])
+                            ? $this->generateInputText($keyOption, $element)
+                            : $this->generateTranslatableField($keyOption, $element, 'input');
                         break;
                     case 'boolean':
                         $html .= $this->generateRadioButton($keyOption, $element);
@@ -187,7 +200,7 @@ class OptionExtension extends AppAdminExtension
                     case 'textarea':
                         $html .= empty($element['translatable'])
                             ? $this->generateTextarea($keyOption, $element)
-                            : $this->generateTranslatableTextarea($keyOption, $element);
+                            : $this->generateTranslatableField($keyOption, $element, 'textarea');
                         break;
                     case 'select':
                         $html .= $this->generateSelect($keyOption, $element);
@@ -318,7 +331,8 @@ class OptionExtension extends AppAdminExtension
      */
     private function generateTextarea(string $key, array $element): string
     {
-        $html = $this->renderTextarea(
+        $html = $this->renderField(
+            'textarea',
             $key,
             $this->translator->trans($element['label']),
             $this->getValueByKey($key),
@@ -331,68 +345,176 @@ class OptionExtension extends AppAdminExtension
     }
 
     /**
-     * Génère un champ textarea par langue du site pour une option traduisible, la langue par défaut en premier
+     * Génère une option traduisible : un bloc par langue du site, seul celui de la langue par défaut est affiché,
+     * le sélecteur de langue de l'onglet bascule les autres
      * @param string $key
      * @param array $element
+     * @param string $tag input ou textarea
      * @return string
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    private function generateTranslatableTextarea(string $key, array $element): string
+    private function generateTranslatableField(string $key, array $element, string $tag): string
     {
         $default = $this->optionSystemService->getDefaultLanguage();
-        $locales = array_unique([$default, ...$this->handlers->get('supportedLocales')->getAll()]);
         $translations = $this->optionSystemService->decodeTranslations($this->getValueByKey($key));
+        $label = $this->translator->trans($element['label']);
 
-        $html = '<fieldset><legend class="form-label">' . $this->translator->trans($element['label']) . '</legend>';
-        foreach ($locales as $locale) {
+        $html = '';
+        foreach ($this->getLocales() as $locale) {
+            $id = $key . '-' . $locale;
+            $attributes = ['data-key' => $key, 'data-locale' => $locale];
+            if (!empty($element['fallback_label'])) {
+                $attributes['data-fallback-label'] = '1';
+            }
+
             $html .=
-                '<div class="mt-3">' .
-                $this->renderTextarea(
-                    $key . '-' . $locale,
-                    $this->translator->trans('global.locale.' . $locale),
+                '<div data-option-locale="' .
+                $locale .
+                '"' .
+                ($locale === $default ? '' : ' class="hidden"') .
+                '>' .
+                $this->renderField(
+                    $tag,
+                    $id,
+                    $label .
+                        ' <span class="text-fg-muted">(' .
+                        $this->translator->trans('global.locale.' . $locale) .
+                        ')</span>',
                     $translations[$locale] ?? '',
                     $element,
                     isset($element['required']) && $locale === $default,
-                    ['data-key' => $key, 'data-locale' => $locale],
-                    3,
-                    'form-label text-fg-muted',
+                    $attributes,
                 ) .
+                '<div id="fallback-' .
+                $id .
+                '" class="hidden form-text text-warning" aria-live="polite"></div>' .
                 '</div>';
         }
-        $html .= '</fieldset>';
         $html .= $this->getHelp($key, $element);
 
         return $html;
     }
 
     /**
-     * Rendu d'un label et de son textarea, suivis des messages d'erreur, de succès et du spinner
-     * @param string $id id du textarea
+     * Sélecteur de la langue de saisie d'un onglet multilingue, langue par défaut sélectionnée, avec le nombre de
+     * champs vides de chaque langue
+     * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function generateLocaleSwitch(): string
+    {
+        $default = $this->optionSystemService->getDefaultLanguage();
+        $countLabel = $this->escape($this->translator->trans('options_system.multilingual.empty_count_label'));
+
+        $html =
+            '<div class="flex flex-wrap gap-2" role="group" data-option-locale-switch aria-label="' .
+            $this->escape($this->translator->trans('options_system.multilingual.switch_label')) .
+            '">';
+        foreach ($this->getLocales() as $locale) {
+            $selected = $locale === $default;
+            $html .=
+                '<button type="button" class="btn btn-xs ' .
+                ($selected ? 'btn-primary' : 'btn-outline-dark') .
+                '" data-option-locale-button="' .
+                $locale .
+                '" aria-pressed="' .
+                ($selected ? 'true' : 'false') .
+                '">' .
+                $this->translator->trans('global.locale.' . $locale) .
+                '<span class="hidden rounded-full bg-alert-warning-bg px-1.5 text-xs text-alert-warning-text" data-option-locale-count="' .
+                $locale .
+                '"></span><span class="sr-only" data-option-locale-count-label="' .
+                $locale .
+                '" data-label="' .
+                $countLabel .
+                '"></span></button>';
+        }
+        return $html . '</div>';
+    }
+
+    /**
+     * Attributs du panneau d'un onglet multilingue : langue par défaut et messages affichés sous un champ vide
+     * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function getMultilingualAttributes(): string
+    {
+        $default = $this->optionSystemService->getDefaultLanguage();
+        $messages = [
+            'data-default-locale' => $default,
+            'data-msg-fallback-default' => $this->translator->trans(
+                'options_system.multilingual.empty_fallback_default',
+                [
+                    'language' => $this->translator->trans('global.locale.' . $default),
+                ],
+            ),
+            'data-msg-fallback-other' => $this->translator->trans('options_system.multilingual.empty_fallback_other'),
+            'data-msg-empty-nothing' => $this->translator->trans('options_system.multilingual.empty_nothing'),
+            'data-msg-empty-theme' => $this->translator->trans('options_system.multilingual.empty_theme_label'),
+        ];
+
+        $html = ' data-option-multilingual';
+        foreach ($messages as $name => $value) {
+            $html .= ' ' . $name . '="' . $this->escape($value) . '"';
+        }
+        return $html;
+    }
+
+    /**
+     * Vrai si la catégorie se saisit langue par langue (clé multilingual de la config)
+     * @param array $category
+     * @return bool
+     */
+    private function isMultilingual(array $category): bool
+    {
+        return !empty($category['multilingual']);
+    }
+
+    /**
+     * Langues du site, langue par défaut en premier
+     * @return string[]
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function getLocales(): array
+    {
+        return array_values(
+            array_unique([
+                $this->optionSystemService->getDefaultLanguage(),
+                ...$this->handlers->get('supportedLocales')->getAll(),
+            ]),
+        );
+    }
+
+    /**
+     * Rendu d'un label et de son champ (input texte ou textarea), suivis des messages d'erreur, de succès et du spinner
+     * @param string $tag input ou textarea
+     * @param string $id id du champ
      * @param string $label libellé déjà traduit
      * @param string $value
      * @param array $element configuration de l'option
      * @param bool $required
-     * @param array<string, string> $attributes attributs supplémentaires du textarea
-     * @param int $rows
-     * @param string $labelClass
+     * @param array<string, string> $attributes attributs supplémentaires du champ
      * @return string
      */
-    private function renderTextarea(
+    private function renderField(
+        string $tag,
         string $id,
         string $label,
         string $value,
         array $element,
         bool $required,
         array $attributes = [],
-        int $rows = 5,
-        string $labelClass = 'form-label',
     ): string {
         if ($required) {
             $attributes['required'] = 'required';
         }
         if (isset($element['placeholder'])) {
             $attributes['placeholder'] = $this->translator->trans($element['placeholder']);
+            $attributes['data-placeholder'] = $attributes['placeholder'];
         }
 
         $htmlAttributes = '';
@@ -403,22 +525,30 @@ class OptionExtension extends AppAdminExtension
             $htmlAttributes .= ' disabled';
         }
 
+        $field =
+            $tag === 'textarea'
+                ? '<textarea class="form-input no-control event-input" rows="5" id="' .
+                    $id .
+                    '"' .
+                    $htmlAttributes .
+                    '>' .
+                    $this->escape($value) .
+                    '</textarea>'
+                : '<input type="text" class="form-input no-control event-input" id="' .
+                    $id .
+                    '"' .
+                    $htmlAttributes .
+                    ' value="' .
+                    $this->escape($value) .
+                    '">';
+
         return '<label for="' .
             $id .
-            '" class="' .
-            $labelClass .
-            '">' .
+            '" class="form-label">' .
             $label .
             ($required ? ' <span class="text-error-text">*</span>' : '') .
-            '</label><textarea class="form-input no-control event-input" rows="' .
-            $rows .
-            '" id="' .
-            $id .
-            '"' .
-            $htmlAttributes .
-            '>' .
-            $this->escape($value) .
-            '</textarea>' .
+            '</label>' .
+            $field .
             $this->getError($id, $element) .
             $this->getSuccess($id, $element) .
             $this->getSpinner($id);

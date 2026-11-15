@@ -195,6 +195,26 @@ enum OptionSystem: string
     case OS_FRONT_FOOTER_TEXTE = 'OS_FRONT_FOOTER_TEXTE';
 
     /**
+     * Clé option front, bandeau de consentement aux scripts activé
+     */
+    case OS_FRONT_CONSENT_ENABLED = 'OS_FRONT_CONSENT_ENABLED';
+
+    /**
+     * Clé option front, texte Markdown du bandeau de consentement
+     */
+    case OS_FRONT_CONSENT_TEXT = 'OS_FRONT_CONSENT_TEXT';
+
+    /**
+     * Clé option front, libellé du bouton d'acceptation du bandeau de consentement
+     */
+    case OS_FRONT_CONSENT_ACCEPT_LABEL = 'OS_FRONT_CONSENT_ACCEPT_LABEL';
+
+    /**
+     * Clé option front, libellé du bouton de refus du bandeau de consentement
+     */
+    case OS_FRONT_CONSENT_REFUSE_LABEL = 'OS_FRONT_CONSENT_REFUSE_LABEL';
+
+    /**
      * Clé option front, url réseau social GITHUB
      * @var string
      */

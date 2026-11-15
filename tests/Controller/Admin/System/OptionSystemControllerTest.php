@@ -78,6 +78,41 @@ class OptionSystemControllerTest extends AppWebTestCase
         $this->assertSelectorTextSame('#' . $key . '-es', '<b>ES</b>');
         $this->assertEquals('es', $crawler->filter('#' . $key . '-es')->attr('data-locale'));
         $this->assertEquals($key, $crawler->filter('#' . $key . '-es')->attr('data-key'));
+        $this->assertCount(1, $crawler->filter('#fallback-' . $key . '-en'));
+
+        $label = OptionSystem::OS_FRONT_CONSENT_ACCEPT_LABEL->value;
+        $this->assertEquals('input', $crawler->filter('#' . $label . '-en')->nodeName());
+        $this->assertEquals('1', $crawler->filter('#' . $label . '-en')->attr('data-fallback-label'));
+    }
+
+    /**
+     * Test que l'onglet multilingue affiche le sélecteur de langue, seuls les champs de la langue par défaut visibles
+     * @return void
+     */
+    public function testIndexMultilingualTab(): void
+    {
+        $this->client->loginUser($this->createUserSuperAdmin(), 'admin');
+        $crawler = $this->client->request('GET', $this->router->generate('admin_option-system_change'));
+        $this->assertResponseIsSuccessful();
+
+        $panel = $crawler->filter('[data-option-multilingual]');
+        $this->assertCount(1, $panel);
+        $this->assertEquals('fr', $panel->attr('data-default-locale'));
+        $this->assertStringContainsString('Français', (string) $panel->attr('data-msg-fallback-default'));
+
+        $buttons = $panel->filter('[data-option-locale-button]');
+        $this->assertEquals(
+            ['fr', 'en', 'es'],
+            $buttons->each(fn($button) => $button->attr('data-option-locale-button')),
+        );
+        $this->assertEquals('true', $buttons->first()->attr('aria-pressed'));
+
+        $key = OptionSystem::OS_FRONT_CONSENT_TEXT->value;
+        $this->assertCount(1, $panel->filter('#' . $key . '-fr'));
+        $this->assertCount(0, $panel->filter('div.hidden[data-option-locale="fr"] #' . $key . '-fr'));
+        $this->assertCount(1, $panel->filter('div.hidden[data-option-locale="en"] #' . $key . '-en'));
+        $this->assertCount(1, $panel->filter('#' . OptionSystem::OS_FRONT_CONSENT_ENABLED->value));
+        $this->assertCount(1, $panel->filter('#' . OptionSystem::OS_FRONT_FOOTER_TEXTE->value . '-es'));
     }
 
     /**

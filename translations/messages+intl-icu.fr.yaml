@@ -66,6 +66,9 @@ options_system.category.mail.title: 'Gestion des emails'
 options_system.category.media.description: 'Gérer les options de la médiathèque'
 options_system.category.media.label: Médiathèque
 options_system.category.media.title: Gestion de la médiathèque
+options_system.category.multilingual.description: 'Textes affichés sur le site public, saisis dans chaque langue. Le sélecteur choisit la langue modifiée.'
+options_system.category.multilingual.label: 'Options multilingues'
+options_system.category.multilingual.title: 'Textes du site par langue'
 options_system.category.notification.description: 'Gérer les notifications sur le CMS'
 options_system.category.notification.label: Notification
 options_system.category.notification.title: 'Gestion des notifications'
@@ -85,6 +88,17 @@ options_system.front_api_token.help: "Token envoyé par le front pour appeler l'
 options_system.front_api_token.label: "Token API utilisé par le front du site"
 options_system.front_api_token.placeholder: "xxxxxxxx.xxxxxxxx.xxxxxxxx.xxxxxxxx"
 options_system.front_api_token.success: "Le token API du front a bien été mis à jour"
+options_system.front_consent_accept_label.help: 'Laissé vide, le thème affiche son propre libellé.'
+options_system.front_consent_accept_label.label: 'Libellé du bouton d''acceptation'
+options_system.front_consent_accept_label.placeholder: 'Accepter'
+options_system.front_consent_enabled.help: 'Les scripts des options « Script dans la balise HEAD », « Script juste après l''ouverture de la balise BODY » et « Script juste avant la fermeture de la balise BODY » se chargent après l''accord du visiteur. Sans script renseigné, le bandeau ne s''affiche pas.'
+options_system.front_consent_enabled.label: 'Activer le bandeau de consentement'
+options_system.front_consent_refuse_label.help: 'Laissé vide, le thème affiche son propre libellé.'
+options_system.front_consent_refuse_label.label: 'Libellé du bouton de refus'
+options_system.front_consent_refuse_label.placeholder: 'Refuser'
+options_system.front_consent_text.help: 'Texte en Markdown, qui peut contenir un lien vers vos mentions légales.'
+options_system.front_consent_text.label: 'Texte du bandeau de consentement'
+options_system.front_consent_text.placeholder: 'Ce site utilise des scripts de mesure d''audience. Acceptez-vous leur chargement ?'
 options_system.front_footer_social_facebook_url.help: Laissez vide pour ne rien afficher, sinon l'URL apparaîtra dans le footer
 options_system.front_footer_social_facebook_url.label: URL de votre compte Facebook
 options_system.front_footer_social_facebook_url.placeholder: URL de votre compte Facebook
@@ -158,6 +172,12 @@ options_system.media_url.help: À ne changer que si vous utilisez un stockage ex
 options_system.media_url.label: URL publique d'accès aux images stockées
 options_system.media_url.placeholder: URL publique au format http://
 options_system.media_url.success: URL des médias changée avec succès
+options_system.multilingual.empty_count_label: 'Champs non traduits :'
+options_system.multilingual.empty_fallback_default: 'Non traduit : le texte en {language} sera affiché.'
+options_system.multilingual.empty_fallback_other: 'Non traduit : le texte d''une autre langue sera affiché.'
+options_system.multilingual.empty_nothing: 'Vide : rien ne sera affiché.'
+options_system.multilingual.empty_theme_label: 'Vide : le libellé par défaut du thème sera affiché.'
+options_system.multilingual.switch_label: 'Langue de saisie'
 options_system.nb_element.help: La valeur choisie sera définie pour chaque nouvel utilisateur créé
 options_system.nb_element.label: "Nombre d'éléments par page sur les tableaux de données"
 options_system.new_comment_wait_validation.help: 'Si oui, tout nouveau commentaire devra être validé manuellement pour être visible sur le site'
