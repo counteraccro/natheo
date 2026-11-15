@@ -9,6 +9,9 @@ import { MediaItem } from '@/ts/Mediatheque/Mediatheque.type';
 import AlertWarning from '@/vue/Components/Alert/Warning.vue';
 import axios from 'axios';
 import { toastSuccess, toastError, toastRequestError } from '@/vue/Composables/Global/toast';
+import { leaveGuard } from '@/vue/Composables/Admin/leaveGuard';
+
+const LEAVE_GUARD_KEY = 'media-edit';
 
 type TranslateRecord = { [key: string]: string | TranslateRecord };
 
@@ -49,6 +52,10 @@ export default defineComponent({
       this.folder.currentFolder = this.data.parent;
       this.folder.editFolder = this.data.id;
     }
+    leaveGuard.track(LEAVE_GUARD_KEY, () => [this.media, this.folder]);
+  },
+  beforeUnmount() {
+    leaveGuard.untrack(LEAVE_GUARD_KEY);
   },
   computed: {},
   methods: {
@@ -83,6 +90,7 @@ export default defineComponent({
         })
         .then(() => {
           toastSuccess(this.translate.save_media_msg_ok as string);
+          leaveGuard.commit(LEAVE_GUARD_KEY);
           this.save = true;
         })
         .catch((error) => {
@@ -111,6 +119,7 @@ export default defineComponent({
             toastError(response.data.msg as string);
           } else {
             toastSuccess(response.data.msg as string);
+            leaveGuard.commit(LEAVE_GUARD_KEY);
             this.save = true;
           }
         })
