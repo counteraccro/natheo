@@ -1,13 +1,14 @@
 <script setup lang="ts">
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Pied de page du thème Natheo-Base : menu, texte et réseaux sociaux du site, langues, liens utiles
  */
 import { toRef } from 'vue';
 import { useFrontContext } from '@/vue/Composables/Front/useFrontContext';
 import { useMenus } from '@/vue/Composables/Front/useMenus';
 import { useSiteOptions } from '@/vue/Composables/Front/useSiteOptions';
+import { useConsent } from '@/vue/Composables/Front/useConsent';
 import { useLanguages } from '@/vue/Composables/Front/useLanguages';
 import { useSocialLinks } from '@/vue/Composables/Front/useSocialLinks';
 import FooterMenu from '@/vue/Components/Front/NatheoBase/Menu/FooterMenu.vue';
@@ -21,6 +22,7 @@ const { menus } = useMenus(toRef(props, 'page'));
 const socials = useSocialLinks();
 
 const languages = useLanguages();
+const consent = useConsent();
 </script>
 
 <template>
@@ -44,6 +46,11 @@ const languages = useLanguages();
         </li>
         <li>
           <a :href="urls.adminAuth" class="underline">{{ translate.footer.adminLink }}</a>
+        </li>
+        <li v-if="consent.required">
+          <button type="button" class="cursor-pointer underline" @click="consent.reopen()">
+            {{ translate.footer.consentLink }}
+          </button>
         </li>
       </ul>
       <p class="text-gray-500">{{ translate.footer.credit }}</p>

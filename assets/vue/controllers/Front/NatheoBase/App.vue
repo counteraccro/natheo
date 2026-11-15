@@ -1,12 +1,13 @@
 <script setup lang="ts">
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Composant racine du thème Natheo-Base : installe le contexte du site public et compose la page
  */
 import { createFrontContext } from '@/vue/Composables/Front/useFrontContext';
 import { useMenus } from '@/vue/Composables/Front/useMenus';
 import { usePage } from '@/vue/Composables/Front/usePage';
+import ConsentBanner from '@/vue/Components/Front/NatheoBase/ConsentBanner.vue';
 import SiteHeader from '@/vue/Components/Front/NatheoBase/SiteHeader.vue';
 import SiteFooter from '@/vue/Components/Front/NatheoBase/SiteFooter.vue';
 import PageView from '@/vue/Components/Front/NatheoBase/PageView.vue';
@@ -20,6 +21,7 @@ const { menus } = useMenus(page);
 </script>
 
 <template>
+  <ConsentBanner />
   <div class="min-h-screen flex flex-col">
     <SiteHeader :page="page" />
     <div class="flex-1 w-full max-w-6xl mx-auto px-4 py-8 flex flex-col md:flex-row gap-8">

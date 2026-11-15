@@ -47,6 +47,11 @@ class FrontTranslate extends AppTranslate
         $this->locale = $locale;
 
         return [
+            'consent' => [
+                'regionLabel' => $this->trans('front.consent.region_label'),
+                'accept' => $this->trans('front.consent.accept'),
+                'refuse' => $this->trans('front.consent.refuse'),
+            ],
             'errorApi' => $this->getTranslateErrorApi(),
             'footer' => $this->getTranslateFooter(),
             'header' => $this->getTranslateHeader(),
@@ -152,6 +157,7 @@ class FrontTranslate extends AppTranslate
             'esLink' => $this->translator->trans('front.footer.es.link', domain: 'front', locale: $this->locale),
             'enLink' => $this->translator->trans('front.footer.en.link', domain: 'front', locale: $this->locale),
             'socialLabel' => $this->trans('front.footer.social_label'),
+            'consentLink' => $this->trans('front.footer.consent_link'),
         ];
     }
 

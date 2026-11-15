@@ -101,6 +101,14 @@ export interface FrontFooterTranslate {
   esLink: string;
   enLink: string;
   socialLabel: string;
+  consentLink: string;
+}
+
+/** Repli des libellés du bandeau de consentement laissés vides dans les options système */
+export interface FrontConsentTranslate {
+  regionLabel: string;
+  accept: string;
+  refuse: string;
 }
 
 export interface FrontErrorApiTranslate {
@@ -111,6 +119,7 @@ export interface FrontErrorApiTranslate {
 }
 
 export interface FrontTranslate {
+  consent: FrontConsentTranslate;
   errorApi: FrontErrorApiTranslate;
   footer: FrontFooterTranslate;
   header: FrontHeaderTranslate;
