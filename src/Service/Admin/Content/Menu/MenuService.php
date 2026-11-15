@@ -249,12 +249,7 @@ class MenuService extends AppAdminService
      */
     public function getPreviewSlugs(): array
     {
-        $slugs = fn(array $cases) => array_combine(
-            array_map(fn(MenuType|MenuPosition $case) => $case->value, $cases),
-            array_map(fn(MenuType|MenuPosition $case) => $case->getSlug(), $cases),
-        );
-
-        return ['types' => $slugs(MenuType::cases()), 'positions' => $slugs(MenuPosition::cases())];
+        return ['types' => MenuType::getSlugsByValue(), 'positions' => MenuPosition::getSlugsByValue()];
     }
 
     /**

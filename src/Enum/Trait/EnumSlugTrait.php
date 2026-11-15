@@ -43,4 +43,13 @@ trait EnumSlugTrait
     {
         return array_map(fn(self $case) => $case->getSlug(), self::cases());
     }
+
+    /**
+     * Slugs de tous les cas, indexés par leur valeur (enums adossés à une valeur)
+     * @return array<int|string, string>
+     */
+    public static function getSlugsByValue(): array
+    {
+        return array_combine(array_map(fn(self $case) => $case->value, self::cases()), self::getSlugs());
+    }
 }

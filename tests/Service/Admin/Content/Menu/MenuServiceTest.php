@@ -12,6 +12,7 @@ namespace App\Tests\Service\Admin\Content\Menu;
 use App\Entity\Admin\Content\Menu\Menu;
 use App\Entity\Admin\Content\Menu\MenuElement;
 use App\Enum\Admin\Content\Menu\MenuPosition;
+use App\Enum\Admin\Content\Menu\MenuType;
 use App\Repository\Admin\Content\Menu\MenuRepository;
 use App\Service\Admin\Content\Menu\MenuService;
 use App\Tests\AppWebTestCase;
@@ -112,6 +113,19 @@ class MenuServiceTest extends AppWebTestCase
         $this->assertArrayHasKey(MenuPosition::POSITION_RIGHT->value, $result);
         $this->assertArrayHasKey(MenuPosition::POSITION_FOOTER->value, $result);
         $this->assertArrayHasKey(MenuPosition::POSITION_LEFT->value, $result);
+    }
+
+    /**
+     * Test méthode getPreviewSlugs() : slug de l'API v2 de chaque type et de chaque position, par valeur
+     * @return void
+     */
+    public function testGetPreviewSlugs(): void
+    {
+        $slugs = $this->menuService->getPreviewSlugs();
+        $this->assertCount(count(MenuType::cases()), $slugs['types']);
+        $this->assertSame('header_menu_deroulant', $slugs['types'][MenuType::HEADER_MENU_DEROULANT->value]);
+        $this->assertSame('footer_1_row_center', $slugs['types'][MenuType::FOOTER_1_ROW_CENTER->value]);
+        $this->assertSame('left', $slugs['positions'][MenuPosition::POSITION_LEFT->value]);
     }
 
     /**
@@ -278,10 +292,16 @@ class MenuServiceTest extends AppWebTestCase
      */
     public function testExternalLink(): void
     {
-        foreach (['', '#', 'http://natheo.fr', 'HTTPS://natheo.fr/page', 'mailto:a@b.fr', 'tel:+33100000000', '/page'] as $link) {
+        foreach (
+            ['', '#', 'http://natheo.fr', 'HTTPS://natheo.fr/page', 'mailto:a@b.fr', 'tel:+33100000000', '/page']
+            as $link
+        ) {
             $this->assertTrue($this->menuService->isAllowedExternalLink($link), $link);
         }
-        foreach (['javascript:alert(1)', ' JavaScript:alert(1)', 'data:text/html,x', '//evil.fr', 'natheo.fr'] as $link) {
+        foreach (
+            ['javascript:alert(1)', ' JavaScript:alert(1)', 'data:text/html,x', '//evil.fr', 'natheo.fr']
+            as $link
+        ) {
             $this->assertFalse($this->menuService->isAllowedExternalLink($link), $link);
         }
 
