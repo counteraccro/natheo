@@ -3,13 +3,11 @@
  * @author Gourdon Aymeric
  * @version 1.0
  */
+import { reactive } from 'vue';
 
-type TrackedForm = {
-  source: () => unknown;
-  snapshot: string;
-};
-
-const forms = new Map<string, TrackedForm>();
+const sources = new Map<string, () => unknown>();
+// Réactif pour que isDirty(key) puisse alimenter une propriété calculée
+const snapshots = reactive<Record<string, string>>({});
 
 /**
  * Sérialise les données d'un formulaire pour les comparer, un champ vidé valant un champ jamais rempli
@@ -24,7 +22,8 @@ const serialize = (source: () => unknown): string =>
  * @param source fonction retournant les données du formulaire
  */
 const track = (key: string, source: () => unknown): void => {
-  forms.set(key, { source, snapshot: serialize(source) });
+  sources.set(key, source);
+  snapshots[key] = serialize(source);
 };
 
 /**
@@ -32,9 +31,9 @@ const track = (key: string, source: () => unknown): void => {
  * @param key
  */
 const commit = (key: string): void => {
-  const form = forms.get(key);
-  if (form !== undefined) {
-    form.snapshot = serialize(form.source);
+  const source = sources.get(key);
+  if (source !== undefined) {
+    snapshots[key] = serialize(source);
   }
 };
 
@@ -43,19 +42,20 @@ const commit = (key: string): void => {
  * @param key
  */
 const untrack = (key: string): void => {
-  forms.delete(key);
+  sources.delete(key);
+  delete snapshots[key];
 };
 
 /**
- * Retourne true si un formulaire suivi diffère de sa référence
+ * Retourne true si le formulaire key diffère de sa référence, ou si l'un des formulaires suivis en diffère sans key
+ * @param key
  */
-const isDirty = (): boolean => {
-  for (const form of forms.values()) {
-    if (serialize(form.source) !== form.snapshot) {
-      return true;
-    }
-  }
-  return false;
+const isDirty = (key?: string): boolean => {
+  const keys = key === undefined ? Object.keys(snapshots) : [key];
+  return keys.some((k) => {
+    const source = sources.get(k);
+    return k in snapshots && source !== undefined && serialize(source) !== snapshots[k];
+  });
 };
 
 export const leaveGuard = { track, commit, untrack, isDirty };
