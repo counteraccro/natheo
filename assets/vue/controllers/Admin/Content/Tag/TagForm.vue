@@ -8,10 +8,12 @@ import { defineComponent, type PropType } from 'vue';
 import axios from 'axios';
 import type { Tag, TagFormLocales, TagFormTranslate } from '@/ts/Tag/TagForm.type';
 import { withCsrf } from '@/vue/Composables/Admin/csrf';
-import { emitter } from '@/vue/Composables/Global/useEvent';
+import { leaveGuard } from '@/vue/Composables/Admin/leaveGuard';
 import SkeletonForm from '@/vue/Components/Skeleton/Form.vue';
 import Modal from '@/vue/Components/Global/Modal.vue';
 import { toastSuccess, toastError, toastRequestError } from '@/vue/Composables/Global/toast';
+
+const LEAVE_GUARD_KEY = 'tag';
 
 export default defineComponent({
   name: 'TagForm',
@@ -39,17 +41,20 @@ export default defineComponent({
       isErrorHexa: true,
       showErrors: false,
       templateStat: '',
-      classNoControl: '',
       showModalConfirmDelete: false,
     };
   },
   mounted() {
+    leaveGuard.track(LEAVE_GUARD_KEY, () => this.tag);
     this.loadColorExemple();
     if (this.tag.id !== null) {
       this.isErrorHexa = false;
       this.autoCopy = false;
       this.loadStat();
     }
+  },
+  beforeUnmount() {
+    leaveGuard.untrack(LEAVE_GUARD_KEY);
   },
   computed: {
     isErrorLabel(): boolean {
@@ -67,7 +72,6 @@ export default defineComponent({
      */
     save(): void {
       this.loading = true;
-      this.classNoControl = 'no-control';
 
       axios
         .post(this.url, { tag: this.tag }, withCsrf(this.csrf_token_save))
@@ -77,7 +81,7 @@ export default defineComponent({
             return;
           }
 
-          emitter.emit('reset-check-confirm');
+          leaveGuard.commit(LEAVE_GUARD_KEY);
           toastSuccess(this.translate.successSave);
 
           if (response.data.etat === 'new') {
@@ -120,6 +124,7 @@ export default defineComponent({
         .then((response) => {
           if (response.data.success === true) {
             toastSuccess(response.data.msg);
+            leaveGuard.untrack(LEAVE_GUARD_KEY);
             setTimeout(() => {
               window.location.href = this.url_index;
             }, 1500);

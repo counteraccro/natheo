@@ -8,7 +8,7 @@
 import { defineComponent, type PropType } from 'vue';
 import axios from 'axios';
 import { withCsrf } from '@/vue/Composables/Admin/csrf';
-import { emitter } from '@/vue/Composables/Global/useEvent';
+import { leaveGuard } from '@/vue/Composables/Admin/leaveGuard';
 import SkeletonFaq from '@/vue/Components/Skeleton/Faq.vue';
 import type {
   Faq,
@@ -27,6 +27,8 @@ import { MediaModule } from '@/ts/MarkdownEditor/modules/Mediatheque';
 import { toastSuccess, toastError, toastRequestError } from '@/vue/Composables/Global/toast';
 
 type TranslateRecord = { [key: string]: string | TranslateRecord };
+
+const LEAVE_GUARD_KEY = 'edit-faq';
 
 export default defineComponent({
   name: 'EditFaq',
@@ -69,6 +71,9 @@ export default defineComponent({
 
   mounted(): any {
     this.loadFaq();
+  },
+  beforeUnmount(): void {
+    leaveGuard.untrack(LEAVE_GUARD_KEY);
   },
   computed: {
     /**
@@ -120,10 +125,10 @@ export default defineComponent({
         .get(this.urls.load_faq)
         .then((response) => {
           this.faq = response.data.faq;
-          emitter.emit('reset-check-confirm');
           this.keyMarkdownEditor += 1;
           this.loading = false;
           this.loadDraggableCategories();
+          this.$nextTick(() => leaveGuard.track(LEAVE_GUARD_KEY, () => this.faq));
         })
         .catch((error) => {
           toastRequestError(error);

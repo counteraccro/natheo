@@ -11,11 +11,13 @@ import MenuTree from '@/vue/Components/Menu/MenuTree.vue';
 import Sortable from 'sortablejs';
 import Modal from '@/vue/Components/Global/Modal.vue';
 import MenuElementForm from '@/vue/Components/Menu/MenuElementForm.vue';
-import { emitter } from '@/vue/Composables/Global/useEvent';
+import { leaveGuard } from '@/vue/Composables/Admin/leaveGuard';
 import MenuHeader from '@/vue/Components/Menu/MenuType/MenuHeader.vue';
 import MenuFooter from '@/vue/Components/Menu/MenuType/MenuFooter.vue';
 import MenuLeftRight from '@/vue/Components/Menu/MenuType/MenuLeftRight.vue';
 import { toastSuccess, toastError, toastRequestError } from '@/vue/Composables/Global/toast';
+
+const LEAVE_GUARD_KEY = 'menu';
 
 export default defineComponent({
   name: 'Menu',
@@ -89,6 +91,9 @@ export default defineComponent({
     this.loadMenu();
     this.currentLocale = this.locales.current;
   },
+  beforeUnmount() {
+    leaveGuard.untrack(LEAVE_GUARD_KEY);
+  },
 
   computed: {
     /**
@@ -125,6 +130,7 @@ export default defineComponent({
         .finally(() => {
           this.loading = false;
           this.loadDraggable();
+          this.$nextTick(() => leaveGuard.track(LEAVE_GUARD_KEY, () => this.menu));
         });
     },
 
@@ -498,6 +504,7 @@ export default defineComponent({
         .then((response) => {
           if (response.data.success === true) {
             toastSuccess(response.data.msg);
+            leaveGuard.commit(LEAVE_GUARD_KEY);
             // Cas première page, on force la redirection pour passer en mode édition
             if (response.data.redirect === true) {
               window.location.replace(response.data.url);
@@ -519,7 +526,6 @@ export default defineComponent({
         })
         .finally(() => {
           this.loading = false;
-          emitter.emit('reset-check-confirm');
         });
     },
 
