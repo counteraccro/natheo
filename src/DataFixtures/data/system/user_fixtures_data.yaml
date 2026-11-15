@@ -1,8 +1,8 @@
 user:
   User:
-    email: tcarpentier@teixeira.com
-    password: $2y$04$85zpO5c/N9H07SmGkUGNme0M0WeZ91X7CenLrqNOnMVai3/V1v6cK
-    login: julien40
+    email: olivier77@david.org
+    password: $2y$04$v.cEcFu0RwLcaue1dToVKOLRLneCIUCUCqmg0j9SMeqyIx8JJ4W3K
+    login: joseph55
     firstname: ''
     lastname: ''
     roles: ROLE_SUPER_ADMIN

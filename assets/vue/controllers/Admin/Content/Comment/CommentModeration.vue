@@ -9,7 +9,6 @@ import { defineComponent, type PropType } from 'vue';
 import axios from 'axios';
 import GridPaginate from '@/vue/Components/Grid/GridPaginate.vue';
 import { renderMarkdown } from '@/ts/MarkdownEditor/markdownRender';
-import { emitter } from '@/vue/Composables/Global/useEvent';
 import { withCsrf } from '@/vue/Composables/Admin/csrf';
 import type {
   CommentModerationUrls,
@@ -109,7 +108,6 @@ export default defineComponent({
         .then((response) => {
           if (response.data.success === true) {
             toastSuccess(response.data.msg);
-            emitter.emit('reset-check-confirm');
             this.allSelected = false;
             this.resetSelected();
             this.load();
@@ -201,13 +199,7 @@ export default defineComponent({
     <div class="xl:col-span-2 flex flex-col gap-4">
       <div class="card flex items-center justify-between px-5 py-3 rounded-lg">
         <div class="form-check" style="margin-bottom: 0">
-          <input
-            type="checkbox"
-            class="form-check-input no-control"
-            id="check-all"
-            @change="selectAll"
-            v-model="allSelected"
-          />
+          <input type="checkbox" class="form-check-input" id="check-all" @change="selectAll" v-model="allSelected" />
           <label class="form-check-label font-medium" for="check-all">{{ translate.comment_select_all }}</label>
         </div>
         <div class="flex items-center gap-3">
@@ -238,7 +230,7 @@ export default defineComponent({
             <div class="form-check" style="margin-bottom: 0">
               <input
                 type="checkbox"
-                class="form-check-input no-control"
+                class="form-check-input"
                 :id="'comment-' + comment.id"
                 @change="updateSelected(comment.id)"
                 :checked="isChecked(comment.id)"
@@ -418,7 +410,7 @@ export default defineComponent({
               style="color: var(--text-secondary); font-weight: var(--font-weight-medium); font-size: var(--text-xs)"
               >{{ translate.status_label }}</label
             >
-            <select v-model="filters.status" id="list-status" @change="load()" class="form-input no-control">
+            <select v-model="filters.status" id="list-status" @change="load()" class="form-input">
               <option value="0">{{ translate.status_default }}</option>
               <option v-for="(key, status) in datas.status" :value="status" :selected="status === filters.status">
                 {{ key }}
@@ -431,7 +423,7 @@ export default defineComponent({
               style="color: var(--text-secondary); font-weight: var(--font-weight-medium); font-size: var(--text-xs)"
               >{{ translate.pages_label }}</label
             >
-            <select class="form-input no-control" v-model="filters.pages" id="list-pages" @change="load()">
+            <select class="form-input" v-model="filters.pages" id="list-pages" @change="load()">
               <option value="0">{{ translate.pages_default }}</option>
               <option v-for="(key, page) in datas.pages" :value="page" :selected="page === filters.pages">
                 {{ key }}

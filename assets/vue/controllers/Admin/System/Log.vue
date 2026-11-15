@@ -236,7 +236,7 @@ export default defineComponent({
       <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4">
         <div class="form-group">
           <label class="form-label" for="select-time">{{ translate.log_select_time_label }}</label>
-          <select class="form-input no-control" id="select-time" v-model="time" @change="changeTimeFilter">
+          <select class="form-input" id="select-time" v-model="time" @change="changeTimeFilter">
             <option value="all">{{ translate.log_select_time_all }}</option>
             <option value="now">{{ translate.log_select_time_now }}</option>
             <option value="yesterday">{{ translate.log_select_time_yesterday }}</option>
@@ -245,7 +245,7 @@ export default defineComponent({
 
         <div class="form-group">
           <label class="form-label" for="select-file">{{ translate.log_select_file_label }}</label>
-          <select class="form-input no-control" id="select-file" v-model="selectFile" @change="selectLogFile">
+          <select class="form-input" id="select-file" v-model="selectFile" @change="selectLogFile">
             <option value="">{{ translate.log_select_file }}</option>
             <option v-for="option in files" :key="option.path" :value="option.path">{{ option.name }}</option>
           </select>
@@ -407,7 +407,7 @@ export default defineComponent({
 
           <input
             type="text"
-            class="form-input input-icon-left no-control"
+            class="form-input input-icon-left"
             :placeholder="translateGenericGrid.placeholder"
             v-model="searchQuery"
           />

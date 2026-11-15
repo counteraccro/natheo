@@ -8,7 +8,7 @@
 import { defineComponent, type PropType } from 'vue';
 import axios from 'axios';
 import { withCsrf } from '@/vue/Composables/Admin/csrf';
-import { emitter } from '@/vue/Composables/Global/useEvent';
+import { leaveGuard } from '@/vue/Composables/Admin/leaveGuard';
 import SkeletonFaq from '@/vue/Components/Skeleton/Faq.vue';
 import type {
   Faq,
@@ -28,6 +28,8 @@ import { toastSuccess, toastError, toastRequestError } from '@/vue/Composables/G
 
 type TranslateRecord = { [key: string]: string | TranslateRecord };
 
+const LEAVE_GUARD_KEY = 'edit-faq';
+
 export default defineComponent({
   name: 'EditFaq',
   components: { Modal, MarkdownEditor, SkeletonFaq },
@@ -41,7 +43,6 @@ export default defineComponent({
   data() {
     return {
       loading: false,
-      updateNoSave: false,
       showModalConfirmDelete: false,
       currentLocale: this.locales.current as string,
       openQuestions: new Set() as Set<number>,
@@ -70,7 +71,17 @@ export default defineComponent({
   mounted(): any {
     this.loadFaq();
   },
+  beforeUnmount(): void {
+    leaveGuard.untrack(LEAVE_GUARD_KEY);
+  },
   computed: {
+    /**
+     * Retourne true si la FAQ diffère de sa dernière version sauvegardée
+     */
+    updateNoSave(): boolean {
+      return leaveGuard.isDirty(LEAVE_GUARD_KEY);
+    },
+
     /**
      * check si les champs ne sont pas vide avant sauvegarde
      */
@@ -120,10 +131,10 @@ export default defineComponent({
         .get(this.urls.load_faq)
         .then((response) => {
           this.faq = response.data.faq;
-          emitter.emit('reset-check-confirm');
           this.keyMarkdownEditor += 1;
           this.loading = false;
           this.loadDraggableCategories();
+          this.$nextTick(() => leaveGuard.track(LEAVE_GUARD_KEY, () => this.faq));
         })
         .catch((error) => {
           toastRequestError(error);
@@ -153,7 +164,6 @@ export default defineComponent({
             });
 
             this.faq.faqCategories = items;
-            this.updateNoSave = true;
           },
         });
 
@@ -191,8 +201,6 @@ export default defineComponent({
             toCat.faqQuestions.forEach((q: FaqQuestion, i: number) => {
               q.renderOrder = i + 1;
             });
-
-            this.updateNoSave = true;
           },
         });
       });
@@ -225,7 +233,6 @@ export default defineComponent({
     updateValueByLocale(value: string, id: string): void {
       const tmp = id.split('|');
       const itemId = parseInt(tmp[0]);
-      this.updateNoSave = true;
 
       switch (tmp[1]) {
         case 'faqTranslations':
@@ -304,7 +311,7 @@ export default defineComponent({
         .then((response) => {
           if (response.data.success === true) {
             toastSuccess(response.data.msg);
-            this.updateNoSave = false;
+            leaveGuard.commit(LEAVE_GUARD_KEY);
           } else {
             toastError(response.data.msg);
           }
@@ -348,8 +355,6 @@ export default defineComponent({
 
       this.openQuestions.add(newQuestion.id);
       this.openQuestions = new Set(this.openQuestions);
-
-      this.updateNoSave = true;
     },
 
     /**
@@ -373,7 +378,6 @@ export default defineComponent({
       };
 
       this.faq.faqCategories.push(newCategory);
-      this.updateNoSave = true;
 
       this.$nextTick(() => {
         this.loadDraggableCategories();
@@ -397,7 +401,6 @@ export default defineComponent({
                 question.disabled = true;
               });
             }
-            this.updateNoSave = true;
           }
           break;
         case 'question':
@@ -405,7 +408,6 @@ export default defineComponent({
             const item = faqC.faqQuestions.find((item) => item.id === id);
             if (item) {
               item.disabled = !item.disabled;
-              this.updateNoSave = true;
             }
           });
           break;
@@ -455,8 +457,6 @@ export default defineComponent({
         default:
           return;
       }
-
-      this.updateNoSave = true;
     },
 
     /**
@@ -650,15 +650,12 @@ export default defineComponent({
         <div class="form-group px-5 pt-5">
           <div class="form-switch form-switch-inline">
             <input
-              class="switch-input no-control event-input"
+              class="switch-input event-input"
               type="checkbox"
               role="switch"
               id="disabled_faq"
               :checked="!faq.disabled"
-              @change="
-                faq.disabled = !($event.target as HTMLInputElement).checked;
-                updateNoSave = true;
-              "
+              @change="faq.disabled = !($event.target as HTMLInputElement).checked"
             />
             <label class="switch-toggle" for="disabled_faq"></label>
             <label class="swith-label" for="disabled_faq">

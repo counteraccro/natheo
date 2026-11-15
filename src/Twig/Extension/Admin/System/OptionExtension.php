@@ -233,7 +233,7 @@ class OptionExtension extends AppAdminExtension
             $this->translator->trans($element['label']) .
             $labelRequire .
             '</label>
-            <input type="text" class="form-input no-control event-input" id="' .
+            <input type="text" class="form-input event-input" id="' .
             $key .
             '" ' .
             $require .
@@ -276,7 +276,7 @@ class OptionExtension extends AppAdminExtension
 
         $html =
             '<div class="form-switch form-switch-inline">
-            <input class="switch-input no-control event-input ' .
+            <input class="switch-input event-input ' .
             $active .
             '" type="checkbox" role="switch" ' .
             $disabled .
@@ -335,7 +335,7 @@ class OptionExtension extends AppAdminExtension
             $this->translator->trans($element['label']) .
             $labelRequire .
             '</label>
-            <textarea class="form-input no-control event-input" rows="5"
+            <textarea class="form-input event-input" rows="5"
             id="' .
             $key .
             '" ' .
@@ -396,7 +396,7 @@ class OptionExtension extends AppAdminExtension
             '</label>
             <select id="' .
             $key .
-            '" class="form-input no-control event-input" ' .
+            '" class="form-input event-input" ' .
             $disabled .
             '>
             ' .

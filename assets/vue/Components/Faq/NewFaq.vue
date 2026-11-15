@@ -9,10 +9,12 @@ import { defineComponent, type PropType } from 'vue';
 import SkeletonFaq from '@/vue/Components/Skeleton/Faq.vue';
 import axios from 'axios';
 import { withCsrf } from '@/vue/Composables/Admin/csrf';
-import { emitter } from '@/vue/Composables/Global/useEvent';
+import { leaveGuard } from '@/vue/Composables/Admin/leaveGuard';
 import { toastSuccess, toastError } from '@/vue/Composables/Global/toast';
 
 type TranslateRecord = { [key: string]: string | TranslateRecord };
+
+const LEAVE_GUARD_KEY = 'new-faq';
 
 export default defineComponent({
   name: 'NewFaq',
@@ -31,7 +33,12 @@ export default defineComponent({
       },
     };
   },
-  mounted(): any {},
+  mounted(): void {
+    leaveGuard.track(LEAVE_GUARD_KEY, () => this.faq);
+  },
+  beforeUnmount(): void {
+    leaveGuard.untrack(LEAVE_GUARD_KEY);
+  },
   computed: {
     /**
      * Vérifie si le champ nouveau titre est vide ou non
@@ -77,7 +84,7 @@ export default defineComponent({
         .then((response) => {
           if (response.data.success === true) {
             toastSuccess(response.data.msg);
-            emitter.emit('reset-check-confirm');
+            leaveGuard.commit(LEAVE_GUARD_KEY);
             setTimeout(function () {
               window.location.replace(response.data.url_redirect);
             }, 2000);

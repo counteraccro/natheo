@@ -7,7 +7,7 @@
 import { defineComponent } from 'vue';
 import axios, { AxiosResponse } from 'axios';
 import MarkdownEditor from '../../../../Components/Global/MarkdownEditor/MarkdownEditor.vue';
-import { emitter } from '@/vue/Composables/Global/useEvent';
+import { leaveGuard } from '@/vue/Composables/Admin/leaveGuard';
 import { withCsrf } from '@/vue/Composables/Admin/csrf';
 import {
   Translate,
@@ -19,6 +19,8 @@ import {
 } from '@/ts/Comment/CommentEdit.type';
 import SkeletonCommentEdit from '@/vue/Components/Skeleton/CommentEdit.vue';
 import { toastSuccess, toastError, toastRequestError } from '@/vue/Composables/Global/toast';
+
+const LEAVE_GUARD_KEY = 'comment';
 
 export default defineComponent({
   name: 'CommentEdit',
@@ -57,6 +59,10 @@ export default defineComponent({
     this.load();
   },
 
+  beforeUnmount(): void {
+    leaveGuard.untrack(LEAVE_GUARD_KEY);
+  },
+
   methods: {
     /**
      * Charge les données du commentaire
@@ -73,6 +79,7 @@ export default defineComponent({
         })
         .finally(() => {
           this.loading = false;
+          this.$nextTick(() => leaveGuard.track(LEAVE_GUARD_KEY, () => this.comment));
         });
     },
 
@@ -103,7 +110,7 @@ export default defineComponent({
         .then((response: AxiosResponse<SaveCommentResponse>) => {
           if (response.data.success) {
             toastSuccess(response.data.msg);
-            emitter.emit('reset-check-confirm');
+            leaveGuard.commit(LEAVE_GUARD_KEY);
           } else {
             toastError(response.data.msg);
           }

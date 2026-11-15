@@ -575,7 +575,7 @@ export default defineComponent({
           <AlertWarning type="alert-primary-solid mt-6" :text="translate.dump_option.help_body" />
           <AlertDanger type="alert-danger-solid mt-6" :text="translate.dump_option.warning_body" />
 
-          <button class="btn btn-sm btn-primary w-full mt-6 no-control" @click="dumpSQL">
+          <button class="btn btn-sm btn-primary w-full mt-6" @click="dumpSQL">
             <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 stroke-linecap="round"

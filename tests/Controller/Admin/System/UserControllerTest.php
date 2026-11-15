@@ -736,9 +736,17 @@ class UserControllerTest extends AppWebTestCase
         $userSuperAdm = $this->createUserSuperAdmin();
 
         $this->client->loginUser($userSuperAdm, 'admin');
-        $this->client->request('GET', $this->router->generate('admin_user_add'));
+        $crawler = $this->client->request('GET', $this->router->generate('admin_user_add'));
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains('h1', $this->translator->trans('user.add.title', domain: 'user'));
+        $this->assertSelectorExists('form[data-leave-guard=""]');
+
+        // Email déjà utilisé : formulaire réaffiché avec la saisie, marqué non sauvegardé
+        $form = $crawler->filter('form[data-leave-guard]')->form();
+        $form['user_add[email]'] = $userSuperAdm->getEmail();
+        $this->client->submit($form);
+        $this->assertResponseStatusCodeSame(422);
+        $this->assertSelectorExists('form[data-leave-guard="dirty"]');
     }
 
     /**

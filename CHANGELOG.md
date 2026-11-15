@@ -33,6 +33,7 @@ Le format suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), avec un
 
 - Installation : les dossiers inscriptibles absents d'un clone neuf sont créés ([#501](https://github.com/counteraccro/natheo/issues/501))
 - Éditeur de page : la barre de statut indique « Aucune modification » à l'ouverture au lieu de « Modifications non sauvegardées », dans la langue de l'interface ([#523](https://github.com/counteraccro/natheo/issues/523))
+- Back-office : la confirmation avant de quitter une page ne s'affiche plus après une recherche, un filtre, un lien ouvert dans un nouvel onglet ou sur les pages de connexion ; elle couvre désormais le retour du navigateur, le rechargement, la fermeture de l'onglet et les modifications sans saisie (glisser-déposer) ([#542](https://github.com/counteraccro/natheo/issues/542))
 
 ### Sécurité
 
