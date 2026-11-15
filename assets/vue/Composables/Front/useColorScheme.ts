@@ -19,6 +19,7 @@ export interface ColorSchemeState {
 /** Un seul mode par page affichée, partagé par tous les composants */
 const scheme = shallowRef<ColorScheme>(document.documentElement.classList.contains('dark') ? 'dark' : 'light');
 let previewMode = false;
+let onPreviewToggle: ((value: ColorScheme) => void) | null = null;
 
 function apply(value: ColorScheme): void {
   scheme.value = value;
@@ -41,6 +42,13 @@ export function setPreviewColorScheme(value: ColorScheme): void {
   apply(value);
 }
 
+/**
+ * Appelle `listener` quand le bouton du thème change le mode de l'aperçu, pour en informer l'éditeur
+ */
+export function onPreviewColorSchemeToggle(listener: ((value: ColorScheme) => void) | null): void {
+  onPreviewToggle = listener;
+}
+
 export function useColorScheme(): ColorSchemeState {
   const media = window.matchMedia('(prefers-color-scheme: dark)');
 
@@ -56,6 +64,7 @@ export function useColorScheme(): ColorSchemeState {
     const value: ColorScheme = scheme.value === 'dark' ? 'light' : 'dark';
     apply(value);
     if (previewMode) {
+      onPreviewToggle?.(value);
       return;
     }
     try {

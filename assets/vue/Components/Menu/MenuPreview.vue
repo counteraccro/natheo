@@ -83,6 +83,9 @@ export default defineComponent({
         this.sendMenu();
       } else if (message?.type === 'height') {
         this.height = message.height;
+      } else if (message?.type === 'scheme') {
+        // Mode changé par le bouton du thème dans l'aperçu
+        this.dark = message.dark;
       }
     },
 

@@ -5,7 +5,7 @@
  * hauteur renvoyée pour ajuster le cadre (sous-menus et tiroirs ouverts compris), liens sans navigation
  */
 import { computed, onBeforeUnmount, onMounted, shallowRef, type ComputedRef, type ShallowRef } from 'vue';
-import { setPreviewColorScheme } from '@/vue/Composables/Front/useColorScheme';
+import { onPreviewColorSchemeToggle, setPreviewColorScheme } from '@/vue/Composables/Front/useColorScheme';
 import { postMenuPreviewMessage, readMenuPreviewMessage } from '@/vue/Composables/Global/menuPreviewMessage';
 import type { Menu } from '@/ts/Front/Api/Menu.type';
 import type { Page } from '@/ts/Front/Api/Page.type';
@@ -127,6 +127,7 @@ export function useMenuPreview(): MenuPreview {
 
   // Clair par défaut, comme la barre d'outils de l'éditeur, en attendant son choix
   setPreviewColorScheme('light');
+  onPreviewColorSchemeToggle((value) => postMenuPreviewMessage(window.parent, { type: 'scheme', dark: value === 'dark' }));
 
   onMounted(() => {
     window.addEventListener('message', onMessage);
@@ -145,6 +146,7 @@ export function useMenuPreview(): MenuPreview {
   onBeforeUnmount(() => {
     window.removeEventListener('message', onMessage);
     document.removeEventListener('click', onClick, true);
+    onPreviewColorSchemeToggle(null);
     resize.disconnect();
     mutations.disconnect();
     cancelAnimationFrame(frame);

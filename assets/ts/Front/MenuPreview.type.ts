@@ -28,7 +28,7 @@ export interface MenuPreviewMenuMessage {
   menu: Menu;
 }
 
-/** Éditeur → aperçu : mode sombre ou clair */
+/** Éditeur ↔ aperçu : mode sombre ou clair, choisi dans la barre de l'éditeur ou par le bouton du thème */
 export interface MenuPreviewSchemeMessage {
   source: MenuPreviewSource;
   type: 'scheme';
