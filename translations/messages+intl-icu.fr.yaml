@@ -97,7 +97,7 @@ options_system.front_consent_refuse_label.help: 'Laissé vide, le thème affiche
 options_system.front_consent_refuse_label.label: 'Libellé du bouton de refus'
 options_system.front_consent_refuse_label.placeholder: 'Refuser'
 options_system.front_consent_reset_at.button: 'Redemander le consentement à tous les visiteurs'
-options_system.front_consent_reset_at.help: 'Après l''ajout d''un script ou une modification des mentions légales, ce bouton affiche de nouveau le bandeau à tous les visiteurs, y compris à ceux qui avaient déjà répondu.'
+options_system.front_consent_reset_at.help: 'Force à nouveau l''affichage du bandeau, même pour ceux qui l''ont déjà validé. À utiliser suite à un changement de politique.'
 options_system.front_consent_reset_at.label: 'Redemander le consentement'
 options_system.front_consent_reset_at.last: 'Dernière demande : {date, date, short} à {date, time, short}'
 options_system.front_consent_reset_at.never: 'Dernière demande : jamais'
