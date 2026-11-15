@@ -2,7 +2,7 @@
  * @author Gourdon Aymeric
  * @version 1.0
  * Aperçu d'un menu au design du thème, affiché dans une iframe de l'éditeur de menu : menu reçu de l'éditeur,
- * hauteur renvoyée pour ajuster le cadre (sous-menus ouverts compris), liens sans navigation
+ * hauteur renvoyée pour ajuster le cadre (sous-menus et tiroirs ouverts compris), liens sans navigation
  */
 import { computed, onBeforeUnmount, onMounted, shallowRef, type ComputedRef, type ShallowRef } from 'vue';
 import { setPreviewColorScheme } from '@/vue/Composables/Front/useColorScheme';
@@ -45,14 +45,15 @@ function menuPreviewPage(menu: Menu): Page {
 }
 
 /**
- * Hauteur du contenu, sous-menus ouverts compris : ils sont positionnés par-dessus la page et ne comptent pas dans
- * la hauteur du body. Un panneau fixe (menu latéral) compte pour la hauteur de son contenu.
+ * Hauteur du contenu, sous-menus et tiroirs ouverts compris : positionnés par-dessus la page, ils ne comptent pas dans
+ * la hauteur du body. Un panneau fixe compte pour la hauteur de son contenu.
  */
 function contentHeight(): number {
   let bottom = document.body.getBoundingClientRect().bottom;
   for (const element of Array.from(document.body.querySelectorAll<HTMLElement>('*'))) {
     const rect = element.getBoundingClientRect();
-    if (rect.height === 0) {
+    // La barre de débogage de Symfony (développement) est fixée en bas du cadre et le bloquerait à sa hauteur
+    if (rect.height === 0 || element.closest('.sf-toolbar') !== null) {
       continue;
     }
     const position = getComputedStyle(element).position;
