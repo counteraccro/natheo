@@ -18,6 +18,11 @@ export interface SiteOptions {
   theme_front_site: string | null;
   open_comment: boolean;
   front_footer_texte: string | null;
+  front_consent_enabled: boolean | null;
+  /** Texte Markdown du bandeau de consentement */
+  front_consent_text: string | null;
+  front_consent_accept_label: string | null;
+  front_consent_refuse_label: string | null;
   front_script_top: string | null;
   front_script_start_body: string | null;
   front_script_end_body: string | null;

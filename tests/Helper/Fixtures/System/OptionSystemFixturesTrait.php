@@ -73,6 +73,12 @@ trait OptionSystemFixturesTrait
         $this->createOptionSystem($data);
 
         $data = [
+            'key' => OptionSystemEnum::OS_FRONT_CONSENT_ENABLED->value,
+            'value' => '0',
+        ];
+        $this->createOptionSystem($data);
+
+        $data = [
             'key' => OptionSystemEnum::OS_REPLACE_DELETE_USER->value,
             'value' => '1',
         ];
