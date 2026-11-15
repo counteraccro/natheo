@@ -2,7 +2,7 @@
 /**
  * Demande une confirmation avant de quitter une page dont un formulaire suivi a été modifié
  * @author Gourdon Aymeric
- * @version 3.0
+ * @version 1.0
  */
 import { defineComponent, type PropType } from 'vue';
 import Modal from '@/vue/Components/Global/Modal.vue';

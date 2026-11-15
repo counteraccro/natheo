@@ -1,7 +1,7 @@
 /**
  * Types pour le composant LeaveGuard
  * @author Gourdon Aymeric
- * @version 2.0
+ * @version 1.0
  */
 
 export interface LeaveGuardTranslate {
