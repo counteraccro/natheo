@@ -598,6 +598,27 @@ class PageService extends AppAdminService
     }
 
     /**
+     * Catégorie (slug de l'API v2) et état publié de chaque page, pour l'aperçu des menus : [idPage] => [category, published]
+     * @return array<int, array{category: ?string, published: bool}>
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getMenuPreviewPages(): array
+    {
+        /** @var PageRepository $repository */
+        $repository = $this->getRepository(Page::class);
+
+        $return = [];
+        foreach ($repository->getAllCategoryAndStatus() as $row) {
+            $return[$row['id']] = [
+                'category' => PageCategory::tryFrom((int) $row['category'])?->getSlug(),
+                'published' => !$row['disabled'] && (int) $row['status'] === PageStatus::PUBLISH->value,
+            ];
+        }
+        return $return;
+    }
+
+    /**
      * Retourne les titres et url des pages du site, toutes locales : [idPage][locale] => [title, url]
      * @return array
      * @throws ContainerExceptionInterface

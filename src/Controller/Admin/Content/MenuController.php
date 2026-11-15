@@ -23,7 +23,9 @@ use App\Service\Admin\Content\Menu\MenuConvertToArray;
 use App\Service\Admin\Content\Menu\MenuService;
 use App\Service\Admin\Content\Page\PageService;
 use App\Service\Admin\System\OptionSystemService;
+use App\Service\Front\FrontThemeService;
 use App\Translate\Admin\Content\MenuTranslate;
+use App\Translate\Front\FrontTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
@@ -258,14 +260,57 @@ class MenuController extends AppAdminController
                     'blank' => MenuLinkTarget::LINK_TARGET_BLANK->value,
                     'self' => MenuLinkTarget::LINK_TARGET_SELF->value,
                 ],
+                'preview_slugs' => $menuService->getPreviewSlugs(),
             ],
             'urls' => [
                 'load_menu' => $this->generateUrl('admin_menu_load_menu'),
                 'save_menu' => $this->generateUrl('admin_menu_save_menu'),
                 'new_menu' => $this->generateUrl('admin_menu_add'),
                 'listing' => $this->generateUrl('admin_menu_index'),
+                'preview' => array_combine(
+                    $locales['locales'],
+                    array_map(
+                        fn(string $locale) => $this->generateUrl('admin_menu_preview', ['locale' => $locale]),
+                        $locales['locales'],
+                    ),
+                ),
             ],
         ]);
+    }
+
+    /**
+     * Aperçu d'un menu avec le thème du site public, affiché dans une iframe de l'éditeur qui lui envoie le menu
+     * @param FrontThemeService $frontThemeService
+     * @param FrontTranslate $frontTranslate
+     * @param string $locale langue du contenu du menu
+     * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[
+        Route(
+            '/preview/{locale}',
+            name: 'preview',
+            requirements: ['locale' => '%app.supported_locales%'],
+            methods: ['GET'],
+        ),
+    ]
+    public function preview(
+        FrontThemeService $frontThemeService,
+        FrontTranslate $frontTranslate,
+        string $locale,
+    ): Response {
+        $theme = $frontThemeService->getMenuPreviewTemplate();
+
+        $response = $this->render($theme['template'], [
+            'urls' => $frontThemeService->getUrls(),
+            'datas' => $frontThemeService->getDatas($locale),
+            'translate' => $frontTranslate->getTranslate($locale),
+            'scriptsTag' => $theme['scriptsTag'],
+            'locale' => $locale,
+        ]);
+        $response->headers->set('X-Robots-Tag', 'noindex');
+        return $response;
     }
 
     /**
@@ -319,6 +364,7 @@ class MenuController extends AppAdminController
                 'name' => $name,
                 'url_site' => $urlSite,
                 'pages' => $pageService->getAllTitleAndUrlPage(),
+                'preview_pages' => $pageService->getMenuPreviewPages(),
             ],
         ]);
     }
