@@ -1,10 +1,10 @@
 <script setup lang="ts">
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * En-tête du thème Natheo-Horizon : logo et nom du site, menu, langues, mode sombre, utilisateur connecté
  */
-import { computed, ref, toRef } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, toRef } from 'vue';
 import { useFrontContext } from '@/vue/Composables/Front/useFrontContext';
 import { useMenus } from '@/vue/Composables/Front/useMenus';
 import { useSiteOptions } from '@/vue/Composables/Front/useSiteOptions';
@@ -25,6 +25,16 @@ const siteName = computed(() => options.value?.site_name ?? '');
 const sidebar = computed(() => menus.value.header !== undefined && layoutOf(menus.value.header).kind === 'sidebar');
 const drawerOpen = ref(false);
 const burger = ref<HTMLButtonElement | null>(null);
+
+// Passage en grand écran (fenêtre agrandie) : le menu de l'en-tête reprend la place du tiroir
+const desktop = window.matchMedia('(min-width: 64rem)');
+function onDesktopChange(event: MediaQueryListEvent): void {
+  if (event.matches && !sidebar.value) {
+    drawerOpen.value = false;
+  }
+}
+onMounted(() => desktop.addEventListener('change', onDesktopChange));
+onBeforeUnmount(() => desktop.removeEventListener('change', onDesktopChange));
 </script>
 
 <template>
