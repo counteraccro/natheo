@@ -333,18 +333,6 @@ class PageRepository extends ServiceEntityRepository
     }
 
     /**
-     * Retourne l'id, la catégorie, le statut et l'état désactivé de toutes les pages
-     * @return array<int, array{id: int, category: int, status: int, disabled: bool}>
-     */
-    public function getAllCategoryAndStatus(): array
-    {
-        return $this->createQueryBuilder('p')
-            ->select('p.id', 'p.category', 'p.status', 'p.disabled')
-            ->getQuery()
-            ->getArrayResult();
-    }
-
-    /**
      * Retourne l'id, la locale, le titre et l'url de toutes les traductions de pages
      * @return array<int, array{id: int, locale: string, titre: string, url: string}>
      */

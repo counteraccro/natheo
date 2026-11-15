@@ -287,7 +287,7 @@ class PageService extends AppAdminService
      */
     public function canBeLandingPage(Page $page): bool
     {
-        return $page->getStatus() === PageStatus::PUBLISH->value && !$page->isDisabled();
+        return $page->isPublished();
     }
 
     /**
@@ -609,10 +609,11 @@ class PageService extends AppAdminService
         $repository = $this->getRepository(Page::class);
 
         $return = [];
-        foreach ($repository->getAllCategoryAndStatus() as $row) {
-            $return[$row['id']] = [
-                'category' => PageCategory::tryFrom((int) $row['category'])?->getSlug(),
-                'published' => !$row['disabled'] && (int) $row['status'] === PageStatus::PUBLISH->value,
+        /** @var Page $page */
+        foreach ($repository->findAll() as $page) {
+            $return[$page->getId()] = [
+                'category' => PageCategory::tryFrom((int) $page->getCategory())?->getSlug(),
+                'published' => $page->isPublished(),
             ];
         }
         return $return;
