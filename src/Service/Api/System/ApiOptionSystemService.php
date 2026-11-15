@@ -38,6 +38,7 @@ class ApiOptionSystemService extends AppApiService
             OptionSystem::OS_THEME_FRONT_SITE->value,
             OptionSystem::OS_FRONT_FOOTER_TEXTE->value,
             OptionSystem::OS_FRONT_CONSENT_ENABLED->value,
+            OptionSystem::OS_FRONT_CONSENT_RESET_AT->value,
             OptionSystem::OS_FRONT_CONSENT_TEXT->value,
             OptionSystem::OS_FRONT_CONSENT_ACCEPT_LABEL->value,
             OptionSystem::OS_FRONT_CONSENT_REFUSE_LABEL->value,

@@ -82,11 +82,12 @@ class OptionSystemFrontService extends AppFrontService
     public function getFrontScripts(): array
     {
         $optionSystemService = $this->getOptionSystemService();
-        return [
+        // Un champ vidé en laissant un retour à la ligne ne compte pas comme un script
+        return array_map(trim(...), [
             'top' => $optionSystemService->getValueByKey(OptionSystem::OS_FRONT_SCRIPT_TOP->value) ?? '',
             'startBody' => $optionSystemService->getValueByKey(OptionSystem::OS_FRONT_SCRIPT_START_BODY->value) ?? '',
             'endBody' => $optionSystemService->getValueByKey(OptionSystem::OS_FRONT_SCRIPT_END_BODY->value) ?? '',
-        ];
+        ]);
     }
 
     /**
@@ -104,9 +105,9 @@ class OptionSystemFrontService extends AppFrontService
 
     /**
      * Contenu du bandeau de consentement dans la langue de la page : texte converti en HTML, libellés des boutons
-     * (chaîne vide quand le thème doit afficher son propre libellé)
+     * (chaîne vide quand le thème doit afficher son propre libellé) et date de la dernière demande de consentement
      * @param string $locale
-     * @return array{text: string, accept: string, refuse: string}
+     * @return array{text: string, accept: string, refuse: string, resetAt: string|null}
      * @throws CommonMarkException
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -129,6 +130,7 @@ class OptionSystemFrontService extends AppFrontService
                     OptionSystem::OS_FRONT_CONSENT_REFUSE_LABEL->value,
                     $locale,
                 ) ?? '',
+            'resetAt' => $optionSystemService->getValueByKey(OptionSystem::OS_FRONT_CONSENT_RESET_AT->value) ?: null,
         ];
     }
 }

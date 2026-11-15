@@ -265,13 +265,14 @@ class IndexControllerTest extends AppWebTestCase
     }
 
     /**
-     * Options de script vides : aucune balise ajoutée, pas de bandeau même activé
+     * Options de script vides ou réduites à des blancs : aucune balise ajoutée, pas de bandeau même activé
      * @return void
      */
     public function testIndexFrontScriptsEmpty(): void
     {
         $this->createUser();
         $this->setOption(OptionSystem::OS_FRONT_CONSENT_ENABLED, '1');
+        $this->setOption(OptionSystem::OS_FRONT_SCRIPT_START_BODY, "\n  \n");
 
         $crawler = $this->client->request('GET', $this->homeUrl());
         $this->assertResponseIsSuccessful();
@@ -315,7 +316,12 @@ class IndexControllerTest extends AppWebTestCase
             $this->assertStringContainsString('&lt;b&gt;', $consent['text']);
             $this->assertSame('Yes', $consent['accept']);
             $this->assertSame('', $consent['refuse']);
+            $this->assertNull($consent['resetAt']);
         }
+
+        $this->setOption(OptionSystem::OS_FRONT_CONSENT_RESET_AT, '2026-11-15T10:00:00+00:00');
+        $consent = $this->getVueProps($this->client->request('GET', $this->homeUrl()))['datas']['consent'];
+        $this->assertSame('2026-11-15T10:00:00+00:00', $consent['resetAt']);
     }
 
     /**

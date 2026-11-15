@@ -19,6 +19,8 @@ export interface SiteOptions {
   open_comment: boolean;
   front_footer_texte: string | null;
   front_consent_enabled: boolean | null;
+  /** Date ISO 8601 de la dernière demande de consentement, les choix antérieurs ne valent plus */
+  front_consent_reset_at: string | null;
   /** Texte Markdown du bandeau de consentement */
   front_consent_text: string | null;
   front_consent_accept_label: string | null;

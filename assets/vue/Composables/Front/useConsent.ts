@@ -4,9 +4,10 @@
  * Consentement aux scripts des options système : choix mémorisé six mois, affichage du bandeau, activation des
  * scripts servis inertes dans des <template data-consent-script>
  */
-import { readonly, shallowRef } from 'vue';
+import { nextTick, readonly, ref, shallowRef, watch } from 'vue';
 import { useFrontContext, type FrontContext } from '@/vue/Composables/Front/useFrontContext';
 import type { ConsentChoice, ConsentState, StoredConsent } from '@/ts/Front/Consent.type';
+import type { FrontConsent } from '@/ts/Front/FrontProps.type';
 
 const STORAGE_KEY = 'frontConsent';
 const VALIDITY_MONTHS = 6;
@@ -18,17 +19,28 @@ export function useConsent(): ConsentState {
   const context = useFrontContext();
   let state = states.get(context);
   if (state === undefined) {
-    state = createConsentState(context.datas.consent !== null);
+    state = createConsentState(context.datas.consent);
     states.set(context, state);
   }
   return state;
 }
 
-function createConsentState(required: boolean): ConsentState {
-  const stored = required ? readStoredConsent() : null;
+function createConsentState(consent: FrontConsent | null): ConsentState {
+  const required = consent !== null;
+  const resetAt = consent?.resetAt ?? null;
+  const stored = required ? readStoredConsent(resetAt) : null;
   const choice = shallowRef<ConsentChoice | null>(stored?.choice ?? null);
   const visible = shallowRef(required && stored === null);
+  const region = ref<HTMLElement | null>(null);
   let activated = false;
+
+  // Rouvert depuis le pied de page : le focus suit, pour le clavier et les lecteurs d'écran
+  watch(visible, async (isVisible, wasVisible) => {
+    if (isVisible && !wasVisible) {
+      await nextTick();
+      region.value?.focus();
+    }
+  });
 
   const activate = (): void => {
     if (!activated) {
@@ -40,9 +52,9 @@ function createConsentState(required: boolean): ConsentState {
   const save = (value: ConsentChoice): void => {
     choice.value = value;
     visible.value = false;
-    const consent: StoredConsent = { choice: value, date: new Date().toISOString() };
+    const stored: StoredConsent = { choice: value, date: new Date().toISOString(), resetAt };
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(consent));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(stored));
     } catch {
       // Stockage indisponible (navigation privée) : le choix vaut pour la page en cours
     }
@@ -70,13 +82,16 @@ function createConsentState(required: boolean): ConsentState {
     reopen(): void {
       visible.value = required;
     },
+    region,
   };
 }
 
 /**
- * Choix enregistré s'il est lisible et date de moins de six mois, null sinon
+ * Choix enregistré s'il est lisible, date de moins de six mois et répond à la dernière demande de consentement,
+ * null sinon
+ * @param resetAt date de la dernière demande, null si elle n'a jamais été faite
  */
-function readStoredConsent(): StoredConsent | null {
+function readStoredConsent(resetAt: string | null): StoredConsent | null {
   let parsed: Partial<StoredConsent> | null;
   try {
     parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? 'null') as Partial<StoredConsent> | null;
@@ -90,10 +105,10 @@ function readStoredConsent(): StoredConsent | null {
   const date = new Date(parsed.date);
   const expiry = new Date(date);
   expiry.setMonth(expiry.getMonth() + VALIDITY_MONTHS);
-  if (Number.isNaN(date.getTime()) || expiry <= new Date()) {
+  if (Number.isNaN(date.getTime()) || expiry <= new Date() || (parsed.resetAt ?? null) !== resetAt) {
     return null;
   }
-  return { choice: parsed.choice, date: parsed.date };
+  return { choice: parsed.choice, date: parsed.date, resetAt };
 }
 
 /**

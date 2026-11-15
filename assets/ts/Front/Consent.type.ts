@@ -12,6 +12,8 @@ export interface StoredConsent {
   choice: ConsentChoice;
   /** Date du choix, ISO 8601 */
   date: string;
+  /** Demande de consentement à laquelle le choix répond, null avant toute demande */
+  resetAt: string | null;
 }
 
 export interface ConsentState {
@@ -25,4 +27,6 @@ export interface ConsentState {
   refuse: () => void;
   /** Réaffiche le bandeau pour changer d'avis */
   reopen: () => void;
+  /** Élément du bandeau, qui reçoit le focus quand il est rouvert */
+  region: Ref<HTMLElement | null>;
 }

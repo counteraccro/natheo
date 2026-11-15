@@ -38,6 +38,8 @@ export interface FrontConsent {
   text: string;
   accept: string;
   refuse: string;
+  /** Date ISO 8601 de la dernière demande de consentement, null si elle n'a jamais été faite */
+  resetAt: string | null;
 }
 
 export interface FrontThemeDatas {

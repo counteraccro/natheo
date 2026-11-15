@@ -24,12 +24,12 @@
     {% block javascripts %}
         {{ vite_entry_script_tags(scriptsTag) }}
     {% endblock %}
-    {{ _self.front_script(frontScripts.top|default(''), frontScripts.consent|default(false)) }}
+    {{ _self.front_script(frontScripts.top|default(''), consentRequired|default(false)) }}
 </head>
 <body class="{% block body_class %}{% endblock %}">
-{{ _self.front_script(frontScripts.startBody|default(''), frontScripts.consent|default(false)) }}
+{{ _self.front_script(frontScripts.startBody|default(''), consentRequired|default(false)) }}
 {% block body %}{% endblock %}
-{{ _self.front_script(frontScripts.endBody|default(''), frontScripts.consent|default(false)) }}
+{{ _self.front_script(frontScripts.endBody|default(''), consentRequired|default(false)) }}
 </body>
 </html>
 

@@ -131,6 +131,7 @@ class OptionSystemTest extends AppApiV2TestCase
         $this->assertMatchesResourceCollectionJsonSchema(OptionSystem::class);
         $values = array_column($content['member'], 'value', 'key');
         $this->assertTrue($values['front_consent_enabled']);
+        $this->assertArrayHasKey('front_consent_reset_at', $values);
         $this->assertSame('Text *EN*', $values['front_consent_text']);
         $this->assertSame('Accept', $values['front_consent_accept_label']);
         $this->assertSame('Refuse', $values['front_consent_refuse_label']);
