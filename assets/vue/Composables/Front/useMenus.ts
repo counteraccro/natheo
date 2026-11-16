@@ -1,6 +1,6 @@
 /**
  * @author Gourdon Aymeric
- * @version 2.0
+ * @version 2.1
  * Menus de la page par position, disposition de chaque type de menu et lien de chaque élément
  * (page facultative pour le seul calcul des liens)
  */
@@ -67,7 +67,7 @@ export function useMenus(page?: Ref<Page | null>): Menus {
   }
 
   function isActive(element: MenuElement): boolean {
-    const slug = context.datas.slug ?? page?.value?.slug ?? null;
+    const slug = context.slug.value ?? page?.value?.slug ?? null;
     return (slug !== null && element.pageSlug === slug) || element.children.some(isActive);
   }
 
