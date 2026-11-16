@@ -2,7 +2,7 @@
 /**
  * @author Gourdon Aymeric
  * @version 1.0
- * Icônes du thème Natheo-Horizon, tracés repris de Flowbite Icons (MIT), décoratives
+ * Icônes des thèmes du site public, tracés repris de Flowbite Icons (MIT), décoratives
  */
 import { computed } from 'vue';
 

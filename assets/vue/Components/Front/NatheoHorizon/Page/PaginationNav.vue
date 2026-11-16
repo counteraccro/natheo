@@ -5,7 +5,7 @@
  * Navigation entre les pages d'une collection : précédente / suivante, numéros sauf en mode compact
  */
 import { computed } from 'vue';
-import HorizonIcon from '@/vue/Components/Front/NatheoHorizon/Layout/HorizonIcon.vue';
+import FrontIcon from '@/vue/Components/Front/Global/FrontIcon.vue';
 import type { FrontPaginationTranslate } from '@/ts/Front/FrontTranslate.type';
 
 const props = defineProps<{ page: number; lastPage: number; translate: FrontPaginationTranslate; compact?: boolean }>();
@@ -25,7 +25,7 @@ const button =
 <template>
   <nav v-if="lastPage > 1" :aria-label="translate.label" class="mt-8 flex items-center justify-between gap-4">
     <button type="button" :class="button" :disabled="page <= 1" @click="emit('go', page - 1)">
-      <HorizonIcon name="chevron-down" class="size-4 rotate-90" />
+      <FrontIcon name="chevron-down" class="size-4 rotate-90" />
       <span class="max-sm:sr-only">{{ translate.previous }}</span>
     </button>
     <ol v-if="!compact" class="flex gap-1.5">
@@ -51,7 +51,7 @@ const button =
     <span v-else class="text-[0.95rem] text-fg-muted">{{ page }} {{ translate.of }} {{ lastPage }}</span>
     <button type="button" :class="button" :disabled="page >= lastPage" @click="emit('go', page + 1)">
       <span class="max-sm:sr-only">{{ translate.next }}</span>
-      <HorizonIcon name="chevron-down" class="size-4 -rotate-90" />
+      <FrontIcon name="chevron-down" class="size-4 -rotate-90" />
     </button>
   </nav>
 </template>

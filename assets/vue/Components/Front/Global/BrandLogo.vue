@@ -2,7 +2,7 @@
 /**
  * @author Gourdon Aymeric
  * @version 1.0
- * Logo du thème Natheo-Horizon : la grille des tailles de blocs (pleine largeur, deux moitiés, trois tiers)
+ * Logo de Nathéo, commun aux thèmes du site public : la grille des tailles de blocs (pleine largeur, deux moitiés, trois tiers)
  */
 </script>
 

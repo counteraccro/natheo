@@ -9,8 +9,8 @@ import { nextTick, ref, watch } from 'vue';
 import { useFrontContext } from '@/vue/Composables/Front/useFrontContext';
 import { useLanguages } from '@/vue/Composables/Front/useLanguages';
 import { useMenus } from '@/vue/Composables/Front/useMenus';
-import BrandLogo from '@/vue/Components/Front/NatheoHorizon/Layout/BrandLogo.vue';
-import HorizonIcon from '@/vue/Components/Front/NatheoHorizon/Layout/HorizonIcon.vue';
+import BrandLogo from '@/vue/Components/Front/Global/BrandLogo.vue';
+import FrontIcon from '@/vue/Components/Front/Global/FrontIcon.vue';
 import MenuLink from '@/vue/Components/Front/NatheoHorizon/Menu/MenuLink.vue';
 import NestedMenuList from '@/vue/Components/Front/NatheoHorizon/Menu/NestedMenuList.vue';
 import type { Menu } from '@/ts/Front/Api/Menu.type';
@@ -87,7 +87,7 @@ const subLink = 'flex min-h-11 items-center gap-2.5 font-medium text-on-night-mu
           @click="close"
         >
           <span class="sr-only">{{ translate.header.closeMenu }}</span>
-          <HorizonIcon name="close" class="size-5.5" />
+          <FrontIcon name="close" class="size-5.5" />
         </button>
       </div>
 
@@ -97,7 +97,7 @@ const subLink = 'flex min-h-11 items-center gap-2.5 font-medium text-on-night-mu
             <details v-if="element.children.length" :open="isActive(element)" class="group">
               <summary :class="link" class="cursor-pointer list-none justify-between [&::-webkit-details-marker]:hidden">
                 {{ element.label }}
-                <HorizonIcon name="chevron-down" class="size-5.5 transition-transform group-open:rotate-180" />
+                <FrontIcon name="chevron-down" class="size-5.5 transition-transform group-open:rotate-180" />
               </summary>
               <NestedMenuList
                 :elements="element.children"
