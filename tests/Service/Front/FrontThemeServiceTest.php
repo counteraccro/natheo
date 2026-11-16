@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Test du service des props communes des thèmes
  */
 
@@ -83,5 +83,24 @@ class FrontThemeServiceTest extends AppWebTestCase
             ['template' => 'front/natheo_base/menu_preview.html.twig', 'scriptsTag' => 'front_natheo_base'],
             $this->frontThemeService->getMenuPreviewTemplate(),
         );
+    }
+
+    /**
+     * Test méthode getTemplateVersion() : version propre au thème actif
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testGetTemplateVersion(): void
+    {
+        $optionSystemService = $this->container->get(OptionSystemService::class);
+
+        foreach (Template::cases() as $template) {
+            $optionSystemService->saveValueByKee(OptionSystem::OS_THEME_FRONT_SITE->value, $template->value);
+            $this->assertSame(
+                $this->container->getParameter('app.' . $template->value . '.version'),
+                $this->frontThemeService->getTemplateVersion(),
+            );
+        }
     }
 }

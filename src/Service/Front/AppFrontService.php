@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * AppService pour le front
  */
 
@@ -38,6 +38,19 @@ class AppFrontService extends AppFrontHandlerService
     public function getScriptTags(): string
     {
         return 'front_' . $this->resolveTemplate('front_error.index.no_script_tag')->value;
+    }
+
+    /**
+     * Version du thème actif affichée en bas de page (paramètre app.<thème>.version), chaîne vide sans paramètre
+     * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getTemplateVersion(): string
+    {
+        $parameter = 'app.' . $this->resolveTemplate('front_error.index.no_template')->value . '.version';
+        $parameterBag = $this->getParameterBag();
+        return $parameterBag->has($parameter) ? (string) $parameterBag->get($parameter) : '';
     }
 
     /**

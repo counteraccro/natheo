@@ -4,11 +4,12 @@ declare(strict_types=1);
 /**
  * Class pour la génération des traductions pour les scripts vue du front
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 1.2
  */
 
 namespace App\Translate\Front;
 
+use App\Service\Front\OptionSystemFrontService;
 use App\Translate\AppTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
@@ -29,6 +30,7 @@ class FrontTranslate extends AppTranslate
             AutowireLocator([
                 'translator' => TranslatorInterface::class,
                 'parameterBag' => ContainerBagInterface::class,
+                'optionSystemFrontService' => OptionSystemFrontService::class,
             ]),
         ]
         private readonly ContainerInterface $handlers,
@@ -133,6 +135,8 @@ class FrontTranslate extends AppTranslate
     {
         /** @var ContainerBagInterface $parameterBag */
         $parameterBag = $this->handlers->get('parameterBag');
+        /** @var OptionSystemFrontService $optionSystemFrontService */
+        $optionSystemFrontService = $this->handlers->get('optionSystemFrontService');
 
         return [
             'credit' => $this->translator->trans(
@@ -143,7 +147,7 @@ class FrontTranslate extends AppTranslate
             ),
             'templateVersion' => $this->translator->trans(
                 'front.footer.template.version',
-                ['version' => $parameterBag->get('app.natheo_horizon.version')],
+                ['version' => $optionSystemFrontService->getTemplateVersion()],
                 'front',
                 locale: $this->locale,
             ),
