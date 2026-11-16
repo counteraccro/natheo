@@ -30,6 +30,12 @@
     --radius-sf: var(--radius);
 }
 
+/* Trois dispositions : barre en bas (mobile), rail d'icônes dès md, barre latérale complète dès xl */
+@theme {
+    --breakpoint-md: 56.25rem;
+    --breakpoint-xl: 80rem;
+}
+
 @theme {
     --animate-breathe: sf-breathe 1.4s ease-in-out infinite alternate;
 
