@@ -27,6 +27,7 @@ export default defineConfig(({ command }) => ({
         admin: './assets/app_admin.js',
         front_natheo_horizon: './assets/front_natheo_horizon.ts',
         front_natheo_base: './assets/front_natheo_base.ts',
+        front_natheo_storm: './assets/front_natheo_storm.ts',
         install: './assets/app_install.js',
       },
     },

@@ -4,11 +4,13 @@ declare(strict_types=1);
 /**
  * Class pour la génération des traductions pour les scripts vue du front
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 1.2
  */
 
 namespace App\Translate\Front;
 
+use App\Enum\Admin\Content\Page\PageCategory;
+use App\Service\Front\FrontThemeService;
 use App\Translate\AppTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
@@ -29,6 +31,7 @@ class FrontTranslate extends AppTranslate
             AutowireLocator([
                 'translator' => TranslatorInterface::class,
                 'parameterBag' => ContainerBagInterface::class,
+                'frontThemeService' => FrontThemeService::class,
             ]),
         ]
         private readonly ContainerInterface $handlers,
@@ -47,6 +50,7 @@ class FrontTranslate extends AppTranslate
         $this->locale = $locale;
 
         return [
+            'categories' => $this->getTranslateCategories(),
             'consent' => [
                 'regionLabel' => $this->trans('front.consent.region_label'),
                 'accept' => $this->trans('front.consent.accept'),
@@ -74,7 +78,28 @@ class FrontTranslate extends AppTranslate
                 'listing' => $this->getTranslateListing(),
                 'pagination' => $this->getTranslatePagination(),
             ],
+            'thread' => [
+                'order' => $this->trans('front.thread.order'),
+                'more' => $this->trans('front.thread.more'),
+                'end' => $this->trans('front.thread.end'),
+                'button' => $this->trans('front.thread.button'),
+                // Paramètre laissé tel quel : le titre de la page est placé dans le navigateur
+                'opened' => $this->trans('front.thread.opened', ['title' => '{title}']),
+            ],
         ];
+    }
+
+    /**
+     * Libellé de chaque catégorie de page, par slug
+     * @return array<string, string>
+     */
+    private function getTranslateCategories(): array
+    {
+        $categories = [];
+        foreach (PageCategory::getSlugs() as $slug) {
+            $categories[$slug] = $this->trans('front.category.' . $slug);
+        }
+        return $categories;
     }
 
     /**
@@ -133,6 +158,8 @@ class FrontTranslate extends AppTranslate
     {
         /** @var ContainerBagInterface $parameterBag */
         $parameterBag = $this->handlers->get('parameterBag');
+        /** @var FrontThemeService $frontThemeService */
+        $frontThemeService = $this->handlers->get('frontThemeService');
 
         return [
             'credit' => $this->translator->trans(
@@ -143,7 +170,7 @@ class FrontTranslate extends AppTranslate
             ),
             'templateVersion' => $this->translator->trans(
                 'front.footer.template.version',
-                ['version' => $parameterBag->get('app.natheo_horizon.version')],
+                ['version' => $frontThemeService->getTemplateVersion()],
                 'front',
                 locale: $this->locale,
             ),
@@ -175,6 +202,8 @@ class FrontTranslate extends AppTranslate
             'skipLink' => $this->trans('front.header.skip_link'),
             'closeMenu' => $this->trans('front.header.close_menu'),
             'localeLabel' => $this->trans('front.header.locale_label'),
+            'menuButton' => $this->trans('front.header.menu_button'),
+            'modeButton' => $this->trans('front.header.mode_button'),
         ];
     }
 

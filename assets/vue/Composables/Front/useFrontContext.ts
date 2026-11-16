@@ -1,9 +1,9 @@
 /**
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 1.3
  * Contexte du site public partagé par les composables : props du thème, client API et cache des chargements
  */
-import { getCurrentInstance, inject, shallowRef, type InjectionKey, type ShallowRef } from 'vue';
+import { getCurrentInstance, inject, ref, shallowRef, type InjectionKey, type Ref, type ShallowRef } from 'vue';
 import { ApiClient } from '@/vue/Composables/Front/Api/ApiClient';
 import { ApiError } from '@/vue/Composables/Front/Api/ApiError';
 import type { FrontThemeDatas, FrontThemeProps, FrontThemeUrls } from '@/ts/Front/FrontProps.type';
@@ -17,6 +17,12 @@ export interface FrontContext {
   api: ApiClient;
   /** Page affichée, renseignée par usePage() une fois chargée */
   page: ShallowRef<Page | null>;
+  /** Slug de la page demandée, null pour l'accueil ; usePage() charge la page qui lui correspond */
+  slug: Ref<string | null>;
+  /** Navigation sans rechargement possible : ni prévisualisation, ni utilisateur connecté (lien d'édition calculé par le serveur) */
+  canNavigate: boolean;
+  /** Ouvre une page sans rechargement ; sans effet quand canNavigate est faux */
+  navigate(category: string, slug: string): void;
   /** Chargement partagé : un seul appel par clé, quel que soit le nombre de composants qui le demandent */
   once<T>(key: string, loader: () => Promise<T>): Promise<T>;
   /** URL publique d'une page */
@@ -38,6 +44,7 @@ export function createFrontContext(props: FrontThemeProps): FrontContext {
     locale: props.datas.locale,
   });
   const loads = new Map<string, Promise<unknown>>();
+  const home = (props.urls.home[props.datas.locale] ?? '/').replace(/\/?$/, '/');
 
   const context: FrontContext = {
     urls: props.urls,
@@ -45,9 +52,25 @@ export function createFrontContext(props: FrontThemeProps): FrontContext {
     translate: props.translate,
     api,
     page: shallowRef<Page | null>(null),
+    slug: ref(props.datas.slug),
+    canNavigate: props.datas.preview === null && props.datas.user === null,
+    navigate(category: string, slug: string): void {
+      if (!context.canNavigate || slug === context.slug.value) {
+        return;
+      }
+      window.history.pushState(null, '', context.pageUrl(category, slug));
+      context.slug.value = slug;
+    },
     once<T>(key: string, loader: () => Promise<T>): Promise<T> {
       if (!loads.has(key)) {
-        loads.set(key, loader());
+        // Un échec n'est pas gardé : la clé est rechargée au prochain appel
+        loads.set(
+          key,
+          loader().catch((error: unknown) => {
+            loads.delete(key);
+            throw error;
+          }),
+        );
       }
       return loads.get(key) as Promise<T>;
     },
@@ -65,6 +88,12 @@ export function createFrontContext(props: FrontThemeProps): FrontContext {
     },
   };
 
+  if (context.canNavigate) {
+    window.addEventListener('popstate', () => {
+      context.slug.value = slugFromPath(window.location.pathname, home);
+    });
+  }
+
   // Fourni à l'application montée et non au composant : le composant racine l'utilise lui-même
   const app = getCurrentInstance()?.appContext.app;
   if (app === undefined) {
@@ -72,6 +101,17 @@ export function createFrontContext(props: FrontThemeProps): FrontContext {
   }
   app.provide(FRONT_CONTEXT_KEY, context);
   return context;
+}
+
+/**
+ * Slug d'une adresse /<locale>/<catégorie>/<slug>, null pour l'accueil
+ */
+function slugFromPath(pathname: string, home: string): string | null {
+  if (!pathname.startsWith(home)) {
+    return null;
+  }
+  const segments = pathname.slice(home.length).split('/').filter((segment) => segment !== '');
+  return segments[1] === undefined ? null : decodeURIComponent(segments[1]);
 }
 
 export function useFrontContext(): FrontContext {

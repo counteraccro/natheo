@@ -10,7 +10,7 @@ import { useFrontContext } from '@/vue/Composables/Front/useFrontContext';
 import { isMouse, useHoverDelay } from '@/vue/Composables/Front/useHoverDelay';
 import { useMenus } from '@/vue/Composables/Front/useMenus';
 import { NAV_PANEL_OPEN } from '@/vue/Components/Front/NatheoHorizon/Layout/NavPanel.vue';
-import HorizonIcon from '@/vue/Components/Front/NatheoHorizon/Layout/HorizonIcon.vue';
+import FrontIcon from '@/vue/Components/Front/Global/FrontIcon.vue';
 import MenuLink from '@/vue/Components/Front/NatheoHorizon/Menu/MenuLink.vue';
 import type { MenuElement } from '@/ts/Front/Api/Menu.type';
 
@@ -141,7 +141,7 @@ function onFocusout(event: FocusEvent, element: MenuElement): void {
           :aria-controls="`cascade-${element.id}`"
           @click="toggle(element)"
         >
-          <HorizonIcon
+          <FrontIcon
             name="chevron-down"
             class="size-4"
             :class="toLeft && openId === element.id ? 'rotate-90' : '-rotate-90'"

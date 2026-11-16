@@ -1,0 +1,51 @@
+/*!
+ * Author : Gourdon Aymeric
+ * Version : 1.0
+ * Jetons de couleur du thème StormFront, clair et sombre (contrastes WCAG 2.2 AA)
+ */
+
+:root {
+    /* Volet de lecture et fil */
+    --page: #f4f6f7;
+    --thread: #dfe4e7;
+    --fg: #1c2329;
+    --fg-muted: #4c5862;
+    --line: #c9d1d6;
+    --field-border: #76848e;
+    --primary: #245a7e;
+    --on-primary: #ffffff;
+    --focus: var(--primary);
+    --code-bg: #1e252b;
+
+    /* Barre latérale et ses volets */
+    --rail: #1e252b;
+    --on-rail: #e8ecef;
+    --on-rail-muted: #a7b3bc;
+    --rail-line: rgb(167 179 188 / 0.18);
+    --bolt: #f0c75e;
+    --on-bolt: #1e252b;
+
+    /* Statut « en attente » et bandeau de prévisualisation */
+    --notice-bg: #fbeec2;
+    --notice-fg: #3b2d00;
+    --notice-line: #a67c00;
+
+    --radius: 3px;
+    --font: 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
+    --font-mono: 'Geist Mono Variable', ui-monospace, 'SF Mono', Menlo, monospace;
+    color-scheme: light;
+}
+
+:root.dark {
+    --page: #12171a;
+    --thread: #182024;
+    --fg: #e3e8eb;
+    --fg-muted: #9ba8b1;
+    --line: #2a343a;
+    --field-border: #5d6b75;
+    --primary: #8ec3e3;
+    --on-primary: #12171a;
+    --code-bg: #0a0d0f;
+    --rail: #0d1114;
+    color-scheme: dark;
+}

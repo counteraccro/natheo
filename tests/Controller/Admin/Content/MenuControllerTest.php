@@ -283,7 +283,7 @@ class MenuControllerTest extends AppWebTestCase
     }
 
     /**
-     * Test méthode preview() : accès contributeur, thème actif servi sans scripts du site, repli sur Natheo-Base
+     * Test méthode preview() : accès contributeur, thème actif servi sans scripts du site, aperçu propre à StormFront
      * @return void
      */
     public function testPreview(): void
@@ -329,7 +329,7 @@ class MenuControllerTest extends AppWebTestCase
         $this->client->request('GET', $this->router->generate('admin_menu_preview', ['locale' => 'fr']));
         $this->assertResponseIsSuccessful();
         $this->assertStringContainsString(
-            'Front/NatheoBase/MenuPreview',
+            'Front/StormFront/MenuPreview',
             (string) $this->client->getResponse()->getContent(),
         );
     }

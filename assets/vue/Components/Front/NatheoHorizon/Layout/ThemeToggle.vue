@@ -6,7 +6,7 @@
  */
 import { useFrontContext } from '@/vue/Composables/Front/useFrontContext';
 import { useColorScheme } from '@/vue/Composables/Front/useColorScheme';
-import HorizonIcon from '@/vue/Components/Front/NatheoHorizon/Layout/HorizonIcon.vue';
+import FrontIcon from '@/vue/Components/Front/Global/FrontIcon.vue';
 
 const { translate } = useFrontContext();
 const { scheme, toggle } = useColorScheme();
@@ -20,6 +20,6 @@ const { scheme, toggle } = useColorScheme();
     @click="toggle"
   >
     <span class="sr-only">{{ translate.header.darkMode }}</span>
-    <HorizonIcon :name="scheme === 'dark' ? 'sun' : 'moon'" class="size-5.5" />
+    <FrontIcon :name="scheme === 'dark' ? 'sun' : 'moon'" class="size-5.5" />
   </button>
 </template>

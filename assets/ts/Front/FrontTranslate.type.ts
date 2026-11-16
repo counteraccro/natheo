@@ -1,6 +1,6 @@
 /**
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 1.2
  * Traductions du site public (FrontTranslate), communes à tous les thèmes
  */
 
@@ -82,6 +82,9 @@ export interface FrontHeaderTranslate {
   skipLink: string;
   closeMenu: string;
   localeLabel: string;
+  /** Libellés courts des boutons d'une barre d'icônes */
+  menuButton: string;
+  modeButton: string;
 }
 
 export interface FrontMenuTranslate {
@@ -118,11 +121,24 @@ export interface FrontErrorApiTranslate {
   back: string;
 }
 
+/** Liste des pages d'une catégorie, à côté de la page ouverte */
+export interface FrontThreadTranslate {
+  order: string;
+  more: string;
+  end: string;
+  button: string;
+  /** Annonce de la page ouverte sans rechargement, « {title} » à la place de son titre */
+  opened: string;
+}
+
 export interface FrontTranslate {
+  /** Libellé de chaque catégorie de page, par slug */
+  categories: Record<string, string>;
   consent: FrontConsentTranslate;
   errorApi: FrontErrorApiTranslate;
   footer: FrontFooterTranslate;
   header: FrontHeaderTranslate;
   menu: FrontMenuTranslate;
   main: FrontMainTranslate;
+  thread: FrontThreadTranslate;
 }
