@@ -25,7 +25,6 @@
         text-decoration-thickness: 2px;
     }
 
-    /* --focus est redéfini sur la barre latérale (éclair) */
     :focus-visible {
         outline: 3px solid var(--focus);
         outline-offset: 2px;

@@ -8,15 +8,7 @@
 
 {% block body %}
     <main class="flex min-h-screen w-full flex-col justify-center px-[clamp(1.25rem,8vw,9rem)] py-16 [--focus:var(--bolt)]">
-        {# Logo de Nathéo, même grille que Global/BrandLogo.vue #}
-        <svg class="size-12" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
-            <rect x="4" y="4" width="56" height="17" rx="3" fill="#c9b8ff"/>
-            <rect x="4" y="24" width="26.5" height="17" rx="3" fill="#8f6cff"/>
-            <rect x="33.5" y="24" width="26.5" height="17" rx="3" fill="#8f6cff"/>
-            <rect x="4" y="44" width="16.6" height="16" rx="3" fill="#6a45ec"/>
-            <rect x="23.7" y="44" width="16.6" height="16" rx="3" fill="#6a45ec"/>
-            <rect x="43.4" y="44" width="16.6" height="16" rx="3" fill="#5cc8f0"/>
-        </svg>
+        <twig:Front:BrandLogo class="size-12"/>
         <h1 class="mt-10 max-w-[18ch] text-[clamp(2.4rem,5vw,4rem)] leading-[1.02]">
             {{ 'front_error.closed_site.block_title'|trans({}, 'front_error', locale) }}
         </h1>
