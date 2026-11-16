@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace App\Translate\Front;
 
+use App\Enum\Admin\Content\Page\PageCategory;
 use App\Service\Front\OptionSystemFrontService;
 use App\Translate\AppTranslate;
 use Psr\Container\ContainerExceptionInterface;
@@ -49,6 +50,7 @@ class FrontTranslate extends AppTranslate
         $this->locale = $locale;
 
         return [
+            'categories' => $this->getTranslateCategories(),
             'consent' => [
                 'regionLabel' => $this->trans('front.consent.region_label'),
                 'accept' => $this->trans('front.consent.accept'),
@@ -76,7 +78,28 @@ class FrontTranslate extends AppTranslate
                 'listing' => $this->getTranslateListing(),
                 'pagination' => $this->getTranslatePagination(),
             ],
+            'thread' => [
+                'order' => $this->trans('front.thread.order'),
+                'more' => $this->trans('front.thread.more'),
+                'end' => $this->trans('front.thread.end'),
+                'button' => $this->trans('front.thread.button'),
+                // Paramètre laissé tel quel : le titre de la page est placé dans le navigateur
+                'opened' => $this->trans('front.thread.opened', ['title' => '{title}']),
+            ],
         ];
+    }
+
+    /**
+     * Libellé de chaque catégorie de page, par slug
+     * @return array<string, string>
+     */
+    private function getTranslateCategories(): array
+    {
+        $categories = [];
+        foreach (PageCategory::getSlugs() as $slug) {
+            $categories[$slug] = $this->trans('front.category.' . $slug);
+        }
+        return $categories;
     }
 
     /**
@@ -179,6 +202,8 @@ class FrontTranslate extends AppTranslate
             'skipLink' => $this->trans('front.header.skip_link'),
             'closeMenu' => $this->trans('front.header.close_menu'),
             'localeLabel' => $this->trans('front.header.locale_label'),
+            'menuButton' => $this->trans('front.header.menu_button'),
+            'modeButton' => $this->trans('front.header.mode_button'),
         ];
     }
 
