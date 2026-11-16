@@ -81,7 +81,8 @@ function replaceMetas(previous: Meta[], next: Meta[]): void {
   for (const meta of pageMetas(previous)) {
     document.head.querySelector(`meta[name="${CSS.escape(meta.name)}"]`)?.remove();
   }
-  for (const meta of pageMetas(next)) {
+  // Comme le rendu serveur : pas de balise pour une méta sans traduction
+  for (const meta of pageMetas(next).filter((meta) => meta.value !== '')) {
     const element = document.createElement('meta');
     element.name = meta.name;
     element.content = meta.value;

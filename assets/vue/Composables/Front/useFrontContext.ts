@@ -1,6 +1,6 @@
 /**
  * @author Gourdon Aymeric
- * @version 1.2
+ * @version 1.3
  * Contexte du site public partagé par les composables : props du thème, client API et cache des chargements
  */
 import { getCurrentInstance, inject, ref, shallowRef, type InjectionKey, type Ref, type ShallowRef } from 'vue';
@@ -21,7 +21,7 @@ export interface FrontContext {
   slug: Ref<string | null>;
   /** Navigation sans rechargement possible : ni prévisualisation, ni utilisateur connecté (lien d'édition calculé par le serveur) */
   canNavigate: boolean;
-  /** Ouvre une page : sans rechargement quand canNavigate, en changeant d'adresse sinon */
+  /** Ouvre une page sans rechargement ; sans effet quand canNavigate est faux */
   navigate(category: string, slug: string): void;
   /** Chargement partagé : un seul appel par clé, quel que soit le nombre de composants qui le demandent */
   once<T>(key: string, loader: () => Promise<T>): Promise<T>;
@@ -55,19 +55,22 @@ export function createFrontContext(props: FrontThemeProps): FrontContext {
     slug: ref(props.datas.slug),
     canNavigate: props.datas.preview === null && props.datas.user === null,
     navigate(category: string, slug: string): void {
-      const url = context.pageUrl(category, slug);
-      if (!context.canNavigate) {
-        window.location.assign(url);
+      if (!context.canNavigate || slug === context.slug.value) {
         return;
       }
-      if (slug !== context.slug.value) {
-        window.history.pushState(null, '', url);
-        context.slug.value = slug;
-      }
+      window.history.pushState(null, '', context.pageUrl(category, slug));
+      context.slug.value = slug;
     },
     once<T>(key: string, loader: () => Promise<T>): Promise<T> {
       if (!loads.has(key)) {
-        loads.set(key, loader());
+        // Un échec n'est pas gardé : la clé est rechargée au prochain appel
+        loads.set(
+          key,
+          loader().catch((error: unknown) => {
+            loads.delete(key);
+            throw error;
+          }),
+        );
       }
       return loads.get(key) as Promise<T>;
     },
