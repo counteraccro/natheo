@@ -1,3 +1,5 @@
+import type { MenuPreviewPage, MenuPreviewSlugs, MenuPreviewTranslate } from '@/ts/Menu/MenuPreview.type';
+
 export interface Locales {
   locales: string[];
   localesTranslate: Record<string, string>;
@@ -81,6 +83,7 @@ export interface Translate {
   menu_no_exist_text: string;
   menu_form: MenuFormTranslate;
   menu_tree: MenuTreeTranslate;
+  preview: MenuPreviewTranslate;
 }
 
 export interface Urls {
@@ -92,6 +95,8 @@ export interface Urls {
   new_menu_element: string;
   update_parent_menu_element: string;
   reorder_menu_element: string;
+  /** URL de l'aperçu au design du thème, par langue */
+  preview: Record<string, string>;
 }
 
 /** Entrée générique pour les selects (list_position, list_type, etc.) */
@@ -99,6 +104,7 @@ export interface MenuDatas {
   list_position: Record<string, string>;
   list_type: Record<string, Record<string, string>>;
   list_target_value: Record<string, string>;
+  preview_slugs: MenuPreviewSlugs;
 }
 
 export interface MenuElementTranslation {
@@ -142,9 +148,8 @@ export type PageLocales = Record<string, PageTranslation>;
 
 export interface LoadMenuData {
   all_elements: MenuElement[];
-  name: string;
-  url_site: string;
   pages: Record<string, PageLocales>;
+  preview_pages: Record<string, MenuPreviewPage>;
   list_target_value: Record<string, string>;
 }
 

@@ -77,14 +77,46 @@ class ApiPageContentService extends AppApiService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function isPageContentAvailable(PageContent $pageContent, string $locale): bool
+    private function isPageContentAvailable(PageContent $pageContent, string $locale): bool
     {
         return match (PageContentType::tryFrom((int) $pageContent->getType())) {
-            PageContentType::TEXT => (string) $pageContent->getPageContentTranslationByLocale($locale)?->getText() !== '',
+            PageContentType::TEXT => (string) $pageContent->getPageContentTranslationByLocale($locale)?->getText() !==
+                '',
             PageContentType::FAQ => $this->findActiveFaq((int) $pageContent->getTypeId()) !== null,
             PageContentType::LISTING => PageCategory::tryFrom((int) $pageContent->getTypeId()) !== null,
             default => false,
         };
+    }
+
+    /**
+     * Contenu d'un bloc calculé pour l'API : HTML d'un texte, FAQ active et ses réponses en HTML, catégorie et titre
+     * d'un listing ; null si le type est inconnu ou le contenu vide dans la langue demandée
+     * @param PageContent $pageContent
+     * @param string $locale
+     * @return array{type: PageContentType, html?: string, faq?: Faq, answers?: array<int, string>, category?: PageCategory, title?: string}|null
+     * @throws CommonMarkException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getRenderedContent(PageContent $pageContent, string $locale): ?array
+    {
+        $type = PageContentType::tryFrom((int) $pageContent->getType());
+        switch ($type) {
+            case PageContentType::TEXT:
+                $text = (string) $pageContent->getPageContentTranslationByLocale($locale)?->getText();
+                return $text === '' ? null : ['type' => $type, 'html' => $this->renderMarkdown($text)];
+            case PageContentType::FAQ:
+                $faq = $this->findActiveFaq((int) $pageContent->getTypeId());
+                return $faq === null
+                    ? null
+                    : ['type' => $type, 'faq' => $faq, 'answers' => $this->renderFaqAnswers($faq, $locale)];
+            case PageContentType::LISTING:
+                $category = PageCategory::tryFrom((int) $pageContent->getTypeId());
+                return $category === null
+                    ? null
+                    : ['type' => $type, 'category' => $category, 'title' => $this->getListingTitle($category, $locale)];
+        }
+        return null;
     }
 
     /**
@@ -112,7 +144,7 @@ class ApiPageContentService extends AppApiService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function findActiveFaq(int $id): ?Faq
+    private function findActiveFaq(int $id): ?Faq
     {
         /** @var Faq|null $faq */
         $faq = $this->findOneByCriteria(Faq::class, ['id' => $id, 'disabled' => false]);
@@ -127,7 +159,7 @@ class ApiPageContentService extends AppApiService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function renderMarkdown(string $markdown): string
+    private function renderMarkdown(string $markdown): string
     {
         $markdownService = new MarkdownService();
         return $markdownService->convertMarkdownToHtml($this->getMarkdownEditorService()->parseMarkdown($markdown));
@@ -142,7 +174,7 @@ class ApiPageContentService extends AppApiService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function renderFaqAnswers(Faq $faq, string $locale): array
+    private function renderFaqAnswers(Faq $faq, string $locale): array
     {
         $answers = [];
         foreach ($faq->getFaqCategories() as $faqCategory) {
@@ -165,7 +197,7 @@ class ApiPageContentService extends AppApiService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getListingTitle(PageCategory $category, string $locale): string
+    private function getListingTitle(PageCategory $category, string $locale): string
     {
         return $this->getTranslator()->trans(
             'page.content.listing.title',

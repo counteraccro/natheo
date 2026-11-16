@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     {% include "/admin/includes/theme_init.html.twig" %}
     <title>{% block title %}Welcome!{% endblock %}</title>
-    <link rel="icon" type="image/jpg" href="{{ asset('assets/natheo/favico/favicon.ico') }}">
+    <link rel="icon" type="image/svg+xml" href="{{ asset('assets/natheo/favico/favicon.svg') }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset('assets/natheo/favico/favicon.ico') }}" sizes="any">
 
     {% block stylesheets %}
         {{ vite_entry_link_tags('install_css') }}

@@ -56,7 +56,7 @@ class TagService extends AppAdminService
         $translator = $this->getTranslator();
         $gridService = $this->getGridService();
         $tagRender = $this->getTagRender();
-        $locale = $this->getRequestStack()->getCurrentRequest()->getLocale();
+        $locale = $this->getCurrentLocale();
         $csrfTokenManager = $this->getCsrfTokenManager();
         $csrfTokens = [
             TagCsrfToken::DISABLED->value => $csrfTokenManager->getToken(TagCsrfToken::DISABLED->value)->getValue(),

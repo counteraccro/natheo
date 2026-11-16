@@ -149,4 +149,80 @@ class ApiPageServiceTest extends AppWebTestCase
         // Slug inconnu dans la locale : repli sur une autre locale (page non traduite)
         $this->assertEquals($pageEn->getId(), $repository->getBySlug('nous-contacter', locale: 'es')?->getId());
     }
+
+    /**
+     * Test méthode findEditablePageBySlug() : page désignée par son slug ou page d'accueil, si l'utilisateur peut la modifier
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testFindEditablePageBySlug(): void
+    {
+        $owner = $this->createUserContributeur(['disabled' => false, 'anonymous' => false]);
+        $other = $this->createUserContributeur(['disabled' => false, 'anonymous' => false]);
+        $page = $this->createPageAllDataDefault($owner);
+        $home = $this->createPageAllDataDefault($owner);
+        $this->persistAndFlush($home->setLandingPage(true));
+        $slug = $page->getPageTranslationByLocale('fr')->getUrl();
+
+        $this->assertEquals(
+            $page->getId(),
+            $this->apiPageService->findEditablePageBySlug($slug, 'fr', $owner)?->getId(),
+        );
+        $this->assertEquals($home->getId(), $this->apiPageService->findEditablePageBySlug('', 'fr', $owner)?->getId());
+        $this->assertNull($this->apiPageService->findEditablePageBySlug($slug, 'fr', $other));
+        $this->assertNull($this->apiPageService->findEditablePageBySlug('slug-inconnu', 'fr', $owner));
+    }
+
+    /**
+     * Test méthode getPreviewPageOf() : brouillon sur demande, page non publiée directement, null sinon
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testGetPreviewPageOf(): void
+    {
+        $page = $this->createPageAllDataDefault();
+        $this->assertNull($this->apiPageService->getPreviewPageOf($page, true));
+
+        $this->createPageDraft($page);
+        $this->assertNull($this->apiPageService->getPreviewPageOf($page, false));
+        $preview = $this->apiPageService->getPreviewPageOf($page, true);
+        $this->assertNotSame($page, $preview);
+        $this->assertEquals('Brouillon fr', $preview->getPageTranslationByLocale('fr')->getTitre());
+        $this->apiPageService->releasePreviewPage($preview, $page);
+
+        $unpublished = $this->createPageAllDataDefault();
+        $this->persistAndFlush($unpublished->setStatus(PageStatus::DRAFT->value));
+        $this->assertSame($unpublished, $this->apiPageService->getPreviewPageOf($unpublished, false));
+    }
+
+    /**
+     * Test méthode releasePreviewPage() : la copie de travail n'est pas enregistrée, la page reste inchangée
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testReleasePreviewPage(): void
+    {
+        $page = $this->createPageAllDataDefault();
+        $menu = $this->createMenu();
+        $this->createPageDraft($page, [$menu->getId()]);
+        $title = $page->getPageTranslationByLocale('fr')->getTitre();
+        $nbPages = $this->em->getRepository(Page::class)->count();
+
+        $preview = $this->apiPageService->getPreviewPageOf($page, true);
+        $this->apiPageService->releasePreviewPage($preview, $page);
+        $this->assertContains($menu, $preview->getMenus());
+        $this->assertNotContains($preview, $menu->getPages());
+        $this->em->flush();
+        $this->em->clear();
+
+        $this->assertEquals($nbPages, $this->em->getRepository(Page::class)->count());
+        $pageInDb = $this->em->getRepository(Page::class)->find($page->getId());
+        $this->assertEquals($title, $pageInDb->getPageTranslationByLocale('fr')->getTitre());
+
+        $this->apiPageService->releasePreviewPage($pageInDb, $pageInDb);
+        $this->assertSame($pageInDb, $this->em->getRepository(Page::class)->find($page->getId()));
+    }
 }

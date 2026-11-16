@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Convertit une page en ressource Page de l'API v2
  */
 
@@ -11,6 +11,7 @@ namespace App\Api\V2\Mapper\Content;
 
 use App\Api\V2\Output\Content\Author;
 use App\Api\V2\Output\Content\Meta;
+use App\Api\V2\Output\Content\PageTranslation;
 use App\Api\V2\Output\Content\Tag;
 use App\Api\V2\Resource\Content\Menu;
 use App\Api\V2\Resource\Content\Page;
@@ -44,6 +45,7 @@ final readonly class PageMapper
         $page->openComment = (bool) $entity->isOpenComment();
         $page->reads = (int) ($entity->getPageStatistiqueByKey(PageStatistics::NB_READ->value)?->getValue() ?? 0);
         $page->menus = $menus;
+        $page->translations = $this->mapTranslations($entity);
 
         foreach ($entity->getPageMetas() as $pageMeta) {
             $page->seo[] = new Meta(
@@ -60,6 +62,28 @@ final readonly class PageMapper
             $page->contents[] = $content;
         }
         return $page;
+    }
+
+    /**
+     * Traductions d'une page ayant un slug, triées par langue
+     * @param PageEntity $entity
+     * @return PageTranslation[]
+     */
+    public function mapTranslations(PageEntity $entity): array
+    {
+        $translations = [];
+        foreach ($entity->getPageTranslations() as $translation) {
+            if ((string) $translation->getUrl() === '') {
+                continue;
+            }
+            $translations[] = new PageTranslation(
+                (string) $translation->getLocale(),
+                (string) $translation->getUrl(),
+                (string) $translation->getTitre(),
+            );
+        }
+        usort($translations, fn(PageTranslation $a, PageTranslation $b) => strcmp($a->locale, $b->locale));
+        return $translations;
     }
 
     /**

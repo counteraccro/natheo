@@ -11,6 +11,7 @@ namespace App\Tests\Enum\Trait;
 
 use App\Enum\Admin\Comment\CommentStatus;
 use App\Enum\Admin\Content\Menu\MenuPosition;
+use App\Enum\Admin\Content\Menu\MenuType;
 use PHPUnit\Framework\TestCase;
 
 class EnumSlugTraitTest extends TestCase
@@ -47,5 +48,15 @@ class EnumSlugTraitTest extends TestCase
         $this->assertSame(MenuPosition::POSITION_LEFT, MenuPosition::tryFromSlug('left'));
         $this->assertNull(MenuPosition::tryFromSlug('position_left'));
         $this->assertSame(['header', 'right', 'footer', 'left'], MenuPosition::getSlugs());
+    }
+
+    /**
+     * Slugs indexés par la valeur du cas
+     * @return void
+     */
+    public function testGetSlugsByValue(): void
+    {
+        $this->assertSame([1 => 'header', 2 => 'right', 3 => 'footer', 4 => 'left'], MenuPosition::getSlugsByValue());
+        $this->assertSame('header_side_bar', MenuType::getSlugsByValue()[MenuType::HEADER_SIDE_BAR->value]);
     }
 }

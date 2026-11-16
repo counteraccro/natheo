@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace App\Service\Admin;
 
 use App\Entity\Admin\System\User;
-use App\Enum\Admin\System\Options\OptionSystem;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityRepository;
 use Psr\Container\ContainerExceptionInterface;
@@ -263,14 +262,8 @@ class AppAdminService extends AppAdminHandlerService
      */
     public function getLocales(): array
     {
-        $optionSystemService = $this->getOptionSystemService();
-        if ($this->getRequestStack()->getCurrentRequest() !== null) {
-            $current = $this->getRequestStack()->getCurrentRequest()->getLocale();
-        } else {
-            $current = $optionSystemService->getValueByKey(OptionSystem::OS_DEFAULT_LANGUAGE->value);
-        }
-
-        $locales = explode('|', $this->getParameterBag()->get('app.supported_locales'));
+        $current = $this->getCurrentLocale();
+        $locales = $this->getSupportedLocales();
         array_unshift($locales, $current);
         $localesTranslate = [];
 
@@ -283,6 +276,21 @@ class AppAdminService extends AppAdminHandlerService
             'localesTranslate' => $localesTranslate,
             'current' => $current,
         ];
+    }
+
+    /**
+     * Retourne la locale de la requête courante, ou la langue par défaut hors requête
+     * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getCurrentLocale(): string
+    {
+        $request = $this->getRequestStack()->getCurrentRequest();
+        if ($request !== null) {
+            return $request->getLocale();
+        }
+        return $this->getOptionSystemService()->getDefaultLanguage();
     }
 
     /**

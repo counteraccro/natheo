@@ -1,3 +1,8 @@
 option_system.index.title: Opciones del sistema
 option_system.index.description: Gestionar la configuración del CMS
 option_system.error.csrf: Token de seguridad no válido, vuelva a cargar la página e inténtelo de nuevo.
+option_system.consent_reset.title: 'Volver a pedir el consentimiento'
+option_system.consent_reset.body: 'El banner de consentimiento se mostrará de nuevo a todos los visitantes, incluidos los que ya han elegido.'
+option_system.consent_reset.cancel: Cancelar
+option_system.consent_reset.confirm: Confirmar
+option_system.consent_reset.error: 'No se pudo guardar la solicitud, recargue la página e inténtelo de nuevo.'

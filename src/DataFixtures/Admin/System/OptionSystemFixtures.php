@@ -24,6 +24,10 @@ class OptionSystemFixtures extends AppFixtures implements FixtureGroupInterface,
     {
         $data = Yaml::parseFile($this->pathDataFixtures . self::OPTION_SYSTEM_FIXTURES_DATA_FILE);
         foreach ($data['option_system'] as $ref => $dataOS) {
+            // Option traduisible : valeurs par langue stockées en objet JSON
+            if (is_array($dataOS['value'] ?? null)) {
+                $dataOS['value'] = json_encode($dataOS['value'], JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR);
+            }
             $optionSystem = $this->populateEntity($dataOS, new OptionSystem());
             $manager->persist($optionSystem);
             $this->addReference($ref, $optionSystem);

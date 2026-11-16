@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * AppService pour le front
  */
 
@@ -26,37 +26,50 @@ class AppFrontService extends AppFrontHandlerService
      */
     public function getPathTemplate(): string
     {
-        $translator = $this->getTranslator();
-        $optionSystemService = $this->getOptionSystemService();
-        $template = $optionSystemService->getValueByKey(OptionSystem::OS_THEME_FRONT_SITE->value);
-
-        if (!in_array($template, Template::toArray())) {
-            throw new HttpException(
-                Response::HTTP_INTERNAL_SERVER_ERROR,
-                $translator->trans('front_error.index.no_template', ['template' => $template], domain: 'front_error'),
-            );
-        }
-        return 'front/' . $template;
+        return 'front/' . $this->resolveTemplate('front_error.index.no_template')->value;
     }
 
     /**
-     * Retourne la clé de génération des fichiers CSS et JS en fonction du template
+     * Retourne la clé de l'entrée Vite du thème actif (front_<thème>), pour ses scripts et ses styles
      * @return string
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
     public function getScriptTags(): string
     {
-        $translator = $this->getTranslator();
-        $optionSystemService = $this->getOptionSystemService();
-        $template = $optionSystemService->getValueByKey(OptionSystem::OS_THEME_FRONT_SITE->value);
+        return 'front_' . $this->resolveTemplate('front_error.index.no_script_tag')->value;
+    }
 
-        if (!in_array($template, Template::toArray())) {
+    /**
+     * Version du thème actif affichée en bas de page (paramètre app.<thème>.version), chaîne vide sans paramètre
+     * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getTemplateVersion(): string
+    {
+        $parameter = 'app.' . $this->resolveTemplate('front_error.index.no_template')->value . '.version';
+        $parameterBag = $this->getParameterBag();
+        return $parameterBag->has($parameter) ? (string) $parameterBag->get($parameter) : '';
+    }
+
+    /**
+     * Thème de l'option system OS_THEME_FRONT_SITE, erreur 500 traduite par $errorKey s'il est inconnu
+     * @param string $errorKey
+     * @return Template
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function resolveTemplate(string $errorKey): Template
+    {
+        $value = (string) $this->getOptionSystemService()->getValueByKey(OptionSystem::OS_THEME_FRONT_SITE->value);
+        $template = Template::tryFrom($value);
+        if ($template === null) {
             throw new HttpException(
                 Response::HTTP_INTERNAL_SERVER_ERROR,
-                $translator->trans('front_error.index.no_script_tag', ['template' => $template], domain: 'front_error'),
+                $this->getTranslator()->trans($errorKey, ['template' => $value], domain: 'front_error'),
             );
         }
-        return 'front_' . $template;
+        return $template;
     }
 }

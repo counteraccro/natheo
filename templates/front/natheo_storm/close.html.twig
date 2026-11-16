@@ -1,0 +1,24 @@
+{% extends 'front/front_base.html.twig' %}
+
+{% block title %}
+    {{ 'front_error.closed_site.title'|trans({}, 'front_error', locale) }}
+{% endblock %}
+
+{% block body_class %}bg-rail text-on-rail{% endblock %}
+
+{% block body %}
+    <main class="flex min-h-screen w-full flex-col justify-center px-[clamp(1.25rem,8vw,9rem)] py-16 [--focus:var(--bolt)]">
+        <twig:Front:BrandLogo class="size-12"/>
+        <h1 class="mt-10 max-w-[18ch] text-[clamp(2.4rem,5vw,4rem)] leading-[1.02]">
+            {{ 'front_error.closed_site.block_title'|trans({}, 'front_error', locale) }}
+        </h1>
+        <p class="mt-6 max-w-[60ch] text-lg text-on-rail-muted">
+            {{ 'front_error.closed_site.block_text'|trans({}, 'front_error', locale) }}
+        </p>
+        <p class="mt-10 border-t border-rail-line pt-6">
+            <a href="{{ path('admin_dashboard_index') }}" class="text-on-rail-muted hover:text-on-rail">
+                {{ 'front_error.closed_site.admin_link'|trans({}, 'front_error', locale) }}
+            </a>
+        </p>
+    </main>
+{% endblock %}

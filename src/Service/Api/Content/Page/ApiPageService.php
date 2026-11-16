@@ -370,6 +370,59 @@ class ApiPageService extends AppApiService
     }
 
     /**
+     * Retourne la page désignée par son slug (la page d'accueil si le slug est vide), publiée ou brouillon,
+     * si l'utilisateur peut la modifier ; null sinon
+     * @param string $slug
+     * @param string $locale
+     * @param User $user
+     * @return Page|null
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function findEditablePageBySlug(string $slug, string $locale, User $user): ?Page
+    {
+        $page = $this->getPageBySlug($slug, $locale, $user);
+        if ($page === null || !$this->getSecurity()->isGrantedForUser($user, ContentVoter::EDIT, $page)) {
+            return null;
+        }
+        return $page;
+    }
+
+    /**
+     * Retourne la page à prévisualiser : son brouillon si demandé et existant, la page elle-même si elle n'est
+     * pas publiée ; null quand la page publiée s'affiche normalement. Une copie de travail doit être libérée
+     * par releasePreviewPage()
+     * @param Page $page
+     * @param bool $withDraft
+     * @return Page|null
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getPreviewPageOf(Page $page, bool $withDraft): ?Page
+    {
+        $draft = $withDraft ? $this->getPageDraftService()->getPreviewPage($page) : null;
+        if ($draft !== null) {
+            return $draft;
+        }
+        return $page->isPublished() ? null : $page;
+    }
+
+    /**
+     * Libère la copie de travail renvoyée par getPreviewPageOf()
+     * @param Page $preview
+     * @param Page $page
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function releasePreviewPage(Page $preview, Page $page): void
+    {
+        if ($preview !== $page) {
+            $this->getPageDraftService()->releaseWorkingCopy($preview);
+        }
+    }
+
+    /**
      * Retourne les pages publiées, filtrées par catégorie, tag actif, slug ou page d'accueil.
      * Le slug désigne au plus une page, en priorité celle dont le slug est celui de $locale
      * @param int $page

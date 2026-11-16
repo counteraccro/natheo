@@ -27,13 +27,10 @@ class TranslateService extends AppAdminService
      */
     public function getListLanguages(): array
     {
-        $containerBag = $this->getContainerBag();
         $translator = $this->getTranslator();
 
-        $tab = explode('|', $containerBag->get('app.supported_locales'));
-
         $return = [];
-        foreach ($tab as $language) {
+        foreach ($this->getSupportedLocales() as $language) {
             $return[$language] = $translator->trans('global.locale.' . $language);
         }
         return $return;

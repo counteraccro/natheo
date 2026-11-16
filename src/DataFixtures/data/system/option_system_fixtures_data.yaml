@@ -7,13 +7,56 @@ option_system:
         value: '1'
     OS_FRONT_SCRIPT_TOP:
         key: 'OS_FRONT_SCRIPT_TOP'
-        value: ''
+        value: |
+            <script>
+              window.natheoDemo = { scripts: ['head'] };
+              console.info('[Nathéo démo] Script de la balise HEAD exécuté');
+            </script>
     OS_FRONT_SCRIPT_START_BODY:
         key: 'OS_FRONT_SCRIPT_START_BODY'
-        value: ''
+        value: |
+            <script>
+              (window.natheoDemo = window.natheoDemo || { scripts: [] }).scripts.push('body-start');
+              console.info('[Nathéo démo] Script du début de la balise BODY exécuté');
+            </script>
     OS_FRONT_SCRIPT_END_BODY:
         key: 'OS_FRONT_SCRIPT_END_BODY'
-        value: ''
+        value: |
+            <script>
+              (function () {
+                var demo = (window.natheoDemo = window.natheoDemo || { scripts: [] });
+                demo.scripts.push('body-end');
+                console.info('[Nathéo démo] Script de la fin de la balise BODY exécuté');
+
+                var texts = {
+                  fr: { message: 'scripts de démonstration exécutés après votre accord :', close: 'Fermer', head: 'HEAD', 'body-start': 'début du BODY', 'body-end': 'fin du BODY' },
+                  en: { message: 'demo scripts ran after your consent:', close: 'Close', head: 'HEAD', 'body-start': 'start of BODY', 'body-end': 'end of BODY' },
+                  es: { message: 'scripts de demostración ejecutados tras su aceptación:', close: 'Cerrar', head: 'HEAD', 'body-start': 'inicio del BODY', 'body-end': 'final del BODY' }
+                };
+                var t = texts[(document.documentElement.lang || 'fr').slice(0, 2)] || texts.fr;
+
+                var box = document.createElement('div');
+                box.setAttribute('role', 'status');
+                box.style.cssText = 'position:fixed;left:20px;right:20px;bottom:20px;margin-left:auto;z-index:2147483647;max-width:22rem;display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border-radius:6px;background:#13112a;color:#fff;font:14px/1.5 system-ui,sans-serif;box-shadow:0 8px 30px rgba(0,0,0,.35)';
+                var text = document.createElement('p');
+                text.style.margin = '0';
+                var close = document.createElement('button');
+                close.type = 'button';
+                close.textContent = '×';
+                close.setAttribute('aria-label', t.close);
+                close.style.cssText = 'flex:none;min-width:32px;min-height:32px;border:1px solid rgba(255,255,255,.6);border-radius:4px;background:transparent;color:#fff;font-size:18px;line-height:1;cursor:pointer';
+                var remove = function () { box.remove(); };
+                close.addEventListener('click', remove);
+                box.append(text, close);
+                document.body.appendChild(box);
+
+                // Texte ajouté après la zone role="status" pour que les lecteurs d'écran l'annoncent
+                setTimeout(function () {
+                  text.textContent = demo.scripts.length + ' ' + t.message + ' ' + demo.scripts.map(function (s) { return t[s]; }).join(', ') + '.';
+                }, 100);
+                setTimeout(remove, 8000);
+              })();
+            </script>
     OS_REPLACE_DELETE_USER:
         key: 'OS_REPLACE_DELETE_USER'
         value: '1'
@@ -89,7 +132,31 @@ option_system:
         value: 'natheo_horizon'
     OS_FRONT_FOOTER_TEXTE:
         key: 'OS_FRONT_FOOTER_TEXTE'
-        value: 'NatheoCMS est un CMS headless développé avec Symfony pour vous offrir le meilleur compromis entre un site clé en main et la possibilité de le façonner à votre envie'
+        value:
+            fr: 'Ce site tourne avec Nathéo, un CMS open source écrit en PHP avec Symfony.'
+            en: 'This site runs on Nathéo, an open source CMS written in PHP with Symfony.'
+            es: 'Este sitio funciona con Nathéo, un CMS de código abierto escrito en PHP con Symfony.'
+    OS_FRONT_CONSENT_ENABLED:
+        key: 'OS_FRONT_CONSENT_ENABLED'
+        value: '1'
+    OS_FRONT_CONSENT_TEXT:
+        key: 'OS_FRONT_CONSENT_TEXT'
+        value:
+            fr: "Ce site de démonstration charge trois petits scripts d'exemple, sans cookie ni envoi de données. Ils montrent comment Nathéo bloque les scripts de mesure d'audience tant que vous n'avez pas donné votre accord. [Lire les mentions légales](/fr/page/mentions-legales)"
+            en: 'This demo site loads three small sample scripts, with no cookies and no data sent anywhere. They show how Nathéo holds back audience measurement scripts until you give your consent. [Read the legal notice](/en/page/legal-notice)'
+            es: 'Este sitio de demostración carga tres pequeños scripts de ejemplo, sin cookies ni envío de datos. Muestran cómo Nathéo bloquea los scripts de medición de audiencia hasta que usted da su consentimiento. [Leer el aviso legal](/es/page/aviso-legal)'
+    OS_FRONT_CONSENT_ACCEPT_LABEL:
+        key: 'OS_FRONT_CONSENT_ACCEPT_LABEL'
+        value:
+            fr: 'Accepter'
+            en: 'Accept'
+            es: 'Aceptar'
+    OS_FRONT_CONSENT_REFUSE_LABEL:
+        key: 'OS_FRONT_CONSENT_REFUSE_LABEL'
+        value:
+            fr: 'Refuser'
+            en: 'Refuse'
+            es: 'Rechazar'
     OS_FRONT_FOOTER_SOCIAL_GITHUB_URL:
         key: 'OS_FRONT_FOOTER_SOCIAL_GITHUB_URL'
         value: https://github.com/counteraccro/natheo

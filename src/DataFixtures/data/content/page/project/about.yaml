@@ -1,0 +1,27 @@
+about:
+    user: R-Admin
+    render: TWO_BLOCK
+    category: PAGE
+    status: PUBLISH
+    date: '-12 days'
+    isOpenComment: false
+    ruleComment: VALIDATE
+    headerImg: hdr-about
+    menus: [menu-project-header]
+    stats: { visitors: 420, reads: 380 }
+    translations:
+        fr: { titre: 'À propos', url: a-propos }
+        en: { titre: 'About', url: about }
+        es: { titre: 'Acerca de', url: acerca-de }
+    metas:
+        description:
+            fr: 'L''histoire de Nathéo et ses choix techniques.'
+            en: 'Nathéo''s story and its technical choices.'
+            es: 'La historia de Nathéo y sus decisiones técnicas.'
+        keywords:
+            fr: 'historique, Symfony, Vue 3, API Platform, PostgreSQL'
+            en: 'history, Symfony, Vue 3, API Platform, PostgreSQL'
+            es: 'historia, Symfony, Vue 3, API Platform, PostgreSQL'
+    blocks:
+        - { block: 1, type: TEXT }
+        - { block: 2, type: TEXT }

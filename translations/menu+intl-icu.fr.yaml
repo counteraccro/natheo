@@ -37,7 +37,14 @@ menu.left.right.type.sidebar: Menu latéral
 menu.left.right.type.sidebar_accordion: Menu latéral avec accordéons
 menu.footer.type.col: Pied de page en colonnes
 menu.title.demo: 'Rendu du menu'
-menu.title.demo_warning: 'Ce rendu est un aperçu de la structure et peut être différent du rendu de votre site'
+menu.title.demo_warning: 'Aperçu avec le thème du site public. Les liens sont désactivés, les éléments désactivés et les pages non publiées sont masqués.'
+menu.preview.iframe_title: 'Aperçu du menu avec le thème du site public'
+menu.preview.width_label: 'Largeur de l''aperçu'
+menu.preview.width_desktop: 'Ordinateur'
+menu.preview.width_mobile: 'Mobile'
+menu.preview.scheme_label: 'Mode de l''aperçu'
+menu.preview.scheme_light: 'Clair'
+menu.preview.scheme_dark: 'Sombre'
 menu.title.architecture: 'Architecture du menu'
 menu.button.save: Sauvegarder
 menu.button.new: 'Nouveau menu'

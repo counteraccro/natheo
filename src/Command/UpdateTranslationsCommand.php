@@ -8,12 +8,12 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Service\Global\SupportedLocales;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 #[
     AsCommand(
@@ -23,14 +23,14 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 ]
 class UpdateTranslationsCommand extends Command
 {
-    public function __construct(#[Autowire(param: 'app.supported_locales')] private readonly string $supportedLocales)
+    public function __construct(private readonly SupportedLocales $supportedLocales)
     {
         parent::__construct();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        foreach (explode('|', $this->supportedLocales) as $locale) {
+        foreach ($this->supportedLocales->getAll() as $locale) {
             $this->extractLocale($locale, $output);
         }
 

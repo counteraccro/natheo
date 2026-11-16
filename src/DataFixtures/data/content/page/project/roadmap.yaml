@@ -1,0 +1,26 @@
+roadmap:
+    user: R-Admin
+    render: ONE_BLOCK
+    category: PAGE
+    status: PUBLISH
+    headerImg: hdr-roadmap
+    date: '-2 days'
+    isOpenComment: false
+    ruleComment: VALIDATE
+    menus: [menu-project-header]
+    stats: { visitors: 310, reads: 280 }
+    translations:
+        fr: { titre: 'Feuille de route', url: feuille-de-route }
+        en: { titre: 'Roadmap', url: roadmap }
+        es: { titre: 'Hoja de ruta', url: hoja-de-ruta }
+    metas:
+        description:
+            fr: 'Les prochaines versions de Nathéo.'
+            en: 'The next Nathéo releases.'
+            es: 'Las próximas versiones de Nathéo.'
+        keywords:
+            fr: 'feuille de route, version 2.1, API v2, Nathéo 3.0'
+            en: 'roadmap, version 2.1, API v2, Nathéo 3.0'
+            es: 'hoja de ruta, versión 2.1, API v2, Nathéo 3.0'
+    blocks:
+        - { block: 1, type: TEXT }

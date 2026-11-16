@@ -15,6 +15,8 @@ enum Template: string
 
     case NATHEO_STORM = 'natheo_storm';
 
+    case NATHEO_BASE = 'natheo_base';
+
     public static function toArray(): array
     {
         $return = [];

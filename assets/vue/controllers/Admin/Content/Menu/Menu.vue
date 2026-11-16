@@ -12,9 +12,7 @@ import Sortable from 'sortablejs';
 import Modal from '@/vue/Components/Global/Modal.vue';
 import MenuElementForm from '@/vue/Components/Menu/MenuElementForm.vue';
 import { leaveGuard } from '@/vue/Composables/Admin/leaveGuard';
-import MenuHeader from '@/vue/Components/Menu/MenuType/MenuHeader.vue';
-import MenuFooter from '@/vue/Components/Menu/MenuType/MenuFooter.vue';
-import MenuLeftRight from '@/vue/Components/Menu/MenuType/MenuLeftRight.vue';
+import MenuPreview from '@/vue/Components/Menu/MenuPreview.vue';
 import { toastSuccess, toastError, toastRequestError } from '@/vue/Composables/Global/toast';
 
 const LEAVE_GUARD_KEY = 'menu';
@@ -28,9 +26,7 @@ export default defineComponent({
     SkeletonArchitectureMenu,
     SkeletonFormMenu,
     SkeletonRenderMenu,
-    MenuHeader,
-    MenuFooter,
-    MenuLeftRight,
+    MenuPreview,
   },
   props: {
     urls: {
@@ -66,13 +62,14 @@ export default defineComponent({
       sortableRoot: null as Sortable | null,
       currentLocale: '',
       listTypeByPosition: {} as Record<string, string>,
+      /** Dernier type choisi pour chaque position, repris en revenant sur cette position */
+      typeByPosition: {} as Record<string, number>,
       idSelected: 0,
       menuElementSelected: null as MenuElement | null,
       nodeToOpen: 0,
       showModalConfirmDelete: false,
       localeValidationState: {} as Record<string, boolean>,
       noSaveElementIds: [] as number[],
-      selectComponent: '',
       errors: {
         name: false,
       } as Record<string, boolean>,
@@ -85,6 +82,13 @@ export default defineComponent({
         },
       },
     };
+  },
+  watch: {
+    'menu.type'(type: number | undefined): void {
+      if (type !== undefined && this.menu.position !== undefined) {
+        this.typeByPosition[String(this.menu.position)] = Number(type);
+      }
+    },
   },
   mounted() {
     this.loadMenu();
@@ -141,28 +145,6 @@ export default defineComponent({
     },
 
     /**
-     * Permet de changer de composant
-     * @param idPosition
-     */
-    switchComposant(idPosition: number) {
-      switch (idPosition) {
-        case 1:
-          this.selectComponent = 'MenuHeader';
-          break;
-        case 2:
-        case 4:
-          this.selectComponent = 'MenuLeftRight';
-          break;
-        case 3:
-          this.selectComponent = 'MenuFooter';
-          break;
-        default:
-          this.selectComponent = 'MenuHeader';
-          break;
-      }
-    },
-
-    /**
      * Normalise récursivement les children undefined → []
      */
     normalizeElements(elements: MenuElement[]): void {
@@ -196,11 +178,11 @@ export default defineComponent({
       }
 
       if (!isFirstLoad && !(this.menu.type in this.listTypeByPosition)) {
+        const remembered = this.typeByPosition[position.toString()];
         const first = Object.entries(this.listTypeByPosition)[0];
-        this.menu.type = Number(first[0]);
+        this.menu.type =
+          remembered !== undefined && remembered in this.listTypeByPosition ? remembered : Number(first[0]);
       }
-
-      this.switchComposant(parseInt(position.toString()));
     },
 
     /**
@@ -595,13 +577,14 @@ export default defineComponent({
         </div>
       </div>
       <div class="p-5">
-        <Component
-          v-if="selectComponent"
-          :is="selectComponent"
+        <MenuPreview
           :menu="menu"
-          :type="Number(menu.type)"
-          :locale="currentLocale"
-          :data="dataMenu"
+          :locale="currentLocale || locales.current"
+          :urls="urls.preview"
+          :slugs="menu_datas.preview_slugs"
+          :pages="dataMenu.pages"
+          :preview-pages="dataMenu.preview_pages"
+          :translate="translate.preview"
         />
         <p class="text-xs mt-2 flex items-center gap-1.5 text-fg-subtle">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -831,7 +814,7 @@ export default defineComponent({
               <select
                 id="menu-position"
                 class="form-input"
-                v-model="menu.position"
+                v-model.number="menu.position"
                 @change="selectListTypeByPosition(menu.position)"
               >
                 <option v-for="(position, key) in menu_datas.list_position" :value="key">
@@ -842,7 +825,7 @@ export default defineComponent({
 
             <div class="form-group">
               <label class="form-label" for="menu-title">{{ translate.select_type_label }}</label>
-              <select id="menu-type" class="form-input" v-model="menu.type">
+              <select id="menu-type" class="form-input" v-model.number="menu.type">
                 <option v-for="(position, key) in listTypeByPosition" :value="key">{{ position }}</option>
               </select>
             </div>

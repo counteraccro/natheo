@@ -36,6 +36,7 @@
 .idea/sqldialects.xml
 /.env.dev
 public/assets/thumbnails/*
+/public/assets/natheotheque/
 .idea/commandlinetools/Symfony_10_01_2024_18_53.xml
 .idea/workspace.xml~
 .idea/copyright/profiles_settings.xml

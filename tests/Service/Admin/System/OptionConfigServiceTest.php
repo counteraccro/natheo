@@ -52,6 +52,17 @@ class OptionConfigServiceTest extends AppWebTestCase
     }
 
     /**
+     * Test méthode isTranslatable()
+     * @return void
+     */
+    public function testIsTranslatable(): void
+    {
+        $this->assertTrue($this->optionConfigService->isTranslatable(['type' => 'textarea', 'translatable' => true]));
+        $this->assertFalse($this->optionConfigService->isTranslatable(['type' => 'textarea']));
+        $this->assertFalse($this->optionConfigService->isTranslatable(null));
+    }
+
+    /**
      * Test méthode isValidValue()
      * @return void
      */

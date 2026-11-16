@@ -19,6 +19,7 @@ use App\Service\Global\Database\DataBase;
 use App\Service\Global\Database\RawQueryManager;
 use App\Service\Global\Database\RawResultQueryManager;
 use App\Service\Global\EnvFile;
+use App\Service\Global\SupportedLocales;
 use App\Translate\Admin\Global\GridTranslate;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -74,6 +75,7 @@ class AppAdminHandlerService
         'tagRender' => TagRender::class,
         'managerRegistry' => ManagerRegistry::class,
         'validator' => ValidatorInterface::class,
+        'supportedLocales' => SupportedLocales::class,
     ];
 
     public function __construct(#[AutowireLocator(self::HANDLERS)] protected ContainerInterface $handlers) {}
@@ -153,6 +155,17 @@ class AppAdminHandlerService
     protected function getParameterBag(): ParameterBagInterface
     {
         return $this->handlers->get('parameterBag');
+    }
+
+    /**
+     * Langues du site
+     * @return string[]
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getSupportedLocales(): array
+    {
+        return $this->handlers->get('supportedLocales')->getAll();
     }
 
     /**

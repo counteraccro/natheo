@@ -40,6 +40,16 @@ class OptionConfigService extends AppAdminService
     }
 
     /**
+     * Vérifie qu'une option a une valeur par langue (clé translatable de la config)
+     * @param array|null $optionConfig
+     * @return bool
+     */
+    public function isTranslatable(?array $optionConfig): bool
+    {
+        return !empty($optionConfig['translatable']);
+    }
+
+    /**
      * Vérifie qu'une valeur respecte la configuration de l'option (type, required, validation)
      * @param array $optionConfig
      * @param string $value
@@ -52,6 +62,9 @@ class OptionConfigService extends AppAdminService
         }
 
         switch ($optionConfig['type']) {
+            // Valeur posée par sa propre action, jamais saisie
+            case 'action':
+                return false;
             case 'boolean':
                 return in_array($value, ['0', '1'], true);
             case 'select':

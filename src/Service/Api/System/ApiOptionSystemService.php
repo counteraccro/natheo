@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 1.2
  * Service ApiOptionSystem
  */
 
@@ -37,6 +37,11 @@ class ApiOptionSystemService extends AppApiService
             OptionSystem::OS_ADRESSE_SITE->value,
             OptionSystem::OS_THEME_FRONT_SITE->value,
             OptionSystem::OS_FRONT_FOOTER_TEXTE->value,
+            OptionSystem::OS_FRONT_CONSENT_ENABLED->value,
+            OptionSystem::OS_FRONT_CONSENT_RESET_AT->value,
+            OptionSystem::OS_FRONT_CONSENT_TEXT->value,
+            OptionSystem::OS_FRONT_CONSENT_ACCEPT_LABEL->value,
+            OptionSystem::OS_FRONT_CONSENT_REFUSE_LABEL->value,
             OptionSystem::OS_FRONT_FOOTER_SOCIAL_FACEBOOK_URL->value,
             OptionSystem::OS_FRONT_FOOTER_SOCIAL_INSTAGRAM_URL->value,
             OptionSystem::OS_FRONT_FOOTER_SOCIAL_GITHUB_URL->value,
@@ -51,24 +56,25 @@ class ApiOptionSystemService extends AppApiService
 
     /**
      * Retourne la liste des options system avec la value
+     * @param string|null $locale langue des options traduisibles, langue par défaut du site si null
      * @return array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getAllOptionSystemWithValue(): array
+    public function getAllOptionSystemWithValue(?string $locale = null): array
     {
         $optionSystemService = $this->getOptionSystemService();
 
         $return = [];
         foreach ($this->getWhiteListeOptionSystem() as $option) {
-            $return[$option] = $optionSystemService->getValueByKey($option);
+            $return[$option] = $optionSystemService->getTranslatedValueByKey($option, $locale);
         }
 
         return $return;
     }
 
     /**
-     * Options publiques de l'API v2, clés en minuscules sans préfixe et valeurs typées
+     * Options publiques de l'API v2, clés en minuscules sans préfixe, valeurs typées et dans la langue de la requête
      * @return list<array{key: string, value: bool|string|null}>
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -78,7 +84,7 @@ class ApiOptionSystemService extends AppApiService
         $config = $this->getOptionSystemService()->getOptionsSystemConfig();
 
         $return = [];
-        foreach ($this->getAllOptionSystemWithValue() as $option => $value) {
+        foreach ($this->getAllOptionSystemWithValue($this->getContentLocale()) as $option => $value) {
             $return[] = $this->toPublicOption($option, $value, $config);
         }
         return $return;
@@ -101,7 +107,7 @@ class ApiOptionSystemService extends AppApiService
         $optionSystemService = $this->getOptionSystemService();
         return $this->toPublicOption(
             $option,
-            $optionSystemService->getValueByKey($option),
+            $optionSystemService->getTranslatedValueByKey($option, $this->getContentLocale()),
             $optionSystemService->getOptionsSystemConfig(),
         );
     }

@@ -1,0 +1,14 @@
+menu-docs-footer:
+    name: 'Pied de page de la documentation'
+    type: FOOTER_1_ROW_CENTER
+    position: POSITION_FOOTER
+    elements:
+        -   page: home
+            label: { fr: 'Accueil', en: 'Home', es: 'Inicio' }
+        -   page: docs
+        -   label: { fr: 'Documentation complète', en: 'Full documentation', es: 'Documentación completa' }
+            url: 'https://counteraccro.github.io/natheo.doc/'
+            newTab: true
+        -   label: { fr: 'GitHub', en: 'GitHub', es: 'GitHub' }
+            url: 'https://github.com/counteraccro/natheo'
+            newTab: true

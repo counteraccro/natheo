@@ -1,0 +1,19 @@
+/*!
+ * Author : Gourdon Aymeric
+ * Version : 1.0
+ * Point d'entrée du design du thème StormFront
+ */
+
+@import 'tailwindcss' source(none);
+@import './front/stormFront/variables.css';
+@import './front/stormFront/theme.css';
+@import './front/stormFront/base.css';
+@import './front/stormFront/prose.css';
+
+/* Seuls les fichiers du thème sont scannés */
+@source '../vue/controllers/Front/StormFront';
+@source '../vue/Components/Front/StormFront';
+@source '../vue/Components/Front/Global';
+@source '../../templates/front/natheo_storm';
+
+@custom-variant dark (&:where(.dark, .dark *));

@@ -1,0 +1,30 @@
+blog-2-2-draft:
+    user: R-Contributeur
+    render: ONE_BLOCK
+    category: BLOG
+    status: DRAFT
+    headerImg: hdr-blog-2-2
+    date: '-1 day'
+    isOpenComment: true
+    ruleComment: WAIT_VALIDATION
+    validationStatus: PENDING
+    validationUser: R-Contributeur
+    validationAt: -1 day
+    tags: [tag-version]
+    menus: [menu-blog-header, menu-blog-side]
+    stats: { visitors: 0, reads: 0 }
+    translations:
+        fr: { titre: 'Nathéo 2.2 : premières pistes', url: natheo-2-2-premieres-pistes }
+        en: { titre: 'Nathéo 2.2: first ideas', url: natheo-2-2-first-ideas }
+        es: { titre: 'Nathéo 2.2: primeras ideas', url: natheo-2-2-primeras-ideas }
+    metas:
+        description:
+            fr: 'Les premières pistes pour Nathéo 2.2 : écrire dans Nathéo par l''API v2.'
+            en: 'First ideas for Nathéo 2.2: writing to Nathéo through the API v2.'
+            es: 'Primeras ideas para Nathéo 2.2: escribir en Nathéo a través de la API v2.'
+        keywords:
+            fr: 'Nathéo 2.2, API v2, écriture, feuille de route'
+            en: 'Nathéo 2.2, API v2, write, roadmap'
+            es: 'Nathéo 2.2, API v2, escritura, hoja de ruta'
+    blocks:
+        - { block: 1, type: TEXT }

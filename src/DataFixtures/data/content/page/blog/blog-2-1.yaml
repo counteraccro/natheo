@@ -1,0 +1,27 @@
+blog-2-1:
+    user: R-Contributeur
+    render: ONE_BLOCK
+    category: BLOG
+    status: PUBLISH
+    date: '-3 days'
+    isOpenComment: true
+    ruleComment: WAIT_VALIDATION
+    headerImg: hdr-blog-2-1
+    tags: [tag-version, tag-api, tag-themes]
+    menus: [menu-blog-header, menu-blog-side]
+    stats: { visitors: 640, reads: 590 }
+    translations:
+        fr: { titre: 'Nathéo 2.1 est disponible', url: natheo-2-1-est-disponible }
+        en: { titre: 'Nathéo 2.1 is out', url: natheo-2-1-is-out }
+        es: { titre: 'Nathéo 2.1 ya está disponible', url: natheo-2-1-ya-esta-disponible }
+    metas:
+        description:
+            fr: 'Brouillons et validation des pages, API v2, trois thèmes et nouvel éditeur : la 2.1 est sortie.'
+            en: 'Page drafts and validation, API v2, three themes and a new editor: 2.1 is out.'
+            es: 'Borradores y validación de páginas, API v2, tres temas y un nuevo editor: ya salió la 2.1.'
+        keywords:
+            fr: 'Nathéo 2.1, brouillon, API v2, thèmes'
+            en: 'Nathéo 2.1, draft, API v2, themes'
+            es: 'Nathéo 2.1, borrador, API v2, temas'
+    blocks:
+        - { block: 1, type: TEXT }

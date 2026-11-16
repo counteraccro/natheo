@@ -1,0 +1,26 @@
+/*!
+ * Author : Gourdon Aymeric
+ * Version : 1.0
+ * Point d'entrée du design du thème Natheo-Base
+ */
+
+@import 'tailwindcss' source(none);
+
+/* Seuls les fichiers du thème sont scannés */
+@source '../vue/controllers/Front/NatheoBase';
+@source '../vue/Components/Front/NatheoBase';
+@source '../../templates/front/natheo_base';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+.natheo-base-content :where(h1, h2, h3) {
+    @apply font-semibold mt-4 mb-2;
+}
+
+.natheo-base-content :where(p, ul, ol) {
+    @apply mb-3;
+}
+
+.natheo-base-content :where(a) {
+    @apply underline;
+}

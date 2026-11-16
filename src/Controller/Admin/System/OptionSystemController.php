@@ -4,7 +4,7 @@ declare(strict_types=1);
 /**
  * Option système
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  */
 
 namespace App\Controller\Admin\System;
@@ -14,6 +14,7 @@ use App\Enum\Admin\Global\Breadcrumb;
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Admin\Content\Page\PageValidationService;
 use App\Service\Admin\System\OptionSystemService;
+use App\Translate\Admin\System\OptionSystemTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -37,10 +38,11 @@ class OptionSystemController extends AppAdminController
 
     /**
      * Point d'entrée pour les options systèmes
+     * @param OptionSystemTranslate $optionSystemTranslate
      * @return Response
      */
     #[Route('/change', name: 'change')]
-    public function index(): Response
+    public function index(OptionSystemTranslate $optionSystemTranslate): Response
     {
         $breadcrumb = [
             Breadcrumb::DOMAIN->value => 'option_system',
@@ -52,6 +54,12 @@ class OptionSystemController extends AppAdminController
         return $this->render('admin/system/option_system/index.html.twig', [
             'breadcrumb' => $breadcrumb,
             'csrfTokenId' => self::CSRF_TOKEN_UPDATE,
+            'translate' => $optionSystemTranslate->getTranslate(),
+            'urlActions' => [
+                OptionSystem::OS_FRONT_CONSENT_RESET_AT->value => $this->generateUrl(
+                    'admin_option-system_ajax_consent_reset',
+                ),
+            ],
         ]);
     }
 
@@ -80,11 +88,20 @@ class OptionSystemController extends AppAdminController
         }
 
         $data = json_decode($request->getContent(), true);
-        if (!is_array($data) || !is_string($data['key'] ?? null) || !is_scalar($data['value'] ?? null)) {
+        if (
+            !is_array($data) ||
+            !is_string($data['key'] ?? null) ||
+            !is_scalar($data['value'] ?? null) ||
+            !is_string($data['locale'] ?? '')
+        ) {
             return $this->json($optionSystemService->getResponseAjax(), Response::HTTP_BAD_REQUEST);
         }
 
-        $updated = $optionSystemService->updateValueFromAdmin($data['key'], strval($data['value']));
+        $updated = $optionSystemService->updateValueFromAdmin(
+            $data['key'],
+            strval($data['value']),
+            $data['locale'] ?? null,
+        );
         // Désactiver la validation ne publie pas les pages en attente : elles redeviennent modifiables
         if (
             $updated &&
@@ -94,5 +111,36 @@ class OptionSystemController extends AppAdminController
             $pageValidationService->clearAllPending();
         }
         return $this->json($optionSystemService->getResponseAjax());
+    }
+
+    /**
+     * Redemande le consentement aux scripts du site public à tous les visiteurs
+     * @param Request $request
+     * @param OptionSystemService $optionSystemService
+     * @param TranslatorInterface $translator
+     * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/ajax/consent-reset', name: 'ajax_consent_reset', methods: ['POST'])]
+    public function resetConsent(
+        Request $request,
+        OptionSystemService $optionSystemService,
+        TranslatorInterface $translator,
+    ): JsonResponse {
+        if (!$this->isCsrfTokenValid(self::CSRF_TOKEN_UPDATE, $request->headers->get('X-CSRF-TOKEN'))) {
+            return $this->json(
+                ['success' => false, 'msg' => $translator->trans('option_system.error.csrf', domain: 'option_system')],
+                Response::HTTP_FORBIDDEN,
+            );
+        }
+
+        $date = $optionSystemService->resetFrontConsent();
+        return $this->json([
+            'success' => true,
+            'last' => $translator->trans('options_system.front_consent_reset_at.last', [
+                'date' => $date->getTimestamp(),
+            ]),
+        ]);
     }
 }

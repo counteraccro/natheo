@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 2.0
  * Fixtures pour la génération des menus
  */
 
@@ -14,42 +14,34 @@ use App\Entity\Admin\Content\Menu\Menu;
 use App\Entity\Admin\Content\Menu\MenuElement;
 use App\Entity\Admin\Content\Menu\MenuElementTranslation;
 use App\Entity\Admin\Content\Page\Page;
-use App\Entity\Admin\System\User;
+use App\Enum\Admin\Content\Menu\MenuLinkTarget;
+use App\Enum\Admin\Content\Menu\MenuPosition;
+use App\Enum\Admin\Content\Menu\MenuType;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Symfony\Component\Yaml\Yaml;
 
 class MenuFixtures extends AppFixtures implements FixtureGroupInterface, OrderedFixtureInterface
 {
-    const MENU_FIXTURES_DATA_FILE =
-        'content' . DIRECTORY_SEPARATOR . 'menu' . DIRECTORY_SEPARATOR . 'menu_fixtures_data.yaml';
+    /**
+     * Dossier des menus : un fichier YAML par menu
+     */
+    const MENU_FIXTURES_FOLDER = 'content' . DIRECTORY_SEPARATOR . 'menu' . DIRECTORY_SEPARATOR;
 
     public function load(ObjectManager $manager): void
     {
-        $data = Yaml::parseFile($this->pathDataFixtures . self::MENU_FIXTURES_DATA_FILE);
+        foreach ($this->loadYamlFolder($this->pathDataFixtures . self::MENU_FIXTURES_FOLDER) as $ref => $file) {
+            $data = $file['data'];
 
-        if ($data === null) {
-            return;
-        }
-
-        foreach ($data['menu'] as $ref => $dataMenu) {
             $menu = new Menu();
-
-            foreach ($dataMenu as $key => $value) {
-                switch ($key) {
-                    case 'menuElement':
-                        foreach ($value as $menuElRef => $menuElement) {
-                            $menu->addMenuElement($this->createMenuElement($menuElement, $menuElRef));
-                        }
-                        break;
-                    case 'user':
-                        $menu->setUser($this->getReference($value, User::class));
-                        break;
-                    default:
-                        $this->setData($key, $value, $menu);
-                }
-            }
+            $menu->setUser($this->getUserReference($data['user'] ?? 'User'));
+            $menu->setName($data['name']);
+            $menu->setType($this->enumValue(MenuType::class, $data['type']));
+            $menu->setPosition($this->enumValue(MenuPosition::class, $data['position']));
+            $menu->setRenderOrder($data['renderOrder'] ?? 1);
+            $menu->setDefaultMenu($data['defaultMenu'] ?? false);
+            $menu->setDisabled($data['disabled'] ?? false);
+            $this->addMenuElements($menu, $data['elements'] ?? []);
 
             $manager->persist($menu);
             $this->addReference($ref, $menu);
@@ -59,34 +51,42 @@ class MenuFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
     }
 
     /**
-     * Créer un menuElement
-     * @param array $data
-     * @return MenuElement
+     * Ajoute au menu les éléments $elements et leurs enfants (clé « children »), dans l'ordre donné
+     * @param Menu $menu
+     * @param array $elements
+     * @param MenuElement|null $parent
+     * @return void
      */
-    private function createMenuElement(array $data, string $ref): MenuElement
+    private function addMenuElements(Menu $menu, array $elements, ?MenuElement $parent = null): void
     {
-        $menuElement = new MenuElement();
-        foreach ($data as $key => $value) {
-            if ($key === 'menuElementTranslation') {
-                foreach ($value as $menuElementTranslation) {
-                    $menuElement->addMenuElementTranslation(
-                        $this->populateEntity($menuElementTranslation, new MenuElementTranslation()),
-                    );
-                }
-            } elseif ($key === 'page') {
-                if (!empty($value)) {
-                    $menuElement->setPage($this->getReference($value, Page::class));
-                }
-            } elseif ($key === 'parent') {
-                if (!empty($value)) {
-                    $menuElement->setParent($this->getReference($value, MenuElement::class));
-                }
-            } else {
-                $this->setData($key, $value, $menuElement);
+        foreach (array_values($elements) as $index => $data) {
+            $page = isset($data['page']) ? $this->getReference($data['page'], Page::class) : null;
+
+            $menuElement = new MenuElement();
+            $menuElement->setColumnPosition(1);
+            $menuElement->setRowPosition($index + 1);
+            $menuElement->setDisabled($data['disabled'] ?? false);
+            $menuElement->setLinkTarget(
+                $data['newTab'] ?? false
+                    ? MenuLinkTarget::LINK_TARGET_BLANK->value
+                    : MenuLinkTarget::LINK_TARGET_SELF->value,
+            );
+            $menuElement->setPage($page);
+            $menuElement->setParent($parent);
+
+            foreach ($this->getLocales() as $locale) {
+                $translation = new MenuElementTranslation();
+                $translation->setLocale($locale);
+                $translation->setTextLink(
+                    $data['label'][$locale] ?? ($page?->getPageTranslationByLocale($locale)?->getTitre() ?? ''),
+                );
+                $translation->setExternalLink($data['url'] ?? '#');
+                $menuElement->addMenuElementTranslation($translation);
             }
+
+            $menu->addMenuElement($menuElement);
+            $this->addMenuElements($menu, $data['children'] ?? [], $menuElement);
         }
-        $this->addReference($ref, $menuElement);
-        return $menuElement;
     }
 
     /**

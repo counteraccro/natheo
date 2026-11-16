@@ -1,0 +1,88 @@
+/*!
+ * Author : Gourdon Aymeric
+ * Version : 2.0
+ * Styles de base du thème Natheo-Horizon : page, liens, titres, formulaires, focus
+ */
+
+@layer base {
+    html {
+        -webkit-text-size-adjust: 100%;
+        scroll-padding-top: 90px;
+    }
+
+    body {
+        background: var(--bg);
+        color: var(--fg);
+        font: 400 1.0625rem/1.65 var(--font);
+    }
+
+    a {
+        color: var(--primary);
+        text-underline-offset: 0.2em;
+        text-decoration-thickness: 1px;
+    }
+
+    a:hover {
+        text-decoration-thickness: 2px;
+    }
+
+    /* --focus est redéfini sur les zones de fond nuit */
+    :focus-visible {
+        outline: 3px solid var(--focus);
+        outline-offset: 2px;
+        border-radius: 2px;
+    }
+
+    h1, h2, h3 {
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        line-height: 1.1;
+    }
+
+    label {
+        display: block;
+        font-weight: 600;
+        font-size: 0.95rem;
+        margin-bottom: 0.35rem;
+    }
+
+    select, input, textarea {
+        font: inherit;
+        color: var(--fg);
+        background: var(--bg);
+        border: 1.5px solid var(--field-border);
+        border-radius: var(--radius);
+        min-height: 44px;
+        padding: 0 0.8rem;
+        width: 100%;
+    }
+
+    textarea {
+        min-height: 130px;
+        padding: 0.7rem 0.8rem;
+        resize: vertical;
+    }
+
+    /* Chevron Flowbite à la place de celui du navigateur, collé au bord */
+    select {
+        width: auto;
+        appearance: none;
+        padding-right: 2.6rem;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Cpath stroke='%234f4a6b' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m8 10 4 4 4-4'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 0.7rem center;
+        background-size: 1.25rem;
+        cursor: pointer;
+    }
+
+    :root.dark select {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Cpath stroke='%23a9a2c8' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m8 10 4 4 4-4'/%3E%3C/svg%3E");
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+}

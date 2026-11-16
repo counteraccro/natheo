@@ -1,0 +1,92 @@
+faq-api:
+    user: R-Admin
+    title:
+        fr: 'Questions sur l''API v2'
+        en: 'API v2 questions'
+        es: 'Preguntas sobre la API v2'
+    categories:
+        -   title: { fr: 'Utiliser l''API', en: 'Using the API', es: 'Usar la API' }
+            questions:
+                -   title:
+                        fr: 'Comment m''authentifier ?'
+                        en: 'How do I authenticate?'
+                        es: '¿Cómo me autentico?'
+                    answer:
+                        fr: |
+                            Chaque appel envoie un jeton dans l'en-tête `Authorization: Bearer <token>`. Pour une application ou un script, ce jeton est un token d'API, créé dans l'administration depuis le menu « Tokens API », avec un rôle de lecture, d'écriture ou d'administration.
+
+                            Pour agir au nom d'un utilisateur, ouvrez une session avec `POST /api/v2/user_sessions`. La réponse contient un access token valable 15 minutes et un refresh token pour le renouveler.
+                        en: |
+                            Each call sends a token in the `Authorization: Bearer <token>` header. For an application or a script, this token is an API token, created in the administration from the "API tokens" menu, with a read, write or admin role.
+
+                            To act on behalf of a user, open a session with `POST /api/v2/user_sessions`. The response holds an access token valid for 15 minutes and a refresh token to renew it.
+                        es: |
+                            Cada llamada envía un token en la cabecera `Authorization: Bearer <token>`. Para una aplicación o un script, este token es un token de API, creado en la administración desde el menú «Tokens API», con un rol de lectura, de escritura o de administración.
+
+                            Para actuar en nombre de un usuario, abra una sesión con `POST /api/v2/user_sessions`. La respuesta contiene un access token válido durante 15 minutos y un refresh token para renovarlo.
+                -   title:
+                        fr: 'Quel format renvoie l''API ?'
+                        en: 'What format does the API return?'
+                        es: '¿Qué formato devuelve la API?'
+                    answer:
+                        fr: |
+                            Du JSON-LD avec le vocabulaire Hydra par défaut. Les ressources liées sont désignées par leur IRI et les collections sont paginées. Avec l'en-tête `Accept: application/json`, l'API renvoie du JSON simple. Les erreurs suivent le format `application/problem+json`, avec un titre et un détail traduits dans la langue de la requête.
+                        en: |
+                            JSON-LD with the Hydra vocabulary by default. Linked resources are referred to by their IRI and collections are paginated. With the `Accept: application/json` header, the API returns plain JSON. Errors follow the `application/problem+json` format, with a title and a detail translated into the language of the request.
+                        es: |
+                            JSON-LD con el vocabulario Hydra por defecto. Los recursos vinculados se designan por su IRI y las colecciones están paginadas. Con la cabecera `Accept: application/json`, la API devuelve JSON simple. Los errores siguen el formato `application/problem+json`, con un título y un detalle traducidos al idioma de la petición.
+                -   title:
+                        fr: 'Comment choisir la langue des contenus ?'
+                        en: 'How do I choose the content language?'
+                        es: '¿Cómo elijo el idioma de los contenidos?'
+                    answer:
+                        fr: |
+                            Avec le paramètre `locale` ou l'en-tête `Accept-Language`. Le paramètre passe en premier. Sans l'un ni l'autre, ou avec une langue que le site ne gère pas, l'API répond dans la langue par défaut du site. L'en-tête `Content-Language` de la réponse indique toujours la langue servie.
+                        en: |
+                            With the `locale` parameter or the `Accept-Language` header. The parameter comes first. Without either of them, or with a language the site does not handle, the API answers in the default language of the site. The `Content-Language` header of the response always gives the language served.
+                        es: |
+                            Con el parámetro `locale` o la cabecera `Accept-Language`. El parámetro tiene prioridad. Sin ninguno de los dos, o con un idioma que el sitio no gestiona, la API responde en el idioma por defecto del sitio. La cabecera `Content-Language` de la respuesta indica siempre el idioma servido.
+                -   title:
+                        fr: 'Comment retrouver une page à partir de son adresse ?'
+                        en: 'How do I find a page from its address?'
+                        es: '¿Cómo encuentro una página a partir de su dirección?'
+                    answer:
+                        fr: |
+                            Avec le filtre `slug` de la collection des pages, par exemple `GET /api/v2/pages?slug=accueil`. La réponse contient 0 ou 1 page, avec un résumé et son IRI. L'appel à cette IRI renvoie la page complète, avec ses blocs et ses menus.
+                        en: |
+                            With the `slug` filter of the pages collection, for example `GET /api/v2/pages?slug=home`. The response holds 0 or 1 page, with a summary and its IRI. A call to that IRI returns the full page, with its blocks and menus.
+                        es: |
+                            Con el filtro `slug` de la colección de páginas, por ejemplo `GET /api/v2/pages?slug=inicio`. La respuesta contiene 0 o 1 página, con un resumen y su IRI. La llamada a esa IRI devuelve la página completa, con sus bloques y sus menús.
+                -   title:
+                        fr: 'Pourquoi l''API répond 404 pour une page qui existe ?'
+                        en: 'Why does the API return 404 for a page that exists?'
+                        es: '¿Por qué la API responde 404 para una página que existe?'
+                    answer:
+                        fr: |
+                            L'API sert uniquement les pages publiées et actives. Une page en brouillon, en attente de validation ou désactivée renvoie une erreur 404, et un menu n'affiche pas les liens vers ces pages. Pour voir un brouillon tel qu'il sera publié, utilisez la prévisualisation depuis l'éditeur de page.
+                        en: |
+                            The API only serves published and active pages. A draft page, a page waiting for validation or a disabled page returns a 404 error, and a menu does not show links to these pages. To see a draft as it will be published, use the preview from the page editor.
+                        es: |
+                            La API sirve únicamente las páginas publicadas y activas. Una página en borrador, pendiente de validación o desactivada devuelve un error 404, y un menú no muestra los enlaces a esas páginas. Para ver un borrador tal y como se publicará, use la previsualización desde el editor de páginas.
+                -   title:
+                        fr: 'Mon application utilise l''API v1. Que va-t-il se passer ?'
+                        en: 'My application uses the API v1. What will happen?'
+                        es: 'Mi aplicación usa la API v1. ¿Qué va a pasar?'
+                    answer:
+                        fr: |
+                            L'API v1 reste disponible sous `/api/v1` jusqu'à Nathéo 3.0, sans nouvelles fonctionnalités. Ses réponses portent l'en-tête `Deprecation` et un en-tête `Link` qui mène au guide de migration. Le [guide de migration](https://counteraccro.github.io/natheo.doc/Docs/API/migration_v2.html) détaille les changements pour passer à la v2.
+                        en: |
+                            The API v1 remains available under `/api/v1` until Nathéo 3.0, without new features. Its responses carry the `Deprecation` header and a `Link` header that leads to the migration guide. The [migration guide](https://counteraccro.github.io/natheo.doc/Docs/API/migration_v2.html) describes the changes needed to move to the v2.
+                        es: |
+                            La API v1 sigue disponible en `/api/v1` hasta Nathéo 3.0, sin nuevas funcionalidades. Sus respuestas llevan la cabecera `Deprecation` y una cabecera `Link` que lleva a la guía de migración. La [guía de migración](https://counteraccro.github.io/natheo.doc/Docs/API/migration_v2.html) detalla los cambios para pasar a la v2.
+                -   title:
+                        fr: 'Où trouver la documentation des ressources ?'
+                        en: 'Where can I find the documentation of the resources?'
+                        es: '¿Dónde encuentro la documentación de los recursos?'
+                    answer:
+                        fr: |
+                            Sur `/api/v2/docs`, avec Swagger UI. Chaque opération y décrit ses paramètres, sa réponse et ses erreurs, et peut être essayée avec votre token. La page reste accessible tant que l'option « Ouvrir l'API ? » est activée.
+                        en: |
+                            On `/api/v2/docs`, with Swagger UI. Each operation describes its parameters, its response and its errors, and can be tried with your token. The page stays available as long as the "Open the API?" option is on.
+                        es: |
+                            En `/api/v2/docs`, con Swagger UI. Cada operación describe sus parámetros, su respuesta y sus errores, y se puede probar con su token. La página está disponible mientras la opción «¿Abrir la API?» esté activada.

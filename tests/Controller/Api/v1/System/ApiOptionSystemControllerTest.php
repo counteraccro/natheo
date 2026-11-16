@@ -120,4 +120,37 @@ class ApiOptionSystemControllerTest extends AppApiTestCase
             $content['errors'][0],
         );
     }
+
+    /**
+     * Une option traduisible renvoie la valeur de la langue par défaut, au format chaîne de la v1
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testTranslatableValue(): void
+    {
+        $key = OptionSystem::OS_FRONT_FOOTER_TEXTE->value;
+        $this->container
+            ->get(OptionSystemService::class)
+            ->saveValueByKee($key, json_encode(['fr' => 'Texte FR', 'en' => 'Text EN']));
+
+        $this->client->request(
+            'GET',
+            $this->router->generate('api_options_systems_listing', ['api_version' => self::API_VERSION]),
+            server: $this->getCustomHeaders(),
+        );
+        $this->assertResponseIsSuccessful();
+        $this->assertSame('Texte FR', json_decode($this->client->getResponse()->getContent(), true)['data'][$key]);
+
+        $this->client->request(
+            'GET',
+            $this->router->generate('api_options_systems_get_by_key', [
+                'api_version' => self::API_VERSION,
+                'key' => $key,
+            ]),
+            server: $this->getCustomHeaders(),
+        );
+        $this->assertResponseIsSuccessful();
+        $this->assertSame('Texte FR', json_decode($this->client->getResponse()->getContent(), true)['data']['value']);
+    }
 }
