@@ -50,7 +50,7 @@ watch(
 <template>
   <a
     href="#contenu"
-    class="absolute -top-16 left-4 z-100 rounded-sf bg-white px-4 py-3 font-semibold text-[#1c2329] focus:top-4"
+    class="absolute -top-16 left-4 z-100 rounded-sf bg-page px-4 py-3 font-semibold text-fg focus:top-4"
   >
     {{ translate.header.skipLink }}
   </a>

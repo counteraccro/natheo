@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace App\Translate\Front;
 
 use App\Enum\Admin\Content\Page\PageCategory;
-use App\Service\Front\OptionSystemFrontService;
+use App\Service\Front\FrontThemeService;
 use App\Translate\AppTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
@@ -31,7 +31,7 @@ class FrontTranslate extends AppTranslate
             AutowireLocator([
                 'translator' => TranslatorInterface::class,
                 'parameterBag' => ContainerBagInterface::class,
-                'optionSystemFrontService' => OptionSystemFrontService::class,
+                'frontThemeService' => FrontThemeService::class,
             ]),
         ]
         private readonly ContainerInterface $handlers,
@@ -158,8 +158,8 @@ class FrontTranslate extends AppTranslate
     {
         /** @var ContainerBagInterface $parameterBag */
         $parameterBag = $this->handlers->get('parameterBag');
-        /** @var OptionSystemFrontService $optionSystemFrontService */
-        $optionSystemFrontService = $this->handlers->get('optionSystemFrontService');
+        /** @var FrontThemeService $frontThemeService */
+        $frontThemeService = $this->handlers->get('frontThemeService');
 
         return [
             'credit' => $this->translator->trans(
@@ -170,7 +170,7 @@ class FrontTranslate extends AppTranslate
             ),
             'templateVersion' => $this->translator->trans(
                 'front.footer.template.version',
-                ['version' => $optionSystemFrontService->getTemplateVersion()],
+                ['version' => $frontThemeService->getTemplateVersion()],
                 'front',
                 locale: $this->locale,
             ),
