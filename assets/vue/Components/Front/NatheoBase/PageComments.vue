@@ -1,35 +1,22 @@
 <script setup lang="ts">
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Commentaires de la page dans le thème Natheo-Base : liste, envoi et modération
  */
-import { ref } from 'vue';
 import { useFrontContext } from '@/vue/Composables/Front/useFrontContext';
 import { useComments } from '@/vue/Composables/Front/useComments';
 import { useCommentForm } from '@/vue/Composables/Front/useCommentForm';
 import { useFormat } from '@/vue/Composables/Front/useFormat';
 import PaginationNav from '@/vue/Components/Front/NatheoBase/PaginationNav.vue';
 import type { Page } from '@/ts/Front/Api/Page.type';
-import type { Comment, CommentStatus } from '@/ts/Front/Api/Comment.type';
 
 const props = defineProps<{ page: Page }>();
-const context = useFrontContext();
-const t = context.translate.main.articleFooter.comment;
-const { data: comments, page, load, add, moderate, canModerate } = useComments(props.page);
+const t = useFrontContext().translate.main.articleFooter.comment;
+const { data: comments, page, load, add, canModerate, moderationMessage, changeStatus } = useComments(props.page);
 
 const { form, message, sending, submit } = useCommentForm(add);
-const moderationError = ref<string | null>(null);
 const format = useFormat();
-
-async function changeStatus(comment: Comment, status: CommentStatus): Promise<void> {
-  moderationError.value = null;
-  try {
-    await moderate(comment, status);
-  } catch (error) {
-    moderationError.value = context.errorLabel(error);
-  }
-}
 </script>
 
 <template>
@@ -38,7 +25,7 @@ async function changeStatus(comment: Comment, status: CommentStatus): Promise<vo
       {{ t.title }} <span v-if="comments" class="text-gray-500">({{ comments.total }})</span>
     </h2>
 
-    <p v-if="moderationError" role="alert">{{ moderationError }}</p>
+    <p v-if="moderationMessage" role="status">{{ moderationMessage }}</p>
     <ul v-if="comments" class="space-y-4">
       <li v-for="comment in comments.members" :key="comment.id" class="border border-gray-200 dark:border-gray-700 p-3">
         <p class="text-sm text-gray-500">

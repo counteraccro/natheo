@@ -9,8 +9,8 @@ import { useFrontContext } from '@/vue/Composables/Front/useFrontContext';
 import { useConsent } from '@/vue/Composables/Front/useConsent';
 import { useMenus } from '@/vue/Composables/Front/useMenus';
 import { useSiteOptions } from '@/vue/Composables/Front/useSiteOptions';
-import { useSocialLinks, type SocialNetwork } from '@/vue/Composables/Front/useSocialLinks';
-import FrontIcon, { type IconName } from '@/vue/Components/Front/Global/FrontIcon.vue';
+import { useSocialLinks } from '@/vue/Composables/Front/useSocialLinks';
+import FrontIcon from '@/vue/Components/Front/Global/FrontIcon.vue';
 import FooterMenu from '@/vue/Components/Front/StormFront/Menu/FooterMenu.vue';
 import type { Page } from '@/ts/Front/Api/Page.type';
 
@@ -20,17 +20,6 @@ const { data: options } = useSiteOptions();
 const { menus } = useMenus(toRef(props, 'page'));
 const socials = useSocialLinks();
 const consent = useConsent();
-
-// TikTok n'a pas d'icône dans Flowbite : globe générique
-const ICONS: Record<SocialNetwork, IconName> = {
-  github: 'github',
-  linkedin: 'linkedin',
-  youtube: 'youtube',
-  x: 'x',
-  facebook: 'facebook',
-  instagram: 'instagram',
-  tiktok: 'globe',
-};
 </script>
 
 <template>
@@ -51,7 +40,7 @@ const ICONS: Record<SocialNetwork, IconName> = {
               class="grid size-11 place-items-center rounded-sf text-fg shadow-[inset_0_0_0_1.5px_var(--line)] hover:shadow-[inset_0_0_0_1.5px_var(--fg)]"
             >
               <span class="sr-only">{{ social.label }}</span>
-              <FrontIcon :name="ICONS[social.network]" class="size-5.5" />
+              <FrontIcon :name="social.icon" class="size-5.5" />
             </a>
           </li>
         </ul>

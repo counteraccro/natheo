@@ -4,36 +4,18 @@
  * @version 1.0
  * Commentaires de la page : tri, liste paginée, modération et formulaire
  */
-import { ref, useId } from 'vue';
+import { useId } from 'vue';
 import { useFrontContext } from '@/vue/Composables/Front/useFrontContext';
 import { useComments } from '@/vue/Composables/Front/useComments';
 import CommentItem from '@/vue/Components/Front/NatheoHorizon/Comment/CommentItem.vue';
 import CommentForm from '@/vue/Components/Front/NatheoHorizon/Comment/CommentForm.vue';
 import PaginationNav from '@/vue/Components/Front/NatheoHorizon/Page/PaginationNav.vue';
 import type { Page } from '@/ts/Front/Api/Page.type';
-import type { Comment, CommentStatus } from '@/ts/Front/Api/Comment.type';
 
 const props = defineProps<{ page: Page }>();
-const context = useFrontContext();
-const t = context.translate.main.articleFooter.comment;
-const { data: comments, page, order, load, add, moderate, canModerate } = useComments(props.page);
+const t = useFrontContext().translate.main.articleFooter.comment;
+const { data: comments, page, order, load, add, canModerate, moderationMessage: message, changeStatus } = useComments(props.page);
 const sortId = useId();
-const message = ref<string | null>(null);
-
-const SUCCESS: Record<CommentStatus, string> = {
-  validate: t.successValidate,
-  moderate: t.successModerate,
-  wait_validation: t.successWaiting,
-};
-
-async function changeStatus(comment: Comment, status: CommentStatus, moderationComment: string | null): Promise<void> {
-  try {
-    await moderate(comment, status, moderationComment);
-    message.value = SUCCESS[status];
-  } catch (error) {
-    message.value = context.errorLabel(error);
-  }
-}
 </script>
 
 <template>

@@ -4,19 +4,14 @@
  * @version 1.0
  * Navigation entre les pages d'une collection : précédente / suivante, numéros sauf en mode compact
  */
-import { computed } from 'vue';
+import { usePaginationNumbers } from '@/vue/Composables/Front/usePaginationNumbers';
 import FrontIcon from '@/vue/Components/Front/Global/FrontIcon.vue';
 import type { FrontPaginationTranslate } from '@/ts/Front/FrontTranslate.type';
 
 const props = defineProps<{ page: number; lastPage: number; translate: FrontPaginationTranslate; compact?: boolean }>();
 const emit = defineEmits<{ go: [page: number] }>();
 
-/** Première, dernière et pages voisines ; null pour une coupure */
-const numbers = computed(() => {
-  const pages = new Set([1, props.lastPage, props.page - 1, props.page, props.page + 1]);
-  const sorted = [...pages].filter((n) => n >= 1 && n <= props.lastPage).sort((a, b) => a - b);
-  return sorted.flatMap((n, i) => (i > 0 && n - sorted[i - 1] > 1 ? [null, n] : [n]));
-});
+const numbers = usePaginationNumbers(() => props.page, () => props.lastPage);
 
 const button =
   'inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-nh px-4 font-semibold text-fg shadow-[inset_0_0_0_1.5px_currentColor] disabled:cursor-default disabled:opacity-45';

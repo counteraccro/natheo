@@ -6,34 +6,19 @@
  */
 import { computed, ref, useId } from 'vue';
 import { useFrontContext } from '@/vue/Composables/Front/useFrontContext';
+import { useFormat } from '@/vue/Composables/Front/useFormat';
 import type { Comment, CommentStatus } from '@/ts/Front/Api/Comment.type';
 
 const props = defineProps<{ comment: Comment; canModerate: boolean }>();
 const emit = defineEmits<{ moderate: [status: CommentStatus, moderationComment: string | null] }>();
-const { datas, translate } = useFrontContext();
+const { translate } = useFrontContext();
+const format = useFormat();
 const t = translate.main.articleFooter.comment;
 const fieldId = useId();
 const moderating = ref(false);
 const moderationComment = ref(props.comment.moderationComment ?? '');
 
-const UNITS: [Intl.RelativeTimeFormatUnit, number][] = [
-  ['year', 31536000],
-  ['month', 2592000],
-  ['week', 604800],
-  ['day', 86400],
-  ['hour', 3600],
-  ['minute', 60],
-];
-
-const relativeDate = computed(() => {
-  if (!props.comment.createdAt) {
-    return null;
-  }
-  const seconds = (new Date(props.comment.createdAt).getTime() - Date.now()) / 1000;
-  const format = new Intl.RelativeTimeFormat(datas.locale, { numeric: 'auto' });
-  const [unit, size] = UNITS.find(([, size]) => Math.abs(seconds) >= size) ?? ['minute', 60];
-  return format.format(Math.round(seconds / size), unit);
-});
+const relativeDate = computed(() => format.relative(props.comment.createdAt));
 
 const status = computed(() => {
   if (props.comment.status === 'wait_validation') {
