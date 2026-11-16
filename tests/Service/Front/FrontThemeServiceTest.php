@@ -63,7 +63,7 @@ class FrontThemeServiceTest extends AppWebTestCase
     }
 
     /**
-     * Test méthode getMenuPreviewTemplate() : gabarit du thème actif, Natheo-Base pour un thème qui n'en a pas
+     * Test méthode getMenuPreviewTemplate() : gabarit du dossier du thème actif, présent pour chaque thème
      * @return void
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -72,17 +72,16 @@ class FrontThemeServiceTest extends AppWebTestCase
     {
         $optionSystemService = $this->container->get(OptionSystemService::class);
 
-        $optionSystemService->saveValueByKee(OptionSystem::OS_THEME_FRONT_SITE->value, Template::NATHEO_HORIZON->value);
-        $this->assertSame(
-            ['template' => 'front/natheo_horizon/menu_preview.html.twig', 'scriptsTag' => 'front_natheo_horizon'],
-            $this->frontThemeService->getMenuPreviewTemplate(),
-        );
-
-        $optionSystemService->saveValueByKee(OptionSystem::OS_THEME_FRONT_SITE->value, Template::NATHEO_STORM->value);
-        $this->assertSame(
-            ['template' => 'front/natheo_base/menu_preview.html.twig', 'scriptsTag' => 'front_natheo_base'],
-            $this->frontThemeService->getMenuPreviewTemplate(),
-        );
+        foreach (Template::cases() as $template) {
+            $optionSystemService->saveValueByKee(OptionSystem::OS_THEME_FRONT_SITE->value, $template->value);
+            $this->assertSame(
+                [
+                    'template' => 'front/' . $template->value . '/menu_preview.html.twig',
+                    'scriptsTag' => 'front_' . $template->value,
+                ],
+                $this->frontThemeService->getMenuPreviewTemplate(),
+            );
+        }
     }
 
     /**

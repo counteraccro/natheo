@@ -1,0 +1,15 @@
+{% extends 'front/front_base.html.twig' %}
+
+{% block meta %}
+    <meta name="robots" content="noindex">
+{% endblock %}
+
+{% block body_class %}bg-page text-fg{% endblock %}
+
+{% block body %}
+    <div {{ vue_component('Front/StormFront/MenuPreview', {
+        'datas': datas,
+        'urls': urls,
+        'translate': translate
+    }) }}></div>
+{% endblock %}
