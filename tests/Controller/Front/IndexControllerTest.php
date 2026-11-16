@@ -169,6 +169,48 @@ class IndexControllerTest extends AppWebTestCase
     }
 
     /**
+     * Thème StormFront : composant racine du thème et son entrée Vite, avec les props communes
+     * @return void
+     */
+    public function testIndexStormFront(): void
+    {
+        $this->createUser();
+        $this->setTheme(Template::NATHEO_STORM);
+
+        $crawler = $this->client->request('GET', $this->homeUrl());
+        $this->assertResponseIsSuccessful();
+        $content = (string) $this->client->getResponse()->getContent();
+        $this->assertStringContainsString('Front/StormFront/App', $content);
+        $this->assertStringContainsString('front_natheo_storm', $content);
+
+        $props = $this->getVueProps($crawler);
+        $this->assertEquals('front-token-test', $props['datas']['apiToken']);
+        $this->assertStringContainsString(
+            (string) $this->container->getParameter('app.natheo_storm.version'),
+            $props['translate']['footer']['templateVersion'],
+        );
+    }
+
+    /**
+     * Thème StormFront, site fermé : sa page de maintenance en 503
+     * @return void
+     */
+    public function testIndexStormFrontCloseSite(): void
+    {
+        $this->createUser();
+        $this->setTheme(Template::NATHEO_STORM);
+        $this->container->get(OptionSystemService::class)->saveValueByKee(OptionSystem::OS_OPEN_SITE->value, '0');
+
+        $this->client->request('GET', $this->homeUrl());
+        $this->assertResponseStatusCodeSame(503);
+        $this->assertSelectorExists('body.bg-rail');
+        $this->assertSelectorTextContains(
+            'h1',
+            $this->translator->trans('front_error.closed_site.block_title', domain: 'front_error'),
+        );
+    }
+
+    /**
      * Lien « Modifier cette page » : seulement pour un utilisateur qui peut modifier la page affichée
      * @return void
      */
@@ -250,7 +292,7 @@ class IndexControllerTest extends AppWebTestCase
         $this->createUser();
         $this->setScripts();
 
-        foreach ([Template::NATHEO_HORIZON, Template::NATHEO_BASE] as $template) {
+        foreach (Template::cases() as $template) {
             $this->setTheme($template);
             $crawler = $this->client->request('GET', $this->homeUrl());
             $this->assertResponseIsSuccessful();
@@ -296,7 +338,7 @@ class IndexControllerTest extends AppWebTestCase
         );
         $this->setOption(OptionSystem::OS_FRONT_CONSENT_ACCEPT_LABEL, json_encode(['fr' => 'Oui', 'en' => 'Yes']));
 
-        foreach ([Template::NATHEO_HORIZON, Template::NATHEO_BASE] as $template) {
+        foreach (Template::cases() as $template) {
             $this->setTheme($template);
             $crawler = $this->client->request('GET', $this->homeUrl('en'));
             $this->assertResponseIsSuccessful();

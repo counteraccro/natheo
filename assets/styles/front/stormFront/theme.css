@@ -1,0 +1,41 @@
+/*!
+ * Author : Gourdon Aymeric
+ * Version : 1.0
+ * Jetons du thème StormFront exposés à Tailwind (bg-thread, bg-rail, text-on-rail, text-bolt…)
+ */
+
+@theme inline {
+    --font-sans: var(--font);
+    --font-mono: var(--font-mono);
+
+    --color-page: var(--page);
+    --color-thread: var(--thread);
+    --color-fg: var(--fg);
+    --color-fg-muted: var(--fg-muted);
+    --color-line: var(--line);
+    --color-field: var(--field-border);
+    --color-primary: var(--primary);
+    --color-on-primary: var(--on-primary);
+    --color-code: var(--code-bg);
+    --color-rail: var(--rail);
+    --color-on-rail: var(--on-rail);
+    --color-on-rail-muted: var(--on-rail-muted);
+    --color-rail-line: var(--rail-line);
+    --color-bolt: var(--bolt);
+    --color-on-bolt: var(--on-bolt);
+    --color-notice: var(--notice-bg);
+    --color-on-notice: var(--notice-fg);
+    --color-notice-line: var(--notice-line);
+
+    --radius-sf: var(--radius);
+}
+
+@theme {
+    --animate-breathe: sf-breathe 1.4s ease-in-out infinite alternate;
+
+    @keyframes sf-breathe {
+        to {
+            opacity: 0.45;
+        }
+    }
+}
