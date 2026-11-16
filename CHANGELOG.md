@@ -25,6 +25,7 @@ Le format suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), avec un
 - API v2 : la ressource `Page` donne ses traductions (`translations` : langue, slug et titre) ([#524](https://github.com/counteraccro/natheo/issues/524))
 - Natheo-Horizon : sous-menus de l'en-tête ouverts au survol de la souris, sous-niveaux du menu déroulant en cascade, menus de l'en-tête et menu mobile sur autant de niveaux que nécessaire ; la démo montre un menu sur trois niveaux ([#531](https://github.com/counteraccro/natheo/issues/531))
 - Site public : les scripts des options système (balise HEAD, début et fin de la balise BODY) sont injectés dans la page, et un bandeau de consentement activable les bloque tant que le visiteur ne les a pas acceptés. Le choix est gardé six mois et se modifie depuis le pied de page ; un bouton des options le redemande à tous les visiteurs, après un changement de politique par exemple. Nouvel onglet « Options multilingues » pour les textes du site, saisis langue par langue avec un sélecteur, où le texte du pied de page est déplacé ([#527](https://github.com/counteraccro/natheo/issues/527))
+- Nouveau thème StormFront pour le site public, choisi dans les options système : un lecteur à trois volets (barre latérale à la place de l'en-tête, fil des pages de la catégorie, page ouverte sans recharger le site), gris tempête, polices Geist et Geist Mono, mode sombre et aperçu des menus dans l'éditeur. Le socle commun des thèmes sait lire les pages d'une catégorie et ouvrir une page sans rechargement (adresse, titre, métas et retour arrière du navigateur) ([#465](https://github.com/counteraccro/natheo/issues/465))
 
 ### Modifié
 
@@ -36,6 +37,7 @@ Le format suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), avec un
 - Données de démonstration installées par `natheo:install` : le site vitrine de Nathéo, avec un vrai contenu en français, anglais et espagnol, toutes les dispositions de page, les onze types de menus, des commentaires dans chaque statut et des captures du CMS en images d'en-tête ([#521](https://github.com/counteraccro/natheo/issues/521))
 - Le favicon reprend le logo en grille de blocs sur le site public, l'administration et l'installation ([#521](https://github.com/counteraccro/natheo/issues/521))
 - Menus : l'aperçu de l'éditeur affiche le menu avec le thème du site public (en-tête, menu de côté ou pied de page), suit les modifications avant l'enregistrement, en largeur ordinateur ou mobile et en mode clair ou sombre. Un thème fournit son aperçu avec `menu_preview.html.twig`, à défaut celui de Natheo-Base est utilisé ([#533](https://github.com/counteraccro/natheo/issues/533))
+- Site public : la version affichée en bas de page est celle du thème actif (paramètre `app.<thème>.version`), et non plus toujours celle de Natheo-Horizon ([#465](https://github.com/counteraccro/natheo/issues/465))
 
 ### Déprécié
 
