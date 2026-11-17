@@ -15,6 +15,7 @@ use App\Api\V2\Concurrency\Etag;
 use App\Api\V2\Concurrency\VersionedResourceInterface;
 use App\Api\V2\Exception\PreconditionFailedException;
 use App\Api\V2\Metadata\OperationSecurityMetadataFactory;
+use App\Api\V2\Security\CurrentUserResolver;
 use App\Enum\Admin\System\ActionLog\ActionLogAction;
 use App\Service\Api\Admin\ActionLogService;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,17 +33,24 @@ abstract class AbstractAdminProcessor implements ProcessorInterface
 
     private ActionLogService $actionLogService;
 
+    private CurrentUserResolver $currentUserResolver;
+
     /**
      * Dépendances de la base, injectées sans passer par le constructeur des processors
      * @param TranslatorInterface $translator
      * @param ActionLogService $actionLogService
+     * @param CurrentUserResolver $currentUserResolver
      * @return void
      */
     #[Required]
-    public function setAdminProcessorServices(TranslatorInterface $translator, ActionLogService $actionLogService): void
-    {
+    public function setAdminProcessorServices(
+        TranslatorInterface $translator,
+        ActionLogService $actionLogService,
+        CurrentUserResolver $currentUserResolver,
+    ): void {
         $this->translator = $translator;
         $this->actionLogService = $actionLogService;
+        $this->currentUserResolver = $currentUserResolver;
     }
 
     /**
@@ -67,6 +75,7 @@ abstract class AbstractAdminProcessor implements ProcessorInterface
         if (is_string($module)) {
             $resource = $result ?? $current;
             $this->actionLogService->log(
+                $this->currentUserResolver->getSession(),
                 $module,
                 $this->getLogAction($operation, $data),
                 (string) $operation->getShortName(),

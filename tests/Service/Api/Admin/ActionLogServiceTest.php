@@ -11,15 +11,12 @@ namespace App\Tests\Service\Api\Admin;
 
 use App\Enum\Admin\System\ActionLog\ActionLogAction;
 use App\Enum\Admin\System\ApiToken\ApiTokenScope;
-use App\Security\ApiUser;
 use App\Service\Api\Admin\ActionLogService;
 use App\Tests\AppWebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class ActionLogServiceTest extends AppWebTestCase
 {
@@ -35,7 +32,7 @@ class ActionLogServiceTest extends AppWebTestCase
     }
 
     /**
-     * Auteur et utilisateur d'origine lus dans la session API de la requête, IP de la requête
+     * Auteur et utilisateur d'origine lus dans la session, IP de la requête
      * @return void
      */
     public function testLog(): void
@@ -48,12 +45,9 @@ class ActionLogServiceTest extends AppWebTestCase
             'apiToken' => $apiToken,
             'impersonator' => $impersonator,
         ]);
-        $apiUser = new ApiUser($apiToken, $session);
-        $this->container
-            ->get(TokenStorageInterface::class)
-            ->setToken(new UsernamePasswordToken($apiUser, 'api', $apiUser->getRoles()));
 
         $log = $this->actionLogService->log(
+            $session,
             'tag',
             ActionLogAction::UPDATE->value,
             'AdminTag',
@@ -74,12 +68,12 @@ class ActionLogServiceTest extends AppWebTestCase
     }
 
     /**
-     * Sans session API : action tracée sans auteur
+     * Action tracée sans auteur pour un appel fait avec un token d'API seul
      * @return void
      */
     public function testLogWithoutSession(): void
     {
-        $log = $this->actionLogService->log('tag', ActionLogAction::DELETE->value, 'AdminTag');
+        $log = $this->actionLogService->log(null, 'tag', ActionLogAction::DELETE->value, 'AdminTag');
         $this->assertNull($log->getUser());
         $this->assertNull($log->getImpersonator());
         $this->assertNull($log->getResourceId());

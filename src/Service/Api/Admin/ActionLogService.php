@@ -4,13 +4,13 @@ declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
  * @version 1.0
- * Écriture du journal des actions du back-office pour l'utilisateur de la session API
+ * Écriture du journal des actions du back-office
  */
 
 namespace App\Service\Api\Admin;
 
 use App\Entity\Admin\System\ActionLog;
-use App\Security\ApiUser;
+use App\Entity\Admin\System\UserSession;
 use App\Service\Api\AppApiService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -18,7 +18,8 @@ use Psr\Container\NotFoundExceptionInterface;
 class ActionLogService extends AppApiService
 {
     /**
-     * Trace une action ; l'auteur et l'utilisateur d'origine viennent de la session API de la requête
+     * Trace une action, l'auteur et l'utilisateur d'origine étant ceux de la session
+     * @param UserSession|null $session session de l'auteur, null pour un appel fait avec un token d'API seul
      * @param string $module
      * @param string $action valeur de ActionLogAction ou action propre au module
      * @param string $resource
@@ -29,15 +30,13 @@ class ActionLogService extends AppApiService
      * @throws NotFoundExceptionInterface
      */
     public function log(
+        ?UserSession $session,
         string $module,
         string $action,
         string $resource,
         ?string $resourceId = null,
         ?string $label = null,
     ): ActionLog {
-        $apiUser = $this->getSecurity()->getUser();
-        $session = $apiUser instanceof ApiUser ? $apiUser->getSession() : null;
-
         $actionLog = (new ActionLog())
             ->setUser($session?->getUser())
             ->setImpersonator($session?->getImpersonator())
