@@ -78,3 +78,6 @@ when@test:
         # Module du back-office des ressources de test de l'API (tests/Api/V2/Resource)
         App\Tests\Api\V2\Module\ProbeModule:
             autoconfigure: true
+        App\Tests\Api\V2\State\AdminProbeProcessor:
+            autowire: true
+            autoconfigure: true

@@ -216,7 +216,7 @@ class ApiPlatformTest extends AppApiV2TestCase
 
         foreach ($content['paths'] as $path => $operations) {
             foreach ($operations as $method => $operation) {
-                if (!is_array($operation) || ($operation['tags'] ?? []) === ['Probe']) {
+                if (!is_array($operation) || in_array($operation['tags'][0] ?? '', ['Probe', 'AdminProbe'], true)) {
                     continue;
                 }
                 $this->assertDoesNotMatchRegularExpression(
