@@ -32,6 +32,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
     ApiResource(
         operations: [
             new Get(
+                name: 'menu_get',
                 uriTemplate: '/menus/{id}',
                 errors: [NotFoundException::class, ValidationException::class],
                 requirements: ['id' => '\d+'],
@@ -45,6 +46,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
                 ],
             ),
             new GetCollection(
+                name: 'menu_get_collection',
                 uriTemplate: '/menus',
                 errors: [NotFoundException::class, ValidationException::class],
                 paginationEnabled: false,

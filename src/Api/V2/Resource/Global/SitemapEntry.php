@@ -22,6 +22,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
     ApiResource(
         operations: [
             new GetCollection(
+                name: 'sitemap_entry_get_collection',
                 uriTemplate: '/sitemap',
                 errors: [],
                 openapi: new OpenApiOperation(

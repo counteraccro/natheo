@@ -23,6 +23,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     ApiResource(
         operations: [
             new Post(
+                name: 'page_read_post',
                 uriTemplate: '/page_reads',
                 errors: [NotFoundException::class, ValidationException::class],
                 status: 204,

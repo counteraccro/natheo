@@ -37,6 +37,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
     ApiResource(
         operations: [
             new Get(
+                name: 'comment_get',
                 uriTemplate: '/comments/{id}',
                 requirements: ['id' => '\d+'],
                 errors: [NotFoundException::class],
@@ -46,6 +47,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
                 provider: CommentProvider::class,
             ),
             new GetCollection(
+                name: 'comment_get_collection',
                 uriTemplate: '/pages/{pageId}/comments',
                 uriVariables: ['pageId' => new Link(fromClass: Page::class)],
                 requirements: ['pageId' => '\d+'],
@@ -67,6 +69,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
                 ],
             ),
             new Post(
+                name: 'comment_post',
                 uriTemplate: '/comments',
                 errors: [
                     NotFoundException::class,
@@ -84,6 +87,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
                 processor: CreateCommentProcessor::class,
             ),
             new Patch(
+                name: 'comment_patch',
                 uriTemplate: '/comments/{id}',
                 requirements: ['id' => '\d+'],
                 errors: [NotFoundException::class, ForbiddenException::class, ValidationException::class],

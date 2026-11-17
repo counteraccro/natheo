@@ -27,11 +27,14 @@ use App\Api\V2\State\Processor\System\DeleteUserSessionProcessor;
 use App\Api\V2\State\Provider\System\UserSessionCollectionProvider;
 use App\Api\V2\State\Provider\System\UserSessionProvider;
 use Symfony\Component\Serializer\Attribute\Groups;
+use App\Api\V2\Metadata\OperationSecurityMetadataFactory;
 
 #[
     ApiResource(
         operations: [
             new Post(
+                name: 'user_session_post',
+                extraProperties: [OperationSecurityMetadataFactory::SHARED => true],
                 uriTemplate: '/user_sessions',
                 errors: [InvalidGrantException::class, TooManyRequestsException::class, ValidationException::class],
                 openapi: new OpenApiOperation(
@@ -48,6 +51,8 @@ use Symfony\Component\Serializer\Attribute\Groups;
                 processor: CreateUserSessionProcessor::class,
             ),
             new GetCollection(
+                name: 'user_session_get_collection',
+                extraProperties: [OperationSecurityMetadataFactory::SHARED => true],
                 uriTemplate: '/user_sessions',
                 paginationEnabled: false,
                 errors: [ForbiddenException::class],
@@ -60,6 +65,8 @@ use Symfony\Component\Serializer\Attribute\Groups;
                 provider: UserSessionCollectionProvider::class,
             ),
             new Get(
+                name: 'user_session_get',
+                extraProperties: [OperationSecurityMetadataFactory::SHARED => true],
                 uriTemplate: '/user_sessions/{id}',
                 requirements: ['id' => '\d+|current'],
                 errors: [ForbiddenException::class, NotFoundException::class],
@@ -72,6 +79,8 @@ use Symfony\Component\Serializer\Attribute\Groups;
                 provider: UserSessionProvider::class,
             ),
             new Delete(
+                name: 'user_session_delete',
+                extraProperties: [OperationSecurityMetadataFactory::SHARED => true],
                 uriTemplate: '/user_sessions/{id}',
                 requirements: ['id' => '\d+|current'],
                 errors: [ForbiddenException::class, NotFoundException::class],

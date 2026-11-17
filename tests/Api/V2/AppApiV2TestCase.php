@@ -13,6 +13,8 @@ use ApiPlatform\JsonSchema\BackwardCompatibleSchemaFactory;
 use ApiPlatform\JsonSchema\Schema;
 use ApiPlatform\Test\Constraint\MatchesJsonSchema;
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\System\ApiToken\ApiTokenScope;
+use App\Service\Global\Token\TokenHasher;
 use App\Tests\Controller\Api\AppApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -76,6 +78,23 @@ class AppApiV2TestCase extends AppApiTestCase
     protected function sessionHeaders(User $user, string $role = 'ROLE_READ_API'): array
     {
         return ['HTTP_Authorization' => 'Bearer ' . $this->createUserToken($user, $role)];
+    }
+
+    /**
+     * En-tête Authorization avec un token back-office seul, sans session, à passer dans $headers de requestV2()
+     * @param string $role
+     * @return array<string, string>
+     */
+    protected function backOfficeTokenHeaders(string $role = 'ROLE_ADMIN_API'): array
+    {
+        $token = self::getFaker()->uuid();
+        $this->createApiToken([
+            'token' => TokenHasher::hash($token),
+            'roles' => [$role],
+            'scope' => ApiTokenScope::BACK_OFFICE,
+            'disabled' => false,
+        ]);
+        return ['HTTP_Authorization' => 'Bearer ' . $token];
     }
 
     /**

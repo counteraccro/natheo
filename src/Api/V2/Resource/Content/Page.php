@@ -36,6 +36,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     ApiResource(
         operations: [
             new Get(
+                name: 'page_get',
                 uriTemplate: '/pages/{id}',
                 requirements: ['id' => '\d+'],
                 errors: [NotFoundException::class, ValidationException::class],
@@ -49,6 +50,7 @@ use Symfony\Component\Validator\Constraints as Assert;
                 ],
             ),
             new GetCollection(
+                name: 'page_get_collection',
                 uriTemplate: '/pages',
                 errors: [ValidationException::class],
                 openapi: new OpenApiOperation(summary: 'Les pages publiées, les plus récemment modifiées en premier'),

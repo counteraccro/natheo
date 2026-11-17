@@ -26,6 +26,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
     ApiResource(
         operations: [
             new Get(
+                name: 'option_system_get',
                 uriTemplate: '/option_systems/{key}',
                 errors: [NotFoundException::class, ValidationException::class],
                 openapi: new OpenApiOperation(summary: 'Une option système publique par sa clé'),
@@ -38,6 +39,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
                 ],
             ),
             new GetCollection(
+                name: 'option_system_get_collection',
                 uriTemplate: '/option_systems',
                 paginationEnabled: false,
                 errors: [ValidationException::class],
