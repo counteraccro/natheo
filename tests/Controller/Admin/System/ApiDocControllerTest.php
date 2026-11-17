@@ -27,7 +27,12 @@ class ApiDocControllerTest extends AppWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains('h1', $this->translator->trans('api_token.doc.title', domain: 'api_token'));
 
-        $data = json_decode($this->client->getCrawler()->filter('#swagger-data')->text(), true);
+        $crawler = $this->client->getCrawler();
+        foreach (['swagger-ui-bundle.js', 'swagger-ui-standalone-preset.js', 'init-swagger-ui.js'] as $script) {
+            $this->assertCount(1, $crawler->filter('head script[src*="' . $script . '"]'), $script);
+        }
+
+        $data = json_decode($crawler->filter('#swagger-data')->text(), true);
         $this->assertArrayHasKey('/api/v2/admin/probes', $data['spec']['paths']);
         $this->assertArrayHasKey('/api/v2/info', $data['spec']['paths']);
         $this->assertFalse($data['oauth']['enabled']);

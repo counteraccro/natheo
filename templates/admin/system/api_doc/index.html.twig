@@ -7,6 +7,13 @@
     <link rel="stylesheet" href="{{ asset('bundles/apiplatform/swagger-ui/swagger-ui.css') }}">
 {% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/apiplatform/swagger-ui/swagger-ui-bundle.js') }}" defer></script>
+    <script src="{{ asset('bundles/apiplatform/swagger-ui/swagger-ui-standalone-preset.js') }}" defer></script>
+    <script src="{{ asset('bundles/apiplatform/init-swagger-ui.js') }}" defer></script>
+{% endblock %}
+
 {% block body %}
 
     <twig:Admin:PageHeaderComponent :breadcrumb="breadcrumb" :title="'api_token.doc.title' | trans({}, 'api_token')" :description="'api_token.doc.description' | trans({}, 'api_token')">
@@ -23,11 +30,4 @@
         <div id="swagger-ui"></div>
     </div>
 
-{% endblock %}
-
-{% block scriptJavascript %}
-    {{ parent() }}
-    <script src="{{ asset('bundles/apiplatform/swagger-ui/swagger-ui-bundle.js') }}"></script>
-    <script src="{{ asset('bundles/apiplatform/swagger-ui/swagger-ui-standalone-preset.js') }}"></script>
-    <script src="{{ asset('bundles/apiplatform/init-swagger-ui.js') }}"></script>
 {% endblock %}
