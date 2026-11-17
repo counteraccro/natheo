@@ -46,7 +46,8 @@ class AdminConventionsTest extends AppApiV2TestCase
     }
 
     /**
-     * ETag sur la lecture ; If-Match périmé : 412 ; If-Match à jour, « * » ou absent : écriture acceptée
+     * ETag sur la lecture ; If-Match périmé : 412 ; If-Match à jour, affaibli par un proxy, « * » ou absent :
+     * écriture acceptée
      * @return void
      */
     public function testConcurrency(): void
@@ -79,7 +80,7 @@ class AdminConventionsTest extends AppApiV2TestCase
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertNotEquals($etag, $response->headers->get('ETag'));
 
-        foreach ([['HTTP_IF_MATCH' => '"a", *'], []] as $ifMatch) {
+        foreach ([['HTTP_IF_MATCH' => 'W/' . $etag], ['HTTP_IF_MATCH' => '"a", *'], []] as $ifMatch) {
             $response = $this->requestV2('PATCH', $item, body: ['name' => 'x'], headers: [...$ifMatch, ...$headers]);
             $this->assertEquals(200, $response->getStatusCode());
         }

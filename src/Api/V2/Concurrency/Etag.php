@@ -23,14 +23,15 @@ final class Etag
     }
 
     /**
-     * Indique si l'en-tête If-Match désigne la version courante (comparaison forte, « * » accepté)
+     * Indique si l'en-tête If-Match désigne la version courante, « * » accepté
+     * Le préfixe W/ est ignoré car un proxy qui compresse la réponse affaiblit l'ETag (nginx gzip)
      * @param string $ifMatch
      * @param VersionedResourceInterface $resource
      * @return bool
      */
     public static function matches(string $ifMatch, VersionedResourceInterface $resource): bool
     {
-        $tags = array_map(trim(...), explode(',', $ifMatch));
+        $tags = array_map(fn(string $tag) => preg_replace('#^W/#', '', trim($tag)), explode(',', $ifMatch));
         return in_array('*', $tags, true) || in_array(self::of($resource), $tags, true);
     }
 }
