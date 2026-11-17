@@ -32,6 +32,13 @@ class UserSession
     private ?User $user = null;
 
     /**
+     * Utilisateur d'origine quand la session est ouverte pendant une usurpation d'identité
+     */
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(name: 'impersonator_id', nullable: true, onDelete: 'SET NULL')]
+    private ?User $impersonator = null;
+
+    /**
      * Token d'API qui a créé la session : la session porte ses rôles
      */
     #[ORM\ManyToOne]
@@ -93,6 +100,18 @@ class UserSession
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getImpersonator(): ?User
+    {
+        return $this->impersonator;
+    }
+
+    public function setImpersonator(?User $impersonator): static
+    {
+        $this->impersonator = $impersonator;
 
         return $this;
     }

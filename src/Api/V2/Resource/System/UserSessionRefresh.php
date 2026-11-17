@@ -18,11 +18,14 @@ use App\Api\V2\Exception\InvalidGrantException;
 use App\Api\V2\State\Processor\System\CreateUserSessionRefreshProcessor;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Api\V2\Metadata\OperationSecurityMetadataFactory;
 
 #[
     ApiResource(
         operations: [
             new Post(
+                name: 'user_session_refresh_post',
+                extraProperties: [OperationSecurityMetadataFactory::SHARED => true],
                 uriTemplate: '/user_session_refreshes',
                 status: 200,
                 errors: [InvalidGrantException::class, ValidationException::class],

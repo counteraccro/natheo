@@ -7,6 +7,7 @@ namespace App\Controller\Admin\System;
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\System\ApiToken;
 use App\Enum\Admin\Global\Breadcrumb;
+use App\Enum\Admin\System\ApiToken\ApiTokenScope;
 use App\Enum\Admin\System\Options\OptionUser;
 use App\Service\Admin\System\ApiTokenService;
 use App\Translate\Admin\System\ApiTokenTranslate;
@@ -92,6 +93,7 @@ class ApiTokenController extends AppAdminController
         TranslatorInterface $translator,
         Request $request,
     ): JsonResponse {
+        $this->denyInternal($apiToken);
         $csrfError = $this->checkCsrf(ApiTokenService::CSRF_TOKEN_UPDATE_DISABLED, $request);
         if ($csrfError !== null) {
             return $csrfError;
@@ -125,6 +127,7 @@ class ApiTokenController extends AppAdminController
         TranslatorInterface $translator,
         Request $request,
     ): JsonResponse {
+        $this->denyInternal($apiToken);
         $csrfError = $this->checkCsrf(ApiTokenService::CSRF_TOKEN_DELETE, $request);
         if ($csrfError !== null) {
             return $csrfError;
@@ -154,6 +157,9 @@ class ApiTokenController extends AppAdminController
         #[MapEntity(id: 'id')] ?ApiToken $apiToken = null,
         ?int $id = null,
     ): Response {
+        if ($apiToken !== null) {
+            $this->denyInternal($apiToken);
+        }
         $breadcrumbTitle = 'api_token.update.title';
         if ($apiToken === null && $id === null) {
             $apiToken = new ApiToken();
@@ -185,6 +191,8 @@ class ApiTokenController extends AppAdminController
             ],
             'datas' => [
                 'roles' => $apiTokenService->getRolesApi(),
+                'scopes' => $apiTokenService->getScopes(),
+                'scopeWithRoles' => ApiTokenScope::PUBLIC->value,
             ],
             'csrfTokens' => [
                 'save' => ApiTokenService::CSRF_TOKEN_SAVE,
@@ -211,6 +219,7 @@ class ApiTokenController extends AppAdminController
         TranslatorInterface $translator,
         Request $request,
     ): JsonResponse {
+        $this->denyInternal($apiToken);
         $csrfError = $this->checkCsrf(ApiTokenService::CSRF_TOKEN_REGENERATE, $request);
         if ($csrfError !== null) {
             return $csrfError;
@@ -257,9 +266,12 @@ class ApiTokenController extends AppAdminController
         $id = intval($dataApiToken['id'] ?? 0);
         if ($id > 0) {
             $apiToken = $apiTokenService->findOneById(ApiToken::class, $id);
-            if ($apiToken === null) {
+            if ($apiToken === null || $apiToken->isInternal()) {
                 return $this->json(
-                    ['success' => false, 'msg' => $translator->trans('api_token.update.not_found_title', domain: 'api_token')],
+                    [
+                        'success' => false,
+                        'msg' => $translator->trans('api_token.update.not_found_title', domain: 'api_token'),
+                    ],
                     Response::HTTP_NOT_FOUND,
                 );
             }
@@ -277,5 +289,17 @@ class ApiTokenController extends AppAdminController
         );
         $response['token'] = $response['success'] === true ? $result['token'] : '';
         return $this->json($response);
+    }
+
+    /**
+     * Le token interne du back-office n'est ni affiché ni modifiable
+     * @param ApiToken $apiToken
+     * @return void
+     */
+    private function denyInternal(ApiToken $apiToken): void
+    {
+        if ($apiToken->isInternal()) {
+            throw $this->createNotFoundException();
+        }
     }
 }

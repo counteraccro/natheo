@@ -28,7 +28,7 @@ final readonly class TranslatedErrorProvider implements ProviderInterface
      * Statuts ayant un titre traduit (api_errors.title.<statut>), les autres prennent api_errors.title.default
      * @var int[]
      */
-    private const array TITLED_STATUSES = [400, 401, 403, 404, 405, 406, 409, 415, 422, 429, 500];
+    private const array TITLED_STATUSES = [400, 401, 403, 404, 405, 406, 409, 412, 415, 422, 429, 500];
 
     public function __construct(
         #[AutowireDecorated] private ProviderInterface $decorated,

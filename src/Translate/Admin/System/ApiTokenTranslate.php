@@ -54,11 +54,15 @@ class ApiTokenTranslate extends AppTranslate
             'help_role_read' => $this->translator->trans('api_token.card.help.role_read', domain: 'api_token'),
             'help_role_write' => $this->translator->trans('api_token.card.help.role_write', domain: 'api_token'),
             'help_role_admin' => $this->translator->trans('api_token.card.help.role_admin', domain: 'api_token'),
-            'btn_edit_token_api' => $this->translator->trans('api_token.card.button.edit', domain: 'api_token'),
-            'btn_cancel_edit_token' => $this->translator->trans(
-                'api_token.card.button.cancel',
+            'select_label_scope' => $this->translator->trans('api_token.card.select.label.scope', domain: 'api_token'),
+            'help_scope' => $this->translator->trans('api_token.card.help.scope', domain: 'api_token'),
+            'help_scope_public' => $this->translator->trans('api_token.card.help.scope_public', domain: 'api_token'),
+            'help_scope_back_office' => $this->translator->trans(
+                'api_token.card.help.scope_back_office',
                 domain: 'api_token',
             ),
+            'btn_edit_token_api' => $this->translator->trans('api_token.card.button.edit', domain: 'api_token'),
+            'btn_cancel_edit_token' => $this->translator->trans('api_token.card.button.cancel', domain: 'api_token'),
             'btn_delete_token' => $this->translator->trans('api_token.card.button.delete', domain: 'api_token'),
             'btn_save_token_api' => $this->translator->trans('api_token.card.button.save', domain: 'api_token'),
             'modale_title_confirm_edit' => $this->translator->trans(

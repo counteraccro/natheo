@@ -56,7 +56,7 @@ class DashboardService extends AppAdminService
                 [ApiTokenDefault::READ->value, ApiTokenDefault::WRITE->value, ApiTokenDefault::ADMIN->value],
             ),
         ]);
-        $nbApiToken = $this->apiTokenRepo->count([]);
+        $nbApiToken = $this->apiTokenRepo->count(['internal' => false]);
 
         $configComplete = true;
         $body = [

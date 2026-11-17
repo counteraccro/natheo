@@ -14,6 +14,7 @@ use App\Repository\Admin\System\ApiTokenRepository;
 use App\Tests\AppWebTestCase;
 use App\Service\Global\Token\TokenHasher;
 use App\Enum\Admin\System\ApiToken\ApiTokenRole;
+use App\Enum\Admin\System\ApiToken\ApiTokenScope;
 
 class ApiTokenControllerTest extends AppWebTestCase
 {
@@ -30,10 +31,7 @@ class ApiTokenControllerTest extends AppWebTestCase
         $this->client->loginUser($userSuperAdm, 'admin');
         $this->client->request('GET', $this->router->generate('admin_api_token_index'));
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains(
-            'h1',
-            $this->translator->trans('api_token.index.title', domain: 'api_token'),
-        );
+        $this->assertSelectorTextContains('h1', $this->translator->trans('api_token.index.title', domain: 'api_token'));
     }
 
     /**
@@ -45,6 +43,7 @@ class ApiTokenControllerTest extends AppWebTestCase
         for ($i = 0; $i < 10; $i++) {
             $this->createApiToken();
         }
+        $this->createApiToken(['internal' => true, 'scope' => ApiTokenScope::BACK_OFFICE]);
 
         $this->checkNoAccess('admin_api_token_load_grid_data');
         $userSuperAdm = $this->createUserSuperAdmin();
@@ -152,10 +151,7 @@ class ApiTokenControllerTest extends AppWebTestCase
         $this->client->loginUser($userSuperAdm, 'admin');
         $this->client->request('GET', $this->router->generate('admin_api_token_add'));
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains(
-            'h1',
-            $this->translator->trans('api_token.add.title', domain: 'api_token'),
-        );
+        $this->assertSelectorTextContains('h1', $this->translator->trans('api_token.add.title', domain: 'api_token'));
 
         $this->client->request('GET', $this->router->generate('admin_api_token_update', ['id' => $apiToken->getId()]));
         $this->assertResponseIsSuccessful();
@@ -338,5 +334,53 @@ class ApiTokenControllerTest extends AppWebTestCase
             ->attr('data-symfony--ux-vue--vue-props-value');
 
         return json_decode($props, true);
+    }
+
+    /**
+     * Le token interne du back-office n'est ni affiché, ni modifié, ni supprimé
+     * @return void
+     */
+    public function testInternalTokenHidden(): void
+    {
+        $apiToken = $this->createApiToken([
+            'internal' => true,
+            'scope' => ApiTokenScope::BACK_OFFICE,
+            'disabled' => false,
+        ]);
+        $this->client->loginUser($this->createUserSuperAdmin(), 'admin');
+
+        $this->client->request('GET', $this->router->generate('admin_api_token_update', ['id' => $apiToken->getId()]));
+        $this->assertResponseStatusCodeSame(404);
+
+        foreach (
+            [
+                ['PUT', 'admin_api_token_update_disabled'],
+                ['DELETE', 'admin_api_token_delete'],
+                ['PUT', 'admin_api_token_regenerate'],
+            ]
+            as [$method, $route]
+        ) {
+            $this->client->request(
+                $method,
+                $this->router->generate($route, ['id' => $apiToken->getId()]),
+                server: ['HTTP_X-CSRF-TOKEN' => 'jeton-invalide'],
+            );
+            $this->assertResponseStatusCodeSame(404, $route);
+        }
+
+        $this->client->request('GET', $this->router->generate('admin_api_token_add'));
+        $csrf = $this->getFormProps()['csrfTokens']['save'];
+        $this->client->request(
+            'POST',
+            $this->router->generate('admin_api_token_save'),
+            server: ['HTTP_X-CSRF-TOKEN' => $csrf],
+            content: json_encode(['apiToken' => ['id' => $apiToken->getId(), 'name' => 'renommé']]),
+        );
+        $this->assertResponseStatusCodeSame(404);
+
+        $this->em->clear();
+        $verif = $this->em->getRepository(ApiToken::class)->find($apiToken->getId());
+        $this->assertNotEquals('renommé', $verif->getName());
+        $this->assertFalse($verif->isDisabled());
     }
 }

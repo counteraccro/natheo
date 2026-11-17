@@ -16,11 +16,14 @@ use ApiPlatform\OpenApi\Model\Operation as OpenApiOperation;
 use App\Api\V2\Exception\ForbiddenException;
 use App\Api\V2\State\Provider\System\MeProvider;
 use Symfony\Component\Serializer\Attribute\Groups;
+use App\Api\V2\Metadata\OperationSecurityMetadataFactory;
 
 #[
     ApiResource(
         operations: [
             new Get(
+                name: 'me_get',
+                extraProperties: [OperationSecurityMetadataFactory::SHARED => true],
                 uriTemplate: '/me',
                 errors: [ForbiddenException::class],
                 openapi: new OpenApiOperation(

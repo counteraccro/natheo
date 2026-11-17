@@ -32,6 +32,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
     ApiResource(
         operations: [
             new Get(
+                name: 'menu_get',
                 uriTemplate: '/menus/{id}',
                 errors: [NotFoundException::class, ValidationException::class],
                 requirements: ['id' => '\d+'],
@@ -39,12 +40,10 @@ use Symfony\Component\Serializer\Attribute\Groups;
                 normalizationContext: ['groups' => ['menu:read']],
                 security: "is_granted('ROLE_READ_API')",
                 provider: MenuProvider::class,
-                parameters: [
-                    new LocaleParameter(),
-                    new AcceptLanguageParameter(),
-                ],
+                parameters: [new LocaleParameter(), new AcceptLanguageParameter()],
             ),
             new GetCollection(
+                name: 'menu_get_collection',
                 uriTemplate: '/menus',
                 errors: [NotFoundException::class, ValidationException::class],
                 paginationEnabled: false,

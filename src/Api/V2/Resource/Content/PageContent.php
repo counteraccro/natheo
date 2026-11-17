@@ -29,6 +29,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
     ApiResource(
         operations: [
             new Get(
+                name: 'page_content_get',
                 uriTemplate: '/page_contents/{id}',
                 errors: [NotFoundException::class, ValidationException::class],
                 requirements: ['id' => '\d+'],
@@ -38,10 +39,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
                 normalizationContext: ['groups' => ['page_content:read']],
                 security: "is_granted('ROLE_READ_API')",
                 provider: PageContentProvider::class,
-                parameters: [
-                    new LocaleParameter(),
-                    new AcceptLanguageParameter(),
-                ],
+                parameters: [new LocaleParameter(), new AcceptLanguageParameter()],
             ),
         ],
     ),

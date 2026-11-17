@@ -175,7 +175,7 @@ class CommentTest extends AppApiV2TestCase
             headers: ['HTTP_USER_AGENT' => 'phpunit-agent'],
         );
         $this->assertEquals(201, $response->getStatusCode());
-        $this->assertMatchesResourceItemJsonSchema(CommentResource::class, '_api_/comments_post');
+        $this->assertMatchesResourceItemJsonSchema(CommentResource::class, 'comment_post');
         $content = $this->decode($response);
         $this->assertEquals('wait_validation', $content['status']);
         $this->assertNull($content['comment']);
@@ -307,7 +307,7 @@ class CommentTest extends AppApiV2TestCase
             headers: $headers,
         );
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertMatchesResourceItemJsonSchema(CommentResource::class, '_api_/comments/{id}_patch');
+        $this->assertMatchesResourceItemJsonSchema(CommentResource::class, 'comment_patch');
         $content = $this->decode($response);
         $this->assertEquals('moderate', $content['status']);
         $this->assertEquals('Spam', $content['moderationComment']);

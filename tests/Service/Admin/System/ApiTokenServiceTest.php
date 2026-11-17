@@ -21,6 +21,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use App\Service\Global\Token\TokenHasher;
 use App\Enum\Admin\System\ApiToken\ApiTokenRole;
+use App\Enum\Admin\System\ApiToken\ApiTokenScope;
 
 class ApiTokenServiceTest extends AppWebTestCase
 {
@@ -51,6 +52,8 @@ class ApiTokenServiceTest extends AppWebTestCase
         for ($i = 0; $i < 10; $i++) {
             $this->createApiToken();
         }
+
+        $this->createApiToken(['internal' => true, 'scope' => ApiTokenScope::BACK_OFFICE]);
 
         $result = $this->apiTokenService->getAllPaginate(1, 5, []);
         $this->assertInstanceOf(Paginator::class, $result);
@@ -109,6 +112,22 @@ class ApiTokenServiceTest extends AppWebTestCase
     }
 
     /**
+     * Test de la méthode getScopes()
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testGetScopes(): void
+    {
+        $result = $this->apiTokenService->getScopes();
+        $this->assertSame(array_column(ApiTokenScope::cases(), 'value'), array_keys($result));
+        $this->assertEquals(
+            $this->translator->trans('api_token.scope.back_office', domain: 'api_token'),
+            $result[ApiTokenScope::BACK_OFFICE->value],
+        );
+    }
+
+    /**
      * Test createApiToken()
      * @return void
      * @throws ContainerExceptionInterface
@@ -136,6 +155,18 @@ class ApiTokenServiceTest extends AppWebTestCase
         $this->assertNotEquals(TokenHasher::hash($data['token']), $apiToken->getToken());
         $this->assertEquals([ApiTokenRole::WRITE->value, ApiTokenRole::READ->value], $apiToken->getRoles());
         $this->assertEquals('2099-01-15 23:59:59', $apiToken->getExpiresAt()->format('Y-m-d H:i:s'));
+        $this->assertSame(ApiTokenScope::PUBLIC, $apiToken->getScope());
+        $this->assertFalse($apiToken->isInternal());
+
+        $result = $this->apiTokenService->createApiToken([
+            'name' => 'back-office',
+            'roles' => [ApiTokenRole::ADMIN->value],
+            'scope' => ApiTokenScope::BACK_OFFICE->value,
+            'internal' => true,
+        ]);
+        $this->assertSame(ApiTokenScope::BACK_OFFICE, $result['apiToken']->getScope());
+        $this->assertFalse($result['apiToken']->isInternal());
+        $this->assertSame([ApiTokenRole::READ->value], $result['apiToken']->getRoles(), 'Aucun rôle enregistré');
 
         $result = $this->apiTokenService->createApiToken(['name' => 'sans role', 'roles' => ['ROLE_INCONNU']]);
         $this->assertEquals([ApiTokenRole::READ->value], $result['apiToken']->getRoles());
@@ -150,7 +181,7 @@ class ApiTokenServiceTest extends AppWebTestCase
      */
     public function testUpdateApiToken(): void
     {
-        $apiToken = $this->createApiToken(['disabled' => true]);
+        $apiToken = $this->createApiToken(['disabled' => true, 'scope' => ApiTokenScope::BACK_OFFICE]);
         $hash = $apiToken->getToken();
 
         $this->apiTokenService->updateApiToken($apiToken, [
@@ -166,6 +197,17 @@ class ApiTokenServiceTest extends AppWebTestCase
         $this->assertEquals($hash, $apiToken->getToken());
         $this->assertTrue($apiToken->isDisabled());
         $this->assertNull($apiToken->getExpiresAt());
+        $this->assertSame(ApiTokenScope::BACK_OFFICE, $apiToken->getScope(), 'Type absent : type conservé');
+        $this->assertNotContains(ApiTokenRole::ADMIN->value, $apiToken->getRoles(), 'Token back-office sans rôle');
+
+        $this->apiTokenService->updateApiToken($apiToken, ['name' => 'edit', 'scope' => 'inconnu']);
+        $this->assertSame(ApiTokenScope::BACK_OFFICE, $apiToken->getScope());
+        $this->apiTokenService->updateApiToken($apiToken, [
+            'name' => 'edit',
+            'scope' => 'public',
+            'roles' => [ApiTokenRole::ADMIN->value],
+        ]);
+        $this->assertSame(ApiTokenScope::PUBLIC, $apiToken->getScope());
         $this->assertContains(ApiTokenRole::ADMIN->value, $apiToken->getRoles());
     }
 
@@ -202,6 +244,21 @@ class ApiTokenServiceTest extends AppWebTestCase
         $this->assertEquals($apiToken->getId(), $result['id']);
         $this->assertEquals([ApiTokenRole::WRITE->value], $result['roles']);
         $this->assertEquals('2099-06-01', $result['expiresAt']);
+        $this->assertEquals(ApiTokenScope::PUBLIC->value, $result['scope']);
         $this->assertNull($result['lastUsedAt']);
+    }
+
+    /**
+     * Token interne créé une seule fois quand il manque, puis relu
+     * @return void
+     */
+    public function testGetInternalBackOfficeToken(): void
+    {
+        $apiToken = $this->apiTokenService->getInternalBackOfficeToken();
+        $this->assertNotNull($apiToken->getId());
+        $this->assertTrue($apiToken->isInternal());
+        $this->assertSame(ApiTokenScope::BACK_OFFICE, $apiToken->getScope());
+        $this->assertFalse($apiToken->isDisabled());
+        $this->assertSame($apiToken, $this->apiTokenService->getInternalBackOfficeToken());
     }
 }

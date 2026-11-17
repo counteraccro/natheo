@@ -16,6 +16,7 @@ use App\Tests\AppWebTestCase;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 use App\Service\Global\Token\TokenHasher;
 use App\Enum\Admin\System\ApiToken\ApiTokenRole;
+use App\Enum\Admin\System\ApiToken\ApiTokenScope;
 use App\Enum\Admin\System\ApiToken\ApiTokenDefault;
 use App\Service\Global\Token\TokenGenerator;
 
@@ -59,5 +60,13 @@ class ApiTokenFixtureTest extends AppWebTestCase
         $this->assertInstanceOf(ApiToken::class, $apiToken);
         $this->assertFalse($apiToken->isDisabled());
         $this->assertContains(ApiTokenRole::WRITE->value, $apiToken->getRoles());
+        $this->assertSame(ApiTokenScope::PUBLIC, $apiToken->getScope());
+        $this->assertFalse($apiToken->isInternal());
+
+        $internal = $this->em->getRepository(ApiToken::class)->findBy(['internal' => true]);
+        $this->assertCount(1, $internal, 'Un seul token interne du back-office');
+        $this->assertSame(ApiTokenScope::BACK_OFFICE, $internal[0]->getScope());
+        $this->assertNotContains(ApiTokenRole::ADMIN->value, $internal[0]->getRoles());
+        $this->assertFalse($internal[0]->isDisabled());
     }
 }
