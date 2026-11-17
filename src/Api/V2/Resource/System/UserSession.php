@@ -40,10 +40,11 @@ use App\Api\V2\Metadata\OperationSecurityMetadataFactory;
                 openapi: new OpenApiOperation(
                     summary: 'Ouvre une session pour un utilisateur du back-office',
                     description: 'Renvoie un access token (15 min) à transmettre dans l\'en-tête Authorization à la ' .
-                        'place du token d\'API, et un refresh token pour le renouveler. La session porte les rôles ' .
-                        'du token d\'API de la requête. Refusée pour un utilisateur sans rôle d\'administration ; ' .
-                        'tentatives limitées par IP et email. Ouverte à ROLE_READ_API, pour que le site public ' .
-                        'puisse connecter ses utilisateurs.',
+                        'place du token d\'API, et un refresh token pour le renouveler. La session reçoit les rôles ' .
+                        'du token d\'API de la requête et ceux de l\'utilisateur. Un utilisateur sans rôle ' .
+                        'd\'administration est refusé, et les tentatives sont limitées par IP et par email. ' .
+                        'L\'opération est ouverte à ROLE_READ_API pour que le site public puisse connecter ses ' .
+                        'utilisateurs.',
                 ),
                 normalizationContext: ['groups' => ['user_session:create']],
                 security: "is_granted('ROLE_READ_API')",
