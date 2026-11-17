@@ -14,8 +14,9 @@ use ApiPlatform\Metadata\FilterInterface;
 use ApiPlatform\Metadata\JsonSchemaFilterInterface;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\Metadata\Parameter;
+use App\Api\V2\Filter\OrderFilter;
 
-final class OrderFilter implements FilterInterface, JsonSchemaFilterInterface
+final class AdminOrderFilter implements FilterInterface, JsonSchemaFilterInterface
 {
     use BackwardCompatibleFilterDescriptionTrait;
 
@@ -31,7 +32,7 @@ final class OrderFilter implements FilterInterface, JsonSchemaFilterInterface
      */
     public function getSchema(Parameter $parameter): array
     {
-        return ['type' => 'string', 'enum' => ['asc', 'desc']];
+        return ['type' => 'string', 'enum' => OrderFilter::getApiNames()];
     }
 
     /**
@@ -42,14 +43,11 @@ final class OrderFilter implements FilterInterface, JsonSchemaFilterInterface
     public static function getValue(Operation $operation): ?array
     {
         foreach ($operation->getParameters() ?? [] as $parameter) {
-            $value = $parameter->getValue(null);
-            if ($parameter->getFilter() !== self::class || !is_string($value) || $parameter->getProperty() === null) {
+            $direction = OrderFilter::fromApiName($parameter->getValue(null));
+            if ($parameter->getFilter() !== self::class || $direction === null || $parameter->getProperty() === null) {
                 continue;
             }
-            return [
-                'field' => $parameter->getProperty(),
-                'direction' => $value === 'asc' ? \SortDirection::Ascending : \SortDirection::Descending,
-            ];
+            return ['field' => $parameter->getProperty(), 'direction' => $direction];
         }
         return null;
     }

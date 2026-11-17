@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace App\Repository\Trait;
 
 use App\Enum\Api\Admin\ActivationStatus;
-use App\Service\Api\Admin\AdminCollectionQuery;
+use App\Dto\Api\Admin\AdminCollectionQuery;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 

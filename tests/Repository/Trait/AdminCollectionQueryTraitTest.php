@@ -12,7 +12,7 @@ namespace App\Tests\Repository\Trait;
 use App\Entity\Admin\System\ApiToken;
 use App\Enum\Api\Admin\ActivationStatus;
 use App\Repository\Trait\AdminCollectionQueryTrait;
-use App\Service\Api\Admin\AdminCollectionQuery;
+use App\Dto\Api\Admin\AdminCollectionQuery;
 use App\Tests\AppWebTestCase;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;

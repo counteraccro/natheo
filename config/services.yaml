@@ -81,3 +81,6 @@ when@test:
         App\Tests\Api\V2\State\AdminProbeProcessor:
             autowire: true
             autoconfigure: true
+        App\Tests\Api\V2\State\AdminProbeProvider:
+            autowire: true
+            autoconfigure: true

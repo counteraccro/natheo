@@ -39,7 +39,7 @@ final class OrderFilter implements FilterInterface, JsonSchemaFilterInterface
     {
         return [
             'type' => 'string',
-            'enum' => array_map(self::toApiName(...), \SortDirection::cases()),
+            'enum' => self::getApiNames(),
             'default' => self::toApiName(self::DEFAULT),
         ];
     }
@@ -51,13 +51,31 @@ final class OrderFilter implements FilterInterface, JsonSchemaFilterInterface
      */
     public static function getValue(Operation $operation): \SortDirection
     {
-        $value = $operation->getParameters()?->get(self::PARAMETER)?->getValue(null);
+        return self::fromApiName($operation->getParameters()?->get(self::PARAMETER)?->getValue(null)) ?? self::DEFAULT;
+    }
+
+    /**
+     * Valeurs des sens de tri acceptées par l'API
+     * @return string[]
+     */
+    public static function getApiNames(): array
+    {
+        return array_map(self::toApiName(...), \SortDirection::cases());
+    }
+
+    /**
+     * Sens de tri correspondant à une valeur de l'API, null si elle n'en est pas une
+     * @param mixed $value
+     * @return \SortDirection|null
+     */
+    public static function fromApiName(mixed $value): ?\SortDirection
+    {
         foreach (\SortDirection::cases() as $direction) {
             if ($value === self::toApiName($direction)) {
                 return $direction;
             }
         }
-        return self::DEFAULT;
+        return null;
     }
 
     /**
