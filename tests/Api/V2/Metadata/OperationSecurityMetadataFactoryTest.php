@@ -78,7 +78,7 @@ class OperationSecurityMetadataFactoryTest extends TestCase
     }
 
     /**
-     * Adresse /admin/ sans module, module hors /admin/ ou module inconnu : erreur au build des métadonnées
+     * Une adresse /admin/ sans module, un module hors /admin/ ou un module inconnu font échouer les métadonnées
      * @return void
      */
     public function testInvalidAdminOperations(): void

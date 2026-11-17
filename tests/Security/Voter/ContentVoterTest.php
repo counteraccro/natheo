@@ -144,7 +144,7 @@ class ContentVoterTest extends AppWebTestCase
     }
 
     /**
-     * Dans l'API, le vote porte sur l'utilisateur réel de la session ; un token d'API seul est refusé
+     * Dans l'API, le vote porte sur l'utilisateur réel de la session. Un token d'API seul est refusé
      * @return void
      */
     public function testApiUser(): void

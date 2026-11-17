@@ -4,8 +4,8 @@ declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
  * @version 1.0
- * Sécurité des opérations selon le type du token : publiques, partagées par les deux types, ou d'administration
- * (construite depuis leur module)
+ * Ajoute à la sécurité de chaque opération la condition sur le type du token. Une opération d'administration
+ * reçoit en plus la condition de son module
  */
 
 namespace App\Api\V2\Metadata;
@@ -95,8 +95,8 @@ final readonly class OperationSecurityMetadataFactory implements ResourceMetadat
     }
 
     /**
-     * Condition d'une opération d'administration : session ouverte par un token back-office (ou public avec
-     * frontAllowed) et rôle du module ; les droits sont ceux de l'utilisateur
+     * Condition d'une opération d'administration. Elle exige une session ouverte par un token back-office (ou public
+     * avec frontAllowed) et le rôle du module, les droits étant ceux de l'utilisateur
      * @param Operation $operation
      * @param mixed $module
      * @param bool $isAdminPath

@@ -16,7 +16,7 @@ use App\Tests\AppWebTestCase;
 class ApiUserTest extends AppWebTestCase
 {
     /**
-     * Token seul : rôles du token et de son type, aucun utilisateur
+     * Un token seul porte ses rôles et celui de son type, sans utilisateur
      * @return void
      */
     public function testTokenOnly(): void
@@ -32,7 +32,7 @@ class ApiUserTest extends AppWebTestCase
     }
 
     /**
-     * Session : rôles du token, de son type, de la session et vrais rôles de l'utilisateur
+     * Une session porte les rôles du token, de son type et de la session, puis les vrais rôles de l'utilisateur
      * @return void
      */
     public function testWithSession(): void

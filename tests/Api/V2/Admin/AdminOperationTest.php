@@ -23,7 +23,7 @@ class AdminOperationTest extends AppApiV2TestCase
     private const string ITEM = '/admin/probes/' . AdminProbe::EXISTING_ID;
 
     /**
-     * Sans session ouverte par un token back-office : refusé, quel que soit le token
+     * Refus sans session ouverte par un token back-office, quel que soit le token
      * @return void
      */
     public function testSessionAndScopeRequired(): void
@@ -43,8 +43,8 @@ class AdminOperationTest extends AppApiV2TestCase
     }
 
     /**
-     * Droits de l'utilisateur, quel que soit le rôle du token back-office : rôle du module, condition propre
-     * à l'opération
+     * Les droits viennent de l'utilisateur, quel que soit le rôle du token back-office. L'opération exige le rôle
+     * du module et sa propre condition
      * @return void
      */
     public function testRoles(): void
@@ -67,7 +67,7 @@ class AdminOperationTest extends AppApiV2TestCase
     }
 
     /**
-     * frontAllowed : une session ouverte par un token public est acceptée, toujours croisée avec les droits
+     * Avec frontAllowed, une session ouverte par un token public est acceptée, toujours croisée avec les droits
      * @return void
      */
     public function testFrontAllowed(): void
@@ -88,7 +88,7 @@ class AdminOperationTest extends AppApiV2TestCase
     }
 
     /**
-     * Le name d'une opération d'administration est sa route : aucune route du back-office ne doit le porter
+     * Le name d'une opération d'administration sert de nom de route, aucune route du back-office ne doit le porter
      * @return void
      */
     public function testAdminOperationRoutes(): void

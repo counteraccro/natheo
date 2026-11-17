@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 /**
- * Migration v2.1 (MySQL / MariaDB) : type des tokens d'API et token interne du back-office
+ * Migration v2.1 (MySQL / MariaDB) : type des tokens d'API et colonne internal
  * @author Gourdon Aymeric
  * @version 1.0
  */

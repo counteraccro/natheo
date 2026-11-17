@@ -18,7 +18,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class AdminConventionsTest extends AppApiV2TestCase
 {
     /**
-     * Filtres génériques : recherche, statut, tri, nombre d'éléments par page ; valeur invalide : 422
+     * Filtres génériques de recherche, de statut, de tri et de nombre d'éléments par page, 422 pour une valeur invalide
      * @return void
      */
     public function testFilters(): void
@@ -46,8 +46,8 @@ class AdminConventionsTest extends AppApiV2TestCase
     }
 
     /**
-     * ETag sur la lecture ; If-Match périmé : 412 ; If-Match à jour, affaibli par un proxy, « * » ou absent :
-     * écriture acceptée
+     * La lecture renvoie un ETag. Un If-Match périmé donne 412, et l'écriture passe avec un If-Match à jour,
+     * affaibli par un proxy, « * » ou absent
      * @return void
      */
     public function testConcurrency(): void

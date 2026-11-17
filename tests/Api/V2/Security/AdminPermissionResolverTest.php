@@ -23,7 +23,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 class AdminPermissionResolverTest extends AppWebTestCase
 {
     /**
-     * Propriétaire : tous les droits, suppression selon l'option ; autre contributeur : aucun droit
+     * Le propriétaire a tous les droits, la suppression dépendant de l'option. Un autre contributeur n'en a aucun
      * @return void
      */
     public function testForContent(): void

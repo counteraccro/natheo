@@ -366,7 +366,7 @@ class ApiTokenService extends AppAdminService
         $apiToken->setName(trim((string) ($data['name'] ?? '')));
         $apiToken->setComment(isset($data['comment']) ? (string) $data['comment'] : null);
         $apiToken->setScope(ApiTokenScope::tryFrom((string) ($data['scope'] ?? '')) ?? $apiToken->getScope());
-        // Un token back-office n'a pas de rôle : les droits sont ceux de l'utilisateur de la session
+        // Un token back-office n'a pas de rôle, les droits viennent de l'utilisateur de la session
         $apiToken->setRoles(
             $apiToken->getScope() === ApiTokenScope::PUBLIC ? $this->filterRoles((array) ($data['roles'] ?? [])) : [],
         );

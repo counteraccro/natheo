@@ -4,7 +4,7 @@ declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
  * @version 1.0
- * Base des processors d'administration : contrôle If-Match avant l'écriture, journal des actions après
+ * Base des processors d'administration, qui contrôle If-Match avant l'écriture puis trace l'action dans le journal
  */
 
 namespace App\Api\V2\State\Processor\Admin;
@@ -118,7 +118,8 @@ abstract class AbstractAdminProcessor implements ProcessorInterface
     }
 
     /**
-     * Identifiant de l'élément tracé dans le journal : variable d'URI id, sinon propriété id de la ressource
+     * Identifiant de l'élément tracé dans le journal, lu dans la variable d'URI id ou à défaut dans la propriété id
+     * de la ressource
      * @param mixed $resource
      * @param array $uriVariables
      * @return string|null
@@ -130,7 +131,8 @@ abstract class AbstractAdminProcessor implements ProcessorInterface
     }
 
     /**
-     * Sans If-Match l'écriture est acceptée (scripts d'intégration) ; avec, il doit désigner la version lue
+     * Une écriture sans If-Match est acceptée pour les scripts d'intégration. Avec If-Match, l'en-tête doit désigner
+     * la version lue
      * @param mixed $current élément tel qu'il était avant l'écriture
      * @param Request|null $request
      * @return void

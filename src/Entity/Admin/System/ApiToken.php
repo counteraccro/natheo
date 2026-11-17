@@ -46,7 +46,7 @@ class ApiToken
     private ApiTokenScope $scope = ApiTokenScope::PUBLIC;
 
     /**
-     * Token du back-office créé à l'installation, jamais affiché ni supprimable
+     * Token interne du back-office, jamais affiché ni supprimable
      */
     #[ORM\Column(options: ['default' => false])]
     private bool $internal = false;

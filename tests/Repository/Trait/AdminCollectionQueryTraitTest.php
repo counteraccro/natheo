@@ -20,7 +20,7 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 class AdminCollectionQueryTraitTest extends AppWebTestCase
 {
     /**
-     * Recherche insensible à la casse sur les champs déclarés, statut, tri, page ; champ inconnu ignoré
+     * Recherche insensible à la casse sur les champs déclarés, statut, tri et page. Un champ inconnu est ignoré
      * @return void
      */
     public function testPaginateAdminCollection(): void

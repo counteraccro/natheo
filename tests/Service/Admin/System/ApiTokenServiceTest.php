@@ -112,7 +112,7 @@ class ApiTokenServiceTest extends AppWebTestCase
     }
 
     /**
-     * test méthode getScopes()
+     * Test de la méthode getScopes()
      * @return void
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface

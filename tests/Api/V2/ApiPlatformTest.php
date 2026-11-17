@@ -92,7 +92,7 @@ class ApiPlatformTest extends AppApiV2TestCase
     }
 
     /**
-     * Un token back-office n'ouvre ni les opérations publiques de la v2 ni la v1 ; les opérations partagées
+     * Un token back-office n'ouvre ni les opérations publiques de la v2 ni la v1. Les opérations partagées
      * (sessions, infos) restent ouvertes aux deux types
      * @return void
      */

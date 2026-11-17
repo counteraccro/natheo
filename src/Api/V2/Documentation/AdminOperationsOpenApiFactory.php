@@ -22,7 +22,7 @@ use Symfony\Component\DependencyInjection\Attribute\AutowireDecorated;
 final readonly class AdminOperationsOpenApiFactory implements OpenApiFactoryInterface
 {
     /**
-     * Clé de contexte qui demande la documentation complète, administration comprise
+     * Clé de contexte qui demande la documentation avec les opérations d'administration
      * @var string
      */
     public const string WITH_ADMIN = 'natheo_with_admin';

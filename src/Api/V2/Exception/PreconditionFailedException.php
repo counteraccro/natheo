@@ -4,7 +4,7 @@ declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
  * @version 1.0
- * Élément modifié depuis sa lecture : l'en-tête If-Match ne correspond plus à sa version (412)
+ * Réponse 412 quand l'en-tête If-Match ne correspond plus à la version de l'élément
  */
 
 namespace App\Api\V2\Exception;

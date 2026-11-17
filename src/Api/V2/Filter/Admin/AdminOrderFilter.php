@@ -4,7 +4,7 @@ declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
  * @version 1.0
- * Tri d'une collection d'administration : order[<champ>]=asc|desc, champs déclarés par l'opération
+ * Tri d'une collection d'administration par order[<champ>]=asc|desc, sur les champs déclarés par l'opération
  */
 
 namespace App\Api\V2\Filter\Admin;

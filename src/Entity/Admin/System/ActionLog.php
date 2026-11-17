@@ -4,7 +4,7 @@ declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
  * @version 1.0
- * Écriture faite dans le back-office : auteur, module, action et élément concerné
+ * Écriture faite dans le back-office, avec son auteur, son module, son action et l'élément concerné
  */
 
 namespace App\Entity\Admin\System;

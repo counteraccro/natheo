@@ -68,8 +68,7 @@ class ApiService extends AppApiService
     }
 
     /**
-     * Converti un objet ApiToken en ApiUser pour le ApiProvider Si les conditions suivantes sont remplis
-     *  - IP autorisée, Token valide, actif et non expiré
+     * Convertit un token d'API en ApiUser pour le ApiProvider, si l'IP est autorisée et le token actif et non expiré
      * @param string $token
      * @return ApiUser|null
      * @throws ContainerExceptionInterface
@@ -96,7 +95,7 @@ class ApiService extends AppApiService
     }
 
     /**
-     * Converti l'access token d'une session utilisateur en ApiUser pour le ApiProvider, avec les rôles du token d'API
+     * Convertit l'access token d'une session utilisateur en ApiUser pour le ApiProvider, avec les rôles du token d'API
      * de la session et ceux de l'utilisateur, si l'IP est autorisée et la session valide
      * @param string $token
      * @return ApiUser|null

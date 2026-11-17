@@ -4,7 +4,7 @@ declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
  * @version 1.0
- * Documentation complète de l'API v2, opérations d'administration comprises
+ * Documentation de l'API v2 avec les opérations d'administration
  */
 
 namespace App\Controller\Admin\System;

@@ -14,7 +14,7 @@ use App\Tests\AppWebTestCase;
 class ApiDocControllerTest extends AppWebTestCase
 {
     /**
-     * Documentation complète réservée au super administrateur, opérations d'administration comprises
+     * Documentation avec les opérations d'administration, réservée au super administrateur
      * @return void
      */
     public function testIndex(): void

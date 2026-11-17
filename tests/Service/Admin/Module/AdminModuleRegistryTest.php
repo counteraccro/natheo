@@ -29,7 +29,7 @@ class AdminModuleRegistryTest extends AppWebTestCase
     }
 
     /**
-     * Deux modules du même identifiant : erreur
+     * Deux modules avec le même identifiant provoquent une erreur
      * @return void
      */
     public function testDuplicateModule(): void

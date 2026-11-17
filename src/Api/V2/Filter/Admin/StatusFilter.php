@@ -4,7 +4,7 @@ declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
  * @version 1.0
- * Statut d'activation d'une collection d'administration : valeurs issues de ActivationStatus
+ * Filtre du statut d'activation d'une collection d'administration, valeurs construites depuis ActivationStatus
  */
 
 namespace App\Api\V2\Filter\Admin;

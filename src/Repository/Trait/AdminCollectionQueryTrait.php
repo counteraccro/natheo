@@ -17,7 +17,7 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 trait AdminCollectionQueryTrait
 {
     /**
-     * Seuls les champs présents dans $fields sont recherchés et triés : un champ inconnu est ignoré
+     * Un champ absent de $fields est ignoré par la recherche et le tri
      * @param QueryBuilder $qb
      * @param AdminCollectionQuery $query
      * @param array<string, string> $fields champ de la ressource => chemin DQL (ex : 'name' => 't.name')

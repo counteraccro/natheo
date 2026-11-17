@@ -4,7 +4,8 @@ declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
  * @version 1.0
- * Utilisateur de sécurité du pare-feu API : token d'API de l'appel et, pour un access token, session de l'utilisateur
+ * Utilisateur de sécurité du pare-feu API, qui porte le token d'API de l'appel et, pour un access token, la session
+ * de l'utilisateur
  */
 
 namespace App\Security;

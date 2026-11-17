@@ -67,7 +67,7 @@ class ContentVoter extends Voter
     }
 
     /**
-     * Ordre des vérifications : option de suppression (DELETE), rôle admin, puis propriétaire.
+     * Vérifie l'option de suppression (DELETE), puis le rôle admin, puis le propriétaire.
      * Dans l'API, le vote porte sur l'utilisateur réel de la session
      * @param string $attribute
      * @param Page|Faq|Menu|Tag $subject
