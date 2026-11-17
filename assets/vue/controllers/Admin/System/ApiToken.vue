@@ -360,14 +360,14 @@ export default defineComponent({
         </ul>
       </div>
 
-      <div v-if="apiToken.scope === 'public'" class="form-group mt-3">
+      <div v-if="apiToken.scope === datas.scopeWithRoles" class="form-group mt-3">
         <label for="roles" class="form-label">{{ translate.select_label_role }}</label>
         <select class="form-input" id="roles" v-model="apiToken.roles[0]">
           <option v-for="(role, key) in datas.roles" :value="key">{{ role }}</option>
         </select>
       </div>
 
-      <div v-if="apiToken.scope === 'public'" class="alert alert-info-bordered">
+      <div v-if="apiToken.scope === datas.scopeWithRoles" class="alert alert-info-bordered">
         <svg class="alert-icon text-alert-info" fill="currentColor" viewBox="0 0 20 20">
           <path
             fill-rule="evenodd"

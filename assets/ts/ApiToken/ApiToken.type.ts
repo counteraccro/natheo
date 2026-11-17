@@ -33,6 +33,8 @@ export interface ApiTokenUrls {
 export interface ApiTokenDatas {
   roles: Record<string, string>;
   scopes: Record<string, string>;
+  /** Type de token qui porte des rôles */
+  scopeWithRoles: string;
 }
 
 export interface ApiTokenCsrfTokens {

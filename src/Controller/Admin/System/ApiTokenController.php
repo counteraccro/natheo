@@ -7,6 +7,7 @@ namespace App\Controller\Admin\System;
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\System\ApiToken;
 use App\Enum\Admin\Global\Breadcrumb;
+use App\Enum\Admin\System\ApiToken\ApiTokenScope;
 use App\Enum\Admin\System\Options\OptionUser;
 use App\Service\Admin\System\ApiTokenService;
 use App\Translate\Admin\System\ApiTokenTranslate;
@@ -191,6 +192,7 @@ class ApiTokenController extends AppAdminController
             'datas' => [
                 'roles' => $apiTokenService->getRolesApi(),
                 'scopes' => $apiTokenService->getScopes(),
+                'scopeWithRoles' => ApiTokenScope::PUBLIC->value,
             ],
             'csrfTokens' => [
                 'save' => ApiTokenService::CSRF_TOKEN_SAVE,
