@@ -79,3 +79,10 @@ api_token.card.button.regenerate: Regenerar
 api_token.card.button.back_list: Volver a la lista
 api_token.modal.confirm.regenerate.title: ¿Regenerar el token?
 api_token.modal.confirm.regenerate.text: El token anterior quedará invalidado de inmediato, todas las aplicaciones que lo utilizan deberán actualizarse. <br /> ¿Confirma esta acción?
+api_token.grid.scope: 'Tipo'
+api_token.scope.public: 'Público'
+api_token.scope.back_office: 'Back-office'
+api_token.card.select.label.scope: 'Tipo del token'
+api_token.card.help.scope: 'El tipo limita las API que abre el token'
+api_token.card.help.scope_public: 'Público: sitio público e integraciones, solo abre las API públicas'
+api_token.card.help.scope_back_office: 'Back-office: solo abre el inicio de sesión de un usuario y luego las API de administración con sus derechos'

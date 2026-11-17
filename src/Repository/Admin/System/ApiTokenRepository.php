@@ -51,7 +51,7 @@ class ApiTokenRepository extends ServiceEntityRepository
     }
 
     /**
-     * Retourne une liste de Mail Paginé
+     * Retourne la liste paginée des tokens, sans les tokens internes
      * @param int $page
      * @param int $limit
      * @param array $queryParams
@@ -59,12 +59,13 @@ class ApiTokenRepository extends ServiceEntityRepository
      */
     public function getAllPaginate(int $page, int $limit, array $queryParams): Paginator
     {
-        $query = $this->createQueryBuilder(ApiToken::DEFAULT_ALIAS);
+        $query = $this->createQueryBuilder(ApiToken::DEFAULT_ALIAS)
+            ->where(ApiToken::DEFAULT_ALIAS . '.internal = false');
         $this->applyOrdering($query, ApiToken::class, $queryParams);
 
         if (isset($queryParams['search']) && $queryParams['search'] !== '') {
             $query
-                ->where(ApiToken::DEFAULT_ALIAS . '.name like :search')
+                ->andWhere(ApiToken::DEFAULT_ALIAS . '.name like :search')
                 ->setParameter('search', '%' . $queryParams['search'] . '%');
         }
 

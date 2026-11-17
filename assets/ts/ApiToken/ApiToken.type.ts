@@ -12,6 +12,8 @@ export interface ApiToken {
   name: string | null;
   comment: string | null;
   roles: string[];
+  // Valeur de ApiTokenScope
+  scope: string;
   disabled: boolean;
   // Format Y-m-d, compatible avec un input de type date
   expiresAt: string | null;
@@ -30,6 +32,7 @@ export interface ApiTokenUrls {
 
 export interface ApiTokenDatas {
   roles: Record<string, string>;
+  scopes: Record<string, string>;
 }
 
 export interface ApiTokenCsrfTokens {
@@ -71,6 +74,10 @@ export interface ApiTokenTranslate {
   help_role_read: string;
   help_role_write: string;
   help_role_admin: string;
+  select_label_scope: string;
+  help_scope: string;
+  help_scope_public: string;
+  help_scope_back_office: string;
   btn_edit_token_api: string;
   btn_cancel_edit_token: string;
   btn_delete_token: string;
