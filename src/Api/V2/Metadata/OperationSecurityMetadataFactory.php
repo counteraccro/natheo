@@ -5,6 +5,7 @@ declare(strict_types=1);
  * @author Gourdon Aymeric
  * @version 1.0
  * Sécurité des opérations selon le type du token : publiques, partagées par les deux types, ou d'administration
+ * (construite depuis leur module)
  */
 
 namespace App\Api\V2\Metadata;
@@ -13,7 +14,10 @@ use ApiPlatform\Metadata\ErrorResource;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\Metadata\Resource\Factory\ResourceMetadataCollectionFactoryInterface;
 use ApiPlatform\Metadata\Resource\ResourceMetadataCollection;
+use App\Enum\Admin\System\ApiToken\ApiTokenRole;
 use App\Enum\Admin\System\ApiToken\ApiTokenScope;
+use App\Security\ApiUser;
+use App\Service\Admin\Module\AdminModuleRegistry;
 use Symfony\Component\DependencyInjection\Attribute\AsDecorator;
 use Symfony\Component\DependencyInjection\Attribute\AutowireDecorated;
 
@@ -26,7 +30,28 @@ final readonly class OperationSecurityMetadataFactory implements ResourceMetadat
      */
     public const string SHARED = 'shared';
 
-    public function __construct(#[AutowireDecorated] private ResourceMetadataCollectionFactoryInterface $decorated) {}
+    /**
+     * Clé d'extraProperties qui rattache une opération d'administration (/admin/…) à son module
+     * @var string
+     */
+    public const string MODULE = 'module';
+
+    /**
+     * Clé d'extraProperties d'une opération d'administration qui accepte aussi une session ouverte par un token public
+     * @var string
+     */
+    public const string FRONT_ALLOWED = 'frontAllowed';
+
+    /**
+     * Préfixe des adresses des opérations d'administration
+     * @var string
+     */
+    public const string ADMIN_PREFIX = '/admin/';
+
+    public function __construct(
+        #[AutowireDecorated] private ResourceMetadataCollectionFactoryInterface $decorated,
+        private AdminModuleRegistry $adminModuleRegistry,
+    ) {}
 
     /**
      * @param string $resourceClass
@@ -57,10 +82,67 @@ final readonly class OperationSecurityMetadataFactory implements ResourceMetadat
     private function buildSecurity(Operation $operation): ?string
     {
         $security = $operation->getSecurity();
-        if (($operation->getExtraProperties()[self::SHARED] ?? false) === true) {
+        $extra = $operation->getExtraProperties();
+        $module = $extra[self::MODULE] ?? null;
+        $isAdminPath = str_starts_with((string) $operation->getUriTemplate(), self::ADMIN_PREFIX);
+
+        if ($module !== null || $isAdminPath) {
+            return $this->combine($this->buildAdminCondition($operation, $module, $isAdminPath), $security);
+        }
+        if (($extra[self::SHARED] ?? false) === true) {
             return $security;
         }
-        return $this->combine(sprintf("is_granted('%s')", ApiTokenScope::PUBLIC->getRole()), $security);
+        return $this->combine($this->isGranted(ApiTokenScope::PUBLIC->getRole()), $security);
+    }
+
+    /**
+     * Condition d'une opération d'administration : session ouverte par un token back-office (ou public avec
+     * frontAllowed), rôle du token selon la méthode et rôle du module
+     * @param Operation $operation
+     * @param mixed $module
+     * @param bool $isAdminPath
+     * @return string
+     * @throws \LogicException si l'opération et son adresse ne correspondent pas, ou si le module est inconnu
+     */
+    private function buildAdminCondition(Operation $operation, mixed $module, bool $isAdminPath): string
+    {
+        if (!is_string($module) || !$isAdminPath) {
+            throw new \LogicException(
+                sprintf(
+                    'L\'opération « %s » doit avoir une adresse en %s et un module (extraProperties « %s »)',
+                    $operation->getName(),
+                    self::ADMIN_PREFIX,
+                    self::MODULE,
+                ),
+            );
+        }
+        $definition =
+            $this->adminModuleRegistry->get($module) ??
+            throw new \LogicException(
+                sprintf('Module « %s » inconnu pour l\'opération « %s »', $module, $operation->getName()),
+            );
+
+        $conditions = [];
+        if (($operation->getExtraProperties()[self::FRONT_ALLOWED] ?? false) !== true) {
+            $conditions[] = $this->isGranted(ApiTokenScope::BACK_OFFICE->getRole());
+        }
+        $conditions[] = $this->isGranted(ApiUser::ROLE_USER_SESSION);
+        $conditions[] = $this->isGranted(
+            in_array($operation->getMethod(), ['GET', 'HEAD'], true)
+                ? ApiTokenRole::READ->value
+                : ApiTokenRole::WRITE->value,
+        );
+        $conditions[] = $this->isGranted($definition->role);
+        return implode(' and ', $conditions);
+    }
+
+    /**
+     * @param string $role
+     * @return string
+     */
+    private function isGranted(string $role): string
+    {
+        return sprintf("is_granted('%s')", $role);
     }
 
     /**

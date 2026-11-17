@@ -74,3 +74,7 @@ when@test:
     parameters:
         # Dossier dédié pour ne pas toucher aux dumps de l'environnement de dev
         app.dump_directory: '%kernel.project_dir%/var/dump_test/'
+    services:
+        # Module du back-office des ressources de test de l'API (tests/Api/V2/Resource)
+        App\Tests\Api\V2\Module\ProbeModule:
+            autoconfigure: true

@@ -81,6 +81,28 @@ class AppApiV2TestCase extends AppApiTestCase
     }
 
     /**
+     * En-tête Authorization avec l'access token d'une nouvelle session de l'utilisateur ouverte par un token
+     * back-office, à passer dans $headers de requestV2()
+     * @param User $user
+     * @param string $role rôle du token back-office de la session
+     * @return array<string, string>
+     */
+    protected function adminSessionHeaders(User $user, string $role = 'ROLE_ADMIN_API'): array
+    {
+        $accessToken = self::getFaker()->uuid();
+        $this->createUserSession([
+            'user' => $user,
+            'apiToken' => $this->createApiToken([
+                'roles' => [$role],
+                'scope' => ApiTokenScope::BACK_OFFICE,
+                'disabled' => false,
+            ]),
+            'accessTokenHash' => TokenHasher::hash($accessToken),
+        ]);
+        return ['HTTP_Authorization' => 'Bearer ' . $accessToken];
+    }
+
+    /**
      * En-tête Authorization avec un token back-office seul, sans session, à passer dans $headers de requestV2()
      * @param string $role
      * @return array<string, string>
@@ -164,18 +186,16 @@ class AppApiV2TestCase extends AppApiTestCase
             ->get('api_platform.metadata.resource.metadata_collection_factory')
             ->create($resourceClass)
             ->getOperation($operationName, $collection);
-        $schema = $this->container
-            ->get('api_platform.json_schema.schema_factory')
-            ->buildSchema(
-                $resourceClass,
-                'jsonld',
-                Schema::TYPE_OUTPUT,
-                $operation,
-                null,
-                ($operation->getNormalizationContext() ?? []) + [
-                    BackwardCompatibleSchemaFactory::SCHEMA_DRAFT4_VERSION => true,
-                ],
-            );
+        $schema = $this->container->get('api_platform.json_schema.schema_factory')->buildSchema(
+            $resourceClass,
+            'jsonld',
+            Schema::TYPE_OUTPUT,
+            $operation,
+            null,
+            ($operation->getNormalizationContext() ?? []) + [
+                BackwardCompatibleSchemaFactory::SCHEMA_DRAFT4_VERSION => true,
+            ],
+        );
 
         $this->assertThat($this->decode($this->client->getResponse()), new MatchesJsonSchema($schema->getArrayCopy()));
     }
