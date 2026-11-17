@@ -10,7 +10,9 @@ declare(strict_types=1);
 namespace App\Tests\Security\Voter;
 
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\System\ApiToken\ApiTokenScope;
 use App\Enum\Admin\System\Options\OptionSystem;
+use App\Security\ApiUser;
 use App\Security\Voter\ContentVoter;
 use App\Service\Admin\System\OptionSystemService;
 use App\Tests\AppWebTestCase;
@@ -133,6 +135,45 @@ class ContentVoterTest extends AppWebTestCase
         $this->assertSame(VoterInterface::ACCESS_ABSTAIN, $this->vote($user, $page, 'OTHER_ATTRIBUTE'));
         $this->assertSame(VoterInterface::ACCESS_ABSTAIN, $this->vote($user, $user, ContentVoter::EDIT));
         $this->assertSame(VoterInterface::ACCESS_DENIED, $this->voter->vote(new NullToken(), $page, [ContentVoter::EDIT]));
+    }
+
+    /**
+     * Dans l'API, le vote porte sur l'utilisateur réel de la session ; un token d'API seul est refusé
+     * @return void
+     */
+    public function testApiUser(): void
+    {
+        $owner = $this->createUserContributeur();
+        $page = $this->createPage($owner);
+        $apiToken = $this->createApiToken([
+            'roles' => ['ROLE_ADMIN_API'],
+            'scope' => ApiTokenScope::BACK_OFFICE,
+            'disabled' => false,
+        ]);
+
+        $this->assertSame(VoterInterface::ACCESS_DENIED, $this->voteApi(new ApiUser($apiToken), $page));
+
+        $ownerSession = $this->createUserSession(['user' => $owner, 'apiToken' => $apiToken]);
+        $this->assertSame(VoterInterface::ACCESS_GRANTED, $this->voteApi(new ApiUser($apiToken, $ownerSession), $page));
+
+        $other = $this->createUserContributeur();
+        $otherSession = $this->createUserSession(['user' => $other, 'apiToken' => $apiToken]);
+        $this->assertSame(VoterInterface::ACCESS_DENIED, $this->voteApi(new ApiUser($apiToken, $otherSession), $page));
+
+        $admin = $this->createUserAdmin();
+        $adminSession = $this->createUserSession(['user' => $admin, 'apiToken' => $apiToken]);
+        $this->assertSame(VoterInterface::ACCESS_GRANTED, $this->voteApi(new ApiUser($apiToken, $adminSession), $page));
+    }
+
+    /**
+     * @param ApiUser $apiUser
+     * @param mixed $subject
+     * @return int
+     */
+    private function voteApi(ApiUser $apiUser, mixed $subject): int
+    {
+        $token = new UsernamePasswordToken($apiUser, 'api', $apiUser->getRoles());
+        return $this->voter->vote($token, $subject, [ContentVoter::EDIT]);
     }
 
     /**
