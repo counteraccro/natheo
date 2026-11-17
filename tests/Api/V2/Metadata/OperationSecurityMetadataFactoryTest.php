@@ -63,16 +63,16 @@ class OperationSecurityMetadataFactoryTest extends TestCase
         $this->assertSame("is_granted('ROLE_READ_API')", $operations['shared']->getSecurity());
         $this->assertSame(
             "is_granted('ROLE_API_BACK_OFFICE') and is_granted('ROLE_API_USER_SESSION') and " .
-                "is_granted('ROLE_READ_API') and is_granted('ROLE_CONTRIBUTEUR')",
+                "is_granted('ROLE_CONTRIBUTEUR')",
             $operations['admin_read']->getSecurity(),
         );
         $this->assertSame(
             "is_granted('ROLE_API_BACK_OFFICE') and is_granted('ROLE_API_USER_SESSION') and " .
-                "is_granted('ROLE_WRITE_API') and is_granted('ROLE_CONTRIBUTEUR') and (is_granted('ROLE_SUPER_ADMIN'))",
+                "is_granted('ROLE_CONTRIBUTEUR') and (is_granted('ROLE_SUPER_ADMIN'))",
             $operations['admin_write']->getSecurity(),
         );
         $this->assertSame(
-            "is_granted('ROLE_API_USER_SESSION') and is_granted('ROLE_WRITE_API') and is_granted('ROLE_CONTRIBUTEUR')",
+            "is_granted('ROLE_API_USER_SESSION') and is_granted('ROLE_CONTRIBUTEUR')",
             $operations['admin_front']->getSecurity(),
         );
     }

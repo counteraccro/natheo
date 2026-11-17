@@ -160,11 +160,13 @@ class ApiTokenServiceTest extends AppWebTestCase
 
         $result = $this->apiTokenService->createApiToken([
             'name' => 'back-office',
+            'roles' => [ApiTokenRole::ADMIN->value],
             'scope' => ApiTokenScope::BACK_OFFICE->value,
             'internal' => true,
         ]);
         $this->assertSame(ApiTokenScope::BACK_OFFICE, $result['apiToken']->getScope());
         $this->assertFalse($result['apiToken']->isInternal());
+        $this->assertSame([ApiTokenRole::READ->value], $result['apiToken']->getRoles(), 'Aucun rôle enregistré');
 
         $result = $this->apiTokenService->createApiToken(['name' => 'sans role', 'roles' => ['ROLE_INCONNU']]);
         $this->assertEquals([ApiTokenRole::READ->value], $result['apiToken']->getRoles());
@@ -195,13 +197,18 @@ class ApiTokenServiceTest extends AppWebTestCase
         $this->assertEquals($hash, $apiToken->getToken());
         $this->assertTrue($apiToken->isDisabled());
         $this->assertNull($apiToken->getExpiresAt());
-        $this->assertContains(ApiTokenRole::ADMIN->value, $apiToken->getRoles());
         $this->assertSame(ApiTokenScope::BACK_OFFICE, $apiToken->getScope(), 'Type absent : type conservé');
+        $this->assertNotContains(ApiTokenRole::ADMIN->value, $apiToken->getRoles(), 'Token back-office sans rôle');
 
         $this->apiTokenService->updateApiToken($apiToken, ['name' => 'edit', 'scope' => 'inconnu']);
         $this->assertSame(ApiTokenScope::BACK_OFFICE, $apiToken->getScope());
-        $this->apiTokenService->updateApiToken($apiToken, ['name' => 'edit', 'scope' => 'public']);
+        $this->apiTokenService->updateApiToken($apiToken, [
+            'name' => 'edit',
+            'scope' => 'public',
+            'roles' => [ApiTokenRole::ADMIN->value],
+        ]);
         $this->assertSame(ApiTokenScope::PUBLIC, $apiToken->getScope());
+        $this->assertContains(ApiTokenRole::ADMIN->value, $apiToken->getRoles());
     }
 
     /**

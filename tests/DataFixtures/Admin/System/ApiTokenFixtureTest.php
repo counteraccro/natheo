@@ -66,7 +66,7 @@ class ApiTokenFixtureTest extends AppWebTestCase
         $internal = $this->em->getRepository(ApiToken::class)->findBy(['internal' => true]);
         $this->assertCount(1, $internal, 'Un seul token interne du back-office');
         $this->assertSame(ApiTokenScope::BACK_OFFICE, $internal[0]->getScope());
-        $this->assertContains(ApiTokenRole::ADMIN->value, $internal[0]->getRoles());
+        $this->assertNotContains(ApiTokenRole::ADMIN->value, $internal[0]->getRoles());
         $this->assertFalse($internal[0]->isDisabled());
     }
 }

@@ -105,7 +105,8 @@ class ApiTokenService extends AppAdminService
                 $translator->trans('api_token.grid.scope', domain: 'api_token') => $this->getScopes()[
                     $apiToken->getScope()->value
                 ],
-                $translator->trans('api_token.grid.roles', domain: 'api_token') => implode(', ', $apiToken->getRoles()),
+                $translator->trans('api_token.grid.roles', domain: 'api_token') =>
+                    $apiToken->getScope() === ApiTokenScope::PUBLIC ? implode(', ', $apiToken->getRoles()) : '',
                 $translator->trans('api_token.grid.expires_at', domain: 'api_token') => $this->formatExpiresAt(
                     $apiToken,
                 ),
@@ -340,8 +341,11 @@ class ApiTokenService extends AppAdminService
     {
         $apiToken->setName(trim((string) ($data['name'] ?? '')));
         $apiToken->setComment(isset($data['comment']) ? (string) $data['comment'] : null);
-        $apiToken->setRoles($this->filterRoles((array) ($data['roles'] ?? [])));
         $apiToken->setScope(ApiTokenScope::tryFrom((string) ($data['scope'] ?? '')) ?? $apiToken->getScope());
+        // Un token back-office n'a pas de rôle : les droits sont ceux de l'utilisateur de la session
+        $apiToken->setRoles(
+            $apiToken->getScope() === ApiTokenScope::PUBLIC ? $this->filterRoles((array) ($data['roles'] ?? [])) : [],
+        );
         $apiToken->setExpiresAt($this->parseExpiresAt($data['expiresAt'] ?? null));
     }
 

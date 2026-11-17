@@ -43,27 +43,24 @@ class AdminOperationTest extends AppApiV2TestCase
     }
 
     /**
-     * Droits de l'utilisateur plafonnés par le token : lecture avec ROLE_READ_API, écriture avec ROLE_WRITE_API,
-     * rôle du module, condition propre à l'opération
+     * Droits de l'utilisateur, quel que soit le rôle du token back-office : rôle du module, condition propre
+     * à l'opération
      * @return void
      */
     public function testRoles(): void
     {
         $contributor = $this->createUserContributeur(['disabled' => false, 'anonymous' => false]);
-        $read = $this->adminSessionHeaders($contributor, 'ROLE_READ_API');
-        $write = $this->adminSessionHeaders($contributor, 'ROLE_WRITE_API');
+        $contributorHeaders = $this->adminSessionHeaders($contributor);
         $admin = $this->adminSessionHeaders($this->createUserAdmin(['disabled' => false, 'anonymous' => false]));
         $member = $this->adminSessionHeaders($this->createUser(['disabled' => false, 'anonymous' => false]));
 
-        $this->assertEquals(200, $this->requestV2('GET', self::ITEM, headers: $read)->getStatusCode());
+        $this->assertEquals(200, $this->requestV2('GET', self::ITEM, headers: $contributorHeaders)->getStatusCode());
         $this->assertMatchesResourceItemJsonSchema(AdminProbe::class);
-        $this->assertProblem($this->requestV2('PATCH', self::ITEM, body: ['name' => 'x'], headers: $read), 403);
-
         $this->assertEquals(
             200,
-            $this->requestV2('PATCH', self::ITEM, body: ['name' => 'x'], headers: $write)->getStatusCode(),
+            $this->requestV2('PATCH', self::ITEM, body: ['name' => 'x'], headers: $contributorHeaders)->getStatusCode(),
         );
-        $this->assertProblem($this->requestV2('DELETE', self::ITEM, headers: $write), 403);
+        $this->assertProblem($this->requestV2('DELETE', self::ITEM, headers: $contributorHeaders), 403);
 
         $this->assertEquals(204, $this->requestV2('DELETE', self::ITEM, headers: $admin)->getStatusCode());
         $this->assertProblem($this->requestV2('GET', self::ITEM, headers: $member), 403);

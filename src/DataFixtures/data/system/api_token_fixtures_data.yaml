@@ -26,7 +26,6 @@ api_token_front:
 # Token interne du back-office : sa valeur aléatoire n'est conservée nulle part, le serveur ouvre les sessions depuis l'entité
 api_token_back_office:
     name: 'Back-office'
-    roles: ROLE_ADMIN_API
     scope: BACK_OFFICE
     internal: true
     comment: "Token interne utilisé par le back-office pour ouvrir la session API de l'utilisateur connecté"

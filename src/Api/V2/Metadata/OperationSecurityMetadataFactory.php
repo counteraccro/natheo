@@ -14,7 +14,6 @@ use ApiPlatform\Metadata\ErrorResource;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\Metadata\Resource\Factory\ResourceMetadataCollectionFactoryInterface;
 use ApiPlatform\Metadata\Resource\ResourceMetadataCollection;
-use App\Enum\Admin\System\ApiToken\ApiTokenRole;
 use App\Enum\Admin\System\ApiToken\ApiTokenScope;
 use App\Security\ApiUser;
 use App\Service\Admin\Module\AdminModuleRegistry;
@@ -97,7 +96,7 @@ final readonly class OperationSecurityMetadataFactory implements ResourceMetadat
 
     /**
      * Condition d'une opération d'administration : session ouverte par un token back-office (ou public avec
-     * frontAllowed), rôle du token selon la méthode et rôle du module
+     * frontAllowed) et rôle du module ; les droits sont ceux de l'utilisateur
      * @param Operation $operation
      * @param mixed $module
      * @param bool $isAdminPath
@@ -127,11 +126,6 @@ final readonly class OperationSecurityMetadataFactory implements ResourceMetadat
             $conditions[] = $this->isGranted(ApiTokenScope::BACK_OFFICE->getRole());
         }
         $conditions[] = $this->isGranted(ApiUser::ROLE_USER_SESSION);
-        $conditions[] = $this->isGranted(
-            in_array($operation->getMethod(), ['GET', 'HEAD'], true)
-                ? ApiTokenRole::READ->value
-                : ApiTokenRole::WRITE->value,
-        );
         $conditions[] = $this->isGranted($definition->role);
         return implode(' and ', $conditions);
     }

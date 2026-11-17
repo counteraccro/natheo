@@ -84,16 +84,15 @@ class AppApiV2TestCase extends AppApiTestCase
      * En-tête Authorization avec l'access token d'une nouvelle session de l'utilisateur ouverte par un token
      * back-office, à passer dans $headers de requestV2()
      * @param User $user
-     * @param string $role rôle du token back-office de la session
      * @return array<string, string>
      */
-    protected function adminSessionHeaders(User $user, string $role = 'ROLE_ADMIN_API'): array
+    protected function adminSessionHeaders(User $user): array
     {
         $accessToken = self::getFaker()->uuid();
         $this->createUserSession([
             'user' => $user,
             'apiToken' => $this->createApiToken([
-                'roles' => [$role],
+                'roles' => [],
                 'scope' => ApiTokenScope::BACK_OFFICE,
                 'disabled' => false,
             ]),
@@ -104,15 +103,14 @@ class AppApiV2TestCase extends AppApiTestCase
 
     /**
      * En-tête Authorization avec un token back-office seul, sans session, à passer dans $headers de requestV2()
-     * @param string $role
      * @return array<string, string>
      */
-    protected function backOfficeTokenHeaders(string $role = 'ROLE_ADMIN_API'): array
+    protected function backOfficeTokenHeaders(): array
     {
         $token = self::getFaker()->uuid();
         $this->createApiToken([
             'token' => TokenHasher::hash($token),
-            'roles' => [$role],
+            'roles' => [],
             'scope' => ApiTokenScope::BACK_OFFICE,
             'disabled' => false,
         ]);
