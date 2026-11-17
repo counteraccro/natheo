@@ -33,10 +33,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
                 normalizationContext: ['groups' => ['option_system:read']],
                 security: "is_granted('ROLE_READ_API')",
                 provider: OptionSystemProvider::class,
-                parameters: [
-                    new LocaleParameter(),
-                    new AcceptLanguageParameter(),
-                ],
+                parameters: [new LocaleParameter(), new AcceptLanguageParameter()],
             ),
             new GetCollection(
                 name: 'option_system_get_collection',
@@ -47,10 +44,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
                 normalizationContext: ['groups' => ['option_system:list']],
                 security: "is_granted('ROLE_READ_API')",
                 provider: OptionSystemCollectionProvider::class,
-                parameters: [
-                    new LocaleParameter(),
-                    new AcceptLanguageParameter(),
-                ],
+                parameters: [new LocaleParameter(), new AcceptLanguageParameter()],
             ),
         ],
     ),

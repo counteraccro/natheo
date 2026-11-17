@@ -59,8 +59,9 @@ class ApiTokenRepository extends ServiceEntityRepository
      */
     public function getAllPaginate(int $page, int $limit, array $queryParams): Paginator
     {
-        $query = $this->createQueryBuilder(ApiToken::DEFAULT_ALIAS)
-            ->where(ApiToken::DEFAULT_ALIAS . '.internal = false');
+        $query = $this->createQueryBuilder(ApiToken::DEFAULT_ALIAS)->where(
+            ApiToken::DEFAULT_ALIAS . '.internal = false',
+        );
         $this->applyOrdering($query, ApiToken::class, $queryParams);
 
         if (isset($queryParams['search']) && $queryParams['search'] !== '') {

@@ -31,10 +31,7 @@ class ApiTokenControllerTest extends AppWebTestCase
         $this->client->loginUser($userSuperAdm, 'admin');
         $this->client->request('GET', $this->router->generate('admin_api_token_index'));
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains(
-            'h1',
-            $this->translator->trans('api_token.index.title', domain: 'api_token'),
-        );
+        $this->assertSelectorTextContains('h1', $this->translator->trans('api_token.index.title', domain: 'api_token'));
     }
 
     /**
@@ -154,10 +151,7 @@ class ApiTokenControllerTest extends AppWebTestCase
         $this->client->loginUser($userSuperAdm, 'admin');
         $this->client->request('GET', $this->router->generate('admin_api_token_add'));
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains(
-            'h1',
-            $this->translator->trans('api_token.add.title', domain: 'api_token'),
-        );
+        $this->assertSelectorTextContains('h1', $this->translator->trans('api_token.add.title', domain: 'api_token'));
 
         $this->client->request('GET', $this->router->generate('admin_api_token_update', ['id' => $apiToken->getId()]));
         $this->assertResponseIsSuccessful();

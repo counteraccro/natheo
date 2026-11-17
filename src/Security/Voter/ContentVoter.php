@@ -75,13 +75,17 @@ class ContentVoter extends Voter
      * @param Vote|null $vote
      * @return bool
      */
-    protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token, ?Vote $vote = null): bool
-    {
+    protected function voteOnAttribute(
+        string $attribute,
+        mixed $subject,
+        TokenInterface $token,
+        ?Vote $vote = null,
+    ): bool {
         $user = $token->getUser();
         if ($user instanceof ApiUser) {
             $user = $user->getUser();
         }
-        if (!$user instanceof User) {
+        if (!($user instanceof User)) {
             return false;
         }
 

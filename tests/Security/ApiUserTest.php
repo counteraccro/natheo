@@ -27,10 +27,7 @@ class ApiUserTest extends AppWebTestCase
         $this->assertNull($apiUser->getUser());
         $this->assertNull($apiUser->getSession());
         $this->assertSame($apiToken, $apiUser->getApiToken());
-        $this->assertEqualsCanonicalizing(
-            ['ROLE_WRITE_API', 'ROLE_READ_API', 'ROLE_API_PUBLIC'],
-            $apiUser->getRoles(),
-        );
+        $this->assertEqualsCanonicalizing(['ROLE_WRITE_API', 'ROLE_READ_API', 'ROLE_API_PUBLIC'], $apiUser->getRoles());
         $this->assertSame('api_token_' . $apiToken->getId(), $apiUser->getUserIdentifier());
     }
 

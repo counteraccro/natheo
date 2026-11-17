@@ -40,10 +40,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
                 normalizationContext: ['groups' => ['menu:read']],
                 security: "is_granted('ROLE_READ_API')",
                 provider: MenuProvider::class,
-                parameters: [
-                    new LocaleParameter(),
-                    new AcceptLanguageParameter(),
-                ],
+                parameters: [new LocaleParameter(), new AcceptLanguageParameter()],
             ),
             new GetCollection(
                 name: 'menu_get_collection',

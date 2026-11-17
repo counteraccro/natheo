@@ -191,7 +191,11 @@ class ApiTokenService extends AppAdminService
                 'url' => $router->generate('admin_api_token_delete', ['id' => $apiToken->getId()]),
                 'ajax' => true,
                 'confirm' => true,
-                'msgConfirm' => $translator->trans('api_token.confirm.delete.message', ['label' => $label], 'api_token'),
+                'msgConfirm' => $translator->trans(
+                    'api_token.confirm.delete.message',
+                    ['label' => $label],
+                    'api_token',
+                ),
                 'csrf' => $csrfTokenManager->getToken(self::CSRF_TOKEN_DELETE)->getValue(),
             ];
         }

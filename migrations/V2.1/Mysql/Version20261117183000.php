@@ -27,7 +27,9 @@ final class Version20261117183000 extends AbstractMigration
     {
         $this->skipIf(!($this->platform instanceof AbstractMySQLPlatform), 'Migration réservée à MySQL / MariaDB');
 
-        $this->addSql("ALTER TABLE api_token ADD scope VARCHAR(20) DEFAULT 'public' NOT NULL, ADD internal TINYINT DEFAULT 0 NOT NULL");
+        $this->addSql(
+            "ALTER TABLE api_token ADD scope VARCHAR(20) DEFAULT 'public' NOT NULL, ADD internal TINYINT DEFAULT 0 NOT NULL",
+        );
     }
 
     public function down(Schema $schema): void

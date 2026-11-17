@@ -47,8 +47,8 @@ class AdminModuleRegistryTest extends AppWebTestCase
      */
     private function createModule(string $id): AdminModuleInterface
     {
-        return new class ($id)readonly  implements AdminModuleInterface {
-            public function __construct(private string $id) {}
+        return new class ($id) implements AdminModuleInterface {
+            public function __construct(private readonly string $id) {}
 
             public function getDefinition(): AdminModule
             {

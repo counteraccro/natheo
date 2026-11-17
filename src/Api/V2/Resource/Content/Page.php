@@ -44,10 +44,7 @@ use Symfony\Component\Validator\Constraints as Assert;
                 normalizationContext: ['groups' => ['page:read']],
                 security: "is_granted('ROLE_READ_API')",
                 provider: PageProvider::class,
-                parameters: [
-                    new LocaleParameter(),
-                    new AcceptLanguageParameter(),
-                ],
+                parameters: [new LocaleParameter(), new AcceptLanguageParameter()],
             ),
             new GetCollection(
                 name: 'page_get_collection',

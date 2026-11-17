@@ -106,7 +106,10 @@ class ContentVoterTest extends AppWebTestCase
             VoterInterface::ACCESS_DENIED,
             $this->vote($this->createUserContributeur(), $tag, ContentVoter::EDIT),
         );
-        $this->assertSame(VoterInterface::ACCESS_GRANTED, $this->vote($this->createUserAdmin(), $tag, ContentVoter::EDIT));
+        $this->assertSame(
+            VoterInterface::ACCESS_GRANTED,
+            $this->vote($this->createUserAdmin(), $tag, ContentVoter::EDIT),
+        );
     }
 
     /**
@@ -134,7 +137,10 @@ class ContentVoterTest extends AppWebTestCase
 
         $this->assertSame(VoterInterface::ACCESS_ABSTAIN, $this->vote($user, $page, 'OTHER_ATTRIBUTE'));
         $this->assertSame(VoterInterface::ACCESS_ABSTAIN, $this->vote($user, $user, ContentVoter::EDIT));
-        $this->assertSame(VoterInterface::ACCESS_DENIED, $this->voter->vote(new NullToken(), $page, [ContentVoter::EDIT]));
+        $this->assertSame(
+            VoterInterface::ACCESS_DENIED,
+            $this->voter->vote(new NullToken(), $page, [ContentVoter::EDIT]),
+        );
     }
 
     /**

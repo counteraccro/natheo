@@ -266,7 +266,10 @@ class ApiTokenController extends AppAdminController
             $apiToken = $apiTokenService->findOneById(ApiToken::class, $id);
             if ($apiToken === null || $apiToken->isInternal()) {
                 return $this->json(
-                    ['success' => false, 'msg' => $translator->trans('api_token.update.not_found_title', domain: 'api_token')],
+                    [
+                        'success' => false,
+                        'msg' => $translator->trans('api_token.update.not_found_title', domain: 'api_token'),
+                    ],
                     Response::HTTP_NOT_FOUND,
                 );
             }
