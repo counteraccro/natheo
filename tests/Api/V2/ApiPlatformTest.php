@@ -213,10 +213,19 @@ class ApiPlatformTest extends AppApiV2TestCase
         $content = $this->decode($response);
         $this->assertArrayHasKey('/api/v2/info', $content['paths']);
         $this->assertArrayHasKey('Bearer', $content['components']['securitySchemes']);
+        $this->assertSame([], preg_grep('#^/api/v2/admin/#', array_keys($content['paths'])), 'Administration masquée');
+        $this->assertStringNotContainsString('AdminProbe', (string) $response->getContent());
+        $this->assertStringNotContainsString('Permissions', (string) $response->getContent());
+        $this->assertNotContains('AdminProbe', array_column($content['tags'] ?? [], 'name'));
+
+        $hydra = $this->requestV2('GET', '/docs.jsonld', self::HEADER_NONE);
+        $this->assertEquals(200, $hydra->getStatusCode());
+        $this->assertStringContainsString('Probe', (string) $hydra->getContent());
+        $this->assertStringNotContainsString('AdminProbe', (string) $hydra->getContent());
 
         foreach ($content['paths'] as $path => $operations) {
             foreach ($operations as $method => $operation) {
-                if (!is_array($operation) || in_array($operation['tags'][0] ?? '', ['Probe', 'AdminProbe'], true)) {
+                if (!is_array($operation) || ($operation['tags'] ?? []) === ['Probe']) {
                     continue;
                 }
                 $this->assertDoesNotMatchRegularExpression(
