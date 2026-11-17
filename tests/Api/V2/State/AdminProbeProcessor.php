@@ -35,4 +35,13 @@ final class AdminProbeProcessor extends AbstractAdminProcessor
         $data->updatedAt = AdminProbe::UPDATED_AT_AFTER_WRITE;
         return $data;
     }
+
+    /**
+     * @param mixed $resource
+     * @return string|null
+     */
+    protected function getLogLabel(mixed $resource): ?string
+    {
+        return $resource instanceof AdminProbe ? $resource->name : null;
+    }
 }

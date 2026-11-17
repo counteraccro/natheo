@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace App\Tests\Api\V2\Admin;
 
 use App\Api\V2\Concurrency\Etag;
+use App\Entity\Admin\System\ActionLog;
 use App\Tests\Api\V2\AppApiV2TestCase;
 use App\Tests\Api\V2\Resource\Admin\AdminProbe;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -88,6 +89,50 @@ class AdminConventionsTest extends AppApiV2TestCase
         );
         $this->assertNull($this->client->getResponse()->headers->get('ETag'));
         $this->assertSame(Etag::of(new AdminProbe()), $etag);
+    }
+
+    /**
+     * Chaque écriture réussie est tracée dans le journal, une écriture refusée ne l'est pas
+     * @return void
+     */
+    public function testActionLog(): void
+    {
+        $user = $this->createUserAdmin(['disabled' => false, 'anonymous' => false]);
+        $headers = $this->adminSessionHeaders($user);
+        $item = '/admin/probes/' . AdminProbe::EXISTING_ID;
+
+        $this->requestV2('PATCH', $item, body: ['name' => 'x'], headers: ['HTTP_IF_MATCH' => '"perime"', ...$headers]);
+        $this->assertSame([], $this->em->getRepository(ActionLog::class)->findAll());
+
+        $this->assertEquals(
+            200,
+            $this->requestV2('PATCH', $item, body: ['name' => 'renommé'], headers: $headers)->getStatusCode(),
+        );
+        $this->assertEquals(
+            201,
+            $this->requestV2('POST', '/admin/probes', body: ['name' => 'nouveau'], headers: $headers)->getStatusCode(),
+        );
+        $this->assertEquals(204, $this->requestV2('DELETE', $item, headers: $headers)->getStatusCode());
+
+        $logs = array_map(
+            fn(ActionLog $log) => [
+                $log->getModule(),
+                $log->getAction(),
+                $log->getResource(),
+                $log->getResourceId(),
+                $log->getLabel(),
+                $log->getUser()?->getId(),
+            ],
+            $this->em->getRepository(ActionLog::class)->findBy([], ['id' => 'ASC']),
+        );
+        $this->assertSame(
+            [
+                ['probe', 'update', 'AdminProbe', '1', 'renommé', $user->getId()],
+                ['probe', 'create', 'AdminProbe', '4', 'nouveau', $user->getId()],
+                ['probe', 'delete', 'AdminProbe', '1', 'alpha', $user->getId()],
+            ],
+            $logs,
+        );
     }
 
     /**
