@@ -283,6 +283,30 @@ class ApiTokenService extends AppAdminService
     }
 
     /**
+     * Token interne du back-office, créé s'il manque (installation mise à jour sans les fixtures)
+     * @return ApiToken
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getInternalBackOfficeToken(): ApiToken
+    {
+        /** @var ApiToken|null $apiToken */
+        $apiToken = $this->findOneBy(ApiToken::class, 'internal', true);
+        if ($apiToken !== null) {
+            return $apiToken;
+        }
+
+        $apiToken = (new ApiToken())
+            ->setName('Back-office')
+            ->setScope(ApiTokenScope::BACK_OFFICE)
+            ->setInternal(true)
+            ->setDisabled(false)
+            ->setToken(TokenHasher::hash($this->generateToken()));
+        $this->save($apiToken);
+        return $apiToken;
+    }
+
+    /**
      * Met à jour les informations d'un ApiToken, sans modifier ni le token ni son statut
      * @param ApiToken $apiToken
      * @param array $data

@@ -247,4 +247,18 @@ class ApiTokenServiceTest extends AppWebTestCase
         $this->assertEquals(ApiTokenScope::PUBLIC->value, $result['scope']);
         $this->assertNull($result['lastUsedAt']);
     }
+
+    /**
+     * Token interne créé une seule fois quand il manque, puis relu
+     * @return void
+     */
+    public function testGetInternalBackOfficeToken(): void
+    {
+        $apiToken = $this->apiTokenService->getInternalBackOfficeToken();
+        $this->assertNotNull($apiToken->getId());
+        $this->assertTrue($apiToken->isInternal());
+        $this->assertSame(ApiTokenScope::BACK_OFFICE, $apiToken->getScope());
+        $this->assertFalse($apiToken->isDisabled());
+        $this->assertSame($apiToken, $this->apiTokenService->getInternalBackOfficeToken());
+    }
 }
