@@ -20,6 +20,8 @@ export function buildUiLabels(t: UiTranslator): UiLabels {
     toast: { close: t('toast.close'), region: t('toast.region') },
     button: { loading: t('button.loading') },
     field: { required: t('field.required') },
+    errorSummary: { title: (count) => t('error_summary.title', { count }) },
+    tabs: { hasErrors: t('tabs.has_errors') },
     input: { counter: (count, max) => t('input.counter', { count, max }) },
     colorInput: { picker: t('color_input.picker'), hex: t('color_input.hex') },
     pagination: {

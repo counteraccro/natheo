@@ -9,4 +9,6 @@ export interface TabItem {
   id: string;
   label: string;
   icon?: IconName;
+  /** Onglet marqué comme contenant des erreurs */
+  invalid?: boolean;
 }

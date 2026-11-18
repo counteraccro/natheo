@@ -3,21 +3,57 @@
  * @author Gourdon Aymeric
  * @version 1.0
  * Onglets (motif « tabs ») : focus itinérant, flèches, Début et Fin, activation par Entrée ou Espace ;
- * chaque panneau est monté à sa première ouverture (emplacement nommé par l'id de l'onglet)
+ * chaque panneau est monté à sa première ouverture (emplacement nommé par l'id de l'onglet) ; dans un UiForm,
+ * errorPrefixes marque les onglets dont un champ est en erreur et les ouvre depuis le récapitulatif
  */
-import { nextTick, reactive, ref, useId, watch } from 'vue';
+import { computed, nextTick, onBeforeUnmount, reactive, ref, useId, watch } from 'vue';
 import UiIcon from '@/vue/Components/Global/Ui/UiIcon.vue';
+import { useFormContext } from '@/vue/Composables/Admin/Ui/formContext';
+import { useUiLabels } from '@/vue/Composables/Admin/Ui/useUiLabels';
 import type { TabItem } from '@/ts/Admin/Ui/Display/UiTabs.type';
 
-const props = defineProps<{ tabs: TabItem[]; label: string }>();
+const props = defineProps<{
+  tabs: TabItem[];
+  label: string;
+  /** Préfixe des chemins de propriété de chaque onglet (fr → translations[fr]) */
+  errorPrefixes?: Record<string, string>;
+}>();
 const active = defineModel<string>({ required: true });
 
 const uid = useId();
 const tabId = (id: string): string => `ui-tab-${uid}-${id}`;
 const panelId = (id: string): string => `ui-tabpanel-${uid}-${id}`;
 const focused = ref(active.value);
-const visited = reactive(new Set<string>([active.value]));
 const list = ref<HTMLElement | null>(null);
+const labels = useUiLabels();
+const form = useFormContext();
+// Dans un formulaire, tous les panneaux sont montés : chaque champ déclare son libellé au récapitulatif des erreurs
+const visited = reactive(new Set<string>(form && props.errorPrefixes ? props.tabs.map((tab) => tab.id) : [active.value]));
+
+const invalid = computed(
+  () =>
+    new Set(
+      props.tabs
+        .filter(
+          (tab) =>
+            tab.invalid ||
+            (form && props.errorPrefixes?.[tab.id] && form.errors.hasErrorsIn(props.errorPrefixes[tab.id]))
+        )
+        .map((tab) => tab.id)
+    )
+);
+
+// Ouvre l'onglet qui contient le champ visé par le récapitulatif des erreurs
+const removeRevealer = form?.addRevealer((path) => {
+  const tab = props.tabs.find((item) => {
+    const prefix = props.errorPrefixes?.[item.id];
+    return prefix && (path === prefix || path.startsWith(`${prefix}.`) || path.startsWith(`${prefix}[`));
+  });
+  if (!tab || tab.id === active.value) return false;
+  active.value = tab.id;
+  return true;
+});
+onBeforeUnmount(() => removeRevealer?.());
 
 watch(active, (id) => {
   visited.add(id);
@@ -65,6 +101,10 @@ const onKeydown = (event: KeyboardEvent): void => {
       >
         <UiIcon v-if="tab.icon" :name="tab.icon" class="size-4" />
         <slot name="tab" :tab="tab">{{ tab.label }}</slot>
+        <template v-if="invalid.has(tab.id)">
+          <UiIcon name="exclamation-circle" class="size-3.5 text-danger" />
+          <span class="sr-only">({{ labels.tabs.hasErrors }})</span>
+        </template>
       </button>
     </div>
     <template v-for="tab in tabs" :key="tab.id">

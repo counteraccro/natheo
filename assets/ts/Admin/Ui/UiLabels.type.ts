@@ -14,6 +14,8 @@ export interface UiLabels {
   toast: { close: string; region: string };
   button: { loading: string };
   field: { required: string };
+  errorSummary: { title: (count: number) => string };
+  tabs: { hasErrors: string };
   input: { counter: (count: number, max: number) => string };
   colorInput: { picker: string; hex: string };
   pagination: {

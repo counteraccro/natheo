@@ -3,6 +3,7 @@ import { h, nextTick } from 'vue';
 import { mount } from '@vue/test-utils';
 import UiTabs from '@/vue/Components/Admin/Ui/Display/UiTabs.vue';
 import UiBadge from '@/vue/Components/Admin/Ui/Display/UiBadge.vue';
+import { withLabels } from '../../__tests__/support';
 
 afterEach(() => {
   document.body.innerHTML = '';
@@ -15,16 +16,19 @@ const tabs = [
 ];
 
 const mountTabs = () =>
-  mount(UiTabs, {
-    props: {
-      tabs,
-      label: 'Langues',
-      modelValue: 'fr',
-      'onUpdate:modelValue': (v: string) => wrapper.setProps({ modelValue: v }),
-    },
-    slots: { fr: () => h('p', 'Panneau FR'), en: () => h('p', 'Panneau EN'), es: () => h('p', 'Panneau ES') },
-    attachTo: document.body,
-  });
+  mount(
+    UiTabs,
+    withLabels({
+      props: {
+        tabs,
+        label: 'Langues',
+        modelValue: 'fr',
+        'onUpdate:modelValue': (v: string) => wrapper.setProps({ modelValue: v }),
+      },
+      slots: { fr: () => h('p', 'Panneau FR'), en: () => h('p', 'Panneau EN'), es: () => h('p', 'Panneau ES') },
+      attachTo: document.body,
+    })
+  );
 let wrapper: ReturnType<typeof mountTabs>;
 
 describe('UiTabs', () => {
@@ -56,6 +60,16 @@ describe('UiTabs', () => {
     expect(tab(2).attributes('aria-selected')).toBe('true');
     expect(wrapper.text()).toContain('Panneau ES');
   });
+});
+
+it('marque un onglet en erreur', () => {
+  const wrapper = mount(
+    UiTabs,
+    withLabels({
+      props: { tabs: [{ id: 'fr', label: 'Français', invalid: true }], label: 'Langues', modelValue: 'fr' },
+    })
+  );
+  expect(wrapper.get('[role="tab"]').text()).toContain('tabs.has_errors');
 });
 
 describe('UiBadge', () => {
