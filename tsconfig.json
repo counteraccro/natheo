@@ -17,7 +17,8 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["assets/*"]
+      "@/*": ["assets/*"],
+      "@ui": ["assets/vue/Components/Admin/Ui/index.ts"]
     }
   },
   "include": [

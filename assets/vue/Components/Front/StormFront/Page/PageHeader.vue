@@ -9,7 +9,7 @@ import { useFrontContext } from '@/vue/Composables/Front/useFrontContext';
 import { useBreadcrumb } from '@/vue/Composables/Front/useBreadcrumb';
 import { useEditLink } from '@/vue/Composables/Front/useEditLink';
 import { useFormat } from '@/vue/Composables/Front/useFormat';
-import FrontIcon from '@/vue/Components/Front/Global/FrontIcon.vue';
+import UiIcon from '@/vue/Components/Global/Ui/UiIcon.vue';
 import TagList from '@/vue/Components/Front/StormFront/Thread/TagList.vue';
 import type { Page } from '@/ts/Front/Api/Page.type';
 
@@ -81,7 +81,7 @@ const article = computed(() => props.page.category !== 'page');
         :href="editLink"
         class="mt-6 inline-flex min-h-10 items-center gap-2 rounded-sf px-3.5 text-[0.92rem] font-semibold text-fg no-underline shadow-[inset_0_0_0_1.5px_currentColor]"
       >
-        <FrontIcon name="edit" class="size-4.5" />
+        <UiIcon name="edit" class="size-4.5" />
         {{ translate.main.editLink }}
       </a>
     </div>

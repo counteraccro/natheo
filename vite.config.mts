@@ -48,6 +48,7 @@ export default defineConfig(({ command }) => ({
 
   resolve: {
     alias: {
+      '@ui': fileURLToPath(new URL('./assets/vue/Components/Admin/Ui', import.meta.url)),
       '@': fileURLToPath(new URL('./assets', import.meta.url)),
       // Alias pour Vue 3 avec support complet (Options API + Composition API + template compiler)
       vue: 'vue/dist/vue.esm-bundler.js',

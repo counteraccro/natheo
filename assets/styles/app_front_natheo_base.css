@@ -9,6 +9,7 @@
 /* Seuls les fichiers du thème sont scannés */
 @source '../vue/controllers/Front/NatheoBase';
 @source '../vue/Components/Front/NatheoBase';
+@source '../vue/Components/Global/Ui';
 @source '../../templates/front/natheo_base';
 
 @custom-variant dark (&:where(.dark, .dark *));

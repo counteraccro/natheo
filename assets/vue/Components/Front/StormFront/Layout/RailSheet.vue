@@ -6,7 +6,7 @@
  */
 import { onBeforeUnmount, onMounted, ref } from 'vue';
 import { useFrontContext } from '@/vue/Composables/Front/useFrontContext';
-import FrontIcon from '@/vue/Components/Front/Global/FrontIcon.vue';
+import UiIcon from '@/vue/Components/Global/Ui/UiIcon.vue';
 
 defineProps<{ id: string; title: string; wide: boolean }>();
 const emit = defineEmits<{ close: [] }>();
@@ -52,7 +52,7 @@ onBeforeUnmount(() => document.removeEventListener('keydown', onKeydown));
         @click="emit('close')"
       >
         <span class="sr-only">{{ translate.header.closeMenu }}</span>
-        <FrontIcon name="close" class="size-5.5" />
+        <UiIcon name="close" class="size-5.5" />
       </button>
     </div>
     <slot />

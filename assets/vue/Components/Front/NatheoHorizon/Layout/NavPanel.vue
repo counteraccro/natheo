@@ -17,7 +17,7 @@ let closeOpenPanel: (() => void) | null = null;
  */
 import { nextTick, onBeforeUnmount, onMounted, provide, readonly, ref, useId, watch } from 'vue';
 import { isMouse, useHoverDelay } from '@/vue/Composables/Front/useHoverDelay';
-import FrontIcon from '@/vue/Components/Front/Global/FrontIcon.vue';
+import UiIcon from '@/vue/Components/Global/Ui/UiIcon.vue';
 
 const props = defineProps<{ label?: string; current?: boolean; align?: 'left' | 'right'; hover?: boolean }>();
 const id = useId();
@@ -149,7 +149,7 @@ onBeforeUnmount(() => {
     >
       <span v-if="props.current" class="size-2 rounded-[2px] bg-mod-third" aria-hidden="true" />
       <slot name="label">{{ props.label }}</slot>
-      <FrontIcon name="chevron-down" class="size-4 transition-transform" :class="{ 'rotate-180': open }" />
+      <UiIcon name="chevron-down" class="size-4 transition-transform" :class="{ 'rotate-180': open }" />
     </button>
     <div
       v-show="open"

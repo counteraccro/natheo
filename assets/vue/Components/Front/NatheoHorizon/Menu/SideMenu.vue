@@ -7,7 +7,7 @@
 import { computed } from 'vue';
 import { useFrontContext } from '@/vue/Composables/Front/useFrontContext';
 import { useMenus } from '@/vue/Composables/Front/useMenus';
-import FrontIcon from '@/vue/Components/Front/Global/FrontIcon.vue';
+import UiIcon from '@/vue/Components/Global/Ui/UiIcon.vue';
 import MenuLink from '@/vue/Components/Front/NatheoHorizon/Menu/MenuLink.vue';
 import NestedMenuList from '@/vue/Components/Front/NatheoHorizon/Menu/NestedMenuList.vue';
 import type { Menu } from '@/ts/Front/Api/Menu.type';
@@ -30,7 +30,7 @@ const NESTED = 'ml-2 border-l border-line pl-4';
             class="flex min-h-10 cursor-pointer list-none items-center justify-between gap-2.5 font-semibold [&::-webkit-details-marker]:hidden"
           >
             {{ element.label }}
-            <FrontIcon name="chevron-down" class="size-4 transition-transform group-open:rotate-180" />
+            <UiIcon name="chevron-down" class="size-4 transition-transform group-open:rotate-180" />
           </summary>
           <NestedMenuList :elements="element.children" :link-class="LINK" :nested-class="NESTED" :class="NESTED" />
         </details>
