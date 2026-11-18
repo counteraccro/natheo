@@ -46,7 +46,6 @@ class TranslationKeyConventionTest extends TestCase
         'notification',
         'option_system',
         'page',
-        'sidebar',
         'sql_manager',
         'tag',
         'translate',
@@ -64,7 +63,6 @@ class TranslationKeyConventionTest extends TestCase
         'options_user',
         'pagedemo',
         'response',
-        'sidebar',
     ];
 
     private const LOCALES = ['fr', 'en', 'es'];

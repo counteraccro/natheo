@@ -56,12 +56,6 @@ class AppFixtures extends Fixture
     protected const GROUP_DEVTOOLS = 'devTools';
 
     /**
-     * Lié à tous les éléments de sidebar
-     * @var string
-     */
-    protected const GROUP_SIDEBAR_ELEMENT = 'sidebarElement';
-
-    /**
      * Lié à tous les éléments de system
      * @var string
      */
