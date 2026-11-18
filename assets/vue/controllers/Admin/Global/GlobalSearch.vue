@@ -44,13 +44,17 @@ export default defineComponent({
       type: Number,
       required: true,
     },
+    entities: {
+      type: Array as PropType<GlobalSearchEntity[]>,
+      required: true,
+    },
   },
 
   emits: [],
 
   data() {
     return {
-      activeTab: 'page' as GlobalSearchEntity,
+      activeTab: (this.entities[0] ?? 'page') as GlobalSearchEntity,
       total: 0 as number,
       loading: {
         page: false,
@@ -71,11 +75,7 @@ export default defineComponent({
   },
 
   mounted() {
-    this.globalSearch('page', this.search, this.page, this.limit, false);
-    this.globalSearch('menu', this.search, this.page, this.limit, false);
-    this.globalSearch('faq', this.search, this.page, this.limit, false);
-    this.globalSearch('tag', this.search, this.page, this.limit, false);
-    this.globalSearch('user', this.search, this.page, this.limit, false);
+    this.entities.forEach((entity) => this.globalSearch(entity, this.search, this.page, this.limit, false));
   },
 
   methods: {
@@ -146,7 +146,7 @@ export default defineComponent({
 
   <div class="mb-4 mt-4 border-b border-gray-200 dark:border-gray-700" id="tab-search">
     <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-styled-tab" role="tablist">
-      <li class="me-2" role="presentation">
+      <li v-if="entities.includes('page')" class="me-2" role="presentation">
         <button
           class="inline-block ps-4 pt-2 pe-4 border-b-2 rounded-t-sm cursor-pointer"
           :class="[results.page === null ? 'pb-3' : 'pb-2', tabClass('page')]"
@@ -180,7 +180,7 @@ export default defineComponent({
           </span>
         </button>
       </li>
-      <li class="me-2" role="presentation">
+      <li v-if="entities.includes('menu')" class="me-2" role="presentation">
         <button
           class="inline-block ps-4 pt-2 pe-4 border-b-2 rounded-t-sm cursor-pointer"
           :class="[results.menu === null ? 'pb-3' : 'pb-2', tabClass('menu')]"
@@ -214,7 +214,7 @@ export default defineComponent({
           </span>
         </button>
       </li>
-      <li class="me-2" role="presentation">
+      <li v-if="entities.includes('faq')" class="me-2" role="presentation">
         <button
           class="inline-block ps-4 pt-2 pe-4 border-b-2 rounded-t-sm cursor-pointer"
           :class="[results.faq === null ? 'pb-3' : 'pb-2', tabClass('faq')]"
@@ -248,7 +248,7 @@ export default defineComponent({
           </span>
         </button>
       </li>
-      <li class="me-2" role="presentation">
+      <li v-if="entities.includes('tag')" class="me-2" role="presentation">
         <button
           class="inline-block ps-4 pt-2 pe-4 border-b-2 rounded-t-sm cursor-pointer"
           :class="[results.tag === null ? 'pb-3' : 'pb-2', tabClass('tag')]"
@@ -282,7 +282,7 @@ export default defineComponent({
           </span>
         </button>
       </li>
-      <li class="me-2" role="presentation">
+      <li v-if="entities.includes('user')" class="me-2" role="presentation">
         <button
           class="inline-block ps-4 pt-2 pe-4 border-b-2 rounded-t-sm cursor-pointer"
           :class="[results.user === null ? 'pb-3' : 'pb-2', tabClass('user')]"
@@ -320,7 +320,13 @@ export default defineComponent({
   </div>
 
   <div id="tab-search-content">
-    <div v-show="activeTab === 'page'" id="tab-page" role="tabpanel" aria-labelledby="nav-0-tab">
+    <div
+      v-if="entities.includes('page')"
+      v-show="activeTab === 'page'"
+      id="tab-page"
+      role="tabpanel"
+      aria-labelledby="nav-0-tab"
+    >
       <div v-if="loading.page">
         <SkeletonSearchResult :rows="limit" />
       </div>
@@ -353,7 +359,13 @@ export default defineComponent({
       </div>
     </div>
 
-    <div v-show="activeTab === 'menu'" id="tab-menu" role="tabpanel" aria-labelledby="nav-1-tab">
+    <div
+      v-if="entities.includes('menu')"
+      v-show="activeTab === 'menu'"
+      id="tab-menu"
+      role="tabpanel"
+      aria-labelledby="nav-1-tab"
+    >
       <div v-if="loading.menu">
         <SkeletonSearchResult :rows="limit" />
       </div>
@@ -385,7 +397,13 @@ export default defineComponent({
       </div>
     </div>
 
-    <div v-show="activeTab === 'faq'" id="tab-faq" role="tabpanel" aria-labelledby="nav-2-tab">
+    <div
+      v-if="entities.includes('faq')"
+      v-show="activeTab === 'faq'"
+      id="tab-faq"
+      role="tabpanel"
+      aria-labelledby="nav-2-tab"
+    >
       <div v-if="loading.faq">
         <SkeletonSearchResult :rows="limit" />
       </div>
@@ -417,7 +435,13 @@ export default defineComponent({
       </div>
     </div>
 
-    <div v-show="activeTab === 'tag'" id="tab-tag" role="tabpanel" aria-labelledby="nav-3-tab">
+    <div
+      v-if="entities.includes('tag')"
+      v-show="activeTab === 'tag'"
+      id="tab-tag"
+      role="tabpanel"
+      aria-labelledby="nav-3-tab"
+    >
       <div v-if="loading.tag">
         <SkeletonSearchResult :rows="limit" />
       </div>
@@ -450,7 +474,13 @@ export default defineComponent({
       </div>
     </div>
 
-    <div v-show="activeTab === 'user'" id="tab-user" role="tabpanel" aria-labelledby="nav-4-tab">
+    <div
+      v-if="entities.includes('user')"
+      v-show="activeTab === 'user'"
+      id="tab-user"
+      role="tabpanel"
+      aria-labelledby="nav-4-tab"
+    >
       <div v-if="loading.user">
         <SkeletonSearchResult :rows="limit" />
       </div>

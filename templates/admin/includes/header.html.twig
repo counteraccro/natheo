@@ -83,7 +83,8 @@
            {% endif %}
 
             <!-- New Content Dropdown -->
-            {% if is_granted('ROLE_CONTRIBUTEUR') %}
+            {% set shortcuts = getAdminShortcuts() %}
+            {% if shortcuts is not empty %}
             <div class="hidden sm:block">
                 <button id="newContentButton" data-dropdown-toggle="newContentDropdown" class="btn btn-sm btn-primary" type="button">
                     <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -97,40 +98,16 @@
                 <!-- Dropdown menu -->
                 <div id="newContentDropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-56 border-1 border-gray-200">
                     <ul class="py-2 text-sm text-gray-700">
+                        {% for shortcut in shortcuts %}
                         <li>
-                            <a href="{{ path('admin_page_add') }}" class="flex items-center px-4 py-3 hover:bg-gray-100">
-                                <svg class="w-5 h-5 mr-3 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                            <a href="{{ shortcut.url }}" class="flex items-center px-4 py-3 hover:bg-gray-100">
+                                <svg class="w-5 h-5 mr-3 text-primary" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ shortcut.icon }}"/>
                                 </svg>
-                                <span>{{ 'global.header.new.page' | trans({}, 'global') }}</span>
+                                <span>{{ shortcut.label }}</span>
                             </a>
                         </li>
-                        <li>
-                            <a href="{{ path('admin_menu_add') }}" class="flex items-center px-4 py-3 hover:bg-gray-100">
-                                <svg class="w-5 h-5 mr-3 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                                </svg>
-                                <span>{{ 'global.header.new.menu' | trans({}, 'global') }}</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ path('admin_faq_add') }}" class="flex items-center px-4 py-3 hover:bg-gray-100">
-                                <svg class="w-5 h-5 mr-3 text-primary" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.529 9.988a2.502 2.502 0 1 1 5 .191A2.441 2.441 0 0 1 12 12.582V14m-.01 3.008H12M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
-                                </svg>
-
-                                <span>{{ 'global.header.new.faq' | trans({}, 'global') }}</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ path('admin_tag_add') }}" class="flex items-center px-4 py-3 hover:bg-gray-100">
-                                <svg class="w-5 h-5 mr-3 text-primary" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.583 8.445h.01M10.86 19.71l-6.573-6.63a.993.993 0 0 1 0-1.4l7.329-7.394A.98.98 0 0 1 12.31 4l5.734.007A1.968 1.968 0 0 1 20 5.983v5.5a.992.992 0 0 1-.316.727l-7.44 7.5a.974.974 0 0 1-1.384.001Z"/>
-                                </svg>
-
-                                <span>{{ 'global.header.new.tag' | trans({}, 'global') }}</span>
-                            </a>
-                        </li>
+                        {% endfor %}
                     </ul>
                 </div>
             </div>

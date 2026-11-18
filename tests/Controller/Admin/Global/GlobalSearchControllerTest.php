@@ -42,7 +42,7 @@ class GlobalSearchControllerTest extends AppWebTestCase
         $this->createUser();
         $contributeur = $this->createUserContributeur();
 
-        $user = $this->createUser();
+        $user = $this->createUserSuperAdmin();
         $this->client->loginUser($user, 'admin');
         $this->client->request(
             'GET',
@@ -96,5 +96,41 @@ class GlobalSearchControllerTest extends AppWebTestCase
                 $this->assertEquals(1, $content['result']['total']);
             }
         }
+    }
+
+    /**
+     * Un contributeur ne voit pas le module des utilisateurs : ni onglet, ni résultat
+     * @return void
+     */
+    public function testSearchHiddenModule(): void
+    {
+        $admin = $this->createUserAdmin();
+        $contributeur = $this->createUserContributeur();
+        $this->client->loginUser($contributeur, 'admin');
+
+        $this->client->request('POST', $this->router->generate('admin_search_index'));
+        $this->assertResponseIsSuccessful();
+        $props = json_decode(
+            $this->client
+                ->getCrawler()
+                ->filter('[data-symfony--ux-vue--vue-component-value="Admin/Global/GlobalSearch"]')
+                ->attr('data-symfony--ux-vue--vue-props-value'),
+            true,
+        );
+        $this->assertSame(['page', 'menu', 'faq', 'tag'], $props['entities']);
+
+        $this->client->request(
+            'GET',
+            $this->router->generate('admin_search_global', [
+                'entity' => 'user',
+                'page' => 1,
+                'limit' => 10,
+                'search' => $admin->getEmail(),
+            ]),
+        );
+        $this->assertResponseIsSuccessful();
+        $content = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertSame([], $content['result']['elements']);
+        $this->assertSame(0, $content['result']['total']);
     }
 }

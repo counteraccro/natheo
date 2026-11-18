@@ -18,6 +18,11 @@ use App\Entity\Admin\System\User;
 use App\Enum\Admin\Content\Page\PageContentType;
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Enum\Admin\System\Options\OptionUser;
+use App\Service\Admin\Module\Core\FaqModule;
+use App\Service\Admin\Module\Core\MenuModule;
+use App\Service\Admin\Module\Core\PageModule;
+use App\Service\Admin\Module\Core\TagModule;
+use App\Service\Admin\Module\Core\UserModule;
 use App\Service\Admin\System\User\PersonalData;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Psr\Container\ContainerExceptionInterface;
@@ -25,6 +30,18 @@ use Psr\Container\NotFoundExceptionInterface;
 
 class GlobalSearchService extends AppAdminService
 {
+    /**
+     * Module du back-office de chaque type d'élément recherché, dans l'ordre des onglets
+     * @var array<string, string>
+     */
+    public const array ENTITY_MODULES = [
+        'page' => PageModule::ID,
+        'menu' => MenuModule::ID,
+        'faq' => FaqModule::ID,
+        'tag' => TagModule::ID,
+        'user' => UserModule::ID,
+    ];
+
     /**
      * Recherche globale
      * @param string $entity

@@ -49,4 +49,5 @@ export interface DashboardRoles {
   isContributeur: boolean;
   isAdmin: boolean;
   isSuperAdmin: boolean;
+  canSeeHelpFirstConnexion: boolean;
 }

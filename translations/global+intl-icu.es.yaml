@@ -5,10 +5,6 @@ global.role.super_admin: Superadministrador
 global.footer.licence: Copyright &copy; 2023-{year} &mdash; Desarrollado con Nathéo CMS
 global.breadcrumb.dashboard: Panel de control
 global.header.new.button: Nuevo
-global.header.new.page: Nueva página
-global.header.new.menu: Nuevo menú
-global.header.new.faq: Nueva FAQ
-global.header.new.tag: Nueva etiqueta
 global.header.search.placeholder: Buscar una página, una etiqueta, un menú...
 global.header.menu.my_account: Mi cuenta
 global.header.menu.my_options: Mis opciones

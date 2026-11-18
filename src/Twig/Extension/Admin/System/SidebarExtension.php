@@ -5,7 +5,7 @@ declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
  * @version 3.0
- * Sidebar de l'administration, construite depuis les modules et les entrées de menu déclarés
+ * Sidebar et bouton « Nouveau » de l'administration, construits depuis les modules et les entrées de menu déclarés
  */
 
 namespace App\Twig\Extension\Admin\System;
@@ -48,6 +48,29 @@ class SidebarExtension
         );
 
         return $twig->render('admin/includes/sidebar.html.twig', ['nodes' => $tree]);
+    }
+
+    /**
+     * Raccourcis du bouton « Nouveau » du header, avec l'icône de l'entrée parente quand elle existe
+     * @return array<int, array{url: string, label: string, icon: string}>
+     */
+    #[AsTwigFunction('getAdminShortcuts')]
+    public function getAdminShortcuts(): array
+    {
+        $icons = [];
+        foreach ($this->menuBuilder->getFlatList() as $node) {
+            $icons[$node->item->id] = $node->item->icon;
+        }
+
+        $shortcuts = [];
+        foreach ($this->menuBuilder->getShortcuts() as $node) {
+            $shortcuts[] = [
+                'url' => (string) $node->url,
+                'label' => $node->label,
+                'icon' => $icons[$node->item->parent ?? ''] ?? $node->item->icon,
+            ];
+        }
+        return $shortcuts;
     }
 
     /**

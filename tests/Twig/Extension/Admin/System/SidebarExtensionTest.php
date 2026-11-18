@@ -130,4 +130,30 @@ class SidebarExtensionTest extends AppWebTestCase
         $this->assertSelectorNotExists('#sidebar a.active');
         $this->assertSelectorNotExists('#sidebar .submenu.open');
     }
+
+    /**
+     * Le bouton « Nouveau » liste les raccourcis visibles dans l'ordre du menu, il est masqué sans raccourci
+     * @return void
+     */
+    public function testShortcuts(): void
+    {
+        $this->client->loginUser($this->createUserContributeur(), 'admin');
+        $this->client->request('GET', $this->router->generate('admin_dashboard_index'));
+        $this->assertResponseIsSuccessful();
+        $links = $this->client->getCrawler()->filter('#newContentDropdown a')->each(fn($link) => $link->attr('href'));
+        $expected = array_map(fn($route) => $this->router->generate($route), [
+            'admin_menu_add',
+            'admin_page_add',
+            'admin_tag_add',
+            'admin_faq_add',
+        ]);
+        $this->assertSame($expected, $links);
+
+        $user = $this->createUser();
+        $this->generateDefaultOptionUser($user);
+        $this->client->loginUser($user, 'admin');
+        $this->client->request('GET', $this->router->generate('admin_dashboard_index'));
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorNotExists('#newContentButton');
+    }
 }
