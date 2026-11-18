@@ -147,9 +147,7 @@ const displayed = computed(() =>
 );
 const busy = computed(() => props.loading || mode.value === 'pending');
 const skeletonRows = computed(() => Math.min(itemsPerPage.value, props.rows.length || 5));
-const colspan = computed(
-  () => shownColumns.value.length + (props.actionsFor ? 1 : 0) + (props.selectable ? 1 : 0)
-);
+const colspan = computed(() => shownColumns.value.length + (props.actionsFor ? 1 : 0) + (props.selectable ? 1 : 0));
 
 // Tri
 const ariaSort = (column: DataTableColumn): 'ascending' | 'descending' | 'none' | undefined => {
@@ -183,8 +181,7 @@ const selectedSet = computed(() => new Set(selected.value));
 const pageKeys = computed(() => displayed.value.map(keyOf));
 const pageSelected = computed(() => pageKeys.value.filter((key) => selectedSet.value.has(key)).length);
 const allPageSelected = computed(() => pageKeys.value.length > 0 && pageSelected.value === pageKeys.value.length);
-const labelOf = (row: T): string =>
-  props.rowLabel?.(row) ?? cellText(row[props.columns[0]?.key ?? props.rowKey]);
+const labelOf = (row: T): string => props.rowLabel?.(row) ?? cellText(row[props.columns[0]?.key ?? props.rowKey]);
 const sortedBulkActions = computed(() =>
   [...(props.bulkActions ?? [])].sort((a, b) => Number(!!a.danger) - Number(!!b.danger))
 );
@@ -277,7 +274,9 @@ const clearSelection = async (): Promise<void> => {
         v-else-if="mode === 'pending'"
         class="flex items-center gap-2.5 border-b border-line bg-primary-soft px-4 py-2 text-sm text-on-primary-soft"
       >
-        <span class="size-3.5 animate-[ui-spin_.7s_linear_infinite] rounded-full border-2 border-current border-r-transparent" />
+        <span
+          class="size-3.5 animate-[ui-spin_.7s_linear_infinite] rounded-full border-2 border-current border-r-transparent"
+        />
         <span>{{ labels.dataTable.searchPending }}</span>
       </div>
       <div
@@ -404,7 +403,11 @@ const clearSelection = async (): Promise<void> => {
             <tr
               v-for="row in displayed"
               :key="keyOf(row)"
-              :class="selectable && selectedSet.has(keyOf(row)) && 'bg-[color-mix(in_srgb,var(--primary-soft)_70%,transparent)] hover:bg-primary-soft'"
+              :class="
+                selectable &&
+                selectedSet.has(keyOf(row)) &&
+                'bg-[color-mix(in_srgb,var(--primary-soft)_70%,transparent)] hover:bg-primary-soft'
+              "
               class="group/row transition-colors duration-100 hover:bg-[color-mix(in_srgb,var(--surface)_55%,transparent)] has-[[aria-expanded=true]]:bg-[color-mix(in_srgb,var(--primary-soft)_55%,transparent)] max-md:grid max-md:grid-cols-[minmax(0,1fr)_auto] max-md:gap-x-3 max-md:gap-y-1.5 max-md:border-b max-md:border-line max-md:px-4 max-md:py-3.5"
             >
               <td

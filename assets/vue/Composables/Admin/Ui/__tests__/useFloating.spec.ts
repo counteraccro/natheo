@@ -18,7 +18,12 @@ describe('computePosition', () => {
   });
 
   it("le garde sous le bouton s'il ne tient nulle part", () => {
-    const position = computePosition({ top: 100, left: 600, width: 32, height: 32 }, { width: 220, height: 900 }, viewport, 'bottom-end');
+    const position = computePosition(
+      { top: 100, left: 600, width: 32, height: 32 },
+      { width: 220, height: 900 },
+      viewport,
+      'bottom-end'
+    );
     expect(position.side).toBe('bottom');
   });
 
@@ -32,7 +37,12 @@ describe('computePosition', () => {
   });
 
   it('centre une infobulle au-dessus', () => {
-    const position = computePosition({ top: 300, left: 500, width: 40, height: 40 }, { width: 100, height: 30 }, viewport, 'top-center');
+    const position = computePosition(
+      { top: 300, left: 500, width: 40, height: 40 },
+      { width: 100, height: 30 },
+      viewport,
+      'top-center'
+    );
     expect(position).toMatchObject({ side: 'top', top: 262, left: 470, arrowX: 50 });
   });
 });

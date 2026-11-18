@@ -25,7 +25,11 @@ const control = useFieldControl();
     <select
       v-model="model"
       v-bind="{ ...control, ...$attrs }"
-      :class="[CONTROL_CLASSES, 'cursor-pointer appearance-none pr-8', size === 'sm' ? 'h-8 pl-2.5 text-sm' : 'h-9 pl-3']"
+      :class="[
+        CONTROL_CLASSES,
+        'cursor-pointer appearance-none pr-8',
+        size === 'sm' ? 'h-8 pl-2.5 text-sm' : 'h-9 pl-3',
+      ]"
     >
       <option v-if="placeholder" :value="null" disabled>{{ placeholder }}</option>
       <slot>

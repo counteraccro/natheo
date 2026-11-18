@@ -59,7 +59,10 @@ describe('UiDataTable : sélection multiple', () => {
     await wrapper.get('th input[type="checkbox"]').setValue(true);
     expect(wrapper.props('selected')).toEqual([1, 2]);
     const region = wrapper.get('[role="region"]');
-    await region.findAll('button').find((b) => b.text() === 'data_table.select_all(3)')!.trigger('click');
+    await region
+      .findAll('button')
+      .find((b) => b.text() === 'data_table.select_all(3)')!
+      .trigger('click');
     expect(wrapper.emitted('selectAll')).toHaveLength(1);
 
     await wrapper.setProps({ rows: page2 });
@@ -78,7 +81,11 @@ describe('UiDataTable : sélection multiple', () => {
 
   it('vide la sélection et rend le focus à la case d’en-tête', async () => {
     const wrapper = mountTable([1]);
-    await wrapper.get('[role="region"]').findAll('button').find((b) => b.text() === 'data_table.clear_selection')!.trigger('click');
+    await wrapper
+      .get('[role="region"]')
+      .findAll('button')
+      .find((b) => b.text() === 'data_table.clear_selection')!
+      .trigger('click');
     await nextTick();
     await nextTick();
     expect(wrapper.props('selected')).toEqual([]);

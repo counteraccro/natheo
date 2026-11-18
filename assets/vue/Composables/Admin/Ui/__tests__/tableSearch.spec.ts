@@ -2,7 +2,10 @@ import { describe, expect, it } from 'vitest';
 import { filterRows, fold, highlight } from '@/vue/Composables/Admin/Ui/tableSearch';
 import { tokenizeSql } from '@/vue/Composables/Admin/Ui/sqlTokens';
 
-const columns = [{ key: 'label', label: 'Libellé' }, { key: 'pages', label: 'Pages' }];
+const columns = [
+  { key: 'label', label: 'Libellé' },
+  { key: 'pages', label: 'Pages' },
+];
 const rows = [
   { id: 1, label: 'Écologie', pages: 3 },
   { id: 2, label: 'Vue', pages: 12 },

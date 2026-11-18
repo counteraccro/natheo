@@ -22,7 +22,11 @@ watchPostEffect(() => {
 </script>
 
 <template>
-  <label v-if="label" class="inline-flex cursor-pointer items-start gap-2.5 text-fg" :class="disabled && 'cursor-not-allowed opacity-60'">
+  <label
+    v-if="label"
+    class="inline-flex cursor-pointer items-start gap-2.5 text-fg"
+    :class="disabled && 'cursor-not-allowed opacity-60'"
+  >
     <input
       ref="input"
       v-model="model"

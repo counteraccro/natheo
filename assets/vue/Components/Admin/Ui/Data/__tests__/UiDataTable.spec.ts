@@ -26,7 +26,10 @@ const actions: DataTableAction[] = [
 ];
 
 const mountTable = (props: Record<string, unknown> = {}) =>
-  mount(UiDataTable, withLabels({ props: { label: 'Tags', columns, rows, totalItems: 2, ...props }, attachTo: document.body }));
+  mount(
+    UiDataTable,
+    withLabels({ props: { label: 'Tags', columns, rows, totalItems: 2, ...props }, attachTo: document.body })
+  );
 
 const bodyRows = (wrapper: ReturnType<typeof mountTable>) => wrapper.findAll('tbody tr');
 

@@ -74,7 +74,10 @@ onMounted(() => {
       <UiIcon v-if="icon" :name="icon" :class="iconClass" />
       <slot />
     </span>
-    <span v-if="loading" class="absolute size-4 animate-[ui-spin_.7s_linear_infinite] rounded-full border-2 border-current border-r-transparent">
+    <span
+      v-if="loading"
+      class="absolute size-4 animate-[ui-spin_.7s_linear_infinite] rounded-full border-2 border-current border-r-transparent"
+    >
       <span class="sr-only">{{ labels.button.loading }}</span>
     </span>
   </a>
@@ -83,7 +86,10 @@ onMounted(() => {
       <UiIcon v-if="icon" :name="icon" :class="iconClass" />
       <slot />
     </span>
-    <span v-if="loading" class="absolute size-4 animate-[ui-spin_.7s_linear_infinite] rounded-full border-2 border-current border-r-transparent">
+    <span
+      v-if="loading"
+      class="absolute size-4 animate-[ui-spin_.7s_linear_infinite] rounded-full border-2 border-current border-r-transparent"
+    >
       <span class="sr-only">{{ labels.button.loading }}</span>
     </span>
   </button>

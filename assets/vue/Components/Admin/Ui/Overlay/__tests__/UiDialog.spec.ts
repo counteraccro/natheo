@@ -27,7 +27,9 @@ const Host = defineComponent({
     const open = ref(false);
     return () => [
       h('button', { id: 'opener', onClick: () => (open.value = true) }, 'Ouvrir'),
-      h(UiDialog, { open: open.value, 'onUpdate:open': (v: boolean) => (open.value = v), title: 'Titre' }, () => h('p', 'Contenu')),
+      h(UiDialog, { open: open.value, 'onUpdate:open': (v: boolean) => (open.value = v), title: 'Titre' }, () =>
+        h('p', 'Contenu')
+      ),
     ];
   },
 });
@@ -71,7 +73,10 @@ describe('UiConfirmDialog', () => {
   });
 
   it('émet confirm sans se fermer, cancel en se fermant', async () => {
-    const wrapper = mount(UiConfirmDialog, withLabels({ props: { open: true, title: 'Valider' }, attachTo: document.body }));
+    const wrapper = mount(
+      UiConfirmDialog,
+      withLabels({ props: { open: true, title: 'Valider' }, attachTo: document.body })
+    );
     await nextTick();
     const [cancel, confirm] = wrapper.get('footer').findAll('button');
     await confirm.trigger('click');

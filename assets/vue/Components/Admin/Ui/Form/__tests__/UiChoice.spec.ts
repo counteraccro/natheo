@@ -24,7 +24,11 @@ describe('UiCheckbox', () => {
 describe('UiSwitch', () => {
   it('bascule au clic et expose son état', async () => {
     const wrapper = mount(UiSwitch, {
-      props: { label: 'Actif', modelValue: false, 'onUpdate:modelValue': (v: boolean) => wrapper.setProps({ modelValue: v }) },
+      props: {
+        label: 'Actif',
+        modelValue: false,
+        'onUpdate:modelValue': (v: boolean) => wrapper.setProps({ modelValue: v }),
+      },
     });
     const button = wrapper.get('[role="switch"]');
     expect(button.attributes('aria-checked')).toBe('false');
@@ -37,7 +41,12 @@ describe('UiSwitch', () => {
 describe('UiSelect', () => {
   it('liste ses options et transmet la valeur choisie', async () => {
     const wrapper = mount(UiSelect, {
-      props: { options: [{ value: 'fr', label: 'Français' }, { value: 'en', label: 'English' }] },
+      props: {
+        options: [
+          { value: 'fr', label: 'Français' },
+          { value: 'en', label: 'English' },
+        ],
+      },
     });
     expect(wrapper.findAll('option')).toHaveLength(2);
     await wrapper.get('select').setValue('en');

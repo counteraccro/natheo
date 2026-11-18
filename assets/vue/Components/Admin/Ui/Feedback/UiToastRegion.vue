@@ -85,7 +85,10 @@ onBeforeUnmount(() => countdowns.forEach((countdown) => clearTimeout(countdown.t
       @focusin="pause(item.id)"
       @focusout="resume(item.id)"
     >
-      <span class="grid size-7 shrink-0 place-items-center rounded-full" :class="[FEEDBACK_SOFT[item.type], FEEDBACK_TEXT[item.type]]">
+      <span
+        class="grid size-7 shrink-0 place-items-center rounded-full"
+        :class="[FEEDBACK_SOFT[item.type], FEEDBACK_TEXT[item.type]]"
+      >
         <UiIcon :name="FEEDBACK_ICONS[item.type]" class="size-4" />
       </span>
       <div class="min-w-0 flex-1">

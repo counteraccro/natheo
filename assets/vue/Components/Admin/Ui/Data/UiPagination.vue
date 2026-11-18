@@ -40,7 +40,13 @@ const PAGE_CLASSES =
       <span class="flex items-center gap-2">
         <label :for="perPageId">{{ labels.pagination.itemsPerPage }}</label>
         <span class="w-[72px]">
-          <UiSelect :id="perPageId" :model-value="itemsPerPage" :options="options" size="sm" @update:model-value="changePerPage" />
+          <UiSelect
+            :id="perPageId"
+            :model-value="itemsPerPage"
+            :options="options"
+            size="sm"
+            @update:model-value="changePerPage"
+          />
         </span>
       </span>
       <nav :aria-label="labels.pagination.nav" class="flex items-center gap-1">

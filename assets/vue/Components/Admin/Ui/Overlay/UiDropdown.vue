@@ -36,9 +36,7 @@ const trigger = ref<HTMLElement | null>(null);
 const panel = ref<HTMLElement | null>(null);
 
 const items = (): HTMLElement[] =>
-  panel.value
-    ? [...panel.value.querySelectorAll<HTMLElement>('[role^="menuitem"]:not([aria-disabled="true"])')]
-    : [];
+  panel.value ? [...panel.value.querySelectorAll<HTMLElement>('[role^="menuitem"]:not([aria-disabled="true"])')] : [];
 
 const focusItem = (index: number): void => {
   const list = items();

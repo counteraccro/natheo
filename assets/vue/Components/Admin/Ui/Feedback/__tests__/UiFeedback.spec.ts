@@ -15,7 +15,10 @@ describe('UiAlert', () => {
   });
 
   it('se ferme sur demande', async () => {
-    const wrapper = mount(UiAlert, withLabels({ props: { dismissible: true, title: 'Tag utilisé' }, slots: { default: 'Sur 12 pages' } }));
+    const wrapper = mount(
+      UiAlert,
+      withLabels({ props: { dismissible: true, title: 'Tag utilisé' }, slots: { default: 'Sur 12 pages' } })
+    );
     expect(wrapper.text()).toContain('Tag utilisé');
     await wrapper.get('[aria-label="alert.close"]').trigger('click');
     expect(wrapper.emitted('close')).toHaveLength(1);

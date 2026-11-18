@@ -16,7 +16,12 @@ const tabs = [
 
 const mountTabs = () =>
   mount(UiTabs, {
-    props: { tabs, label: 'Langues', modelValue: 'fr', 'onUpdate:modelValue': (v: string) => wrapper.setProps({ modelValue: v }) },
+    props: {
+      tabs,
+      label: 'Langues',
+      modelValue: 'fr',
+      'onUpdate:modelValue': (v: string) => wrapper.setProps({ modelValue: v }),
+    },
     slots: { fr: () => h('p', 'Panneau FR'), en: () => h('p', 'Panneau EN'), es: () => h('p', 'Panneau ES') },
     attachTo: document.body,
   });
@@ -55,7 +60,11 @@ describe('UiTabs', () => {
 
 describe('UiBadge', () => {
   it('affiche un état avec son point ou un compteur', () => {
-    expect(mount(UiBadge, { props: { tone: 'success' }, slots: { default: 'Actif' } }).find('[aria-hidden]').exists()).toBe(true);
+    expect(
+      mount(UiBadge, { props: { tone: 'success' }, slots: { default: 'Actif' } })
+        .find('[aria-hidden]')
+        .exists()
+    ).toBe(true);
     expect(mount(UiBadge, { props: { count: 12 } }).text()).toBe('12');
   });
 });

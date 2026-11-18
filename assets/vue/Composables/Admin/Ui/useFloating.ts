@@ -66,7 +66,12 @@ export function useFloating(
   placement: FloatingPlacement,
   onDismiss: () => void
 ) {
-  const position = ref<FloatingPosition>({ top: 0, left: 0, side: placement.startsWith('top') ? 'top' : 'bottom', arrowX: 0 });
+  const position = ref<FloatingPosition>({
+    top: 0,
+    left: 0,
+    side: placement.startsWith('top') ? 'top' : 'bottom',
+    arrowX: 0,
+  });
 
   const update = (): void => {
     if (!reference.value || !floating.value) return;

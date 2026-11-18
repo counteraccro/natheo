@@ -38,7 +38,8 @@ provideField({
 <template>
   <div class="flex flex-col gap-1.5">
     <label :for="id" class="text-[13.5px] font-semibold text-fg" :class="hideLabel && 'sr-only'">
-      {{ label }}<template v-if="required"
+      {{ label
+      }}<template v-if="required"
         ><span class="ml-0.5 text-danger" aria-hidden="true">*</span
         ><span class="sr-only"> ({{ labels.field.required }})</span></template
       >
