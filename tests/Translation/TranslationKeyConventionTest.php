@@ -20,6 +20,7 @@ class TranslationKeyConventionTest extends TestCase
      */
     private const DOMAINS = [
         'admin_module',
+        'admin_ui',
         'advanced_options',
         'api_errors',
         'api_token',
