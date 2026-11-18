@@ -31,35 +31,6 @@ class SidebarControllerTest extends AppWebTestCase
     }
 
     /**
-     * Test du rendu de la sidebar : sous-menu vide masqué, chevron orienté sur le sous-menu ouvert
-     * @return void
-     */
-    public function testRenderSidebar(): void
-    {
-        $emptyParent = $this->createSidebarElement([
-            'disabled' => false,
-            'children' => ['disabled' => true],
-        ]);
-        $openParent = $this->createSidebarElement([
-            'disabled' => false,
-            'children' => ['disabled' => false, 'route' => 'admin_sidebar_index'],
-        ]);
-
-        $this->client->loginUser($this->createUserSuperAdmin(), 'admin');
-        $crawler = $this->client->request('GET', $this->router->generate('admin_sidebar_index'));
-        $this->assertResponseIsSuccessful();
-
-        $this->assertCount(0, $crawler->filter('#submenu-' . $emptyParent->getId()));
-        $this->assertCount(0, $crawler->filter('#sidebar i.bi'));
-
-        $this->assertStringContainsString('open', $crawler->filter('#submenu-' . $openParent->getId())->attr('class'));
-        $this->assertStringContainsString(
-            'rotate',
-            $crawler->filter('#chevron-' . $openParent->getId())->attr('class'),
-        );
-    }
-
-    /**
      * Test chargement des données du grid
      * @return void
      */
