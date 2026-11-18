@@ -26,6 +26,7 @@ yarn install
 yarn dev                # vite dev server with HMR (assets/, watches templates)
 yarn build              # vue-tsc type-check + vite build
 yarn type-check         # vue-tsc --noEmit only
+yarn test               # Vitest (specs in __tests__/ next to the code, excluded from vue-tsc)
 ```
 
 ## Architecture

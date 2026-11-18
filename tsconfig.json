@@ -27,5 +27,6 @@
     "assets/**/*.vue",
     "assets/**/*.js"
   ],
+  "exclude": ["assets/**/__tests__/**"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
