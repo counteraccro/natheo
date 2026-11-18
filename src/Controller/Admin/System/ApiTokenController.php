@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/admin/{_locale}/api-token', name: 'admin_api_token_', requirements: ['_locale' => '%app.supported_locales%'])]
-#[IsGranted('ROLE_SUPER_ADMIN')]
+#[IsGranted('ROLE_ADMIN')]
 class ApiTokenController extends AppAdminController
 {
     /**

@@ -29,7 +29,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
         requirements: ['_locale' => '%app.supported_locales%'],
     ),
 ]
-#[IsGranted('ROLE_SUPER_ADMIN')]
+#[IsGranted('ROLE_ADMIN')]
 class TranslationController extends AppAdminController
 {
     /**
