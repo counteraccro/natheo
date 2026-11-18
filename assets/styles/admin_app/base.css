@@ -57,6 +57,26 @@
         box-shadow: 1px 1px 0 0 var(--arrow-edge);
     }
 
+    /* Code couleur d'une modale de confirmation : bande en haut et contour */
+    dialog.ui-dialog[data-tone] {
+        outline: 1px solid color-mix(in srgb, var(--primary) 60%, transparent);
+    }
+
+    dialog.ui-dialog[data-tone]::before {
+        content: '';
+        display: block;
+        height: 3px;
+        background: var(--primary);
+    }
+
+    dialog.ui-dialog[data-tone='danger'] {
+        outline-color: color-mix(in srgb, var(--danger) 60%, transparent);
+    }
+
+    dialog.ui-dialog[data-tone='danger']::before {
+        background: var(--danger);
+    }
+
     dialog.ui-dialog::backdrop {
         background: rgb(17 17 20 / 0.5);
         backdrop-filter: blur(2px);
