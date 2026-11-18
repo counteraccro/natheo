@@ -49,3 +49,5 @@ export type {
   DataTableSort,
   DataTableSearchMode,
 } from '@/ts/Admin/Ui/Data/UiDataTable.type';
+export { useAppearance, setMode, setTheme } from '@/vue/Composables/Admin/Ui/useAppearance';
+export type { ColorMode, ThemeColor } from '@/ts/Admin/Layout/AdminHeader.type';
