@@ -33,6 +33,7 @@ Le format suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), avec un
 - Documentation de l'API v2 avec les opérations d'administration, ouverte aux administrateurs depuis la sidebar. La documentation publique `/api/v2/docs` ne les affiche pas ([#548](https://github.com/counteraccro/natheo/issues/548), [#550](https://github.com/counteraccro/natheo/issues/550))
 - Back-office : chaque module qui a plusieurs pages devient un sous-menu avec sa liste, sa création et ses autres pages (« Gestion des pages », « Nouvelle page »…). Sous « Tokens API », les entrées « Front » et « Back-office » listent les tokens d'un seul type, et le dossier « Commentaires » affiche le nombre de commentaires en attente de modération ([#550](https://github.com/counteraccro/natheo/issues/550))
 - API v2 : `GET /api/v2/admin/modules` et `GET /api/v2/admin/menu_items` donnent les modules et les entrées du menu visibles par l'utilisateur de la session ([#550](https://github.com/counteraccro/natheo/issues/550))
+- Design system du nouveau back-office pour les modules et les bundles : jetons des quatre thèmes en clair et en sombre, police Figtree, composants Vue importés depuis `@ui` (boutons, champs, modales, menus, onglets, alertes, notifications, grille de données avec recherche en deux temps et sélection multiple) et composants du layout ; catalogue sur `/admin/{locale}/design-system` en environnement dev ([#517](https://github.com/counteraccro/natheo/issues/517))
 
 ### Modifié
 
