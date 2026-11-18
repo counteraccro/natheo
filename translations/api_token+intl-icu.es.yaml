@@ -88,4 +88,3 @@ api_token.card.help.scope_public: 'Un token público sirve para el sitio públic
 api_token.card.help.scope_back_office: 'Un token de back-office sirve para conectar a un usuario. Las operaciones de administración se ejecutan después con los derechos de ese usuario.'
 api_token.doc.title: 'Documentación de la API'
 api_token.doc.description: 'Esta página describe todas las operaciones de la API v2. Las operaciones de administración no aparecen en la documentación pública y todavía pueden cambiar antes de la versión 2.2.'
-api_token.index.button.doc: 'Documentación de la API'

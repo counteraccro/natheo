@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Repository\Admin\System;
 
 use App\Entity\Admin\System\ApiToken;
+use App\Enum\Admin\System\ApiToken\ApiTokenScope;
 use App\Repository\Trait\OrderedQueryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -54,7 +55,7 @@ class ApiTokenRepository extends ServiceEntityRepository
      * Retourne la liste paginée des tokens, sans les tokens internes
      * @param int $page
      * @param int $limit
-     * @param array $queryParams
+     * @param array $queryParams search, orderField, order et scope (ApiTokenScope ou null pour tous les types)
      * @return Paginator
      */
     public function getAllPaginate(int $page, int $limit, array $queryParams): Paginator
@@ -68,6 +69,12 @@ class ApiTokenRepository extends ServiceEntityRepository
             $query
                 ->andWhere(ApiToken::DEFAULT_ALIAS . '.name like :search')
                 ->setParameter('search', '%' . $queryParams['search'] . '%');
+        }
+
+        if (($queryParams['scope'] ?? null) instanceof ApiTokenScope) {
+            $query
+                ->andWhere(ApiToken::DEFAULT_ALIAS . '.scope = :scope')
+                ->setParameter('scope', $queryParams['scope']->value);
         }
 
         $paginator = new Paginator($query->getQuery(), true);

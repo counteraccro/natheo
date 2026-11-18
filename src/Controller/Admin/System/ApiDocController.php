@@ -36,7 +36,6 @@ class ApiDocController extends AppAdminController
         $breadcrumb = [
             Breadcrumb::DOMAIN->value => 'api_token',
             Breadcrumb::BREADCRUMB->value => [
-                'api_token.index.title' => 'admin_api_token_index',
                 'api_token.doc.title' => '#',
             ],
         ];
