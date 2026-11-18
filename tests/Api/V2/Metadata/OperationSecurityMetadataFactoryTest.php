@@ -125,7 +125,12 @@ class OperationSecurityMetadataFactoryTest extends TestCase
         $module = new class implements AdminModuleInterface {
             public function getDefinition(): AdminModule
             {
-                return new AdminModule('tag', 'ROLE_CONTRIBUTEUR');
+                return new AdminModule('tag', 'ROLE_CONTRIBUTEUR', 'tag.label', 'tag.description');
+            }
+
+            public function getMenuItems(): array
+            {
+                return [];
             }
         };
 

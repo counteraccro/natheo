@@ -3,20 +3,21 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 2.0
  * Test du registre des modules du back-office
  */
 
 namespace App\Tests\Service\Admin\Module;
 
 use App\Service\Admin\Module\AdminModule;
-use App\Service\Admin\Module\AdminModuleInterface;
 use App\Service\Admin\Module\AdminModuleRegistry;
 use App\Tests\Api\V2\Module\ProbeModule;
 use App\Tests\AppWebTestCase;
 
 class AdminModuleRegistryTest extends AppWebTestCase
 {
+    use AdminModuleTestTrait;
+
     /**
      * Les modules marqués AsAdminModule sont lus par le registre du conteneur
      * @return void
@@ -25,6 +26,7 @@ class AdminModuleRegistryTest extends AppWebTestCase
     {
         $registry = $this->container->get(AdminModuleRegistry::class);
         $this->assertSame(ProbeModule::ID, $registry->get(ProbeModule::ID)?->id);
+        $this->assertInstanceOf(ProbeModule::class, $registry->getService(ProbeModule::ID));
         $this->assertNull($registry->get('inconnu'));
     }
 
@@ -34,26 +36,38 @@ class AdminModuleRegistryTest extends AppWebTestCase
      */
     public function testDuplicateModule(): void
     {
-        $module = $this->createModule('tag');
-        $registry = new AdminModuleRegistry([$module, $this->createModule('page'), $module]);
+        $module = $this->createTestModule('tag');
+        $registry = new AdminModuleRegistry([$module, $this->createTestModule('page'), $module]);
 
         $this->expectException(\LogicException::class);
         $registry->all();
     }
 
     /**
-     * @param string $id
-     * @return AdminModuleInterface
+     * Une route appartient au module de son préfixe, sauf si elle est en exception
+     * @return void
      */
-    private function createModule(string $id): AdminModuleInterface
+    public function testFindByRoute(): void
     {
-        return new class ($id) implements AdminModuleInterface {
-            public function __construct(private readonly string $id) {}
+        $user = new AdminModule(
+            'user',
+            'ROLE_SUPER_ADMIN',
+            'user.label',
+            'user.description',
+            routePrefixes: ['admin_user_'],
+            routeExceptions: ['admin_user_my_account'],
+        );
+        $registry = new AdminModuleRegistry([
+            $this->createTestModule('user', definition: $user),
+            $this->createTestModule(
+                'page',
+                definition: new AdminModule('page', 'ROLE_CONTRIBUTEUR', 'l', 'd', routePrefixes: ['admin_page_']),
+            ),
+        ]);
 
-            public function getDefinition(): AdminModule
-            {
-                return new AdminModule($this->id, 'ROLE_CONTRIBUTEUR');
-            }
-        };
+        $this->assertSame('user', $registry->findByRoute('admin_user_index')?->id);
+        $this->assertSame('page', $registry->findByRoute('admin_page_add')?->id);
+        $this->assertNull($registry->findByRoute('admin_user_my_account'));
+        $this->assertNull($registry->findByRoute('admin_tag_index'));
     }
 }

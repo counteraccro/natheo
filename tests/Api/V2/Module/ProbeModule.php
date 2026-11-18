@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Api\V2\Module;
 
+use App\Service\Admin\Module\AdminMenuItem;
 use App\Service\Admin\Module\AdminModule;
 use App\Service\Admin\Module\AdminModuleInterface;
 use App\Service\Admin\Module\AsAdminModule;
@@ -27,6 +28,19 @@ final class ProbeModule implements AdminModuleInterface
      */
     public function getDefinition(): AdminModule
     {
-        return new AdminModule(id: self::ID, role: 'ROLE_CONTRIBUTEUR');
+        return new AdminModule(
+            id: self::ID,
+            role: 'ROLE_CONTRIBUTEUR',
+            label: 'admin_module.module.probe.label',
+            description: 'admin_module.module.probe.description',
+        );
+    }
+
+    /**
+     * @return AdminMenuItem[]
+     */
+    public function getMenuItems(): array
+    {
+        return [];
     }
 }
