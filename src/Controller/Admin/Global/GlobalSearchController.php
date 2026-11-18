@@ -10,6 +10,7 @@ namespace App\Controller\Admin\Global;
 
 use App\Controller\Admin\AppAdminController;
 use App\Enum\Admin\Global\Breadcrumb;
+use App\Enum\Admin\Global\GlobalSearchEntity;
 use App\Enum\Admin\System\Options\OptionUser;
 use App\Service\Admin\GlobalSearchService;
 use App\Service\Admin\Module\AdminMenuBuilder;
@@ -58,10 +59,13 @@ class GlobalSearchController extends AppAdminController
             ],
             'limit' => intval($this->optionUserService->getValueByKey(OptionUser::OU_NB_ELEMENT->value)),
             'page' => 1,
-            'entities' => array_keys(
-                array_filter(
-                    GlobalSearchService::ENTITY_MODULES,
-                    fn($module) => $menuBuilder->isModuleVisible($module),
+            'entities' => array_values(
+                array_map(
+                    fn(GlobalSearchEntity $type) => $type->value,
+                    array_filter(
+                        GlobalSearchEntity::cases(),
+                        fn(GlobalSearchEntity $type) => $menuBuilder->isModuleVisible($type->getModule()),
+                    ),
                 ),
             ),
         ]);
@@ -91,7 +95,7 @@ class GlobalSearchController extends AppAdminController
         ?string $search = null,
     ): Response {
         $result = ['elements' => [], 'total' => 0];
-        $module = GlobalSearchService::ENTITY_MODULES[$entity] ?? null;
+        $module = GlobalSearchEntity::tryFrom((string) $entity)?->getModule();
         if ($search !== null && ($module === null || $menuBuilder->isModuleVisible($module))) {
             $result = $globalSearchService->globalSearch($entity, $search, $page, $limit);
         }
