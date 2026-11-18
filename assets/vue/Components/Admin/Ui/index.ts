@@ -39,3 +39,13 @@ export type { TabItem } from '@/ts/Admin/Ui/Display/UiTabs.type';
 export type { BadgeTone } from '@/ts/Admin/Ui/Display/UiBadge.type';
 export type { AlertVariant } from '@/ts/Admin/Ui/Feedback/UiAlert.type';
 export type { NotificationItem, NotificationType } from '@/ts/Toast/Toast.type';
+export { default as UiDropdownSeparator } from './Overlay/UiDropdownSeparator.vue';
+export { default as UiPagination } from './Data/UiPagination.vue';
+export { default as UiDataTable } from './Data/UiDataTable.vue';
+export type {
+  DataTableAction,
+  DataTableColumn,
+  DataTableRow,
+  DataTableSort,
+  DataTableSearchMode,
+} from '@/ts/Admin/Ui/Data/UiDataTable.type';
