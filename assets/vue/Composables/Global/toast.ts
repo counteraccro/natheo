@@ -2,12 +2,13 @@
  * @author Gourdon Aymeric
  * @version 1.0
  * Toasts de l'admin et de l'installation : état partagé par tous les îlots Vue de la page
- * (même instance de module), affiché par l'unique ToastContainer monté dans la base Twig
+ * (même instance de module), affiché par l'unique ToastContainer monté dans la base Twig ; notifications du nouveau
+ * back-office dans une file à part, affichée par UiToastRegion
  */
 import { reactive } from 'vue';
 import axios from 'axios';
 import { uiTrans } from '@/vue/Composables/Global/uiTranslate';
-import type { ToastItem, ToastType } from '@/ts/Toast/Toast.type';
+import type { NotificationItem, NotificationType, ToastItem, ToastType } from '@/ts/Toast/Toast.type';
 
 const DURATION = 3000;
 let lastId = 0;
@@ -63,4 +64,39 @@ export const toastRequestError = (error: unknown): void => {
   }
   const msg = axios.isAxiosError(error) ? error.response?.data?.msg : undefined;
   toastError(typeof msg === 'string' && msg !== '' ? msg : uiTrans('error'));
+};
+
+const NOTIFICATION_DURATION = 5000;
+let lastNotificationId = 0;
+
+export const notificationState = reactive<{ items: NotificationItem[] }>({ items: [] });
+
+/**
+ * Ajoute une notification du nouveau back-office, la plus récente en tête
+ * @param type variante
+ * @param title titre
+ * @param text texte facultatif
+ * @param duration durée d'affichage
+ * @returns identifiant de la notification
+ */
+export const notify = (
+  type: NotificationType,
+  title: string,
+  text?: string,
+  duration: number = NOTIFICATION_DURATION
+): number => {
+  const id = ++lastNotificationId;
+  notificationState.items.unshift({ id, type, title, text, duration });
+  return id;
+};
+
+/**
+ * Retire une notification
+ * @param id identifiant de la notification
+ */
+export const dismissNotification = (id: number): void => {
+  const index = notificationState.items.findIndex((item) => item.id === id);
+  if (index !== -1) {
+    notificationState.items.splice(index, 1);
+  }
 };

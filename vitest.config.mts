@@ -14,5 +14,6 @@ export default defineConfig({
     environment: 'happy-dom',
     include: ['assets/**/__tests__/**/*.spec.ts'],
     restoreMocks: true,
+    setupFiles: ['./vitest.setup.ts'],
   },
 });
