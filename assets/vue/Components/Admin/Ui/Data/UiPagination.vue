@@ -22,7 +22,12 @@ const lastPage = computed(() => Math.max(1, Math.ceil(props.totalItems / itemsPe
 const numbers = usePaginationNumbers(page, lastPage);
 const from = computed(() => (props.totalItems === 0 ? 0 : (page.value - 1) * itemsPerPage.value + 1));
 const to = computed(() => Math.min(page.value * itemsPerPage.value, props.totalItems));
-const options = computed(() => props.perPageOptions.map((value) => ({ value, label: String(value) })));
+// La valeur courante reste proposée même hors de la liste
+const options = computed(() =>
+  [...new Set([...props.perPageOptions, itemsPerPage.value])]
+    .sort((a, b) => a - b)
+    .map((value) => ({ value, label: String(value) }))
+);
 
 const changePerPage = (value: string | number | null | undefined): void => {
   itemsPerPage.value = Number(value);

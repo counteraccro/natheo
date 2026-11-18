@@ -32,18 +32,18 @@ const inactive = computed(() => props.disabled || props.loading);
 
 const VARIANTS: Record<ButtonVariant, string> = {
   primary:
-    'bg-primary text-on-primary hover:bg-primary-hover aria-expanded:bg-primary-hover aria-expanded:shadow-[0_0_0_3px_color-mix(in_srgb,var(--primary)_25%,transparent)]',
+    'border-transparent bg-primary text-on-primary hover:bg-primary-hover aria-expanded:bg-primary-hover aria-expanded:shadow-[0_0_0_3px_color-mix(in_srgb,var(--primary)_25%,transparent)]',
   secondary:
     'border-line-strong bg-bg text-fg hover:border-field hover:bg-surface aria-expanded:border-primary aria-expanded:bg-surface aria-expanded:shadow-[0_0_0_3px_color-mix(in_srgb,var(--primary)_15%,transparent)]',
   ghost:
-    'bg-transparent text-fg-muted hover:bg-surface hover:text-fg aria-expanded:bg-primary-soft aria-expanded:text-on-primary-soft aria-expanded:shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--primary)_30%,transparent)]',
-  danger: 'bg-danger text-bg hover:brightness-[.93]',
+    'border-transparent bg-transparent text-fg-muted hover:bg-surface hover:text-fg aria-expanded:bg-primary-soft aria-expanded:text-on-primary-soft aria-expanded:shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--primary)_30%,transparent)]',
+  danger: 'border-transparent bg-danger text-bg hover:brightness-[.93]',
   'danger-soft':
     'border-[color-mix(in_srgb,var(--danger)_35%,transparent)] bg-transparent text-danger hover:bg-danger-soft',
 };
 
 const classes = computed(() => [
-  'ui-ring relative inline-flex shrink-0 cursor-pointer items-center justify-center rounded-md border border-transparent font-semibold tracking-[-0.005em] whitespace-nowrap no-underline transition-[background-color,border-color,color,box-shadow,transform] duration-100 active:translate-y-px',
+  'ui-ring relative inline-flex shrink-0 cursor-pointer items-center justify-center rounded-md border font-semibold tracking-[-0.005em] whitespace-nowrap no-underline transition-[background-color,border-color,color,box-shadow,transform] duration-100 active:translate-y-px',
   props.size === 'sm' ? 'h-8 gap-1.5 text-sm' : 'h-9 gap-[7px] text-base',
   iconOnly.value ? (props.size === 'sm' ? 'w-8' : 'w-9') : props.size === 'sm' ? 'px-3' : 'px-3.5',
   VARIANTS[props.variant],

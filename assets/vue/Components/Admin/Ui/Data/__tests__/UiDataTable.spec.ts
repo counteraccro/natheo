@@ -136,4 +136,9 @@ describe('UiPagination', () => {
     expect(wrapper.emitted('update:itemsPerPage')?.[0]).toEqual([50]);
     expect(wrapper.emitted('update:page')?.[0]).toEqual([1]);
   });
+
+  it('propose le nombre par page courant même hors de la liste', () => {
+    const wrapper = mount(UiPagination, withLabels({ props: { totalItems: 8, page: 1, itemsPerPage: 5 } }));
+    expect((wrapper.get('select').element as HTMLSelectElement).value).toBe('5');
+  });
 });

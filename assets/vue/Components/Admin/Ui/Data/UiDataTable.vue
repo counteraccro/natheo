@@ -458,7 +458,7 @@ const clearSelection = async (): Promise<void> => {
                         size="sm"
                         :icon="action.icon"
                         :aria-label="action.label"
-                        :class="action.danger ? 'text-danger' : 'text-fg-subtle hover:text-fg'"
+                        :class="action.danger ? 'text-danger!' : 'text-fg-subtle! hover:text-fg!'"
                         @click="runAction(action, row)"
                       />
                     </UiTooltip>
