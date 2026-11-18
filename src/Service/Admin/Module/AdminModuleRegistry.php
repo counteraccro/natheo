@@ -52,21 +52,6 @@ final class AdminModuleRegistry
     }
 
     /**
-     * Module auquel appartient la route Symfony, null si elle n'appartient à aucun
-     * @param string $route
-     * @return AdminModule|null
-     */
-    public function findByRoute(string $route): ?AdminModule
-    {
-        foreach ($this->all() as $definition) {
-            if ($definition->hasRoute($route)) {
-                return $definition;
-            }
-        }
-        return null;
-    }
-
-    /**
      * @return array<string, AdminModule>
      * @throws \LogicException si deux modules ont le même identifiant
      */

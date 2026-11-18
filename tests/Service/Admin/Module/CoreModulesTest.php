@@ -114,7 +114,7 @@ class CoreModulesTest extends AppWebTestCase
      */
     public function testModuleRoutesRequireModuleRole(): void
     {
-        $routes = $this->router->getRouteCollection();
+        $routes = $this->getBackOfficeRoutes();
         foreach ($this->getModuleRegistry()->all() as $module) {
             $count = 0;
             foreach ($routes as $name => $route) {
@@ -149,7 +149,7 @@ class CoreModulesTest extends AppWebTestCase
      */
     public function testRouteBelongsToOneModule(): void
     {
-        foreach (array_keys($this->router->getRouteCollection()->all()) as $name) {
+        foreach (array_keys($this->getBackOfficeRoutes()) as $name) {
             $owners = array_filter($this->getModuleRegistry()->all(), fn($module) => $module->hasRoute($name));
             $this->assertLessThanOrEqual(
                 1,
@@ -157,6 +157,18 @@ class CoreModulesTest extends AppWebTestCase
                 sprintf('Route « %s » dans plusieurs modules : %s', $name, implode(', ', array_keys($owners))),
             );
         }
+    }
+
+    /**
+     * Routes des pages et des appels AJAX du back-office, les seules désignées par les préfixes des modules
+     * @return array<string, Route>
+     */
+    private function getBackOfficeRoutes(): array
+    {
+        return array_filter(
+            $this->router->getRouteCollection()->all(),
+            fn(Route $route) => str_starts_with($route->getPath(), '/admin/'),
+        );
     }
 
     /**

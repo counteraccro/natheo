@@ -23,7 +23,8 @@ final readonly class AdminModule
      * @param string $label clé de traduction du nom du module
      * @param string $description clé de traduction de la description du module
      * @param bool $locked module qui ne peut pas être désactivé
-     * @param string[] $routePrefixes préfixes (ou noms complets) des routes Symfony du module
+     * @param string[] $routePrefixes préfixes (ou noms complets) des routes des pages du back-office du module, chemins
+     * en /admin/ (les routes des opérations d'API sont rattachées par leur extraProperties « module »)
      * @param string[] $routeExceptions routes des préfixes qui n'appartiennent pas au module
      * @param string $translationDomain domaine de traduction du nom et de la description
      */

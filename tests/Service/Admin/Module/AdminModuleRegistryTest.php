@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace App\Tests\Service\Admin\Module;
 
-use App\Service\Admin\Module\AdminModule;
 use App\Service\Admin\Module\AdminModuleRegistry;
 use App\Tests\Api\V2\Module\ProbeModule;
 use App\Tests\AppWebTestCase;
@@ -41,33 +40,5 @@ class AdminModuleRegistryTest extends AppWebTestCase
 
         $this->expectException(\LogicException::class);
         $registry->all();
-    }
-
-    /**
-     * Une route appartient au module de son préfixe, sauf si elle est en exception
-     * @return void
-     */
-    public function testFindByRoute(): void
-    {
-        $user = new AdminModule(
-            'user',
-            'ROLE_SUPER_ADMIN',
-            'user.label',
-            'user.description',
-            routePrefixes: ['admin_user_'],
-            routeExceptions: ['admin_user_my_account'],
-        );
-        $registry = new AdminModuleRegistry([
-            $this->createTestModule('user', definition: $user),
-            $this->createTestModule(
-                'page',
-                definition: new AdminModule('page', 'ROLE_CONTRIBUTEUR', 'l', 'd', routePrefixes: ['admin_page_']),
-            ),
-        ]);
-
-        $this->assertSame('user', $registry->findByRoute('admin_user_index')?->id);
-        $this->assertSame('page', $registry->findByRoute('admin_page_add')?->id);
-        $this->assertNull($registry->findByRoute('admin_user_my_account'));
-        $this->assertNull($registry->findByRoute('admin_tag_index'));
     }
 }

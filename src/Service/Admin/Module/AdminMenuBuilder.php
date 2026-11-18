@@ -72,6 +72,31 @@ final class AdminMenuBuilder implements ResetInterface
     }
 
     /**
+     * Entrées affichées dans l'ordre du menu, plus les raccourcis masqués, pour l'API
+     * @return AdminMenuNode[]
+     */
+    public function getListedNodes(): array
+    {
+        $result = [];
+        $walk = function (array $nodes) use (&$walk, &$result): void {
+            foreach ($nodes as $node) {
+                if ($node->isDisplayed()) {
+                    $result[$node->item->id] = $node;
+                    $walk($node->children);
+                }
+            }
+        };
+        $walk($this->getTree());
+        foreach ($this->getShortcuts() as $node) {
+            $result[$node->item->id] ??= $node;
+        }
+
+        $order = array_flip(array_map(fn(AdminMenuNode $node) => $node->item->id, $this->getFlatList()));
+        uasort($result, fn(AdminMenuNode $a, AdminMenuNode $b) => $order[$a->item->id] <=> $order[$b->item->id]);
+        return array_values($result);
+    }
+
+    /**
      * Entrées de création visibles marquées shortcut, pour le bouton « Nouveau » du header
      * @return AdminMenuNode[]
      */

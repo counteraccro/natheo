@@ -17,6 +17,8 @@ api_errors.find.listing.category.not.found: The requested category does not exis
 api_errors.find.listing.tag.not.found: The requested tag does not exist
 api_errors.api.not.open: Resource not accessible - API closed
 api_errors.find.option.system.not.found: System option not available
+api_errors.find.admin_module.not_found: 'Back-office module not available'
+api_errors.find.admin_menu_item.not_found: 'Menu item not available'
 api_errors.comment.by.page.not.id.slug.together: The id or page_slug parameter is required
 api_errors.comment.by.page.id.slug.together: The id and page_slug parameters cannot be used together
 api_errors.comment.wait.validation: Awaiting approval
