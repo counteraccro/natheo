@@ -1,0 +1,80 @@
+/*!
+ * Author : Gourdon Aymeric
+ * Version : 1.0
+ * Jetons du back-office exposés à Tailwind (bg-canvas, text-fg, border-line, bg-side, bg-danger-soft…)
+ */
+
+@theme inline {
+    --font-sans: var(--font);
+    --font-mono: var(--font-code);
+
+    --color-canvas: var(--canvas);
+    --color-bg: var(--bg);
+    --color-surface: var(--surface);
+    --color-raised: var(--surface-raised);
+    --color-fg: var(--fg);
+    --color-fg-muted: var(--fg-muted);
+    --color-fg-subtle: var(--fg-subtle);
+    --color-line: var(--line);
+    --color-line-strong: var(--line-strong);
+    --color-field: var(--field);
+
+    --color-primary: var(--primary);
+    --color-primary-hover: var(--primary-hover);
+    --color-on-primary: var(--on-primary);
+    --color-primary-soft: var(--primary-soft);
+    --color-on-primary-soft: var(--on-primary-soft);
+    --color-primary-on-dark: var(--primary-on-dark);
+
+    --color-side: var(--side-bg);
+    --color-on-side: var(--on-side);
+    --color-on-side-muted: var(--on-side-muted);
+    --color-on-side-subtle: var(--on-side-subtle);
+    --color-side-hover: var(--side-hover);
+    --color-side-active: var(--side-active);
+    --color-side-line: var(--side-line);
+    --color-side-card: var(--side-card);
+    --color-on-side-accent: var(--on-side-accent);
+
+    --color-danger: var(--danger);
+    --color-danger-soft: var(--danger-soft);
+    --color-success: var(--success);
+    --color-success-soft: var(--success-soft);
+    --color-warning: var(--warning);
+    --color-warning-soft: var(--warning-soft);
+    --color-info: var(--info);
+    --color-info-soft: var(--info-soft);
+
+    --color-tooltip: var(--tooltip-bg);
+    --color-on-tooltip: var(--on-tooltip);
+
+    --color-mod-full: var(--mod-full);
+    --color-mod-half: var(--mod-half);
+    --color-mod-third-a: var(--mod-third-a);
+    --color-mod-third-b: var(--mod-third-b);
+
+    --shadow-panel: var(--panel-shadow);
+    --shadow-overlay: var(--overlay-shadow);
+    --shadow-dialog: var(--dialog-shadow);
+
+    --ease-out-soft: var(--ease);
+}
+
+@theme {
+    --radius-sm: 5px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+
+    --text-2xs: 11px;
+    --text-2xs--line-height: 1.4;
+    --text-xs: 12px;
+    --text-xs--line-height: 1.5;
+    --text-sm: 13px;
+    --text-sm--line-height: 1.5;
+    --text-base: 14px;
+    --text-base--line-height: 1.5;
+    --text-md: 15px;
+    --text-md--line-height: 1.35;
+    --text-title: 26px;
+    --text-title--line-height: 1.2;
+}

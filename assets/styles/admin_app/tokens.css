@@ -1,0 +1,151 @@
+/*!
+ * Author : Gourdon Aymeric
+ * Version : 1.0
+ * Jetons du back-office : neutres et sidebar communs, couleur principale par thème (data-theme), clair et sombre (.dark)
+ */
+
+:root {
+    --canvas: #f2f2f4;
+    --bg: #ffffff;
+    --surface: #f4f4f5;
+    --surface-raised: #ffffff;
+    --fg: #18181b;
+    --fg-muted: #4a4a52;
+    --fg-subtle: #5f5f69;
+    --line: #e7e7ea;
+    --line-strong: #d6d6db;
+    --field: #8a8a93;
+
+    --primary: #5b3fd1;
+    --primary-hover: #4a31b3;
+    --on-primary: #ffffff;
+    --primary-soft: #f1eefc;
+    --on-primary-soft: #4229a8;
+    --primary-on-dark: #b3a0ff;
+    --focus: var(--primary);
+
+    --side-bg: #1e1e21;
+    --on-side: #fafafa;
+    --on-side-muted: #b4b4bc;
+    --on-side-subtle: #94949d;
+    --side-hover: #2a2a2e;
+    --side-active: #333338;
+    --side-line: #303035;
+    --side-card: #26262a;
+    --on-side-accent: #111113;
+
+    --danger: #b42318;
+    --danger-soft: #fdeceb;
+    --success: #067647;
+    --success-soft: #e6f5ed;
+    --warning: #8a5a00;
+    --warning-soft: #fcf1d6;
+    --info: #1d4ed8;
+    --info-soft: #eaf0fd;
+
+    --tooltip-bg: #18181b;
+    --on-tooltip: #ffffff;
+
+    /* Couleurs du logo, identiques dans tous les thèmes */
+    --mod-full: #c9b8ff;
+    --mod-half: #8f6cff;
+    --mod-third-a: #6a45ec;
+    --mod-third-b: #5cc8f0;
+
+
+    --panel-shadow: 0 1px 2px rgb(17 17 20 / 0.04), 0 1px 0 rgb(17 17 20 / 0.02);
+    --overlay-shadow: 0 12px 32px -8px rgb(17 17 20 / 0.22), 0 0 0 1px rgb(17 17 20 / 0.06);
+    --dialog-shadow: 0 32px 64px -16px rgb(17 17 20 / 0.4), 0 0 0 1px rgb(17 17 20 / 0.05);
+    --arrow-edge: rgb(17 17 20 / 0.07);
+    --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+    --font: 'Figtree Variable', ui-sans-serif, system-ui, sans-serif;
+    --font-code: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+    color-scheme: light;
+}
+
+:root.dark {
+    --canvas: #111113;
+    --bg: #18181b;
+    --surface: #202024;
+    --surface-raised: #1f1f23;
+    --fg: #ededef;
+    --fg-muted: #a8a8b0;
+    --fg-subtle: #8e8e97;
+    --line: #2c2c31;
+    --line-strong: #3b3b42;
+    --field: #6e6e77;
+
+    --primary: #b3a0ff;
+    --primary-hover: #c7b8ff;
+    --on-primary: #111113;
+    --primary-soft: #2a2640;
+    --on-primary-soft: #d9d2fb;
+
+    --side-bg: #161618;
+
+    --danger: #ff8a80;
+    --danger-soft: #3a1418;
+    --success: #7ad9a6;
+    --success-soft: #0e2c20;
+    --warning: #f5c56b;
+    --warning-soft: #2e2309;
+    --info: #9cb8ff;
+    --info-soft: #14203f;
+
+    --tooltip-bg: #ededef;
+    --on-tooltip: #18181b;
+
+    --panel-shadow: 0 0 0 1px rgb(255 255 255 / 0.02);
+    --overlay-shadow: 0 12px 32px -8px rgb(0 0 0 / 0.65), 0 0 0 1px rgb(255 255 255 / 0.08);
+    --dialog-shadow: 0 32px 64px -16px rgb(0 0 0 / 0.8), 0 0 0 1px rgb(255 255 255 / 0.08);
+    --arrow-edge: rgb(255 255 255 / 0.09);
+
+    color-scheme: dark;
+}
+
+:root[data-theme='blue'] {
+    --primary: #1d4ed8;
+    --primary-hover: #1e40af;
+    --primary-soft: #e8eefd;
+    --on-primary-soft: #1e3a8a;
+    --primary-on-dark: #9cb8ff;
+}
+
+:root.dark[data-theme='blue'] {
+    --primary: #9cb8ff;
+    --primary-hover: #b8ccff;
+    --primary-soft: #172554;
+    --on-primary-soft: #c7d6ff;
+}
+
+:root[data-theme='green'] {
+    --primary: #047857;
+    --primary-hover: #065f46;
+    --primary-soft: #e4f5ee;
+    --on-primary-soft: #064e3b;
+    --primary-on-dark: #6fd8b0;
+}
+
+:root.dark[data-theme='green'] {
+    --primary: #6fd8b0;
+    --primary-hover: #8fe3c3;
+    --primary-soft: #0b2e25;
+    --on-primary-soft: #bfeedd;
+}
+
+:root[data-theme='red'] {
+    --primary: #b91c1c;
+    --primary-hover: #991b1b;
+    --primary-soft: #fdecec;
+    --on-primary-soft: #7f1d1d;
+    --primary-on-dark: #ffa3a3;
+}
+
+:root.dark[data-theme='red'] {
+    --primary: #ffa3a3;
+    --primary-hover: #ffbcbc;
+    --primary-soft: #3a1116;
+    --on-primary-soft: #ffd0d0;
+}

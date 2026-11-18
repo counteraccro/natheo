@@ -1,0 +1,114 @@
+/*!
+ * Author : Gourdon Aymeric
+ * Version : 1.0
+ * Styles de base du back-office : page, focus, mouvement réduit et éléments que les utilitaires ne couvrent pas
+ */
+
+@layer base {
+    html {
+        background: var(--canvas);
+    }
+
+    body {
+        margin: 0;
+        background: var(--canvas);
+        color: var(--fg);
+        font: 14px/1.5 var(--font);
+        -webkit-font-smoothing: antialiased;
+    }
+
+    :focus-visible {
+        outline: 2px solid var(--focus);
+        outline-offset: 2px;
+    }
+
+    [hidden] {
+        display: none !important;
+    }
+}
+
+@layer components {
+    /* Anneau décalé des boutons : un trait de la couleur de la page puis la couleur du thème */
+    .ui-ring:focus-visible {
+        outline: none;
+        box-shadow:
+            0 0 0 2px var(--canvas),
+            0 0 0 4px var(--focus);
+    }
+
+    /* Flèche d'un panneau flottant, pointée sur le centre de son bouton */
+    .ui-arrow::before {
+        content: '';
+        position: absolute;
+        left: calc(var(--ui-arrow-x, 50%) - 6px);
+        top: -6px;
+        width: 12px;
+        height: 12px;
+        background: var(--surface-raised);
+        transform: rotate(45deg);
+        border-radius: 2px 0 0 0;
+        box-shadow: -1px -1px 0 0 var(--arrow-edge);
+    }
+
+    .ui-arrow[data-side='top']::before {
+        top: auto;
+        bottom: -6px;
+        border-radius: 0 0 2px 0;
+        box-shadow: 1px 1px 0 0 var(--arrow-edge);
+    }
+
+    dialog.ui-dialog::backdrop {
+        background: rgb(17 17 20 / 0.5);
+        backdrop-filter: blur(2px);
+    }
+
+    .ui-skeleton {
+        background: linear-gradient(90deg, var(--surface) 0%, var(--line) 50%, var(--surface) 100%);
+        background-size: 200% 100%;
+        animation: ui-skeleton 1.4s ease-in-out infinite;
+    }
+}
+
+@keyframes ui-skeleton {
+    to {
+        background-position: -200% 0;
+    }
+}
+
+@keyframes ui-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes ui-pop {
+    from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.98);
+    }
+}
+
+@keyframes ui-toast-in {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+}
+
+@keyframes ui-progress {
+    from {
+        width: 100%;
+    }
+    to {
+        width: 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+}

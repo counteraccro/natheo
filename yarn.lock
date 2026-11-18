@@ -98,6 +98,11 @@
   dependencies:
     tslib "^2.4.0"
 
+"@fontsource-variable/figtree@^5.3.0":
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/@fontsource-variable/figtree/-/figtree-5.3.0.tgz#df8e3e467d3cceb1eb982ae2ed04a4accb284f65"
+  integrity sha512-VRVodD7OiG7apQwE8/2fMjaqpY/a0qRJqL5HtYj8CKIVps+9amaFcdfKmDIf7iqYQx6iPLlArVXAfKeIZmVcNQ==
+
 "@fontsource-variable/geist-mono@^5.3.0":
   version "5.3.0"
   resolved "https://registry.yarnpkg.com/@fontsource-variable/geist-mono/-/geist-mono-5.3.0.tgz#ef4ce98a5d7485a4944ead6f799346dc33eddc63"
