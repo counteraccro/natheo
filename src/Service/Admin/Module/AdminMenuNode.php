@@ -24,6 +24,12 @@ final class AdminMenuNode
     public bool $open = false;
 
     /**
+     * Entrée affichée dans la sidebar, faux pour un raccourci listé hors du menu et ses parents
+     * @var bool
+     */
+    public bool $inMenu = false;
+
+    /**
      * @param AdminMenuItem $item
      * @param string|null $module identifiant du module, null pour un dossier sans module
      * @param string $label libellé traduit

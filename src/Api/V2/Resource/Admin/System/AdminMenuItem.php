@@ -110,7 +110,7 @@ final class AdminMenuItem
     public bool $shortcut = false;
 
     /**
-     * Entrée absente du menu, listée parce qu'elle est un raccourci
+     * Entrée absente du menu, listée parce qu'elle est un raccourci ou le parent d'un raccourci
      */
     #[ApiProperty(required: true)]
     #[Groups(['admin_menu_item:read', 'admin_menu_item:list'])]

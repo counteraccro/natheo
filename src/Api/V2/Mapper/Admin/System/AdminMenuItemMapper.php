@@ -29,7 +29,7 @@ final readonly class AdminMenuItemMapper
         $item->position = $node->item->position;
         $item->legacyUrl = $node->url;
         $item->shortcut = $node->item->shortcut;
-        $item->hidden = $node->item->hidden;
+        $item->hidden = !$node->inMenu;
         $item->badge = $node->badge;
         return $item;
     }

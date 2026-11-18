@@ -14,6 +14,7 @@ use App\Enum\Admin\Global\Breadcrumb;
 use App\Service\Admin\Module\AdminMenuBuilder;
 use App\Service\Admin\Module\AdminMenuNode;
 use App\Service\Admin\Module\AdminMenuRegistry;
+use App\Service\Admin\Module\AdminModuleInterface;
 use App\Service\Admin\Module\AdminModuleRegistry;
 use App\Tests\AppWebTestCase;
 use App\Twig\Extension\Admin\System\SidebarExtension;
@@ -139,6 +140,46 @@ class AdminMenuBuilderTest extends AppWebTestCase
     }
 
     /**
+     * Liste de l'API : entrées du menu, puis raccourcis hors du menu avec leurs parents, marqués hors menu
+     * @return void
+     */
+    public function testListedNodes(): void
+    {
+        $builder = $this->createBuilder($this->createUserSuperAdmin(), [
+            $this->createTestModule(
+                'archive',
+                items: [
+                    $this->createTestMenuItem('archive', 'content', 30, options: ['hidden' => true]),
+                    $this->createTestMenuItem('archive_new', 'archive', 10, 'admin_faq_add', ['shortcut' => true]),
+                ],
+            ),
+        ]);
+
+        $inMenu = [];
+        foreach ($builder->getListedNodes() as $node) {
+            $inMenu[$node->item->id] = $node->inMenu;
+        }
+        $this->assertSame(
+            [
+                'content' => true,
+                'page' => true,
+                'page_index' => true,
+                'page_new' => true,
+                'tag' => true,
+                'tag_stats' => true,
+                'archive' => false,
+                'archive_new' => false,
+                'system' => true,
+                'token' => true,
+                'token_back' => true,
+                'token_public' => true,
+                'token_new' => false,
+            ],
+            $inMenu,
+        );
+    }
+
+    /**
      * Rendu de la sidebar : liens, dossier ouvert, entrée avec lien et enfants, badge du module
      * @return void
      */
@@ -179,9 +220,10 @@ class AdminMenuBuilderTest extends AppWebTestCase
     /**
      * Menu de test : contenus (pages, tags avec statistiques), système (tokens sur trois niveaux)
      * @param User $user utilisateur connecté
+     * @param AdminModuleInterface[] $extraModules modules ajoutés au menu de test
      * @return AdminMenuBuilder
      */
-    private function createBuilder(User $user): AdminMenuBuilder
+    private function createBuilder(User $user, array $extraModules = []): AdminMenuBuilder
     {
         $this->container
             ->get('security.token_storage')
@@ -220,6 +262,7 @@ class AdminMenuBuilderTest extends AppWebTestCase
                     'shortcut' => true,
                 ]),
             ]),
+            ...$extraModules,
         ]);
         $menus = [
             $this->createTestMenu([

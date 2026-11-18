@@ -72,7 +72,7 @@ final class AdminMenuBuilder implements ResetInterface
     }
 
     /**
-     * Entrées affichées dans l'ordre du menu, plus les raccourcis masqués, pour l'API
+     * Entrées affichées dans l'ordre du menu, plus les raccourcis hors du menu et leurs parents, pour l'API
      * @return AdminMenuNode[]
      */
     public function getListedNodes(): array
@@ -81,17 +81,27 @@ final class AdminMenuBuilder implements ResetInterface
         $walk = function (array $nodes) use (&$walk, &$result): void {
             foreach ($nodes as $node) {
                 if ($node->isDisplayed()) {
+                    $node->inMenu = true;
                     $result[$node->item->id] = $node;
                     $walk($node->children);
                 }
             }
         };
         $walk($this->getTree());
+
+        $byId = [];
+        foreach ($this->getFlatList() as $node) {
+            $byId[$node->item->id] = $node;
+        }
+        // Les parents d'un raccourci sont listés pour que son parent soit présent dans la liste
         foreach ($this->getShortcuts() as $node) {
-            $result[$node->item->id] ??= $node;
+            for ($current = $node; $current !== null && !isset($result[$current->item->id]); ) {
+                $result[$current->item->id] = $current;
+                $current = $byId[$current->item->parent ?? ''] ?? null;
+            }
         }
 
-        $order = array_flip(array_map(fn(AdminMenuNode $node) => $node->item->id, $this->getFlatList()));
+        $order = array_flip(array_keys($byId));
         uasort($result, fn(AdminMenuNode $a, AdminMenuNode $b) => $order[$a->item->id] <=> $order[$b->item->id]);
         return array_values($result);
     }
