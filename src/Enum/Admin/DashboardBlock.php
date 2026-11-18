@@ -9,8 +9,7 @@ declare(strict_types=1);
 
 namespace App\Enum\Admin;
 
-use App\Service\Admin\Module\Core\ApiTokenModule;
-use App\Service\Admin\Module\Core\OptionSystemModule;
+use App\Enum\Admin\Module\CoreModuleId;
 
 enum DashboardBlock: string
 {
@@ -44,7 +43,7 @@ enum DashboardBlock: string
     public function getModules(): array
     {
         return match ($this) {
-            self::HELP_FIRST_CONNEXION => [OptionSystemModule::ID, ApiTokenModule::ID],
+            self::HELP_FIRST_CONNEXION => [CoreModuleId::OPTION_SYSTEM->value, CoreModuleId::API_TOKEN->value],
             default => [],
         };
     }

@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace App\Service\Admin\Module\Core;
 
+use App\Enum\Admin\Module\CoreModuleId;
 use App\Service\Admin\Module\AdminMenuItem;
 use App\Service\Admin\Module\AdminModule;
 use App\Service\Admin\Module\AdminModuleInterface;
@@ -21,7 +22,7 @@ final class LogModule implements AdminModuleInterface
      * Identifiant du module
      * @var string
      */
-    public const string ID = 'log';
+    public const string ID = CoreModuleId::LOG->value;
 
     /**
      * @return AdminModule

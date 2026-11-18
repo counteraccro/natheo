@@ -12,9 +12,9 @@ namespace App\Controller\Admin;
 
 use App\Controller\Admin\Content\PageController;
 use App\Enum\Admin\DashboardBlock;
-use App\Service\Admin\Module\AdminMenuBuilder;
 use App\Enum\Admin\Global\Breadcrumb;
 use App\Service\Admin\DashboardService;
+use App\Service\Admin\Module\AdminMenuBuilder;
 use App\Service\Admin\StatisticsService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Service\Admin\System\User\UserDataService;

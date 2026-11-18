@@ -20,13 +20,13 @@ use App\Api\V2\Metadata\LocaleParameter;
 use App\Api\V2\Metadata\OperationSecurityMetadataFactory;
 use App\Api\V2\State\Provider\Admin\System\AdminModuleCollectionProvider;
 use App\Api\V2\State\Provider\Admin\System\AdminModuleProvider;
-use App\Service\Admin\Module\Core\DashboardModule;
+use App\Enum\Admin\Module\CoreModuleId;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 #[
     ApiResource(
         shortName: 'AdminModule',
-        extraProperties: [OperationSecurityMetadataFactory::MODULE => DashboardModule::ID],
+        extraProperties: [OperationSecurityMetadataFactory::MODULE => CoreModuleId::DASHBOARD->value],
         operations: [
             new GetCollection(
                 name: 'admin_module_get_collection',

@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace App\Service\Admin\Module\Core;
 
+use App\Enum\Admin\Module\CoreModuleId;
 use App\Service\Admin\Module\AdminMenuItem;
 use App\Service\Admin\Module\AdminModule;
 use App\Service\Admin\Module\AdminModuleInterface;
@@ -21,7 +22,7 @@ final class TranslationModule implements AdminModuleInterface
      * Identifiant du module
      * @var string
      */
-    public const string ID = 'translation';
+    public const string ID = CoreModuleId::TRANSLATION->value;
 
     /**
      * @return AdminModule

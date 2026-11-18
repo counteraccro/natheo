@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace App\Service\Admin\Module\Core;
 
+use App\Enum\Admin\Global\SvgIcon;
+use App\Enum\Admin\Module\CoreModuleId;
 use App\Service\Admin\Module\AdminMenuItem;
 use App\Service\Admin\Module\AdminModule;
 use App\Service\Admin\Module\AdminModuleInterface;
@@ -21,7 +23,7 @@ final class UserModule implements AdminModuleInterface
      * Identifiant du module
      * @var string
      */
-    public const string ID = 'user';
+    public const string ID = CoreModuleId::USER->value;
 
     /**
      * @return AdminModule
@@ -64,7 +66,7 @@ final class UserModule implements AdminModuleInterface
             new AdminMenuItem(
                 id: 'user_index',
                 label: 'admin_module.menu.user_index.label',
-                icon: 'M9 8h10M9 12h10M9 16h10M4.99 8H5m-.02 4h.01m0 4H5',
+                icon: SvgIcon::LIST->value,
                 parent: self::ID,
                 position: 10,
                 legacyRoute: 'admin_user_index',
@@ -72,7 +74,7 @@ final class UserModule implements AdminModuleInterface
             new AdminMenuItem(
                 id: 'user_new',
                 label: 'admin_module.menu.user_new.label',
-                icon: 'M5 12h14m-7 7V5',
+                icon: SvgIcon::PLUS->value,
                 parent: self::ID,
                 position: 20,
                 legacyRoute: 'admin_user_add',

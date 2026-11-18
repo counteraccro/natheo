@@ -10,6 +10,8 @@ declare(strict_types=1);
 namespace App\Service\Admin\Module\Core;
 
 use App\Enum\Admin\Comment\CommentStatus;
+use App\Enum\Admin\Global\SvgIcon;
+use App\Enum\Admin\Module\CoreModuleId;
 use App\Repository\Admin\Content\Comment\CommentRepository;
 use App\Service\Admin\Module\AdminMenuBadgeInterface;
 use App\Service\Admin\Module\AdminMenuItem;
@@ -24,7 +26,7 @@ final class CommentModule implements AdminModuleInterface, AdminMenuBadgeInterfa
      * Identifiant du module
      * @var string
      */
-    public const string ID = 'comment';
+    public const string ID = CoreModuleId::COMMENT->value;
 
     public function __construct(private readonly CommentRepository $commentRepository) {}
 
@@ -59,7 +61,7 @@ final class CommentModule implements AdminModuleInterface, AdminMenuBadgeInterfa
             new AdminMenuItem(
                 id: 'comment_index',
                 label: 'admin_module.menu.comment_index.label',
-                icon: 'M9 8h10M9 12h10M9 16h10M4.99 8H5m-.02 4h.01m0 4H5',
+                icon: SvgIcon::LIST->value,
                 parent: self::ID,
                 position: 10,
                 legacyRoute: 'admin_comment_index',

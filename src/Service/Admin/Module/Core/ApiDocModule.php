@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace App\Service\Admin\Module\Core;
 
+use App\Enum\Admin\Module\CoreModuleId;
 use App\Service\Admin\Module\AdminMenuItem;
 use App\Service\Admin\Module\AdminModule;
 use App\Service\Admin\Module\AdminModuleInterface;
@@ -21,7 +22,7 @@ final class ApiDocModule implements AdminModuleInterface
      * Identifiant du module
      * @var string
      */
-    public const string ID = 'api_doc';
+    public const string ID = CoreModuleId::API_DOC->value;
 
     /**
      * @return AdminModule

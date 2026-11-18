@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace App\Service\Admin\Module\Core;
 
+use App\Enum\Admin\Global\SvgIcon;
+use App\Enum\Admin\Module\CoreModuleId;
 use App\Enum\Admin\System\ApiToken\ApiTokenScope;
 use App\Service\Admin\Module\AdminMenuItem;
 use App\Service\Admin\Module\AdminModule;
@@ -22,7 +24,7 @@ final class ApiTokenModule implements AdminModuleInterface
      * Identifiant du module
      * @var string
      */
-    public const string ID = 'api_token';
+    public const string ID = CoreModuleId::API_TOKEN->value;
 
     /**
      * @return AdminModule
@@ -73,7 +75,7 @@ final class ApiTokenModule implements AdminModuleInterface
             new AdminMenuItem(
                 id: 'api_token_new',
                 label: 'admin_module.menu.api_token_new.label',
-                icon: 'M5 12h14m-7 7V5',
+                icon: SvgIcon::PLUS->value,
                 parent: self::ID,
                 position: 30,
                 legacyRoute: 'admin_api_token_add',
