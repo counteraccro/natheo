@@ -3,7 +3,16 @@
  * @version 1.0
  * Lien entre un UiField et son champ : identifiant, aide et erreur reliées, état invalide et requis
  */
-import { computed, inject, provide, useId, type ComputedRef, type InjectionKey } from 'vue';
+import {
+  computed,
+  inject,
+  onBeforeUnmount,
+  provide,
+  useId,
+  watchEffect,
+  type ComputedRef,
+  type InjectionKey,
+} from 'vue';
 import type { FieldContext } from '@/ts/Admin/Ui/Form/UiField.type';
 
 const FIELD: InjectionKey<FieldContext> = Symbol('UiField');
@@ -28,4 +37,17 @@ export function useFieldControl(invalid?: ComputedRef<boolean>) {
     'aria-invalid': field?.invalid.value || invalid?.value ? true : undefined,
     required: field?.required.value || undefined,
   }));
+}
+
+/**
+ * Confie le compteur de caractères au UiField parent, qui l'aligne avec les erreurs
+ * @param text texte du compteur, undefined quand il est masqué
+ * @return true quand le UiField l'affiche, false quand le contrôle doit l'afficher lui-même
+ */
+export function useFieldCounter(text: ComputedRef<string | undefined>): boolean {
+  const field = inject(FIELD, null);
+  if (!field) return false;
+  watchEffect(() => (field.counter.value = text.value));
+  onBeforeUnmount(() => (field.counter.value = undefined));
+  return true;
 }

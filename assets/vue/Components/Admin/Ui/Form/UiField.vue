@@ -5,7 +5,7 @@
  * Champ de formulaire : libellé, aide et erreurs reliés au contrôle placé dans l'emplacement par défaut ; dans un UiForm,
  * name (chemin de propriété de l'API) lit ses erreurs et les efface dès que le champ est modifié
  */
-import { computed, onBeforeUnmount, useId, watch } from 'vue';
+import { computed, onBeforeUnmount, ref, useId, watch } from 'vue';
 import UiIcon from '@/vue/Components/Global/Ui/UiIcon.vue';
 import { provideField } from '@/vue/Composables/Admin/Ui/useField';
 import { useFormContext } from '@/vue/Composables/Admin/Ui/formContext';
@@ -23,6 +23,7 @@ const props = defineProps<{
 }>();
 
 const labels = useUiLabels();
+const counter = ref<string>();
 const form = useFormContext();
 const uid = useId();
 const id = computed(() => props.id ?? (props.name && form ? form.fieldId(props.name) : `ui-field-${uid}`));
@@ -56,6 +57,7 @@ provideField({
   describedBy,
   invalid: computed(() => messages.value.length > 0),
   required: computed(() => props.required),
+  counter,
 });
 </script>
 
@@ -69,15 +71,18 @@ provideField({
       >
     </label>
     <slot :id="id" :described-by="describedBy" :invalid="messages.length > 0" />
-    <div v-if="messages.length" :id="errorId" class="flex flex-col gap-1">
-      <p
-        v-for="(message, index) in messages"
-        :key="index"
-        class="m-0 flex items-start gap-1.5 text-sm font-medium text-danger"
-      >
-        <UiIcon name="exclamation-circle" class="mt-0.5 size-4" />
-        {{ message }}
-      </p>
+    <div v-if="messages.length || counter" class="-mt-0.5 flex items-start gap-3">
+      <div v-if="messages.length" :id="errorId" class="flex flex-col gap-1">
+        <p
+          v-for="(message, index) in messages"
+          :key="index"
+          class="m-0 flex items-start gap-1.5 text-sm font-medium text-danger"
+        >
+          <UiIcon name="exclamation-circle" class="mt-0.5 size-4" />
+          {{ message }}
+        </p>
+      </div>
+      <p v-if="counter" class="m-0 ml-auto shrink-0 text-xs leading-5 text-fg-subtle tabular-nums">{{ counter }}</p>
     </div>
     <p v-if="help" :id="helpId" class="text-sm text-fg-subtle">{{ help }}</p>
   </div>

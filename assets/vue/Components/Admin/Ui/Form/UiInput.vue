@@ -5,7 +5,7 @@
  * Champ texte, email, nombre, recherche, mot de passe ou URL, avec compteur de caractères facultatif
  */
 import { computed } from 'vue';
-import { useFieldControl } from '@/vue/Composables/Admin/Ui/useField';
+import { useFieldControl, useFieldCounter } from '@/vue/Composables/Admin/Ui/useField';
 import { useUiLabels } from '@/vue/Composables/Admin/Ui/useUiLabels';
 import { CONTROL_CLASSES } from '@/vue/Composables/Admin/Ui/controlClasses';
 
@@ -24,6 +24,10 @@ const model = defineModel<string | number | null>();
 const labels = useUiLabels();
 const control = useFieldControl();
 const length = computed(() => String(model.value ?? '').length);
+const counterText = computed(() =>
+  props.counter && props.maxlength ? labels.input.counter(length.value, props.maxlength) : undefined
+);
+const inField = useFieldCounter(counterText);
 </script>
 
 <template>
@@ -34,7 +38,7 @@ const length = computed(() => String(model.value ?? '').length);
     :maxlength="maxlength"
     :class="[CONTROL_CLASSES, 'h-9 px-3']"
   />
-  <p v-if="counter && maxlength" class="-mt-0.5 text-right text-xs text-fg-subtle tabular-nums">
-    {{ labels.input.counter(length, maxlength) }}
+  <p v-if="counterText && !inField" class="-mt-0.5 text-right text-xs text-fg-subtle tabular-nums">
+    {{ counterText }}
   </p>
 </template>

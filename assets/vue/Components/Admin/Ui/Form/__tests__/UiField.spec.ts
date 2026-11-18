@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { h } from 'vue';
+import { h, nextTick } from 'vue';
 import { mount } from '@vue/test-utils';
 import UiField from '@/vue/Components/Admin/Ui/Form/UiField.vue';
 import UiInput from '@/vue/Components/Admin/Ui/Form/UiInput.vue';
@@ -29,6 +29,21 @@ describe('UiField', () => {
     const input = wrapper.get('input');
     expect(input.attributes('aria-describedby')).toBeUndefined();
     expect(input.attributes('aria-invalid')).toBeUndefined();
+  });
+
+  it('affiche le compteur du champ sur la ligne des erreurs', async () => {
+    const wrapper = mount(
+      UiField,
+      withLabels({
+        props: { label: 'Libellé', error: 'Obligatoire' },
+        slots: { default: () => h(UiInput, { modelValue: 'Vue', maxlength: 40, counter: true }) },
+      })
+    );
+    await nextTick();
+    const row = wrapper.get('[id$="-error"]').element.parentElement;
+    expect(row?.textContent).toContain('Obligatoire');
+    expect(row?.textContent).toContain('input.counter(3,40)');
+    expect(wrapper.text().match(/input\.counter/g)).toHaveLength(1);
   });
 });
 
