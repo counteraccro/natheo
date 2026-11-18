@@ -3,11 +3,13 @@
  * @author Gourdon Aymeric
  * @version 1.0
  * Grille de données : tri, recherche en deux temps (page affichée puis base), colonnes réglables, requête SQL,
- * actions par ligne déjà filtrées par l'appelant, squelette, état vide et pagination ; liste empilée sous 768 px
+ * actions par ligne déjà filtrées par l'appelant, sélection multiple et actions groupées, squelette, état vide et
+ * pagination ; liste empilée sous 768 px
  */
-import { computed, onBeforeUnmount, ref, useId, watch } from 'vue';
+import { computed, nextTick, onBeforeUnmount, ref, useId, watch } from 'vue';
 import UiIcon from '@/vue/Components/Global/Ui/UiIcon.vue';
 import UiButton from '../Form/UiButton.vue';
+import UiCheckbox from '../Form/UiCheckbox.vue';
 import UiDropdown from '../Overlay/UiDropdown.vue';
 import UiDropdownItem from '../Overlay/UiDropdownItem.vue';
 import UiDropdownLabel from '../Overlay/UiDropdownLabel.vue';
@@ -46,6 +48,11 @@ const props = withDefaults(
     searchable?: boolean;
     /** Requête de la grille, montrée au super administrateur */
     sql?: string | null;
+    /** Cases de sélection et barre des actions groupées */
+    selectable?: boolean;
+    bulkActions?: DataTableAction[];
+    /** Libellé d'une ligne pour sa case (première colonne par défaut) */
+    rowLabel?: (row: T) => string;
   }>(),
   { rowKey: 'id', searchable: true, sql: null }
 );
@@ -53,11 +60,16 @@ const props = withDefaults(
 const sort = defineModel<DataTableSort | null>('sort', { default: null });
 const page = defineModel<number>('page', { default: 1 });
 const itemsPerPage = defineModel<number>('itemsPerPage', { default: 20 });
+/** Clés des lignes sélectionnées, conservées d'une page à l'autre */
+const selected = defineModel<(string | number)[]>('selected', { default: () => [] });
 
 const emit = defineEmits<{
   action: [payload: { id: string; row: T }];
   search: [term: string];
   saveSql: [sql: string];
+  bulkAction: [payload: { id: string; keys: (string | number)[] }];
+  /** Toute la collection : l'appelant demande ses clés à l'API */
+  selectAll: [];
 }>();
 
 defineSlots<
@@ -135,7 +147,9 @@ const displayed = computed(() =>
 );
 const busy = computed(() => props.loading || mode.value === 'pending');
 const skeletonRows = computed(() => Math.min(itemsPerPage.value, props.rows.length || 5));
-const colspan = computed(() => shownColumns.value.length + (props.actionsFor ? 1 : 0));
+const colspan = computed(
+  () => shownColumns.value.length + (props.actionsFor ? 1 : 0) + (props.selectable ? 1 : 0)
+);
 
 // Tri
 const ariaSort = (column: DataTableColumn): 'ascending' | 'descending' | 'none' | undefined => {
@@ -162,6 +176,35 @@ const hideClass = (column: DataTableColumn): string | undefined =>
   column.hideBelow ? HIDE_BELOW[column.hideBelow] : undefined;
 
 const runAction = (action: DataTableAction, row: T): void => emit('action', { id: action.id, row });
+
+// Sélection
+const pageCheckbox = ref<HTMLElement | null>(null);
+const selectedSet = computed(() => new Set(selected.value));
+const pageKeys = computed(() => displayed.value.map(keyOf));
+const pageSelected = computed(() => pageKeys.value.filter((key) => selectedSet.value.has(key)).length);
+const allPageSelected = computed(() => pageKeys.value.length > 0 && pageSelected.value === pageKeys.value.length);
+const labelOf = (row: T): string =>
+  props.rowLabel?.(row) ?? cellText(row[props.columns[0]?.key ?? props.rowKey]);
+const sortedBulkActions = computed(() =>
+  [...(props.bulkActions ?? [])].sort((a, b) => Number(!!a.danger) - Number(!!b.danger))
+);
+
+const toggleRow = (row: T, checked: boolean): void => {
+  const key = keyOf(row);
+  selected.value = checked ? [...selected.value, key] : selected.value.filter((k) => k !== key);
+};
+
+const togglePage = (checked: boolean): void => {
+  const keys = new Set(pageKeys.value);
+  const others = selected.value.filter((key) => !keys.has(key));
+  selected.value = checked ? [...others, ...pageKeys.value] : others;
+};
+
+const clearSelection = async (): Promise<void> => {
+  selected.value = [];
+  await nextTick();
+  pageCheckbox.value?.querySelector('input')?.focus();
+};
 </script>
 
 <template>
@@ -253,12 +296,62 @@ const runAction = (action: DataTableAction, row: T): void => emit('action', { id
       </div>
     </div>
 
+    <div
+      v-if="selectable && selected.length"
+      role="region"
+      :aria-label="labels.dataTable.selectionRegion"
+      class="flex flex-wrap items-center gap-x-3 gap-y-2 border-b border-line bg-primary-soft px-4 py-2 text-sm text-on-primary-soft max-md:hidden"
+    >
+      <b class="font-[650]" aria-live="polite">{{ labels.dataTable.selected(selected.length) }}</b>
+      <button
+        v-if="allPageSelected && totalItems > selected.length"
+        type="button"
+        class="ui-ring cursor-pointer rounded-sm border-0 bg-transparent px-1 py-0.5 font-semibold text-inherit underline underline-offset-3"
+        @click="emit('selectAll')"
+      >
+        {{ labels.dataTable.selectAll(totalItems) }}
+      </button>
+      <button
+        type="button"
+        class="ui-ring cursor-pointer rounded-sm border-0 bg-transparent px-1 py-0.5 font-semibold text-inherit underline underline-offset-3"
+        @click="clearSelection"
+      >
+        {{ labels.dataTable.clearSelection }}
+      </button>
+      <div v-if="sortedBulkActions.length" class="ml-auto flex gap-2">
+        <UiButton
+          v-for="action in sortedBulkActions"
+          :key="action.id"
+          size="sm"
+          :variant="action.danger ? 'danger-soft' : 'secondary'"
+          :icon="action.icon"
+          @click="emit('bulkAction', { id: action.id, keys: [...selected] })"
+        >
+          {{ action.label }}
+        </UiButton>
+      </div>
+    </div>
+
     <UiSqlBlock v-if="sql && sqlVisible" :sql="sql" @save="emit('saveSql', sql)" @hide="sqlVisible = false" />
 
     <div class="overflow-x-auto" :aria-busy="busy || undefined">
       <table :aria-label="label" class="w-full border-separate border-spacing-0 tabular-nums max-md:block">
         <thead class="max-md:hidden">
           <tr>
+            <th
+              v-if="selectable"
+              ref="pageCheckbox"
+              scope="col"
+              class="h-10 w-px border-b border-line bg-[color-mix(in_srgb,var(--surface)_40%,var(--bg))] pr-1 pl-4"
+            >
+              <UiCheckbox
+                :model-value="allPageSelected"
+                :indeterminate="pageSelected > 0 && !allPageSelected"
+                :aria-label="labels.dataTable.selectPage"
+                :disabled="busy || pageKeys.length === 0"
+                @update:model-value="togglePage"
+              />
+            </th>
             <th
               v-for="column in shownColumns"
               :key="column.key"
@@ -311,8 +404,19 @@ const runAction = (action: DataTableAction, row: T): void => emit('action', { id
             <tr
               v-for="row in displayed"
               :key="keyOf(row)"
+              :class="selectable && selectedSet.has(keyOf(row)) && 'bg-[color-mix(in_srgb,var(--primary-soft)_70%,transparent)] hover:bg-primary-soft'"
               class="group/row transition-colors duration-100 hover:bg-[color-mix(in_srgb,var(--surface)_55%,transparent)] has-[[aria-expanded=true]]:bg-[color-mix(in_srgb,var(--primary-soft)_55%,transparent)] max-md:grid max-md:grid-cols-[minmax(0,1fr)_auto] max-md:gap-x-3 max-md:gap-y-1.5 max-md:border-b max-md:border-line max-md:px-4 max-md:py-3.5"
             >
+              <td
+                v-if="selectable"
+                class="h-14 w-px border-b border-line pr-1 pl-4 align-middle group-last/row:border-b-0 max-md:hidden"
+              >
+                <UiCheckbox
+                  :model-value="selectedSet.has(keyOf(row))"
+                  :aria-label="labels.dataTable.selectRow(labelOf(row))"
+                  @update:model-value="toggleRow(row, $event)"
+                />
+              </td>
               <td
                 v-for="(column, index) in shownColumns"
                 :key="column.key"
