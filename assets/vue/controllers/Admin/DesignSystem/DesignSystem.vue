@@ -123,7 +123,7 @@ const saveForm = (): void => {
     .filter(([, value]) => value.trim() === '')
     .map(([code]) => ({ propertyPath: `translations[${code}].label`, message: 'Cette valeur ne doit pas être vide.' }));
   if (tagLabels.fr.trim() === 'Version') {
-    violations.push({ propertyPath: '', message: 'Un autre tag porte déjà ce libellé.' });
+    violations.push({ propertyPath: 'translations[fr].label', message: 'Un autre tag porte déjà ce libellé.' });
   }
   formErrors.set(violations);
   if (violations.length === 0) notify('success', 'Tag enregistré');
