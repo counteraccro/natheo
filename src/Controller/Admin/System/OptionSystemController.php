@@ -31,7 +31,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
         requirements: ['_locale' => '%app.supported_locales%'],
     ),
 ]
-#[IsGranted('ROLE_SUPER_ADMIN')]
+#[IsGranted('ROLE_ADMIN')]
 class OptionSystemController extends AppAdminController
 {
     const CSRF_TOKEN_UPDATE = 'option_system_update';

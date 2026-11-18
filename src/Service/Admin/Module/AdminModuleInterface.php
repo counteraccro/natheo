@@ -3,13 +3,13 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
- * Module du back-office, déclaré avec l'attribut AsAdminModule
+ * @version 2.0
+ * Module du back-office, déclaré avec l'attribut AsAdminModule. Ses entrées de menu reçoivent son rôle
  */
 
 namespace App\Service\Admin\Module;
 
-interface AdminModuleInterface
+interface AdminModuleInterface extends AdminMenuProviderInterface
 {
     /**
      * @return AdminModule

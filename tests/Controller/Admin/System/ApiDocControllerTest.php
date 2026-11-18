@@ -14,15 +14,15 @@ use App\Tests\AppWebTestCase;
 class ApiDocControllerTest extends AppWebTestCase
 {
     /**
-     * Documentation avec les opérations d'administration, réservée au super administrateur
+     * Documentation avec les opérations d'administration, réservée aux administrateurs
      * @return void
      */
     public function testIndex(): void
     {
         $this->checkNoAccess('admin_api_doc_index');
-        $this->checkNoAccess('admin_api_doc_index', user: $this->createUserAdmin());
+        $this->checkNoAccess('admin_api_doc_index', user: $this->createUserContributeur());
 
-        $this->client->loginUser($this->createUserSuperAdmin(), 'admin');
+        $this->client->loginUser($this->createUserAdmin(), 'admin');
         $this->client->request('GET', $this->router->generate('admin_api_doc_index'));
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains('h1', $this->translator->trans('api_token.doc.title', domain: 'api_token'));

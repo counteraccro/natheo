@@ -63,6 +63,32 @@ class ApiTokenControllerTest extends AppWebTestCase
     }
 
     /**
+     * La grille ne montre que les tokens du type demandé, et le bouton « Nouveau » garde ce type
+     * @return void
+     */
+    public function testIndexByScope(): void
+    {
+        $this->createApiToken();
+        $this->createApiToken();
+        $this->createApiToken(['scope' => ApiTokenScope::BACK_OFFICE]);
+
+        $this->client->loginUser($this->createUserAdmin(), 'admin');
+        $this->client->request('GET', $this->router->generate('admin_api_token_index', ['scope' => 'back_office']));
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorExists(
+            'a[href="' . $this->router->generate('admin_api_token_add', ['scope' => 'back_office']) . '"]',
+        );
+        $this->assertSelectorNotExists('a[href="' . $this->router->generate('admin_api_doc_index') . '"].btn');
+
+        foreach (['back_office' => 1, 'public' => 2, 'inconnu' => 3] as $scope => $expected) {
+            $url = $this->router->generate('admin_api_token_load_grid_data', ['page' => 1, 'limit' => 20]);
+            $this->client->request('GET', $url . '?scope=' . $scope);
+            $this->assertResponseIsSuccessful();
+            $this->assertSame($expected, json_decode($this->client->getResponse()->getContent(), true)['nb'], $scope);
+        }
+    }
+
+    /**
      * Test méthode updateDisabled()
      * @return void
      */
@@ -164,6 +190,26 @@ class ApiTokenControllerTest extends AppWebTestCase
         $props = $this->getFormProps();
         $this->assertArrayNotHasKey('token', $props['pApiToken']);
         $this->assertStringNotContainsString($apiToken->getToken(), $this->client->getResponse()->getContent());
+    }
+
+    /**
+     * Le type demandé est présélectionné à la création, le fil d'Ariane de l'édition cite la liste du type du token
+     * @return void
+     */
+    public function testAddWithScope(): void
+    {
+        $this->client->loginUser($this->createUserAdmin(), 'admin');
+        $this->client->request('GET', $this->router->generate('admin_api_token_add', ['scope' => 'back_office']));
+        $this->assertResponseIsSuccessful();
+        $this->assertSame('back_office', $this->getFormProps()['pApiToken']['scope']);
+        $backOfficeList = $this->router->generate('admin_api_token_index', ['scope' => 'back_office']);
+        $this->assertSelectorExists('nav[aria-label="Breadcrumb"] a[href="' . $backOfficeList . '"]');
+
+        $apiToken = $this->createApiToken(['scope' => ApiTokenScope::BACK_OFFICE]);
+        $this->client->request('GET', $this->router->generate('admin_api_token_update', ['id' => $apiToken->getId()]));
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorExists('nav[aria-label="Breadcrumb"] a[href="' . $backOfficeList . '"]');
+        $this->assertSelectorExists('#sidebar a.active[href="' . $backOfficeList . '"]');
     }
 
     /**

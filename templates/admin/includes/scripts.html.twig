@@ -7,8 +7,11 @@
         const submenu = document.getElementById('submenu-' + id);
         const chevron = document.getElementById('chevron-' + id);
 
-        submenu.classList.toggle('open');
-        chevron.classList.toggle('rotate');
+        const open = submenu.classList.toggle('open');
+        chevron.classList.toggle('rotate', open);
+        document.querySelectorAll('[aria-controls="submenu-' + id + '"]').forEach(button => {
+            button.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
     }
 
     // ============================================
@@ -23,9 +26,9 @@
     }
 
     // Fermer la sidebar au clic sur un lien (mobile)
-    document.querySelectorAll('.sidebar-item').forEach(item => {
-        item.addEventListener('click', function(e) {
-            if (window.innerWidth < 1024 && !this.hasAttribute('onclick')) {
+    document.querySelectorAll('#sidebar a.sidebar-item, #sidebar .sidebar-item a').forEach(link => {
+        link.addEventListener('click', function() {
+            if (window.innerWidth < 1024) {
                 toggleMobileSidebar();
             }
         });

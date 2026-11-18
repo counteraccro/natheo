@@ -1,0 +1,49 @@
+<?php
+
+declare(strict_types=1);
+/**
+ * @author Gourdon Aymeric
+ * @version 1.0
+ * Entrée du menu du back-office, dossier ou lien vers une page
+ */
+
+namespace App\Service\Admin\Module;
+
+final readonly class AdminMenuItem
+{
+    /**
+     * @param string $id identifiant unique de l'entrée
+     * @param string $label clé de traduction du libellé
+     * @param string $icon tracé SVG de l'icône (attribut d)
+     * @param string|null $parent identifiant de l'entrée parente, null au premier niveau
+     * @param int $position ordre d'affichage parmi les entrées du même parent
+     * @param string|null $legacyRoute route de la page Twig, null pour un dossier
+     * @param array<string, string|int> $routeParameters paramètres de la route
+     * @param string|null $role rôle exigé en plus de celui du module
+     * @param bool $shortcut entrée de création reprise dans le bouton « Nouveau » du header
+     * @param bool $hidden entrée connue du registre mais absente de la sidebar
+     * @param string $translationDomain domaine de traduction du libellé
+     */
+    public function __construct(
+        public string $id,
+        public string $label,
+        public string $icon,
+        public ?string $parent = null,
+        public int $position = 0,
+        public ?string $legacyRoute = null,
+        public array $routeParameters = [],
+        public ?string $role = null,
+        public bool $shortcut = false,
+        public bool $hidden = false,
+        public string $translationDomain = AdminModule::DEFAULT_TRANSLATION_DOMAIN,
+    ) {}
+
+    /**
+     * Indique si l'entrée est un dossier, sans lien
+     * @return bool
+     */
+    public function isFolder(): bool
+    {
+        return $this->legacyRoute === null;
+    }
+}

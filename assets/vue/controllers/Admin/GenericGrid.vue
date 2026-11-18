@@ -56,6 +56,11 @@ export default defineComponent({
       type: String as PropType<GenericGridFilter>,
       default: 'all',
     },
+    // Paramètres fixes ajoutés à chaque chargement (filtre imposé par la page)
+    extraParams: {
+      type: Object as PropType<Record<string, string>>,
+      default: () => ({}),
+    },
   },
   data() {
     return {
@@ -122,7 +127,7 @@ export default defineComponent({
 
       const strSearch = this.getSearchParams();
       const filter = this.getFilterParams();
-      const order = this.getOrderParams();
+      const order = this.getOrderParams() + this.getExtraParams();
 
       const tmp = this.url.split('/');
       let url = this.url + '/' + page + '/' + limit + filter + strSearch + order;
@@ -192,6 +197,15 @@ export default defineComponent({
      */
     getOrderParams(): string {
       return '&orderField=' + this.orderField + '&order=' + this.order;
+    },
+
+    /**
+     * Génération des paramètres fixes de la page
+     */
+    getExtraParams(): string {
+      return Object.entries(this.extraParams)
+        .map(([key, value]) => '&' + encodeURIComponent(key) + '=' + encodeURIComponent(value))
+        .join('');
     },
 
     /**

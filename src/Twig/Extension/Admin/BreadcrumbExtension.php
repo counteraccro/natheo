@@ -19,7 +19,7 @@ class BreadcrumbExtension extends AppAdminExtension
      * Génère le breadcrumb
      * @param array $elements Tableau contenant les elements suivants <br />
      *  [domain => domaine pour les traductions] <br />
-     *  [breadcrumb][key-translate => route] <br />
+     *  [breadcrumb][key-translate => route ou [route, paramètres]] <br />
      * Le premier élément est généré automatiquement (dashboard)
      * @return string
      */
@@ -60,9 +60,10 @@ class BreadcrumbExtension extends AppAdminExtension
                     $this->translator->trans($label, domain: $domain) .
                     '</span>';
             } else {
+                [$name, $parameters] = Breadcrumb::getRoute($route) ?? ['admin_dashboard_index', []];
                 $html .=
                     '<a href="' .
-                    $this->router->generate($route) .
+                    $this->router->generate($name, $parameters) .
                     '" class="ms-1 text-sm font-medium link">' .
                     $this->translator->trans($label, domain: $domain) .
                     '</a>';

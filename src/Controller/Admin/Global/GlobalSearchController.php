@@ -10,8 +10,10 @@ namespace App\Controller\Admin\Global;
 
 use App\Controller\Admin\AppAdminController;
 use App\Enum\Admin\Global\Breadcrumb;
+use App\Enum\Admin\Global\GlobalSearchEntity;
 use App\Enum\Admin\System\Options\OptionUser;
 use App\Service\Admin\GlobalSearchService;
+use App\Service\Admin\Module\AdminMenuBuilder;
 use App\Translate\Admin\Global\GlobalSearchTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -28,13 +30,17 @@ class GlobalSearchController extends AppAdminController
      * Point d'entrée pour la recherche
      * @param Request $request
      * @param GlobalSearchTranslate $globalSearchTranslate
+     * @param AdminMenuBuilder $menuBuilder
      * @return Response
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
     #[Route('/', name: 'index', methods: ['POST'])]
-    public function index(Request $request, GlobalSearchTranslate $globalSearchTranslate): Response
-    {
+    public function index(
+        Request $request,
+        GlobalSearchTranslate $globalSearchTranslate,
+        AdminMenuBuilder $menuBuilder,
+    ): Response {
         $breadcrumb = [
             Breadcrumb::DOMAIN->value => 'global_search',
             Breadcrumb::BREADCRUMB->value => [
@@ -53,13 +59,23 @@ class GlobalSearchController extends AppAdminController
             ],
             'limit' => intval($this->optionUserService->getValueByKey(OptionUser::OU_NB_ELEMENT->value)),
             'page' => 1,
+            'entities' => array_values(
+                array_map(
+                    fn(GlobalSearchEntity $type) => $type->value,
+                    array_filter(
+                        GlobalSearchEntity::cases(),
+                        fn(GlobalSearchEntity $type) => $menuBuilder->isModuleVisible($type->getModule()),
+                    ),
+                ),
+            ),
         ]);
     }
 
     /**
-     * Effectue une recherche en fonction de l'entité et de search
+     * Effectue une recherche en fonction de l'entité et de search, vide si l'utilisateur ne voit pas son module
      * @param Request $request
      * @param GlobalSearchService $globalSearchService
+     * @param AdminMenuBuilder $menuBuilder
      * @param string|null $entity
      * @param string|null $search
      * @param int $page
@@ -72,13 +88,15 @@ class GlobalSearchController extends AppAdminController
     public function search(
         Request $request,
         GlobalSearchService $globalSearchService,
+        AdminMenuBuilder $menuBuilder,
         ?string $entity = null,
         int $page = 1,
         int $limit = 20,
         ?string $search = null,
     ): Response {
         $result = ['elements' => [], 'total' => 0];
-        if ($search !== null) {
+        $module = GlobalSearchEntity::tryFrom((string) $entity)?->getModule();
+        if ($search !== null && ($module === null || $menuBuilder->isModuleVisible($module))) {
             $result = $globalSearchService->globalSearch($entity, $search, $page, $limit);
         }
 

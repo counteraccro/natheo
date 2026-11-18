@@ -88,4 +88,3 @@ api_token.card.help.scope_public: 'A public token is used by the public site and
 api_token.card.help.scope_back_office: 'A back-office token is used to log a user in. Administration operations then run with that user''s rights.'
 api_token.doc.title: 'API documentation'
 api_token.doc.description: 'This page describes every operation of the API v2. Administration operations are not shown in the public documentation and may still change before version 2.2.'
-api_token.index.button.doc: 'API documentation'

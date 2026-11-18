@@ -20,7 +20,7 @@ use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 #[Route('/admin/{_locale}/api-docs', name: 'admin_api_doc_', requirements: ['_locale' => '%app.supported_locales%'])]
-#[IsGranted('ROLE_SUPER_ADMIN')]
+#[IsGranted('ROLE_ADMIN')]
 class ApiDocController extends AppAdminController
 {
     /**
@@ -36,7 +36,6 @@ class ApiDocController extends AppAdminController
         $breadcrumb = [
             Breadcrumb::DOMAIN->value => 'api_token',
             Breadcrumb::BREADCRUMB->value => [
-                'api_token.index.title' => 'admin_api_token_index',
                 'api_token.doc.title' => '#',
             ],
         ];

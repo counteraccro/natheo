@@ -56,6 +56,27 @@ class DashboardControllerTest extends AppWebTestCase
     }
 
     /**
+     * L'aide de première connexion est proposée à qui voit les options système et les tokens
+     * @return void
+     */
+    public function testIndexHelpFirstConnexion(): void
+    {
+        foreach ([[$this->createUserContributeur(), false], [$this->createUserAdmin(), true]] as [$user, $expected]) {
+            $this->client->loginUser($user, 'admin');
+            $this->client->request('GET', $this->router->generate('admin_dashboard_index'));
+            $this->assertResponseIsSuccessful();
+            $props = json_decode(
+                $this->client
+                    ->getCrawler()
+                    ->filter('[data-symfony--ux-vue--vue-component-value="Admin/Dashboard/Dashboard"]')
+                    ->attr('data-symfony--ux-vue--vue-props-value'),
+                true,
+            );
+            $this->assertSame($expected, $props['roles']['canSeeHelpFirstConnexion']);
+        }
+    }
+
+    /**
      * Test méthode loadDashboardBlock()
      * @return void
      */
@@ -67,7 +88,7 @@ class DashboardControllerTest extends AppWebTestCase
         $this->checkNoAccess(
             'admin_dashboard_load_block',
             ['id' => DashboardBlock::HELP_FIRST_CONNEXION->value],
-            user: $this->createUserAdmin(),
+            user: $this->createUserContributeur(),
         );
 
         $contributeur = $this->createUserContributeur();
@@ -85,7 +106,7 @@ class DashboardControllerTest extends AppWebTestCase
             $this->assertTrue($content['success']);
         }
 
-        $user = $this->createUserSuperAdmin();
+        $user = $this->createUserAdmin();
         $this->client->loginUser($user, 'admin');
         $this->client->request(
             'GET',

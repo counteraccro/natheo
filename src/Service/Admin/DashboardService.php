@@ -24,6 +24,7 @@ use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use App\Service\Global\Token\TokenHasher;
 use App\Enum\Admin\System\ApiToken\ApiTokenDefault;
+use App\Enum\Admin\System\ApiToken\ApiTokenScope;
 
 class DashboardService extends AppAdminService
 {
@@ -161,7 +162,7 @@ class DashboardService extends AppAdminService
             ],
             'link_tokens' => [
                 'label' => $translator->trans('dashboard.help_first_connection.link_tokens', domain: 'dashboard'),
-                'link' => $router->generate('admin_api_token_index'),
+                'link' => $router->generate('admin_api_token_index', ['scope' => ApiTokenScope::PUBLIC->value]),
             ],
         ];
 

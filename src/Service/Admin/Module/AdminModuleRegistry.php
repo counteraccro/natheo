@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 2.0
  * Registre des modules du back-office, alimenté par les services marqués AsAdminModule
  */
 
@@ -18,6 +18,12 @@ final class AdminModuleRegistry
      * @var array<string, AdminModule>|null
      */
     private ?array $definitions = null;
+
+    /**
+     * Services des modules indexés par identifiant
+     * @var array<string, AdminModuleInterface>
+     */
+    private array $services = [];
 
     /**
      * @param iterable<AdminModuleInterface> $modules
@@ -35,6 +41,17 @@ final class AdminModuleRegistry
     }
 
     /**
+     * Service qui déclare le module
+     * @param string $id
+     * @return AdminModuleInterface|null
+     */
+    public function getService(string $id): ?AdminModuleInterface
+    {
+        $this->all();
+        return $this->services[$id] ?? null;
+    }
+
+    /**
      * @return array<string, AdminModule>
      * @throws \LogicException si deux modules ont le même identifiant
      */
@@ -44,14 +61,15 @@ final class AdminModuleRegistry
             return $this->definitions;
         }
 
-        $this->definitions = [];
+        $definitions = [];
         foreach ($this->modules as $module) {
             $definition = $module->getDefinition();
-            if (isset($this->definitions[$definition->id])) {
+            if (isset($definitions[$definition->id])) {
                 throw new \LogicException(sprintf('Module du back-office « %s » déclaré deux fois', $definition->id));
             }
-            $this->definitions[$definition->id] = $definition;
+            $definitions[$definition->id] = $definition;
+            $this->services[$definition->id] = $module;
         }
-        return $this->definitions;
+        return $this->definitions = $definitions;
     }
 }
