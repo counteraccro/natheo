@@ -5,7 +5,7 @@
  * Catalogue des composants du design system (environnement dev) : chaque composant dans ses états, dans le layout du
  * back-office ; couleur et mode depuis le menu Apparence de la barre du haut
  */
-import { computed, ref } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import AdminShell from '@/vue/Components/Admin/Layout/AdminShell.vue';
 import AdminSidebar from '@/vue/Components/Admin/Layout/AdminSidebar.vue';
 import AdminHeader from '@/vue/Components/Admin/Layout/AdminHeader.vue';
@@ -25,7 +25,9 @@ import {
   UiDropdownItem,
   UiDropdownSeparator,
   UiEmptyState,
+  UiErrorSummary,
   UiField,
+  UiForm,
   UiIcon,
   UiInput,
   UiSelect,
@@ -38,6 +40,8 @@ import {
   buildUiLabels,
   notify,
   provideUiLabels,
+  useFormErrors,
+  type ApiViolation,
   type DataTableAction,
   type DataTableColumn,
   type DataTableSort,
@@ -104,13 +108,27 @@ const sidebarItems: SidebarItem[] = [
   },
 ];
 
-// Formulaire
-const label = ref('Version');
-const description = ref('');
+// Formulaire : l'enregistrement simule la réponse 422 de l'API
+const tagLabels = reactive<Record<string, string>>({ fr: 'Version', en: 'Release', es: '' });
+const descriptions = reactive<Record<string, string>>({ fr: '', en: '', es: '' });
 const color = ref('#6530e0');
 const locale = ref<string | number | null>('fr');
 const enabled = ref(true);
 const accepted = ref(false);
+const formErrors = useFormErrors();
+const TAB_PREFIXES = { fr: 'translations[fr]', en: 'translations[en]', es: 'translations[es]' };
+
+const saveForm = (): void => {
+  const violations: ApiViolation[] = Object.entries(tagLabels)
+    .filter(([, value]) => value.trim() === '')
+    .map(([code]) => ({ propertyPath: `translations[${code}].label`, message: 'Cette valeur ne doit pas être vide.' }));
+  if (tagLabels.fr.trim() === 'Version') {
+    violations.push({ propertyPath: '', message: 'Un autre tag porte déjà ce libellé.' });
+  }
+  formErrors.set(violations);
+  if (violations.length === 0) notify('success', 'Tag enregistré');
+};
+
 const languageTab = ref('fr');
 const tabs = [
   { id: 'fr', label: 'Français' },
@@ -320,31 +338,33 @@ const PANEL_TITLE = 'm-0 text-md font-[650]';
     <div class="grid grid-cols-[minmax(0,1fr)_360px] items-start gap-5 max-xl:grid-cols-[minmax(0,1fr)]">
       <section :class="PANEL">
         <header :class="PANEL_HEAD"><h2 :class="PANEL_TITLE">Formulaire</h2></header>
-        <div class="flex flex-col gap-[18px] p-5">
+        <UiForm :errors="formErrors" class="p-5" @submit="saveForm">
           <UiAlert variant="info" title="Ce tag est affiché sur 12 pages">
-            La modification met ces pages à jour dès l'enregistrement.
+            La modification met ces pages à jour dès l'enregistrement. Enregistrer avec un libellé vide ou « Version »
+            simule une réponse 422 de l'API.
           </UiAlert>
-          <UiTabs v-model="languageTab" :tabs="tabs" label="Langues">
+          <UiErrorSummary />
+          <UiTabs v-model="languageTab" :tabs="tabs" label="Langues" :error-prefixes="TAB_PREFIXES">
             <template v-for="tab in tabs" :key="tab.id" #[tab.id]>
               <div class="flex flex-col gap-[18px]">
                 <UiField
-                  label="Libellé"
+                  :name="`translations[${tab.id}].label`"
+                  :label="`Libellé (${tab.label})`"
                   required
                   help="Affiché sur le site public"
-                  :error="label ? undefined : 'Le libellé est obligatoire'"
                 >
-                  <UiInput v-model="label" :maxlength="40" counter />
+                  <UiInput v-model="tagLabels[tab.id]" :maxlength="40" counter />
                 </UiField>
-                <UiField label="Description">
-                  <UiTextarea v-model="description" :maxlength="200" counter />
+                <UiField :name="`translations[${tab.id}].description`" :label="`Description (${tab.label})`">
+                  <UiTextarea v-model="descriptions[tab.id]" :maxlength="200" counter />
                 </UiField>
               </div>
             </template>
           </UiTabs>
-          <UiField label="Couleur" help="Code hexadécimal #rrggbb">
+          <UiField name="color" label="Couleur" help="Code hexadécimal #rrggbb">
             <UiColorInput v-model="color" />
           </UiField>
-          <UiField label="Langue par défaut">
+          <UiField name="locale" label="Langue par défaut">
             <UiSelect
               v-model="locale"
               :options="[
@@ -360,7 +380,11 @@ const PANEL_TITLE = 'm-0 text-md font-[650]';
             label="Afficher dans le nuage de tags"
             description="Sur la page d'accueil du thème"
           />
-        </div>
+          <div class="flex justify-end gap-2">
+            <UiButton icon="close" @click="formErrors.clearAll()">Effacer les erreurs</UiButton>
+            <UiButton type="submit" variant="primary" icon="check">Enregistrer</UiButton>
+          </div>
+        </UiForm>
       </section>
 
       <section :class="PANEL">
