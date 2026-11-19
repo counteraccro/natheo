@@ -38,7 +38,7 @@ describe('NatheoStudioLayout', () => {
     const data = bootstrap();
     const { wrapper } = mountWith(NatheoStudioLayout, layoutProps(data), data);
     expect(wrapper.text()).toContain('Nathéo');
-    expect(wrapper.text()).toContain('admin_app.role.admin');
+    expect(wrapper.text()).toContain('Administrateur');
     expect(wrapper.find('a[href="/admin/fr/page/index"]').exists()).toBe(true);
     expect(wrapper.find('main .screen').exists()).toBe(true);
     expect(wrapper.find('[aria-label="admin_ui.header.notifications"]').exists()).toBe(true);
@@ -79,7 +79,7 @@ describe('NatheoStudioLayout', () => {
         commit: 'abc',
         commitDate: '2026-11-19',
         version: '2.1.0-dev',
-        users: [{ id: 1, login: 'admin', role: 'ROLE_SUPER_ADMIN', avatar: null, url: '/login-link' }],
+        users: [{ id: 1, login: 'admin', role: 'Super administrateur', avatar: null, url: '/login-link' }],
       },
     });
     const { wrapper } = mountWith(NatheoStudioLayout, layoutProps(data), data);

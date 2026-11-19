@@ -25,12 +25,8 @@ describe('createCan', () => {
     expect(can.can('delete', 'admin_tag_delete', { permissions: { delete: true } })).toBe(false);
   });
 
-  it('suit la hiérarchie des rôles', async () => {
-    const can = await canFor(['ROLE_SUPER_ADMIN']);
-    expect(
-      ['ROLE_SUPER_ADMIN', 'ROLE_ADMIN', 'ROLE_CONTRIBUTEUR', 'ROLE_USER'].every((role) => can.hasRole(role))
-    ).toBe(true);
-    const contributor = await canFor(['ROLE_CONTRIBUTEUR']);
+  it('lit les rôles atteignables donnés par le serveur', async () => {
+    const contributor = await canFor(['ROLE_CONTRIBUTEUR', 'ROLE_USER']);
     expect(contributor.hasRole('ROLE_USER')).toBe(true);
     expect(contributor.hasRole('ROLE_ADMIN')).toBe(false);
   });

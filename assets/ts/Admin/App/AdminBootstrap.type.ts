@@ -24,8 +24,10 @@ export interface AdminBootstrapUser {
   initials: string;
   email: string;
   avatar: string | null;
-  /** Rôles bruts (ROLE_ADMIN…) */
+  /** Rôles atteignables par la hiérarchie des rôles (ROLE_ADMIN…) */
   roles: string[];
+  /** Nom traduit du rôle le plus élevé */
+  role: string;
   /** Nom de l'utilisateur d'origine pendant une usurpation */
   impersonating: string | null;
 }
@@ -50,6 +52,7 @@ export interface AdminBootstrapOptions {
 export interface AdminDebugUser {
   id: number;
   login: string;
+  /** Nom traduit du rôle le plus élevé */
   role: string;
   avatar: string | null;
   url: string;

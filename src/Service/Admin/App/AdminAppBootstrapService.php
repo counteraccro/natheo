@@ -12,6 +12,7 @@ namespace App\Service\Admin\App;
 use App\Entity\Admin\System\User;
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Enum\Admin\System\Options\OptionUser;
+use App\Enum\Admin\System\User\Role;
 use App\Service\Admin\AppAdminHandlerService;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\Dev\DevInfoService;
@@ -27,6 +28,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\SwitchUserToken;
+use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 use Symfony\Component\Security\Http\Impersonate\ImpersonateUrlGenerator;
 
 class AdminAppBootstrapService extends AppAdminService
@@ -47,6 +49,7 @@ class AdminAppBootstrapService extends AppAdminService
             Autowire(service: 'security.impersonate_url_generator'),
         ]
         private readonly ImpersonateUrlGenerator $impersonateUrlGenerator,
+        private readonly RoleHierarchyInterface $roleHierarchy,
     ) {
         parent::__construct($handlers);
     }
@@ -84,7 +87,8 @@ class AdminAppBootstrapService extends AppAdminService
                 'initials' => $this->getInitials($user),
                 'email' => $user->getEmail(),
                 'avatar' => AvatarUrl::file($user->getAvatar(), $this->getParameterBag()->get('app.path.avatar')),
-                'roles' => $user->getRoles(),
+                'roles' => $this->roleHierarchy->getReachableRoleNames($user->getRoles()),
+                'role' => $this->getRoleLabel($user->getRoles()),
                 'impersonating' => $impersonator === null ? null : $this->getDisplayName($impersonator),
             ],
             'site' => [
@@ -211,6 +215,29 @@ class AdminAppBootstrapService extends AppAdminService
         if ($this->getParameterBag()->get('kernel.environment') !== 'dev') {
             return null;
         }
-        return [...$this->devInfoService->getInfo(), 'users' => $this->devInfoService->getLoginUsers()];
+        $users = array_map(
+            fn(array $user): array => [...$user, 'role' => $this->getRoleLabel([$user['role']])],
+            $this->devInfoService->getLoginUsers(),
+        );
+        return [...$this->devInfoService->getInfo(), 'users' => $users];
+    }
+
+    /**
+     * Nom traduit du rôle du back-office le plus élevé, le premier rôle brut à défaut
+     * @param string[] $roles
+     * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function getRoleLabel(array $roles): string
+    {
+        $translator = $this->getTranslator();
+        return match (Role::highest($roles)) {
+            Role::SUPER_ADMIN => $translator->trans('admin_app.role.super_admin', domain: 'admin_app'),
+            Role::ADMIN => $translator->trans('admin_app.role.admin', domain: 'admin_app'),
+            Role::CONTRIBUTEUR => $translator->trans('admin_app.role.contributor', domain: 'admin_app'),
+            Role::USER => $translator->trans('admin_app.role.user', domain: 'admin_app'),
+            null => $roles[0] ?? '',
+        };
     }
 }

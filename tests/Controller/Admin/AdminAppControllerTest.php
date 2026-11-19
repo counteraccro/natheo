@@ -77,6 +77,8 @@ class AdminAppControllerTest extends AppWebTestCase
                 'initials' => $bootstrap['user']['initials'],
             ],
         );
+        $this->assertEqualsCanonicalizing(['ROLE_CONTRIBUTEUR', 'ROLE_USER'], $bootstrap['user']['roles']);
+        $this->assertSame('Contributeur', $bootstrap['user']['role']);
         $this->assertNull($bootstrap['user']['impersonating']);
         $this->assertNull($bootstrap['urls']['impersonationExit']);
         $this->assertSame($this->router->generate('admin_dashboard_index'), $bootstrap['urls']['dashboard']);

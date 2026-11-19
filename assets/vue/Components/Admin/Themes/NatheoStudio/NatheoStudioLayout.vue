@@ -9,7 +9,6 @@ import { computed } from 'vue';
 import { AdminDebugBar, AdminHeader, AdminShell, AdminSidebar, type DebugSection, type DebugUser } from '@ui';
 import NatheoStudioUserMenu from './NatheoStudioUserMenu.vue';
 import { useAdminContext } from '@/vue/Composables/Admin/useAdminContext';
-import { roleLabel } from '@/vue/Composables/Admin/roleLabel';
 import type { AdminLayoutProps } from '@/ts/Admin/Theme/AdminTheme.type';
 
 const props = defineProps<AdminLayoutProps>();
@@ -19,7 +18,7 @@ const { t, leave } = useAdminContext();
 
 const user = computed(() => ({
   name: props.bootstrap.user.name,
-  detail: roleLabel(props.bootstrap.user.roles, t),
+  detail: props.bootstrap.user.role,
   initials: props.bootstrap.user.initials,
 }));
 
@@ -60,7 +59,7 @@ const debugSections = computed<DebugSection[]>(() => {
 const debugUsers = computed<DebugUser[]>(() =>
   (props.bootstrap.debug?.users ?? []).map((debugUser) => ({
     name: debugUser.login,
-    detail: roleLabel([debugUser.role], t),
+    detail: debugUser.role,
     initials: debugUser.login.slice(0, 2).toUpperCase(),
     href: debugUser.url,
     current: debugUser.id === props.bootstrap.user.id,
