@@ -25,6 +25,7 @@ export default defineConfig(({ command }) => ({
                 install_css: './assets/styles/app_install.scss',
                 email: './assets/styles/app_email.scss',
                 admin: './assets/app_admin.js',
+                admin_app: './assets/admin_app.ts',
                 admin_design_system: './assets/admin_design_system.ts',
                 front_natheo_horizon: './assets/front_natheo_horizon.ts',
                 front_natheo_base: './assets/front_natheo_base.ts',

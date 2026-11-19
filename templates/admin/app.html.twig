@@ -1,0 +1,17 @@
+{# Page de l'application Vue du back-office : données de démarrage lues par l'entrée admin_app #}
+<!DOCTYPE html>
+<html lang="{{ locale }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% include "/admin/includes/theme_init.html.twig" with { nonce: nonce } %}
+    <title>{{ siteName }}</title>
+    <link rel="icon" type="image/svg+xml" href="{{ asset('assets/natheo/favico/favicon.svg') }}">
+    {{ vite_entry_link_tags('admin_app') }}
+    {{ vite_entry_script_tags('admin_app', { attr: { nonce: nonce } }) }}
+</head>
+<body>
+<div id="admin-app"></div>
+<script type="application/json" id="admin-bootstrap">{{ bootstrap|raw }}</script>
+</body>
+</html>
