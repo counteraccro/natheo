@@ -1,62 +1,62 @@
-admin_ui.alert.close: 'Fermer l''alerte'
-admin_ui.breadcrumb.nav: 'Fil d''Ariane'
-admin_ui.button.loading: 'Chargement…'
+admin_ui.alert.close: "Fermer l'alerte"
+admin_ui.breadcrumb.nav: "Fil d'Ariane"
+admin_ui.button.loading: Chargement…
 admin_ui.color_input.hex: 'Code hexadécimal'
 admin_ui.color_input.picker: 'Choisir une couleur'
-admin_ui.confirm_dialog.cancel: 'Annuler'
-admin_ui.confirm_dialog.confirm: 'Confirmer'
-admin_ui.data_table.actions: 'Actions'
+admin_ui.confirm_dialog.cancel: Annuler
+admin_ui.confirm_dialog.confirm: Confirmer
+admin_ui.data_table.actions: Actions
 admin_ui.data_table.clear_selection: 'Tout désélectionner'
-admin_ui.data_table.columns: 'Colonnes'
+admin_ui.data_table.columns: Colonnes
 admin_ui.data_table.empty_text: 'Aucune ligne ne correspond à ces critères.'
 admin_ui.data_table.empty_title: 'Aucun résultat'
-admin_ui.data_table.more_actions: 'Plus d''actions'
-admin_ui.data_table.options: 'Options'
+admin_ui.data_table.more_actions: "Plus d'actions"
+admin_ui.data_table.options: Options
 admin_ui.data_table.search_back: 'Revenir au tableau'
 admin_ui.data_table.search_hint: 'Entrée pour chercher dans toute la base'
 admin_ui.data_table.search_label: 'Rechercher dans le tableau'
 admin_ui.data_table.search_local: '{count} sur {total} lignes de cette page'
 admin_ui.data_table.search_pending: 'Recherche dans la base de données…'
-admin_ui.data_table.search_placeholder: 'Rechercher…'
+admin_ui.data_table.search_placeholder: Rechercher…
 admin_ui.data_table.search_remote: '{count, plural, =0 {Aucun résultat} one {# résultat} other {# résultats}} dans toute la base'
 admin_ui.data_table.select_all: 'Sélectionner les {total}'
 admin_ui.data_table.select_page: 'Sélectionner les lignes de la page'
 admin_ui.data_table.select_row: 'Sélectionner {label}'
 admin_ui.data_table.selected: '{count, plural, one {# élément sélectionné} other {# éléments sélectionnés}}'
-admin_ui.data_table.selection_region: 'Sélection'
-admin_ui.data_table.sql_copied: 'Copié'
-admin_ui.data_table.sql_copy: 'Copier'
-admin_ui.data_table.sql_hide: 'Masquer'
-admin_ui.data_table.sql_save: 'Enregistrer'
+admin_ui.data_table.selection_region: Sélection
+admin_ui.data_table.sql_copied: Copié
+admin_ui.data_table.sql_copy: Copier
+admin_ui.data_table.sql_hide: Masquer
+admin_ui.data_table.sql_save: Enregistrer
 admin_ui.data_table.sql_show: 'Afficher le SQL'
 admin_ui.data_table.sql_title: 'Requête SQL'
 admin_ui.debug_bar.close: 'Fermer la barre de debug'
-admin_ui.debug_bar.current_user: 'connecté'
+admin_ui.debug_bar.current_user: connecté
 admin_ui.debug_bar.login_as: 'Se connecter avec'
 admin_ui.debug_bar.open: 'Barre de debug'
-admin_ui.dialog.close: 'Fermer'
+admin_ui.dialog.close: Fermer
 admin_ui.error_summary.item: '{label} : {message}'
-admin_ui.error_summary.title: '{count, plural, one {# erreur empêche l''enregistrement} other {# erreurs empêchent l''enregistrement}}'
-admin_ui.field.required: 'obligatoire'
-admin_ui.header.appearance: 'Apparence'
-admin_ui.header.color: 'Couleur'
+admin_ui.error_summary.title: "{count, plural, one {# erreur empêche l'enregistrement} other {# erreurs empêchent l'enregistrement}}"
+admin_ui.field.required: obligatoire
+admin_ui.header.appearance: Apparence
+admin_ui.header.color: Couleur
 admin_ui.header.impersonation: 'Connecté en tant que {name}'
 admin_ui.header.impersonation_exit: 'Revenir à mon compte'
-admin_ui.header.mode: 'Mode'
-admin_ui.header.mode_dark: 'Sombre'
-admin_ui.header.mode_light: 'Clair'
-admin_ui.header.new: 'Nouveau'
-admin_ui.header.notifications: 'Notifications'
+admin_ui.header.mode: Mode
+admin_ui.header.mode_dark: Sombre
+admin_ui.header.mode_light: Clair
+admin_ui.header.new: Nouveau
+admin_ui.header.notifications: Notifications
 admin_ui.header.open_menu: 'Ouvrir le menu'
 admin_ui.header.search_label: 'Recherche globale'
-admin_ui.header.search_placeholder: 'Rechercher…'
-admin_ui.header.theme_blue: 'Bleu'
-admin_ui.header.theme_green: 'Vert'
-admin_ui.header.theme_red: 'Rouge'
-admin_ui.header.theme_violet: 'Violet'
+admin_ui.header.search_placeholder: Rechercher…
+admin_ui.header.theme_blue: Bleu
+admin_ui.header.theme_green: Vert
+admin_ui.header.theme_red: Rouge
+admin_ui.header.theme_violet: Violet
 admin_ui.input.counter: '{count} / {max} caractères'
 admin_ui.pagination.items_per_page: 'Lignes par page'
-admin_ui.pagination.nav: 'Pagination'
+admin_ui.pagination.nav: Pagination
 admin_ui.pagination.next: 'Page suivante'
 admin_ui.pagination.page: 'Page {page}'
 admin_ui.pagination.previous: 'Page précédente'
@@ -68,4 +68,4 @@ admin_ui.sidebar.user_menu: 'Menu utilisateur'
 admin_ui.sidebar.version: 'Version {version}'
 admin_ui.tabs.has_errors: 'contient des erreurs'
 admin_ui.toast.close: 'Fermer la notification'
-admin_ui.toast.region: 'Notifications'
+admin_ui.toast.region: Notifications

@@ -3,38 +3,38 @@ admin_module.menu.api_doc.label: 'API documentation'
 admin_module.menu.api_token.label: 'API tokens'
 admin_module.menu.api_token_back_office.label: 'Back office'
 admin_module.menu.api_token_new.label: 'New token'
-admin_module.menu.api_token_public.label: 'Front'
-admin_module.menu.comment.label: 'Comments'
+admin_module.menu.api_token_public.label: Front
+admin_module.menu.comment.label: Comments
 admin_module.menu.comment_index.label: 'Comment management'
-admin_module.menu.comment_moderate.label: 'Moderation'
-admin_module.menu.content.label: 'Content'
-admin_module.menu.dashboard.label: 'Dashboard'
-admin_module.menu.database_manager.label: 'Database'
+admin_module.menu.comment_moderate.label: Moderation
+admin_module.menu.content.label: Content
+admin_module.menu.dashboard.label: Dashboard
+admin_module.menu.database_manager.label: Database
 admin_module.menu.demo_overwrite.label: 'Override example'
-admin_module.menu.faq.label: 'FAQ'
+admin_module.menu.faq.label: FAQ
 admin_module.menu.faq_index.label: 'FAQ management'
 admin_module.menu.faq_new.label: 'New FAQ'
-admin_module.menu.info.label: 'Information'
-admin_module.menu.log.label: 'Logs'
-admin_module.menu.mail.label: 'Emails'
+admin_module.menu.info.label: Information
+admin_module.menu.log.label: Logs
+admin_module.menu.mail.label: Emails
 admin_module.menu.media.label: 'Media library'
-admin_module.menu.menu.label: 'Menus'
+admin_module.menu.menu.label: Menus
 admin_module.menu.menu_index.label: 'Menu management'
 admin_module.menu.menu_new.label: 'New menu'
 admin_module.menu.option_system.label: 'System options'
-admin_module.menu.page.label: 'Pages'
+admin_module.menu.page.label: Pages
 admin_module.menu.page_index.label: 'Page management'
 admin_module.menu.page_new.label: 'New page'
 admin_module.menu.sql_manager.label: 'SQL manager'
 admin_module.menu.sql_manager_index.label: 'Query management'
 admin_module.menu.sql_manager_new.label: 'New query'
-admin_module.menu.system.label: 'System'
-admin_module.menu.tag.label: 'Tags'
+admin_module.menu.system.label: System
+admin_module.menu.tag.label: Tags
 admin_module.menu.tag_index.label: 'Tag management'
 admin_module.menu.tag_new.label: 'New tag'
-admin_module.menu.tools.label: 'Tools'
-admin_module.menu.translation.label: 'Translations'
-admin_module.menu.user.label: 'Users'
+admin_module.menu.tools.label: Tools
+admin_module.menu.translation.label: Translations
+admin_module.menu.user.label: Users
 admin_module.menu.user_index.label: 'User management'
 admin_module.menu.user_new.label: 'New user'
 admin_module.module.advanced_option.description: 'Manage the options for the development of the CMS'
@@ -44,34 +44,34 @@ admin_module.module.api_doc.label: 'API documentation'
 admin_module.module.api_token.description: 'Manage the access tokens to the Nathéo CMS APIs'
 admin_module.module.api_token.label: 'API tokens'
 admin_module.module.comment.description: 'Comment management'
-admin_module.module.comment.label: 'Comments'
+admin_module.module.comment.label: Comments
 admin_module.module.dashboard.description: 'Home page of the CMS administration'
-admin_module.module.dashboard.label: 'Dashboard'
+admin_module.module.dashboard.label: Dashboard
 admin_module.module.database_manager.description: 'View the database and its statistics'
-admin_module.module.database_manager.label: 'Database'
+admin_module.module.database_manager.label: Database
 admin_module.module.demo_overwrite.description: 'Example of overriding a CMS page'
 admin_module.module.demo_overwrite.label: 'Override example'
 admin_module.module.faq.description: 'FAQ management'
-admin_module.module.faq.label: 'FAQ'
+admin_module.module.faq.label: FAQ
 admin_module.module.info.description: 'Information about the CMS'
-admin_module.module.info.label: 'Information'
+admin_module.module.info.label: Information
 admin_module.module.log.description: 'Management and viewing of the application logs'
-admin_module.module.log.label: 'Logs'
+admin_module.module.log.label: Logs
 admin_module.module.mail.description: 'Management of the emails sent from the CMS'
-admin_module.module.mail.label: 'Emails'
+admin_module.module.mail.label: Emails
 admin_module.module.media.description: 'Media management'
 admin_module.module.media.label: 'Media library'
 admin_module.module.menu.description: 'Menu management'
-admin_module.module.menu.label: 'Menus'
+admin_module.module.menu.label: Menus
 admin_module.module.option_system.description: 'CMS configuration'
 admin_module.module.option_system.label: 'System options'
 admin_module.module.page.description: 'Page management'
-admin_module.module.page.label: 'Pages'
+admin_module.module.page.label: Pages
 admin_module.module.sql_manager.description: 'Create / run SQL queries (SELECT only)'
 admin_module.module.sql_manager.label: 'SQL manager'
 admin_module.module.tag.description: 'Tag management'
-admin_module.module.tag.label: 'Tags'
+admin_module.module.tag.label: Tags
 admin_module.module.translation.description: 'Management of the CMS translations'
-admin_module.module.translation.label: 'Translations'
+admin_module.module.translation.label: Translations
 admin_module.module.user.description: 'Management of the users who can log in to the site administration'
-admin_module.module.user.label: 'Users'
+admin_module.module.user.label: Users
