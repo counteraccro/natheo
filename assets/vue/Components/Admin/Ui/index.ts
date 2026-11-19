@@ -49,6 +49,8 @@ export type {
   DataTableSort,
   DataTableSearchMode,
 } from '@/ts/Admin/Ui/Data/UiDataTable.type';
+export { useTableSearch } from '@/vue/Composables/Admin/Ui/useTableSearch';
+export type { TableSearch, TableSearchOptions } from '@/vue/Composables/Admin/Ui/useTableSearch';
 export { useAppearance, setMode, setTheme } from '@/vue/Composables/Admin/Ui/useAppearance';
 export type { ColorMode, ThemeColor } from '@/ts/Admin/Layout/AdminHeader.type';
 export { default as UiForm } from './Form/UiForm.vue';

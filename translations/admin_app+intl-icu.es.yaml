@@ -25,3 +25,5 @@ admin_app.role.user: Usuario
 admin_app.user_menu.logout: 'Cerrar sesión'
 admin_app.user_menu.my_account: 'Mi cuenta'
 admin_app.user_menu.my_options: 'Mis opciones'
+admin_app.resource.conflict_title: 'Modificado mientras tanto'
+admin_app.resource.conflict_text: 'Alguien guardó este elemento después de abrirlo. Vuelva a cargarlo para ver la última versión y repita sus cambios.'

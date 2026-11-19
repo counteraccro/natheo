@@ -66,6 +66,15 @@ describe('ApiClient', () => {
     expect(headersOf(fetchMock)).toMatchObject({ 'If-Match': '"abc"', 'Content-Type': 'application/merge-patch+json' });
   });
 
+  it('renvoie le nouvel ETag après une création ou une modification', async () => {
+    mockFetch(json({ id: 5 }, 201, { ETag: '"v1"' }), json({ id: 5 }, 200, { ETag: '"v2"' }));
+    expect(await client().postResource('/admin/tags', { label: 'A' })).toEqual({ data: { id: 5 }, etag: '"v1"' });
+    expect(await client().patchResource('/admin/tags/5', { label: 'B' }, { ifMatch: '"v1"' })).toEqual({
+      data: { id: 5 },
+      etag: '"v2"',
+    });
+  });
+
   it('supprime avec If-Match et accepte un 204', async () => {
     const fetchMock = mockFetch(json(null, 204));
     await expect(client().delete('/admin/tags/4', { ifMatch: '"abc"' })).resolves.toBeUndefined();

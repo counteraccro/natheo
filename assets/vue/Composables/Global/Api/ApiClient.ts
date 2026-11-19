@@ -1,6 +1,6 @@
 /**
  * @author Gourdon Aymeric
- * @version 2.0
+ * @version 2.1
  * Client de l'API v2, commun au site public et au back-office
  */
 import { ApiError } from '@/vue/Composables/Global/Api/ApiError';
@@ -64,11 +64,25 @@ export class ApiClient {
     return { members: collection.member, total: collection.totalItems, page, lastPage };
   }
 
-  post<T>(path: string, body: object): Promise<T> {
+  async post<T>(path: string, body: object): Promise<T> {
+    return (await this.postResource<T>(path, body)).data;
+  }
+
+  async patch<T>(path: string, body: object, options: ApiWriteOptions = {}): Promise<T> {
+    return (await this.patchResource<T>(path, body, options)).data;
+  }
+
+  /**
+   * Création, avec l'ETag de la ressource créée
+   */
+  postResource<T>(path: string, body: object): Promise<ApiResource<T>> {
     return this.write<T>({ method: 'POST', url: this.buildUrl(path), body, contentType: 'application/ld+json' });
   }
 
-  patch<T>(path: string, body: object, options: ApiWriteOptions = {}): Promise<T> {
+  /**
+   * Modification, avec le nouvel ETag à renvoyer à la suivante
+   */
+  patchResource<T>(path: string, body: object, options: ApiWriteOptions = {}): Promise<ApiResource<T>> {
     return this.write<T>({
       method: 'PATCH',
       url: this.buildUrl(path),
@@ -82,9 +96,10 @@ export class ApiClient {
     await this.send({ method: 'DELETE', url: this.buildUrl(path), ifMatch: options.ifMatch });
   }
 
-  private async write<T>(request: ApiRequest): Promise<T> {
+  private async write<T>(request: ApiRequest): Promise<ApiResource<T>> {
     const response = await this.send(request);
-    return response.status === 204 ? (undefined as T) : ((await response.json()) as T);
+    const data = response.status === 204 ? (undefined as T) : ((await response.json()) as T);
+    return { data, etag: response.headers.get('ETag') };
   }
 
   /**

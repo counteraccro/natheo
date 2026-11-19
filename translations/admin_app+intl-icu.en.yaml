@@ -25,3 +25,5 @@ admin_app.role.user: User
 admin_app.user_menu.logout: 'Log out'
 admin_app.user_menu.my_account: 'My account'
 admin_app.user_menu.my_options: 'My options'
+admin_app.resource.conflict_title: 'Changed in the meantime'
+admin_app.resource.conflict_text: 'Someone saved this item after you opened it. Reload it to see the latest version, then make your changes again.'

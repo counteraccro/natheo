@@ -25,3 +25,5 @@ admin_app.role.user: Utilisateur
 admin_app.user_menu.logout: Déconnexion
 admin_app.user_menu.my_account: 'Mon compte'
 admin_app.user_menu.my_options: 'Mes options'
+admin_app.resource.conflict_title: 'Modifié entre-temps'
+admin_app.resource.conflict_text: "Quelqu'un a enregistré cet élément après son ouverture. Rechargez-le pour voir la dernière version, puis refaites vos modifications."
