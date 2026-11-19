@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Construit le menu du back-office visible par l'utilisateur courant, pour la sidebar, le header et l'API
  */
 
@@ -240,7 +240,7 @@ final class AdminMenuBuilder implements ResetInterface
             $nodes[] = new AdminMenuNode(
                 item: $item,
                 module: $this->menuRegistry->getModule($item->id)?->id,
-                label: $this->translator->trans($item->label, domain: $item->translationDomain),
+                label: $item->label->trans($this->translator),
                 url: $item->isFolder()
                     ? null
                     : $this->urlGenerator->generate($item->legacyRoute, $item->routeParameters),

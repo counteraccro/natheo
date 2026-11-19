@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Module des FAQ
  */
 
@@ -15,6 +15,8 @@ use App\Service\Admin\Module\AdminMenuItem;
 use App\Service\Admin\Module\AdminModule;
 use App\Service\Admin\Module\AdminModuleInterface;
 use App\Service\Admin\Module\AsAdminModule;
+
+use function Symfony\Component\Translation\t;
 
 #[AsAdminModule]
 final class FaqModule implements AdminModuleInterface
@@ -33,8 +35,8 @@ final class FaqModule implements AdminModuleInterface
         return new AdminModule(
             id: self::ID,
             role: 'ROLE_CONTRIBUTEUR',
-            label: 'admin_module.module.faq.label',
-            description: 'admin_module.module.faq.description',
+            label: t('admin_module.module.faq.label', domain: 'admin_module'),
+            description: t('admin_module.module.faq.description', domain: 'admin_module'),
             routePrefixes: ['admin_faq_'],
         );
     }
@@ -47,14 +49,14 @@ final class FaqModule implements AdminModuleInterface
         return [
             new AdminMenuItem(
                 id: self::ID,
-                label: 'admin_module.menu.faq.label',
+                label: t('admin_module.menu.faq.label', domain: 'admin_module'),
                 icon: 'M9.529 9.988a2.502 2.502 0 1 1 5 .191A2.441 2.441 0 0 1 12 12.582V14m-.01 3.008H12M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z',
                 parent: CoreMenu::CONTENT,
                 position: 60,
             ),
             new AdminMenuItem(
                 id: 'faq_index',
-                label: 'admin_module.menu.faq_index.label',
+                label: t('admin_module.menu.faq_index.label', domain: 'admin_module'),
                 icon: SvgIcon::LIST->value,
                 parent: self::ID,
                 position: 10,
@@ -62,7 +64,7 @@ final class FaqModule implements AdminModuleInterface
             ),
             new AdminMenuItem(
                 id: 'faq_new',
-                label: 'admin_module.menu.faq_new.label',
+                label: t('admin_module.menu.faq_new.label', domain: 'admin_module'),
                 icon: SvgIcon::PLUS->value,
                 parent: self::ID,
                 position: 20,

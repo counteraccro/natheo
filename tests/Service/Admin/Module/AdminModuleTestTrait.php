@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Modules et menus construits à la volée pour les tests des registres et de la sidebar
  */
 
@@ -14,6 +14,7 @@ use App\Service\Admin\Module\AdminMenuItem;
 use App\Service\Admin\Module\AdminMenuProviderInterface;
 use App\Service\Admin\Module\AdminModule;
 use App\Service\Admin\Module\AdminModuleInterface;
+use Symfony\Component\Translation\TranslatableMessage;
 
 trait AdminModuleTestTrait
 {
@@ -32,7 +33,12 @@ trait AdminModuleTestTrait
         ?AdminModule $definition = null,
         ?array $badges = null,
     ): AdminModuleInterface {
-        $definition ??= new AdminModule($id, $role, $id . '.label', $id . '.description');
+        $definition ??= new AdminModule(
+            $id,
+            $role,
+            new TranslatableMessage($id . '.label'),
+            new TranslatableMessage($id . '.description'),
+        );
         if ($badges === null) {
             return new class ($definition, $items) implements AdminModuleInterface {
                 public function __construct(private readonly AdminModule $definition, private readonly array $items) {}
@@ -107,7 +113,7 @@ trait AdminModuleTestTrait
         return new AdminMenuItem(
             ...[
                 'id' => $id,
-                'label' => $id,
+                'label' => new TranslatableMessage($id),
                 'icon' => 'M0 0',
                 'parent' => $parent,
                 'position' => $position,

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Module des pages du site public
  */
 
@@ -15,6 +15,8 @@ use App\Service\Admin\Module\AdminMenuItem;
 use App\Service\Admin\Module\AdminModule;
 use App\Service\Admin\Module\AdminModuleInterface;
 use App\Service\Admin\Module\AsAdminModule;
+
+use function Symfony\Component\Translation\t;
 
 #[AsAdminModule]
 final class PageModule implements AdminModuleInterface
@@ -33,8 +35,8 @@ final class PageModule implements AdminModuleInterface
         return new AdminModule(
             id: self::ID,
             role: 'ROLE_CONTRIBUTEUR',
-            label: 'admin_module.module.page.label',
-            description: 'admin_module.module.page.description',
+            label: t('admin_module.module.page.label', domain: 'admin_module'),
+            description: t('admin_module.module.page.description', domain: 'admin_module'),
             locked: true,
             routePrefixes: ['admin_page_'],
         );
@@ -48,14 +50,14 @@ final class PageModule implements AdminModuleInterface
         return [
             new AdminMenuItem(
                 id: self::ID,
-                label: 'admin_module.menu.page.label',
+                label: t('admin_module.menu.page.label', domain: 'admin_module'),
                 icon: 'M10 3v4a1 1 0 0 1-1 1H5m14-4v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1ZM8 18h8l-2-4-1.5 2-2-4L8 18Zm7-8.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0Z',
                 parent: CoreMenu::CONTENT,
                 position: 20,
             ),
             new AdminMenuItem(
                 id: 'page_index',
-                label: 'admin_module.menu.page_index.label',
+                label: t('admin_module.menu.page_index.label', domain: 'admin_module'),
                 icon: SvgIcon::LIST->value,
                 parent: self::ID,
                 position: 10,
@@ -63,7 +65,7 @@ final class PageModule implements AdminModuleInterface
             ),
             new AdminMenuItem(
                 id: 'page_new',
-                label: 'admin_module.menu.page_new.label',
+                label: t('admin_module.menu.page_new.label', domain: 'admin_module'),
                 icon: SvgIcon::PLUS->value,
                 parent: self::ID,
                 position: 20,

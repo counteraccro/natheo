@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Cohérence des modules du back-office avec les routes, les rôles des contrôleurs et les traductions
  */
 
@@ -62,11 +62,11 @@ class CoreModulesTest extends AppWebTestCase
             if ($module->id === ProbeModule::ID) {
                 continue;
             }
-            $keys[] = [$module->label, $module->translationDomain];
-            $keys[] = [$module->description, $module->translationDomain];
+            $keys[] = [$module->label->getMessage(), $module->label->getDomain()];
+            $keys[] = [$module->description->getMessage(), $module->description->getDomain()];
         }
         foreach ($this->getMenuRegistry()->all() as $item) {
-            $keys[] = [$item->label, $item->translationDomain];
+            $keys[] = [$item->label->getMessage(), $item->label->getDomain()];
         }
 
         foreach (self::LOCALES as $locale) {

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Module des commentaires des pages et de leur modération
  */
 
@@ -18,6 +18,8 @@ use App\Service\Admin\Module\AdminMenuItem;
 use App\Service\Admin\Module\AdminModule;
 use App\Service\Admin\Module\AdminModuleInterface;
 use App\Service\Admin\Module\AsAdminModule;
+
+use function Symfony\Component\Translation\t;
 
 #[AsAdminModule]
 final class CommentModule implements AdminModuleInterface, AdminMenuBadgeInterface
@@ -38,8 +40,8 @@ final class CommentModule implements AdminModuleInterface, AdminMenuBadgeInterfa
         return new AdminModule(
             id: self::ID,
             role: 'ROLE_CONTRIBUTEUR',
-            label: 'admin_module.module.comment.label',
-            description: 'admin_module.module.comment.description',
+            label: t('admin_module.module.comment.label', domain: 'admin_module'),
+            description: t('admin_module.module.comment.description', domain: 'admin_module'),
             locked: true,
             routePrefixes: ['admin_comment_'],
         );
@@ -53,14 +55,14 @@ final class CommentModule implements AdminModuleInterface, AdminMenuBadgeInterfa
         return [
             new AdminMenuItem(
                 id: self::ID,
-                label: 'admin_module.menu.comment.label',
+                label: t('admin_module.menu.comment.label', domain: 'admin_module'),
                 icon: 'M9 17h6l3 3v-3h2V9h-2M4 4h11v8H9l-3 3v-3H4V4Z',
                 parent: CoreMenu::CONTENT,
                 position: 30,
             ),
             new AdminMenuItem(
                 id: 'comment_index',
-                label: 'admin_module.menu.comment_index.label',
+                label: t('admin_module.menu.comment_index.label', domain: 'admin_module'),
                 icon: SvgIcon::LIST->value,
                 parent: self::ID,
                 position: 10,
@@ -68,7 +70,7 @@ final class CommentModule implements AdminModuleInterface, AdminMenuBadgeInterfa
             ),
             new AdminMenuItem(
                 id: 'comment_moderate',
-                label: 'admin_module.menu.comment_moderate.label',
+                label: t('admin_module.menu.comment_moderate.label', domain: 'admin_module'),
                 icon: 'M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z',
                 parent: self::ID,
                 position: 20,

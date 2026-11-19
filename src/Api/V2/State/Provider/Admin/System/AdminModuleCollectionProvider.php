@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Provider de la liste des modules du back-office visibles par l'utilisateur de la session
  */
 
@@ -41,8 +41,8 @@ final readonly class AdminModuleCollectionProvider implements ProviderInterface
         return array_map(
             fn(AdminModuleDefinition $definition) => $mapper->map(
                 $definition,
-                $this->translator->trans($definition->label, domain: $definition->translationDomain),
-                $this->translator->trans($definition->description, domain: $definition->translationDomain),
+                $definition->label->trans($this->translator),
+                $definition->description->trans($this->translator),
                 $this->operationFinder->find($definition->id),
             ),
             $this->menuBuilder->getVisibleModules(),

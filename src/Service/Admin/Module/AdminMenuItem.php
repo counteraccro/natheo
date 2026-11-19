@@ -3,17 +3,19 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Entrée du menu du back-office, dossier ou lien vers une page
  */
 
 namespace App\Service\Admin\Module;
 
+use Symfony\Component\Translation\TranslatableMessage;
+
 final readonly class AdminMenuItem
 {
     /**
      * @param string $id identifiant unique de l'entrée
-     * @param string $label clé de traduction du libellé
+     * @param TranslatableMessage $label libellé, écrit avec t() pour que translation:extract trouve sa clé
      * @param string $icon tracé SVG de l'icône (attribut d)
      * @param string|null $parent identifiant de l'entrée parente, null au premier niveau
      * @param int $position ordre d'affichage parmi les entrées du même parent
@@ -22,11 +24,10 @@ final readonly class AdminMenuItem
      * @param string|null $role rôle exigé en plus de celui du module
      * @param bool $shortcut entrée de création reprise dans le bouton « Nouveau » du header
      * @param bool $hidden entrée connue du registre mais absente de la sidebar
-     * @param string $translationDomain domaine de traduction du libellé
      */
     public function __construct(
         public string $id,
-        public string $label,
+        public TranslatableMessage $label,
         public string $icon,
         public ?string $parent = null,
         public int $position = 0,
@@ -35,7 +36,6 @@ final readonly class AdminMenuItem
         public ?string $role = null,
         public bool $shortcut = false,
         public bool $hidden = false,
-        public string $translationDomain = AdminModule::DEFAULT_TRANSLATION_DOMAIN,
     ) {}
 
     /**

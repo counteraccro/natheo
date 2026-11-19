@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Module des options système
  */
 
@@ -14,6 +14,8 @@ use App\Service\Admin\Module\AdminMenuItem;
 use App\Service\Admin\Module\AdminModule;
 use App\Service\Admin\Module\AdminModuleInterface;
 use App\Service\Admin\Module\AsAdminModule;
+
+use function Symfony\Component\Translation\t;
 
 #[AsAdminModule]
 final class OptionSystemModule implements AdminModuleInterface
@@ -32,8 +34,8 @@ final class OptionSystemModule implements AdminModuleInterface
         return new AdminModule(
             id: self::ID,
             role: 'ROLE_ADMIN',
-            label: 'admin_module.module.option_system.label',
-            description: 'admin_module.module.option_system.description',
+            label: t('admin_module.module.option_system.label', domain: 'admin_module'),
+            description: t('admin_module.module.option_system.description', domain: 'admin_module'),
             locked: true,
             routePrefixes: ['admin_option-system_'],
         );
@@ -47,7 +49,7 @@ final class OptionSystemModule implements AdminModuleInterface
         return [
             new AdminMenuItem(
                 id: self::ID,
-                label: 'admin_module.menu.option_system.label',
+                label: t('admin_module.menu.option_system.label', domain: 'admin_module'),
                 icon: 'M4 5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5Zm16 14a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2ZM4 13a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-6Zm16-2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v6Z',
                 parent: CoreMenu::SYSTEM,
                 position: 20,

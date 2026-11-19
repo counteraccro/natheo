@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Module des informations sur le CMS et le serveur
  */
 
@@ -14,6 +14,8 @@ use App\Service\Admin\Module\AdminMenuItem;
 use App\Service\Admin\Module\AdminModule;
 use App\Service\Admin\Module\AdminModuleInterface;
 use App\Service\Admin\Module\AsAdminModule;
+
+use function Symfony\Component\Translation\t;
 
 #[AsAdminModule]
 final class InfoModule implements AdminModuleInterface
@@ -32,8 +34,8 @@ final class InfoModule implements AdminModuleInterface
         return new AdminModule(
             id: self::ID,
             role: 'ROLE_SUPER_ADMIN',
-            label: 'admin_module.module.info.label',
-            description: 'admin_module.module.info.description',
+            label: t('admin_module.module.info.label', domain: 'admin_module'),
+            description: t('admin_module.module.info.description', domain: 'admin_module'),
             locked: true,
             routePrefixes: ['admin_info_'],
         );
@@ -47,7 +49,7 @@ final class InfoModule implements AdminModuleInterface
         return [
             new AdminMenuItem(
                 id: self::ID,
-                label: 'admin_module.menu.info.label',
+                label: t('admin_module.menu.info.label', domain: 'admin_module'),
                 icon: 'M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z',
                 parent: CoreMenu::SYSTEM,
                 position: 80,

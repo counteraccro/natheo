@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Module des utilisateurs du back-office. Les pages personnelles (compte, options, mot de passe) restent ouvertes à tous
  */
 
@@ -15,6 +15,8 @@ use App\Service\Admin\Module\AdminMenuItem;
 use App\Service\Admin\Module\AdminModule;
 use App\Service\Admin\Module\AdminModuleInterface;
 use App\Service\Admin\Module\AsAdminModule;
+
+use function Symfony\Component\Translation\t;
 
 #[AsAdminModule]
 final class UserModule implements AdminModuleInterface
@@ -33,8 +35,8 @@ final class UserModule implements AdminModuleInterface
         return new AdminModule(
             id: self::ID,
             role: 'ROLE_SUPER_ADMIN',
-            label: 'admin_module.module.user.label',
-            description: 'admin_module.module.user.description',
+            label: t('admin_module.module.user.label', domain: 'admin_module'),
+            description: t('admin_module.module.user.description', domain: 'admin_module'),
             locked: true,
             routePrefixes: ['admin_user_'],
             routeExceptions: [
@@ -58,14 +60,14 @@ final class UserModule implements AdminModuleInterface
         return [
             new AdminMenuItem(
                 id: self::ID,
-                label: 'admin_module.menu.user.label',
+                label: t('admin_module.menu.user.label', domain: 'admin_module'),
                 icon: 'M16 19h4a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-2m-2.236-4a3 3 0 1 0 0-4M3 18v-1a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1Zm8-10a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z',
                 parent: CoreMenu::SYSTEM,
                 position: 10,
             ),
             new AdminMenuItem(
                 id: 'user_index',
-                label: 'admin_module.menu.user_index.label',
+                label: t('admin_module.menu.user_index.label', domain: 'admin_module'),
                 icon: SvgIcon::LIST->value,
                 parent: self::ID,
                 position: 10,
@@ -73,7 +75,7 @@ final class UserModule implements AdminModuleInterface
             ),
             new AdminMenuItem(
                 id: 'user_new',
-                label: 'admin_module.menu.user_new.label',
+                label: t('admin_module.menu.user_new.label', domain: 'admin_module'),
                 icon: SvgIcon::PLUS->value,
                 parent: self::ID,
                 position: 20,
