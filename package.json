@@ -29,7 +29,7 @@
         "vite": "^8",
         "vite-plugin-symfony": "^8",
         "vitest": "^5.1.1",
-        "vue": "^3.4.0",
+        "vue": "^3.5.34",
         "vue-tsc": "^3.2.4"
     },
     "dependencies": {
@@ -40,8 +40,10 @@
         "axios": "^1.8.4",
         "dompurify": "^3",
         "flowbite": "^3.1.2",
+        "intl-messageformat": "^12.2.0",
         "marked": "^18.1.0",
-        "sortablejs": "^1.15.7"
+        "sortablejs": "^1.15.7",
+        "vue-router": "^5.5.1"
     },
     "resolutions": {
         "**/js-beautify/glob": "^14.0.6",
