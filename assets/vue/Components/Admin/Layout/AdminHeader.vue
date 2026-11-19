@@ -1,7 +1,7 @@
 <script setup lang="ts">
 /**
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 1.2
  * Barre du haut en trois zones : section courante, recherche globale, actions (Nouveau, apparence, notifications,
  * menu utilisateur) ; bandeau d'usurpation au-dessus
  */
@@ -10,9 +10,8 @@ import UiIcon from '@/vue/Components/Global/Ui/UiIcon.vue';
 import UiButton from '../Ui/Form/UiButton.vue';
 import UiDropdown from '../Ui/Overlay/UiDropdown.vue';
 import UiDropdownItem from '../Ui/Overlay/UiDropdownItem.vue';
-import UiDropdownLabel from '../Ui/Overlay/UiDropdownLabel.vue';
+import AdminAppearanceMenu from './AdminAppearanceMenu.vue';
 import { useUiLabels } from '@/vue/Composables/Admin/Ui/useUiLabels';
-import { useAppearance } from '@/vue/Composables/Admin/Ui/useAppearance';
 import type { HeaderSection, HeaderShortcut } from '@/ts/Admin/Layout/AdminHeader.type';
 
 withDefaults(
@@ -34,7 +33,6 @@ const emit = defineEmits<{ openNav: []; submitSearch: [term: string]; openNotifi
 defineSlots<{ 'user-menu'?: () => unknown; actions?: () => unknown }>();
 
 const labels = useUiLabels();
-const { theme, mode, themes, setTheme, setMode } = useAppearance();
 const searchId = `ui-global-search-${useId()}`;
 const searchInput = ref<HTMLInputElement | null>(null);
 const isMac = /Mac|iPhone|iPad/.test(navigator.userAgent);
@@ -127,34 +125,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', focusSearch));
           </UiDropdownItem>
         </UiDropdown>
         <slot name="actions" />
-        <UiDropdown
-          :label="labels.header.appearance"
-          :icon="mode === 'dark' ? 'moon' : 'sun'"
-          icon-only
-          variant="ghost"
-          width="min-w-56"
-        >
-          <UiDropdownLabel>{{ labels.header.mode }}</UiDropdownLabel>
-          <UiDropdownItem type="radio" :checked="mode === 'light'" @select="setMode('light')">
-            {{ labels.header.modeLight }}
-          </UiDropdownItem>
-          <UiDropdownItem type="radio" :checked="mode === 'dark'" @select="setMode('dark')">
-            {{ labels.header.modeDark }}
-          </UiDropdownItem>
-          <UiDropdownLabel separator>{{ labels.header.color }}</UiDropdownLabel>
-          <UiDropdownItem
-            v-for="color in themes"
-            :key="color"
-            type="radio"
-            :checked="theme === color"
-            @select="setTheme(color)"
-          >
-            <span class="inline-flex items-center gap-2">
-              <span class="size-3.5 rounded-full" :style="{ background: `var(--theme-${color})` }" aria-hidden="true" />
-              {{ labels.header.themes[color] }}
-            </span>
-          </UiDropdownItem>
-        </UiDropdown>
+        <AdminAppearanceMenu />
         <span v-if="notifiable" class="relative inline-flex">
           <UiButton
             variant="ghost"
