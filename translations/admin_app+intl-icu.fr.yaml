@@ -18,6 +18,8 @@ admin_app.not_found.dashboard: 'Tableau de bord'
 admin_app.not_found.hint: "La page a peut-être été déplacée, ou votre compte n'a pas accès à ce module."
 admin_app.not_found.text: 'Aucune page du back-office ne correspond à cette adresse.'
 admin_app.not_found.title: 'Page introuvable'
+admin_app.resource.conflict_text: "Quelqu'un a enregistré cet élément après son ouverture. Rechargez-le pour voir la dernière version, puis refaites vos modifications."
+admin_app.resource.conflict_title: 'Modifié entre-temps'
 admin_app.role.admin: Administrateur
 admin_app.role.contributor: Contributeur
 admin_app.role.super_admin: 'Super administrateur'
@@ -25,5 +27,3 @@ admin_app.role.user: Utilisateur
 admin_app.user_menu.logout: Déconnexion
 admin_app.user_menu.my_account: 'Mon compte'
 admin_app.user_menu.my_options: 'Mes options'
-admin_app.resource.conflict_title: 'Modifié entre-temps'
-admin_app.resource.conflict_text: "Quelqu'un a enregistré cet élément après son ouverture. Rechargez-le pour voir la dernière version, puis refaites vos modifications."

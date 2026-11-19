@@ -18,6 +18,8 @@ admin_app.not_found.dashboard: 'Panel de control'
 admin_app.not_found.hint: 'Puede que la página se haya movido o que su cuenta no tenga acceso a este módulo.'
 admin_app.not_found.text: 'Ninguna página del back-office corresponde a esta dirección.'
 admin_app.not_found.title: 'Página no encontrada'
+admin_app.resource.conflict_text: 'Alguien guardó este elemento después de abrirlo. Vuelva a cargarlo para ver la última versión y repita sus cambios.'
+admin_app.resource.conflict_title: 'Modificado mientras tanto'
 admin_app.role.admin: Administrador
 admin_app.role.contributor: Colaborador
 admin_app.role.super_admin: Superadministrador
@@ -25,5 +27,3 @@ admin_app.role.user: Usuario
 admin_app.user_menu.logout: 'Cerrar sesión'
 admin_app.user_menu.my_account: 'Mi cuenta'
 admin_app.user_menu.my_options: 'Mis opciones'
-admin_app.resource.conflict_title: 'Modificado mientras tanto'
-admin_app.resource.conflict_text: 'Alguien guardó este elemento después de abrirlo. Vuelva a cargarlo para ver la última versión y repita sus cambios.'

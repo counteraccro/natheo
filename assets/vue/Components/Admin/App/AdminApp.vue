@@ -15,7 +15,7 @@ import { NOT_FOUND_ROUTE } from '@/vue/Composables/Admin/adminRouter';
 import type { AdminTheme } from '@/ts/Admin/Theme/AdminTheme.type';
 import type { HeaderSection } from '@/ts/Admin/Layout/AdminHeader.type';
 
-const props = defineProps<{ theme: AdminTheme }>();
+defineProps<{ theme: AdminTheme }>();
 
 const { t, leave, menu, bootstrap } = useAdminContext();
 const { current, answer } = useConfirm();

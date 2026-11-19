@@ -18,6 +18,8 @@ admin_app.not_found.dashboard: Dashboard
 admin_app.not_found.hint: 'The page may have moved, or your account cannot access this module.'
 admin_app.not_found.text: 'No back-office page matches this address.'
 admin_app.not_found.title: 'Page not found'
+admin_app.resource.conflict_text: 'Someone saved this item after you opened it. Reload it to see the latest version, then make your changes again.'
+admin_app.resource.conflict_title: 'Changed in the meantime'
 admin_app.role.admin: Administrator
 admin_app.role.contributor: Contributor
 admin_app.role.super_admin: 'Super administrator'
@@ -25,5 +27,3 @@ admin_app.role.user: User
 admin_app.user_menu.logout: 'Log out'
 admin_app.user_menu.my_account: 'My account'
 admin_app.user_menu.my_options: 'My options'
-admin_app.resource.conflict_title: 'Changed in the meantime'
-admin_app.resource.conflict_text: 'Someone saved this item after you opened it. Reload it to see the latest version, then make your changes again.'
