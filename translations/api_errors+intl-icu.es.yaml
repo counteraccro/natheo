@@ -18,6 +18,7 @@ api_errors.find.listing.tag.not.found: La etiqueta solicitada no existe
 api_errors.api.not.open: Recurso no accesible - API cerrada
 api_errors.find.option.system.not.found: Opción del sistema no disponible
 api_errors.find.admin_module.not_found: 'Módulo del back-office no disponible'
+api_errors.find.translation_catalogue.not_found: 'Catálogo de traducción no encontrado'
 api_errors.find.admin_menu_item.not_found: 'Entrada de menú no disponible'
 api_errors.comment.by.page.not.id.slug.together: Se requiere el parámetro id o page_slug
 api_errors.comment.by.page.id.slug.together: Los parámetros id y page_slug no se pueden usar juntos
