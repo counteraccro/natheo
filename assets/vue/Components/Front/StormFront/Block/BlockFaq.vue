@@ -4,7 +4,7 @@
  * @version 1.0
  * Bloc FAQ : questions dépliables par catégorie
  */
-import FrontIcon from '@/vue/Components/Front/Global/FrontIcon.vue';
+import UiIcon from '@/vue/Components/Global/Ui/UiIcon.vue';
 import type { FaqContent } from '@/ts/Front/Api/PageContent.type';
 
 defineProps<{ content: FaqContent }>();
@@ -20,7 +20,7 @@ defineProps<{ content: FaqContent }>();
           class="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 text-[1.1rem] font-semibold [&::-webkit-details-marker]:hidden"
         >
           {{ question.title }}
-          <FrontIcon name="plus" class="size-5 text-primary transition-transform group-open:rotate-45" />
+          <UiIcon name="plus" class="size-5 text-primary transition-transform group-open:rotate-45" />
         </summary>
         <div class="sf-prose pb-4 text-[1.05rem] text-fg-muted" v-html="question.answer" />
       </details>

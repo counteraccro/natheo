@@ -8,8 +8,8 @@ import { computed, onBeforeUnmount, onMounted, ref, toRef } from 'vue';
 import { useFrontContext } from '@/vue/Composables/Front/useFrontContext';
 import { useMenus } from '@/vue/Composables/Front/useMenus';
 import { useSiteOptions } from '@/vue/Composables/Front/useSiteOptions';
-import BrandLogo from '@/vue/Components/Front/Global/BrandLogo.vue';
-import FrontIcon from '@/vue/Components/Front/Global/FrontIcon.vue';
+import BrandLogo from '@/vue/Components/Global/Ui/BrandLogo.vue';
+import UiIcon from '@/vue/Components/Global/Ui/UiIcon.vue';
 import LocaleSwitcher from '@/vue/Components/Front/NatheoHorizon/Layout/LocaleSwitcher.vue';
 import MobileDrawer from '@/vue/Components/Front/NatheoHorizon/Layout/MobileDrawer.vue';
 import ThemeToggle from '@/vue/Components/Front/NatheoHorizon/Layout/ThemeToggle.vue';
@@ -71,7 +71,7 @@ onBeforeUnmount(() => desktop.removeEventListener('change', onDesktopChange));
           @click="drawerOpen = true"
         >
           <span class="sr-only">{{ translate.header.openMenu }}</span>
-          <FrontIcon name="bars" class="size-6" />
+          <UiIcon name="bars" class="size-6" />
         </button>
       </div>
     </div>

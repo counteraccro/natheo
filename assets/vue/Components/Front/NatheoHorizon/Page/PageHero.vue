@@ -9,7 +9,7 @@ import { useFrontContext } from '@/vue/Composables/Front/useFrontContext';
 import { useFormat } from '@/vue/Composables/Front/useFormat';
 import { useBreadcrumb } from '@/vue/Composables/Front/useBreadcrumb';
 import { useEditLink } from '@/vue/Composables/Front/useEditLink';
-import FrontIcon from '@/vue/Components/Front/Global/FrontIcon.vue';
+import UiIcon from '@/vue/Components/Global/Ui/UiIcon.vue';
 import type { Page } from '@/ts/Front/Api/Page.type';
 
 const props = defineProps<{ page: Page; readingTime: number | null }>();
@@ -86,7 +86,7 @@ const updatedAt = computed(() => format.date(props.page.updatedAt));
           :href="editLink"
           class="mt-7 inline-flex min-h-11 items-center gap-2 rounded-nh px-4 font-semibold text-on-night no-underline shadow-[inset_0_0_0_1.5px_rgb(201_184_255/0.55)] hover:shadow-[inset_0_0_0_1.5px_#fff]"
         >
-          <FrontIcon name="edit" class="size-5" />
+          <UiIcon name="edit" class="size-5" />
           {{ translate.main.editLink }}
         </a>
       </div>

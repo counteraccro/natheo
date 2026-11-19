@@ -4,5 +4,5 @@
     "module": "ESNext",
     "moduleResolution": "bundler"
   },
-  "include": ["vite.config.mts"]
+  "include": ["vite.config.mts", "vite.aliases.mts", "vitest.config.mts", "vitest.setup.ts"]
 }

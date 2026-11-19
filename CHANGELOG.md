@@ -14,6 +14,7 @@ Le format suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), avec un
 - Le thème Natheo-Horizon est réécrit : ses anciens composants (`Front/NatheoHorizon/Structure`, `Main`, `Nav`, `Footer`), `FrontApi.ts`, `UtilsFront.ts` et les constantes de `Composables/Front/Const/` sont supprimés, le conteneur `div.container` de `front_base.html.twig` est retiré et l'entrée Vite `front_natheo_horizon` pointe sur `assets/front_natheo_horizon.ts` au lieu de `assets/app_front.ts`. Une surcharge de ces fichiers est à refaire à partir du thème Natheo-Base ([#464](https://github.com/counteraccro/natheo/issues/464))
 - Tokens d'API : chaque token a un type, public ou back-office. Les tokens existants deviennent publics et gardent l'accès aux opérations publiques de l'API v2 et à l'API v1. Un token back-office n'a pas de rôle propre. Il sert à connecter un utilisateur (`POST /api/v2/user_sessions`), et les opérations d'administration s'exécutent ensuite avec les droits de cet utilisateur ([#548](https://github.com/counteraccro/natheo/issues/548))
 - La sidebar n'est plus stockée en base : l'écran « Sidebar » et la table `sidebar_element` sont supprimés. Une entrée ajoutée en base pour une page personnalisée est à déclarer dans un module (`#[AsAdminModule]`), les entrées désactivées réapparaissent et les libellés de la sidebar modifiés dans l'écran des traductions reprennent leur texte d'origine ([#550](https://github.com/counteraccro/natheo/issues/550))
+- Icônes et logo des thèmes : `Components/Front/Global/FrontIcon.vue` est remplacé par `Components/Global/Ui/UiIcon.vue` (mêmes noms d'icônes, prop `name`), `BrandLogo.vue` passe de `Components/Front/Global/` à `Components/Global/Ui/` et le composant Twig `<twig:Front:BrandLogo>` devient `<twig:BrandLogo>`. Un thème personnalisé qui les importe change ses imports ([#517](https://github.com/counteraccro/natheo/issues/517))
 
 ### Ajouté
 
@@ -32,6 +33,7 @@ Le format suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), avec un
 - Documentation de l'API v2 avec les opérations d'administration, ouverte aux administrateurs depuis la sidebar. La documentation publique `/api/v2/docs` ne les affiche pas ([#548](https://github.com/counteraccro/natheo/issues/548), [#550](https://github.com/counteraccro/natheo/issues/550))
 - Back-office : chaque module qui a plusieurs pages devient un sous-menu avec sa liste, sa création et ses autres pages (« Gestion des pages », « Nouvelle page »…). Sous « Tokens API », les entrées « Front » et « Back-office » listent les tokens d'un seul type, et le dossier « Commentaires » affiche le nombre de commentaires en attente de modération ([#550](https://github.com/counteraccro/natheo/issues/550))
 - API v2 : `GET /api/v2/admin/modules` et `GET /api/v2/admin/menu_items` donnent les modules et les entrées du menu visibles par l'utilisateur de la session ([#550](https://github.com/counteraccro/natheo/issues/550))
+- Design system du nouveau back-office pour les modules et les bundles : jetons des quatre thèmes en clair et en sombre, police Figtree, composants Vue importés depuis `@ui` (boutons, champs, formulaires avec les erreurs de validation de l'API et leur récapitulatif, modales, menus, onglets, alertes, notifications, grille de données avec recherche en deux temps et sélection multiple) et composants du layout ; catalogue sur `/admin/{locale}/design-system` en environnement dev ([#517](https://github.com/counteraccro/natheo/issues/517))
 
 ### Modifié
 
@@ -46,6 +48,7 @@ Le format suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), avec un
 - Site public : la version affichée en bas de page est celle du thème actif (paramètre `app.<thème>.version`), et non plus toujours celle de Natheo-Horizon ([#465](https://github.com/counteraccro/natheo/issues/465))
 - Back-office : la sidebar est construite depuis les modules déclarés dans le code, sur autant de niveaux que nécessaire, et le bouton « Nouveau » de l'en-tête depuis leurs entrées de création ([#550](https://github.com/counteraccro/natheo/issues/550))
 - Options système, tokens API, documentation de l'API, emails, traductions et aide de première connexion du tableau de bord sont ouverts aux administrateurs, et plus seulement au super administrateur ([#550](https://github.com/counteraccro/natheo/issues/550))
+- Logo Nathéo sur les pages de connexion, de mot de passe et d'installation ([#517](https://github.com/counteraccro/natheo/issues/517))
 
 ### Déprécié
 

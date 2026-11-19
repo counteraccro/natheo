@@ -17,7 +17,8 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["assets/*"]
+      "@/*": ["assets/*"],
+      "@ui": ["assets/vue/Components/Admin/Ui/index.ts"]
     }
   },
   "include": [
@@ -27,5 +28,6 @@
     "assets/**/*.vue",
     "assets/**/*.js"
   ],
+  "exclude": ["assets/**/__tests__/**"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

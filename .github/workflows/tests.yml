@@ -122,6 +122,9 @@ jobs:
       - name: Dépendances front
         run: yarn install --frozen-lockfile --non-interactive
 
+      - name: Tests front (Vitest)
+        run: yarn test
+
       - name: Build (vue-tsc + vite)
         run: yarn build
 
