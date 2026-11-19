@@ -14,7 +14,7 @@ const catalogueKeys = readFileSync(
   .map((line) => line.slice('admin_ui.'.length, line.indexOf(':')));
 
 describe('useUiLabels', () => {
-  it('lit toutes les clés du domaine admin_ui, et seulement elles', () => {
+  it('lit exactement les clés du domaine admin_ui', () => {
     const used = new Set<string>();
     const labels = buildUiLabels((key) => {
       used.add(key);

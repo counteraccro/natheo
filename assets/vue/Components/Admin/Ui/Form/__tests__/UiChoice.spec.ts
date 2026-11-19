@@ -75,7 +75,7 @@ describe('UiSelect', () => {
 });
 
 describe('UiColorInput', () => {
-  it('ne transmet que les codes hexadécimaux valides', async () => {
+  it('refuse les codes hexadécimaux invalides et transmet les valides', async () => {
     const wrapper = mount(UiColorInput, withLabels({ props: { modelValue: '#5b3fd1' } }));
     const text = wrapper.get('input[type="text"]');
     await text.setValue('#12');

@@ -294,7 +294,7 @@ const PANEL_TITLE = 'm-0 text-md font-[650]';
     />
     <AdminPageHeader
       title="Design system"
-      description="Composants du nouveau back-office dans leurs états. Couleur et mode depuis le menu Apparence."
+      description="Composants du nouveau back-office dans chacun de leurs états. La couleur et le mode se changent dans le menu Apparence."
       icon="sliders"
     >
       <template #actions>
@@ -494,7 +494,7 @@ const PANEL_TITLE = 'm-0 text-md font-[650]';
 
     <UiDialog v-model:open="dialogOpen" title="Aperçu du tag">
       <template #icon><UiIcon name="tag" class="size-5 text-fg-muted" /></template>
-      <p class="m-0 text-fg-muted">Une modale simple : Échap ou le bouton Fermer la referment.</p>
+      <p class="m-0 text-fg-muted">Échap ou le bouton Fermer referment cette modale.</p>
       <template #footer>
         <UiButton @click="dialogOpen = false">Fermer</UiButton>
       </template>

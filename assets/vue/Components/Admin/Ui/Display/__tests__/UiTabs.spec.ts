@@ -32,7 +32,7 @@ const mountTabs = () =>
 let wrapper: ReturnType<typeof mountTabs>;
 
 describe('UiTabs', () => {
-  it('relie les onglets à leurs panneaux et ne monte que le panneau ouvert', () => {
+  it('relie les onglets à leurs panneaux et monte uniquement le panneau ouvert', () => {
     wrapper = mountTabs();
     const [fr] = wrapper.findAll('[role="tab"]');
     expect(fr.attributes('aria-selected')).toBe('true');
