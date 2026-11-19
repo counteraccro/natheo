@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Ressource API v2 : entrée du menu du back-office visible par l'utilisateur de la session
  */
 
@@ -96,11 +96,25 @@ final class AdminMenuItem
     public int $position = 0;
 
     /**
-     * Adresse de la page Twig, null pour un dossier
+     * Adresse de la page Twig, null pour un dossier ou un écran de l'application
      */
     #[ApiProperty(required: true)]
     #[Groups(['admin_menu_item:read', 'admin_menu_item:list'])]
     public ?string $legacyUrl = null;
+
+    /**
+     * Nom de la route Vue d'un écran de l'application, null sinon
+     */
+    #[ApiProperty(required: true)]
+    #[Groups(['admin_menu_item:read', 'admin_menu_item:list'])]
+    public ?string $route = null;
+
+    /**
+     * Chemin de cet écran sous /admin/<langue>/, null sinon
+     */
+    #[ApiProperty(required: true)]
+    #[Groups(['admin_menu_item:read', 'admin_menu_item:list'])]
+    public ?string $path = null;
 
     /**
      * Entrée de création reprise dans le bouton « Nouveau »

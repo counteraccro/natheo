@@ -1,12 +1,12 @@
 <script setup lang="ts" generic="T extends DataTableRow">
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Grille de données : tri, recherche en deux temps (page affichée puis base), colonnes réglables, requête SQL,
  * actions par ligne déjà filtrées par l'appelant, sélection multiple et actions groupées, squelette, état vide et
  * pagination ; liste empilée sous 768 px
  */
-import { computed, nextTick, onBeforeUnmount, ref, useId, watch } from 'vue';
+import { computed, nextTick, ref, useId, watch } from 'vue';
 import UiIcon from '@/vue/Components/Global/Ui/UiIcon.vue';
 import UiButton from '../Form/UiButton.vue';
 import UiCheckbox from '../Form/UiCheckbox.vue';
@@ -21,18 +21,15 @@ import UiPagination from './UiPagination.vue';
 import UiSqlBlock from './UiSqlBlock.vue';
 import { useUiLabels } from '@/vue/Composables/Admin/Ui/useUiLabels';
 import { CONTROL_CLASSES } from '@/vue/Composables/Admin/Ui/controlClasses';
-import { cellText, filterRows, highlight } from '@/vue/Composables/Admin/Ui/tableSearch';
+import { cellText, highlight } from '@/vue/Composables/Admin/Ui/tableSearch';
+import { useTableSearch } from '@/vue/Composables/Admin/Ui/useTableSearch';
 import type {
   DataTableAction,
   DataTableColumn,
   DataTableRow,
-  DataTableSearchMode,
   DataTableSort,
 } from '@/ts/Admin/Ui/Data/UiDataTable.type';
 
-/** Saisie minimale et délai avant la recherche en base quand la page affichée ne contient rien */
-const REMOTE_MIN_LENGTH = 2;
-const REMOTE_DELAY = 450;
 const DIRECT_ACTIONS = 2;
 
 const props = withDefaults(
@@ -108,56 +105,23 @@ const toggleColumn = (key: string): void => {
 const sqlVisible = ref(false);
 
 // Recherche
-const term = ref('');
-const mode = ref<DataTableSearchMode>('idle');
-let remoteTerm: string | null = null;
-let timer: ReturnType<typeof setTimeout> | undefined;
-
-const searchRemote = (value: string): void => {
-  clearTimeout(timer);
-  if (!value) return;
-  mode.value = 'pending';
-  remoteTerm = value;
-  page.value = 1;
-  emit('search', value);
-};
-
-const onSearchInput = (): void => {
-  clearTimeout(timer);
-  const value = term.value.trim();
-  if (!value) {
-    mode.value = 'idle';
-    if (remoteTerm !== null) {
-      remoteTerm = null;
-      page.value = 1;
-      emit('search', '');
-    }
-    return;
-  }
-  mode.value = 'local';
-  if (value.length >= REMOTE_MIN_LENGTH && filterRows(props.rows, shownColumns.value, value).length === 0) {
-    timer = setTimeout(() => searchRemote(value), REMOTE_DELAY);
-  }
-};
-
-const clearSearch = (): void => {
-  term.value = '';
-  onSearchInput();
-};
-
-// La réponse arrive avec de nouvelles lignes ou la fin du chargement, y compris en cas d'échec
-watch(
-  () => [props.rows, props.rows.length, props.loading] as const,
-  ([, , loading]) => {
-    if (mode.value === 'pending' && !loading) mode.value = 'remote';
-  }
-);
-onBeforeUnmount(() => clearTimeout(timer));
-
-const highlightTerm = computed(() => (mode.value === 'local' || mode.value === 'remote' ? term.value.trim() : ''));
-const displayed = computed(() =>
-  mode.value === 'local' ? filterRows(props.rows, shownColumns.value, term.value) : props.rows
-);
+const {
+  term,
+  mode,
+  displayed,
+  highlightTerm,
+  onInput: onSearchInput,
+  clear: clearSearch,
+  searchRemote,
+} = useTableSearch<T>({
+  rows: () => props.rows,
+  columns: () => shownColumns.value,
+  loading: () => props.loading,
+  search: (value) => emit('search', value),
+  resetPage: () => {
+    page.value = 1;
+  },
+});
 const busy = computed(() => props.loading || mode.value === 'pending');
 const skeletonRows = computed(() => Math.min(itemsPerPage.value, props.rows.length || 5));
 const colspan = computed(() => shownColumns.value.length + (props.actionsFor ? 1 : 0) + (props.selectable ? 1 : 0));
@@ -234,7 +198,7 @@ const clearSelection = async (): Promise<void> => {
           :placeholder="labels.dataTable.searchPlaceholder"
           :class="[CONTROL_CLASSES, 'h-9 pr-3 pl-9']"
           @input="onSearchInput"
-          @keydown.enter.prevent="searchRemote(term.trim())"
+          @keydown.enter.prevent="searchRemote()"
           @keydown.esc.prevent="clearSearch"
         />
       </div>

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Test du menu construit pour l'utilisateur courant et de son rendu dans la sidebar
  */
 
@@ -199,6 +199,50 @@ class AdminMenuBuilderTest extends AppWebTestCase
         $this->assertCount(1, $html->filter('#submenu-tag a[href="' . $this->router->generate('admin_tag_add') . '"]'));
         $this->assertSame('4', trim($html->filter('#submenu-content span.rounded-full')->text()));
         $this->assertCount(1, $html->filter('span.rounded-full'));
+    }
+
+    /**
+     * Une entrée de l'application mène à son écran sous /admin/<langue>/, dans l'arbre, le bouton « Nouveau » et la
+     * sidebar des pages Twig
+     * @return void
+     */
+    public function testAppRouteItem(): void
+    {
+        $builder = $this->createBuilder($this->createUserSuperAdmin(), [
+            $this->createTestModule(
+                'faq',
+                items: [
+                    $this->createTestMenuItem(
+                        'faq',
+                        'content',
+                        30,
+                        options: ['route' => 'faq_index', 'path' => 'faqs'],
+                    ),
+                    $this->createTestMenuItem(
+                        'faq_new',
+                        'faq',
+                        10,
+                        options: [
+                            'route' => 'faq_new',
+                            'path' => 'faqs/new',
+                            'shortcut' => true,
+                        ],
+                    ),
+                ],
+            ),
+        ]);
+
+        $faq = array_values(
+            array_filter($builder->getFlatList(), fn(AdminMenuNode $node) => $node->item->id === 'faq'),
+        );
+        $this->assertSame('/admin/fr/faqs', $faq[0]->url);
+        $this->assertContains(
+            '/admin/fr/faqs/new',
+            array_map(fn(AdminMenuNode $node) => $node->url, $builder->getShortcuts()),
+        );
+
+        $html = $this->renderSidebar($builder, 'admin_tag_index');
+        $this->assertCount(1, $html->filter('a[href="/admin/fr/faqs/new"]'));
     }
 
     /**

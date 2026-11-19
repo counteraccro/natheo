@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Module de la base de données et de ses sauvegardes
  */
 
@@ -14,6 +14,8 @@ use App\Service\Admin\Module\AdminMenuItem;
 use App\Service\Admin\Module\AdminModule;
 use App\Service\Admin\Module\AdminModuleInterface;
 use App\Service\Admin\Module\AsAdminModule;
+
+use function Symfony\Component\Translation\t;
 
 #[AsAdminModule]
 final class DatabaseManagerModule implements AdminModuleInterface
@@ -32,8 +34,8 @@ final class DatabaseManagerModule implements AdminModuleInterface
         return new AdminModule(
             id: self::ID,
             role: 'ROLE_SUPER_ADMIN',
-            label: 'admin_module.module.database_manager.label',
-            description: 'admin_module.module.database_manager.description',
+            label: t('admin_module.module.database_manager.label', domain: 'admin_module'),
+            description: t('admin_module.module.database_manager.description', domain: 'admin_module'),
             routePrefixes: ['admin_database_manager_'],
         );
     }
@@ -46,7 +48,7 @@ final class DatabaseManagerModule implements AdminModuleInterface
         return [
             new AdminMenuItem(
                 id: self::ID,
-                label: 'admin_module.menu.database_manager.label',
+                label: t('admin_module.menu.database_manager.label', domain: 'admin_module'),
                 icon: 'M19 6c0 1.657-3.134 3-7 3S5 7.657 5 6m14 0c0-1.657-3.134-3-7-3S5 4.343 5 6m14 0v6M5 6v6m0 0c0 1.657 3.134 3 7 3s7-1.343 7-3M5 12v6c0 1.657 3.134 3 7 3s7-1.343 7-3v-6',
                 parent: CoreMenu::TOOLS,
                 position: 30,

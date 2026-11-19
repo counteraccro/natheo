@@ -11,7 +11,7 @@ const catalogueKeys = readFileSync(
 )
   .split('\n')
   .filter((line) => line.startsWith('admin_ui.'))
-  .map((line) => line.slice('admin_ui.'.length, line.indexOf(':')));
+  .map((line) => line.slice(0, line.indexOf(':')));
 
 describe('useUiLabels', () => {
   it('lit exactement les clés du domaine admin_ui', () => {
@@ -32,7 +32,7 @@ describe('useUiLabels', () => {
 
   it('passe les paramètres au traducteur', () => {
     const labels = buildUiLabels((key, params) => `${key}:${JSON.stringify(params ?? {})}`);
-    expect(labels.pagination.range(1, 20, 48)).toBe('pagination.range:{"from":1,"to":20,"total":48}');
+    expect(labels.pagination.range(1, 20, 48)).toBe('admin_ui.pagination.range:{"from":1,"to":20,"total":48}');
   });
 
   it('fournit les libellés aux descendants', () => {
@@ -44,7 +44,7 @@ describe('useUiLabels', () => {
         return () => h(Child);
       },
     });
-    expect(mount(Parent).text()).toBe('dialog.close');
+    expect(mount(Parent).text()).toBe('admin_ui.dialog.close');
   });
 
   it('échoue sans fournisseur', () => {

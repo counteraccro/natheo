@@ -3,13 +3,14 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Tests du service des sessions API des utilisateurs
  */
 
 namespace App\Tests\Service\Api\System\User;
 
 use App\Entity\Admin\System\UserSession;
+use App\Enum\Admin\System\ApiToken\ApiTokenScope;
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Admin\System\OptionSystemService;
 use App\Service\Api\System\User\UserSessionService;
@@ -315,6 +316,74 @@ class UserSessionServiceTest extends AppWebTestCase
         $this->assertNull($phpSession->get(UserSessionService::FRONT_SESSION_KEY));
         $this->assertNull($this->userSessionService->findByAccessToken($otherToken));
         $this->assertNotNull($this->userSessionService->findByAccessToken($renewed));
+    }
+
+    /**
+     * Test méthode getBackOfficeAccessToken() : session sur le token interne, réutilisation, renouvellement près de
+     * l'expiration, utilisateur d'origine d'une usurpation, séparée de la session du site public
+     * @return void
+     */
+    public function testGetBackOfficeAccessToken(): void
+    {
+        $user = $this->createUserContributeur(['disabled' => false, 'anonymous' => false]);
+        $phpSession = new Session(new MockArraySessionStorage());
+
+        $first = $this->userSessionService->getBackOfficeAccessToken(
+            $user,
+            null,
+            $phpSession,
+            'Navigateur',
+            '127.0.0.1',
+        );
+        $session = $this->userSessionService->findByAccessToken($first->token);
+        $this->assertNotNull($session);
+        $this->assertSame($user->getId(), $session->getUser()->getId());
+        $this->assertNull($session->getImpersonator());
+        $this->assertTrue($session->getApiToken()->isInternal());
+        $this->assertSame(ApiTokenScope::BACK_OFFICE, $session->getApiToken()->getScope());
+        $this->assertEquals($session->getAccessTokenExpiresAt(), $first->expiresAt);
+        $this->assertEqualsWithDelta(
+            time() + UserSessionService::ACCESS_TOKEN_LIFETIME * 60,
+            $first->expiresAt->getTimestamp(),
+            5,
+        );
+        $this->assertEquals(
+            $first,
+            $this->userSessionService->getBackOfficeAccessToken($user, null, $phpSession, null, null),
+        );
+
+        // Sous la marge : renouvelé dans la même session
+        $margin = UserSessionService::BACK_OFFICE_RENEW_MARGIN;
+        $session->setAccessTokenExpiresAt(new \DateTimeImmutable('+' . ($margin - 1) . ' minutes'));
+        $this->persistAndFlush($session);
+        $renewed = $this->userSessionService->getBackOfficeAccessToken($user, null, $phpSession, null, null);
+        $this->assertNotSame($first->token, $renewed->token);
+        $this->assertSame($session->getId(), $this->userSessionService->findByAccessToken($renewed->token)?->getId());
+        $this->assertCount(1, $this->userSessionService->findActiveByUser($user));
+
+        // Usurpation : nouvelle session qui garde l'utilisateur d'origine
+        $impersonator = $this->createUserContributeur(['disabled' => false, 'anonymous' => false]);
+        $impersonated = $this->userSessionService->getBackOfficeAccessToken(
+            $user,
+            $impersonator,
+            $phpSession,
+            null,
+            null,
+        );
+        $this->assertNotSame($renewed->token, $impersonated->token);
+        $this->assertSame(
+            $impersonator->getId(),
+            $this->userSessionService->findByAccessToken($impersonated->token)?->getImpersonator()?->getId(),
+        );
+
+        // Les sessions du site public et du back-office sont gardées et révoquées séparément
+        $frontToken = self::getFaker()->uuid();
+        $this->createApiToken(['token' => TokenHasher::hash($frontToken), 'disabled' => false]);
+        $front = $this->userSessionService->getFrontAccessToken($user, $frontToken, $phpSession, null, null);
+        $this->userSessionService->revokeBackOfficeSession($phpSession);
+        $this->assertNull($phpSession->get(UserSessionService::BACK_OFFICE_SESSION_KEY));
+        $this->assertNull($this->userSessionService->findByAccessToken($impersonated->token));
+        $this->assertNotNull($this->userSessionService->findByAccessToken($front));
     }
 
     /**

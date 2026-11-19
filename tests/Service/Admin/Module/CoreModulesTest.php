@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.2
  * Cohérence des modules du back-office avec les routes, les rôles des contrôleurs et les traductions
  */
 
@@ -33,6 +33,12 @@ class CoreModulesTest extends AppWebTestCase
     private const array LOCALES = ['fr', 'en', 'es'];
 
     /**
+     * Dossier des modules de l'application Vue du back-office
+     * @var string
+     */
+    private const string APP_MODULES_DIR = 'assets/vue/Components/Admin/Modules';
+
+    /**
      * Chaque entrée de menu mène à une route existante
      * @return void
      */
@@ -45,6 +51,34 @@ class CoreModulesTest extends AppWebTestCase
                     sprintf('Route « %s » de l\'entrée « %s » inconnue', $item->legacyRoute, $item->id),
                 );
             }
+        }
+    }
+
+    /**
+     * Chaque entrée de l'application mène à une route Vue déclarée par le module.ts de son module, au même chemin
+     * @return void
+     */
+    public function testAppRoutesExist(): void
+    {
+        $appRoutes = $this->getAppRoutes();
+        $this->assertSame('/design-system', $appRoutes['design_system']['design_system'] ?? null);
+
+        $registry = $this->getMenuRegistry();
+        foreach ($registry->all() as $item) {
+            if (!$item->isAppRoute()) {
+                continue;
+            }
+            $moduleId = $registry->getModule($item->id)?->id;
+            $this->assertSame(
+                '/' . $item->path,
+                $appRoutes[$moduleId][$item->route] ?? null,
+                sprintf(
+                    'Route Vue « %s » de l\'entrée « %s » absente du module « %s »',
+                    $item->route,
+                    $item->id,
+                    $moduleId,
+                ),
+            );
         }
     }
 
@@ -62,11 +96,11 @@ class CoreModulesTest extends AppWebTestCase
             if ($module->id === ProbeModule::ID) {
                 continue;
             }
-            $keys[] = [$module->label, $module->translationDomain];
-            $keys[] = [$module->description, $module->translationDomain];
+            $keys[] = [$module->label->getMessage(), $module->label->getDomain()];
+            $keys[] = [$module->description->getMessage(), $module->description->getDomain()];
         }
         foreach ($this->getMenuRegistry()->all() as $item) {
-            $keys[] = [$item->label, $item->translationDomain];
+            $keys[] = [$item->label->getMessage(), $item->label->getDomain()];
         }
 
         foreach (self::LOCALES as $locale) {
@@ -202,6 +236,27 @@ class CoreModulesTest extends AppWebTestCase
     {
         $reachable = $this->container->get(RoleHierarchyInterface::class)->getReachableRoleNames([$role]);
         return array_diff($required, $reachable) === [];
+    }
+
+    /**
+     * Routes déclarées par les module.ts de l'application : [id du module => [nom de la route => chemin]]
+     * @return array<string, array<string, string>>
+     */
+    private function getAppRoutes(): array
+    {
+        $routes = [];
+        $projectDir = $this->container->getParameter('kernel.project_dir');
+        $idPattern = "/\\bid:\\s*'([^']+)'/";
+        $routePattern = "/\\{[^{}]*?\\bpath:\\s*'([^']*)'[^{}]*?\\bname:\\s*'([^']+)'/";
+        foreach (glob($projectDir . '/' . self::APP_MODULES_DIR . '/*/module.ts') as $file) {
+            $source = (string) file_get_contents($file);
+            $this->assertSame(1, preg_match($idPattern, $source, $id), sprintf('id absent de %s', $file));
+            preg_match_all($routePattern, $source, $matches, PREG_SET_ORDER);
+            foreach ($matches as [, $path, $name]) {
+                $routes[$id[1]][$name] = $path;
+            }
+        }
+        return $routes;
     }
 
     /**

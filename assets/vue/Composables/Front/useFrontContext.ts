@@ -1,11 +1,12 @@
 /**
  * @author Gourdon Aymeric
- * @version 1.3
+ * @version 1.4
  * Contexte du site public partagé par les composables : props du thème, client API et cache des chargements
  */
 import { getCurrentInstance, inject, ref, shallowRef, type InjectionKey, type Ref, type ShallowRef } from 'vue';
-import { ApiClient } from '@/vue/Composables/Front/Api/ApiClient';
-import { ApiError } from '@/vue/Composables/Front/Api/ApiError';
+import { ApiClient } from '@/vue/Composables/Global/Api/ApiClient';
+import { ApiError } from '@/vue/Composables/Global/Api/ApiError';
+import { reloadOnExpiredToken } from '@/vue/Composables/Front/reloadOnExpiredToken';
 import type { FrontThemeDatas, FrontThemeProps, FrontThemeUrls } from '@/ts/Front/FrontProps.type';
 import type { FrontTranslate } from '@/ts/Front/FrontTranslate.type';
 import type { Page } from '@/ts/Front/Api/Page.type';
@@ -39,9 +40,9 @@ const FRONT_CONTEXT_KEY: InjectionKey<FrontContext> = Symbol('natheo.front.conte
 export function createFrontContext(props: FrontThemeProps): FrontContext {
   const api = new ApiClient({
     baseUrl: props.urls.api,
-    apiToken: props.datas.apiToken,
-    userToken: props.datas.userToken,
     locale: props.datas.locale,
+    token: () => props.datas.userToken || props.datas.apiToken,
+    onUnauthorized: () => reloadOnExpiredToken(props.datas.userToken),
   });
   const loads = new Map<string, Promise<unknown>>();
   const home = (props.urls.home[props.datas.locale] ?? '/').replace(/\/?$/, '/');

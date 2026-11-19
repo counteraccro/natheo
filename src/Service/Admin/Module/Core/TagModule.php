@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Module des tags des pages
  */
 
@@ -15,6 +15,8 @@ use App\Service\Admin\Module\AdminMenuItem;
 use App\Service\Admin\Module\AdminModule;
 use App\Service\Admin\Module\AdminModuleInterface;
 use App\Service\Admin\Module\AsAdminModule;
+
+use function Symfony\Component\Translation\t;
 
 #[AsAdminModule]
 final class TagModule implements AdminModuleInterface
@@ -33,8 +35,8 @@ final class TagModule implements AdminModuleInterface
         return new AdminModule(
             id: self::ID,
             role: 'ROLE_CONTRIBUTEUR',
-            label: 'admin_module.module.tag.label',
-            description: 'admin_module.module.tag.description',
+            label: t('admin_module.module.tag.label', domain: 'admin_module'),
+            description: t('admin_module.module.tag.description', domain: 'admin_module'),
             locked: true,
             routePrefixes: ['admin_tag_'],
         );
@@ -48,14 +50,14 @@ final class TagModule implements AdminModuleInterface
         return [
             new AdminMenuItem(
                 id: self::ID,
-                label: 'admin_module.menu.tag.label',
+                label: t('admin_module.menu.tag.label', domain: 'admin_module'),
                 icon: 'M15.2 6H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11.2a1 1 0 0 0 .747-.334l4.46-5a1 1 0 0 0 0-1.332l-4.46-5A1 1 0 0 0 15.2 6Z',
                 parent: CoreMenu::CONTENT,
                 position: 40,
             ),
             new AdminMenuItem(
                 id: 'tag_index',
-                label: 'admin_module.menu.tag_index.label',
+                label: t('admin_module.menu.tag_index.label', domain: 'admin_module'),
                 icon: SvgIcon::LIST->value,
                 parent: self::ID,
                 position: 10,
@@ -63,7 +65,7 @@ final class TagModule implements AdminModuleInterface
             ),
             new AdminMenuItem(
                 id: 'tag_new',
-                label: 'admin_module.menu.tag_new.label',
+                label: t('admin_module.menu.tag_new.label', domain: 'admin_module'),
                 icon: SvgIcon::PLUS->value,
                 parent: self::ID,
                 position: 20,

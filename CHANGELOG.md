@@ -34,6 +34,7 @@ Le format suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), avec un
 - Back-office : chaque module qui a plusieurs pages devient un sous-menu avec sa liste, sa création et ses autres pages (« Gestion des pages », « Nouvelle page »…). Sous « Tokens API », les entrées « Front » et « Back-office » listent les tokens d'un seul type, et le dossier « Commentaires » affiche le nombre de commentaires en attente de modération ([#550](https://github.com/counteraccro/natheo/issues/550))
 - API v2 : `GET /api/v2/admin/modules` et `GET /api/v2/admin/menu_items` donnent les modules et les entrées du menu visibles par l'utilisateur de la session ([#550](https://github.com/counteraccro/natheo/issues/550))
 - Design system du nouveau back-office pour les modules et les bundles : jetons des quatre thèmes en clair et en sombre, police Figtree, composants Vue importés depuis `@ui` (boutons, champs, formulaires avec les erreurs de validation de l'API et leur récapitulatif, modales, menus, onglets, alertes, notifications, grille de données avec recherche en deux temps et sélection multiple) et composants du layout ; catalogue sur `/admin/{locale}/design-system` en environnement dev ([#517](https://github.com/counteraccro/natheo/issues/517))
+- Nouveau back-office : une application Vue sert les écrans des modules migrés sous `/admin/<langue>/`, avec la sidebar du registre des modules et le thème Natheo-Studio. Les textes de l'interface sont servis par `GET /api/v2/admin/translations` (liste des domaines) et `GET /api/v2/admin/translations/{domain}`, revalidés par `ETag` ([#551](https://github.com/counteraccro/natheo/issues/551))
 
 ### Modifié
 
@@ -49,6 +50,7 @@ Le format suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), avec un
 - Back-office : la sidebar est construite depuis les modules déclarés dans le code, sur autant de niveaux que nécessaire, et le bouton « Nouveau » de l'en-tête depuis leurs entrées de création ([#550](https://github.com/counteraccro/natheo/issues/550))
 - Options système, tokens API, documentation de l'API, emails, traductions et aide de première connexion du tableau de bord sont ouverts aux administrateurs, et plus seulement au super administrateur ([#550](https://github.com/counteraccro/natheo/issues/550))
 - Logo Nathéo sur les pages de connexion, de mot de passe et d'installation ([#517](https://github.com/counteraccro/natheo/issues/517))
+- Back-office : une adresse inconnue sous `/admin/<langue>/` affiche la page « Page introuvable » du nouveau back-office, avec son menu, au lieu de la page d'erreur 404. En environnement dev, le catalogue du design system s'ouvre dans la nouvelle application ([#551](https://github.com/counteraccro/natheo/issues/551))
 
 ### Déprécié
 

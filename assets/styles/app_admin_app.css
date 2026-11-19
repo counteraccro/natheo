@@ -13,6 +13,5 @@
 @source '../vue/Components/Admin';
 @source '../vue/Components/Global/Ui';
 @source '../vue/Composables/Admin/Ui';
-@source '../vue/controllers/Admin/DesignSystem';
 
 @custom-variant dark (&:where(.dark, .dark *));

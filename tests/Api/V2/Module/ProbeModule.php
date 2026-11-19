@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Module du back-office chargé uniquement en env test, auquel est rattachée la ressource AdminProbe
  */
 
@@ -13,6 +13,7 @@ use App\Service\Admin\Module\AdminMenuItem;
 use App\Service\Admin\Module\AdminModule;
 use App\Service\Admin\Module\AdminModuleInterface;
 use App\Service\Admin\Module\AsAdminModule;
+use Symfony\Component\Translation\TranslatableMessage;
 
 #[AsAdminModule]
 final class ProbeModule implements AdminModuleInterface
@@ -31,8 +32,8 @@ final class ProbeModule implements AdminModuleInterface
         return new AdminModule(
             id: self::ID,
             role: 'ROLE_CONTRIBUTEUR',
-            label: 'admin_module.module.probe.label',
-            description: 'admin_module.module.probe.description',
+            label: new TranslatableMessage('probe.label'),
+            description: new TranslatableMessage('probe.description'),
         );
     }
 

@@ -26,6 +26,16 @@
     --color-on-primary-soft: var(--on-primary-soft);
     --color-primary-on-dark: var(--primary-on-dark);
 
+    --color-preview-light-canvas: var(--preview-light-canvas);
+    --color-preview-light-bg: var(--preview-light-bg);
+    --color-preview-light-bar: var(--preview-light-bar);
+    --color-preview-light-side: var(--preview-light-side);
+    --color-preview-dark-canvas: var(--preview-dark-canvas);
+    --color-preview-dark-bg: var(--preview-dark-bg);
+    --color-preview-dark-bar: var(--preview-dark-bar);
+    --color-preview-dark-side: var(--preview-dark-side);
+    --color-preview-side-bar: var(--preview-side-bar);
+
     --color-side: var(--side-bg);
     --color-on-side: var(--on-side);
     --color-on-side-muted: var(--on-side-muted);

@@ -3,8 +3,8 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
- * Révoque la session API du site public quand l'utilisateur se déconnecte du back-office
+ * @version 1.1
+ * Révoque les sessions API du site public et du back-office quand l'utilisateur se déconnecte du back-office
  */
 
 namespace App\EventListener;
@@ -31,6 +31,7 @@ final readonly class UserSessionLogoutListener
         $request = $event->getRequest();
         if ($request->hasSession()) {
             $this->userSessionService->revokeFrontSession($request->getSession());
+            $this->userSessionService->revokeBackOfficeSession($request->getSession());
         }
     }
 }

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Registre des entrées du menu du back-office, déclarées par les modules et par les services marqués AsAdminMenu
  */
 
@@ -13,6 +13,12 @@ use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 
 final class AdminMenuRegistry
 {
+    /**
+     * Chemin d'un écran de l'application : segments en minuscules séparés par « / », sans « / » au début ni à la fin
+     * @var string
+     */
+    private const string APP_PATH_PATTERN = '#^[a-z0-9][a-z0-9_-]*(/[a-z0-9][a-z0-9_-]*)*$#';
+
     /**
      * Entrées indexées par identifiant, construites au premier appel
      * @var array<string, AdminMenuItem>|null
@@ -162,6 +168,7 @@ final class AdminMenuRegistry
     private function check(array $items): void
     {
         foreach ($items as $item) {
+            $this->checkLink($item);
             $visited = [$item->id => true];
             for ($parent = $item->parent; $parent !== null; $parent = $items[$parent]->parent) {
                 if (!isset($items[$parent])) {
@@ -176,6 +183,32 @@ final class AdminMenuRegistry
                 }
                 $visited[$parent] = true;
             }
+        }
+    }
+
+    /**
+     * Vérifie qu'une entrée mène à une page Twig ou à un écran de l'application, jamais aux deux, et que l'écran a
+     * un chemin valide sans paramètres de route Twig
+     * @param AdminMenuItem $item
+     * @return void
+     */
+    private function checkLink(AdminMenuItem $item): void
+    {
+        if ($item->route === null && $item->path === null) {
+            return;
+        }
+        $error = match (true) {
+            $item->legacyRoute !== null => 'a une route Twig et une route de l\'application',
+            $item->route === null || $item->path === null => 'doit avoir sa route et son chemin dans l\'application',
+            preg_match(self::APP_PATH_PATTERN, $item->path) !== 1 => sprintf(
+                'a un chemin invalide « %s »',
+                $item->path,
+            ),
+            $item->routeParameters !== [] => 'a des paramètres de route Twig',
+            default => null,
+        };
+        if ($error !== null) {
+            throw new \LogicException(sprintf('L\'entrée de menu « %s » %s', $item->id, $error));
         }
     }
 

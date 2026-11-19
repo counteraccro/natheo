@@ -141,14 +141,18 @@ describe('AdminHeader', () => {
     expect(document.documentElement.classList.contains('dark')).toBe(true);
     expect(document.documentElement.getAttribute('data-theme-mode')).toBe('dark');
     expect(localStorage.getItem('darkMode')).toBe('dark');
-    await appearance.trigger('click');
-    await nextTick();
+    // Le panneau reste ouvert pour comparer les couleurs
     await nextTick();
     [...document.querySelectorAll<HTMLElement>('[role="menuitemradio"]')]
       .find((r) => r.textContent?.includes('header.theme_green'))!
       .click();
     expect(document.documentElement.getAttribute('data-theme')).toBe('green');
     expect(localStorage.getItem('theme')).toBe('green');
+    await nextTick();
+    const green = [...document.querySelectorAll<HTMLElement>('[role="menuitemradio"]')].find((r) =>
+      r.textContent?.includes('header.theme_green')
+    );
+    expect(green?.getAttribute('aria-checked')).toBe('true');
   });
 
   it('retire le mode sombre des pages Twig en repassant en clair', () => {

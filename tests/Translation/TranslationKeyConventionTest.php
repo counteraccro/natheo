@@ -19,6 +19,7 @@ class TranslationKeyConventionTest extends TestCase
      * Domaines contrôlés par le test
      */
     private const DOMAINS = [
+        'admin_app',
         'admin_module',
         'admin_ui',
         'advanced_options',

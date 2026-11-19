@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.2
  * Construit le menu du back-office visible par l'utilisateur courant, pour la sidebar, le header et l'API
  */
 
@@ -240,14 +240,26 @@ final class AdminMenuBuilder implements ResetInterface
             $nodes[] = new AdminMenuNode(
                 item: $item,
                 module: $this->menuRegistry->getModule($item->id)?->id,
-                label: $this->translator->trans($item->label, domain: $item->translationDomain),
-                url: $item->isFolder()
-                    ? null
-                    : $this->urlGenerator->generate($item->legacyRoute, $item->routeParameters),
+                label: $item->label->trans($this->translator),
+                url: $this->generateUrl($item),
                 children: $children,
             );
         }
         return $nodes;
+    }
+
+    /**
+     * Adresse de la page Twig ou de l'écran de l'application, null pour un dossier
+     * @param AdminMenuItem $item
+     * @return string|null
+     */
+    private function generateUrl(AdminMenuItem $item): ?string
+    {
+        return match (true) {
+            $item->isAppRoute() => $this->urlGenerator->generate('admin_app', ['path' => $item->path]),
+            $item->isFolder() => null,
+            default => $this->urlGenerator->generate($item->legacyRoute, $item->routeParameters),
+        };
     }
 
     /**

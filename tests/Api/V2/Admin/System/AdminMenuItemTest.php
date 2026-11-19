@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Tests des ressources AdminMenuItem : entrées du menu visibles selon le rôle de l'utilisateur de la session
  */
 
@@ -57,6 +57,8 @@ class AdminMenuItemTest extends AppApiV2TestCase
         $this->assertSame('page', $items['page_new']['parent']);
         $this->assertSame('page', $items['page_new']['module']);
         $this->assertSame($this->router->generate('admin_page_add'), $items['page_new']['legacyUrl']);
+        $this->assertNull($items['page_new']['route']);
+        $this->assertNull($items['page_new']['path']);
         $this->assertTrue($items['page_new']['shortcut']);
         $this->assertFalse($items['page_new']['hidden']);
         $this->assertSame(1, $items['comment']['badge']);

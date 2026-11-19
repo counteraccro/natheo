@@ -49,9 +49,21 @@ export type {
   DataTableSort,
   DataTableSearchMode,
 } from '@/ts/Admin/Ui/Data/UiDataTable.type';
+export { useTableSearch } from '@/vue/Composables/Admin/Ui/useTableSearch';
+export type { TableSearch, TableSearchOptions } from '@/vue/Composables/Admin/Ui/useTableSearch';
 export { useAppearance, setMode, setTheme } from '@/vue/Composables/Admin/Ui/useAppearance';
 export type { ColorMode, ThemeColor } from '@/ts/Admin/Layout/AdminHeader.type';
 export { default as UiForm } from './Form/UiForm.vue';
 export { default as UiErrorSummary } from './Form/UiErrorSummary.vue';
 export { useFormErrors, violationsFrom, fieldIdOf } from '@/vue/Composables/Admin/Ui/useFormErrors';
 export type { ApiViolation, FormErrors, FormErrorItem } from '@/ts/Admin/Ui/Form/UiForm.type';
+export { default as AdminShell } from '../Layout/AdminShell.vue';
+export { default as AdminSidebar } from '../Layout/AdminSidebar.vue';
+export { default as AdminHeader } from '../Layout/AdminHeader.vue';
+export { default as AdminBreadcrumb } from '../Layout/AdminBreadcrumb.vue';
+export { default as AdminPageHeader } from '../Layout/AdminPageHeader.vue';
+export { default as AdminDebugBar } from '../Layout/AdminDebugBar.vue';
+export type { SidebarItem, SidebarUser } from '@/ts/Admin/Layout/AdminSidebar.type';
+export type { HeaderSection, HeaderShortcut } from '@/ts/Admin/Layout/AdminHeader.type';
+export type { BreadcrumbItem } from '@/ts/Admin/Layout/AdminBreadcrumb.type';
+export type { DebugSection, DebugUser } from '@/ts/Admin/Layout/AdminDebugBar.type';

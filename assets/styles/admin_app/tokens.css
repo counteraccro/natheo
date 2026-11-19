@@ -16,18 +16,33 @@
     --line-strong: #d6d6db;
     --field: #8a8a93;
 
-    /* Couleur principale claire de chaque thème, reprise par la pastille du sélecteur */
+    /* Couleur principale de chaque thème en mode clair, puis sa teinte du mode sombre, reprises par le sélecteur */
     --theme-violet: #5b3fd1;
     --theme-blue: #1d4ed8;
     --theme-green: #047857;
     --theme-red: #b91c1c;
+    --theme-violet-tint: #b3a0ff;
+    --theme-blue-tint: #9cb8ff;
+    --theme-green-tint: #6fd8b0;
+    --theme-red-tint: #ffa3a3;
+
+    /* Miniatures clair et sombre du sélecteur d'apparence, identiques dans les deux modes */
+    --preview-light-canvas: #f2f2f4;
+    --preview-light-bg: #ffffff;
+    --preview-light-bar: #d6d6db;
+    --preview-light-side: #1e1e21;
+    --preview-dark-canvas: #111113;
+    --preview-dark-bg: #202024;
+    --preview-dark-bar: #3b3b42;
+    --preview-dark-side: #19191c;
+    --preview-side-bar: #4a4a52;
 
     --primary: var(--theme-violet);
     --primary-hover: #4a31b3;
     --on-primary: #ffffff;
     --primary-soft: #f1eefc;
     --on-primary-soft: #4229a8;
-    --primary-on-dark: #b3a0ff;
+    --primary-on-dark: var(--theme-violet-tint);
     --focus: var(--primary);
 
     --side-bg: #1e1e21;
@@ -93,7 +108,7 @@
     --line-strong: #3b3b42;
     --field: #6e6e77;
 
-    --primary: #b3a0ff;
+    --primary: var(--theme-violet-tint);
     --primary-hover: #c7b8ff;
     --on-primary: #111113;
     --primary-soft: #2a2640;
@@ -128,11 +143,11 @@
     --primary-hover: #1e40af;
     --primary-soft: #e8eefd;
     --on-primary-soft: #1e3a8a;
-    --primary-on-dark: #9cb8ff;
+    --primary-on-dark: var(--theme-blue-tint);
 }
 
 :root.dark[data-theme='blue'] {
-    --primary: #9cb8ff;
+    --primary: var(--theme-blue-tint);
     --primary-hover: #b8ccff;
     --primary-soft: #172554;
     --on-primary-soft: #c7d6ff;
@@ -143,11 +158,11 @@
     --primary-hover: #065f46;
     --primary-soft: #e4f5ee;
     --on-primary-soft: #064e3b;
-    --primary-on-dark: #6fd8b0;
+    --primary-on-dark: var(--theme-green-tint);
 }
 
 :root.dark[data-theme='green'] {
-    --primary: #6fd8b0;
+    --primary: var(--theme-green-tint);
     --primary-hover: #8fe3c3;
     --primary-soft: #0b2e25;
     --on-primary-soft: #bfeedd;
@@ -158,11 +173,11 @@
     --primary-hover: #991b1b;
     --primary-soft: #fdecec;
     --on-primary-soft: #7f1d1d;
-    --primary-on-dark: #ffa3a3;
+    --primary-on-dark: var(--theme-red-tint);
 }
 
 :root.dark[data-theme='red'] {
-    --primary: #ffa3a3;
+    --primary: var(--theme-red-tint);
     --primary-hover: #ffbcbc;
     --primary-soft: #3a1116;
     --on-primary-soft: #ffd0d0;

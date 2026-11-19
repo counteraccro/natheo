@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Module des emails envoyés par le CMS
  */
 
@@ -14,6 +14,8 @@ use App\Service\Admin\Module\AdminMenuItem;
 use App\Service\Admin\Module\AdminModule;
 use App\Service\Admin\Module\AdminModuleInterface;
 use App\Service\Admin\Module\AsAdminModule;
+
+use function Symfony\Component\Translation\t;
 
 #[AsAdminModule]
 final class MailModule implements AdminModuleInterface
@@ -32,8 +34,8 @@ final class MailModule implements AdminModuleInterface
         return new AdminModule(
             id: self::ID,
             role: 'ROLE_ADMIN',
-            label: 'admin_module.module.mail.label',
-            description: 'admin_module.module.mail.description',
+            label: t('admin_module.module.mail.label', domain: 'admin_module'),
+            description: t('admin_module.module.mail.description', domain: 'admin_module'),
             routePrefixes: ['admin_mail_'],
         );
     }
@@ -46,7 +48,7 @@ final class MailModule implements AdminModuleInterface
         return [
             new AdminMenuItem(
                 id: self::ID,
-                label: 'admin_module.menu.mail.label',
+                label: t('admin_module.menu.mail.label', domain: 'admin_module'),
                 icon: 'm3.5 5.5 7.893 6.036a1 1 0 0 0 1.214 0L20.5 5.5M4 19h16a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Z',
                 parent: CoreMenu::SYSTEM,
                 position: 50,

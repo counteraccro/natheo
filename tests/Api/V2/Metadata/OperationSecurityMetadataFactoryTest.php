@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Test de la sécurité construite par OperationSecurityMetadataFactory
  */
 
@@ -20,6 +20,7 @@ use App\Service\Admin\Module\AdminModule;
 use App\Service\Admin\Module\AdminModuleInterface;
 use App\Service\Admin\Module\AdminModuleRegistry;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Translation\TranslatableMessage;
 
 class OperationSecurityMetadataFactoryTest extends TestCase
 {
@@ -125,7 +126,12 @@ class OperationSecurityMetadataFactoryTest extends TestCase
         $module = new class implements AdminModuleInterface {
             public function getDefinition(): AdminModule
             {
-                return new AdminModule('tag', 'ROLE_CONTRIBUTEUR', 'tag.label', 'tag.description');
+                return new AdminModule(
+                    'tag',
+                    'ROLE_CONTRIBUTEUR',
+                    new TranslatableMessage('tag.label'),
+                    new TranslatableMessage('tag.description'),
+                );
             }
 
             public function getMenuItems(): array

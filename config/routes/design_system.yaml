@@ -1,7 +1,0 @@
-# Catalogue des composants du design system, en environnement dev seulement
-when@dev:
-    admin_design_system:
-        path: /admin/{_locale}/design-system
-        controller: App\Controller\Admin\Dev\DesignSystemController::index
-        requirements:
-            _locale: '%app.supported_locales%'

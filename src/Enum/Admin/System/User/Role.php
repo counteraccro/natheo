@@ -32,6 +32,21 @@ enum Role: string
     }
 
     /**
+     * Rôle du back-office le plus élevé parmi des rôles bruts
+     * @param string[] $roles
+     * @return self|null
+     */
+    public static function highest(array $roles): ?self
+    {
+        foreach (array_reverse(self::cases()) as $role) {
+            if (in_array($role->value, $roles, true)) {
+                return $role;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Retourne la liste des rôles pour les formulaires [clé de traduction => rôle]
      * @return array<string, string>
      */
