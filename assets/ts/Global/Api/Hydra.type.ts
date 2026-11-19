@@ -33,3 +33,9 @@ export interface Paginated<T> {
   page: number;
   lastPage: number;
 }
+
+/** Ressource lue avec son ETag, renvoyé dans If-Match pour la modifier */
+export interface ApiResource<T> {
+  data: T;
+  etag: string | null;
+}

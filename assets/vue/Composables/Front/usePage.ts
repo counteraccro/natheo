@@ -6,7 +6,7 @@
  */
 import { ref, shallowRef, watch, type Ref, type ShallowRef } from 'vue';
 import { useFrontContext, type FrontContext } from '@/vue/Composables/Front/useFrontContext';
-import { ApiError } from '@/vue/Composables/Front/Api/ApiError';
+import { ApiError } from '@/vue/Composables/Global/Api/ApiError';
 import type { Meta, Page, PageSummary } from '@/ts/Front/Api/Page.type';
 
 export interface PageState {
