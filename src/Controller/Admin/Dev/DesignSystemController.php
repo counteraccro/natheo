@@ -4,7 +4,7 @@ declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
  * @version 1.0
- * Catalogue des composants du design system, déclaré pour l'environnement dev seulement (config/routes/design_system.yaml)
+ * Catalogue des composants du design system, accessible en environnement dev
  */
 
 namespace App\Controller\Admin\Dev;
