@@ -53,6 +53,16 @@
     --color-mod-third-a: var(--mod-third-a);
     --color-mod-third-b: var(--mod-third-b);
 
+    --color-code: var(--code-bg);
+    --color-code-raised: var(--code-raised);
+    --color-on-code: var(--on-code);
+    --color-on-code-muted: var(--on-code-muted);
+    --color-code-keyword: var(--code-keyword);
+    --color-code-string: var(--code-string);
+    --color-code-number: var(--code-number);
+    --color-on-code-number: var(--on-code-number);
+    --color-code-identifier: var(--code-identifier);
+
     --shadow-panel: var(--panel-shadow);
     --shadow-overlay: var(--overlay-shadow);
     --shadow-dialog: var(--dialog-shadow);

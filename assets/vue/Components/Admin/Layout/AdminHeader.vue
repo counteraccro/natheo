@@ -13,7 +13,7 @@ import UiDropdownItem from '../Ui/Overlay/UiDropdownItem.vue';
 import UiDropdownLabel from '../Ui/Overlay/UiDropdownLabel.vue';
 import { useUiLabels } from '@/vue/Composables/Admin/Ui/useUiLabels';
 import { useAppearance } from '@/vue/Composables/Admin/Ui/useAppearance';
-import type { HeaderSection, HeaderShortcut, ThemeColor } from '@/ts/Admin/Layout/AdminHeader.type';
+import type { HeaderSection, HeaderShortcut } from '@/ts/Admin/Layout/AdminHeader.type';
 
 withDefaults(
   defineProps<{
@@ -34,13 +34,6 @@ defineSlots<{ 'user-menu'?: () => unknown; actions?: () => unknown }>();
 const labels = useUiLabels();
 const { theme, mode, themes, setTheme, setMode } = useAppearance();
 const searchId = `ui-global-search-${useId()}`;
-
-const SWATCHES: Record<ThemeColor, string> = {
-  violet: 'bg-[#5b3fd1]',
-  blue: 'bg-[#1d4ed8]',
-  green: 'bg-[#047857]',
-  red: 'bg-[#b91c1c]',
-};
 </script>
 
 <template>
@@ -139,7 +132,7 @@ const SWATCHES: Record<ThemeColor, string> = {
             @select="setTheme(color)"
           >
             <span class="inline-flex items-center gap-2">
-              <span class="size-3.5 rounded-full" :class="SWATCHES[color]" aria-hidden="true" />
+              <span class="size-3.5 rounded-full" :style="{ background: `var(--theme-${color})` }" aria-hidden="true" />
               {{ labels.header.themes[color] }}
             </span>
           </UiDropdownItem>

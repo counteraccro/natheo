@@ -16,7 +16,13 @@
     --line-strong: #d6d6db;
     --field: #8a8a93;
 
-    --primary: #5b3fd1;
+    /* Couleur principale claire de chaque thème, reprise par la pastille du sélecteur */
+    --theme-violet: #5b3fd1;
+    --theme-blue: #1d4ed8;
+    --theme-green: #047857;
+    --theme-red: #b91c1c;
+
+    --primary: var(--theme-violet);
     --primary-hover: #4a31b3;
     --on-primary: #ffffff;
     --primary-soft: #f1eefc;
@@ -52,6 +58,16 @@
     --mod-third-a: #6a45ec;
     --mod-third-b: #5cc8f0;
 
+    /* Blocs de code et barre de debug, sombres dans les deux modes */
+    --code-bg: #18181b;
+    --code-raised: #2c2c31;
+    --on-code: #ededef;
+    --on-code-muted: #a8a8b0;
+    --code-keyword: var(--mod-full);
+    --code-string: #7ee0b5;
+    --code-number: #ffc56b;
+    --on-code-number: #3d2c00;
+    --code-identifier: #7cd4f8;
 
     --panel-shadow: 0 1px 2px rgb(17 17 20 / 0.04), 0 1px 0 rgb(17 17 20 / 0.02);
     --overlay-shadow: 0 12px 32px -8px rgb(17 17 20 / 0.22), 0 0 0 1px rgb(17 17 20 / 0.06);
@@ -97,6 +113,8 @@
     --tooltip-bg: #ededef;
     --on-tooltip: #18181b;
 
+    --code-bg: #0c0c0e;
+
     --panel-shadow: 0 0 0 1px rgb(255 255 255 / 0.02);
     --overlay-shadow: 0 12px 32px -8px rgb(0 0 0 / 0.65), 0 0 0 1px rgb(255 255 255 / 0.08);
     --dialog-shadow: 0 32px 64px -16px rgb(0 0 0 / 0.8), 0 0 0 1px rgb(255 255 255 / 0.08);
@@ -106,7 +124,7 @@
 }
 
 :root[data-theme='blue'] {
-    --primary: #1d4ed8;
+    --primary: var(--theme-blue);
     --primary-hover: #1e40af;
     --primary-soft: #e8eefd;
     --on-primary-soft: #1e3a8a;
@@ -121,7 +139,7 @@
 }
 
 :root[data-theme='green'] {
-    --primary: #047857;
+    --primary: var(--theme-green);
     --primary-hover: #065f46;
     --primary-soft: #e4f5ee;
     --on-primary-soft: #064e3b;
@@ -136,7 +154,7 @@
 }
 
 :root[data-theme='red'] {
-    --primary: #b91c1c;
+    --primary: var(--theme-red);
     --primary-hover: #991b1b;
     --primary-soft: #fdecec;
     --on-primary-soft: #7f1d1d;

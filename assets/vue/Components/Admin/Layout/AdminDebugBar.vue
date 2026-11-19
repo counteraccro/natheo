@@ -30,16 +30,16 @@ const close = (): void => {
       v-show="open"
       :id="panelId"
       :aria-label="labels.debugBar.open"
-      class="absolute bottom-[calc(100%+8px)] left-0 w-[340px] max-w-[calc(100vw-32px)] rounded-lg bg-[#18181b] text-[#ededef] shadow-[0_24px_48px_-12px_rgb(0_0_0/.55),0_0_0_1px_rgb(255_255_255/.08)]"
+      class="absolute bottom-[calc(100%+8px)] left-0 w-[340px] max-w-[calc(100vw-32px)] rounded-lg bg-code text-on-code shadow-[0_24px_48px_-12px_rgb(0_0_0/.55),0_0_0_1px_rgb(255_255_255/.08)]"
     >
       <header class="flex items-center gap-2.5 border-b border-white/8 py-3 pr-3 pl-3.5">
         <BrandLogo class="size-[22px]" />
         <b class="font-[650]">Nathéo</b>
-        <span class="rounded-full bg-[#ffc56b] px-1.5 py-px text-2xs font-bold text-[#3d2c00]">{{ env }}</span>
+        <span class="rounded-full bg-code-number px-1.5 py-px text-2xs font-bold text-on-code-number">{{ env }}</span>
         <button
           type="button"
           :aria-label="labels.debugBar.close"
-          class="ml-auto grid size-[30px] cursor-pointer place-items-center rounded-sm border-0 bg-transparent text-[#a8a8b0] hover:bg-white/8 hover:text-white"
+          class="ml-auto grid size-[30px] cursor-pointer place-items-center rounded-sm border-0 bg-transparent text-on-code-muted hover:bg-white/8 hover:text-on-code"
           @click="close"
         >
           <UiIcon name="close" class="size-4" />
@@ -50,16 +50,16 @@ const close = (): void => {
         :key="section.title"
         class="border-t border-white/6 px-3.5 py-2.5 first-of-type:border-t-0"
       >
-        <h3 class="m-0 mb-1.5 text-xs font-semibold text-[#a8a8b0]">{{ section.title }}</h3>
+        <h3 class="m-0 mb-1.5 text-xs font-semibold text-on-code-muted">{{ section.title }}</h3>
         <dl class="m-0 grid grid-cols-[auto_1fr] gap-x-3 gap-y-1">
           <template v-for="entry in section.entries" :key="entry.label">
-            <dt class="text-[#a8a8b0]">{{ entry.label }}</dt>
+            <dt class="text-on-code-muted">{{ entry.label }}</dt>
             <dd class="m-0 truncate text-right tabular-nums">{{ entry.value }}</dd>
           </template>
         </dl>
       </div>
       <div v-if="users?.length" class="border-t border-white/6 px-3.5 py-2.5">
-        <h3 class="m-0 mb-1.5 text-xs font-semibold text-[#a8a8b0]">{{ labels.debugBar.loginAs }}</h3>
+        <h3 class="m-0 mb-1.5 text-xs font-semibold text-on-code-muted">{{ labels.debugBar.loginAs }}</h3>
         <ul class="m-0 flex list-none flex-col gap-0.5 p-0">
           <li v-for="user in users" :key="user.href">
             <a
@@ -68,16 +68,18 @@ const close = (): void => {
               :aria-current="user.current || undefined"
             >
               <span
-                class="grid size-[26px] shrink-0 place-items-center rounded-full bg-[#2c2c31] text-2xs font-bold text-[#d4d4d8]"
+                class="grid size-[26px] shrink-0 place-items-center rounded-full bg-code-raised text-2xs font-bold text-on-code"
                 aria-hidden="true"
               >
                 {{ user.initials }}
               </span>
               <span class="min-w-0">
                 <b class="block leading-tight font-semibold">{{ user.name }}</b>
-                <small class="text-xs text-[#a8a8b0]">{{ user.detail }}</small>
+                <small class="text-xs text-on-code-muted">{{ user.detail }}</small>
               </span>
-              <span v-if="user.current" class="ml-auto text-2xs text-[#7ee0b5]">{{ labels.debugBar.currentUser }}</span>
+              <span v-if="user.current" class="ml-auto text-2xs text-code-string">{{
+                labels.debugBar.currentUser
+              }}</span>
             </a>
           </li>
         </ul>
@@ -88,13 +90,15 @@ const close = (): void => {
       type="button"
       :aria-expanded="open"
       :aria-controls="panelId"
-      class="inline-flex h-[34px] cursor-pointer items-center gap-2 rounded-full border-0 bg-[#18181b] pr-3 pl-2.5 font-semibold text-[#ededef] shadow-[0_8px_24px_rgb(0_0_0/.3)] focus-visible:outline-mod-third-b"
+      class="inline-flex h-[34px] cursor-pointer items-center gap-2 rounded-full border-0 bg-code pr-3 pl-2.5 font-semibold text-on-code shadow-[0_8px_24px_rgb(0_0_0/.3)] focus-visible:outline-mod-third-b"
       @click="open = !open"
     >
       <span class="sr-only">{{ labels.debugBar.open }}</span>
       <BrandLogo class="size-[18px]" />
-      <span class="rounded-full bg-[#ffc56b] px-1.5 py-px text-2xs font-bold text-[#3d2c00]">{{ env }}</span>
-      <span v-if="branch" class="max-w-[220px] truncate font-medium text-[#a8a8b0] max-md:hidden">{{ branch }}</span>
+      <span class="rounded-full bg-code-number px-1.5 py-px text-2xs font-bold text-on-code-number">{{ env }}</span>
+      <span v-if="branch" class="max-w-[220px] truncate font-medium text-on-code-muted max-md:hidden">{{
+        branch
+      }}</span>
     </button>
   </div>
 </template>

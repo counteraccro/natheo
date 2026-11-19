@@ -17,24 +17,24 @@ const labels = useUiLabels();
 const tokens = computed(() => tokenizeSql(props.sql));
 
 const COLORS: Record<SqlToken['kind'], string> = {
-  keyword: 'font-bold text-[#c9b8ff]',
-  string: 'text-[#7ee0b5]',
-  number: 'text-[#ffc56b]',
-  identifier: 'text-[#7cd4f8]',
+  keyword: 'font-bold text-code-keyword',
+  string: 'text-code-string',
+  number: 'text-code-number',
+  identifier: 'text-code-identifier',
   plain: '',
 };
 
 const BUTTON_CLASSES =
-  'inline-flex h-[30px] cursor-pointer items-center gap-1.5 rounded-sm border-0 bg-transparent px-2.5 text-[12.5px] font-semibold text-[#d4d4d8] hover:bg-white/8 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-mod-third-b';
+  'inline-flex h-[30px] cursor-pointer items-center gap-1.5 rounded-sm border-0 bg-transparent px-2.5 text-[12.5px] font-semibold text-on-code-muted hover:bg-white/8 hover:text-on-code focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-mod-third-b';
 </script>
 
 <template>
   <section
-    class="mx-4 mt-3.5 overflow-hidden rounded-md bg-[#18181b] text-[#e4e4e7] shadow-[inset_0_0_0_1px_rgb(255_255_255/.06)] dark:bg-[#0c0c0e]"
+    class="mx-4 mt-3.5 overflow-hidden rounded-md bg-code text-on-code shadow-[inset_0_0_0_1px_rgb(255_255_255/.06)]"
     :aria-label="labels.dataTable.sqlTitle"
   >
     <header class="flex items-center gap-2.5 border-b border-white/8 py-2 pr-2 pl-3.5">
-      <UiIcon name="code" class="size-4 text-[#a8a8b0]" />
+      <UiIcon name="code" class="size-4 text-on-code-muted" />
       <b class="text-sm font-[650]">{{ labels.dataTable.sqlTitle }}</b>
       <div class="ml-auto flex gap-0.5">
         <button type="button" :class="BUTTON_CLASSES" @click="emit('save')">
