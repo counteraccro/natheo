@@ -16,6 +16,7 @@ use App\Service\Admin\AppAdminHandlerService;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\Dev\DevInfoService;
 use App\Service\Admin\System\OptionUserService;
+use App\Service\Api\System\TranslationCatalogueService;
 use App\Service\Api\System\User\UserSessionAccessToken;
 use App\Service\Api\System\User\UserSessionService;
 use App\Service\Global\User\AvatarUrl;
@@ -27,8 +28,6 @@ use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\SwitchUserToken;
 use Symfony\Component\Security\Http\Impersonate\ImpersonateUrlGenerator;
-use Symfony\Component\Translation\MessageCatalogueInterface;
-use Symfony\Component\Translation\TranslatorBagInterface;
 
 class AdminAppBootstrapService extends AppAdminService
 {
@@ -43,6 +42,7 @@ class AdminAppBootstrapService extends AppAdminService
         private readonly UserSessionService $userSessionService,
         private readonly OptionUserService $optionUserService,
         private readonly DevInfoService $devInfoService,
+        private readonly TranslationCatalogueService $catalogueService,
         #[
             Autowire(service: 'security.impersonate_url_generator'),
         ]
@@ -185,24 +185,17 @@ class AdminAppBootstrapService extends AppAdminService
     }
 
     /**
-     * Messages bruts (ICU non formaté) des domaines envoyés avec la page
+     * Messages bruts (ICU non formaté) des domaines envoyés avec la page, en objet JSON même vides
      * @param string $locale
-     * @return array<string, array<string, string>>
+     * @return array<string, object>
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
     private function getMessages(string $locale): array
     {
-        $translator = $this->getTranslator();
-        $messages = array_fill_keys(self::DOMAINS, []);
-        if (!($translator instanceof TranslatorBagInterface)) {
-            return $messages;
-        }
-
-        $catalogue = $translator->getCatalogue($locale);
+        $messages = [];
         foreach (self::DOMAINS as $domain) {
-            $messages[$domain] =
-                $catalogue->all($domain . MessageCatalogueInterface::INTL_DOMAIN_SUFFIX) + $catalogue->all($domain);
+            $messages[$domain] = (object) $this->catalogueService->getMessages($domain, $locale);
         }
         return $messages;
     }
