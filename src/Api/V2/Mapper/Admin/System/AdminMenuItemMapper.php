@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Convertit une entrée du menu visible par l'utilisateur en ressource AdminMenuItem de l'API v2
  */
 
@@ -27,7 +27,9 @@ final readonly class AdminMenuItemMapper
         $item->label = $node->label;
         $item->icon = $node->item->icon;
         $item->position = $node->item->position;
-        $item->legacyUrl = $node->url;
+        $item->legacyUrl = $node->item->isAppRoute() ? null : $node->url;
+        $item->route = $node->item->route;
+        $item->path = $node->item->path;
         $item->shortcut = $node->item->shortcut;
         $item->hidden = !$node->inMenu;
         $item->badge = $node->badge;
