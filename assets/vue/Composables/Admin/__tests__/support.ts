@@ -1,12 +1,13 @@
 /**
  * @author Gourdon Aymeric
  * @version 1.0
- * Données de test de l'application du back-office : modules, entrées de menu et client simulé
+ * Données de test de l'application du back-office : démarrage, modules, entrées de menu et client simulé
  */
 import { vi } from 'vitest';
 import type { ApiClient } from '@/vue/Composables/Global/Api/ApiClient';
 import type { AdminModule } from '@/ts/Admin/Api/AdminModule.type';
 import type { AdminMenuItem } from '@/ts/Admin/Api/AdminMenuItem.type';
+import type { AdminBootstrap } from '@/ts/Admin/App/AdminBootstrap.type';
 
 export function moduleOf(id: string, operations: string[] = []): AdminModule {
   return {
@@ -47,4 +48,43 @@ export function menuApi(modules: AdminModule[], items: AdminMenuItem[]) {
     return Promise.resolve({ members, total: members.length, page: 1, lastPage: 1 });
   });
   return { api: { getCollection } as unknown as ApiClient, getCollection };
+}
+
+/** Données de démarrage d'un administrateur, valeurs remplaçables */
+export function bootstrap(values: Partial<AdminBootstrap> = {}): AdminBootstrap {
+  return {
+    api: {
+      prefix: '/api/v2',
+      accessToken: 'initial',
+      expiresAt: '2099-01-01T00:00:00Z',
+      tokenUrl: '/admin/fr/app/token',
+    },
+    locale: 'fr',
+    locales: ['fr', 'en', 'es'],
+    basePath: '/admin/fr/',
+    user: {
+      id: 1,
+      login: 'admin',
+      name: 'Ada',
+      initials: 'A',
+      email: 'a@b.c',
+      avatar: null,
+      roles: ['ROLE_ADMIN'],
+      impersonating: null,
+    },
+    site: { name: 'Nathéo', version: '2.1.0-dev', url: '/' },
+    urls: {
+      dashboard: '/admin/fr/dashboard/index',
+      logout: '/admin/fr/logout',
+      impersonationExit: null,
+      myAccount: '/admin/fr/user/my-account',
+      myOptions: '/admin/fr/user/my-options',
+      search: '/admin/fr/search',
+      notifications: '/admin/fr/notification/index',
+    },
+    options: { notifications: true, confirmLeave: true, itemsPerPage: 20 },
+    messages: { admin_app: { 'admin_app.leave.title': 'Quitter la page ?' } },
+    debug: null,
+    ...values,
+  };
 }

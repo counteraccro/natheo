@@ -7,7 +7,6 @@
 import {
   createRouter,
   createWebHistory,
-  type RouteComponent,
   type RouteLocationNormalized,
   type RouteLocationRaw,
   type Router,
@@ -16,6 +15,7 @@ import {
 import { routesOf, type AdminModuleDefinition } from '@/vue/Composables/Admin/defineAdminModule';
 import type { AdminMenu } from '@/vue/Composables/Admin/useAdminMenu';
 import type { Translator } from '@/vue/Composables/Admin/useTranslate';
+import type { AdminNotFoundProps, ThemeComponent } from '@/ts/Admin/Theme/AdminTheme.type';
 
 export const NOT_FOUND_ROUTE = 'not-found';
 
@@ -26,7 +26,7 @@ export interface AdminRouterOptions {
   menu: AdminMenu;
   translator: Translator;
   /** Écran « Page introuvable » du thème */
-  notFound: RouteComponent | (() => Promise<RouteComponent>);
+  notFound: ThemeComponent;
   /** Tableau de bord, page Twig tant qu'il n'est pas migré */
   dashboardUrl: string;
   /** Confirmation de départ d'un formulaire modifié */
@@ -69,7 +69,15 @@ export function createAdminRouter(options: AdminRouterOptions): Router {
         },
       },
       ...routesOf(options.modules),
-      { path: '/:path(.*)*', name: NOT_FOUND_ROUTE, component: options.notFound },
+      {
+        path: '/:path(.*)*',
+        name: NOT_FOUND_ROUTE,
+        component: options.notFound,
+        props: (route): AdminNotFoundProps => ({
+          path: options.basePath.replace(/\/$/, '') + route.fullPath,
+          dashboardUrl: options.dashboardUrl,
+        }),
+      },
     ],
   });
 

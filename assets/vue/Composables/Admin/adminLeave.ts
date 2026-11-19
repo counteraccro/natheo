@@ -4,6 +4,7 @@
  * Confirmation avant de quitter un formulaire modifié de l'application : navigation interne, liens qui rechargent et
  * fermeture de l'onglet
  */
+import { clickedLink } from '@/vue/Composables/Admin/clickedLink';
 import { leaveGuard } from '@/vue/Composables/Admin/leaveGuard';
 import type { ConfirmRequest } from '@/vue/Composables/Admin/useConfirm';
 
@@ -37,35 +38,10 @@ export function createAdminLeave(options: AdminLeaveOptions): AdminLeave {
   const confirmLeave = async (): Promise<boolean> =>
     !options.enabled || !leaveGuard.isDirty() || options.confirm(options.request());
 
-  /** Lien quittant l'application visé par le clic, null sinon (RouterLink, nouvel onglet, ancre) */
-  const leavingLink = (event: MouseEvent): HTMLAnchorElement | null => {
-    if (
-      event.defaultPrevented ||
-      event.button !== 0 ||
-      event.metaKey ||
-      event.ctrlKey ||
-      event.shiftKey ||
-      event.altKey
-    ) {
-      return null;
-    }
-    const link = event.target instanceof Element ? event.target.closest('a[href]') : null;
-    if (
-      !(link instanceof HTMLAnchorElement) ||
-      (link.target && link.target !== '_self') ||
-      link.hasAttribute('download')
-    ) {
-      return null;
-    }
-    const url = new URL(link.href, window.location.href);
-    const samePage = url.origin === window.location.origin && url.pathname === window.location.pathname;
-    return samePage && url.hash !== '' ? null : link;
-  };
-
   return {
     confirmLeave,
     onClick(event: MouseEvent): void {
-      const link = options.enabled && leaveGuard.isDirty() ? leavingLink(event) : null;
+      const link = options.enabled && leaveGuard.isDirty() ? clickedLink(event) : null;
       if (link === null) return;
       event.preventDefault();
       void confirmLeave().then((confirmed) => {

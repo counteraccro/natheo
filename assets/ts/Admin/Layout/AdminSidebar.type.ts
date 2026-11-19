@@ -10,8 +10,6 @@ export interface SidebarItem {
   icon?: string;
   /** Absent : dossier */
   href?: string;
-  /** Nom de la route Vue d'un écran de l'application, rendu en lien sans rechargement */
-  route?: string;
   active?: boolean;
   badge?: number;
   children?: SidebarItem[];

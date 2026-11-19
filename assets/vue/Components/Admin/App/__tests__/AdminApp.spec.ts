@@ -1,39 +1,65 @@
 import { describe, expect, it, vi } from 'vitest';
-import { defineComponent } from 'vue';
+import { defineComponent, h } from 'vue';
 import { flushPromises, mount } from '@vue/test-utils';
 import { createMemoryHistory, createRouter } from 'vue-router';
 import AdminApp from '@/vue/Components/Admin/App/AdminApp.vue';
-import { ADMIN_CONTEXT, type AdminContext } from '@/vue/Composables/Admin/useAdminContext';
+import { ADMIN_CONTEXT, createAdminContext } from '@/vue/Composables/Admin/useAdminContext';
 import { useConfirm } from '@/vue/Composables/Admin/useConfirm';
+import { NOT_FOUND_ROUTE } from '@/vue/Composables/Admin/adminRouter';
+import { defineAdminTheme } from '@/vue/Composables/Admin/defineAdminTheme';
+import { bootstrap } from '@/vue/Composables/Admin/__tests__/support';
 
-function mountApp() {
+/** Thème de test : affiche les props reçues autour de l'écran */
+const theme = defineAdminTheme({
+  id: 'test',
+  layout: defineComponent({
+    props: ['items', 'section', 'shortcuts', 'bootstrap'],
+    setup(props, { slots }) {
+      return () => h('div', { class: 'layout', 'data-section': props.section?.label ?? '' }, slots.default?.());
+    },
+  }),
+  notFound: defineComponent({ render: () => h('p', { class: 'not-found' }) }),
+});
+
+async function mountApp(path = '/') {
   const router = createRouter({
-    history: createMemoryHistory(),
-    routes: [{ path: '/', component: defineComponent({ template: '<p class="screen">Écran</p>' }) }],
+    history: createMemoryHistory('/admin/fr/'),
+    routes: [
+      { path: '/', component: defineComponent({ render: () => h('p', { class: 'screen' }, 'Écran') }) },
+      { path: '/:path(.*)*', name: NOT_FOUND_ROUTE, component: theme.notFound },
+    ],
   });
-  const leave = { confirmLeave: vi.fn(), onClick: vi.fn(), onBeforeUnload: vi.fn() };
-  const context = { t: (key: string) => key, leave } as unknown as AdminContext;
+  const context = createAdminContext(bootstrap());
+  const onClick = vi.spyOn(context.leave, 'onClick');
+  const onBeforeUnload = vi.spyOn(context.leave, 'onBeforeUnload');
+  await router.push(path);
   const wrapper = mount(AdminApp, {
+    props: { theme },
     attachTo: document.body,
     global: { plugins: [router], provide: { [ADMIN_CONTEXT as symbol]: context } },
   });
-  return { wrapper, router, leave };
+  await router.isReady();
+  return { wrapper, onClick, onBeforeUnload };
 }
 
 describe('AdminApp', () => {
-  it('affiche l’écran courant et écoute les départs de la page', async () => {
-    const { wrapper, router, leave } = mountApp();
-    await router.isReady();
-    expect(wrapper.find('.screen').exists()).toBe(true);
+  it('affiche l’écran courant dans le layout du thème et écoute les départs de la page', async () => {
+    const { wrapper, onClick, onBeforeUnload } = await mountApp();
+    expect(wrapper.find('.layout .screen').exists()).toBe(true);
     document.body.click();
-    expect(leave.onClick).toHaveBeenCalled();
+    expect(onClick).toHaveBeenCalled();
     window.dispatchEvent(new Event('beforeunload'));
-    expect(leave.onBeforeUnload).toHaveBeenCalled();
+    expect(onBeforeUnload).toHaveBeenCalled();
+  });
+
+  it('nomme la page introuvable dans la section courante', async () => {
+    const { wrapper } = await mountApp('/inconnue');
+    expect(wrapper.find('.not-found').exists()).toBe(true);
+    expect(wrapper.find('.layout').attributes('data-section')).toBe('admin_app.not_found.title');
   });
 
   it('affiche la confirmation demandée et transmet la réponse', async () => {
-    const { router } = mountApp();
-    await router.isReady();
+    await mountApp();
     const answer = useConfirm().confirm({ title: 'Supprimer le tag ?', tone: 'danger' });
     await flushPromises();
     const dialog = document.body.querySelector('dialog');

@@ -39,11 +39,11 @@ describe('createAdminMenu', () => {
     const tree = menu.tree({ name: null });
     expect(tree.map((item) => item.id)).toEqual(['content']);
     const [tag, page] = tree[0].children ?? [];
-    expect(tag.children?.map((item) => [item.id, item.href, item.route])).toEqual([
-      ['tag_index', '/admin/fr/tags', 'tag_index'],
-      ['tag_new', '/admin/fr/tags/new', 'tag_new'],
+    expect(tag.children?.map((item) => [item.id, item.href])).toEqual([
+      ['tag_index', '/admin/fr/tags'],
+      ['tag_new', '/admin/fr/tags/new'],
     ]);
-    expect(page).toMatchObject({ href: '/admin/fr/page/index', route: undefined, badge: 2 });
+    expect(page).toMatchObject({ href: '/admin/fr/page/index', badge: 2 });
   });
 
   it('active l’entrée de la route courante, sinon la dernière route du fil d’Ariane', async () => {

@@ -1,4 +1,27 @@
+admin_app.debug.application: Application
+admin_app.debug.branch: Branch
+admin_app.debug.commit: Commit
+admin_app.debug.commit_date: Date
+admin_app.debug.database: Database
+admin_app.debug.environment: Environment
+admin_app.debug.git: Git
+admin_app.debug.php: PHP
+admin_app.debug.system: System
+admin_app.debug.version: Version
 admin_app.error.navigation: 'The page could not be loaded. Try again in a moment.'
+admin_app.layout.subtitle: 'Back office'
 admin_app.leave.confirm: 'Leave without saving'
 admin_app.leave.message: 'Unsaved changes to this form will be lost.'
 admin_app.leave.title: 'Leave this page?'
+admin_app.not_found.back: 'Previous page'
+admin_app.not_found.dashboard: Dashboard
+admin_app.not_found.hint: 'The page may have moved, or your account cannot access this module.'
+admin_app.not_found.text: 'No back-office page matches this address.'
+admin_app.not_found.title: 'Page not found'
+admin_app.role.admin: Administrator
+admin_app.role.contributor: Contributor
+admin_app.role.super_admin: 'Super administrator'
+admin_app.role.user: User
+admin_app.user_menu.logout: 'Log out'
+admin_app.user_menu.my_account: 'My account'
+admin_app.user_menu.my_options: 'My options'

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Barre du haut en trois zones : section courante, recherche globale, actions (Nouveau, apparence, notifications,
  * menu utilisateur) ; bandeau d'usurpation au-dessus
  */
@@ -24,8 +24,10 @@ withDefaults(
     /** Nom de l'utilisateur usurpé, et lien pour revenir à son compte */
     impersonating?: { name: string; exitHref: string };
     searchable?: boolean;
+    /** Cloche des notifications (option OS_NOTIFICATION) */
+    notifiable?: boolean;
   }>(),
-  { searchable: true }
+  { searchable: true, notifiable: true }
 );
 const search = defineModel<string>('search', { default: '' });
 const emit = defineEmits<{ openNav: []; submitSearch: [term: string]; openNotifications: [] }>();
@@ -153,7 +155,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', focusSearch));
             </span>
           </UiDropdownItem>
         </UiDropdown>
-        <span class="relative inline-flex">
+        <span v-if="notifiable" class="relative inline-flex">
           <UiButton
             variant="ghost"
             icon="bell"

@@ -72,7 +72,6 @@ export function createAdminMenu(api: ApiClient, basePath: string): AdminMenu {
             label: item.label,
             icon: item.icon || undefined,
             href,
-            route: item.route ?? undefined,
             active: item.id === activeId || undefined,
             badge: item.badge ?? undefined,
             children: children.length > 0 ? children : undefined,

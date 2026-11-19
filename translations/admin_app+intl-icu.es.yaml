@@ -1,4 +1,27 @@
+admin_app.debug.application: Aplicación
+admin_app.debug.branch: Rama
+admin_app.debug.commit: Commit
+admin_app.debug.commit_date: Fecha
+admin_app.debug.database: 'Base de datos'
+admin_app.debug.environment: Entorno
+admin_app.debug.git: Git
+admin_app.debug.php: PHP
+admin_app.debug.system: Sistema
+admin_app.debug.version: Versión
 admin_app.error.navigation: 'No se ha podido cargar la página. Inténtelo de nuevo en un momento.'
+admin_app.layout.subtitle: Back-office
 admin_app.leave.confirm: 'Salir sin guardar'
 admin_app.leave.message: 'Se perderán los cambios no guardados de este formulario.'
 admin_app.leave.title: '¿Salir de la página?'
+admin_app.not_found.back: 'Página anterior'
+admin_app.not_found.dashboard: 'Panel de control'
+admin_app.not_found.hint: 'Puede que la página se haya movido o que su cuenta no tenga acceso a este módulo.'
+admin_app.not_found.text: 'Ninguna página del back-office corresponde a esta dirección.'
+admin_app.not_found.title: 'Página no encontrada'
+admin_app.role.admin: Administrador
+admin_app.role.contributor: Colaborador
+admin_app.role.super_admin: Superadministrador
+admin_app.role.user: Usuario
+admin_app.user_menu.logout: 'Cerrar sesión'
+admin_app.user_menu.my_account: 'Mi cuenta'
+admin_app.user_menu.my_options: 'Mis opciones'

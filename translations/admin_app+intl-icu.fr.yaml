@@ -1,4 +1,27 @@
+admin_app.debug.application: Application
+admin_app.debug.branch: Branche
+admin_app.debug.commit: Commit
+admin_app.debug.commit_date: Date
+admin_app.debug.database: 'Base de données'
+admin_app.debug.environment: Environnement
+admin_app.debug.git: Git
+admin_app.debug.php: PHP
+admin_app.debug.system: Système
+admin_app.debug.version: Version
 admin_app.error.navigation: "La page n'a pas pu être chargée. Réessayez dans un instant."
+admin_app.layout.subtitle: Back-office
 admin_app.leave.confirm: 'Quitter sans enregistrer'
 admin_app.leave.message: 'Les modifications non enregistrées de ce formulaire seront perdues.'
 admin_app.leave.title: 'Quitter la page ?'
+admin_app.not_found.back: 'Page précédente'
+admin_app.not_found.dashboard: 'Tableau de bord'
+admin_app.not_found.hint: "La page a peut-être été déplacée, ou votre compte n'a pas accès à ce module."
+admin_app.not_found.text: 'Aucune page du back-office ne correspond à cette adresse.'
+admin_app.not_found.title: 'Page introuvable'
+admin_app.role.admin: Administrateur
+admin_app.role.contributor: Contributeur
+admin_app.role.super_admin: 'Super administrateur'
+admin_app.role.user: Utilisateur
+admin_app.user_menu.logout: Déconnexion
+admin_app.user_menu.my_account: 'Mon compte'
+admin_app.user_menu.my_options: 'Mes options'
