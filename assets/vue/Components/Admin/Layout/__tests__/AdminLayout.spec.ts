@@ -7,6 +7,7 @@ import AdminBreadcrumb from '@/vue/Components/Admin/Layout/AdminBreadcrumb.vue';
 import AdminHeader from '@/vue/Components/Admin/Layout/AdminHeader.vue';
 import AdminPageHeader from '@/vue/Components/Admin/Layout/AdminPageHeader.vue';
 import AdminDebugBar from '@/vue/Components/Admin/Layout/AdminDebugBar.vue';
+import { setMode } from '@/vue/Composables/Admin/Ui/useAppearance';
 import type { SidebarItem } from '@/ts/Admin/Layout/AdminSidebar.type';
 import { withLabels } from '../../Ui/__tests__/support';
 
@@ -138,6 +139,7 @@ describe('AdminHeader', () => {
     const radios = [...document.querySelectorAll<HTMLElement>('[role="menuitemradio"]')];
     radios.find((r) => r.textContent?.includes('header.mode_dark'))!.click();
     expect(document.documentElement.classList.contains('dark')).toBe(true);
+    expect(document.documentElement.getAttribute('data-theme-mode')).toBe('dark');
     expect(localStorage.getItem('darkMode')).toBe('dark');
     await appearance.trigger('click');
     await nextTick();
@@ -147,6 +149,14 @@ describe('AdminHeader', () => {
       .click();
     expect(document.documentElement.getAttribute('data-theme')).toBe('green');
     expect(localStorage.getItem('theme')).toBe('green');
+  });
+
+  it('retire le mode sombre des pages Twig en repassant en clair', () => {
+    setMode('dark');
+    setMode('light');
+    expect(document.documentElement.classList.contains('dark')).toBe(false);
+    expect(document.documentElement.hasAttribute('data-theme-mode')).toBe(false);
+    expect(localStorage.getItem('darkMode')).toBe('light');
   });
 
   it('transmet la recherche globale', async () => {

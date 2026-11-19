@@ -1,8 +1,8 @@
 /**
  * @author Gourdon Aymeric
  * @version 1.0
- * Couleur et mode du back-office, appliqués sur <html> (data-theme, classe dark) et mémorisés sous les mêmes clés que
- * les pages Twig pour suivre l'utilisateur d'un écran à l'autre
+ * Couleur et mode du back-office, appliqués sur <html> (data-theme, classe dark et data-theme-mode des pages Twig) et
+ * mémorisés sous les mêmes clés que ces pages pour suivre l'utilisateur d'un écran à l'autre
  */
 import { readonly, ref } from 'vue';
 import type { ColorMode, ThemeColor } from '@/ts/Admin/Layout/AdminHeader.type';
@@ -39,6 +39,8 @@ export function setTheme(value: ThemeColor): void {
 export function setMode(value: ColorMode): void {
   mode.value = value;
   root.classList.toggle('dark', value === 'dark');
+  if (value === 'dark') root.setAttribute('data-theme-mode', 'dark');
+  else root.removeAttribute('data-theme-mode');
   store(MODE_KEY, value);
 }
 
