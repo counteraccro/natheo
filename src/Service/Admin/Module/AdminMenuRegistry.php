@@ -14,6 +14,12 @@ use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 final class AdminMenuRegistry
 {
     /**
+     * Chemin d'un écran de l'application : segments en minuscules séparés par « / », sans « / » au début ni à la fin
+     * @var string
+     */
+    private const string APP_PATH_PATTERN = '#^[a-z0-9][a-z0-9_-]*(/[a-z0-9][a-z0-9_-]*)*$#';
+
+    /**
      * Entrées indexées par identifiant, construites au premier appel
      * @var array<string, AdminMenuItem>|null
      */
@@ -153,12 +159,6 @@ final class AdminMenuRegistry
         $items[$item->id] = $item;
         $this->moduleIds[$item->id] = $moduleId;
     }
-
-    /**
-     * Chemin d'un écran de l'application : segments en minuscules séparés par « / », sans « / » au début ni à la fin
-     * @var string
-     */
-    private const string APP_PATH_PATTERN = '#^[a-z0-9][a-z0-9_-]*(/[a-z0-9][a-z0-9_-]*)*$#';
 
     /**
      * Vérifie que chaque parent existe et qu'aucune entrée n'est sa propre ancêtre
