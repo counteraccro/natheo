@@ -85,6 +85,16 @@ const labels = useUiLabels();
 const searchId = `ui-table-search-${useId()}`;
 
 const visible = ref(new Set(props.columns.filter((column) => !column.hidden).map((column) => column.key)));
+// Les colonnes ajoutées suivent leur réglage par défaut, celles déjà connues gardent le choix de l'utilisateur
+watch(
+  () => props.columns,
+  (columns, previous) => {
+    const known = new Set(previous.map((column) => column.key));
+    const next = new Set([...visible.value].filter((key) => columns.some((column) => column.key === key)));
+    columns.filter((column) => !known.has(column.key) && !column.hidden).forEach((column) => next.add(column.key));
+    visible.value = next;
+  }
+);
 const toggleable = computed(() => props.columns.filter((column) => column.hidden !== undefined));
 const shownColumns = computed(() => props.columns.filter((column) => visible.value.has(column.key)));
 
@@ -108,6 +118,7 @@ const searchRemote = (value: string): void => {
   if (!value) return;
   mode.value = 'pending';
   remoteTerm = value;
+  page.value = 1;
   emit('search', value);
 };
 
@@ -118,6 +129,7 @@ const onSearchInput = (): void => {
     mode.value = 'idle';
     if (remoteTerm !== null) {
       remoteTerm = null;
+      page.value = 1;
       emit('search', '');
     }
     return;
@@ -133,10 +145,11 @@ const clearSearch = (): void => {
   onSearchInput();
 };
 
+// La réponse arrive avec de nouvelles lignes ou la fin du chargement, y compris en cas d'échec
 watch(
-  () => props.rows,
-  () => {
-    if (mode.value === 'pending') mode.value = 'remote';
+  () => [props.rows, props.rows.length, props.loading] as const,
+  ([, , loading]) => {
+    if (mode.value === 'pending' && !loading) mode.value = 'remote';
   }
 );
 onBeforeUnmount(() => clearTimeout(timer));

@@ -54,6 +54,12 @@ describe('UiDataTable', () => {
     expect(wrapper.findAll('th').map((th) => th.text())).toContain('ID');
   });
 
+  it('affiche une colonne ajoutée après le montage', async () => {
+    const wrapper = mountTable();
+    await wrapper.setProps({ columns: [...columns, { key: 'slug', label: 'Slug' }] });
+    expect(wrapper.findAll('th').map((th) => th.text())).toEqual(['Libellé', 'Utilisation', 'Slug']);
+  });
+
   it('trie par en-tête et annonce le tri', async () => {
     const wrapper = mountTable({ sort: { key: 'label', direction: 'asc' } });
     const th = wrapper.get('th');
@@ -108,6 +114,19 @@ describe('UiDataTable', () => {
       expect(wrapper.text()).toContain('data_table.search_remote(1)');
       await wrapper.get('button.underline').trigger('click');
       expect(wrapper.emitted('search')?.[1]).toEqual(['']);
+    });
+
+    it("revient à la première page et sort de l'attente à la fin du chargement, même sans nouvelles lignes", async () => {
+      const wrapper = mountTable({ page: 3 });
+      const input = wrapper.get('input[type="search"]');
+      await input.setValue('vue');
+      await input.trigger('keydown', { key: 'Enter' });
+      expect(wrapper.emitted('update:page')?.[0]).toEqual([1]);
+      await wrapper.setProps({ loading: true });
+      expect(wrapper.text()).toContain('data_table.search_pending');
+      await wrapper.setProps({ loading: false });
+      expect(wrapper.text()).not.toContain('data_table.search_pending');
+      expect(wrapper.text()).toContain('data_table.search_remote(2)');
     });
 
     it('cherche en base tout de suite sur Entrée', async () => {
