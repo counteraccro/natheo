@@ -4,7 +4,7 @@
  * Libellés internes des composants du back-office (domaine admin_ui), messages à paramètres déjà formatés
  */
 
-/** Traduit une clé du domaine admin_ui (sans le préfixe) avec ses paramètres ICU */
+/** Traduit une clé complète du domaine admin_ui (admin_ui.dialog.close) avec ses paramètres ICU */
 export type UiTranslator = (key: string, params?: Record<string, string | number>) => string;
 
 export interface UiLabels {

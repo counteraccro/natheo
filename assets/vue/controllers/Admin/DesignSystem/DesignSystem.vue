@@ -52,7 +52,7 @@ import type { SidebarItem } from '@/ts/Admin/Layout/AdminSidebar.type';
 const props = defineProps<{ messages: Record<string, string>; locale: string }>();
 
 provideUiLabels(
-  buildUiLabels((key, params) => formatMessage(props.messages[`admin_ui.${key}`] ?? key, params, props.locale))
+  buildUiLabels((key, params) => formatMessage(props.messages[key] ?? key, params, props.locale))
 );
 
 const ICON_TAG =
