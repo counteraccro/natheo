@@ -1,7 +1,9 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
+import { h } from 'vue';
 import { mount } from '@vue/test-utils';
 import UiCheckbox from '@/vue/Components/Admin/Ui/Form/UiCheckbox.vue';
 import UiSwitch from '@/vue/Components/Admin/Ui/Form/UiSwitch.vue';
+import UiField from '@/vue/Components/Admin/Ui/Form/UiField.vue';
 import UiSelect from '@/vue/Components/Admin/Ui/Form/UiSelect.vue';
 import UiColorInput from '@/vue/Components/Admin/Ui/Form/UiColorInput.vue';
 import { withLabels } from '../../__tests__/support';
@@ -35,6 +37,24 @@ describe('UiSwitch', () => {
     expect(button.attributes('aria-labelledby')).toBe(wrapper.get('span').attributes('id'));
     await button.trigger('click');
     expect(button.attributes('aria-checked')).toBe('true');
+  });
+
+  it("reçoit l'identifiant et l'erreur de son UiField, et émet change au clic", async () => {
+    const wrapper = mount(
+      UiField,
+      withLabels({
+        props: { label: 'Actif', id: 'tag-enabled', error: 'Obligatoire' },
+        slots: { default: () => h(UiSwitch, { label: 'Actif', description: 'Visible' }) },
+      })
+    );
+    const button = wrapper.get('[role="switch"]');
+    expect(button.attributes('id')).toBe('tag-enabled');
+    expect(button.attributes('aria-invalid')).toBe('true');
+    expect(button.attributes('aria-describedby')).toMatch(/-desc tag-enabled-error$/);
+    const changed = vi.fn();
+    button.element.addEventListener('change', changed);
+    await button.trigger('click');
+    expect(changed).toHaveBeenCalled();
   });
 });
 
