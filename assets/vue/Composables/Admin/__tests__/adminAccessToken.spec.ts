@@ -42,10 +42,18 @@ describe('createAdminAccessToken', () => {
     expect(reload).toHaveBeenCalledTimes(1);
   });
 
-  it('recharge la page sur une erreur réseau', async () => {
-    vi.stubGlobal('fetch', vi.fn<typeof fetch>().mockRejectedValue(new TypeError('réseau')));
+  it('recharge la page sur une redirection vers la connexion', async () => {
+    const redirect = { ok: false, type: 'opaqueredirect', status: 0, headers: new Headers() } as Response;
+    vi.stubGlobal('fetch', vi.fn<typeof fetch>().mockResolvedValue(redirect));
     const reload = vi.fn();
     expect(await store('2026-11-19T10:10:00Z', reload).renew()).toBe(false);
     expect(reload).toHaveBeenCalledTimes(1);
+  });
+
+  it('ne recharge pas la page sur une erreur réseau', async () => {
+    vi.stubGlobal('fetch', vi.fn<typeof fetch>().mockRejectedValue(new TypeError('réseau')));
+    const reload = vi.fn();
+    expect(await store('2026-11-19T10:10:00Z', reload).renew()).toBe(false);
+    expect(reload).not.toHaveBeenCalled();
   });
 });

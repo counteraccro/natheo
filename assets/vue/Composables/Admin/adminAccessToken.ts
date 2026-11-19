@@ -11,7 +11,7 @@ const RENEW_MARGIN = 60_000;
 export interface AdminAccessTokenStore {
   /** Token courant, renouvelé s'il expire bientôt */
   token(): Promise<string>;
-  /** Redemande un token après un 401 ; false si la session PHP est perdue (la page est alors rechargée) */
+  /** Redemande un token après un 401 ; false si la session PHP est perdue (page rechargée) ou le réseau coupé */
   renew(): Promise<boolean>;
 }
 
@@ -39,18 +39,20 @@ export function createAdminAccessToken(
   let pending: Promise<boolean> | null = null;
 
   const fetchToken = async (): Promise<boolean> => {
+    let response: Response;
     try {
-      const response = await fetch(tokenUrl, {
+      response = await fetch(tokenUrl, {
         headers: { Accept: 'application/json' },
         credentials: 'same-origin',
         redirect: 'manual',
       });
-      if (response.ok && response.headers.get('Content-Type')?.includes('application/json')) {
-        current = (await response.json()) as AdminAccessToken;
-        return true;
-      }
     } catch {
-      // Réseau coupé : traité comme une session perdue
+      // Réseau coupé : l'appel échoue sans recharger, la saisie en cours est gardée
+      return false;
+    }
+    if (response.ok && response.headers.get('Content-Type')?.includes('application/json')) {
+      current = (await response.json()) as AdminAccessToken;
+      return true;
     }
     // Le pare-feu renvoie vers la connexion au rechargement
     reload();
