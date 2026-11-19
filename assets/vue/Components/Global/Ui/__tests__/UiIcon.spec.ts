@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { mount } from '@vue/test-utils';
 import UiIcon from '@/vue/Components/Global/Ui/UiIcon.vue';
-import { ICONS } from '@/vue/Components/Global/Ui/icons';
+import { ICONS } from '@/vue/Composables/Global/icons';
 
 describe('UiIcon', () => {
   it('dessine une icône du registre au trait, décorative par défaut', () => {

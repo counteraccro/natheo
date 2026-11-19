@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { ref } from 'vue';
-import { usePaginationNumbers } from '@/vue/Composables/Front/usePaginationNumbers';
+import { usePaginationNumbers } from '@/vue/Composables/Global/usePaginationNumbers';
 
 describe('usePaginationNumbers', () => {
   it('affiche toutes les pages quand il y en a peu', () => {

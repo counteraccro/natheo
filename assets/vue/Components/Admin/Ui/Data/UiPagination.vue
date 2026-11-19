@@ -8,7 +8,7 @@ import { computed, useId } from 'vue';
 import UiButton from '../Form/UiButton.vue';
 import UiSelect from '../Form/UiSelect.vue';
 import { useUiLabels } from '@/vue/Composables/Admin/Ui/useUiLabels';
-import { usePaginationNumbers } from '@/vue/Composables/Front/usePaginationNumbers';
+import { usePaginationNumbers } from '@/vue/Composables/Global/usePaginationNumbers';
 
 const props = withDefaults(defineProps<{ totalItems: number; perPageOptions?: number[] }>(), {
   perPageOptions: () => [10, 20, 50, 100],

@@ -4,7 +4,7 @@
  * @version 1.0
  * Navigation entre les pages d'une collection : précédente / suivante, numéros sauf en mode compact
  */
-import { usePaginationNumbers } from '@/vue/Composables/Front/usePaginationNumbers';
+import { usePaginationNumbers } from '@/vue/Composables/Global/usePaginationNumbers';
 import UiIcon from '@/vue/Components/Global/Ui/UiIcon.vue';
 import type { FrontPaginationTranslate } from '@/ts/Front/FrontTranslate.type';
 

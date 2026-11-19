@@ -5,7 +5,7 @@
  * Icône du registre (name) ou tracé au trait reçu de l'API (path) ; décorative sauf si label est donné
  */
 import { computed } from 'vue';
-import { ICONS, type IconName } from './icons';
+import { ICONS, type IconName } from '@/vue/Composables/Global/icons';
 import type { IconDefinition } from '@/ts/Global/Ui/UiIcon.type';
 
 const props = defineProps<{
