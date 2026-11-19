@@ -32,3 +32,9 @@ export interface DataTableSort {
 
 /** État de la recherche : aucune, filtre de la page affichée, requête en base en cours, résultats de la base */
 export type DataTableSearchMode = 'idle' | 'local' | 'pending' | 'remote';
+
+/** Morceau d'un texte de cellule, surligné quand il correspond à la recherche */
+export interface TextSegment {
+  text: string;
+  match: boolean;
+}

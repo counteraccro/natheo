@@ -31,6 +31,14 @@ describe('recherche dans la page', () => {
       { text: 'nomie', match: false },
     ]);
   });
+
+  it('garde les positions après un caractère sur deux unités', () => {
+    expect(fold('😀 Tag')).toHaveLength('😀 Tag'.length);
+    expect(highlight('😀 Tag', 'tag')).toEqual([
+      { text: '😀 ', match: false },
+      { text: 'Tag', match: true },
+    ]);
+  });
 });
 
 describe('tokenizeSql', () => {

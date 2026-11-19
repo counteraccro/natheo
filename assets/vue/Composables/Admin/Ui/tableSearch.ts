@@ -3,8 +3,7 @@
  * @version 1.0
  * Recherche dans les lignes affichées d'une grille : comparaison sans accents ni casse, découpage pour le surlignage
  */
-import type { DataTableColumn, DataTableRow } from '@/ts/Admin/Ui/Data/UiDataTable.type';
-import type { TextSegment } from '@/ts/Admin/Ui/Data/SqlToken.type';
+import type { DataTableColumn, DataTableRow, TextSegment } from '@/ts/Admin/Ui/Data/UiDataTable.type';
 
 /**
  * Texte sans accents ni casse, de même longueur que l'original pour retrouver les positions
@@ -13,7 +12,9 @@ export function fold(text: string): string {
   return [...text]
     .map((char) => {
       const base = char.normalize('NFD').replace(/\p{M}/gu, '').toLowerCase();
-      return base.length === 1 ? base : char.toLowerCase().charAt(0) || char;
+      if (base.length === char.length) return base;
+      const lower = char.toLowerCase();
+      return lower.length === char.length ? lower : char;
     })
     .join('');
 }
