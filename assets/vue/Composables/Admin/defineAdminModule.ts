@@ -17,8 +17,10 @@ declare module 'vue-router' {
 }
 
 export interface AdminModuleDefinition {
-  /** Identifiant du module dans le registre (AdminModule::id) */
+  /** Identifiant du module dans le registre (AdminModule::id), ou de l'outil de dev */
   id: string;
+  /** Outil de dev hors registre : déclaré seulement quand le démarrage contient debug (APP_ENV=dev) */
+  debug?: boolean;
   /** Domaines de traduction de ses écrans */
   domains?: string[];
   routes: RouteRecordRaw[];
@@ -33,18 +35,21 @@ export function defineAdminModule(definition: AdminModuleDefinition): AdminModul
 }
 
 /**
- * Routes des modules, chacune marquée de son module et de ses domaines
+ * Routes des modules, chacune marquée de son module et de ses domaines ; outils de dev écartés hors dev
  * @param definitions
+ * @param debug environnement dev
  */
-export function routesOf(definitions: AdminModuleDefinition[]): RouteRecordRaw[] {
+export function routesOf(definitions: AdminModuleDefinition[], debug: boolean): RouteRecordRaw[] {
   return definitions.flatMap((definition) =>
-    definition.routes.map((route) => ({
-      ...route,
-      meta: {
-        ...route.meta,
-        module: definition.id,
-        domains: [...(definition.domains ?? []), ...(route.meta?.domains ?? [])],
-      },
-    }))
+    definition.debug && !debug
+      ? []
+      : definition.routes.map((route) => ({
+          ...route,
+          meta: {
+            ...route.meta,
+            module: definition.debug ? undefined : definition.id,
+            domains: [...(definition.domains ?? []), ...(route.meta?.domains ?? [])],
+          },
+        }))
   );
 }

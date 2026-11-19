@@ -23,6 +23,8 @@ export interface AdminRouterOptions {
   /** /admin/<langue>/ */
   basePath: string;
   modules: AdminModuleDefinition[];
+  /** Environnement dev : outils de dev déclarés */
+  debug: boolean;
   menu: AdminMenu;
   translator: Translator;
   /** Écran « Page introuvable » du thème */
@@ -68,7 +70,7 @@ export function createAdminRouter(options: AdminRouterOptions): Router {
           return false;
         },
       },
-      ...routesOf(options.modules),
+      ...routesOf(options.modules, options.debug),
       {
         path: '/:path(.*)*',
         name: NOT_FOUND_ROUTE,

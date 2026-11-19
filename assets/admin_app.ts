@@ -27,6 +27,7 @@ const modules = Object.values(
 const router = createAdminRouter({
   basePath: bootstrap.basePath,
   modules,
+  debug: bootstrap.debug !== null,
   menu: context.menu,
   translator: context.translator,
   notFound: theme.notFound,

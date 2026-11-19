@@ -10,7 +10,7 @@ import { menuApi, moduleOf } from './support';
 const Screen = defineComponent({ render: () => null });
 const NotFound = defineComponent({ render: () => null });
 
-function routerWith(options: { visible?: string[]; leave?: boolean } = {}) {
+function routerWith(options: { visible?: string[]; leave?: boolean; debug?: boolean } = {}) {
   const { api } = menuApi(
     (options.visible ?? ['tag']).map((id) => moduleOf(id)),
     []
@@ -27,7 +27,13 @@ function routerWith(options: { visible?: string[]; leave?: boolean } = {}) {
         domains: ['tag'],
         routes: [{ path: '/tags', name: 'tag_index', component: Screen }],
       }),
+      defineAdminModule({
+        id: 'design_system',
+        debug: true,
+        routes: [{ path: '/design-system', name: 'design_system', component: Screen }],
+      }),
     ],
+    debug: options.debug ?? false,
     menu: createAdminMenu(api, '/admin/fr/'),
     translator,
     notFound: NotFound,
@@ -74,5 +80,16 @@ describe('createAdminRouter', () => {
     const { router, assign } = routerWith();
     await router.push('/');
     expect(assign).toHaveBeenCalledWith('/admin/fr/dashboard/index');
+  });
+
+  it('déclare les outils de dev en dev seulement, sans module du registre', async () => {
+    const dev = routerWith({ debug: true, visible: [] });
+    await dev.router.push('/design-system');
+    expect(dev.router.currentRoute.value.name).toBe('design_system');
+    expect(dev.router.currentRoute.value.meta.module).toBeUndefined();
+
+    const prod = routerWith({ debug: false });
+    await prod.router.push('/design-system');
+    expect(prod.router.currentRoute.value.name).toBe(NOT_FOUND_ROUTE);
   });
 });

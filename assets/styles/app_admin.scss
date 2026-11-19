@@ -19,7 +19,6 @@
 @source "../../node_modules/flowbite";
 /* Le nouveau back-office a sa propre feuille (app_admin_app.css) */
 @source not "../vue/Components/Admin";
-@source not "../vue/controllers/Admin/DesignSystem";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
