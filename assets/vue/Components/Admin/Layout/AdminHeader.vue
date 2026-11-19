@@ -5,7 +5,7 @@
  * Barre du haut en trois zones : section courante, recherche globale, actions (Nouveau, apparence, notifications,
  * menu utilisateur) ; bandeau d'usurpation au-dessus
  */
-import { useId } from 'vue';
+import { onBeforeUnmount, onMounted, ref, useId } from 'vue';
 import UiIcon from '@/vue/Components/Global/Ui/UiIcon.vue';
 import UiButton from '../Ui/Form/UiButton.vue';
 import UiDropdown from '../Ui/Overlay/UiDropdown.vue';
@@ -34,6 +34,20 @@ defineSlots<{ 'user-menu'?: () => unknown; actions?: () => unknown }>();
 const labels = useUiLabels();
 const { theme, mode, themes, setTheme, setMode } = useAppearance();
 const searchId = `ui-global-search-${useId()}`;
+const searchInput = ref<HTMLInputElement | null>(null);
+const isMac = /Mac|iPhone|iPad/.test(navigator.userAgent);
+const shortcut = isMac ? { label: '⌘ K', aria: 'Meta+K' } : { label: 'Ctrl K', aria: 'Control+K' };
+
+const focusSearch = (event: KeyboardEvent): void => {
+  if (!(isMac ? event.metaKey : event.ctrlKey) || event.key.toLowerCase() !== 'k') return;
+  // Champ masqué sur mobile : le raccourci garde alors son comportement par défaut
+  const form = searchInput.value?.closest('form');
+  if (!form || getComputedStyle(form).display === 'none') return;
+  event.preventDefault();
+  searchInput.value?.focus();
+};
+onMounted(() => window.addEventListener('keydown', focusSearch));
+onBeforeUnmount(() => window.removeEventListener('keydown', focusSearch));
 </script>
 
 <template>
@@ -89,7 +103,9 @@ const searchId = `ui-global-search-${useId()}`;
         />
         <input
           :id="searchId"
+          ref="searchInput"
           v-model="search"
+          :aria-keyshortcuts="shortcut.aria"
           type="search"
           :placeholder="labels.header.searchPlaceholder"
           class="h-[38px] w-full rounded-md border border-line-strong bg-bg pr-16 pl-9 text-fg transition-[border-color,box-shadow] duration-100 placeholder:text-fg-subtle hover:border-field focus:border-primary focus:shadow-[0_0_0_3px_color-mix(in_srgb,var(--primary)_18%,transparent)] focus:outline-none"
@@ -97,7 +113,7 @@ const searchId = `ui-global-search-${useId()}`;
         <kbd
           class="pointer-events-none absolute top-1/2 right-2 -translate-y-1/2 rounded-[4px] border border-line-strong bg-surface px-1.5 py-px font-sans text-2xs text-fg-subtle"
           aria-hidden="true"
-          >Ctrl K</kbd
+          >{{ shortcut.label }}</kbd
         >
       </form>
       <span v-else class="max-md:hidden" />

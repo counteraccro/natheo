@@ -154,6 +154,18 @@ describe('AdminHeader', () => {
     await wrapper.get('form').trigger('submit');
     expect(wrapper.emitted('submitSearch')?.[0]).toEqual(['vue']);
   });
+
+  it('donne le focus à la recherche avec Ctrl K', () => {
+    const wrapper = mount(AdminHeader, withLabels({ attachTo: document.body }));
+    const input = wrapper.get('input[type="search"]');
+    expect(input.attributes('aria-keyshortcuts')).toBe('Control+K');
+    expect(wrapper.get('kbd').text()).toBe('Ctrl K');
+    const event = new KeyboardEvent('keydown', { key: 'k', ctrlKey: true, cancelable: true });
+    window.dispatchEvent(event);
+    expect(event.defaultPrevented).toBe(true);
+    expect(document.activeElement).toBe(input.element);
+    wrapper.unmount();
+  });
 });
 
 describe('AdminDebugBar', () => {
