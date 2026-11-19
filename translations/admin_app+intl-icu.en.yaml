@@ -1,0 +1,4 @@
+admin_app.error.navigation: 'The page could not be loaded. Try again in a moment.'
+admin_app.leave.confirm: 'Leave without saving'
+admin_app.leave.message: 'Unsaved changes to this form will be lost.'
+admin_app.leave.title: 'Leave this page?'

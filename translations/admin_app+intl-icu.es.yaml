@@ -1,0 +1,4 @@
+admin_app.error.navigation: 'No se ha podido cargar la página. Inténtelo de nuevo en un momento.'
+admin_app.leave.confirm: 'Salir sin guardar'
+admin_app.leave.message: 'Se perderán los cambios no guardados de este formulario.'
+admin_app.leave.title: '¿Salir de la página?'
