@@ -42,5 +42,9 @@
         "flowbite": "^3.1.2",
         "marked": "^18.1.0",
         "sortablejs": "^1.15.7"
+    },
+    "resolutions": {
+        "**/js-beautify/glob": "^14.0.6",
+        "**/editorconfig/minimatch": "^11.0.5"
     }
 }
