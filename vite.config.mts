@@ -1,80 +1,79 @@
 import { defineConfig } from 'vite';
-import { fileURLToPath } from 'node:url';
 import vue from '@vitejs/plugin-vue';
 import symfonyPlugin from 'vite-plugin-symfony';
+import { aliases } from './vite.aliases.mts';
 
 export default defineConfig(({ command }) => ({
-  plugins: [
-    symfonyPlugin({
-      refresh: true,
-    }),
-    vue(),
-  ],
+    plugins: [
+        symfonyPlugin({
+            refresh: true,
+        }),
+        vue(),
+    ],
 
-  root: '.',
-  base: command === 'serve' ? '/' : '/build/',
+    root: '.',
+    base: command === 'serve' ? '/' : '/build/',
 
-  build: {
-    manifest: true,
-    emptyOutDir: true,
-    outDir: 'public/build',
-    assetsDir: '',
-    rolldownOptions: {
-      input: {
-        admin_css: './assets/styles/app_admin.scss',
-        install_css: './assets/styles/app_install.scss',
-        email: './assets/styles/app_email.scss',
-        admin: './assets/app_admin.js',
-        admin_design_system: './assets/admin_design_system.ts',
-        front_natheo_horizon: './assets/front_natheo_horizon.ts',
-        front_natheo_base: './assets/front_natheo_base.ts',
-        front_natheo_storm: './assets/front_natheo_storm.ts',
-        install: './assets/app_install.js',
-      },
+    build: {
+        manifest: true,
+        emptyOutDir: true,
+        outDir: 'public/build',
+        assetsDir: '',
+        rolldownOptions: {
+            input: {
+                admin_css: './assets/styles/app_admin.scss',
+                install_css: './assets/styles/app_install.scss',
+                email: './assets/styles/app_email.scss',
+                admin: './assets/app_admin.js',
+                admin_design_system: './assets/admin_design_system.ts',
+                front_natheo_horizon: './assets/front_natheo_horizon.ts',
+                front_natheo_base: './assets/front_natheo_base.ts',
+                front_natheo_storm: './assets/front_natheo_storm.ts',
+                install: './assets/app_install.js',
+            },
+        },
     },
-  },
 
-  server: {
-    host: '0.0.0.0', // Permet d'accéder depuis n'importe quel domaine local
-    cors: true,
-    strictPort: false,
-    port: 5173,
-    origin: 'http://dev.natheo:5173',
-    // Optionnel : watch des fichiers twig pour le HMR
-    watch: {
-      usePolling: false,
-      ignored: ['**/node_modules/**', '**/public/build/**'],
+    server: {
+        host: '0.0.0.0', // Permet d'accéder depuis n'importe quel domaine local
+        cors: true,
+        strictPort: false,
+        port: 5173,
+        origin: 'http://dev.natheo:5173',
+        // Optionnel : watch des fichiers twig pour le HMR
+        watch: {
+            usePolling: false,
+            ignored: ['**/node_modules/**', '**/public/build/**'],
+        },
     },
-  },
 
-  resolve: {
-    alias: {
-      '@ui': fileURLToPath(new URL('./assets/vue/Components/Admin/Ui', import.meta.url)),
-      '@': fileURLToPath(new URL('./assets', import.meta.url)),
-      // Alias pour Vue 3 avec support complet (Options API + Composition API + template compiler)
-      vue: 'vue/dist/vue.esm-bundler.js',
+    resolve: {
+        alias: [
+            ...aliases,
+            // Alias pour Vue 3 avec support complet (Options API + Composition API + template compiler)
+            { find: /^vue$/, replacement: 'vue/dist/vue.esm-bundler.js' },
+        ],
+        extensions: ['.js', '.json', '.jsx', '.ts', '.tsx', '.vue'],
     },
-    extensions: ['.js', '.json', '.jsx', '.ts', '.tsx', '.vue'],
-  },
 
-  // Configuration spécifique pour Vue 3
-  define: {
-    __VUE_OPTIONS_API__: true,
-    __VUE_PROD_DEVTOOLS__: false,
-    __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: false,
-  },
-
-  css: {
-    preprocessorOptions: {
-      scss: {
-        // Options SASS si nécessaire
-        additionalData: ``, // Ajoutez vos variables globales ici si besoin
-      },
+    // Configuration spécifique pour Vue 3
+    define: {
+        __VUE_OPTIONS_API__: true,
+        __VUE_PROD_DEVTOOLS__: false,
+        __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: false,
     },
-  },
 
-  // Optimisation des dépendances
-  optimizeDeps: {
-    include: ['vue'],
-  },
+    css: {
+        preprocessorOptions: {
+            scss: {
+                // Options SASS si nécessaire
+                additionalData: ``, // Ajoutez vos variables globales ici si besoin
+            },
+        },
+    },
+
+    // Optimisation des dépendances
+    optimizeDeps: {
+        include: ['vue'],
+    },
 }));
