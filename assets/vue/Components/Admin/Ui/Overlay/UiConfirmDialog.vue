@@ -3,7 +3,8 @@
  * @author Gourdon Aymeric
  * @version 1.0
  * Confirmation d'une action : ton primary (confirmation) ou danger (suppression) ; « Annuler » a le focus à l'ouverture
- * d'une action destructive, la fermeture après confirmation revient à l'appelant
+ * d'une action destructive, la fermeture après confirmation revient à l'appelant ; Annuler, Échap et Fermer émettent
+ * cancel
  */
 import { computed } from 'vue';
 import UiDialog from './UiDialog.vue';
@@ -40,7 +41,7 @@ const cancel = (): void => {
 </script>
 
 <template>
-  <UiDialog v-model:open="open" :title="title" :tone="tone" size="md">
+  <UiDialog v-model:open="open" :title="title" :tone="tone" size="md" @dismiss="emit('cancel')">
     <template #icon>
       <span
         class="grid size-[34px] shrink-0 place-items-center rounded-full"

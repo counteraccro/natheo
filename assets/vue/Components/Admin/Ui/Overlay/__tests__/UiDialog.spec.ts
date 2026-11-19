@@ -56,6 +56,20 @@ describe('UiDialog', () => {
     wrapper.get('dialog').element.dispatchEvent(new Event('close'));
     expect(wrapper.emitted('update:open')?.[0]).toEqual([false]);
   });
+
+  it("émet cancel sur Échap et sur Fermer, pas à la fermeture par l'appelant", async () => {
+    const wrapper = mount(
+      UiConfirmDialog,
+      withLabels({ props: { open: true, title: 'Valider' }, attachTo: document.body })
+    );
+    await nextTick();
+    wrapper.get('dialog').element.dispatchEvent(new Event('cancel'));
+    await wrapper.get('[aria-label="dialog.close"]').trigger('click');
+    expect(wrapper.emitted('cancel')).toHaveLength(2);
+    await wrapper.setProps({ open: false });
+    await nextTick();
+    expect(wrapper.emitted('cancel')).toHaveLength(2);
+  });
 });
 
 describe('UiConfirmDialog', () => {
@@ -85,5 +99,19 @@ describe('UiConfirmDialog', () => {
     await cancel.trigger('click');
     expect(wrapper.emitted('cancel')).toHaveLength(1);
     expect(wrapper.emitted('update:open')?.[0]).toEqual([false]);
+  });
+
+  it("émet cancel sur Échap et sur Fermer, pas à la fermeture par l'appelant", async () => {
+    const wrapper = mount(
+      UiConfirmDialog,
+      withLabels({ props: { open: true, title: 'Valider' }, attachTo: document.body })
+    );
+    await nextTick();
+    wrapper.get('dialog').element.dispatchEvent(new Event('cancel'));
+    await wrapper.get('[aria-label="dialog.close"]').trigger('click');
+    expect(wrapper.emitted('cancel')).toHaveLength(2);
+    await wrapper.setProps({ open: false });
+    await nextTick();
+    expect(wrapper.emitted('cancel')).toHaveLength(2);
   });
 });

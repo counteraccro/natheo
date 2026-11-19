@@ -2,8 +2,8 @@
 /**
  * @author Gourdon Aymeric
  * @version 1.0
- * Modale sur <dialog> natif : focus piégé et arrière-plan inerte par le navigateur, Échap et bouton Fermer,
- * focus rendu à l'élément d'origine
+ * Modale sur <dialog> natif : focus piégé et arrière-plan inerte par le navigateur, Échap et bouton Fermer (événement
+ * dismiss), focus rendu à l'élément d'origine
  */
 import { onBeforeUnmount, onMounted, ref, useId, watch } from 'vue';
 import UiButton from '../Form/UiButton.vue';
@@ -12,7 +12,7 @@ import type { DialogSize, DialogTone } from '@/ts/Admin/Ui/Overlay/UiConfirmDial
 
 const props = withDefaults(defineProps<{ title: string; size?: DialogSize; tone?: DialogTone }>(), { size: 'md' });
 const open = defineModel<boolean>('open', { default: false });
-const emit = defineEmits<{ close: [] }>();
+const emit = defineEmits<{ close: []; dismiss: [] }>();
 
 const labels = useUiLabels();
 const dialog = ref<HTMLDialogElement | null>(null);
@@ -43,6 +43,11 @@ const onClose = (): void => {
   opener = null;
 };
 
+const dismiss = (): void => {
+  emit('dismiss');
+  open.value = false;
+};
+
 watch(open, sync, { flush: 'post' });
 onMounted(() => sync(open.value));
 onBeforeUnmount(() => dialog.value?.open && dialog.value.close());
@@ -55,6 +60,7 @@ onBeforeUnmount(() => dialog.value?.open && dialog.value.close());
     :data-tone="props.tone"
     class="ui-dialog m-auto max-h-[calc(100dvh-32px)] overflow-hidden rounded-lg border-0 bg-raised p-0 text-fg shadow-dialog open:animate-[ui-pop_.2s_var(--ease)]"
     :class="WIDTHS[size]"
+    @cancel="emit('dismiss')"
     @close="onClose"
   >
     <div v-if="open" class="relative flex max-h-[calc(100dvh-35px)] flex-col gap-3.5 overflow-y-auto p-6">
@@ -72,7 +78,7 @@ onBeforeUnmount(() => dialog.value?.open && dialog.value.close());
         icon="close"
         :aria-label="labels.dialog.close"
         class="absolute! top-3 right-3"
-        @click="open = false"
+        @click="dismiss"
       />
     </div>
   </dialog>
