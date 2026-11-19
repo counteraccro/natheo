@@ -40,6 +40,9 @@ describe('UiTabs', () => {
     const panel = wrapper.get('[role="tabpanel"]');
     expect(panel.attributes('aria-labelledby')).toBe(fr.attributes('id'));
     expect(wrapper.findAll('[role="tabpanel"]')).toHaveLength(1);
+    const [, en] = wrapper.findAll('[role="tab"]');
+    expect(fr.attributes('aria-controls')).toBe(panel.attributes('id'));
+    expect(en.attributes('aria-controls')).toBeUndefined();
   });
 
   it('déplace le focus avec les flèches sans activer, puis active au clic', async () => {

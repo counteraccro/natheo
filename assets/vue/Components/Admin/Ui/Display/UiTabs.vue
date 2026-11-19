@@ -28,7 +28,9 @@ const list = ref<HTMLElement | null>(null);
 const labels = useUiLabels();
 const form = useFormContext();
 // Dans un formulaire, tous les panneaux sont montés : chaque champ déclare son libellé au récapitulatif des erreurs
-const visited = reactive(new Set<string>(form && props.errorPrefixes ? props.tabs.map((tab) => tab.id) : [active.value]));
+const visited = reactive(
+  new Set<string>(form && props.errorPrefixes ? props.tabs.map((tab) => tab.id) : [active.value])
+);
 
 const invalid = computed(
   () =>
@@ -93,7 +95,7 @@ const onKeydown = (event: KeyboardEvent): void => {
         type="button"
         role="tab"
         :aria-selected="tab.id === active"
-        :aria-controls="panelId(tab.id)"
+        :aria-controls="visited.has(tab.id) ? panelId(tab.id) : undefined"
         :tabindex="tab.id === focused ? 0 : -1"
         class="inline-flex h-8 cursor-pointer items-center gap-2 rounded-sm border-0 bg-transparent px-3 font-semibold text-fg-muted hover:text-fg aria-selected:bg-bg aria-selected:text-fg aria-selected:shadow-[0_1px_2px_rgb(17_17_20/.08),0_0_0_1px_var(--line)]"
         @click="active = tab.id"
