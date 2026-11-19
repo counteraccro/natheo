@@ -56,7 +56,7 @@ watch(form.errors.version, async () => {
             :href="`#${item.fieldId}`"
             class="rounded-sm font-medium text-danger underline underline-offset-3"
             @click.prevent="form.reveal(item.path)"
-            >{{ item.label }} : {{ item.message }}</a
+            >{{ labels.errorSummary.item(item.label, item.message) }}</a
           >
           <span v-else class="text-fg-muted">{{ item.message }}</span>
         </li>

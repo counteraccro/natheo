@@ -4,7 +4,7 @@
  * @version 1.0
  * Requête SQL d'une grille, colorée, avec Enregistrer (vers le gestionnaire SQL), Copier et Masquer
  */
-import { computed } from 'vue';
+import { computed, onBeforeUnmount, ref } from 'vue';
 import UiIcon from '@/vue/Components/Global/Ui/UiIcon.vue';
 import { useUiLabels } from '@/vue/Composables/Admin/Ui/useUiLabels';
 import { tokenizeSql } from '@/vue/Composables/Admin/Ui/sqlTokens';
@@ -15,6 +15,20 @@ const props = defineProps<{ sql: string }>();
 const emit = defineEmits<{ save: []; hide: [] }>();
 const labels = useUiLabels();
 const tokens = computed(() => tokenizeSql(props.sql));
+const copied = ref(false);
+let timer: ReturnType<typeof setTimeout> | undefined;
+
+const copy = async (): Promise<void> => {
+  try {
+    await copyToClipboard(props.sql);
+  } catch {
+    return;
+  }
+  copied.value = true;
+  clearTimeout(timer);
+  timer = setTimeout(() => (copied.value = false), 2000);
+};
+onBeforeUnmount(() => clearTimeout(timer));
 
 const COLORS: Record<SqlToken['kind'], string> = {
   keyword: 'font-bold text-code-keyword',
@@ -40,14 +54,17 @@ const BUTTON_CLASSES =
         <button type="button" :class="BUTTON_CLASSES" @click="emit('save')">
           <UiIcon name="database" class="size-4" />{{ labels.dataTable.sqlSave }}
         </button>
-        <button type="button" :class="BUTTON_CLASSES" @click="copyToClipboard(sql)">
-          <UiIcon name="copy" class="size-4" />{{ labels.dataTable.sqlCopy }}
+        <button type="button" :class="BUTTON_CLASSES" @click="copy">
+          <UiIcon :name="copied ? 'check' : 'copy'" class="size-4" />{{
+            copied ? labels.dataTable.sqlCopied : labels.dataTable.sqlCopy
+          }}
         </button>
         <button type="button" :class="BUTTON_CLASSES" @click="emit('hide')">
           <UiIcon name="eye-slash" class="size-4" />{{ labels.dataTable.sqlHide }}
         </button>
       </div>
     </header>
+    <p class="sr-only" role="status">{{ copied ? labels.dataTable.sqlCopied : '' }}</p>
     <pre class="m-0 overflow-x-auto px-4 py-3.5 font-mono text-[12.5px] leading-[1.65]"><code><span
       v-for="(token, index) in tokens"
       :key="index"

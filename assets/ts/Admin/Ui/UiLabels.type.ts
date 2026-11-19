@@ -14,7 +14,7 @@ export interface UiLabels {
   toast: { close: string; region: string };
   button: { loading: string };
   field: { required: string };
-  errorSummary: { title: (count: number) => string };
+  errorSummary: { title: (count: number) => string; item: (label: string, message: string) => string };
   tabs: { hasErrors: string };
   input: { counter: (count: number, max: number) => string };
   colorInput: { picker: string; hex: string };
@@ -33,7 +33,6 @@ export interface UiLabels {
     columns: string;
     searchPlaceholder: string;
     searchLabel: string;
-    searchClear: string;
     searchLocal: (count: number, total: number) => string;
     searchHint: string;
     searchPending: string;
@@ -51,6 +50,7 @@ export interface UiLabels {
     sqlTitle: string;
     sqlSave: string;
     sqlCopy: string;
+    sqlCopied: string;
     sqlHide: string;
   };
   shell: { skipToContent: string };

@@ -89,12 +89,12 @@ describe('UiForm', () => {
     expect(englishTab.text()).toContain('tabs.has_errors');
 
     const link = summary.get('a');
-    expect(link.text()).toBe('Libellé (en) : Obligatoire');
+    expect(link.text()).toBe('error_summary.item(Libellé (en),Obligatoire)');
     await link.trigger('click');
     await nextTick();
     await nextTick();
     expect(englishTab.attributes('aria-selected')).toBe('true');
     expect(document.activeElement?.id).toBe('ui-field-translations-en-label');
-    expect(summary.text()).toContain('Libellé (en) : Obligatoire');
+    expect(summary.text()).toContain('error_summary.item(Libellé (en),Obligatoire)');
   });
 });
