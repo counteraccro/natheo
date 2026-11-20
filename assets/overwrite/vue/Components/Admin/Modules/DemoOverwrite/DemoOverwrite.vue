@@ -68,7 +68,7 @@ const parts = computed<TutorialPart[]>(() => [
     steps: [
       {
         title: t('demo_overwrite.tutorial.module_step1_title'),
-        texts: [t('demo_overwrite.tutorial.module_step1_text')],
+        texts: [t('demo_overwrite.tutorial.module_step1_text'), t('demo_overwrite.tutorial.module_raw_note')],
         code: { file: 'assets/overwrite/vue/Components/Admin/Modules/DemoOverwrite/module.ts', source: moduleSource },
       },
       {
@@ -181,6 +181,7 @@ const PANEL_BODY = 'flex flex-col gap-4 px-6 py-5';
             <template v-if="part.id === 'screen'">
               <DemoOverwriteCode file="assets/" :code="BUTTON_PATHS" />
               <DemoOverwriteText :text="t('demo_overwrite.tutorial.screen_text_2')" />
+              <DemoOverwriteText :text="t('demo_overwrite.tutorial.screen_text_wrap')" />
               <DemoOverwriteText :text="t('demo_overwrite.tutorial.screen_text_3')" />
               <UiAlert variant="info">{{ t('demo_overwrite.tutorial.screen_note') }}</UiAlert>
             </template>

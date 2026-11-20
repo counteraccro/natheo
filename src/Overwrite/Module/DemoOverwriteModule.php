@@ -35,8 +35,8 @@ final class DemoOverwriteModule implements AdminModuleInterface
         return new AdminModule(
             id: self::ID,
             role: 'ROLE_SUPER_ADMIN',
-            label: t('admin_module.module.demo_overwrite.label', domain: 'admin_module'),
-            description: t('admin_module.module.demo_overwrite.description', domain: 'admin_module'),
+            label: t('demo_overwrite.module.label', domain: 'demo_overwrite'),
+            description: t('demo_overwrite.module.description', domain: 'demo_overwrite'),
         );
     }
 
@@ -48,7 +48,7 @@ final class DemoOverwriteModule implements AdminModuleInterface
         return [
             new AdminMenuItem(
                 id: self::ID,
-                label: t('admin_module.menu.demo_overwrite.label', domain: 'admin_module'),
+                label: t('demo_overwrite.menu.label', domain: 'demo_overwrite'),
                 icon: 'M15.041 13.862A4.999 4.999 0 0 1 17 17.831V21M7 3v3.169a5 5 0 0 0 1.891 3.916M17 3v3.169a5 5 0 0 1-2.428 4.288l-5.144 3.086A5 5 0 0 0 7 17.831V21M7 5h10M7.399 8h9.252M8 16h8.652M7 19h10',
                 parent: CoreMenu::TOOLS,
                 position: 40,

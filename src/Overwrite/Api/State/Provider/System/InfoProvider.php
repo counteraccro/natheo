@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Exemple de surcharge du provider de GET /api/v2/info (config/cms/overwrite.yaml) : reprend la réponse du provider
  * d'origine et remplit son champ extra
  */
@@ -35,7 +35,7 @@ final readonly class InfoProvider implements ProviderInterface
             siteName: $info->siteName,
             natheoVersion: $info->natheoVersion,
             apiVersion: $info->apiVersion,
-            extra: ['provider' => self::class, 'generatedAt' => (new \DateTimeImmutable())->format(DATE_ATOM)],
+            extra: ['overwritten' => true],
         );
     }
 }
