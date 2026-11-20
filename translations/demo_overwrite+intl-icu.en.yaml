@@ -1,15 +1,43 @@
-demo_overwrite.screen.description: 'This screen comes from assets/overwrite/ and shows the response of GET /api/v2/info, whose provider is replaced by the one in src/Overwrite/.'
-demo_overwrite.screen.error: 'Reading GET /api/v2/info failed.'
-demo_overwrite.screen.field_api_version: 'API version'
-demo_overwrite.screen.field_extra: 'extra field'
-demo_overwrite.screen.field_natheo_version: 'Nathéo version'
-demo_overwrite.screen.field_site_name: 'Site name'
-demo_overwrite.screen.file_api: 'The configuration file gives the info_get operation another provider. It takes the response of the original provider and fills the extra field.'
-demo_overwrite.screen.file_module: 'The module class sets the required role and places the entry in the Tools menu.'
-demo_overwrite.screen.file_screen: 'This screen is declared by its module.ts. A file placed at the same path as a component of assets/vue/Components/Admin/ takes its place.'
-demo_overwrite.screen.files_title: 'Files of the example'
-demo_overwrite.screen.inactive_text: 'The extra field is null because config/cms/overwrite.yaml no longer overrides the info_get operation. Put the entry back, then clear the cache.'
-demo_overwrite.screen.response_title: 'Response of GET /api/v2/info'
-demo_overwrite.screen.status_active: 'Override active'
-demo_overwrite.screen.status_inactive: 'Override inactive'
+demo_overwrite.screen.description: "This tutorial explains how to customize the API and the back-office without changing Nathéo's code. Each step relies on the files of this screen."
 demo_overwrite.screen.title: 'Override example'
+demo_overwrite.tutorial.api_intro: "The override changes the class that produces the response of an operation. The operation keeps its address and its rights, and API clients have nothing to change."
+demo_overwrite.tutorial.api_step1_text: "Each operation has a unique name. It appears in the `operationId` field of the API documentation, and the `php bin/console debug:api-resource` command shows the operations of a resource. The operation of this example is called `info_get`. The names of administration operations start with `admin_`, like `admin_module_get`."
+demo_overwrite.tutorial.api_step1_title: 'Find the name of the operation'
+demo_overwrite.tutorial.api_step2_processor: "For a write, the class implements `ProcessorInterface`. An administration write extends `AbstractAdminProcessor` instead, like Nathéo's processors, to keep the `If-Match` header check and the action log."
+demo_overwrite.tutorial.api_step2_text: "Create the class in `src/Overwrite/`, here `src/Overwrite/Api/State/Provider/System/InfoProvider.php`. It implements `ProviderInterface` for a read. To keep the original behavior, ask for Nathéo's provider in the constructor. Symfony injects it, and your `provide()` method calls it, then changes its response. Here, it copies the `Info` object and fills the `extra` field."
+demo_overwrite.tutorial.api_step2_title: 'Write the replacement class'
+demo_overwrite.tutorial.api_step3_errors: "On an error, building the cache stops with a message. This happens with an unknown operation, a missing class, a class that does not implement the right interface or a processor given to a read."
+demo_overwrite.tutorial.api_step3_text: "Add an entry under `overwrite.api` in `config/cms/overwrite.yaml`, with the name of the operation and the class under the `provider` key, or `processor` for a write. The file is read when the cache is built. In development, the cache rebuilds itself after a change. In production, run `php bin/console cache:clear`."
+demo_overwrite.tutorial.api_step3_title: 'Declare the override'
+demo_overwrite.tutorial.api_title: 'Override an API operation'
+demo_overwrite.tutorial.error: 'Reading GET /api/v2/info failed.'
+demo_overwrite.tutorial.field_api_version: 'API version'
+demo_overwrite.tutorial.field_extra: 'extra field'
+demo_overwrite.tutorial.field_natheo_version: 'Nathéo version'
+demo_overwrite.tutorial.field_site_name: 'Site name'
+demo_overwrite.tutorial.inactive_text: 'The extra field is null because config/cms/overwrite.yaml no longer overrides the info_get operation. Put the entry back, then clear the cache.'
+demo_overwrite.tutorial.intro_text_1: "An override replaces a part of Nathéo with your code. It applies to an operation of the API v2 or to the Vue files of the back-office. The three parts of this tutorial cover each case."
+demo_overwrite.tutorial.intro_text_2: "Your PHP code goes in `src/Overwrite/` and your Vue files in `assets/overwrite/`. A Nathéo update does not touch these two folders. A file changed elsewhere, in `src/Api/` or `assets/vue/` for example, would be replaced by the next update."
+demo_overwrite.tutorial.intro_text_3: 'You need to know Symfony and Vue 3, and to have a development installation where you can run `php bin/console` and `yarn`.'
+demo_overwrite.tutorial.intro_title: 'Before you start'
+demo_overwrite.tutorial.live_text: 'This response of `GET /api/v2/info` comes from the provider overridden in the first part. Without the override, its `extra` field is `null`.'
+demo_overwrite.tutorial.live_title: 'The result'
+demo_overwrite.tutorial.module_intro: 'This screen is itself a module added by an override. It relies on two files, the declaration of its routes on the Vue side and its module class on the PHP side.'
+demo_overwrite.tutorial.module_step1_text: "Create a folder in `assets/overwrite/vue/Components/Admin/Modules/`, here `DemoOverwrite`, with a `module.ts` file. It gives the module identifier, its translation domains and its routes. The component of each route is imported with `@admin/` and loaded on the first visit. A `module.ts` that reuses the identifier of a Nathéo module replaces it."
+demo_overwrite.tutorial.module_step1_title: 'Declare the routes of the screen'
+demo_overwrite.tutorial.module_step2_text: "The class goes in `src/Overwrite/Module/`, with the `AsAdminModule` attribute. Its definition sets the required role, here `ROLE_SUPER_ADMIN`, and its menu entry places the screen in the Tools menu. The `route` and `path` fields of the entry repeat the name and the path of the route in `module.ts`. Without this class, the address of the screen shows \"Page not found\"."
+demo_overwrite.tutorial.module_step2_title: 'Create the module class'
+demo_overwrite.tutorial.module_step3_text: "The texts of the screen are written with the `t()` function and the full key, like `demo_overwrite.screen.title`. The `php bin/console translation:extract --force --format=yaml fr` command adds the new keys to `translations/demo_overwrite+intl-icu.fr.yaml`, and the same goes for `en` and `es`. The domain is listed in `domains` of `module.ts`, and the application loads it before showing the screen."
+demo_overwrite.tutorial.module_step3_title: 'Add the texts'
+demo_overwrite.tutorial.module_title: 'Add a screen'
+demo_overwrite.tutorial.remove_text: 'Delete the `info_get` entry from `config/cms/overwrite.yaml`, then the `src/Overwrite/Api/`, `src/Overwrite/Module/` and `assets/overwrite/` folders with the `translations/demo_overwrite+intl-icu.*.yaml` files. Then run `php bin/console cache:clear` and `yarn build`.'
+demo_overwrite.tutorial.remove_title: 'Remove the example'
+demo_overwrite.tutorial.screen_note: 'Composables and the API client cannot be overridden this way. To change data, override the API operation that provides it.'
+demo_overwrite.tutorial.screen_text_1: 'The back-office files are in `assets/vue/Components/Admin/`. Copy the one to change into `assets/overwrite/vue/Components/Admin/`, at the same path, then edit the copy. A version of `assets/overwrite/vue/Components/Admin/Ui/Form/UiButton.vue` thus replaces the button across the whole back-office.'
+demo_overwrite.tutorial.screen_text_2: "The replacement goes through the `@admin/` alias, used by every import between back-office files. An import written `@admin/Ui/Form/UiButton.vue` serves your file when it exists, and Nathéo's otherwise. Keep the props and events of the original, because the other components still use them."
+demo_overwrite.tutorial.screen_text_3: 'Then run `yarn build` again. With `yarn dev`, restart the server after adding a file, because Vite keeps the resolution of imports in memory.'
+demo_overwrite.tutorial.screen_title: 'Replace a screen or a component'
+demo_overwrite.tutorial.status_active: 'Override active'
+demo_overwrite.tutorial.status_inactive: 'Override inactive'
+demo_overwrite.tutorial.step: 'Step {number}'
+demo_overwrite.tutorial.summary: 'Contents'
