@@ -6,7 +6,7 @@ demo_overwrite.screen.field_natheo_version: 'Version de Nathéo'
 demo_overwrite.screen.field_site_name: 'Nom du site'
 demo_overwrite.screen.file_api: "Le fichier de configuration donne à l'opération info_get un autre provider. Celui-ci reprend la réponse du provider d'origine et remplit le champ extra."
 demo_overwrite.screen.file_module: "La classe du module fixe le rôle requis et place l'entrée dans le menu Outils."
-demo_overwrite.screen.file_screen: "Cet écran et son module.ts. Un fichier placé au même chemin qu'un composant de assets/vue/Components/Admin/ prend sa place."
+demo_overwrite.screen.file_screen: "Cet écran est déclaré par son module.ts. Un fichier placé au même chemin qu'un composant de assets/vue/Components/Admin/ prend sa place."
 demo_overwrite.screen.files_title: "Fichiers de l'exemple"
 demo_overwrite.screen.inactive_text: "Le champ extra vaut null, car config/cms/overwrite.yaml ne surcharge plus l'opération info_get. Remettez l'entrée puis videz le cache."
 demo_overwrite.screen.response_title: 'Réponse de GET /api/v2/info'
