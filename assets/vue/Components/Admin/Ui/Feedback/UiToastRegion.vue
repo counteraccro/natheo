@@ -7,7 +7,7 @@
  */
 import { computed, onBeforeUnmount, reactive, watch } from 'vue';
 import UiIcon from '@/vue/Components/Global/Ui/UiIcon.vue';
-import UiButton from '../Form/UiButton.vue';
+import UiButton from '@admin/Ui/Form/UiButton.vue';
 import { useUiLabels } from '@/vue/Composables/Admin/Ui/useUiLabels';
 import { dismissNotification, notificationState } from '@/vue/Composables/Global/toast';
 import { FEEDBACK_ICONS, FEEDBACK_SOFT, FEEDBACK_TEXT, feedbackRole } from '@/vue/Composables/Admin/Ui/feedbackStyles';

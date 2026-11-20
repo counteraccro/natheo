@@ -12,7 +12,6 @@ namespace App\Controller\Admin;
 
 use App\Controller\Admin\Content\PageController;
 use App\Enum\Admin\DashboardBlock;
-use App\Enum\Admin\Global\Breadcrumb;
 use App\Service\Admin\DashboardService;
 use App\Service\Admin\Module\AdminMenuBuilder;
 use App\Service\Admin\StatisticsService;
@@ -165,25 +164,6 @@ class DashboardController extends AppAdminController
     public function loadStatistics(StatisticsService $statisticsService): JsonResponse
     {
         return $this->json($statisticsService->getDashboardStatistics());
-    }
-
-    /**
-     * Page Démo pour les elements html
-     * @param int $param
-     * @return Response
-     */
-    #[IsGranted('ROLE_SUPER_ADMIN')]
-    #[Route('/page-demo/{param}', name: 'page_demo')]
-    public function pageDemo(int $param = 5): Response
-    {
-        $breadcrumb = [
-            Breadcrumb::DOMAIN->value => 'messages',
-            Breadcrumb::BREADCRUMB->value => [
-                'pagedemo.index.title' => '#',
-            ],
-        ];
-
-        return $this->render('admin/dashboard/page_demo.html.twig', ['breadcrumb' => $breadcrumb]);
     }
 
     /**

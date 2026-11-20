@@ -1,27 +1,35 @@
 /*!
  * Author : Gourdon Aymeric
- * Version : 1.2
+ * Version : 1.3
  * Point d'entrée de l'application Vue du back-office
  */
 // Importée ici et non dans le CSS : Tailwind ne réécrit pas les chemins des fichiers de police
 import '@fontsource-variable/figtree';
 import './styles/app_admin_app.css';
 import { createApp } from 'vue';
-import AdminApp from '@/vue/Components/Admin/App/AdminApp.vue';
-import theme from '@/vue/Components/Admin/Themes/NatheoStudio/theme';
+import AdminApp from '@admin/App/AdminApp.vue';
+import theme from '@admin/Themes/NatheoStudio/theme';
 import { ADMIN_CONTEXT, createAdminContext } from '@/vue/Composables/Admin/useAdminContext';
 import { createAdminRouter } from '@/vue/Composables/Admin/adminRouter';
-import type { AdminModuleDefinition } from '@/vue/Composables/Admin/defineAdminModule';
+import { mergeModules, type AdminModuleDefinition } from '@/vue/Composables/Admin/defineAdminModule';
 import type { AdminBootstrap } from '@/ts/Admin/App/AdminBootstrap.type';
 
 const bootstrap = JSON.parse(document.getElementById('admin-bootstrap')?.textContent ?? '{}') as AdminBootstrap;
 const context = createAdminContext(bootstrap);
 
-const modules = Object.values(
-  import.meta.glob<AdminModuleDefinition>('./vue/Components/Admin/Modules/*/module.ts', {
-    eager: true,
-    import: 'default',
-  })
+const modules = mergeModules(
+  Object.values(
+    import.meta.glob<AdminModuleDefinition>('./vue/Components/Admin/Modules/*/module.ts', {
+      eager: true,
+      import: 'default',
+    })
+  ),
+  Object.values(
+    import.meta.glob<AdminModuleDefinition>('./overwrite/vue/Components/Admin/Modules/*/module.ts', {
+      eager: true,
+      import: 'default',
+    })
+  )
 );
 
 const router = createAdminRouter({

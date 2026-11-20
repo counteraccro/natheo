@@ -10,7 +10,6 @@ admin_module.menu.comment_moderate.label: Moderation
 admin_module.menu.content.label: Content
 admin_module.menu.dashboard.label: Dashboard
 admin_module.menu.database_manager.label: Database
-admin_module.menu.demo_overwrite.label: 'Override example'
 admin_module.menu.faq.label: FAQ
 admin_module.menu.faq_index.label: 'FAQ management'
 admin_module.menu.faq_new.label: 'New FAQ'
@@ -49,8 +48,6 @@ admin_module.module.dashboard.description: 'Home page of the CMS administration'
 admin_module.module.dashboard.label: Dashboard
 admin_module.module.database_manager.description: 'View the database and its statistics'
 admin_module.module.database_manager.label: Database
-admin_module.module.demo_overwrite.description: 'Example of overriding a CMS page'
-admin_module.module.demo_overwrite.label: 'Override example'
 admin_module.module.faq.description: 'FAQ management'
 admin_module.module.faq.label: FAQ
 admin_module.module.info.description: 'Information about the CMS'

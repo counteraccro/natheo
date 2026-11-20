@@ -7,7 +7,7 @@
  */
 import { computed, useId } from 'vue';
 import UiIcon from '@/vue/Components/Global/Ui/UiIcon.vue';
-import UiDropdown from '../Ui/Overlay/UiDropdown.vue';
+import UiDropdown from '@admin/Ui/Overlay/UiDropdown.vue';
 import { useUiLabels } from '@/vue/Composables/Admin/Ui/useUiLabels';
 import { useAppearance } from '@/vue/Composables/Admin/Ui/useAppearance';
 import type { ColorMode } from '@/ts/Admin/Layout/AdminHeader.type';

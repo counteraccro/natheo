@@ -242,8 +242,6 @@ options_user.default_personal_data_render.value.login: Pseudonyme
 options_user.default_personal_data_render.value.name: Vos nom et prénom
 options_user.nb_element.help: Définit le nombre d'éléments par défaut des tableaux pour votre session
 options_user.nb_element.label: Nombre d'éléments par page
-pagedemo.index.description: 'Cette page n''est affichée que si la surcharge de la route {route} est désactivée dans {file}. Elle sert de page d''origine à l''exemple de surcharge.'
-pagedemo.index.title: 'Page d''origine de la démo de surcharge'
 response.ajax.error: 'Une erreur est survenue, consultez les logs pour en savoir plus'
 response.ajax.success: 'Action réalisée avec succès'
 options_system.page_validation.label: 'Validation des pages'

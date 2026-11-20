@@ -46,6 +46,4 @@ enum CoreModuleId: string
     case DATABASE_MANAGER = 'database_manager';
 
     case SQL_MANAGER = 'sql_manager';
-
-    case DEMO_OVERWRITE = 'demo_overwrite';
 }

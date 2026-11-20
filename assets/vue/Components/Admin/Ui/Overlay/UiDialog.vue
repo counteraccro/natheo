@@ -6,7 +6,7 @@
  * dismiss), focus rendu à l'élément d'origine
  */
 import { onBeforeUnmount, onMounted, ref, useId, watch } from 'vue';
-import UiButton from '../Form/UiButton.vue';
+import UiButton from '@admin/Ui/Form/UiButton.vue';
 import { useUiLabels } from '@/vue/Composables/Admin/Ui/useUiLabels';
 import type { DialogSize, DialogTone } from '@/ts/Admin/Ui/Overlay/UiConfirmDialog.type';
 

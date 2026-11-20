@@ -10,7 +10,6 @@ admin_module.menu.comment_moderate.label: Moderación
 admin_module.menu.content.label: Contenidos
 admin_module.menu.dashboard.label: 'Panel de control'
 admin_module.menu.database_manager.label: 'Base de datos'
-admin_module.menu.demo_overwrite.label: 'Ejemplo de sobrescritura'
 admin_module.menu.faq.label: FAQ
 admin_module.menu.faq_index.label: 'Gestión de las FAQ'
 admin_module.menu.faq_new.label: 'Nueva FAQ'
@@ -49,8 +48,6 @@ admin_module.module.dashboard.description: 'Página de inicio de la administraci
 admin_module.module.dashboard.label: 'Panel de control'
 admin_module.module.database_manager.description: 'Permite visualizar la base de datos y sus estadísticas'
 admin_module.module.database_manager.label: 'Base de datos'
-admin_module.module.demo_overwrite.description: 'Ejemplo de sobrescritura de una página del CMS'
-admin_module.module.demo_overwrite.label: 'Ejemplo de sobrescritura'
 admin_module.module.faq.description: 'Gestión de las FAQ'
 admin_module.module.faq.label: FAQ
 admin_module.module.info.description: 'Información sobre el CMS'

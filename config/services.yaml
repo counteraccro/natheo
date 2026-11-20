@@ -20,6 +20,8 @@ parameters:
     app.default_database_name: '%env(NATHEO_DBNAME)%' # nom de la base de données par défaut
     app.dump_directory: '%kernel.project_dir%/var/dump/' # dossier de stockage des dumps SQL, hors du dossier public
     app.version: '2.1.0-dev'
+    # Fichiers des surcharges d'opérations d'API, lus à la construction du cache
+    app.overwrite_files: ['%kernel.project_dir%/config/cms/overwrite.yaml']
     # Version de chaque thème du site public, affichée en bas de page
     app.natheo_horizon.version: 'Natheo-Horizon v2.0.0'
     app.natheo_storm.version: 'StormFront v1.0.0'
@@ -66,14 +68,14 @@ services:
     App\EventListener\ExceptionListener:
         tags: [kernel.event_listener]
 
-    App\EventListener\OverwriteListener:
-        tags:
-            - { name: kernel.event_listener }
-
 when@test:
     parameters:
         # Dossier dédié pour ne pas toucher aux dumps de l'environnement de dev
         app.dump_directory: '%kernel.project_dir%/var/dump_test/'
+        # Surcharges des ressources de test (tests/Api/V2/Resource) en plus de celles du projet
+        app.overwrite_files:
+            - '%kernel.project_dir%/config/cms/overwrite.yaml'
+            - '%kernel.project_dir%/tests/Api/V2/Overwrite/overwrite.yaml'
     services:
         # Module du back-office des ressources de test de l'API (tests/Api/V2/Resource)
         App\Tests\Api\V2\Module\ProbeModule:
@@ -82,5 +84,9 @@ when@test:
             autowire: true
             autoconfigure: true
         App\Tests\Api\V2\State\AdminProbeProvider:
+            autowire: true
+            autoconfigure: true
+        App\Tests\Api\V2\State\Overwrite\:
+            resource: '../tests/Api/V2/State/Overwrite/'
             autowire: true
             autoconfigure: true

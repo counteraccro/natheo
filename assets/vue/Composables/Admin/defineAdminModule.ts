@@ -1,6 +1,6 @@
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Déclaration des écrans d'un module dans l'application du back-office (module.ts du dossier du module)
  */
 import type { RouteRecordRaw } from 'vue-router';
@@ -32,6 +32,19 @@ export interface AdminModuleDefinition {
  */
 export function defineAdminModule(definition: AdminModuleDefinition): AdminModuleDefinition {
   return definition;
+}
+
+/**
+ * Modules du back-office et de assets/overwrite/ : un module de surcharge remplace celui du même identifiant
+ * @param core modules du back-office
+ * @param overwrites modules de surcharge
+ */
+export function mergeModules(
+  core: AdminModuleDefinition[],
+  overwrites: AdminModuleDefinition[]
+): AdminModuleDefinition[] {
+  const ids = new Set(overwrites.map((definition) => definition.id));
+  return [...core.filter((definition) => !ids.has(definition.id)), ...overwrites];
 }
 
 /**

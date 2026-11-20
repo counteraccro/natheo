@@ -10,7 +10,6 @@ admin_module.menu.comment_moderate.label: Modération
 admin_module.menu.content.label: Contenus
 admin_module.menu.dashboard.label: 'Tableau de bord'
 admin_module.menu.database_manager.label: 'Base de données'
-admin_module.menu.demo_overwrite.label: 'Exemple de surcharge'
 admin_module.menu.faq.label: FAQ
 admin_module.menu.faq_index.label: 'Gestion des FAQ'
 admin_module.menu.faq_new.label: 'Nouvelle FAQ'
@@ -49,8 +48,6 @@ admin_module.module.dashboard.description: "Page d'accueil de la partie administ
 admin_module.module.dashboard.label: 'Tableau de bord'
 admin_module.module.database_manager.description: 'Permet de visualiser la base de données et ses statistiques'
 admin_module.module.database_manager.label: 'Base de données'
-admin_module.module.demo_overwrite.description: "Exemple de surcharge d'une page du CMS"
-admin_module.module.demo_overwrite.label: 'Exemple de surcharge'
 admin_module.module.faq.description: 'Gestion des FAQ'
 admin_module.module.faq.label: FAQ
 admin_module.module.info.description: 'Information sur le CMS'

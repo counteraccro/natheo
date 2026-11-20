@@ -8,9 +8,9 @@
 import { computed, ref, watch } from 'vue';
 import BrandLogo from '@/vue/Components/Global/Ui/BrandLogo.vue';
 import UiIcon from '@/vue/Components/Global/Ui/UiIcon.vue';
-import UiButton from '../Ui/Form/UiButton.vue';
-import UiDropdown from '../Ui/Overlay/UiDropdown.vue';
-import AdminSidebarTree from './AdminSidebarTree.vue';
+import UiButton from '@admin/Ui/Form/UiButton.vue';
+import UiDropdown from '@admin/Ui/Overlay/UiDropdown.vue';
+import AdminSidebarTree from '@admin/Layout/AdminSidebarTree.vue';
 import { useUiLabels } from '@/vue/Composables/Admin/Ui/useUiLabels';
 import type { SidebarItem, SidebarUser } from '@/ts/Admin/Layout/AdminSidebar.type';
 

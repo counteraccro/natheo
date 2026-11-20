@@ -18,7 +18,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["assets/*"],
-      "@ui": ["assets/vue/Components/Admin/Ui/index.ts"]
+      "@ui": ["assets/vue/Components/Admin/Ui/index.ts"],
+      "@admin/*": ["assets/overwrite/vue/Components/Admin/*", "assets/vue/Components/Admin/*"]
     }
   },
   "include": [

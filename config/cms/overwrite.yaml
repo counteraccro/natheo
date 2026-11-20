@@ -1,9 +1,16 @@
-# Ce fichier permet de définir la surcharge d'un controller par un autre
+# Surcharge des opérations de l'API v2 : une opération, désignée par son nom, reçoit un autre provider (lecture) ou
+# processor (écriture). Son adresse, sa sécurité et sa documentation ne changent pas.
+# Lu à la construction du cache : lancer « php bin/console cache:clear » après chaque modification en production.
+#
+# overwrite:
+#     api:
+#         - operation: admin_tag_get
+#           provider: App\Overwrite\Api\State\Provider\Tag\TagProvider
+#         - operation: admin_tag_patch
+#           processor: App\Overwrite\Api\State\Processor\Tag\UpdateTagProcessor
 
 overwrite:
-    - controller: App\Controller\Admin\DashboardController
-      route: admin_dashboard_page_demo
-      overwrite:
-          route: admin_overwrite_page_demo
-          parameters:
-              param: id
+    api:
+        # Exemple livré, affiché par l'écran « Exemple de surcharge » du menu Outils : à retirer avec cet écran
+        - operation: info_get
+          provider: App\Overwrite\Api\State\Provider\System\InfoProvider

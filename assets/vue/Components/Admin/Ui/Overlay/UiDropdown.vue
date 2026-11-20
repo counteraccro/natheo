@@ -6,7 +6,7 @@
  * en position fixe, rattaché à son bouton par une flèche
  */
 import { nextTick, onBeforeUnmount, provide, ref, useId, watch, type ComponentPublicInstance } from 'vue';
-import UiButton from '../Form/UiButton.vue';
+import UiButton from '@admin/Ui/Form/UiButton.vue';
 import { useFloating } from '@/vue/Composables/Admin/Ui/useFloating';
 import { DROPDOWN } from '@/vue/Composables/Admin/Ui/dropdownContext';
 import type { IconName } from '@/ts/Global/Ui/UiIcon.type';
