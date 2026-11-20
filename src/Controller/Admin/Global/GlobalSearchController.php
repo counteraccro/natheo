@@ -14,7 +14,7 @@ use App\Enum\Admin\Global\GlobalSearchEntity;
 use App\Enum\Admin\System\Options\OptionUser;
 use App\Service\Admin\GlobalSearchService;
 use App\Service\Admin\Module\AdminMenuBuilder;
-use App\Translate\Admin\Global\GlobalSearchTranslate;
+use App\Translation\Admin\Global\GlobalSearchTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\Request;

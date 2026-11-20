@@ -7,11 +7,11 @@ declare(strict_types=1);
  * @version 1.2
  */
 
-namespace App\Translate\Front;
+namespace App\Translation\Front;
 
 use App\Enum\Admin\Content\Page\PageCategory;
 use App\Service\Front\FrontThemeService;
-use App\Translate\AppTranslate;
+use App\Translation\AppTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;

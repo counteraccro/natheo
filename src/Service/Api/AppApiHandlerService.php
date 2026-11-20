@@ -19,7 +19,7 @@ use App\Service\Api\Content\ApiMenuService;
 use App\Service\Api\Content\Page\ApiPageContentService;
 use App\Service\Api\System\User\UserSessionService;
 use App\Service\Global\SupportedLocales;
-use App\Translate\Admin\Global\GridTranslate;
+use App\Translation\Admin\Global\GridTranslate;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;

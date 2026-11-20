@@ -20,7 +20,7 @@ use App\Service\Global\Database\RawQueryManager;
 use App\Service\Global\Database\RawResultQueryManager;
 use App\Service\Global\EnvFile;
 use App\Service\Global\SupportedLocales;
-use App\Translate\Admin\Global\GridTranslate;
+use App\Translation\Admin\Global\GridTranslate;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Psr\Container\ContainerExceptionInterface;

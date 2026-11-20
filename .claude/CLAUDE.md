@@ -41,7 +41,7 @@ Concrete services (e.g. `DashboardService extends AppAdminService`) receive thei
 
 Directory shape under `src/` mirrors the domain, duplicated across `Controller/`, `Service/`, `Repository/`, `Entity/`, `Enum/`, generally as `Admin/Content/<Domain>/…`, `Admin/System/…`, `Admin/Tools/…` (plus parallel `Api/` and `Front/` trees for those layers). When adding a feature, expect to touch the matching subfolder in several of these trees at once.
 
-`Translate/<Layer>/<Domain>/<Domain>Translate.php` classes (e.g. `src/Translate/Admin/Content/MenuTranslate.php`, extending `src/Translate/AppTranslate.php`) centralize building the translation arrays passed to Twig/Vue — controllers call these instead of calling the translator directly for anything non-trivial.
+`Translation/<Layer>/<Section>/<Domain>Translate.php` classes (e.g. `src/Translation/Admin/Content/MenuTranslate.php`, extending `src/Translation/AppTranslate.php`) centralize building the translation arrays passed to Twig/Vue — controllers call these instead of calling the translator directly for anything non-trivial.
 
 
 ### Where non-service code goes

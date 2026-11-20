@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Translate\Admin\Content;
+namespace App\Translation\Admin\Content;
 
-use App\Translate\AppTranslate;
+use App\Translation\AppTranslate;
 
 class CommentTranslate extends AppTranslate
 {

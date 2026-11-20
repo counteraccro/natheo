@@ -7,9 +7,9 @@ declare(strict_types=1);
  * Traduction pour l'installation
  */
 
-namespace App\Translate\Installation;
+namespace App\Translation\Installation;
 
-use App\Translate\AppTranslate;
+use App\Translation\AppTranslate;
 
 class InstallationTranslate extends AppTranslate
 {

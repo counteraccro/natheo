@@ -18,7 +18,7 @@ use App\Service\Api\System\User\UserSessionService;
 use App\Service\Front\FrontPreviewService;
 use App\Service\Front\FrontThemeService;
 use App\Service\Global\User\AvatarUrl;
-use App\Translate\Front\FrontTranslate;
+use App\Translation\Front\FrontTranslate;
 use League\CommonMark\Exception\CommonMarkException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;

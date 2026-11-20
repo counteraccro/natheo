@@ -15,7 +15,7 @@ use App\Enum\Admin\Global\Breadcrumb;
 use App\Enum\Admin\System\Options\OptionUser;
 use App\Service\Admin\Tools\SqlManagerService;
 use App\Service\Global\Database\DataBase;
-use App\Translate\Admin\Tools\SqlManagerTranslate;
+use App\Translation\Admin\Tools\SqlManagerTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
