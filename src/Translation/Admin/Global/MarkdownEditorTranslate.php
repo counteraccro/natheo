@@ -7,9 +7,9 @@ declare(strict_types=1);
  * @version 1.1
  */
 
-namespace App\Translate\Admin\Global;
+namespace App\Translation\Admin\Global;
 
-use App\Translate\AppTranslate;
+use App\Translation\AppTranslate;
 
 class MarkdownEditorTranslate extends AppTranslate
 {

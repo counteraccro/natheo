@@ -7,7 +7,7 @@ declare(strict_types=1);
  * @version 1.0
  */
 
-namespace App\Translate;
+namespace App\Translation;
 
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;

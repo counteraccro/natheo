@@ -14,7 +14,7 @@ use App\Enum\Admin\Global\Breadcrumb;
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Admin\Content\Page\PageValidationService;
 use App\Service\Admin\System\OptionSystemService;
-use App\Translate\Admin\System\OptionSystemTranslate;
+use App\Translation\Admin\System\OptionSystemTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;

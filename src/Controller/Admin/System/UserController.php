@@ -29,7 +29,7 @@ use App\Service\Admin\System\Mail\KeyWord;
 use App\Enum\Admin\System\User\Role;
 use App\Enum\Admin\System\User\UserCsrfToken;
 use App\Enum\Admin\System\User\UserDataKey;
-use App\Translate\Admin\System\UserTranslate;
+use App\Translation\Admin\System\UserTranslate;
 use Exception;
 use League\CommonMark\Exception\CommonMarkException;
 use Psr\Container\ContainerExceptionInterface;

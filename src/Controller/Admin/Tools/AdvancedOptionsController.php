@@ -13,7 +13,7 @@ use App\Controller\Admin\AppAdminController;
 use App\Enum\Admin\Global\Breadcrumb;
 use App\Service\Admin\CommandService;
 use App\Service\Global\EnvFile;
-use App\Translate\Admin\Tools\AdvancedOptionsTranslate;
+use App\Translation\Admin\Tools\AdvancedOptionsTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;

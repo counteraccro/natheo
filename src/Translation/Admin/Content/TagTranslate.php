@@ -6,9 +6,9 @@ declare(strict_types=1);
  * @author Gourdon Aymeric
  * @version 1.0
  */
-namespace App\Translate\Admin\Content;
+namespace App\Translation\Admin\Content;
 
-use App\Translate\AppTranslate;
+use App\Translation\AppTranslate;
 
 class TagTranslate extends AppTranslate
 {

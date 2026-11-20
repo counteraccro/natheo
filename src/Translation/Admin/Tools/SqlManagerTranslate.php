@@ -6,9 +6,9 @@ declare(strict_types=1);
  * @author Gourdon Aymeric
  * @version 1.0
  */
-namespace App\Translate\Admin\Tools;
+namespace App\Translation\Admin\Tools;
 
-use App\Translate\AppTranslate;
+use App\Translation\AppTranslate;
 
 class SqlManagerTranslate extends AppTranslate
 {

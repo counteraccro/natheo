@@ -10,7 +10,7 @@ use App\Enum\Admin\Global\Breadcrumb;
 use App\Enum\Admin\System\ApiToken\ApiTokenScope;
 use App\Enum\Admin\System\Options\OptionUser;
 use App\Service\Admin\System\ApiTokenService;
-use App\Translate\Admin\System\ApiTokenTranslate;
+use App\Translation\Admin\System\ApiTokenTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;

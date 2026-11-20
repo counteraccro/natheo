@@ -7,9 +7,9 @@ declare(strict_types=1);
  * @version 1.0
  */
 
-namespace App\Translate\Admin\Tools;
+namespace App\Translation\Admin\Tools;
 
-use App\Translate\AppTranslate;
+use App\Translation\AppTranslate;
 
 class DatabaseManagerTranslate extends AppTranslate
 {

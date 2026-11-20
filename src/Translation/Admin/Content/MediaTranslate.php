@@ -7,9 +7,9 @@ declare(strict_types=1);
  * @version 1.0
  */
 
-namespace App\Translate\Admin\Content;
+namespace App\Translation\Admin\Content;
 
-use App\Translate\AppTranslate;
+use App\Translation\AppTranslate;
 
 class MediaTranslate extends AppTranslate
 {
