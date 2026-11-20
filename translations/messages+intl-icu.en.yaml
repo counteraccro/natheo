@@ -242,8 +242,6 @@ options_user.default_personal_data_render.value.login: Nickname
 options_user.default_personal_data_render.value.name: Your first and last name
 options_user.nb_element.help: Sets the default number of items in tables for your session
 options_user.nb_element.label: Number of items per page
-pagedemo.index.description: 'This page is only displayed if the overwrite of the {route} route is disabled in {file}. It is the original page of the overwrite example.'
-pagedemo.index.title: 'Original page of the overwrite demo'
 response.ajax.error: An error occurred, check the logs to find out more
 response.ajax.success: Action completed successfully
 options_system.page_validation.label: 'Page validation'

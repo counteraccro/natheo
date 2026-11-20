@@ -242,8 +242,6 @@ options_user.default_personal_data_render.value.login: Seudónimo
 options_user.default_personal_data_render.value.name: Su nombre y apellidos
 options_user.nb_element.help: Define el número de elementos por defecto de las tablas para su sesión
 options_user.nb_element.label: Número de elementos por página
-pagedemo.index.description: 'Esta página solo se muestra si la sobrescritura de la ruta {route} está desactivada en {file}. Es la página original del ejemplo de sobrescritura.'
-pagedemo.index.title: 'Página original de la demo de sobrescritura'
 response.ajax.error: Se ha producido un error, consulte los logs para saber más
 response.ajax.success: Acción realizada correctamente
 options_system.page_validation.label: 'Validación de páginas'

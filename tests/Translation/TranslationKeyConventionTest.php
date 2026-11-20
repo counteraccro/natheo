@@ -63,7 +63,6 @@ class TranslationKeyConventionTest extends TestCase
         'mail',
         'options_system',
         'options_user',
-        'pagedemo',
         'response',
     ];
 

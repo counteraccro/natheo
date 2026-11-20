@@ -38,7 +38,6 @@ final class DashboardModule implements AdminModuleInterface
             description: t('admin_module.module.dashboard.description', domain: 'admin_module'),
             locked: true,
             routePrefixes: ['admin_dashboard_'],
-            routeExceptions: ['admin_dashboard_page_demo'],
         );
     }
 
