@@ -37,6 +37,25 @@ class OverwriteConfigPassTest extends TestCase
     }
 
     /**
+     * Clé overwrite.api lue, ancien format des redirections refusé
+     * @return void
+     */
+    public function testEntriesOf(): void
+    {
+        $this->assertSame([], OverwriteConfigPass::entriesOf(null, 'vide.yaml'));
+        $this->assertSame([], OverwriteConfigPass::entriesOf(['overwrite' => ['api' => []]], 'vide.yaml'));
+        $entries = [['operation' => 'a_get', 'provider' => OverwriteProbeProvider::class]];
+        $this->assertSame($entries, OverwriteConfigPass::entriesOf(['overwrite' => ['api' => $entries]], 'un.yaml'));
+
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('ancien.yaml');
+        OverwriteConfigPass::entriesOf(
+            ['overwrite' => [['controller' => 'App\Controller\Admin\DashboardController', 'route' => 'x']]],
+            'ancien.yaml',
+        );
+    }
+
+    /**
      * @param array $entries
      * @param string $message
      * @return void

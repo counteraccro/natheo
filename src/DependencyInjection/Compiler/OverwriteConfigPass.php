@@ -60,7 +60,7 @@ final class OverwriteConfigPass implements CompilerPassInterface
                 continue;
             }
             $container->addResource(new FileResource($file));
-            $entries[$file] = Yaml::parseFile($file)['overwrite']['api'] ?? [];
+            $entries[$file] = self::entriesOf(Yaml::parseFile($file), $file);
         }
 
         $overwrites = self::parse($entries);
@@ -73,6 +73,22 @@ final class OverwriteConfigPass implements CompilerPassInterface
             }
         }
         $container->setParameter(self::API_PARAMETER, $overwrites);
+    }
+
+    /**
+     * Entrées de la clé overwrite.api d'un fichier
+     * @param mixed $data contenu du fichier
+     * @param string $file
+     * @return mixed
+     * @throws \LogicException si la clé overwrite n'a pas la forme attendue, comme l'ancien format des redirections
+     */
+    public static function entriesOf(mixed $data, string $file): mixed
+    {
+        $overwrite = is_array($data) ? $data['overwrite'] ?? [] : [];
+        if (!is_array($overwrite) || array_diff(array_keys($overwrite), ['api']) !== []) {
+            throw new \LogicException(sprintf('La clé overwrite de %s attend seulement « api »', $file));
+        }
+        return $overwrite['api'] ?? [];
     }
 
     /**
