@@ -7,7 +7,7 @@ declare(strict_types=1);
  * Extracteur de translation:extract pour les clés des appels t('domaine.ecran.element') du code Vue et TypeScript
  */
 
-namespace App\Translation;
+namespace App\Translation\Extractor;
 
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;

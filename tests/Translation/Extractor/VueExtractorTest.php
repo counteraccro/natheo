@@ -7,9 +7,9 @@ declare(strict_types=1);
  * Tests de l'extracteur des clés t('…') du code Vue et TypeScript
  */
 
-namespace App\Tests\Translation;
+namespace App\Tests\Translation\Extractor;
 
-use App\Translation\VueExtractor;
+use App\Translation\Extractor\VueExtractor;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Translation\MessageCatalogue;
