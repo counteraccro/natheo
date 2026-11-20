@@ -7,8 +7,8 @@
 import '@fontsource-variable/figtree';
 import './styles/app_admin_app.css';
 import { createApp } from 'vue';
-import AdminApp from '@/vue/Components/Admin/App/AdminApp.vue';
-import theme from '@/vue/Components/Admin/Themes/NatheoStudio/theme';
+import AdminApp from '@admin/App/AdminApp.vue';
+import theme from '@admin/Themes/NatheoStudio/theme';
 import { ADMIN_CONTEXT, createAdminContext } from '@/vue/Composables/Admin/useAdminContext';
 import { createAdminRouter } from '@/vue/Composables/Admin/adminRouter';
 import type { AdminModuleDefinition } from '@/vue/Composables/Admin/defineAdminModule';

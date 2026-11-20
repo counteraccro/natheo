@@ -5,7 +5,7 @@
  * Message placé dans la page : succès, information, avertissement ou danger, action et fermeture facultatives
  */
 import UiIcon from '@/vue/Components/Global/Ui/UiIcon.vue';
-import UiButton from '../Form/UiButton.vue';
+import UiButton from '@admin/Ui/Form/UiButton.vue';
 import { useUiLabels } from '@/vue/Composables/Admin/Ui/useUiLabels';
 import {
   FEEDBACK_BORDER,

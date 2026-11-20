@@ -8,5 +8,11 @@ import { defineAdminModule } from '@/vue/Composables/Admin/defineAdminModule';
 export default defineAdminModule({
   id: 'design_system',
   debug: true,
-  routes: [{ path: '/design-system', name: 'design_system', component: () => import('./DesignSystem.vue') }],
+  routes: [
+    {
+      path: '/design-system',
+      name: 'design_system',
+      component: () => import('@admin/Modules/DesignSystem/DesignSystem.vue'),
+    },
+  ],
 });

@@ -8,17 +8,17 @@
  */
 import { computed, nextTick, ref, useId, watch } from 'vue';
 import UiIcon from '@/vue/Components/Global/Ui/UiIcon.vue';
-import UiButton from '../Form/UiButton.vue';
-import UiCheckbox from '../Form/UiCheckbox.vue';
-import UiDropdown from '../Overlay/UiDropdown.vue';
-import UiDropdownItem from '../Overlay/UiDropdownItem.vue';
-import UiDropdownLabel from '../Overlay/UiDropdownLabel.vue';
-import UiDropdownSeparator from '../Overlay/UiDropdownSeparator.vue';
-import UiTooltip from '../Overlay/UiTooltip.vue';
-import UiEmptyState from '../Feedback/UiEmptyState.vue';
-import UiSkeleton from '../Feedback/UiSkeleton.vue';
-import UiPagination from './UiPagination.vue';
-import UiSqlBlock from './UiSqlBlock.vue';
+import UiButton from '@admin/Ui/Form/UiButton.vue';
+import UiCheckbox from '@admin/Ui/Form/UiCheckbox.vue';
+import UiDropdown from '@admin/Ui/Overlay/UiDropdown.vue';
+import UiDropdownItem from '@admin/Ui/Overlay/UiDropdownItem.vue';
+import UiDropdownLabel from '@admin/Ui/Overlay/UiDropdownLabel.vue';
+import UiDropdownSeparator from '@admin/Ui/Overlay/UiDropdownSeparator.vue';
+import UiTooltip from '@admin/Ui/Overlay/UiTooltip.vue';
+import UiEmptyState from '@admin/Ui/Feedback/UiEmptyState.vue';
+import UiSkeleton from '@admin/Ui/Feedback/UiSkeleton.vue';
+import UiPagination from '@admin/Ui/Data/UiPagination.vue';
+import UiSqlBlock from '@admin/Ui/Data/UiSqlBlock.vue';
 import { useUiLabels } from '@/vue/Composables/Admin/Ui/useUiLabels';
 import { CONTROL_CLASSES } from '@/vue/Composables/Admin/Ui/controlClasses';
 import { cellText, highlight } from '@/vue/Composables/Admin/Ui/tableSearch';

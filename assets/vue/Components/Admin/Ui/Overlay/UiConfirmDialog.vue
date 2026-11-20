@@ -7,8 +7,8 @@
  * cancel
  */
 import { computed } from 'vue';
-import UiDialog from './UiDialog.vue';
-import UiButton from '../Form/UiButton.vue';
+import UiDialog from '@admin/Ui/Overlay/UiDialog.vue';
+import UiButton from '@admin/Ui/Form/UiButton.vue';
 import UiIcon from '@/vue/Components/Global/Ui/UiIcon.vue';
 import { useUiLabels } from '@/vue/Composables/Admin/Ui/useUiLabels';
 import type { IconName } from '@/ts/Global/Ui/UiIcon.type';

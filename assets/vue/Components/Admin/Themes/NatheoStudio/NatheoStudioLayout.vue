@@ -7,7 +7,7 @@
  */
 import { computed } from 'vue';
 import { AdminDebugBar, AdminHeader, AdminShell, AdminSidebar, type DebugSection, type DebugUser } from '@ui';
-import NatheoStudioUserMenu from './NatheoStudioUserMenu.vue';
+import NatheoStudioUserMenu from '@admin/Themes/NatheoStudio/NatheoStudioUserMenu.vue';
 import { useAdminContext } from '@/vue/Composables/Admin/useAdminContext';
 import type { AdminLayoutProps } from '@/ts/Admin/Theme/AdminTheme.type';
 

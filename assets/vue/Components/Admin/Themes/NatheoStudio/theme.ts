@@ -4,10 +4,10 @@
  * Thème Natheo-Studio, thème par défaut du back-office
  */
 import { defineAdminTheme } from '@/vue/Composables/Admin/defineAdminTheme';
-import NatheoStudioLayout from './NatheoStudioLayout.vue';
+import NatheoStudioLayout from '@admin/Themes/NatheoStudio/NatheoStudioLayout.vue';
 
 export default defineAdminTheme({
   id: 'natheo_studio',
   layout: NatheoStudioLayout,
-  notFound: () => import('./NatheoStudioNotFound.vue'),
+  notFound: () => import('@admin/Themes/NatheoStudio/NatheoStudioNotFound.vue'),
 });

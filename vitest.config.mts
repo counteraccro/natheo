@@ -1,9 +1,9 @@
 import { defineConfig } from 'vitest/config';
 import vue from '@vitejs/plugin-vue';
-import { aliases } from './vite.aliases.mts';
+import { adminOverwrite, aliases } from './vite.aliases.mts';
 
 export default defineConfig({
-    plugins: [vue()],
+    plugins: [vue(), adminOverwrite()],
     resolve: { alias: aliases },
     test: {
         environment: 'happy-dom',

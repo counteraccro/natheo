@@ -5,8 +5,8 @@
  * Pagination : plage affichée annoncée, nombre de lignes par page, page précédente, numéros et page suivante
  */
 import { computed, useId } from 'vue';
-import UiButton from '../Form/UiButton.vue';
-import UiSelect from '../Form/UiSelect.vue';
+import UiButton from '@admin/Ui/Form/UiButton.vue';
+import UiSelect from '@admin/Ui/Form/UiSelect.vue';
 import { useUiLabels } from '@/vue/Composables/Admin/Ui/useUiLabels';
 import { usePaginationNumbers } from '@/vue/Composables/Global/usePaginationNumbers';
 

@@ -7,10 +7,10 @@
  */
 import { onBeforeUnmount, onMounted, ref, useId } from 'vue';
 import UiIcon from '@/vue/Components/Global/Ui/UiIcon.vue';
-import UiButton from '../Ui/Form/UiButton.vue';
-import UiDropdown from '../Ui/Overlay/UiDropdown.vue';
-import UiDropdownItem from '../Ui/Overlay/UiDropdownItem.vue';
-import AdminAppearanceMenu from './AdminAppearanceMenu.vue';
+import UiButton from '@admin/Ui/Form/UiButton.vue';
+import UiDropdown from '@admin/Ui/Overlay/UiDropdown.vue';
+import UiDropdownItem from '@admin/Ui/Overlay/UiDropdownItem.vue';
+import AdminAppearanceMenu from '@admin/Layout/AdminAppearanceMenu.vue';
 import { useUiLabels } from '@/vue/Composables/Admin/Ui/useUiLabels';
 import type { HeaderSection, HeaderShortcut } from '@/ts/Admin/Layout/AdminHeader.type';
 
