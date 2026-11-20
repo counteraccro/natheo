@@ -1,11 +1,19 @@
 import { describe, expect, it } from 'vitest';
 
 const sources = {
-  ...import.meta.glob<string>(['../**/*.{vue,ts}', '!../**/__tests__/**'], {
-    eager: true,
-    query: '?raw',
-    import: 'default',
-  }),
+  ...import.meta.glob<string>(
+    [
+      '../**/*.{vue,ts}',
+      '../../../../overwrite/vue/Components/Admin/**/*.{vue,ts}',
+      '!../**/__tests__/**',
+      '!../../../../overwrite/**/__tests__/**',
+    ],
+    {
+      eager: true,
+      query: '?raw',
+      import: 'default',
+    }
+  ),
   ...import.meta.glob<string>('../../../../admin_app.ts', { eager: true, query: '?raw', import: 'default' }),
 };
 

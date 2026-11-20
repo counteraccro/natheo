@@ -49,7 +49,7 @@ admin_module.module.dashboard.description: 'Home page of the CMS administration'
 admin_module.module.dashboard.label: Dashboard
 admin_module.module.database_manager.description: 'View the database and its statistics'
 admin_module.module.database_manager.label: Database
-admin_module.module.demo_overwrite.description: 'Example of overriding a CMS page'
+admin_module.module.demo_overwrite.description: 'Example of overriding an API operation and a back-office screen'
 admin_module.module.demo_overwrite.label: 'Override example'
 admin_module.module.faq.description: 'FAQ management'
 admin_module.module.faq.label: FAQ

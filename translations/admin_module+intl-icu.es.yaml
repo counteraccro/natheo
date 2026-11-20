@@ -49,7 +49,7 @@ admin_module.module.dashboard.description: 'Página de inicio de la administraci
 admin_module.module.dashboard.label: 'Panel de control'
 admin_module.module.database_manager.description: 'Permite visualizar la base de datos y sus estadísticas'
 admin_module.module.database_manager.label: 'Base de datos'
-admin_module.module.demo_overwrite.description: 'Ejemplo de sobrescritura de una página del CMS'
+admin_module.module.demo_overwrite.description: 'Ejemplo de sobrescritura de una operación de la API y de una pantalla del back-office'
 admin_module.module.demo_overwrite.label: 'Ejemplo de sobrescritura'
 admin_module.module.faq.description: 'Gestión de las FAQ'
 admin_module.module.faq.label: FAQ
