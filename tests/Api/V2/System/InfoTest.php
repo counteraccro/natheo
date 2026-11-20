@@ -3,14 +3,16 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Tests de la ressource Info de l'API v2
  */
 
 namespace App\Tests\Api\V2\System;
 
 use App\Api\V2\Resource\System\Info;
+use App\Api\V2\State\Provider\System\InfoProvider as BaseInfoProvider;
 use App\Enum\Admin\System\Options\OptionSystem;
+use App\Overwrite\Api\State\Provider\System\InfoProvider;
 use App\Service\Admin\System\OptionSystemService;
 use App\Service\Api\System\ApiInfoService;
 use App\Tests\Api\V2\AppApiV2TestCase;
@@ -38,5 +40,23 @@ class InfoTest extends AppApiV2TestCase
         $this->assertEquals($siteName, $content['siteName']);
         $this->assertEquals($this->container->getParameter('app.version'), $content['natheoVersion']);
         $this->assertEquals(ApiInfoService::API_VERSION, $content['apiVersion']);
+        $this->assertSame(InfoProvider::class, $content['extra']['provider']);
+        $this->assertNotFalse(\DateTimeImmutable::createFromFormat(DATE_ATOM, $content['extra']['generatedAt']));
+    }
+
+    /**
+     * Sans surcharge, le provider d'origine renvoie extra à null
+     * @return void
+     */
+    public function testExtraWithoutOverwrite(): void
+    {
+        $operation = $this->container
+            ->get('api_platform.metadata.resource.metadata_collection_factory')
+            ->create(Info::class)
+            ->getOperation('info_get');
+        $this->assertSame(InfoProvider::class, $operation->getProvider());
+
+        $info = $this->container->get(BaseInfoProvider::class)->provide($operation);
+        $this->assertNull($info->extra);
     }
 }

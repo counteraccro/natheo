@@ -10,4 +10,7 @@
 #           processor: App\Overwrite\Api\State\Processor\Tag\UpdateTagProcessor
 
 overwrite:
-    api: []
+    api:
+        # Exemple livré, affiché par l'écran « Exemple de surcharge » du menu Outils : à retirer avec cet écran
+        - operation: info_get
+          provider: App\Overwrite\Api\State\Provider\System\InfoProvider

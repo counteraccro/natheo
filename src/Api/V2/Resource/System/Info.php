@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Ressource API v2 : informations générales de l'installation
  */
 
@@ -38,5 +38,13 @@ final readonly class Info
         #[ApiProperty(required: true)] public string $siteName,
         #[ApiProperty(required: true)] public string $natheoVersion,
         #[ApiProperty(required: true)] public string $apiVersion,
+        #[
+            ApiProperty(
+                description: 'Données ajoutées par une surcharge du provider (config/cms/overwrite.yaml), null sans surcharge',
+                required: true,
+                schema: ['type' => ['object', 'null'], 'additionalProperties' => true],
+            ),
+        ]
+        public ?array $extra = null,
     ) {}
 }
