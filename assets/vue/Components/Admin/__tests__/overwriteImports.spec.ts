@@ -18,20 +18,21 @@ const sources = {
 };
 
 /**
- * Imports d'un fichier du back-office qui contournent l'alias @admin/, et donc sa surcharge
+ * Imports d'un fichier du back-office qui contournent l'alias @admin/, et donc sa surcharge. Une surcharge peut
+ * importer l'original par son chemin complet pour l'envelopper
  */
-const bypassingImports = (source: string): string[] =>
-  [...source.matchAll(/(?:from\s+|import\()\s*'((?:\.\.?\/|@\/vue\/Components\/Admin\/)[^']*)'/g)].map(
-    (match) => match[1]
-  );
+const bypassingImports = (source: string, isOverwrite = false): string[] =>
+  [...source.matchAll(/(?:from\s+|import\()\s*'((?:\.\.?\/|@\/vue\/Components\/Admin\/)[^']*)'/g)]
+    .map((match) => match[1])
+    .filter((path) => !isOverwrite || !path.startsWith('@/'));
 
 describe('Imports des composants du back-office', () => {
   it('trouve les sources', () => {
     expect(Object.keys(sources).length).toBeGreaterThan(20);
   });
 
-  it.each(Object.entries(sources))('%s importe les composants par @admin/', (_file, source) => {
-    expect(bypassingImports(source)).toEqual([]);
+  it.each(Object.entries(sources))('%s importe les composants par @admin/', (file, source) => {
+    expect(bypassingImports(source, file.includes('/overwrite/'))).toEqual([]);
   });
 
   it('repère un import relatif ou par le chemin complet', () => {
@@ -40,5 +41,11 @@ describe('Imports des composants du back-office', () => {
         "import A from './A.vue';\nimport B from '@/vue/Components/Admin/Ui/B.vue';\nimport { C } from '@ui';\nconst D = () => import('../D.vue');"
       )
     ).toEqual(['./A.vue', '@/vue/Components/Admin/Ui/B.vue', '../D.vue']);
+  });
+
+  it("laisse une surcharge importer l'original par le chemin complet", () => {
+    expect(
+      bypassingImports("import A from './A.vue';\nimport B from '@/vue/Components/Admin/Ui/B.vue';", true)
+    ).toEqual(['./A.vue']);
   });
 });
