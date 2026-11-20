@@ -6,7 +6,7 @@
  */
 import { computed } from 'vue';
 import { useMenus } from '@/vue/Composables/Front/useMenus';
-import FrontIcon from '@/vue/Components/Front/Global/FrontIcon.vue';
+import UiIcon from '@/vue/Components/Global/Ui/UiIcon.vue';
 import type { MenuElement } from '@/ts/Front/Api/Menu.type';
 
 const props = defineProps<{ element: MenuElement }>();
@@ -26,7 +26,7 @@ const newTab = computed(() => props.element.target === '_blank');
     :aria-current="current ? 'page' : undefined"
   >
     {{ element.label }}
-    <FrontIcon v-if="newTab" name="external" class="size-3.5 opacity-70" />
+    <UiIcon v-if="newTab" name="external" class="size-3.5 opacity-70" />
   </a>
   <span v-else>{{ element.label }}</span>
 </template>

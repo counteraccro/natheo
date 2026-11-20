@@ -15,6 +15,7 @@ import type {
   GlobalSearchResult,
   GlobalSearchPaginate,
   GlobalSearchResponse,
+  GlobalSearchTranslateOnglet,
 } from '@/ts/Global/GlobalSearch.type';
 import { toastRequestError } from '@/vue/Composables/Global/toast';
 
@@ -44,13 +45,17 @@ export default defineComponent({
       type: Number,
       required: true,
     },
+    entities: {
+      type: Array as PropType<GlobalSearchEntity[]>,
+      required: true,
+    },
   },
 
   emits: [],
 
   data() {
     return {
-      activeTab: 'page' as GlobalSearchEntity,
+      activeTab: (this.entities[0] ?? 'page') as GlobalSearchEntity,
       total: 0 as number,
       loading: {
         page: false,
@@ -71,11 +76,7 @@ export default defineComponent({
   },
 
   mounted() {
-    this.globalSearch('page', this.search, this.page, this.limit, false);
-    this.globalSearch('menu', this.search, this.page, this.limit, false);
-    this.globalSearch('faq', this.search, this.page, this.limit, false);
-    this.globalSearch('tag', this.search, this.page, this.limit, false);
-    this.globalSearch('user', this.search, this.page, this.limit, false);
+    this.entities.forEach((entity) => this.globalSearch(entity, this.search, this.page, this.limit, false));
   },
 
   methods: {
@@ -87,6 +88,20 @@ export default defineComponent({
       return this.activeTab === tab
         ? 'text-primary hover:text-primary-hover border-primary bg-primary-lighter'
         : 'border-transparent text-fg-muted hover:text-fg hover:border-line';
+    },
+
+    /**
+     * Traductions de l'onglet d'une entité
+     * @param entity
+     */
+    tabTranslate(entity: GlobalSearchEntity): GlobalSearchTranslateOnglet {
+      return {
+        page: this.translate.ongletPage,
+        menu: this.translate.ongletMenu,
+        faq: this.translate.ongletFaq,
+        tag: this.translate.ongletTag,
+        user: this.translate.ongletUser,
+      }[entity];
     },
 
     /**
@@ -146,20 +161,20 @@ export default defineComponent({
 
   <div class="mb-4 mt-4 border-b border-gray-200 dark:border-gray-700" id="tab-search">
     <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-styled-tab" role="tablist">
-      <li class="me-2" role="presentation">
+      <li v-for="entity in entities" :key="entity" class="me-2" role="presentation">
         <button
           class="inline-block ps-4 pt-2 pe-4 border-b-2 rounded-t-sm cursor-pointer"
-          :class="[results.page === null ? 'pb-3' : 'pb-2', tabClass('page')]"
-          id="nav-0-tab"
+          :class="[results[entity] === null ? 'pb-3' : 'pb-2', tabClass(entity)]"
+          :id="'nav-' + entity + '-tab'"
           type="button"
           role="tab"
-          :aria-controls="translate.ongletPage.onglet"
-          :aria-selected="activeTab === 'page'"
-          @click="activeTab = 'page'"
+          :aria-controls="'tab-' + entity"
+          :aria-selected="activeTab === entity"
+          @click="activeTab = entity"
         >
-          {{ translate.ongletPage.onglet }}
+          {{ tabTranslate(entity).onglet }}
           <svg
-            v-if="loading.page"
+            v-if="loading[entity]"
             aria-hidden="true"
             class="w-4 h-4 ml-2 text-neutral-tertiary animate-spin fill-(--primary) inline"
             viewBox="0 0 100 101"
@@ -175,144 +190,8 @@ export default defineComponent({
               fill="currentFill"
             />
           </svg>
-          <span v-if="!loading.page && results.page !== null" class="ml-2 badge rounded-pill bg-(--primary)">
-            {{ results.page.total }}
-          </span>
-        </button>
-      </li>
-      <li class="me-2" role="presentation">
-        <button
-          class="inline-block ps-4 pt-2 pe-4 border-b-2 rounded-t-sm cursor-pointer"
-          :class="[results.menu === null ? 'pb-3' : 'pb-2', tabClass('menu')]"
-          id="nav-1-tab"
-          type="button"
-          role="tab"
-          :aria-controls="translate.ongletMenu.onglet"
-          :aria-selected="activeTab === 'menu'"
-          @click="activeTab = 'menu'"
-        >
-          {{ translate.ongletMenu.onglet }}
-          <svg
-            v-if="loading.menu"
-            aria-hidden="true"
-            class="w-4 h-4 ml-2 text-neutral-tertiary animate-spin fill-(--primary) inline"
-            viewBox="0 0 100 101"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-              fill="currentColor"
-            />
-            <path
-              d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-              fill="currentFill"
-            />
-          </svg>
-          <span v-if="!loading.menu && results.menu !== null" class="ml-2 badge rounded-pill bg-(--primary)">
-            {{ results.menu.total }}
-          </span>
-        </button>
-      </li>
-      <li class="me-2" role="presentation">
-        <button
-          class="inline-block ps-4 pt-2 pe-4 border-b-2 rounded-t-sm cursor-pointer"
-          :class="[results.faq === null ? 'pb-3' : 'pb-2', tabClass('faq')]"
-          id="nav-2-tab"
-          type="button"
-          role="tab"
-          :aria-controls="translate.ongletFaq.onglet"
-          :aria-selected="activeTab === 'faq'"
-          @click="activeTab = 'faq'"
-        >
-          {{ translate.ongletFaq.onglet }}
-          <svg
-            v-if="loading.faq"
-            aria-hidden="true"
-            class="w-4 h-4 ml-2 text-neutral-tertiary animate-spin fill-(--primary) inline"
-            viewBox="0 0 100 101"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-              fill="currentColor"
-            />
-            <path
-              d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-              fill="currentFill"
-            />
-          </svg>
-          <span v-if="!loading.faq && results.faq !== null" class="ml-2 badge rounded-pill bg-(--primary)">
-            {{ results.faq.total }}
-          </span>
-        </button>
-      </li>
-      <li class="me-2" role="presentation">
-        <button
-          class="inline-block ps-4 pt-2 pe-4 border-b-2 rounded-t-sm cursor-pointer"
-          :class="[results.tag === null ? 'pb-3' : 'pb-2', tabClass('tag')]"
-          id="nav-3-tab"
-          type="button"
-          role="tab"
-          :aria-controls="translate.ongletTag.onglet"
-          :aria-selected="activeTab === 'tag'"
-          @click="activeTab = 'tag'"
-        >
-          {{ translate.ongletTag.onglet }}
-          <svg
-            v-if="loading.tag"
-            aria-hidden="true"
-            class="w-4 h-4 ml-2 text-neutral-tertiary animate-spin fill-(--primary) inline"
-            viewBox="0 0 100 101"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-              fill="currentColor"
-            />
-            <path
-              d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-              fill="currentFill"
-            />
-          </svg>
-          <span v-if="!loading.tag && results.tag !== null" class="ml-2 badge rounded-pill bg-(--primary)">
-            {{ results.tag.total }}
-          </span>
-        </button>
-      </li>
-      <li class="me-2" role="presentation">
-        <button
-          class="inline-block ps-4 pt-2 pe-4 border-b-2 rounded-t-sm cursor-pointer"
-          :class="[results.user === null ? 'pb-3' : 'pb-2', tabClass('user')]"
-          id="nav-4-tab"
-          type="button"
-          role="tab"
-          :aria-controls="translate.ongletUser.onglet"
-          :aria-selected="activeTab === 'user'"
-          @click="activeTab = 'user'"
-        >
-          {{ translate.ongletUser.onglet }}
-          <svg
-            v-if="loading.user"
-            aria-hidden="true"
-            class="w-4 h-4 ml-2 text-neutral-tertiary animate-spin fill-(--primary) inline"
-            viewBox="0 0 100 101"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-              fill="currentColor"
-            />
-            <path
-              d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-              fill="currentFill"
-            />
-          </svg>
-          <span v-if="!loading.user && results.user !== null" class="ml-2 badge rounded-pill bg-(--primary)">
-            {{ results.user.total }}
+          <span v-if="!loading[entity] && results[entity] !== null" class="ml-2 badge rounded-pill bg-(--primary)">
+            {{ results[entity].total }}
           </span>
         </button>
       </li>
@@ -320,162 +199,33 @@ export default defineComponent({
   </div>
 
   <div id="tab-search-content">
-    <div v-show="activeTab === 'page'" id="tab-page" role="tabpanel" aria-labelledby="nav-0-tab">
-      <div v-if="loading.page">
+    <div
+      v-for="entity in entities"
+      :key="entity"
+      v-show="activeTab === entity"
+      :id="'tab-' + entity"
+      role="tabpanel"
+      :aria-labelledby="'nav-' + entity + '-tab'"
+    >
+      <div v-if="loading[entity]">
         <SkeletonSearchResult :rows="limit" />
       </div>
       <div v-else>
-        <h2 class="text-xl font-bold">{{ translate.ongletPage.description }}</h2>
-
+        <h2 class="text-xl font-bold">{{ tabTranslate(entity).description }}</h2>
         <p class="text-sm text-(--text-secondary)">
-          <span v-if="results.page !== null"> {{ results.page.total }} {{ translate.ongletPage.title }} </span>
-          <span v-else>0 {{ translate.ongletPage.title }}</span>
+          {{ results[entity]?.total ?? 0 }} {{ tabTranslate(entity).title }}
         </p>
 
-        <div
-          v-if="results.page === null && !loading.page"
-          class="mt-4 text-center text-sm text-(--text-secondary) italic"
-        >
-          {{ translate.ongletPage.noResult }}
+        <div v-if="results[entity] === null" class="mt-4 text-center text-sm text-(--text-secondary) italic">
+          {{ tabTranslate(entity).noResult }}
         </div>
-        <div v-if="results.page !== null && paginate.page" class="mt-2">
+        <div v-if="results[entity] !== null && paginate[entity]" class="mt-2">
           <TabSearchResult
-            key="1"
-            :result="results.page"
-            :translate="translate.ongletPage"
+            :result="results[entity]"
+            :translate="tabTranslate(entity)"
             :translate-paginate="translate.paginate"
-            :paginate="paginate.page"
-            :entity="'page'"
-            @change-page-event="changePage"
-          >
-          </TabSearchResult>
-        </div>
-      </div>
-    </div>
-
-    <div v-show="activeTab === 'menu'" id="tab-menu" role="tabpanel" aria-labelledby="nav-1-tab">
-      <div v-if="loading.menu">
-        <SkeletonSearchResult :rows="limit" />
-      </div>
-      <div v-else>
-        <h2 class="text-xl font-bold">{{ translate.ongletMenu.description }}</h2>
-        <p class="text-sm text-(--text-secondary)">
-          <span v-if="results.menu !== null"> {{ results.menu.total }} {{ translate.ongletMenu.title }} </span>
-          <span v-else>0 {{ translate.ongletMenu.title }}</span>
-        </p>
-
-        <div
-          v-if="results.menu === null && !loading.menu"
-          class="mt-4 text-center text-sm text-(--text-secondary) italic"
-        >
-          {{ translate.ongletMenu.noResult }}
-        </div>
-        <div v-if="results.menu !== null && paginate.menu" class="mt-2">
-          <TabSearchResult
-            key="3"
-            :result="results.menu"
-            :translate="translate.ongletMenu"
-            :translate-paginate="translate.paginate"
-            :paginate="paginate.menu"
-            :entity="'menu'"
-            @change-page-event="changePage"
-          >
-          </TabSearchResult>
-        </div>
-      </div>
-    </div>
-
-    <div v-show="activeTab === 'faq'" id="tab-faq" role="tabpanel" aria-labelledby="nav-2-tab">
-      <div v-if="loading.faq">
-        <SkeletonSearchResult :rows="limit" />
-      </div>
-      <div v-else>
-        <h2 class="text-xl font-bold">{{ translate.ongletFaq.description }}</h2>
-        <p class="text-sm text-(--text-secondary)">
-          <span v-if="results.faq !== null"> {{ results.faq.total }} {{ translate.ongletFaq.title }} </span>
-          <span v-else>0 {{ translate.ongletFaq.title }}</span>
-        </p>
-
-        <div
-          v-if="results.faq === null && !loading.faq"
-          class="mt-4 text-center text-sm text-(--text-secondary) italic"
-        >
-          {{ translate.ongletFaq.noResult }}
-        </div>
-        <div v-if="results.faq !== null && paginate.faq" class="mt-2">
-          <TabSearchResult
-            key="4"
-            :result="results.faq"
-            :translate="translate.ongletFaq"
-            :translate-paginate="translate.paginate"
-            :paginate="paginate.faq"
-            :entity="'faq'"
-            @change-page-event="changePage"
-          >
-          </TabSearchResult>
-        </div>
-      </div>
-    </div>
-
-    <div v-show="activeTab === 'tag'" id="tab-tag" role="tabpanel" aria-labelledby="nav-3-tab">
-      <div v-if="loading.tag">
-        <SkeletonSearchResult :rows="limit" />
-      </div>
-      <div v-else>
-        <h2 class="text-xl font-bold">{{ translate.ongletTag.description }}</h2>
-        <p class="text-sm text-(--text-secondary)">
-          <span v-if="results.tag !== null"> {{ results.tag.total }} {{ translate.ongletTag.title }} </span>
-          <span v-else>0 {{ translate.ongletTag.title }}</span>
-        </p>
-
-        <div
-          v-if="results.tag === null && !loading.tag"
-          class="mt-4 text-center text-sm text-(--text-secondary) italic"
-        >
-          {{ translate.ongletTag.noResult }}
-        </div>
-
-        <div v-if="results.tag !== null && paginate.tag" class="mt-2">
-          <TabSearchResult
-            key="5"
-            :result="results.tag"
-            :translate="translate.ongletTag"
-            :translate-paginate="translate.paginate"
-            :paginate="paginate.tag"
-            :entity="'tag'"
-            @change-page-event="changePage"
-          >
-          </TabSearchResult>
-        </div>
-      </div>
-    </div>
-
-    <div v-show="activeTab === 'user'" id="tab-user" role="tabpanel" aria-labelledby="nav-4-tab">
-      <div v-if="loading.user">
-        <SkeletonSearchResult :rows="limit" />
-      </div>
-      <div v-else>
-        <h2 class="text-xl font-bold">{{ translate.ongletUser.description }}</h2>
-        <p class="text-sm text-(--text-secondary)">
-          <span v-if="results.user !== null"> {{ results.user.total }} {{ translate.ongletUser.title }} </span>
-          <span v-else>0 {{ translate.ongletUser.title }}</span>
-        </p>
-
-        <div
-          v-if="results.user === null && !loading.user"
-          class="mt-4 text-center text-sm text-(--text-secondary) italic"
-        >
-          {{ translate.ongletUser.noResult }}
-        </div>
-
-        <div v-if="results.user !== null && paginate.user" class="mt-2">
-          <TabSearchResult
-            key="6"
-            :result="results.user"
-            :translate="translate.ongletUser"
-            :translate-paginate="translate.paginate"
-            :paginate="paginate.user"
-            :entity="'user'"
+            :paginate="paginate[entity]"
+            :entity="entity"
             @change-page-event="changePage"
           >
           </TabSearchResult>

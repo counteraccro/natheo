@@ -6,7 +6,7 @@
 import { ref, type Ref } from 'vue';
 import { useFrontContext } from '@/vue/Composables/Front/useFrontContext';
 import { useAsync, type AsyncState } from '@/vue/Composables/Front/useAsync';
-import type { Paginated } from '@/ts/Front/Api/Hydra.type';
+import type { Paginated } from '@/ts/Global/Api/Hydra.type';
 import type { PageSummary } from '@/ts/Front/Api/Page.type';
 import type { ListingContent } from '@/ts/Front/Api/PageContent.type';
 

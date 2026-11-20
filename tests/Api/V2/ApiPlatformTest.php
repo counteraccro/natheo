@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace App\Tests\Api\V2;
 
+use ApiPlatform\Metadata\ErrorResource;
+use ApiPlatform\Metadata\NotExposed;
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Admin\System\OptionSystemService;
 use App\Service\Global\Token\TokenHasher;
@@ -90,6 +92,51 @@ class ApiPlatformTest extends AppApiV2TestCase
     }
 
     /**
+     * Un token back-office n'ouvre ni les opérations publiques de la v2 ni la v1. Les opérations partagées
+     * (sessions, infos) restent ouvertes aux deux types
+     * @return void
+     */
+    public function testTokenScope(): void
+    {
+        $backOffice = $this->backOfficeTokenHeaders();
+        $this->assertProblem($this->requestV2('GET', '/probes', headers: $backOffice), 403);
+        $this->assertEquals(200, $this->requestV2('GET', '/info', headers: $backOffice)->getStatusCode());
+        $this->assertEquals(200, $this->requestV2('GET', '/info', self::HEADER_READ)->getStatusCode());
+
+        $this->client->request(
+            'GET',
+            '/api/v1/options-systems',
+            server: ['HTTP_Accept' => 'application/json', ...$backOffice],
+        );
+        $this->assertEquals(403, $this->client->getResponse()->getStatusCode());
+        $this->client->request('GET', '/api/v1/options-systems', server: $this->getCustomHeaders());
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+    }
+
+    /**
+     * Chaque opération porte un name explicite, utilisé par la surcharge et le registre des modules
+     * @return void
+     */
+    public function testOperationNames(): void
+    {
+        $nameFactory = $this->container->get('api_platform.metadata.resource.name_collection_factory');
+        $metadataFactory = $this->container->get('api_platform.metadata.resource.metadata_collection_factory');
+        foreach ($nameFactory->create() as $resourceClass) {
+            foreach ($metadataFactory->create($resourceClass) as $resource) {
+                if ($resource instanceof ErrorResource) {
+                    continue;
+                }
+                foreach ($resource->getOperations() ?? [] as $name => $operation) {
+                    if ($operation instanceof NotExposed) {
+                        continue;
+                    }
+                    $this->assertStringStartsNotWith('_api_', $name, $resourceClass . ' : name manquant');
+                }
+            }
+        }
+    }
+
+    /**
      * API fermée : 403 avec ou sans token, documentation masquée
      * @return void
      */
@@ -166,6 +213,15 @@ class ApiPlatformTest extends AppApiV2TestCase
         $content = $this->decode($response);
         $this->assertArrayHasKey('/api/v2/info', $content['paths']);
         $this->assertArrayHasKey('Bearer', $content['components']['securitySchemes']);
+        $this->assertSame([], preg_grep('#^/api/v2/admin/#', array_keys($content['paths'])), 'Administration masquée');
+        $this->assertStringNotContainsString('AdminProbe', (string) $response->getContent());
+        $this->assertStringNotContainsString('Permissions', (string) $response->getContent());
+        $this->assertNotContains('AdminProbe', array_column($content['tags'] ?? [], 'name'));
+
+        $hydra = $this->requestV2('GET', '/docs.jsonld', self::HEADER_NONE);
+        $this->assertEquals(200, $hydra->getStatusCode());
+        $this->assertStringContainsString('Probe', (string) $hydra->getContent());
+        $this->assertStringNotContainsString('AdminProbe', (string) $hydra->getContent());
 
         foreach ($content['paths'] as $path => $operations) {
             foreach ($operations as $method => $operation) {

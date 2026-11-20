@@ -6,7 +6,7 @@
 import { computed, type ComputedRef } from 'vue';
 import { useSiteOptions } from '@/vue/Composables/Front/useSiteOptions';
 import type { SiteOptions } from '@/ts/Front/Api/OptionSystem.type';
-import type { IconName } from '@/vue/Components/Front/Global/FrontIcon.vue';
+import type { IconName } from '@/ts/Global/Ui/UiIcon.type';
 
 export type SocialNetwork = 'github' | 'linkedin' | 'youtube' | 'x' | 'facebook' | 'instagram' | 'tiktok';
 
@@ -14,7 +14,7 @@ export interface SocialLink {
   network: SocialNetwork;
   label: string;
   url: string;
-  /** Icône de FrontIcon.vue */
+  /** Icône du registre de UiIcon */
   icon: IconName;
 }
 

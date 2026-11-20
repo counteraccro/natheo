@@ -17,7 +17,7 @@ use App\Enum\Admin\Global\Breadcrumb;
 use App\Enum\Admin\System\Options\OptionUser;
 use App\Security\Voter\ContentVoter;
 use App\Service\Admin\Content\Tag\TagService;
-use App\Translate\Admin\Content\TagTranslate;
+use App\Translation\Admin\Content\TagTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;

@@ -70,7 +70,9 @@ export default defineComponent({
     <div
       class="grid grid-cols-1 gap-6 mb-6"
       v-if="
-        roles.isSuperAdmin && datas.dashboard_help_first_connexion.help_first_connexion && showBlockHelpFirstConnexion
+        roles.canSeeHelpFirstConnexion &&
+        datas.dashboard_help_first_connexion.help_first_connexion &&
+        showBlockHelpFirstConnexion
       "
     >
       <BlockHelpFirstConnexion

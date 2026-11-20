@@ -242,57 +242,7 @@ options_user.default_personal_data_render.value.login: Pseudonyme
 options_user.default_personal_data_render.value.name: Vos nom et prénom
 options_user.nb_element.help: Définit le nombre d'éléments par défaut des tableaux pour votre session
 options_user.nb_element.label: Nombre d'éléments par page
-pagedemo.index.description: 'Cette page n''est affichée que si la surcharge de la route {route} est désactivée dans {file}. Elle sert de page d''origine à l''exemple de surcharge.'
-pagedemo.index.title: 'Page d''origine de la démo de surcharge'
 response.ajax.error: 'Une erreur est survenue, consultez les logs pour en savoir plus'
 response.ajax.success: 'Action réalisée avec succès'
-sidebar.advanced_options.description: 'Permet de gérer les options pour le développement du CMS'
-sidebar.advanced_options.label: 'Options avancées'
-sidebar.api_token.description: Gérer les tokens d'accès aux API de Nathéo CMS
-sidebar.api_token.label: 'Tokens API'
-sidebar.comment.description: 'Gestion des commentaires'
-sidebar.comment.label: Commentaires
-sidebar.content.description: Regroupe l'ensemble des modules de contenu du site
-sidebar.content.label: Contenus
-sidebar.dashboard.description: "Page d'accueil de la partie administration du CMS"
-sidebar.dashboard.label: 'Tableau de bord'
-sidebar.database_manager.description: Permet de visualiser la base de données et ses statistiques
-sidebar.database_manager.label: 'Base de données'
-sidebar.demo_overwrite.description: Exemple de surcharge d'une page du CMS
-sidebar.demo_overwrite.label: 'Exemple de surcharge'
-sidebar.faq.description: Gestion des FAQ
-sidebar.faq.label: FAQ
-sidebar.info.description: 'Information sur le CMS'
-sidebar.info.label: Information
-sidebar.log.description: 'Gestion et visualisation des logs applicatifs'
-sidebar.log.label: Logs
-sidebar.mail.description: 'Gestion des emails envoyés depuis le CMS'
-sidebar.mail.label: Emails
-sidebar.media.description: 'Gestion des médias'
-sidebar.media.label: Médiathèque
-sidebar.member.description: Gestion des membres inscrits sur le site
-sidebar.member.label: Membres
-sidebar.menu.description: 'Gestion des menus'
-sidebar.menu.label: Menus
-sidebar.option_system.description: 'Configuration du CMS'
-sidebar.option_system.label: 'Options système'
-sidebar.page.description: 'Gestion des pages'
-sidebar.page.label: Pages
-sidebar.sidebar.description: "Gestion du menu général de l'administration"
-sidebar.sidebar.label: Sidebar
-sidebar.sql_manager.description: Créer / exécuter des requêtes SQL (uniquement SELECT)
-sidebar.sql_manager.label: 'Gestionnaire SQL'
-sidebar.system.description: "Regroupe l'ensemble des modules système du CMS"
-sidebar.system.label: Système
-sidebar.tag.description: 'Gestion des tags'
-sidebar.tag.label: Tags
-sidebar.tools.description: "Regroupe l'ensemble des modules pour aider au développement du CMS"
-sidebar.tools.label: Outils
-sidebar.translate.description: 'Gestion des traductions du CMS'
-sidebar.translate.label: Traductions
-sidebar.update.description: 'Gestion des mises à jour du CMS'
-sidebar.update.label: 'Mise à jour'
-sidebar.user.description: Gestion des utilisateurs qui peuvent se connecter à l'administration du site
-sidebar.user.label: Utilisateurs
 options_system.page_validation.label: 'Validation des pages'
 options_system.page_validation.help: 'Si cette option est activée, les contributeurs soumettent leurs pages à validation au lieu de les publier ; les administrateurs les valident ou les refusent'

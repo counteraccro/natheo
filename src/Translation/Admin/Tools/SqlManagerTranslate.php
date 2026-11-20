@@ -1,0 +1,85 @@
+<?php
+
+declare(strict_types=1);
+/**
+ * Class pour la génération des traductions pour les scripts vue de SqlManager
+ * @author Gourdon Aymeric
+ * @version 1.0
+ */
+namespace App\Translation\Admin\Tools;
+
+use App\Translation\AppTranslate;
+
+class SqlManagerTranslate extends AppTranslate
+{
+    /**
+     * @return array
+     */
+    public function getTranslate(): array
+    {
+        return [
+            'label_textarea_query' => $this->translator->trans(
+                'sql_manager.label.textarea.query',
+                domain: 'sql_manager',
+            ),
+            'title_my_query' => $this->translator->trans('sql_manager.title.my_query', domain: 'sql_manager'),
+            'sub_title_my_query' => $this->translator->trans('sql_manager.sub.title.my_query', domain: 'sql_manager'),
+            'btn_execute_query' => $this->translator->trans('sql_manager.button.execute.query', domain: 'sql_manager'),
+            'btn_save_query' => $this->translator->trans('sql_manager.button.save.query', domain: 'sql_manager'),
+            'bloc_query' => $this->translator->trans('sql_manager.block.query', domain: 'sql_manager'),
+            'bloc_query_sub_title' => $this->translator->trans(
+                'sql_manager.block.query_sub_title',
+                domain: 'sql_manager',
+            ),
+            'label_list_table' => $this->translator->trans('sql_manager.label.list.table', domain: 'sql_manager'),
+            'btn_add_table' => $this->translator->trans('sql_manager.button.add.table', domain: 'sql_manager'),
+            'label_list_field' => $this->translator->trans('sql_manager.label.list.field', domain: 'sql_manager'),
+            'label_list_field_2' => $this->translator->trans('sql_manager.label.list.field_2', domain: 'sql_manager'),
+            'placeholder_table' => $this->translator->trans('sql_manager.placeholder.table', domain: 'sql_manager'),
+            'placeholder_field' => $this->translator->trans('sql_manager.placeholder.field', domain: 'sql_manager'),
+            'bloc_result' => $this->translator->trans('sql_manager.block.result', domain: 'sql_manager'),
+            'bloc_result_sub_title' => $this->translator->trans(
+                'sql_manager.block.result_sub_title',
+                domain: 'sql_manager',
+            ),
+            'toast_msg_exec_error' => $this->translator->trans(
+                'sql_manager.toast.message.exec.error',
+                domain: 'sql_manager',
+            ),
+            'toast_msg_exec_success' => $this->translator->trans(
+                'sql_manager.toast.message.exec.success',
+                domain: 'sql_manager',
+            ),
+            'toast_msg_save_error' => $this->translator->trans(
+                'sql_manager.toast.message.save.error',
+                domain: 'sql_manager',
+            ),
+            'toast_msg_load_error' => $this->translator->trans(
+                'sql_manager.toast.message.load.error',
+                domain: 'sql_manager',
+            ),
+            'help_text_1' => $this->translator->trans('sql_manager.help.text.1', domain: 'sql_manager'),
+            'help_select_table' => $this->translator->trans('sql_manager.help.select.table', domain: 'sql_manager'),
+            'help_select_field' => $this->translator->trans('sql_manager.help.select.field', domain: 'sql_manager'),
+            'label_name' => $this->translator->trans('sql_manager.label.name', domain: 'sql_manager'),
+            'label_name_placeholder' => $this->translator->trans(
+                'sql_manager.label.name_placeholder',
+                domain: 'sql_manager',
+            ),
+            'error_query_empty' => $this->translator->trans('sql_manager.error.query.empty', domain: 'sql_manager'),
+            'error_name_empty' => $this->translator->trans('sql_manager.error.name.empty', domain: 'sql_manager'),
+            'no_result_query' => $this->translator->trans('sql_manager.no_result.query', domain: 'sql_manager'),
+            'no_result_query_help' => $this->translator->trans('sql_manager.no_result.help', domain: 'sql_manager'),
+            'no_query_manager_title' => $this->translator->trans(
+                'sql_manager.no.query.manager.title',
+                domain: 'sql_manager',
+            ),
+            'no_query_manager_text' => $this->translator->trans(
+                'sql_manager.no.query.manager.text',
+                domain: 'sql_manager',
+            ),
+            'btn_back' => $this->translator->trans('sql_manager.button.back', domain: 'sql_manager'),
+            'btn_new' => $this->translator->trans('sql_manager.button.new', domain: 'sql_manager'),
+        ];
+    }
+}

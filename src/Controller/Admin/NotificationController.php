@@ -17,7 +17,7 @@ use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Admin\GridService;
 use App\Service\Admin\NotificationService;
 use App\Service\Admin\System\OptionSystemService;
-use App\Translate\Admin\Global\NotificationTranslate;
+use App\Translation\Admin\Global\NotificationTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;

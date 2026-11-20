@@ -11,8 +11,8 @@ import { useColorScheme } from '@/vue/Composables/Front/useColorScheme';
 import { useLanguages } from '@/vue/Composables/Front/useLanguages';
 import { useMenus } from '@/vue/Composables/Front/useMenus';
 import { useSiteOptions } from '@/vue/Composables/Front/useSiteOptions';
-import BrandLogo from '@/vue/Components/Front/Global/BrandLogo.vue';
-import FrontIcon from '@/vue/Components/Front/Global/FrontIcon.vue';
+import BrandLogo from '@/vue/Components/Global/Ui/BrandLogo.vue';
+import UiIcon from '@/vue/Components/Global/Ui/UiIcon.vue';
 import RailSheet from '@/vue/Components/Front/StormFront/Layout/RailSheet.vue';
 import MegaColumns from '@/vue/Components/Front/StormFront/Menu/MegaColumns.vue';
 import MenuTree from '@/vue/Components/Front/StormFront/Menu/MenuTree.vue';
@@ -120,7 +120,7 @@ const BUTTON =
       :aria-controls="SHEET_ID"
       @click="toggle('menu', $event.currentTarget as HTMLElement)"
     >
-      <FrontIcon name="bars" class="size-5.5" />
+      <UiIcon name="bars" class="size-5.5" />
       {{ translate.header.menuButton }}
     </button>
     <button
@@ -132,7 +132,7 @@ const BUTTON =
       :aria-controls="threadId"
       @click="toggleThread"
     >
-      <FrontIcon name="list" class="size-5.5" />
+      <UiIcon name="list" class="size-5.5" />
       {{ translate.thread.button }}
     </button>
 
@@ -147,11 +147,11 @@ const BUTTON =
         :aria-controls="SHEET_ID"
         @click="toggle('lang', $event.currentTarget as HTMLElement)"
       >
-        <FrontIcon name="globe" class="size-5.5" />
+        <UiIcon name="globe" class="size-5.5" />
         <span><span class="sr-only">{{ translate.header.localeLabel }} : </span>{{ datas.locale.toUpperCase() }}</span>
       </button>
       <button type="button" :class="BUTTON" :aria-pressed="scheme === 'dark'" @click="toggleScheme">
-        <FrontIcon :name="scheme === 'dark' ? 'sun' : 'moon'" class="size-5.5" />
+        <UiIcon :name="scheme === 'dark' ? 'sun' : 'moon'" class="size-5.5" />
         <span aria-hidden="true">{{ translate.header.modeButton }}</span>
         <span class="sr-only">{{ translate.header.darkMode }}</span>
       </button>

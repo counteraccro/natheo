@@ -1,39 +1,48 @@
-demo_overwrite.index.title: 'La surcharge des pages du back-office'
-demo_overwrite.index.description: 'Guide pour surcharger des pages du back-office'
-demo_overwrite.guide.prerequisites.title: Prérequis
-demo_overwrite.guide.introduction.title: Introduction
-demo_overwrite.guide.introduction.text_1: Vous visualisez actuellement une page personnalisée qui surcharge une page existante du CMS. <br />Nathéo CMS offre la possibilité de surcharger très simplement n'importe quelle page du CMS pour y apporter votre propre logique de code
-demo_overwrite.guide.introduction.text_2: "La page d'origine est appelée depuis le controller {controller} et est rendue via la vue Twig {vue}. Cependant, celle-ci est surchargée et est donc appelée depuis le controller {controller2} avec la vue associée {vue2}"
-demo_overwrite.guide.introduction.text_3: "De la même façon, l'URL {url} est transformée en {url2} afin de rediriger l'utilisateur vers la page surchargée."
-demo_overwrite.guide.introduction.text_4: 'Exemple : <a class="link" href="{url}">la page non surchargée</a> et <a class="link" href="{url2}">la page surchargée</a> pointent toutes deux vers la même page, celle que vous consultez actuellement.'
-demo_overwrite.guide.introduction.sub_title_1: 'Comment cela fonctionne-t-il ?'
-demo_overwrite.guide.prerequisites.text_1: 'Voici les prérequis nécessaires pour créer une nouvelle page personnalisée.'
-demo_overwrite.guide.prerequisites.required_1: 'Avoir un minimum de connaissances en PHP et Symfony.'
-demo_overwrite.guide.prerequisites.required_2: "Disposer d'un environnement de développement complet."
-demo_overwrite.guide.prerequisites.required_3: 'Connaître les conventions Symfony.'
-demo_overwrite.guide.prerequisites.required_4: "Tout au long de ce tutoriel, nous nous appuierons sur le code qui permet d'afficher cette page comme exemple."
-demo_overwrite.guide.prerequisites.alert.title: 'Bon à savoir !'
-demo_overwrite.guide.prerequisites.alert.text_1: 'Ne créez une surcharge que pour ajouter une nouvelle logique de code ou pour modifier en profondeur la logique existante.'
-demo_overwrite.guide.prerequisites.alert.text_2: Si vous souhaitez uniquement modifier le design, utilisez les API (à venir) du back-office.
-demo_overwrite.guide.step_1.title: 'Étape 1 - Création du controller personnalisé'
-demo_overwrite.guide.step_1.text_1: "La première étape consiste à créer un controller personnalisé qui sera appelé à la place du controller d'origine. C'est ici que vous placerez l'ensemble de votre logique métier."
-demo_overwrite.guide.step_1.text_2: 'Créez votre controller dans le dossier <code>Overwrite</code> : {controller}'
-demo_overwrite.guide.step_1.text_3: Depuis ce fichier, vous aurez accès à l'ensemble des fonctionnalités du CMS (enums, services, repositories, etc.)
-demo_overwrite.guide.step_1.text_4: 'Exemple de code avec le controller <code>DemoOverwriteController.php</code>'
-demo_overwrite.guide.step_1.alert.title: Attention
-demo_overwrite.guide.step_1.alert.text_1: 'Pourquoi placer mon code dans le dossier <code>Overwrite</code> plutôt que dans le dossier <code>Controller</code> ?'
-demo_overwrite.guide.step_2.alert.text_2: "Le CMS étant en constante évolution, placer son code personnalisé dans le dossier <code>Controller</code> risque de faire perdre son travail lors d'une mise à jour. Le dossier <code>Overwrite</code> étant réservé au code personnalisé, son contenu ne sera jamais modifié lors des futures mises à jour du CMS."
-demo_overwrite.guide.step_2.title: 'Étape 2 - Création de la vue Twig'
-demo_overwrite.guide.step_2.text_1: 'Ajoutez la vue qui servira au rendu et placez-la dans le dossier {dossier}.'
-demo_overwrite.guide.step_2.text_2: "Tout comme pour le controller, il est recommandé de placer votre code dans le dossier {dossier} afin d'éviter tout risque de perte lors d'une mise à jour."
-demo_overwrite.guide.step_3.title: 'Étape 3 - Configuration'
-demo_overwrite.guide.step_3.text_1: "Une fois votre controller et sa vue créés, il ne reste plus qu'à indiquer au CMS quelle route doit être surchargée par votre nouvelle route. Pour cela, rien de plus simple : ouvrez le fichier {dossier}."
-demo_overwrite.guide.step_3.text_2: 'Voici la configuration pour la surcharge de cette page.'
-demo_overwrite.guide.step_3.text_3: 'Explication rapide de cette configuration.'
-demo_overwrite.guide.step_3.text_4: "<b>controller</b> : Le controller que l'on souhaite surcharger, dans notre exemple {controller}."
-demo_overwrite.guide.step_3.text_5: "<b>route</b> : La route que l'on souhaite surcharger, dans notre exemple <code>admin_dashboard_page_demo</code>."
-demo_overwrite.guide.step_3.text_6: '<b>overwrite</b> : La configuration de la surcharge.'
-demo_overwrite.guide.step_3.text_7: '<b>route</b> : La nouvelle route, dans notre exemple <code>admin_overwrite_page_demo</code>.'
-demo_overwrite.guide.step_3.text_8: '<b>parameters</b> : Si votre route comporte des paramètres, renseignez-les ici sous la forme clé : valeur, où clé correspond au nom du paramètre et valeur à son type de donnée.'
-demo_overwrite.guide.step_4.title: "Étape 4 - C'est terminé !"
-demo_overwrite.guide.step_4.text_1: 'Félicitations, vous venez de surcharger une URL interne du CMS avec votre propre code. Bravo !'
+demo_overwrite.menu.label: 'Exemple de surcharge'
+demo_overwrite.module.description: "Exemple de surcharge d'une opération de l'API et d'un écran du back-office"
+demo_overwrite.module.label: 'Exemple de surcharge'
+demo_overwrite.screen.description: "Ce tutoriel explique comment personnaliser l'API et le back-office sans modifier le code de Nathéo. Chaque étape s'appuie sur les fichiers de cet écran."
+demo_overwrite.screen.title: 'Exemple de surcharge'
+demo_overwrite.tutorial.api_intro: "La surcharge change la classe qui produit la réponse d'une opération. L'opération garde son adresse et ses droits, et les clients de l'API n'ont rien à modifier."
+demo_overwrite.tutorial.api_step1_text: "Chaque opération porte un nom unique. Il figure dans le champ `operationId` de la documentation de l'API, et la commande `php bin/console debug:api-resource` affiche les opérations d'une ressource. L'opération de cet exemple s'appelle `info_get`. Les noms des opérations d'administration commencent par `admin_`, comme `admin_module_get`."
+demo_overwrite.tutorial.api_step1_title: "Trouver le nom de l'opération"
+demo_overwrite.tutorial.api_step2_processor: "Pour une écriture, la classe implémente `ProcessorInterface`. Une écriture d'administration étend plutôt `AbstractAdminProcessor`, comme les processors de Nathéo, pour garder le contrôle de l'en-tête `If-Match` et le journal des actions."
+demo_overwrite.tutorial.api_step2_text: "Créez la classe dans `src/Overwrite/`, ici `src/Overwrite/Api/State/Provider/System/InfoProvider.php`. Elle implémente `ProviderInterface` pour une lecture. Pour garder le comportement d'origine, demandez le provider de Nathéo dans le constructeur. Symfony l'injecte, et votre méthode `provide()` l'appelle puis modifie sa réponse. Ici, elle recopie l'objet `Info` et remplit le champ `extra`."
+demo_overwrite.tutorial.api_step2_title: 'Écrire la classe de remplacement'
+demo_overwrite.tutorial.api_step3_errors: "En cas d'erreur, la construction du cache s'arrête avec un message. C'est le cas d'une opération inconnue, d'une classe absente, d'une classe qui n'est pas un provider ou un processor de l'API, d'un processor donné à une lecture ou d'un provider donné à une opération qui ne lit pas la ressource."
+demo_overwrite.tutorial.api_step3_text: "Ajoutez une entrée sous `overwrite.api` dans `config/cms/overwrite.yaml`, avec le nom de l'opération et la classe sous la clé `provider`, ou `processor` pour une écriture. Le fichier est lu à la construction du cache. En développement, le cache se reconstruit seul après une modification. En production, lancez `php bin/console cache:clear`."
+demo_overwrite.tutorial.api_step3_title: 'Déclarer la surcharge'
+demo_overwrite.tutorial.api_title: "Surcharger une opération de l'API"
+demo_overwrite.tutorial.error: 'La lecture de GET /api/v2/info a échoué.'
+demo_overwrite.tutorial.field_api_version: "Version de l'API"
+demo_overwrite.tutorial.field_extra: 'Champ extra'
+demo_overwrite.tutorial.field_natheo_version: 'Version de Nathéo'
+demo_overwrite.tutorial.field_site_name: 'Nom du site'
+demo_overwrite.tutorial.inactive_text: "Le champ extra vaut null, car config/cms/overwrite.yaml ne surcharge plus l'opération info_get. Remettez l'entrée puis videz le cache."
+demo_overwrite.tutorial.intro_text_1: "Une surcharge remplace une partie de Nathéo par votre code. Elle s'applique à une opération de l'API v2 ou aux fichiers Vue du back-office. Les trois parties de ce tutoriel détaillent chaque cas."
+demo_overwrite.tutorial.intro_text_2: "Votre code PHP va dans `src/Overwrite/` et vos fichiers Vue dans `assets/overwrite/`. Une mise à jour de Nathéo ne touche pas à ces deux dossiers. Un fichier modifié ailleurs, dans `src/Api/` ou `assets/vue/` par exemple, serait remplacé à la mise à jour suivante."
+demo_overwrite.tutorial.intro_text_3: "Il faut connaître Symfony et Vue 3, et disposer d'une installation de développement où lancer `php bin/console` et `yarn`."
+demo_overwrite.tutorial.intro_title: 'Avant de commencer'
+demo_overwrite.tutorial.live_text: "Cette réponse de `GET /api/v2/info` vient du provider surchargé dans la première partie. Sans la surcharge, son champ `extra` vaut `null`."
+demo_overwrite.tutorial.live_title: 'Le résultat'
+demo_overwrite.tutorial.module_intro: "Cet écran est lui-même un module ajouté par surcharge. Il repose sur deux fichiers, la déclaration de ses routes côté Vue et sa classe de module côté PHP."
+demo_overwrite.tutorial.module_raw_note: "Cet écran affiche le code de ses fichiers grâce aux imports `?raw` de Vite. Un fichier importé ainsi est copié dans `public/build`, lisible sans connexion. Réservez-les à des fichiers sans secret."
+demo_overwrite.tutorial.module_step1_text: "Créez un dossier dans `assets/overwrite/vue/Components/Admin/Modules/`, ici `DemoOverwrite`, avec un fichier `module.ts`. Il donne l'identifiant du module, ses domaines de traduction et ses routes. Le composant de chaque route s'importe par `@admin/` et se charge à la première visite. Un `module.ts` qui reprend l'identifiant d'un module de Nathéo le remplace."
+demo_overwrite.tutorial.module_step1_title: "Déclarer les routes de l'écran"
+demo_overwrite.tutorial.module_step2_text: "La classe va dans `src/Overwrite/Module/`, avec l'attribut `AsAdminModule`. Sa définition fixe le rôle requis, ici `ROLE_SUPER_ADMIN`, et son entrée de menu place l'écran dans le menu Outils. Les champs `route` et `path` de l'entrée reprennent le nom et le chemin de la route du `module.ts`. Sans cette classe, l'adresse de l'écran affiche « Page introuvable »."
+demo_overwrite.tutorial.module_step2_title: 'Créer la classe du module'
+demo_overwrite.tutorial.module_step3_text: "Les textes de l'écran s'écrivent avec la fonction `t()` et la clé complète, comme `demo_overwrite.screen.title`. La commande `php bin/console translation:extract --force --format=yaml fr` ajoute les nouvelles clés dans `translations/demo_overwrite+intl-icu.fr.yaml`, et de même pour `en` et `es`. Le domaine est listé dans `domains` du `module.ts`, et l'application le charge avant d'afficher l'écran."
+demo_overwrite.tutorial.module_step3_title: 'Ajouter les textes'
+demo_overwrite.tutorial.module_title: 'Ajouter un écran'
+demo_overwrite.tutorial.remove_text: "Supprimez l'entrée `info_get` de `config/cms/overwrite.yaml`, puis les dossiers `src/Overwrite/Api/`, `src/Overwrite/Module/`, `assets/overwrite/` et `tests/Overwrite/` avec les fichiers `translations/demo_overwrite+intl-icu.*.yaml`. Retirez aussi `demo_overwrite` de la constante `DOMAINS` de `tests/Translation/ExtractedKeysTest.php` et de `tests/Translation/TranslationKeyConventionTest.php`. Lancez ensuite `php bin/console cache:clear` et `yarn build`."
+demo_overwrite.tutorial.remove_title: "Retirer l'exemple"
+demo_overwrite.tutorial.screen_note: "Les composables et le client de l'API ne se surchargent pas de cette façon. Pour changer des données, surchargez l'opération de l'API qui les fournit."
+demo_overwrite.tutorial.screen_text_1: "Les fichiers du back-office sont dans `assets/vue/Components/Admin/`. Copiez celui à modifier dans `assets/overwrite/vue/Components/Admin/`, au même chemin, puis modifiez la copie. Une version de `assets/overwrite/vue/Components/Admin/Ui/Form/UiButton.vue` remplace ainsi le bouton dans tout le back-office."
+demo_overwrite.tutorial.screen_text_2: "Le remplacement passe par l'alias `@admin/`, utilisé par chaque import entre fichiers du back-office. Un import écrit `@admin/Ui/Form/UiButton.vue` sert votre fichier s'il existe, et celui de Nathéo sinon. Gardez les props et les événements de l'original, car les autres composants continuent de les utiliser."
+demo_overwrite.tutorial.screen_text_3: "Relancez ensuite `yarn build`. Avec `yarn dev`, redémarrez le serveur après l'ajout d'un fichier, car Vite garde la résolution des imports en mémoire."
+demo_overwrite.tutorial.screen_text_wrap: "Pour réutiliser l'original au lieu de le recopier, importez-le par son chemin complet, comme `@/vue/Components/Admin/Ui/Form/UiButton.vue`. L'alias `@admin/` désignerait votre propre fichier."
+demo_overwrite.tutorial.screen_title: 'Remplacer un écran ou un composant'
+demo_overwrite.tutorial.status_active: 'Surcharge active'
+demo_overwrite.tutorial.status_inactive: 'Surcharge inactive'
+demo_overwrite.tutorial.step: 'Étape {number}'
+demo_overwrite.tutorial.summary: 'Sommaire'

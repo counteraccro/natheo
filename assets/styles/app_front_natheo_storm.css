@@ -13,7 +13,7 @@
 /* Seuls les fichiers du thème sont scannés */
 @source '../vue/controllers/Front/StormFront';
 @source '../vue/Components/Front/StormFront';
-@source '../vue/Components/Front/Global';
+@source '../vue/Components/Global/Ui';
 @source '../../templates/front/natheo_storm';
 
 @custom-variant dark (&:where(.dark, .dark *));

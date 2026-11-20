@@ -17,7 +17,7 @@ use App\Service\Admin\CommandService;
 use App\Service\Installation\InstallationService;
 use App\Service\Installation\InstallRequirementsChecker;
 use App\Service\Global\Database\DataBase;
-use App\Translate\Installation\InstallationTranslate;
+use App\Translation\Installation\InstallationTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

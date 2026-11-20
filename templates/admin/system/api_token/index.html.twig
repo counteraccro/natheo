@@ -11,7 +11,7 @@
             </svg>
         </twig:block>
         <twig:block name="actions">
-            <a href="{{ path('admin_api_token_add') }}" class="btn btn-primary btn-sm">
+            <a href="{{ path('admin_api_token_add', gridParams) }}" class="btn btn-primary btn-sm">
                 <svg class="icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
                 </svg>
@@ -25,7 +25,7 @@
     </twig:Admin:PageHeaderComponent>
 
 
-    <div {{ vue_component('Admin/GenericGrid', {'url' : path('admin_api_token_load_grid_data', {'page' : page, 'limit' : limit}), 'page' : page, 'limit' : limit, 'activeSearchData' : true}) }}></div>
+    <div {{ vue_component('Admin/GenericGrid', {'url' : path('admin_api_token_load_grid_data', {'page' : page, 'limit' : limit}), 'page' : page, 'limit' : limit, 'activeSearchData' : true, 'extraParams' : gridParams}) }}></div>
 
     <twig:Admin:ModaleComponent id="help-grid-api-token">
         <twig:block name="header">

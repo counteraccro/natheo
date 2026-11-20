@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 1.2
  * Class qui charge les class nécessaire en autowrite pour l'API front
  */
 namespace App\Service\Api;
@@ -11,6 +11,7 @@ namespace App\Service\Api;
 use App\Service\Admin\Content\Page\PageDraftService;
 use App\Service\Admin\Content\Page\PageService;
 use App\Service\Admin\MarkdownEditorService;
+use App\Service\Admin\System\ApiTokenService;
 use App\Service\Admin\System\OptionConfigService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Service\Admin\System\User\UserService;
@@ -18,7 +19,7 @@ use App\Service\Api\Content\ApiMenuService;
 use App\Service\Api\Content\Page\ApiPageContentService;
 use App\Service\Api\System\User\UserSessionService;
 use App\Service\Global\SupportedLocales;
-use App\Translate\Admin\Global\GridTranslate;
+use App\Translation\Admin\Global\GridTranslate;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
@@ -62,6 +63,7 @@ class AppApiHandlerService
                 'accessDecisionManager' => AccessDecisionManagerInterface::class,
                 'userService' => UserService::class,
                 'userSessionService' => UserSessionService::class,
+                'apiTokenService' => ApiTokenService::class,
                 'apiAuthUserLimiter' => new SubscribedService(
                     'apiAuthUserLimiter',
                     RateLimiterFactoryInterface::class,
@@ -201,6 +203,17 @@ class AppApiHandlerService
     protected function getUserSessionService(): UserSessionService
     {
         return $this->handlers->get('userSessionService');
+    }
+
+    /**
+     * Retourne la class ApiTokenService
+     * @return ApiTokenService
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getApiTokenService(): ApiTokenService
+    {
+        return $this->handlers->get('apiTokenService');
     }
 
     /**

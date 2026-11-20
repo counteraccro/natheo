@@ -19,6 +19,9 @@ class TranslationKeyConventionTest extends TestCase
      * Domaines contrôlés par le test
      */
     private const DOMAINS = [
+        'admin_app',
+        'admin_module',
+        'admin_ui',
         'advanced_options',
         'api_errors',
         'api_token',
@@ -45,7 +48,6 @@ class TranslationKeyConventionTest extends TestCase
         'notification',
         'option_system',
         'page',
-        'sidebar',
         'sql_manager',
         'tag',
         'translate',
@@ -61,9 +63,7 @@ class TranslationKeyConventionTest extends TestCase
         'mail',
         'options_system',
         'options_user',
-        'pagedemo',
         'response',
-        'sidebar',
     ];
 
     private const LOCALES = ['fr', 'en', 'es'];

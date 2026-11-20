@@ -7,7 +7,7 @@
 import { computed } from 'vue';
 import { useFrontContext } from '@/vue/Composables/Front/useFrontContext';
 import { useMenus } from '@/vue/Composables/Front/useMenus';
-import FrontIcon from '@/vue/Components/Front/Global/FrontIcon.vue';
+import UiIcon from '@/vue/Components/Global/Ui/UiIcon.vue';
 import MenuLink from '@/vue/Components/Front/StormFront/Menu/MenuLink.vue';
 import NestedMenuList from '@/vue/Components/Front/StormFront/Menu/NestedMenuList.vue';
 import type { Menu, MenuElement } from '@/ts/Front/Api/Menu.type';
@@ -40,12 +40,12 @@ const SUB =
           @click="emit('mega', element, $event.currentTarget as HTMLElement)"
         >
           {{ element.label }}
-          <FrontIcon name="chevron-down" class="size-4 -rotate-90" />
+          <UiIcon name="chevron-down" class="size-4 -rotate-90" />
         </button>
         <details v-else :open="isActive(element)" class="group">
           <summary :class="[ENTRY, { 'text-on-rail': isActive(element) }]" class="list-none [&::-webkit-details-marker]:hidden">
             {{ element.label }}
-            <FrontIcon name="chevron-down" class="size-4 transition-transform group-open:rotate-180" />
+            <UiIcon name="chevron-down" class="size-4 transition-transform group-open:rotate-180" />
           </summary>
           <NestedMenuList :elements="element.children" :link-class="SUB" nested-class="pl-3" class="pb-2" />
         </details>

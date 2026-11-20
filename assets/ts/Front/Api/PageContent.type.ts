@@ -3,7 +3,7 @@
  * @version 1.0
  * Ressource PageContent de l'API v2 : un bloc de contenu d'une page
  */
-import type { JsonLdResource } from '@/ts/Front/Api/Hydra.type';
+import type { JsonLdResource } from '@/ts/Global/Api/Hydra.type';
 import type { PageCategory } from '@/ts/Front/Api/Page.type';
 
 export type PageContentType = 'text' | 'faq' | 'listing';

@@ -40,7 +40,7 @@ class UserSessionTest extends AppApiV2TestCase
                 ],
             );
             $this->assertEquals(201, $response->getStatusCode(), $factory);
-            $this->assertMatchesResourceItemJsonSchema(UserSession::class, '_api_/user_sessions_post');
+            $this->assertMatchesResourceItemJsonSchema(UserSession::class, 'user_session_post');
             $content = $this->decode($response);
 
             $this->assertEquals('UserSession', $content['@type']);
@@ -149,7 +149,7 @@ class UserSessionTest extends AppApiV2TestCase
             headers: $apiHeaders,
         );
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertMatchesResourceItemJsonSchema(UserSession::class, '_api_/user_sessions_post');
+        $this->assertMatchesResourceItemJsonSchema(UserSession::class, 'user_session_post');
         $second = $this->decode($response);
         $this->assertEquals($first['id'], $second['id']);
         $this->assertNotEquals($first['accessToken'], $second['accessToken']);

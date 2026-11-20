@@ -26,18 +26,17 @@ use Symfony\Component\Serializer\Attribute\Groups;
     ApiResource(
         operations: [
             new Get(
+                name: 'option_system_get',
                 uriTemplate: '/option_systems/{key}',
                 errors: [NotFoundException::class, ValidationException::class],
                 openapi: new OpenApiOperation(summary: 'Une option système publique par sa clé'),
                 normalizationContext: ['groups' => ['option_system:read']],
                 security: "is_granted('ROLE_READ_API')",
                 provider: OptionSystemProvider::class,
-                parameters: [
-                    new LocaleParameter(),
-                    new AcceptLanguageParameter(),
-                ],
+                parameters: [new LocaleParameter(), new AcceptLanguageParameter()],
             ),
             new GetCollection(
+                name: 'option_system_get_collection',
                 uriTemplate: '/option_systems',
                 paginationEnabled: false,
                 errors: [ValidationException::class],
@@ -45,10 +44,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
                 normalizationContext: ['groups' => ['option_system:list']],
                 security: "is_granted('ROLE_READ_API')",
                 provider: OptionSystemCollectionProvider::class,
-                parameters: [
-                    new LocaleParameter(),
-                    new AcceptLanguageParameter(),
-                ],
+                parameters: [new LocaleParameter(), new AcceptLanguageParameter()],
             ),
         ],
     ),

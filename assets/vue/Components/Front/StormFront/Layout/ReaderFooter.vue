@@ -10,7 +10,7 @@ import { useConsent } from '@/vue/Composables/Front/useConsent';
 import { useMenus } from '@/vue/Composables/Front/useMenus';
 import { useSiteOptions } from '@/vue/Composables/Front/useSiteOptions';
 import { useSocialLinks } from '@/vue/Composables/Front/useSocialLinks';
-import FrontIcon from '@/vue/Components/Front/Global/FrontIcon.vue';
+import UiIcon from '@/vue/Components/Global/Ui/UiIcon.vue';
 import FooterMenu from '@/vue/Components/Front/StormFront/Menu/FooterMenu.vue';
 import type { Page } from '@/ts/Front/Api/Page.type';
 
@@ -40,7 +40,7 @@ const consent = useConsent();
               class="grid size-11 place-items-center rounded-sf text-fg shadow-[inset_0_0_0_1.5px_var(--line)] hover:shadow-[inset_0_0_0_1.5px_var(--fg)]"
             >
               <span class="sr-only">{{ social.label }}</span>
-              <FrontIcon :name="social.icon" class="size-5.5" />
+              <UiIcon :name="social.icon" class="size-5.5" />
             </a>
           </li>
         </ul>

@@ -1,0 +1,74 @@
+admin_module.menu.advanced_option.label: 'Opciones avanzadas'
+admin_module.menu.api_doc.label: 'Documentación de la API'
+admin_module.menu.api_token.label: 'Tokens API'
+admin_module.menu.api_token_back_office.label: Back-office
+admin_module.menu.api_token_new.label: 'Nuevo token'
+admin_module.menu.api_token_public.label: Front
+admin_module.menu.comment.label: Comentarios
+admin_module.menu.comment_index.label: 'Gestión de los comentarios'
+admin_module.menu.comment_moderate.label: Moderación
+admin_module.menu.content.label: Contenidos
+admin_module.menu.dashboard.label: 'Panel de control'
+admin_module.menu.database_manager.label: 'Base de datos'
+admin_module.menu.faq.label: FAQ
+admin_module.menu.faq_index.label: 'Gestión de las FAQ'
+admin_module.menu.faq_new.label: 'Nueva FAQ'
+admin_module.menu.info.label: Información
+admin_module.menu.log.label: Logs
+admin_module.menu.mail.label: 'Correos electrónicos'
+admin_module.menu.media.label: Mediateca
+admin_module.menu.menu.label: Menús
+admin_module.menu.menu_index.label: 'Gestión de los menús'
+admin_module.menu.menu_new.label: 'Nuevo menú'
+admin_module.menu.option_system.label: 'Opciones del sistema'
+admin_module.menu.page.label: Páginas
+admin_module.menu.page_index.label: 'Gestión de las páginas'
+admin_module.menu.page_new.label: 'Nueva página'
+admin_module.menu.sql_manager.label: 'Gestor SQL'
+admin_module.menu.sql_manager_index.label: 'Gestión de las consultas'
+admin_module.menu.sql_manager_new.label: 'Nueva consulta'
+admin_module.menu.system.label: Sistema
+admin_module.menu.tag.label: Etiquetas
+admin_module.menu.tag_index.label: 'Gestión de las etiquetas'
+admin_module.menu.tag_new.label: 'Nueva etiqueta'
+admin_module.menu.tools.label: Herramientas
+admin_module.menu.translation.label: Traducciones
+admin_module.menu.user.label: Usuarios
+admin_module.menu.user_index.label: 'Gestión de los usuarios'
+admin_module.menu.user_new.label: 'Nuevo usuario'
+admin_module.module.advanced_option.description: 'Permite gestionar las opciones para el desarrollo del CMS'
+admin_module.module.advanced_option.label: 'Opciones avanzadas'
+admin_module.module.api_doc.description: 'Descripción de todas las operaciones de la API v2, administración incluida'
+admin_module.module.api_doc.label: 'Documentación de la API'
+admin_module.module.api_token.description: 'Gestionar los tokens de acceso a las API de Nathéo CMS'
+admin_module.module.api_token.label: 'Tokens API'
+admin_module.module.comment.description: 'Gestión de los comentarios'
+admin_module.module.comment.label: Comentarios
+admin_module.module.dashboard.description: 'Página de inicio de la administración del CMS'
+admin_module.module.dashboard.label: 'Panel de control'
+admin_module.module.database_manager.description: 'Permite visualizar la base de datos y sus estadísticas'
+admin_module.module.database_manager.label: 'Base de datos'
+admin_module.module.faq.description: 'Gestión de las FAQ'
+admin_module.module.faq.label: FAQ
+admin_module.module.info.description: 'Información sobre el CMS'
+admin_module.module.info.label: Información
+admin_module.module.log.description: 'Gestión y visualización de los logs de la aplicación'
+admin_module.module.log.label: Logs
+admin_module.module.mail.description: 'Gestión de los correos electrónicos enviados desde el CMS'
+admin_module.module.mail.label: 'Correos electrónicos'
+admin_module.module.media.description: 'Gestión de los medios'
+admin_module.module.media.label: Mediateca
+admin_module.module.menu.description: 'Gestión de los menús'
+admin_module.module.menu.label: Menús
+admin_module.module.option_system.description: 'Configuración del CMS'
+admin_module.module.option_system.label: 'Opciones del sistema'
+admin_module.module.page.description: 'Gestión de las páginas'
+admin_module.module.page.label: Páginas
+admin_module.module.sql_manager.description: 'Crear / ejecutar consultas SQL (solo SELECT)'
+admin_module.module.sql_manager.label: 'Gestor SQL'
+admin_module.module.tag.description: 'Gestión de las etiquetas'
+admin_module.module.tag.label: Etiquetas
+admin_module.module.translation.description: 'Gestión de las traducciones del CMS'
+admin_module.module.translation.label: Traducciones
+admin_module.module.user.description: 'Gestión de los usuarios que pueden conectarse a la administración del sitio'
+admin_module.module.user.label: Usuarios

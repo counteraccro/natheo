@@ -12,7 +12,7 @@ namespace App\Controller\Admin\System;
 use App\Controller\Admin\AppAdminController;
 use App\Enum\Admin\Global\Breadcrumb;
 use App\Service\Admin\System\TranslateService;
-use App\Translate\Admin\System\TranslationTranslate;
+use App\Translation\Admin\System\TranslationTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -29,7 +29,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
         requirements: ['_locale' => '%app.supported_locales%'],
     ),
 ]
-#[IsGranted('ROLE_SUPER_ADMIN')]
+#[IsGranted('ROLE_ADMIN')]
 class TranslationController extends AppAdminController
 {
     /**

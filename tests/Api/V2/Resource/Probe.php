@@ -22,10 +22,15 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[
     ApiResource(
         operations: [
-            new GetCollection(security: "is_granted('ROLE_READ_API')", provider: [self::class, 'provide']),
-            new Get(security: "is_granted('ROLE_READ_API')", provider: [self::class, 'provide']),
-            new Post(security: "is_granted('ROLE_WRITE_API')", processor: [self::class, 'process']),
+            new GetCollection(
+                name: 'probe_get_collection',
+                security: "is_granted('ROLE_READ_API')",
+                provider: [self::class, 'provide'],
+            ),
+            new Get(name: 'probe_get', security: "is_granted('ROLE_READ_API')", provider: [self::class, 'provide']),
+            new Post(name: 'probe_post', security: "is_granted('ROLE_WRITE_API')", processor: [self::class, 'process']),
             new Delete(
+                name: 'probe_delete',
                 security: "is_granted('ROLE_ADMIN_API')",
                 provider: [self::class, 'provide'],
                 processor: [self::class, 'process'],

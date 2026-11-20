@@ -3,7 +3,7 @@
  * @version 1.0
  * Ressource Menu de l'API v2
  */
-import type { JsonLdResource } from '@/ts/Front/Api/Hydra.type';
+import type { JsonLdResource } from '@/ts/Global/Api/Hydra.type';
 import type { PageCategory } from '@/ts/Front/Api/Page.type';
 
 export type MenuPosition = 'header' | 'right' | 'footer' | 'left';

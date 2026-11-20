@@ -1,39 +1,48 @@
-demo_overwrite.index.title: La sobrescritura de las páginas del back office
-demo_overwrite.index.description: Guía para sobrescribir páginas del back office
-demo_overwrite.guide.introduction.title: Introducción
-demo_overwrite.guide.introduction.text_1: Está viendo una página personalizada que sobrescribe una página existente del CMS. <br />Nathéo CMS permite sobrescribir de forma muy sencilla cualquier página del CMS para añadir su propia lógica de código
-demo_overwrite.guide.introduction.sub_title_1: ¿Cómo funciona?
-demo_overwrite.guide.introduction.text_2: La página original se llama desde el controlador {controller} y se renderiza con la vista Twig {vue}. Sin embargo, está sobrescrita y, por tanto, se llama desde el controlador {controller2} con la vista asociada {vue2}
-demo_overwrite.guide.introduction.text_3: Del mismo modo, la URL {url} se transforma en {url2} para redirigir al usuario a la página sobrescrita.
-demo_overwrite.guide.introduction.text_4: 'Ejemplo: <a class="link" href="{url}">la página no sobrescrita</a> y <a class="link" href="{url2}">la página sobrescrita</a> apuntan ambas a la misma página, la que está consultando.'
-demo_overwrite.guide.prerequisites.title: Requisitos previos
-demo_overwrite.guide.prerequisites.text_1: Estos son los requisitos previos para crear una nueva página personalizada.
-demo_overwrite.guide.prerequisites.required_1: Tener un mínimo de conocimientos de PHP y Symfony.
-demo_overwrite.guide.prerequisites.required_2: Disponer de un entorno de desarrollo completo.
-demo_overwrite.guide.prerequisites.required_3: Conocer las convenciones de Symfony.
-demo_overwrite.guide.prerequisites.alert.title: ¡Bueno saberlo!
-demo_overwrite.guide.prerequisites.alert.text_1: Cree una sobrescritura solo para añadir nueva lógica de código o para modificar a fondo la lógica existente.
-demo_overwrite.guide.prerequisites.alert.text_2: Si solo desea modificar el diseño, utilice las API (próximamente) del back office.
-demo_overwrite.guide.prerequisites.required_4: A lo largo de este tutorial, usaremos como ejemplo el código que muestra esta página.
-demo_overwrite.guide.step_1.title: Paso 1 - Creación del controlador personalizado
-demo_overwrite.guide.step_1.text_1: El primer paso consiste en crear un controlador personalizado que se llamará en lugar del controlador original. Aquí es donde colocará toda su lógica de negocio.
-demo_overwrite.guide.step_1.text_2: 'Cree su controlador en la carpeta <code>Overwrite</code>: {controller}'
-demo_overwrite.guide.step_1.text_3: Desde este archivo, tendrá acceso a todas las funcionalidades del CMS (enums, servicios, repositorios, etc.)
-demo_overwrite.guide.step_1.text_4: Ejemplo de código con el controlador <code>DemoOverwriteController.php</code>
-demo_overwrite.guide.step_1.alert.title: Atención
-demo_overwrite.guide.step_1.alert.text_1: ¿Por qué colocar mi código en la carpeta <code>Overwrite</code> en lugar de en la carpeta <code>Controller</code>?
-demo_overwrite.guide.step_2.alert.text_2: Como el CMS evoluciona constantemente, colocar su código personalizado en la carpeta <code>Controller</code> puede hacerle perder su trabajo durante una actualización. La carpeta <code>Overwrite</code> está reservada al código personalizado, por lo que su contenido nunca se modificará en las futuras actualizaciones del CMS.
-demo_overwrite.guide.step_2.title: Paso 2 - Creación de la vista Twig
-demo_overwrite.guide.step_2.text_1: Añada la vista que servirá para el renderizado y colóquela en la carpeta {dossier}.
-demo_overwrite.guide.step_2.text_2: Al igual que con el controlador, se recomienda colocar su código en la carpeta {dossier} para evitar cualquier riesgo de pérdida durante una actualización.
-demo_overwrite.guide.step_3.title: Paso 3 - Configuración
-demo_overwrite.guide.step_3.text_1: 'Una vez creados su controlador y su vista, solo queda indicar al CMS qué ruta debe sobrescribirse con su nueva ruta. Nada más sencillo: abra el archivo {dossier}.'
-demo_overwrite.guide.step_3.text_2: Esta es la configuración para sobrescribir esta página.
-demo_overwrite.guide.step_3.text_3: Explicación rápida de esta configuración.
-demo_overwrite.guide.step_3.text_4: '<b>controller</b>: el controlador que se desea sobrescribir, en nuestro ejemplo {controller}.'
-demo_overwrite.guide.step_3.text_5: '<b>route</b>: la ruta que se desea sobrescribir, en nuestro ejemplo <code>admin_dashboard_page_demo</code>.'
-demo_overwrite.guide.step_3.text_6: '<b>overwrite</b>: la configuración de la sobrescritura.'
-demo_overwrite.guide.step_3.text_7: '<b>route</b>: la nueva ruta, en nuestro ejemplo <code>admin_overwrite_page_demo</code>.'
-demo_overwrite.guide.step_3.text_8: '<b>parameters</b>: si su ruta tiene parámetros, indíquelos aquí con el formato clave: valor, donde clave es el nombre del parámetro y valor su tipo de dato.'
-demo_overwrite.guide.step_4.title: Paso 4 - ¡Terminado!
-demo_overwrite.guide.step_4.text_1: Enhorabuena, acaba de sobrescribir una URL interna del CMS con su propio código. ¡Bravo!
+demo_overwrite.menu.label: 'Ejemplo de sobrescritura'
+demo_overwrite.module.description: 'Ejemplo de sobrescritura de una operación de la API y de una pantalla del back-office'
+demo_overwrite.module.label: 'Ejemplo de sobrescritura'
+demo_overwrite.screen.description: 'Este tutorial explica cómo personalizar la API y el back-office sin modificar el código de Nathéo. Cada paso se apoya en los archivos de esta pantalla.'
+demo_overwrite.screen.title: 'Ejemplo de sobrescritura'
+demo_overwrite.tutorial.api_intro: 'La sobrescritura cambia la clase que produce la respuesta de una operación. La operación conserva su dirección y sus permisos, y los clientes de la API no tienen nada que modificar.'
+demo_overwrite.tutorial.api_step1_text: 'Cada operación lleva un nombre único. Figura en el campo `operationId` de la documentación de la API, y el comando `php bin/console debug:api-resource` muestra las operaciones de un recurso. La operación de este ejemplo se llama `info_get`. Los nombres de las operaciones de administración empiezan por `admin_`, como `admin_module_get`.'
+demo_overwrite.tutorial.api_step1_title: 'Encontrar el nombre de la operación'
+demo_overwrite.tutorial.api_step2_processor: 'Para una escritura, la clase implementa `ProcessorInterface`. Una escritura de administración extiende en su lugar `AbstractAdminProcessor`, como los processors de Nathéo, para conservar el control de la cabecera `If-Match` y el registro de acciones.'
+demo_overwrite.tutorial.api_step2_text: 'Cree la clase en `src/Overwrite/`, aquí `src/Overwrite/Api/State/Provider/System/InfoProvider.php`. Implementa `ProviderInterface` para una lectura. Para conservar el comportamiento original, pida el provider de Nathéo en el constructor. Symfony lo inyecta, y su método `provide()` lo llama y luego modifica su respuesta. Aquí, copia el objeto `Info` y rellena el campo `extra`.'
+demo_overwrite.tutorial.api_step2_title: 'Escribir la clase de sustitución'
+demo_overwrite.tutorial.api_step3_errors: "En caso de error, la construcción de la caché se detiene con un mensaje. Ocurre con una operación desconocida, una clase inexistente, una clase que no es un provider o un processor de la API, un processor asignado a una lectura o un provider asignado a una operación que no lee el recurso."
+demo_overwrite.tutorial.api_step3_text: 'Añada una entrada bajo `overwrite.api` en `config/cms/overwrite.yaml`, con el nombre de la operación y la clase bajo la clave `provider`, o `processor` para una escritura. El archivo se lee al construir la caché. En desarrollo, la caché se reconstruye sola tras una modificación. En producción, ejecute `php bin/console cache:clear`.'
+demo_overwrite.tutorial.api_step3_title: 'Declarar la sobrescritura'
+demo_overwrite.tutorial.api_title: 'Sobrescribir una operación de la API'
+demo_overwrite.tutorial.error: 'La lectura de GET /api/v2/info ha fallado.'
+demo_overwrite.tutorial.field_api_version: 'Versión de la API'
+demo_overwrite.tutorial.field_extra: 'Campo extra'
+demo_overwrite.tutorial.field_natheo_version: 'Versión de Nathéo'
+demo_overwrite.tutorial.field_site_name: 'Nombre del sitio'
+demo_overwrite.tutorial.inactive_text: 'El campo extra vale null porque config/cms/overwrite.yaml ya no sobrescribe la operación info_get. Vuelva a añadir la entrada y vacíe la caché.'
+demo_overwrite.tutorial.intro_text_1: 'Una sobrescritura sustituye una parte de Nathéo por su código. Se aplica a una operación de la API v2 o a los archivos Vue del back-office. Las tres partes de este tutorial detallan cada caso.'
+demo_overwrite.tutorial.intro_text_2: 'Su código PHP va en `src/Overwrite/` y sus archivos Vue en `assets/overwrite/`. Una actualización de Nathéo no toca estas dos carpetas. Un archivo modificado en otro lugar, en `src/Api/` o `assets/vue/` por ejemplo, se sustituiría en la siguiente actualización.'
+demo_overwrite.tutorial.intro_text_3: 'Hay que conocer Symfony y Vue 3, y disponer de una instalación de desarrollo donde ejecutar `php bin/console` y `yarn`.'
+demo_overwrite.tutorial.intro_title: 'Antes de empezar'
+demo_overwrite.tutorial.live_text: 'Esta respuesta de `GET /api/v2/info` procede del provider sobrescrito en la primera parte. Sin la sobrescritura, su campo `extra` vale `null`.'
+demo_overwrite.tutorial.live_title: 'El resultado'
+demo_overwrite.tutorial.module_intro: 'Esta pantalla es a su vez un módulo añadido por sobrescritura. Se apoya en dos archivos, la declaración de sus rutas en Vue y su clase de módulo en PHP.'
+demo_overwrite.tutorial.module_raw_note: "Esta pantalla muestra el código de sus archivos mediante los imports `?raw` de Vite. Un archivo importado así se copia en `public/build`, legible sin iniciar sesión. Resérvelos para archivos sin secretos."
+demo_overwrite.tutorial.module_step1_text: 'Cree una carpeta en `assets/overwrite/vue/Components/Admin/Modules/`, aquí `DemoOverwrite`, con un archivo `module.ts`. Indica el identificador del módulo, sus dominios de traducción y sus rutas. El componente de cada ruta se importa con `@admin/` y se carga en la primera visita. Un `module.ts` que retoma el identificador de un módulo de Nathéo lo sustituye.'
+demo_overwrite.tutorial.module_step1_title: 'Declarar las rutas de la pantalla'
+demo_overwrite.tutorial.module_step2_text: 'La clase va en `src/Overwrite/Module/`, con el atributo `AsAdminModule`. Su definición fija el rol necesario, aquí `ROLE_SUPER_ADMIN`, y su entrada de menú coloca la pantalla en el menú Herramientas. Los campos `route` y `path` de la entrada retoman el nombre y la ruta del `module.ts`. Sin esta clase, la dirección de la pantalla muestra «Página no encontrada».'
+demo_overwrite.tutorial.module_step2_title: 'Crear la clase del módulo'
+demo_overwrite.tutorial.module_step3_text: 'Los textos de la pantalla se escriben con la función `t()` y la clave completa, como `demo_overwrite.screen.title`. El comando `php bin/console translation:extract --force --format=yaml fr` añade las nuevas claves a `translations/demo_overwrite+intl-icu.fr.yaml`, y lo mismo para `en` y `es`. El dominio figura en `domains` del `module.ts`, y la aplicación lo carga antes de mostrar la pantalla.'
+demo_overwrite.tutorial.module_step3_title: 'Añadir los textos'
+demo_overwrite.tutorial.module_title: 'Añadir una pantalla'
+demo_overwrite.tutorial.remove_text: "Elimine la entrada `info_get` de `config/cms/overwrite.yaml`, luego las carpetas `src/Overwrite/Api/`, `src/Overwrite/Module/`, `assets/overwrite/` y `tests/Overwrite/` con los archivos `translations/demo_overwrite+intl-icu.*.yaml`. Quite también `demo_overwrite` de la constante `DOMAINS` de `tests/Translation/ExtractedKeysTest.php` y de `tests/Translation/TranslationKeyConventionTest.php`. Ejecute después `php bin/console cache:clear` y `yarn build`."
+demo_overwrite.tutorial.remove_title: 'Quitar el ejemplo'
+demo_overwrite.tutorial.screen_note: 'Los composables y el cliente de la API no se sobrescriben de esta forma. Para cambiar datos, sobrescriba la operación de la API que los proporciona.'
+demo_overwrite.tutorial.screen_text_1: 'Los archivos del back-office están en `assets/vue/Components/Admin/`. Copie el que quiera modificar en `assets/overwrite/vue/Components/Admin/`, en la misma ruta, y modifique la copia. Una versión de `assets/overwrite/vue/Components/Admin/Ui/Form/UiButton.vue` sustituye así al botón en todo el back-office.'
+demo_overwrite.tutorial.screen_text_2: 'La sustitución pasa por el alias `@admin/`, que usa cada import entre archivos del back-office. Un import escrito `@admin/Ui/Form/UiButton.vue` sirve su archivo si existe, y el de Nathéo si no. Conserve las props y los eventos del original, porque los demás componentes los siguen usando.'
+demo_overwrite.tutorial.screen_text_3: 'Vuelva a ejecutar `yarn build`. Con `yarn dev`, reinicie el servidor tras añadir un archivo, porque Vite guarda en memoria la resolución de los imports.'
+demo_overwrite.tutorial.screen_text_wrap: "Para reutilizar el original en lugar de copiarlo, impórtelo por su ruta completa, como `@/vue/Components/Admin/Ui/Form/UiButton.vue`. El alias `@admin/` apuntaría a su propio archivo."
+demo_overwrite.tutorial.screen_title: 'Sustituir una pantalla o un componente'
+demo_overwrite.tutorial.status_active: 'Sobrescritura activa'
+demo_overwrite.tutorial.status_inactive: 'Sobrescritura inactiva'
+demo_overwrite.tutorial.step: 'Paso {number}'
+demo_overwrite.tutorial.summary: 'Índice'

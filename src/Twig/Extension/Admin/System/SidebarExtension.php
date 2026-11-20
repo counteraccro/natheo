@@ -4,257 +4,85 @@ declare(strict_types=1);
 
 /**
  * @author Gourdon Aymeric
- * @version 2.0
- * Permet de générer le menu sidebar de l'administration
+ * @version 3.0
+ * Sidebar et bouton « Nouveau » de l'administration, construits depuis les modules et les entrées de menu déclarés
  */
 
 namespace App\Twig\Extension\Admin\System;
 
-use App\Entity\Admin\System\SidebarElement;
 use App\Enum\Admin\Global\Breadcrumb;
-use App\Service\Admin\System\SidebarElementService;
-use App\Twig\Extension\Admin\AppAdminExtension;
-use App\Enum\Admin\Global\SvgIcon;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\ContainerInterface;
-use Psr\Container\NotFoundExceptionInterface;
-use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
+use App\Service\Admin\Module\AdminMenuBuilder;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Twig\Attribute\AsTwigFunction;
+use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
-class SidebarExtension extends AppAdminExtension
+class SidebarExtension
 {
-    /**
-     * @var SidebarElementService
-     */
-    private SidebarElementService $sidebarElementService;
-
-    private string $currentRoute = '';
-
-    /**
-     * Routes parentes de la page courante, issues de son fil d'Ariane
-     * @var string[]
-     */
-    private array $parentRoutes = [];
-
-    /**
-     * @var Security
-     */
-    private Security $security;
-
-    private array $tabNotification = [];
-
-    /**
-     * @param ContainerInterface $handlers
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
     public function __construct(
-        #[
-            AutowireLocator([
-                'translator' => TranslatorInterface::class,
-                'router' => RouterInterface::class,
-                'sidebarElementService' => SidebarElementService::class,
-                'security' => Security::class,
-            ]),
-        ]
-        private readonly ContainerInterface $handlers,
-    ) {
-        $this->sidebarElementService = $this->handlers->get('sidebarElementService');
-        $this->security = $this->handlers->get('security');
-        parent::__construct($this->handlers);
-    }
+        private readonly AdminMenuBuilder $menuBuilder,
+        private readonly RequestStack $requestStack,
+    ) {}
 
     /**
-     * Point d'entrée pour générer le menu sidebar
+     * Génère la sidebar de la page courante
+     * @param Environment $twig
      * @param string $currentRoute
-     * @param array $breadcrumb fil d'Ariane de la page, ses routes gardent actif le lien de la page parente
+     * @param array $breadcrumb fil d'Ariane de la page, ses routes gardent active l'entrée de la page parente
      * @return string
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
-    #[AsTwigFunction('getSidebar', isSafe: ['html'])]
-    public function getSidebar(string $currentRoute, array $breadcrumb = []): string
+    #[AsTwigFunction('getSidebar', isSafe: ['html'], needsEnvironment: true)]
+    public function getSidebar(Environment $twig, string $currentRoute, array $breadcrumb = []): string
     {
-        $this->currentRoute = $currentRoute;
-        $this->parentRoutes = array_values(
-            array_filter(
-                $breadcrumb[Breadcrumb::BREADCRUMB->value] ?? [],
-                fn($route) => is_string($route) && $route !== '#',
-            ),
+        $tree = $this->menuBuilder->getTree();
+        $this->menuBuilder->markActive(
+            $tree,
+            $currentRoute,
+            $this->getRequestParameters(),
+            Breadcrumb::getRoutes($breadcrumb),
         );
-        $sidebarElements = $this->sidebarElementService->getAllParent();
-        $this->getNbNotification();
 
-        $html = '';
-        foreach ($sidebarElements as $element) {
-            /** @var SidebarElement $element */
-            if ($element->getChildren()->count() === 0) {
-                $html .= $this->singleElement($element);
-            } else {
-                $html .= $this->childrenElement($element);
-            }
-        }
-        return $html;
+        return $twig->render('admin/includes/sidebar.html.twig', ['nodes' => $tree]);
     }
 
     /**
-     * Permet de générer des liens directs
-     * @param SidebarElement $sidebarElement
-     * @return string
+     * Raccourcis du bouton « Nouveau » du header, avec l'icône de l'entrée parente quand elle existe
+     * @return array<int, array{url: string, label: string, icon: string}>
      */
-    private function singleElement(SidebarElement $sidebarElement): string
+    #[AsTwigFunction('getAdminShortcuts')]
+    public function getAdminShortcuts(): array
     {
-        if (!$this->security->isGranted($sidebarElement->getRole()) || $sidebarElement->isDisabled()) {
-            return '';
+        $icons = [];
+        foreach ($this->menuBuilder->getFlatList() as $node) {
+            $icons[$node->item->id] = $node->item->icon;
         }
 
-        $url = $this->generateRealUrl($sidebarElement->getRoute());
-        $active = $this->isClassActive($sidebarElement->getRoute());
-
-        return '<a href="' .
-            $url .
-            '" class="sidebar-item ' .
-            $active .
-            ' flex items-center px-4 py-3 rounded-lg">' .
-            SvgIcon::renderPath($sidebarElement->getIcon(), 'w-5 h-5 mr-3') .
-            '<span>' .
-            $this->translateLabel($sidebarElement) .
-            '</span>
-            </a>';
+        $shortcuts = [];
+        foreach ($this->menuBuilder->getShortcuts() as $node) {
+            $shortcuts[] = [
+                'url' => (string) $node->url,
+                'label' => $node->label,
+                'icon' => $icons[$node->item->parent ?? ''] ?? $node->item->icon,
+            ];
+        }
+        return $shortcuts;
     }
 
     /**
-     * Permet de générer un sous menu
-     * @param SidebarElement $sidebarElement
-     * @return string
+     * Paramètres de la route et de l'adresse de la requête courante
+     * @return array<string, mixed>
      */
-    public function childrenElement(SidebarElement $sidebarElement): string
+    private function getRequestParameters(): array
     {
-        if (!$this->security->isGranted($sidebarElement->getRole())) {
-            return '';
+        $request = $this->requestStack->getCurrentRequest();
+        if ($request === null) {
+            return [];
         }
-
-        $open = $html = '';
-        foreach ($sidebarElement->getChildren() as $child) {
-            /* @var SidebarElement $child */
-
-            if ($child->isDisabled() || !$this->security->isGranted($child->getRole())) {
-                continue;
-            }
-
-            $active = $this->isClassActive($child->getRoute());
-            if ($active !== '') {
-                $open = 'open';
-            }
-
-            $notification = '';
-            if (isset($this->tabNotification[$child->getLabel()])) {
-                $notification = $this->getHTMLNotification($this->tabNotification[$child->getLabel()]);
-            }
-
-            $html .=
-                '<a href="' .
-                $this->generateRealUrl($child->getRoute()) .
-                '" class="' .
-                $active .
-                ' sidebar-item flex items-center px-4 py-2 rounded-lg text-sm">' .
-                SvgIcon::renderPath($child->getIcon(), 'w-4 h-4 mr-2') .
-                $this->translateLabel($child) .
-                $notification .
-                '</a>';
-        }
-
-        if ($html === '') {
-            return '';
-        }
-
-        $rotate = $open === 'open' ? 'rotate' : '';
-
-        return '<div>
-            <button class="sidebar-item flex items-center justify-between w-full px-4 py-3 rounded-lg" onclick="toggleSubmenu(\'' .
-            $sidebarElement->getId() .
-            '\')">
-                <div class="flex items-center">' .
-            SvgIcon::renderPath($sidebarElement->getIcon(), 'w-5 h-5 mr-3') .
-            '<span>' .
-            $this->translateLabel($sidebarElement) .
-            '</span></div><svg class="w-4 h-4 chevron ' .
-            $rotate .
-            '" id="chevron-' .
-            $sidebarElement->getId() .
-            '" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                </svg>
-            </button>
-            <div class="submenu ml-8 mt-1 space-y-1 ' .
-            $open .
-            '" id="submenu-' .
-            $sidebarElement->getId() .
-            '">' .
-            $html .
-            '</div></div>';
-    }
-
-    /**
-     * Retourne le label traduit et échappé d'un sidebarElement
-     * @param SidebarElement $sidebarElement
-     * @return string
-     */
-    private function translateLabel(SidebarElement $sidebarElement): string
-    {
-        return htmlspecialchars($this->translator->trans($sidebarElement->getLabel()));
-    }
-
-    /**
-     * Génère une notification
-     * @param int $nb
-     * @return string
-     */
-    private function getHTMLNotification(int $nb): string
-    {
-        return '<span class="ml-auto inline-flex items-center justify-center px-2 py-0.5 text-xs font-bold text-white bg-red-500 rounded-full">' .
-            $nb .
-            '</span>';
-    }
-
-    /**
-     * Récupère les notifications à afficher
-     * @return void
-     */
-    private function getNbNotification(): void
-    {
-        $this->tabNotification = [
-            'sidebar.update.label' => 1,
-        ];
-    }
-
-    /**
-     * Génère une vraie URL en fonction d'une route si elle existe
-     * @param $route
-     * @return string
-     */
-    private function generateRealUrl($route): string
-    {
-        $url = '#';
-        if ($route !== '#') {
-            $url = $this->router->generate($route);
-        }
-        return $url;
-    }
-
-    /**
-     * Génère la class active si le lien est la route courante ou une page parente de celle-ci
-     * @param $route
-     * @return string
-     */
-    private function isClassActive($route): string
-    {
-        if ($route === $this->currentRoute || in_array($route, $this->parentRoutes, true)) {
-            return 'active';
-        }
-        return '';
+        return [...$request->query->all(), ...$request->attributes->get('_route_params', [])];
     }
 }

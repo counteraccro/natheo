@@ -13,6 +13,8 @@ use ApiPlatform\JsonSchema\BackwardCompatibleSchemaFactory;
 use ApiPlatform\JsonSchema\Schema;
 use ApiPlatform\Test\Constraint\MatchesJsonSchema;
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\System\ApiToken\ApiTokenScope;
+use App\Service\Global\Token\TokenHasher;
 use App\Tests\Controller\Api\AppApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -76,6 +78,43 @@ class AppApiV2TestCase extends AppApiTestCase
     protected function sessionHeaders(User $user, string $role = 'ROLE_READ_API'): array
     {
         return ['HTTP_Authorization' => 'Bearer ' . $this->createUserToken($user, $role)];
+    }
+
+    /**
+     * En-tête Authorization avec l'access token d'une nouvelle session de l'utilisateur ouverte par un token
+     * back-office, à passer dans $headers de requestV2()
+     * @param User $user
+     * @return array<string, string>
+     */
+    protected function adminSessionHeaders(User $user): array
+    {
+        $accessToken = self::getFaker()->uuid();
+        $this->createUserSession([
+            'user' => $user,
+            'apiToken' => $this->createApiToken([
+                'roles' => [],
+                'scope' => ApiTokenScope::BACK_OFFICE,
+                'disabled' => false,
+            ]),
+            'accessTokenHash' => TokenHasher::hash($accessToken),
+        ]);
+        return ['HTTP_Authorization' => 'Bearer ' . $accessToken];
+    }
+
+    /**
+     * En-tête Authorization avec un token back-office seul, sans session, à passer dans $headers de requestV2()
+     * @return array<string, string>
+     */
+    protected function backOfficeTokenHeaders(): array
+    {
+        $token = self::getFaker()->uuid();
+        $this->createApiToken([
+            'token' => TokenHasher::hash($token),
+            'roles' => [],
+            'scope' => ApiTokenScope::BACK_OFFICE,
+            'disabled' => false,
+        ]);
+        return ['HTTP_Authorization' => 'Bearer ' . $token];
     }
 
     /**
@@ -145,18 +184,16 @@ class AppApiV2TestCase extends AppApiTestCase
             ->get('api_platform.metadata.resource.metadata_collection_factory')
             ->create($resourceClass)
             ->getOperation($operationName, $collection);
-        $schema = $this->container
-            ->get('api_platform.json_schema.schema_factory')
-            ->buildSchema(
-                $resourceClass,
-                'jsonld',
-                Schema::TYPE_OUTPUT,
-                $operation,
-                null,
-                ($operation->getNormalizationContext() ?? []) + [
-                    BackwardCompatibleSchemaFactory::SCHEMA_DRAFT4_VERSION => true,
-                ],
-            );
+        $schema = $this->container->get('api_platform.json_schema.schema_factory')->buildSchema(
+            $resourceClass,
+            'jsonld',
+            Schema::TYPE_OUTPUT,
+            $operation,
+            null,
+            ($operation->getNormalizationContext() ?? []) + [
+                BackwardCompatibleSchemaFactory::SCHEMA_DRAFT4_VERSION => true,
+            ],
+        );
 
         $this->assertThat($this->decode($this->client->getResponse()), new MatchesJsonSchema($schema->getArrayCopy()));
     }

@@ -14,6 +14,7 @@ use App\Entity\Admin\System\User;
 use App\Service\Admin\GridService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Formatter\Global\FileSizeFormatter;
+use App\Security\ApiUser;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -191,8 +192,11 @@ class LoggerService extends AppService
             return;
         }
 
-        /** @var User|null $currentUser */
         $currentUser = $this->security->getUser();
+        if ($currentUser instanceof ApiUser) {
+            $currentUser = $currentUser->getUser();
+        }
+        $currentUser = $currentUser instanceof User ? $currentUser : null;
         $parameters = [
             'entity' => $entity,
             'id' => $id,

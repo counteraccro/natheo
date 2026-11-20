@@ -12,14 +12,14 @@ namespace App\Controller\Admin;
 
 use App\Controller\Admin\Content\PageController;
 use App\Enum\Admin\DashboardBlock;
-use App\Enum\Admin\Global\Breadcrumb;
 use App\Service\Admin\DashboardService;
+use App\Service\Admin\Module\AdminMenuBuilder;
 use App\Service\Admin\StatisticsService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Service\Admin\System\User\UserDataService;
 use App\Enum\Admin\System\User\UserCsrfToken;
 use App\Enum\Admin\System\User\UserDataKey;
-use App\Translate\Admin\Global\DashboardTranslate;
+use App\Translation\Admin\Global\DashboardTranslate;
 use Psr\Cache\InvalidArgumentException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -38,6 +38,7 @@ class DashboardController extends AppAdminController
      * @param DashboardTranslate $dashboardTranslate
      * @param UserDataService $userDataService
      * @param OptionSystemService $optionSystemService
+     * @param AdminMenuBuilder $menuBuilder
      * @return Response
      */
     #[Route('/index', name: 'index')]
@@ -47,6 +48,7 @@ class DashboardController extends AppAdminController
         DashboardTranslate $dashboardTranslate,
         UserDataService $userDataService,
         OptionSystemService $optionSystemService,
+        AdminMenuBuilder $menuBuilder,
     ): Response
     {
         return $this->render('admin/dashboard/index.html.twig', [
@@ -100,6 +102,7 @@ class DashboardController extends AppAdminController
                 'isContributeur' => $this->isGranted('ROLE_CONTRIBUTEUR'),
                 'isAdmin' => $this->isGranted('ROLE_ADMIN'),
                 'isSuperAdmin' => $this->isGranted('ROLE_SUPER_ADMIN'),
+                'canSeeHelpFirstConnexion' => $this->canSeeBlock(DashboardBlock::HELP_FIRST_CONNEXION, $menuBuilder),
             ],
             'translateStat' => $dashboardTranslate->getDashboardStatisticsTranslate(),
             'urlStat' => [
@@ -116,6 +119,7 @@ class DashboardController extends AppAdminController
      * @param string $id
      * @param TranslatorInterface $translator
      * @param DashboardService $dashboardService
+     * @param AdminMenuBuilder $menuBuilder
      * @return JsonResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -125,6 +129,7 @@ class DashboardController extends AppAdminController
         string $id,
         TranslatorInterface $translator,
         DashboardService $dashboardService,
+        AdminMenuBuilder $menuBuilder,
     ): JsonResponse {
         $block = DashboardBlock::tryFrom($id);
         if ($block === null) {
@@ -134,7 +139,9 @@ class DashboardController extends AppAdminController
                 'error' => $translator->trans('dashboard.index.error_load_block', domain: 'dashboard'),
             ]);
         }
-        $this->denyAccessUnlessGranted($block->getRole());
+        if (!$this->canSeeBlock($block, $menuBuilder)) {
+            throw $this->createAccessDeniedException();
+        }
 
         $return = match ($block) {
             DashboardBlock::HELP_FIRST_CONNEXION => $dashboardService->getBlockHelpConfig(),
@@ -160,21 +167,21 @@ class DashboardController extends AppAdminController
     }
 
     /**
-     * Page Démo pour les elements html
-     * @param int $param
-     * @return Response
+     * Indique si l'utilisateur a le rôle du block et voit ses modules
+     * @param DashboardBlock $block
+     * @param AdminMenuBuilder $menuBuilder
+     * @return bool
      */
-    #[IsGranted('ROLE_SUPER_ADMIN')]
-    #[Route('/page-demo/{param}', name: 'page_demo')]
-    public function pageDemo(int $param = 5): Response
+    private function canSeeBlock(DashboardBlock $block, AdminMenuBuilder $menuBuilder): bool
     {
-        $breadcrumb = [
-            Breadcrumb::DOMAIN->value => 'messages',
-            Breadcrumb::BREADCRUMB->value => [
-                'pagedemo.index.title' => '#',
-            ],
-        ];
-
-        return $this->render('admin/dashboard/page_demo.html.twig', ['breadcrumb' => $breadcrumb]);
+        if (!$this->isGranted($block->getRole())) {
+            return false;
+        }
+        foreach ($block->getModules() as $module) {
+            if (!$menuBuilder->isModuleVisible($module)) {
+                return false;
+            }
+        }
+        return true;
     }
 }

@@ -57,6 +57,16 @@ enum SvgIcon: string
     case PEN = 'M10.779 17.779 4.36 19.918 6.5 13.5m4.279 4.279 8.364-8.643a3.027 3.027 0 0 0-2.14-5.165 3.03 3.03 0 0 0-2.14.886L6.5 13.5m4.279 4.279L6.499 13.5m2.14 2.14 6.213-6.504M12.75 7.04 17 11.28';
 
     /**
+     * Liste à puces
+     */
+    case LIST = 'M9 8h10M9 12h10M9 16h10M4.99 8H5m-.02 4h.01m0 4H5';
+
+    /**
+     * Plus
+     */
+    case PLUS = 'M5 12h14m-7 7V5';
+
+    /**
      * Génère le SVG de l'icône
      * @param string $class classes CSS du SVG
      * @return string

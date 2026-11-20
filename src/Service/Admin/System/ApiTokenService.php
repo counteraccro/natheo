@@ -18,6 +18,7 @@ use Psr\Container\NotFoundExceptionInterface;
 use App\Service\Global\Token\TokenGenerator;
 use App\Service\Global\Token\TokenHasher;
 use App\Enum\Admin\System\ApiToken\ApiTokenRole;
+use App\Enum\Admin\System\ApiToken\ApiTokenScope;
 
 class ApiTokenService extends AppAdminService
 {
@@ -79,6 +80,7 @@ class ApiTokenService extends AppAdminService
             $translator->trans('api_token.grid.name', domain: 'api_token'),
             $translator->trans('api_token.grid.comment', domain: 'api_token'),
             $translator->trans('api_token.grid.token', domain: 'api_token'),
+            $translator->trans('api_token.grid.scope', domain: 'api_token'),
             $translator->trans('api_token.grid.roles', domain: 'api_token'),
             $translator->trans('api_token.grid.expires_at', domain: 'api_token'),
             $translator->trans('api_token.grid.last_used_at', domain: 'api_token'),
@@ -100,7 +102,11 @@ class ApiTokenService extends AppAdminService
                 $translator->trans('api_token.grid.name', domain: 'api_token') => $apiToken->getName(),
                 $translator->trans('api_token.grid.comment', domain: 'api_token') => $apiToken->getComment(),
                 $translator->trans('api_token.grid.token', domain: 'api_token') => '******',
-                $translator->trans('api_token.grid.roles', domain: 'api_token') => implode(', ', $apiToken->getRoles()),
+                $translator->trans('api_token.grid.scope', domain: 'api_token') => $this->getScopes()[
+                    $apiToken->getScope()->value
+                ],
+                $translator->trans('api_token.grid.roles', domain: 'api_token') =>
+                    $apiToken->getScope() === ApiTokenScope::PUBLIC ? implode(', ', $apiToken->getRoles()) : '',
                 $translator->trans('api_token.grid.expires_at', domain: 'api_token') => $this->formatExpiresAt(
                     $apiToken,
                 ),
@@ -186,7 +192,11 @@ class ApiTokenService extends AppAdminService
                 'url' => $router->generate('admin_api_token_delete', ['id' => $apiToken->getId()]),
                 'ajax' => true,
                 'confirm' => true,
-                'msgConfirm' => $translator->trans('api_token.confirm.delete.message', ['label' => $label], 'api_token'),
+                'msgConfirm' => $translator->trans(
+                    'api_token.confirm.delete.message',
+                    ['label' => $label],
+                    'api_token',
+                ),
                 'csrf' => $csrfTokenManager->getToken(self::CSRF_TOKEN_DELETE)->getValue(),
             ];
         }
@@ -238,6 +248,22 @@ class ApiTokenService extends AppAdminService
     }
 
     /**
+     * Retourne les types de token sous la forme [valeur => libellé traduit]
+     * @return array<string, string>
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getScopes(): array
+    {
+        $translator = $this->getTranslator();
+        $scopes = [];
+        foreach (ApiTokenScope::cases() as $scope) {
+            $scopes[$scope->value] = $translator->trans('api_token.scope.' . $scope->value, domain: 'api_token');
+        }
+        return $scopes;
+    }
+
+    /**
      * Crée un ApiToken à partir de $data. Le token est généré côté serveur et seul son hash est stocké
      * @param array $data
      * @return array{apiToken: ApiToken, token: string} l'entité créée et le token en clair, à n'afficher qu'une fois
@@ -254,6 +280,30 @@ class ApiTokenService extends AppAdminService
 
         $this->save($apiToken);
         return ['apiToken' => $apiToken, 'token' => $token];
+    }
+
+    /**
+     * Token interne du back-office, créé s'il manque (installation mise à jour sans les fixtures)
+     * @return ApiToken
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getInternalBackOfficeToken(): ApiToken
+    {
+        /** @var ApiToken|null $apiToken */
+        $apiToken = $this->findOneBy(ApiToken::class, 'internal', true);
+        if ($apiToken !== null) {
+            return $apiToken;
+        }
+
+        $apiToken = (new ApiToken())
+            ->setName('Back-office')
+            ->setScope(ApiTokenScope::BACK_OFFICE)
+            ->setInternal(true)
+            ->setDisabled(false)
+            ->setToken(TokenHasher::hash($this->generateToken()));
+        $this->save($apiToken);
+        return $apiToken;
     }
 
     /**
@@ -298,6 +348,7 @@ class ApiTokenService extends AppAdminService
             'name' => $apiToken->getName(),
             'comment' => $apiToken->getComment(),
             'roles' => array_values($this->filterRoles($apiToken->getRoles())),
+            'scope' => $apiToken->getScope()->value,
             'disabled' => $apiToken->isDisabled(),
             'expiresAt' => $apiToken->getExpiresAt()?->format('Y-m-d'),
             'lastUsedAt' => $apiToken->getLastUsedAt()?->format('d/m/Y H:i'),
@@ -314,7 +365,11 @@ class ApiTokenService extends AppAdminService
     {
         $apiToken->setName(trim((string) ($data['name'] ?? '')));
         $apiToken->setComment(isset($data['comment']) ? (string) $data['comment'] : null);
-        $apiToken->setRoles($this->filterRoles((array) ($data['roles'] ?? [])));
+        $apiToken->setScope(ApiTokenScope::tryFrom((string) ($data['scope'] ?? '')) ?? $apiToken->getScope());
+        // Un token back-office n'a pas de rôle, les droits viennent de l'utilisateur de la session
+        $apiToken->setRoles(
+            $apiToken->getScope() === ApiTokenScope::PUBLIC ? $this->filterRoles((array) ($data['roles'] ?? [])) : [],
+        );
         $apiToken->setExpiresAt($this->parseExpiresAt($data['expiresAt'] ?? null));
     }
 

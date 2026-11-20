@@ -38,6 +38,8 @@ class ApiAuthenticationControllerTest extends AppApiTestCase
         $content = json_decode($response->getContent(), true);
         $this->checkStructureApiRetour($content);
         $this->assertContains('ROLE_WRITE_API', $content['data']['roles']);
+        $this->assertContains('ROLE_USER', $content['data']['roles']);
+        $this->assertNotContains('ROLE_API_PUBLIC', $content['data']['roles']);
     }
 
     /**

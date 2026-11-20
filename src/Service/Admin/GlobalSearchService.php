@@ -16,6 +16,7 @@ use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\Content\Tag\Tag;
 use App\Entity\Admin\System\User;
 use App\Enum\Admin\Content\Page\PageContentType;
+use App\Enum\Admin\Global\GlobalSearchEntity;
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Enum\Admin\System\Options\OptionUser;
 use App\Service\Admin\System\User\PersonalData;
@@ -39,8 +40,8 @@ class GlobalSearchService extends AppAdminService
     {
         $translate = $this->getTranslator();
 
-        $entity = $this->getEntityByString($entity);
-        if ($entity === '') {
+        $entity = GlobalSearchEntity::tryFrom($entity)?->getEntityClass();
+        if ($entity === null) {
             return [
                 'elements' => [],
                 'total' => 0,
@@ -52,23 +53,6 @@ class GlobalSearchService extends AppAdminService
         $result = $repository->search($search, $this->getLocales()['current'], $page, $limit);
 
         return $this->formatResult($result, $entity, $search);
-    }
-
-    /**
-     * Retourne
-     * @param string $entity
-     * @return string
-     */
-    private function getEntityByString(string $entity): string
-    {
-        return match ($entity) {
-            'page' => Page::class,
-            'menu' => Menu::class,
-            'faq' => Faq::class,
-            'tag' => Tag::class,
-            'user' => User::class,
-            default => '',
-        };
     }
 
     /**
