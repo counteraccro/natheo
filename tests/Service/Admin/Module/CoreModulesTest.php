@@ -33,10 +33,13 @@ class CoreModulesTest extends AppWebTestCase
     private const array LOCALES = ['fr', 'en', 'es'];
 
     /**
-     * Dossier des modules de l'application Vue du back-office
-     * @var string
+     * Dossiers des modules de l'application Vue du back-office, surcharges en dernier
+     * @var string[]
      */
-    private const string APP_MODULES_DIR = 'assets/vue/Components/Admin/Modules';
+    private const array APP_MODULES_DIRS = [
+        'assets/vue/Components/Admin/Modules',
+        'assets/overwrite/vue/Components/Admin/Modules',
+    ];
 
     /**
      * Chaque entrée de menu mène à une route existante
@@ -239,7 +242,8 @@ class CoreModulesTest extends AppWebTestCase
     }
 
     /**
-     * Routes déclarées par les module.ts de l'application : [id du module => [nom de la route => chemin]]
+     * Routes déclarées par les module.ts de l'application : [id du module => [nom de la route => chemin]]. Un module de
+     * surcharge remplace celui du même id
      * @return array<string, array<string, string>>
      */
     private function getAppRoutes(): array
@@ -248,12 +252,15 @@ class CoreModulesTest extends AppWebTestCase
         $projectDir = $this->container->getParameter('kernel.project_dir');
         $idPattern = "/\\bid:\\s*'([^']+)'/";
         $routePattern = "/\\{[^{}]*?\\bpath:\\s*'([^']*)'[^{}]*?\\bname:\\s*'([^']+)'/";
-        foreach (glob($projectDir . '/' . self::APP_MODULES_DIR . '/*/module.ts') as $file) {
-            $source = (string) file_get_contents($file);
-            $this->assertSame(1, preg_match($idPattern, $source, $id), sprintf('id absent de %s', $file));
-            preg_match_all($routePattern, $source, $matches, PREG_SET_ORDER);
-            foreach ($matches as [, $path, $name]) {
-                $routes[$id[1]][$name] = $path;
+        foreach (self::APP_MODULES_DIRS as $directory) {
+            foreach (glob($projectDir . '/' . $directory . '/*/module.ts') as $file) {
+                $source = (string) file_get_contents($file);
+                $this->assertSame(1, preg_match($idPattern, $source, $id), sprintf('id absent de %s', $file));
+                preg_match_all($routePattern, $source, $matches, PREG_SET_ORDER);
+                $routes[$id[1]] = [];
+                foreach ($matches as [, $path, $name]) {
+                    $routes[$id[1]][$name] = $path;
+                }
             }
         }
         return $routes;

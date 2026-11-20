@@ -23,7 +23,7 @@ class VueExtractorTest extends TestCase
         $this->directory = sys_get_temp_dir() . '/vue_extractor_' . uniqid();
         $filesystem = new Filesystem();
         $filesystem->dumpFile(
-            $this->directory . '/Components/Demo.vue',
+            $this->directory . '/vue/Components/Demo.vue',
             <<<'VUE'
             <template>
               <p :title="t('admin_app.not_found.title')">{{ t("admin_app.not_found.text", { path }) }}</p>
@@ -38,9 +38,16 @@ class VueExtractorTest extends TestCase
             VUE
             ,
         );
-        $filesystem->dumpFile($this->directory . '/Composables/labels.ts', "t('admin_ui.dialog.close');\n");
-        $filesystem->dumpFile($this->directory . '/Composables/__tests__/labels.spec.ts', "t('admin_ui.test.only');\n");
-        $filesystem->dumpFile($this->directory . '/Composables/notes.md', "t('admin_ui.markdown.only');\n");
+        $filesystem->dumpFile($this->directory . '/vue/Composables/labels.ts', "t('admin_ui.dialog.close');\n");
+        $filesystem->dumpFile(
+            $this->directory . '/vue/Composables/__tests__/labels.spec.ts',
+            "t('admin_ui.test.only');\n",
+        );
+        $filesystem->dumpFile(
+            $this->directory . '/overwrite/vue/Components/Admin/Modules/Demo/Demo.vue',
+            "{{ t('demo_overwrite.screen.title') }}\n",
+        );
+        $filesystem->dumpFile($this->directory . '/vue/Composables/notes.md', "t('admin_ui.markdown.only');\n");
     }
 
     protected function tearDown(): void
@@ -49,12 +56,12 @@ class VueExtractorTest extends TestCase
     }
 
     /**
-     * Clés littérales au format de la convention, domaine déduit du premier segment, préfixe appliqué
+     * Clés littérales au format de la convention, surcharges comprises, domaine déduit du premier segment, préfixe appliqué
      * @return void
      */
     public function testExtract(): void
     {
-        $extractor = new VueExtractor($this->directory);
+        $extractor = new VueExtractor([$this->directory . '/vue', $this->directory . '/overwrite/vue']);
         $extractor->setPrefix('__');
         $catalogue = new MessageCatalogue('fr');
         $extractor->extract('src', $catalogue);
@@ -68,7 +75,11 @@ class VueExtractorTest extends TestCase
             $this->sorted($catalogue->all('admin_app')),
         );
         $this->assertSame(['admin_ui.dialog.close' => '__admin_ui.dialog.close'], $catalogue->all('admin_ui'));
-        $this->assertSame(['admin_app', 'admin_ui'], $this->sortedDomains($catalogue));
+        $this->assertSame(
+            ['demo_overwrite.screen.title' => '__demo_overwrite.screen.title'],
+            $catalogue->all('demo_overwrite'),
+        );
+        $this->assertSame(['admin_app', 'admin_ui', 'demo_overwrite'], $this->sortedDomains($catalogue));
     }
 
     /**
@@ -77,7 +88,7 @@ class VueExtractorTest extends TestCase
      */
     public function testExtractOncePerCatalogue(): void
     {
-        $extractor = new VueExtractor($this->directory);
+        $extractor = new VueExtractor([$this->directory . '/vue', $this->directory . '/overwrite/vue']);
         $catalogue = new MessageCatalogue('fr');
         $extractor->extract('src', $catalogue);
         $catalogue->set('admin_ui.dialog.close', 'Fermer', 'admin_ui');
@@ -92,7 +103,7 @@ class VueExtractorTest extends TestCase
      */
     public function testExtractKeysIgnored(): void
     {
-        $extractor = new VueExtractor($this->directory);
+        $extractor = new VueExtractor([$this->directory . '/vue', $this->directory . '/overwrite/vue']);
 
         $this->assertSame([], $extractor->extractKeys("t('btnHeading', 'Titres')"));
         $this->assertSame([], $extractor->extractKeys("t('admin_ui.close')"));

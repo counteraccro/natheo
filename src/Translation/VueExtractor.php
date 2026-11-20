@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Extracteur de translation:extract pour les clés des appels t('domaine.ecran.element') du code Vue et TypeScript
  */
 
@@ -39,29 +39,34 @@ final class VueExtractor implements ExtractorInterface
     private \WeakMap $extracted;
 
     /**
-     * @param string $directory dossier du code Vue et TypeScript
+     * @param string[] $directories dossiers du code Vue et TypeScript, surcharges comprises
      */
-    public function __construct(#[Autowire('%kernel.project_dir%/assets/vue')] private readonly string $directory)
-    {
+    public function __construct(
+        #[
+            Autowire(['%kernel.project_dir%/assets/vue', '%kernel.project_dir%/assets/overwrite/vue']),
+        ]
+        private readonly array $directories,
+    ) {
         $this->extracted = new \WeakMap();
     }
 
     /**
-     * Ajoute au catalogue les clés trouvées dans le dossier du code Vue, quel que soit $resource
+     * Ajoute au catalogue les clés trouvées dans les dossiers du code Vue, quel que soit $resource
      * @param string|iterable<string> $resource dossiers donnés par la commande (src, templates), ignorés
      * @param MessageCatalogue $catalogue
      * @return void
      */
     public function extract(string|iterable $resource, MessageCatalogue $catalogue): void
     {
-        if (isset($this->extracted[$catalogue]) || !is_dir($this->directory)) {
+        $directories = array_values(array_filter($this->directories, is_dir(...)));
+        if (isset($this->extracted[$catalogue]) || $directories === []) {
             return;
         }
         $this->extracted[$catalogue] = true;
 
         $files = (new Finder())
             ->files()
-            ->in($this->directory)
+            ->in($directories)
             ->name(['*.vue', '*.ts'])
             ->notPath('__tests__');
         foreach ($files as $file) {
