@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Remplace le provider ou le processor des opérations surchargées dans config/cms/overwrite.yaml. Adresse, sécurité,
  * entrées et sorties restent celles de l'opération d'origine
  */
@@ -62,11 +62,19 @@ final readonly class OverwriteMetadataFactory implements ResourceMetadataCollect
      * @param Operation $operation
      * @param array<string, class-string> $overwrite
      * @return Operation
-     * @throws \LogicException si un processor est donné à une opération de lecture
+     * @throws \LogicException si un processor est donné à une lecture ou un provider à une opération qui ne lit pas
      */
     private function apply(Operation $operation, array $overwrite): Operation
     {
         if (isset($overwrite[OverwriteConfigPass::PROVIDER])) {
+            if (!$this->reads($operation)) {
+                throw new \LogicException(
+                    sprintf(
+                        'L\'opération « %s » ne lit pas la ressource et n\'appelle aucun provider',
+                        $operation->getName(),
+                    ),
+                );
+            }
             return $operation->withProvider($overwrite[OverwriteConfigPass::PROVIDER]);
         }
         if ($operation instanceof HttpOperation && $operation->getMethod() === HttpOperation::METHOD_GET) {
@@ -75,5 +83,23 @@ final readonly class OverwriteMetadataFactory implements ResourceMetadataCollect
             );
         }
         return $operation->withProcessor($overwrite[OverwriteConfigPass::PROCESSOR]);
+    }
+
+    /**
+     * Indique si API Platform appelle le provider de l'opération, avec la même règle que son MainController quand
+     * read n'est pas fixé
+     * @param Operation $operation
+     * @return bool
+     */
+    private function reads(Operation $operation): bool
+    {
+        if ($operation->canRead() !== null) {
+            return $operation->canRead();
+        }
+        if (!($operation instanceof HttpOperation)) {
+            return true;
+        }
+        return ($operation->getUriVariables() !== null && $operation->getUriVariables() !== []) ||
+            in_array($operation->getMethod(), [HttpOperation::METHOD_GET, HttpOperation::METHOD_HEAD], true);
     }
 }

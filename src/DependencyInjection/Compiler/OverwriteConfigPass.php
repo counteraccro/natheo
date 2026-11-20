@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Lit les surcharges d'opérations d'API des fichiers overwrite.yaml et les range dans le paramètre app.overwrite_api
  */
 
@@ -44,6 +44,18 @@ final class OverwriteConfigPass implements CompilerPassInterface
     public const string PROCESSOR = 'processor';
 
     /**
+     * Tag des providers d'API Platform, posé par l'autoconfiguration
+     * @var string
+     */
+    public const string PROVIDER_TAG = 'api_platform.state_provider';
+
+    /**
+     * Tag des processors d'API Platform, posé par l'autoconfiguration
+     * @var string
+     */
+    public const string PROCESSOR_TAG = 'api_platform.state_processor';
+
+    /**
      * @param ContainerBuilder $container
      * @return void
      */
@@ -65,14 +77,34 @@ final class OverwriteConfigPass implements CompilerPassInterface
 
         $overwrites = self::parse($entries);
         foreach ($overwrites as $operation => $overwrite) {
-            $class = reset($overwrite);
-            if (!$container->has($class)) {
-                throw new \LogicException(
-                    sprintf('La classe « %s » de l\'opération « %s » n\'est pas un service', $class, $operation),
-                );
-            }
+            self::checkService($container, $operation, $overwrite);
         }
         $container->setParameter(self::API_PARAMETER, $overwrites);
+    }
+
+    /**
+     * Vérifie que la classe de remplacement est un service connu d'API Platform comme provider ou processor
+     * @param ContainerBuilder $container
+     * @param string $operation
+     * @param array<string, class-string> $overwrite
+     * @return void
+     * @throws \LogicException si la classe n'est pas un service ou n'a pas le tag attendu
+     */
+    public static function checkService(ContainerBuilder $container, string $operation, array $overwrite): void
+    {
+        $key = array_key_first($overwrite);
+        $class = $overwrite[$key];
+        if (!$container->has($class)) {
+            throw new \LogicException(
+                sprintf('La classe « %s » de l\'opération « %s » n\'est pas un service', $class, $operation),
+            );
+        }
+        $tag = $key === self::PROVIDER ? self::PROVIDER_TAG : self::PROCESSOR_TAG;
+        if (!$container->findDefinition($class)->hasTag($tag)) {
+            throw new \LogicException(
+                sprintf('Le service « %s » de l\'opération « %s » n\'a pas le tag %s', $class, $operation, $tag),
+            );
+        }
     }
 
     /**

@@ -127,4 +127,20 @@ class OverwriteTest extends AppApiV2TestCase
         $this->expectExceptionMessage('admin_overwrite_probe_get');
         $factory->create(OverwriteProbe::class);
     }
+
+    /**
+     * Un provider donné à une opération qui ne lit pas la ressource est refusé
+     * @return void
+     */
+    public function testProviderOnOperationWithoutRead(): void
+    {
+        $factory = new OverwriteMetadataFactory(
+            $this->container->get('api_platform.metadata.resource.metadata_collection_factory'),
+            ['admin_overwrite_probe_post' => [OverwriteConfigPass::PROVIDER => OverwriteProbeProvider::class]],
+        );
+
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('admin_overwrite_probe_post');
+        $factory->create(OverwriteProbe::class);
+    }
 }

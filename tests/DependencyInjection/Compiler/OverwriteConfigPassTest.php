@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Lecture et contrôle des fichiers de surcharge des opérations d'API
  */
 
@@ -14,6 +14,7 @@ use App\Tests\Api\V2\State\Overwrite\OverwriteProbeProcessor;
 use App\Tests\Api\V2\State\Overwrite\OverwriteProbeProvider;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class OverwriteConfigPassTest extends TestCase
 {
@@ -96,5 +97,39 @@ class OverwriteConfigPassTest extends TestCase
                 'doit implémenter ApiPlatform\State\ProcessorInterface',
             ],
         ];
+    }
+
+    /**
+     * La classe de remplacement doit être un service portant le tag de son rôle
+     * @return void
+     */
+    public function testCheckService(): void
+    {
+        $container = new ContainerBuilder();
+        $container->register(OverwriteProbeProvider::class)->addTag(OverwriteConfigPass::PROVIDER_TAG);
+        $container->register(OverwriteProbeProcessor::class);
+
+        OverwriteConfigPass::checkService($container, 'a_get', [
+            OverwriteConfigPass::PROVIDER => OverwriteProbeProvider::class,
+        ]);
+
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('n\'a pas le tag ' . OverwriteConfigPass::PROCESSOR_TAG);
+        OverwriteConfigPass::checkService($container, 'a_patch', [
+            OverwriteConfigPass::PROCESSOR => OverwriteProbeProcessor::class,
+        ]);
+    }
+
+    /**
+     * Une classe qui n'est pas un service est refusée
+     * @return void
+     */
+    public function testCheckServiceMissing(): void
+    {
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('n\'est pas un service');
+        OverwriteConfigPass::checkService(new ContainerBuilder(), 'a_get', [
+            OverwriteConfigPass::PROVIDER => OverwriteProbeProvider::class,
+        ]);
     }
 }
