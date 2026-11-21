@@ -8,7 +8,7 @@ import type { FormScreenDescriptor } from '@/ts/Admin/Screen/FormScreen.type';
 import type { ScreenItem } from '@/ts/Admin/Screen/Screen.type';
 
 /**
- * Clé de traduction telle quelle. Importée sous le nom t dans screens.ts (t('tag.index.title')), elle laisse
+ * Clé de traduction telle quelle. Importée sous le nom t dans screens.ts (t('tag.collection.title')), elle laisse
  * VueExtractor trouver les clés des descriptions, traduites à l'affichage
  * @param key
  */
