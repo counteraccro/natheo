@@ -176,13 +176,12 @@ const meta = computed(() => {
             >
               <UiSelect v-model="row[field.name] as string" :options="selectOptions(field)" />
             </UiField>
-            <UiField
-              v-else-if="field.type === 'color'"
-              :name="field.name"
-              :label="labelOf(field)"
-              :help="helpOf(field)"
-            >
-              <UiColorInput v-model="row[field.name] as string" :suggestions="field.suggestions" />
+            <UiField v-else-if="field.type === 'color'" :name="field.name" :label="labelOf(field)">
+              <UiColorInput
+                v-model="row[field.name] as string"
+                :suggestions="field.suggestions"
+                :hint="helpOf(field)"
+              />
             </UiField>
             <UiSwitch
               v-else-if="field.type === 'switch'"

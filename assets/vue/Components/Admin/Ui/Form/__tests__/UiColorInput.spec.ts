@@ -23,4 +23,11 @@ describe('UiColorInput', () => {
     await wrapper.find('[role="group"] button:not([aria-pressed])').trigger('click');
     expect(swatches().map((swatch) => swatch.attributes('title'))).not.toEqual(before);
   });
+
+  it('relie l’aide placée à gauche des couleurs proposées au code hexadécimal', () => {
+    const wrapper = mount(UiColorInput, withLabels({ props: { suggestions: 2, hint: 'Format #rrggbb' } }));
+    const hint = wrapper.get('p');
+    expect(hint.text()).toBe('Format #rrggbb');
+    expect(wrapper.get('input[type="text"]').attributes('aria-describedby')).toBe(hint.attributes('id'));
+  });
 });
