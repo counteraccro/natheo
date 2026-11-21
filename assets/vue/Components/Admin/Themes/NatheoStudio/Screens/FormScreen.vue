@@ -139,14 +139,14 @@ const meta = computed(() => {
                     :disabled="screen.isCopied(field, tab.id)"
                     @update:model-value="screen.setTranslation(field, tab.id, String($event ?? ''))"
                   />
+                  <template v-if="field.copyFromCurrent && canEdit" #below>
+                    <UiCheckbox
+                      :model-value="copying"
+                      :label="t('admin_app.screen.translations_copy', { locale: currentLocaleName })"
+                      @update:model-value="screen.setCopying($event)"
+                    />
+                  </template>
                 </UiField>
-                <div v-if="field.copyFromCurrent && canEdit" class="mt-2.5">
-                  <UiCheckbox
-                    :model-value="copying"
-                    :label="t('admin_app.screen.translations_copy', { locale: currentLocaleName })"
-                    @update:model-value="screen.setCopying($event)"
-                  />
-                </div>
               </template>
             </UiTabs>
             <UiField v-else-if="field.type === 'text'" :name="field.name" :label="labelOf(field)" :help="helpOf(field)">
