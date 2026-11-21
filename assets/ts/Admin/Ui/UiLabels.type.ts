@@ -17,7 +17,7 @@ export interface UiLabels {
   errorSummary: { title: (count: number) => string; item: (label: string, message: string) => string };
   tabs: { hasErrors: string };
   input: { counter: (count: number, max: number) => string };
-  colorInput: { picker: string; hex: string };
+  colorInput: { picker: string; hex: string; suggestions: string; more: string; use: (color: string) => string };
   pagination: {
     nav: string;
     previous: string;

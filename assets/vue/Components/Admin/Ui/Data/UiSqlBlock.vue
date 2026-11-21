@@ -35,6 +35,7 @@ const COLORS: Record<SqlToken['kind'], string> = {
   string: 'text-code-string',
   number: 'text-code-number',
   identifier: 'text-code-identifier',
+  comment: 'italic text-code-comment',
   plain: '',
 };
 

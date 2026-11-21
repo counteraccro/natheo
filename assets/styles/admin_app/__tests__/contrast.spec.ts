@@ -83,9 +83,15 @@ const PAIRS: [string, string, number][] = [
   ['--field', '--bg', 3],
   ['--focus', '--bg', 3],
   ['--focus', '--canvas', 3],
-  ...['--on-code', '--on-code-muted', '--code-keyword', '--code-string', '--code-number', '--code-identifier'].map(
-    (fg): [string, string, number] => [fg, '--code-bg', 4.5]
-  ),
+  ...[
+    '--on-code',
+    '--on-code-muted',
+    '--code-keyword',
+    '--code-string',
+    '--code-number',
+    '--code-identifier',
+    '--code-comment',
+  ].map((fg): [string, string, number] => [fg, '--code-bg', 4.5]),
   ['--on-code-muted', '--code-raised', 4.5],
   ['--on-code-number', '--code-number', 4.5],
 ];

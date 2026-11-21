@@ -161,8 +161,23 @@ const onBulk = ({ id, keys }: { id: string; keys: (string | number)[] }): void =
   notify(id === 'delete' ? 'warning' : 'info', `${keys.length} éléments`, `Action groupée « ${id} »`);
 };
 
-const SQL =
-  "SELECT t.id, tt.label, t.color FROM `tag` t INNER JOIN tag_translation tt ON tt.tag_id = t.id WHERE tt.locale = 'fr' ORDER BY tt.label ASC LIMIT 5 OFFSET 0";
+const SQL = [
+  'SELECT',
+  '  t.id,',
+  '  COALESCE(tt.label, td.label) AS label, -- libellé de la langue, à défaut celui par défaut',
+  '  t.color',
+  'FROM',
+  '  `tag` t',
+  "  LEFT JOIN tag_translation tt ON tt.tag_id = t.id AND (tt.locale = 'fr')",
+  "  LEFT JOIN tag_translation td ON td.tag_id = t.id AND (td.locale = 'fr')",
+  'WHERE',
+  "  LOWER(tt.label) LIKE '%l\\'été%' /* antislash de MySQL */",
+  '  AND t.disabled = false',
+  'ORDER BY',
+  '  tt.label ASC',
+  'LIMIT',
+  '  5 OFFSET 0',
+].join('\n');
 
 const PANEL = 'rounded-lg border border-line bg-bg shadow-panel';
 const PANEL_HEAD = 'flex items-center gap-3 border-b border-line px-5 py-4';
@@ -243,7 +258,7 @@ const PANEL_TITLE = 'm-0 text-md font-[650]';
           </template>
         </UiTabs>
         <UiField name="color" label="Couleur" help="Code hexadécimal #rrggbb">
-          <UiColorInput v-model="color" />
+          <UiColorInput v-model="color" :suggestions="5" />
         </UiField>
         <UiField name="locale" label="Langue par défaut">
           <UiSelect

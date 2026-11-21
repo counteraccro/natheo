@@ -50,6 +50,8 @@ const props = withDefaults(
     bulkActions?: DataTableAction[];
     /** Libellé d'une ligne pour sa case (première colonne par défaut) */
     rowLabel?: (row: T) => string;
+    /** Classes d'une ligne (élément désactivé grisé…) */
+    rowClass?: (row: T) => string | undefined;
   }>(),
   { rowKey: 'id', searchable: true, sql: null }
 );
@@ -380,11 +382,12 @@ const clearSelection = async (): Promise<void> => {
             <tr
               v-for="row in displayed"
               :key="keyOf(row)"
-              :class="
+              :class="[
                 selectable &&
-                selectedSet.has(keyOf(row)) &&
-                'bg-[color-mix(in_srgb,var(--primary-soft)_70%,transparent)] hover:bg-primary-soft'
-              "
+                  selectedSet.has(keyOf(row)) &&
+                  'bg-[color-mix(in_srgb,var(--primary-soft)_70%,transparent)] hover:bg-primary-soft',
+                rowClass?.(row),
+              ]"
               class="group/row transition-colors duration-100 hover:bg-[color-mix(in_srgb,var(--surface)_55%,transparent)] has-[[aria-expanded=true]]:bg-[color-mix(in_srgb,var(--primary-soft)_55%,transparent)] max-md:grid max-md:grid-cols-[minmax(0,1fr)_auto] max-md:gap-x-3 max-md:gap-y-1.5 max-md:border-b max-md:border-line max-md:px-4 max-md:py-3.5"
             >
               <td

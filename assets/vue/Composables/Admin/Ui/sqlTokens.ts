@@ -1,26 +1,34 @@
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Découpage d'une requête SQL pour sa coloration, rendue en texte sans v-html
  */
 import type { SqlToken } from '@/ts/Admin/Ui/Data/SqlToken.type';
 
 const KEYWORDS = new Set(
-  'select from where and or not in is null like ilike order by group having limit offset join left right inner outer on as distinct count asc desc between exists union all case when then else end insert into values update set delete'.split(
-    ' '
-  )
+  (
+    'select from where and or not in is null like ilike order by group having limit offset join left right inner ' +
+    'outer cross full on using as distinct count asc desc nulls first last between exists union all case when then ' +
+    'else end insert into values update set delete with true false escape cast coalesce lower upper'
+  ).split(' ')
 );
 
-const PATTERN = /('(?:[^']|'')*')|(\b\d+(?:\.\d+)?\b)|([`"][^`"]+[`"])|([A-Za-z_][\w.]*)|(\s+|[^\sA-Za-z_'`"\d]+)/g;
+/**
+ * Commentaire ; chaîne (apostrophe doublée ou échappée par un antislash) ; nombre ; identifiant entre guillemets ou
+ * accents graves (guillemet doublé) ; mot ; reste
+ */
+const PATTERN =
+  /(--[^\n]*|\/\*[\s\S]*?(?:\*\/|$))|('(?:[^'\\]|\\.|'')*'?)|(\b\d+(?:\.\d+)?\b)|("(?:[^"]|"")*"?|`(?:[^`]|``)*`?)|([A-Za-z_][\w.]*)|(\s+|[^\sA-Za-z_'`"\d-/]+|[-/])/g;
 
 /**
  * Morceaux colorés d'une requête
  */
 export function tokenizeSql(sql: string): SqlToken[] {
   const tokens: SqlToken[] = [];
-  for (const [text, string, number, quoted, word] of sql.matchAll(PATTERN)) {
+  for (const [text, comment, string, number, quoted, word] of sql.matchAll(PATTERN)) {
     let kind: SqlToken['kind'] = 'plain';
-    if (string) kind = 'string';
+    if (comment) kind = 'comment';
+    else if (string) kind = 'string';
     else if (number) kind = 'number';
     else if (quoted) kind = 'identifier';
     else if (word) kind = KEYWORDS.has(word.toLowerCase()) ? 'keyword' : 'plain';

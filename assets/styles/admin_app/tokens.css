@@ -83,6 +83,7 @@
     --code-number: #ffc56b;
     --on-code-number: #3d2c00;
     --code-identifier: #7cd4f8;
+    --code-comment: #8f9ba8;
 
     --panel-shadow: 0 1px 2px rgb(17 17 20 / 0.04), 0 1px 0 rgb(17 17 20 / 0.02);
     --overlay-shadow: 0 12px 32px -8px rgb(17 17 20 / 0.22), 0 0 0 1px rgb(17 17 20 / 0.06);

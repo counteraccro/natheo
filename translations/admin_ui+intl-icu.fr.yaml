@@ -2,7 +2,10 @@ admin_ui.alert.close: "Fermer l'alerte"
 admin_ui.breadcrumb.nav: "Fil d'Ariane"
 admin_ui.button.loading: Chargement…
 admin_ui.color_input.hex: 'Code hexadécimal'
+admin_ui.color_input.more: 'Autres couleurs'
 admin_ui.color_input.picker: 'Choisir une couleur'
+admin_ui.color_input.suggestions: 'Couleurs proposées'
+admin_ui.color_input.use: 'Choisir {color}'
 admin_ui.confirm_dialog.cancel: Annuler
 admin_ui.confirm_dialog.confirm: Confirmer
 admin_ui.data_table.actions: Actions

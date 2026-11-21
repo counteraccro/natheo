@@ -2,7 +2,8 @@
 /**
  * @author Gourdon Aymeric
  * @version 1.0
- * Couleur : sélecteur natif et code hexadécimal, seule une valeur #rrggbb est transmise
+ * Couleur : sélecteur natif et code hexadécimal, seule une valeur #rrggbb est transmise ; couleurs proposées au
+ * hasard en option
  */
 import { computed, ref, watch } from 'vue';
 import { useFieldControl } from '@/vue/Composables/Admin/Ui/useField';
@@ -11,6 +12,12 @@ import { CONTROL_CLASSES } from '@/vue/Composables/Admin/Ui/controlClasses';
 
 const HEX = /^#[0-9a-fA-F]{6}$/;
 
+const props = withDefaults(
+  defineProps<{ /** Nombre de couleurs proposées, aucune par défaut */ suggestions?: number }>(),
+  {
+    suggestions: 0,
+  }
+);
 const model = defineModel<string>({ default: '#000000' });
 const labels = useUiLabels();
 const text = ref(model.value);
@@ -22,6 +29,17 @@ watch(model, (value) => {
     text.value = value;
   }
 });
+
+const randomColor = (): string =>
+  '#' +
+  Math.floor(Math.random() * 0x1000000)
+    .toString(16)
+    .padStart(6, '0');
+const proposed = ref<string[]>([]);
+const propose = (): void => {
+  proposed.value = Array.from({ length: props.suggestions }, randomColor);
+};
+propose();
 
 const onText = (value: string): void => {
   text.value = value.trim();
@@ -53,5 +71,30 @@ const onText = (value: string): void => {
       :class="[CONTROL_CLASSES, 'h-9 w-32 px-3 font-mono text-sm lowercase']"
       @input="onText(($event.target as HTMLInputElement).value)"
     />
+  </div>
+  <div
+    v-if="suggestions > 0"
+    class="mt-2 flex flex-wrap items-center gap-1.5"
+    role="group"
+    :aria-label="labels.colorInput.suggestions"
+  >
+    <button
+      v-for="color in proposed"
+      :key="color"
+      type="button"
+      :title="color"
+      :aria-label="labels.colorInput.use(color)"
+      :aria-pressed="color === model"
+      class="ui-ring size-7 cursor-pointer rounded-md border-0 shadow-[inset_0_0_0_1px_var(--field)] aria-pressed:outline-2 aria-pressed:outline-offset-2 aria-pressed:outline-primary"
+      :style="{ background: color }"
+      @click="model = color"
+    />
+    <button
+      type="button"
+      class="ui-ring ml-1 cursor-pointer rounded-sm border-0 bg-transparent px-1 py-0.5 text-sm font-semibold text-primary underline underline-offset-3"
+      @click="propose"
+    >
+      {{ labels.colorInput.more }}
+    </button>
   </div>
 </template>

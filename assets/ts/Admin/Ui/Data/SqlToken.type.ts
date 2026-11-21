@@ -5,5 +5,5 @@
  */
 export interface SqlToken {
   text: string;
-  kind: 'keyword' | 'string' | 'number' | 'identifier' | 'plain';
+  kind: 'keyword' | 'string' | 'number' | 'identifier' | 'comment' | 'plain';
 }
