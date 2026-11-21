@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 /**
- * Applique une AdminCollectionQuery (recherche, statut, tri, page) à une requête de collection d'administration
+ * Applique une AdminCollectionQuery (recherche, statut, auteur, tri, page) à une requête de collection d'administration
  * @author Gourdon Aymeric
  * @version 1.0
  */
@@ -23,6 +23,8 @@ trait AdminCollectionQueryTrait
      * @param array<string, string> $fields champ de la ressource => chemin DQL (ex : 'name' => 't.name')
      * @param string|null $disabledField chemin DQL du booléen « désactivé », null si la ressource n'en a pas
      * @param string $defaultOrder chemin DQL du tri par défaut
+     * @param string|null $authorField chemin DQL de l'auteur, null si la ressource n'en a pas
+     * @param bool $fetchJoinCollection vrai seulement si la requête joint une collection to-many
      * @return Paginator
      */
     protected function paginateAdminCollection(
@@ -31,6 +33,8 @@ trait AdminCollectionQueryTrait
         array $fields,
         ?string $disabledField,
         string $defaultOrder,
+        ?string $authorField = null,
+        bool $fetchJoinCollection = false,
     ): Paginator {
         $searchPaths = array_values(array_intersect_key($fields, array_flip($query->searchFields)));
         if ($query->search !== null && $searchPaths !== []) {
@@ -48,9 +52,16 @@ trait AdminCollectionQueryTrait
             );
         }
 
+        if ($query->authorId !== null && $authorField !== null) {
+            $qb->andWhere('IDENTITY(' . $authorField . ') = :admin_author')->setParameter(
+                'admin_author',
+                $query->authorId,
+            );
+        }
+
         $qb->orderBy($fields[$query->orderField ?? ''] ?? $defaultOrder, $query->orderDirection);
 
         $qb->setFirstResult(max(0, $query->limit * ($query->page - 1)))->setMaxResults($query->limit);
-        return new Paginator($qb->getQuery(), true);
+        return new Paginator($qb->getQuery(), $fetchJoinCollection);
     }
 }

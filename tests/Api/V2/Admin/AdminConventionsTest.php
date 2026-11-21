@@ -42,7 +42,55 @@ class AdminConventionsTest extends AppApiV2TestCase
         $this->assertSame(['edit' => true, 'disable' => true, 'delete' => false], $permissions);
 
         $this->assertProblem($this->requestV2('GET', '/admin/probes?status=inconnu', headers: $headers), 422);
+        $this->assertProblem($this->requestV2('GET', '/admin/probes?author=autre', headers: $headers), 422);
         $this->assertProblem($this->requestV2('GET', '/admin/probes?order[name]=haut', headers: $headers), 422);
+    }
+
+    /**
+     * author=me ne garde que les éléments de l'utilisateur de la session, exposé en AdminAuthor ; libellés traduits
+     * en liste translations
+     * @return void
+     */
+    public function testAuthorAndTranslations(): void
+    {
+        $user = $this->createUserContributeur(['disabled' => false, 'anonymous' => false]);
+        $headers = $this->adminSessionHeaders($user);
+
+        $this->assertSame([1], $this->ids('/admin/probes?author=me', $headers));
+        $this->assertSame([], $this->ids('/admin/probes?author=me&status=disabled', $headers));
+
+        $content = $this->decode($this->requestV2('GET', '/admin/probes/1', headers: $headers));
+        $this->assertMatchesResourceItemJsonSchema(AdminProbe::class);
+        $this->assertSame(
+            ['id' => $user->getId(), 'login' => $user->getLogin()],
+            array_diff_key($content['author'], ['@type' => true]),
+        );
+        $this->assertSame(
+            [['locale' => 'fr', 'label' => 'alpha'], ['locale' => 'en', 'label' => 'alpha']],
+            array_map(
+                fn(array $translation) => array_diff_key($translation, ['@type' => true]),
+                $content['translations'],
+            ),
+        );
+        $this->assertNull($this->decode($this->requestV2('GET', '/admin/probes/2', headers: $headers))['author']);
+    }
+
+    /**
+     * Un état qui empêche l'écriture répond 409 en problem+json, avec le titre traduit
+     * @return void
+     */
+    public function testConflict(): void
+    {
+        $headers = $this->adminSessionHeaders($this->createUserAdmin(['disabled' => false, 'anonymous' => false]));
+
+        $content = $this->assertProblem(
+            $this->requestV2('DELETE', '/admin/probes/' . AdminProbe::USED_ID, headers: $headers),
+            409,
+        );
+        $translator = $this->container->get(TranslatorInterface::class);
+        $this->assertSame($translator->trans('api_errors.title.409', domain: 'api_errors'), $content['title']);
+        $this->assertSame('sonde utilisée', $content['detail']);
+        $this->assertSame([], $this->em->getRepository(ActionLog::class)->findAll());
     }
 
     /**

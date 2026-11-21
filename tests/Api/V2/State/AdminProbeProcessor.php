@@ -11,6 +11,7 @@ namespace App\Tests\Api\V2\State;
 
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Operation;
+use App\Api\V2\Exception\ConflictException;
 use App\Api\V2\State\Processor\Admin\AbstractAdminProcessor;
 use App\Tests\Api\V2\Resource\Admin\AdminProbe;
 
@@ -29,7 +30,7 @@ final class AdminProbeProcessor extends AbstractAdminProcessor
     protected function write(mixed $data, Operation $operation, array $uriVariables, array $context): ?AdminProbe
     {
         if ($operation instanceof Delete) {
-            return null;
+            return $data->id === AdminProbe::USED_ID ? throw new ConflictException('sonde utilisée') : null;
         }
         $data->id ??= 4;
         $data->updatedAt = AdminProbe::UPDATED_AT_AFTER_WRITE;
