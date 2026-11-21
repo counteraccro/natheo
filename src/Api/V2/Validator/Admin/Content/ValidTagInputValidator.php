@@ -18,7 +18,10 @@ use App\Service\Api\Admin\Content\ApiAdminTagService;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+
+use function Symfony\Component\Translation\t;
 
 final class ValidTagInputValidator extends ConstraintValidator
 {
@@ -48,10 +51,10 @@ final class ValidTagInputValidator extends ConstraintValidator
         }
 
         if ($value->color !== null && preg_match(Tag::COLOR_PATTERN, $value->color) !== 1) {
-            $this->addViolation('tag.error.color', 'color');
+            $this->addViolation(t('tag.error.color', domain: 'tag'), 'color');
         }
         if ($value instanceof CreateTagInput && $value->translations === []) {
-            $this->addViolation('tag.error.translations_required', 'translations');
+            $this->addViolation(t('tag.error.translations_required', domain: 'tag'), 'translations');
         }
         $this->validateTranslations($value->translations ?? []);
     }
@@ -68,24 +71,31 @@ final class ValidTagInputValidator extends ConstraintValidator
         foreach (array_values($translations) as $i => $translation) {
             $path = 'translations[' . $i . ']';
             if (!in_array($translation->locale, $locales, true)) {
-                $this->addViolation('tag.error.locale', $path . '.locale', ['{locale}' => $translation->locale]);
+                $this->addViolation(
+                    t('tag.error.locale', ['{locale}' => $translation->locale], 'tag'),
+                    $path . '.locale',
+                );
                 continue;
             }
             if (isset($seen[$translation->locale])) {
-                $this->addViolation('tag.error.locale_duplicate', $path . '.locale', [
-                    '{locale}' => $translation->locale,
-                ]);
+                $this->addViolation(
+                    t('tag.error.locale_duplicate', ['{locale}' => $translation->locale], 'tag'),
+                    $path . '.locale',
+                );
                 continue;
             }
             $seen[$translation->locale] = true;
 
             $label = trim($translation->label);
             if ($label === '') {
-                $this->addViolation('tag.error.label.blank', $path . '.label');
+                $this->addViolation(t('tag.error.label.blank', domain: 'tag'), $path . '.label');
             } elseif (mb_strlen($label) > self::LABEL_MAX_LENGTH) {
-                $this->addViolation('tag.error.label.length', $path . '.label');
+                $this->addViolation(t('tag.error.label.length', domain: 'tag'), $path . '.label');
             } elseif ($this->tagService->findByLabel($translation->locale, $label, $excludedTagId) !== null) {
-                $this->addViolation('tag.error.duplicate_label', $path . '.label', ['{label}' => $label]);
+                $this->addViolation(
+                    t('tag.error.duplicate_label', ['{label}' => $label], 'tag'),
+                    $path . '.label',
+                );
             }
         }
     }
@@ -101,16 +111,15 @@ final class ValidTagInputValidator extends ConstraintValidator
     }
 
     /**
-     * @param string $message clé du domaine tag
+     * @param TranslatableMessage $message
      * @param string $path
-     * @param array<string, string> $parameters
      * @return void
      */
-    private function addViolation(string $message, string $path, array $parameters = []): void
+    private function addViolation(TranslatableMessage $message, string $path): void
     {
         $this->context
-            ->buildViolation($message, $parameters)
-            ->setTranslationDomain('tag')
+            ->buildViolation($message->getMessage(), $message->getParameters())
+            ->setTranslationDomain($message->getDomain())
             ->atPath($path)
             ->addViolation();
     }
