@@ -9,6 +9,7 @@ import { computed, ref, watch } from 'vue';
 import { useFieldControl } from '@/vue/Composables/Admin/Ui/useField';
 import { useUiLabels } from '@/vue/Composables/Admin/Ui/useUiLabels';
 import { CONTROL_CLASSES } from '@/vue/Composables/Admin/Ui/controlClasses';
+import UiButton from '@admin/Ui/Form/UiButton.vue';
 
 const HEX = /^#[0-9a-fA-F]{6}$/;
 
@@ -89,12 +90,8 @@ const onText = (value: string): void => {
       :style="{ background: color }"
       @click="model = color"
     />
-    <button
-      type="button"
-      class="ui-ring ml-1 cursor-pointer rounded-sm border-0 bg-transparent px-1 py-0.5 text-sm font-semibold text-primary underline underline-offset-3"
-      @click="propose"
-    >
+    <UiButton variant="ghost" size="sm" icon="refresh" class="ml-1" @click="propose">
       {{ labels.colorInput.more }}
-    </button>
+    </UiButton>
   </div>
 </template>
