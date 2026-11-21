@@ -82,6 +82,10 @@ export function createFormScreen<T extends ScreenItem>(
     title: computed(() =>
       isNew.value ? t(descriptor.title.create) : t(descriptor.title.edit, { id: String(resource.id.value) })
     ),
+    description: computed(() => {
+      const keys = descriptor.description;
+      return keys ? t(isNew.value ? keys.create : keys.edit) : '';
+    }),
     locales,
     currentLocale,
     canEdit: computed(() => isNew.value || can.can('edit', descriptor.update.operation, resource.data.value)),

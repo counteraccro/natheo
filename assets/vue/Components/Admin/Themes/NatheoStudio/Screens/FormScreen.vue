@@ -35,7 +35,7 @@ const props = defineProps<AdminScreenProps<FormScreenState<T>>>();
 const { t, bootstrap } = useAdminContext();
 const descriptor = props.screen.descriptor;
 const { data, errors, loading, saving, conflict } = props.screen.resource;
-const { isNew, title, canEdit, canDelete, copying, dirty } = props.screen;
+const { isNew, title, description, canEdit, canDelete, copying, dirty } = props.screen;
 
 const PANEL = 'rounded-lg border border-line bg-bg shadow-panel';
 const PANEL_HEAD = 'flex items-center gap-3 border-b border-line px-5 py-4';
@@ -87,7 +87,7 @@ const meta = computed(() => {
 </script>
 
 <template>
-  <AdminPageHeader :title="title" :icon="descriptor.icon" />
+  <AdminPageHeader :title="title" :description="description || undefined" :icon="descriptor.icon" />
 
   <div class="grid grid-cols-[minmax(0,1fr)_320px] items-start gap-5 max-xl:grid-cols-[minmax(0,1fr)]">
     <UiForm :id="formId" :errors="errors" @submit="screen.save()">

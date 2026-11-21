@@ -42,6 +42,8 @@ export interface FormScreenDescriptor<T extends ScreenItem = ScreenItem> {
   resource: string;
   /** Clés de traduction, {id} dans celle de l'édition */
   title: { create: string; edit: string };
+  /** Clés de traduction du texte sous le titre */
+  description?: { create: string; edit: string };
   icon?: IconName;
   /** Route de la liste */
   back: string;
@@ -65,6 +67,8 @@ export interface FormScreenState<T extends ScreenItem = ScreenItem> {
   /** Création pas encore enregistrée */
   isNew: Ref<boolean>;
   title: Ref<string>;
+  /** Texte sous le titre, vide sans description */
+  description: Ref<string>;
   locales: string[];
   /** Langue de l'interface, recopiée vers les autres quand la recopie est cochée */
   currentLocale: string;

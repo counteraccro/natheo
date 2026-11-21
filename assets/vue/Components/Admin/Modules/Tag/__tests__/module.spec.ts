@@ -22,6 +22,8 @@ function keysOf(): string[] {
     ...Object.values(tagCollection.messages),
     tagForm.title.create,
     tagForm.title.edit,
+    tagForm.description!.create,
+    tagForm.description!.edit,
     ...Object.values(tagForm.messages),
   ];
   tagForm.sections.forEach((section) => {
