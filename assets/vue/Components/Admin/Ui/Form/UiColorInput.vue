@@ -9,6 +9,7 @@ import { computed, ref, useId, watch } from 'vue';
 import { useFieldControl } from '@/vue/Composables/Admin/Ui/useField';
 import { useUiLabels } from '@/vue/Composables/Admin/Ui/useUiLabels';
 import { CONTROL_CLASSES } from '@/vue/Composables/Admin/Ui/controlClasses';
+import { randomHexColor } from '@/vue/Composables/Admin/Ui/randomHexColor';
 import UiButton from '@admin/Ui/Form/UiButton.vue';
 
 const HEX = /^#[0-9a-fA-F]{6}$/;
@@ -40,14 +41,9 @@ watch(model, (value) => {
   }
 });
 
-const randomColor = (): string =>
-  '#' +
-  Math.floor(Math.random() * 0x1000000)
-    .toString(16)
-    .padStart(6, '0');
 const proposed = ref<string[]>([]);
 const propose = (): void => {
-  proposed.value = Array.from({ length: props.suggestions }, randomColor);
+  proposed.value = Array.from({ length: props.suggestions }, randomHexColor);
 };
 propose();
 

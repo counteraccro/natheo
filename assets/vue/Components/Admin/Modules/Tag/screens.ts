@@ -9,15 +9,9 @@ import {
   translationKey as t,
 } from '@/vue/Composables/Admin/Screen/defineScreen';
 import type { AdminTag } from '@/ts/Admin/Api/AdminTag.type';
+import { randomHexColor } from '@ui';
 
 const RESOURCE = '/admin/tags';
-
-/** Couleur #rrggbb tirée au hasard */
-const randomColor = (): string =>
-  '#' +
-  Math.floor(Math.random() * 0x1000000)
-    .toString(16)
-    .padStart(6, '0');
 
 export const tagCollection = defineCollectionScreen<AdminTag>({
   resource: RESOURCE,
@@ -62,7 +56,7 @@ export const tagForm = defineFormScreen<AdminTag>({
   back: 'tag_index',
   editRoute: 'tag_edit',
   leaveKey: 'tag',
-  initial: () => ({ color: randomColor(), disabled: false, translations: [] }),
+  initial: () => ({ color: randomHexColor(), disabled: false, translations: [] }),
   sections: [
     {
       title: t('tag.editor.section_label'),
