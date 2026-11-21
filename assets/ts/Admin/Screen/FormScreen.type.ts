@@ -66,13 +66,21 @@ export interface FormScreenState<T extends ScreenItem = ScreenItem> {
   isNew: Ref<boolean>;
   title: Ref<string>;
   locales: string[];
-  /** Langue de l'interface, recopiée vers les autres à la création */
+  /** Langue de l'interface, recopiée vers les autres quand la recopie est cochée */
   currentLocale: string;
+  /** Modifications non enregistrées */
+  dirty: Ref<boolean>;
   canDelete: Ref<boolean>;
   canEdit: Ref<boolean>;
   /** Valeur d'un champ translations dans une langue */
   translation(field: TranslationsField, locale: string): string;
   setTranslation(field: TranslationsField, locale: string, value: string): void;
+  /** Recopie de la langue de l'interface vers les autres langues des champs copyFromCurrent, cochée à la création */
+  copying: Ref<boolean>;
+  /** Coche ou décoche la recopie ; cochée, elle recopie aussitôt la langue de l'interface */
+  setCopying(value: boolean): void;
+  /** Champ d'une langue rempli par la recopie, non modifiable */
+  isCopied(field: TranslationsField, locale: string): boolean;
   /** Chemin d'erreur du champ d'une langue (translations[1].label) */
   translationPath(field: TranslationsField, locale: string): string;
   save(): Promise<void>;

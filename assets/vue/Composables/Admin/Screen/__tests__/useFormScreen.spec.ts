@@ -83,21 +83,35 @@ function screenWith(id: number | null, api: object = {}) {
 afterEach(() => leaveGuard.untrack('tag'));
 
 describe('createFormScreen', () => {
-  it('recopie le libellé de la langue de l’interface vers les langues vides ou recopiées, à la création', async () => {
+  it('recopie la langue de l’interface dans les autres langues tant que la recopie, cochée à la création, le reste', async () => {
     const { screen, resource } = screenWith(null);
     await resource.load();
+    const labels = () => ['fr', 'en', 'es'].map((locale) => screen.translation(labelField, locale));
     expect(screen.title.value).toBe('tag.form.title_new');
+    expect(screen.copying.value).toBe(true);
+    expect(screen.isCopied(labelField, 'en')).toBe(true);
+    expect(screen.isCopied(labelField, 'fr')).toBe(false);
 
     screen.setTranslation(labelField, 'fr', 'Été');
-    expect(['fr', 'en', 'es'].map((locale) => screen.translation(labelField, locale))).toEqual(['Été', 'Été', 'Été']);
+    expect(labels()).toEqual(['Été', 'Été', 'Été']);
+
+    screen.setCopying(false);
+    expect(screen.isCopied(labelField, 'en')).toBe(false);
     screen.setTranslation(labelField, 'en', 'Summer');
     screen.setTranslation(labelField, 'fr', 'Été 2026');
-    expect(['fr', 'en', 'es'].map((locale) => screen.translation(labelField, locale))).toEqual([
-      'Été 2026',
-      'Summer',
-      'Été 2026',
-    ]);
+    expect(labels()).toEqual(['Été 2026', 'Summer', 'Été']);
+
+    screen.setCopying(true);
+    expect(labels()).toEqual(['Été 2026', 'Été 2026', 'Été 2026']);
     expect(screen.translationPath(labelField, 'es')).toBe('translations[2].label');
+  });
+
+  it('suit les modifications non enregistrées', async () => {
+    const { screen, resource } = screenWith(null);
+    await resource.load();
+    expect(screen.dirty.value).toBe(false);
+    screen.setTranslation(labelField, 'fr', 'Été');
+    expect(screen.dirty.value).toBe(true);
   });
 
   it('envoie les champs déclarés, langues dans l’ordre du site, puis ouvre l’édition du tag créé', async () => {
@@ -107,8 +121,9 @@ describe('createFormScreen', () => {
     });
     const { screen, resource, router } = screenWith(null, { postResource });
     await resource.load();
-    screen.setTranslation(labelField, 'en', 'Summer');
     screen.setTranslation(labelField, 'fr', 'Été');
+    screen.setCopying(false);
+    screen.setTranslation(labelField, 'en', 'Summer');
     await screen.save();
 
     expect(postResource).toHaveBeenCalledWith('/admin/tags', {
@@ -124,7 +139,7 @@ describe('createFormScreen', () => {
     expect(screen.isNew.value).toBe(false);
   });
 
-  it('ne recopie plus en édition et suit les droits de l’élément', async () => {
+  it('ne recopie pas en édition tant que la recopie n’est pas cochée, et suit les droits de l’élément', async () => {
     const getResource = vi.fn().mockResolvedValue({
       data: {
         id: 4,
@@ -141,6 +156,7 @@ describe('createFormScreen', () => {
     const { screen, resource } = screenWith(4, { getResource });
     await resource.load();
     expect(screen.title.value).toBe('tag.form.title_edit {"id":"4"}');
+    expect(screen.copying.value).toBe(false);
     screen.setTranslation(labelField, 'fr', 'Automne');
     expect(screen.translation(labelField, 'en')).toBe('Summer');
     expect(screen.translation(labelField, 'es')).toBe('');

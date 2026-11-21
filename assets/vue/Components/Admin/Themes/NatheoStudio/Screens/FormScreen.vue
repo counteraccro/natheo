@@ -3,13 +3,14 @@
  * @author Gourdon Aymeric
  * @version 1.0
  * Rendu Natheo-Studio d'un écran de formulaire : sections, champs par langue en onglets, erreurs de l'API,
- * conflit d'enregistrement, informations de l'élément et pied de formulaire
+ * conflit d'enregistrement, informations de l'élément et barre d'actions collée en bas
  */
 import { computed, ref } from 'vue';
 import {
   AdminPageHeader,
   UiAlert,
   UiButton,
+  UiCheckbox,
   UiColorInput,
   UiErrorSummary,
   UiField,
@@ -33,7 +34,7 @@ const props = defineProps<AdminScreenProps<FormScreenState<T>>>();
 const { t, bootstrap } = useAdminContext();
 const descriptor = props.screen.descriptor;
 const { data, errors, loading, saving, conflict } = props.screen.resource;
-const { isNew, title, canEdit, canDelete } = props.screen;
+const { isNew, title, canEdit, canDelete, copying, dirty } = props.screen;
 
 const PANEL = 'rounded-lg border border-line bg-bg shadow-panel';
 const PANEL_HEAD = 'flex items-center gap-3 border-b border-line px-5 py-4';
@@ -42,6 +43,7 @@ const PANEL_TITLE = 'm-0 text-md font-[650]';
 const row = computed(() => (data.value ?? {}) as Record<string, unknown>);
 const locales = props.screen.locales;
 const tabs = locales.map((code) => ({ id: code, label: localeName(code, bootstrap.locale) }));
+const currentLocaleName = localeName(props.screen.currentLocale, bootstrap.locale);
 const activeTab = ref(props.screen.currentLocale);
 const components = new Map(
   descriptor.sections
@@ -122,8 +124,8 @@ const meta = computed(() => {
                   :name="screen.translationPath(field, tab.id)"
                   :label="`${labelOf(field)} (${tab.label})`"
                   :help="
-                    isNew && field.copyFromCurrent && tab.id === screen.currentLocale
-                      ? t('admin_app.screen.translations_copy')
+                    screen.isCopied(field, tab.id)
+                      ? t('admin_app.screen.translations_copied', { locale: currentLocaleName })
                       : helpOf(field)
                   "
                   required
@@ -132,11 +134,18 @@ const meta = computed(() => {
                     :model-value="screen.translation(field, tab.id)"
                     :maxlength="field.maxlength"
                     :counter="field.maxlength !== undefined"
+                    :disabled="screen.isCopied(field, tab.id)"
                     @update:model-value="screen.setTranslation(field, tab.id, String($event ?? ''))"
                   />
                 </UiField>
               </template>
             </UiTabs>
+            <UiCheckbox
+              v-if="field.type === 'translations' && field.copyFromCurrent && canEdit"
+              :model-value="copying"
+              :label="t('admin_app.screen.translations_copy', { locale: currentLocaleName })"
+              @update:model-value="screen.setCopying($event)"
+            />
             <UiField v-else-if="field.type === 'text'" :name="field.name" :label="labelOf(field)" :help="helpOf(field)">
               <UiInput
                 v-model="row[field.name] as string"
@@ -188,13 +197,36 @@ const meta = computed(() => {
         </div>
       </section>
 
-      <div class="flex flex-wrap items-center gap-2">
-        <UiButton v-if="canDelete" variant="danger-soft" icon="trash" :disabled="saving" @click="screen.remove()">
-          {{ t('admin_app.screen.action_delete') }}
-        </UiButton>
+      <div
+        class="sticky bottom-4 z-20 flex flex-wrap items-center gap-2.5 rounded-lg bg-raised py-2.5 pr-3 pl-4 shadow-overlay"
+      >
+        <span v-if="canEdit" class="flex items-center gap-2 text-sm text-fg-muted" aria-live="polite">
+          <span class="size-2 rounded-full" :class="dirty ? 'bg-warning' : 'bg-success'" aria-hidden="true"></span>
+          {{ dirty ? t('admin_app.screen.form_dirty') : t('admin_app.screen.form_clean') }}
+        </span>
         <div class="ml-auto flex gap-2">
-          <UiButton icon="chevron-left" @click="screen.back()">{{ t('admin_app.screen.form_back') }}</UiButton>
-          <UiButton v-if="canEdit" type="submit" variant="primary" icon="check" :loading="saving" :disabled="loading">
+          <UiButton
+            v-if="canDelete"
+            size="sm"
+            variant="danger-soft"
+            icon="trash"
+            :disabled="saving"
+            @click="screen.remove()"
+          >
+            {{ t('admin_app.screen.action_delete') }}
+          </UiButton>
+          <UiButton size="sm" icon="chevron-left" @click="screen.back()">{{
+            t('admin_app.screen.form_back')
+          }}</UiButton>
+          <UiButton
+            v-if="canEdit"
+            type="submit"
+            size="sm"
+            variant="primary"
+            icon="check"
+            :loading="saving"
+            :disabled="loading"
+          >
             {{ isNew ? t('admin_app.screen.form_create') : t('admin_app.screen.form_save') }}
           </UiButton>
         </div>

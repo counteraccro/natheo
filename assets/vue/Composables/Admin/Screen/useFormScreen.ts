@@ -2,14 +2,15 @@
  * @author Gourdon Aymeric
  * @version 1.0
  * État et actions d'un écran de formulaire décrit par des données : lecture, champs par langue (recopie de la
- * langue de l'interface à la création), enregistrement, suppression et retour à la liste
+ * langue de l'interface, cochée par défaut à la création), enregistrement, suppression et retour à la liste
  */
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useRouter, type Router } from 'vue-router';
 import { notify } from '@/vue/Composables/Global/toast';
 import { useAdminContext } from '@/vue/Composables/Admin/useAdminContext';
 import { useConfirm, type ConfirmRequest } from '@/vue/Composables/Admin/useConfirm';
 import { useAdminResource, type AdminResource } from '@/vue/Composables/Admin/useAdminResource';
+import { leaveGuard } from '@/vue/Composables/Admin/leaveGuard';
 import type { AdminCan } from '@/vue/Composables/Admin/useCan';
 import type { Translator } from '@/vue/Composables/Admin/useTranslate';
 import type { FormScreenDescriptor, FormScreenState, TranslationsField } from '@/ts/Admin/Screen/FormScreen.type';
@@ -50,6 +51,13 @@ export function createFormScreen<T extends ScreenItem>(
     else data()[field.name] = [...rows, { locale, [field.field]: value }];
   };
 
+  const copyFields = descriptor.sections
+    .flatMap((section) => section.fields)
+    .filter((field): field is TranslationsField => field.type === 'translations' && field.copyFromCurrent === true);
+  const copying = ref(isNew.value && copyFields.length > 0);
+  const copyToOthers = (field: TranslationsField, value: string): void =>
+    locales.filter((other) => other !== currentLocale).forEach((other) => write(field, other, value));
+
   /** Données envoyées : champs déclarés, lignes par langue dans l'ordre des langues du site */
   const payload = (): Row => {
     const body: Row = {};
@@ -83,14 +91,17 @@ export function createFormScreen<T extends ScreenItem>(
         descriptor.delete !== undefined &&
         can.can('delete', descriptor.delete.operation, resource.data.value)
     ),
+    dirty: computed(() => leaveGuard.isDirty(descriptor.leaveKey)),
     translation,
+    copying,
+    setCopying(value: boolean): void {
+      copying.value = value;
+      if (value) copyFields.forEach((field) => copyToOthers(field, translation(field, currentLocale)));
+    },
+    isCopied: (field: TranslationsField, locale: string): boolean =>
+      copying.value && field.copyFromCurrent === true && locale !== currentLocale,
     setTranslation(field: TranslationsField, locale: string, value: string): void {
-      if (isNew.value && field.copyFromCurrent && locale === currentLocale) {
-        const previous = translation(field, locale);
-        locales
-          .filter((other) => other !== locale && [previous, ''].includes(translation(field, other)))
-          .forEach((other) => write(field, other, value));
-      }
+      if (copying.value && field.copyFromCurrent && locale === currentLocale) copyToOthers(field, value);
       write(field, locale, value);
     },
     translationPath(field: TranslationsField, locale: string): string {
