@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { flushPromises, mount } from '@vue/test-utils';
 import TagPreviewField from '@admin/Modules/Tag/TagPreviewField.vue';
 import { ADMIN_CONTEXT, createAdminContext } from '@/vue/Composables/Admin/useAdminContext';
@@ -20,6 +20,14 @@ const sendHeight = (from: Window | null, height: number): void => {
 };
 
 describe('TagPreviewField', () => {
+  // happy-dom ne charge pas les cadres et l'écrit sur la sortie d'erreur à chaque iframe, hors console de Vitest
+  beforeEach(() => {
+    const write = process.stderr.write.bind(process.stderr);
+    vi.spyOn(process.stderr, 'write').mockImplementation((chunk, ...args) =>
+      String(chunk).includes('Iframe page loading is disabled') ? true : write(chunk, ...(args as []))
+    );
+  });
+
   it('écoute toujours le cadre de la langue affichée après un retour sur un onglet précédent', async () => {
     const screen = { currentLocale: 'fr', locales: ['fr', 'en', 'es'] } as unknown as FormScreenState<AdminTag>;
     const wrapper = mount(TagPreviewField, {
