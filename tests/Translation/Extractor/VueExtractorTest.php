@@ -40,10 +40,6 @@ class VueExtractorTest extends TestCase
         );
         $filesystem->dumpFile($this->directory . '/vue/Composables/labels.ts', "t('admin_ui.dialog.close');\n");
         $filesystem->dumpFile(
-            $this->directory . '/vue/Composables/__tests__/labels.spec.ts',
-            "t('admin_ui.test.only');\n",
-        );
-        $filesystem->dumpFile(
             $this->directory . '/overwrite/vue/Components/Admin/Modules/Demo/Demo.vue',
             "{{ t('demo_overwrite.screen.title') }}\n",
         );
