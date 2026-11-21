@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace App\Api\V2\Security;
 
-use App\Api\V2\Output\Admin\Permissions;
+use App\Api\V2\Output\Admin\Global\Permissions;
 use App\Security\Voter\ContentVoter;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 

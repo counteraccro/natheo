@@ -7,7 +7,7 @@ declare(strict_types=1);
  * Droits de l'utilisateur sur un élément d'administration
  */
 
-namespace App\Api\V2\Output\Admin;
+namespace App\Api\V2\Output\Admin\Global;
 
 use ApiPlatform\Metadata\ApiProperty;
 use Symfony\Component\Serializer\Attribute\Groups;

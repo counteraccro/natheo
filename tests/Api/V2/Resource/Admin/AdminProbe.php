@@ -27,7 +27,7 @@ use App\Api\V2\Filter\Admin\StatusFilter;
 use App\Api\V2\Metadata\OperationSecurityMetadataFactory;
 use App\Api\V2\Output\Admin\Global\AdminAuthor;
 use App\Api\V2\Output\Admin\Global\AdminLabelTranslation;
-use App\Api\V2\Output\Admin\Permissions;
+use App\Api\V2\Output\Admin\Global\Permissions;
 use App\Tests\Api\V2\Module\ProbeModule;
 use App\Tests\Api\V2\State\AdminProbeProcessor;
 use App\Tests\Api\V2\State\AdminProbeProvider;

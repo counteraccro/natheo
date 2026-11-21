@@ -35,7 +35,7 @@ use App\Api\V2\Metadata\LocaleParameter;
 use App\Api\V2\Metadata\OperationSecurityMetadataFactory;
 use App\Api\V2\Output\Admin\Global\AdminAuthor;
 use App\Api\V2\Output\Admin\Global\AdminLabelTranslation;
-use App\Api\V2\Output\Admin\Permissions;
+use App\Api\V2\Output\Admin\Global\Permissions;
 use App\Api\V2\State\Processor\Admin\Content\CreateAdminTagProcessor;
 use App\Api\V2\State\Processor\Admin\Content\DeleteAdminTagProcessor;
 use App\Api\V2\State\Processor\Admin\Content\UpdateAdminTagProcessor;

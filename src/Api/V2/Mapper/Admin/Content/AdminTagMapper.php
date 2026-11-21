@@ -11,7 +11,7 @@ namespace App\Api\V2\Mapper\Admin\Content;
 
 use App\Api\V2\Output\Admin\Global\AdminAuthor;
 use App\Api\V2\Output\Admin\Global\AdminLabelTranslation;
-use App\Api\V2\Output\Admin\Permissions;
+use App\Api\V2\Output\Admin\Global\Permissions;
 use App\Api\V2\Resource\Admin\Content\AdminTag;
 use App\Entity\Admin\Content\Tag\Tag;
 
