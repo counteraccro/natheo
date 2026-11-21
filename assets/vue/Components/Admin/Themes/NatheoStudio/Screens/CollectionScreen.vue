@@ -6,7 +6,7 @@
  */
 import { computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { AdminPageHeader, UiButton, UiDataTable, UiSelect, type DataTableRow } from '@ui';
+import { AdminPageHeader, UiBadge, UiButton, UiDataTable, UiSelect, type DataTableRow } from '@ui';
 import { useAdminContext } from '@/vue/Composables/Admin/useAdminContext';
 import { toComponent } from '@/vue/Composables/Admin/Screen/adminTheme';
 import { formatDateTime } from '@/vue/Composables/Admin/Screen/screenFormat';
@@ -73,7 +73,9 @@ onMounted(() => void props.screen.collection.load());
     :loading="loading"
     :actions-for="(row) => screen.actionsFor(asItem(row))"
     :row-label="(row) => descriptor.rowLabel(asItem(row))"
-    :row-class="(row) => (row.disabled ? 'text-fg-subtle' : undefined)"
+    :row-class="
+      (row) => (row.disabled ? 'bg-[color-mix(in_srgb,var(--surface)_60%,transparent)] text-fg-subtle' : undefined)
+    "
     :selectable="screen.bulkActions.length > 0"
     :bulk-actions="screen.bulkActions"
     :sql="screen.canSql ? sql : null"
@@ -105,13 +107,23 @@ onMounted(() => void props.screen.collection.load());
 
     <template v-for="column in customColumns" :key="column.key" #[`cell-${column.key}`]="{ row, value }">
       <component :is="components.get(column.key)" v-if="components.has(column.key)" :row="row" :value="value" />
-      <span
-        v-else-if="column.type === 'badge'"
-        class="inline-flex h-[26px] items-center gap-[7px] rounded-full bg-surface pr-2.5 pl-2 text-sm font-semibold whitespace-nowrap shadow-[inset_0_0_0_1px_var(--line)]"
-        :class="row.disabled ? 'text-fg-subtle' : 'text-fg'"
-      >
-        <span class="size-2 rounded-full" :style="{ background: colorOf(column, row) }" aria-hidden="true" />
-        {{ value }}
+      <span v-else-if="column.type === 'badge'" class="inline-flex items-center gap-2">
+        <span
+          class="inline-flex h-[26px] items-center gap-[7px] rounded-full bg-surface pr-2.5 pl-2 text-sm font-semibold whitespace-nowrap shadow-[inset_0_0_0_1px_var(--line)]"
+          :class="row.disabled ? 'text-fg-subtle' : 'text-fg'"
+        >
+          <span
+            class="size-2 rounded-full"
+            :style="
+              row.disabled
+                ? { boxShadow: `inset 0 0 0 1.5px ${colorOf(column, row)}` }
+                : { background: colorOf(column, row) }
+            "
+            aria-hidden="true"
+          />
+          {{ value }}
+        </span>
+        <UiBadge v-if="row.disabled" tone="warning" :dot="false">{{ t('admin_app.screen.status_disabled') }}</UiBadge>
       </span>
       <time v-else-if="column.type === 'date'" :datetime="String(value ?? '')" class="whitespace-nowrap">
         {{ formatDateTime(value as string | null, bootstrap.locale) }}
