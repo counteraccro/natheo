@@ -19,7 +19,13 @@ export interface AdminCollectionOptions {
   sort?: DataTableSort | null;
   /** Filtres de l'opération (status…), envoyés tels quels */
   filters?: Record<string, CollectionFilterValue>;
+  /** Demande la requête SQL de la page (super administrateur) */
+  withSql?: boolean;
 }
+
+/** Nombre d'éléments lus par requête et plafond de « tout sélectionner » */
+export const SELECT_ALL_PAGE_SIZE = 100;
+export const SELECT_ALL_LIMIT = 1000;
 
 export interface AdminCollection<T> {
   items: ShallowRef<T[]>;
@@ -32,10 +38,19 @@ export interface AdminCollection<T> {
   filters: Record<string, CollectionFilterValue>;
   /** Clés des lignes sélectionnées, gardées d'une page à l'autre */
   selected: Ref<(string | number)[]>;
+  /** Éléments lus, par clé, pour retrouver une ligne sélectionnée sur une autre page */
+  known: Map<string | number, T>;
+  /** Requête SQL de la page, null sans withSql */
+  sql: Ref<string | null>;
   loading: Ref<boolean>;
   error: ShallowRef<ApiError | null>;
   /** Recharge la page courante (après une suppression…) */
   load(): Promise<void>;
+  /**
+   * Sélectionne toute la collection avec les mêmes filtres, lue page par page
+   * @return true si le plafond SELECT_ALL_LIMIT a coupé la sélection
+   */
+  selectAll(): Promise<boolean>;
 }
 
 /**
@@ -59,7 +74,14 @@ export function createAdminCollection<T>(
   const lastPage = ref(1);
   const loading = ref(false);
   const error = shallowRef<ApiError | null>(null);
+  const sql = ref<string | null>(null);
+  const selected = ref<(string | number)[]>([]);
+  const known = new Map<string | number, T>();
   let lastRequest = 0;
+
+  const remember = (members: T[]): void => {
+    members.forEach((member) => known.set((member as { id: string | number }).id, member));
+  };
 
   const query = (): ApiQuery => ({
     page: page.value,
@@ -67,6 +89,7 @@ export function createAdminCollection<T>(
     search: search.value.trim(),
     ...(sort.value ? { [`order[${sort.value.key}]`]: sort.value.direction } : {}),
     ...filters,
+    ...(options.withSql ? { sql: true } : {}),
   });
 
   const load = async (): Promise<void> => {
@@ -84,6 +107,8 @@ export function createAdminCollection<T>(
       items.value = result.members;
       total.value = result.total;
       lastPage.value = result.lastPage;
+      sql.value = result.sql ?? null;
+      remember(result.members);
     } catch (caught) {
       if (request !== lastRequest) return;
       error.value = caught instanceof ApiError ? caught : ApiError.fromNetwork(caught);
@@ -100,6 +125,26 @@ export function createAdminCollection<T>(
     else void load();
   });
 
+  const selectAll = async (): Promise<boolean> => {
+    const keys: (string | number)[] = [];
+    let current = 1;
+    let last = 1;
+    do {
+      const result = await api.getCollection<T>(resource, {
+        ...query(),
+        sql: undefined,
+        page: current,
+        itemsPerPage: SELECT_ALL_PAGE_SIZE,
+      });
+      remember(result.members);
+      keys.push(...result.members.map((member) => (member as { id: string | number }).id));
+      last = result.lastPage;
+      current++;
+    } while (current <= last && keys.length < SELECT_ALL_LIMIT);
+    selected.value = keys.slice(0, SELECT_ALL_LIMIT);
+    return keys.length > SELECT_ALL_LIMIT || current <= last;
+  };
+
   return {
     items,
     total,
@@ -109,10 +154,13 @@ export function createAdminCollection<T>(
     sort,
     search,
     filters,
-    selected: ref([]),
+    selected,
+    known,
+    sql,
     loading,
     error,
     load,
+    selectAll,
   };
 }
 

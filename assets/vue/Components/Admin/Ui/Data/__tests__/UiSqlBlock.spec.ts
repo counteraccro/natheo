@@ -25,4 +25,13 @@ describe('UiSqlBlock', () => {
     await flushPromises();
     expect(wrapper.get('[role="status"]').text()).toBe('');
   });
+
+  it('désactive Enregistrer quand la requête est déjà enregistrée', async () => {
+    const wrapper = mount(UiSqlBlock, withLabels({ props: { sql: 'SELECT 1', saved: true } }));
+    const button = wrapper.findAll('button')[0];
+    expect(button.text()).toBe('data_table.sql_saved');
+    expect(button.attributes('disabled')).toBeDefined();
+    await button.trigger('click');
+    expect(wrapper.emitted('save')).toBeUndefined();
+  });
 });

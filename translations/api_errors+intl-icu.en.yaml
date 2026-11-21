@@ -20,6 +20,7 @@ api_errors.find.option.system.not.found: System option not available
 api_errors.find.admin_module.not_found: 'Back-office module not available'
 api_errors.find.translation_catalogue.not_found: 'Translation catalogue not found'
 api_errors.find.admin_menu_item.not_found: 'Menu item not available'
+api_errors.find.sql_query.not_found: 'SQL query not found'
 api_errors.comment.by.page.not.id.slug.together: The id or page_slug parameter is required
 api_errors.comment.by.page.id.slug.together: The id and page_slug parameters cannot be used together
 api_errors.comment.wait.validation: Awaiting approval

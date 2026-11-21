@@ -25,6 +25,13 @@ export function provideField(context: FieldContext): void {
 }
 
 /**
+ * Coupe le contexte du UiField parent : un contrôle placé dessous garde son propre identifiant
+ */
+export function isolateField(): void {
+  provide(FIELD, null as unknown as FieldContext);
+}
+
+/**
  * Attributs d'accessibilité du contrôle : ceux du UiField parent, sinon un identifiant propre
  * @param invalid état invalide propre au contrôle (valeur saisie incorrecte)
  */

@@ -16,6 +16,7 @@ Le format suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), avec un
 - La sidebar n'est plus stockée en base : l'écran « Sidebar » et la table `sidebar_element` sont supprimés. Une entrée ajoutée en base pour une page personnalisée est à déclarer dans un module (`#[AsAdminModule]`), les entrées désactivées réapparaissent et les libellés de la sidebar modifiés dans l'écran des traductions reprennent leur texte d'origine ([#550](https://github.com/counteraccro/natheo/issues/550))
 - Icônes et logo des thèmes : `Components/Front/Global/FrontIcon.vue` est remplacé par `Components/Global/Ui/UiIcon.vue` (mêmes noms d'icônes, prop `name`), `BrandLogo.vue` passe de `Components/Front/Global/` à `Components/Global/Ui/` et le composant Twig `<twig:Front:BrandLogo>` devient `<twig:BrandLogo>`. Un thème personnalisé qui les importe change ses imports ([#517](https://github.com/counteraccro/natheo/issues/517))
 - Surcharge : la redirection de routes de `config/cms/overwrite.yaml` (`OverwriteListener`) est supprimée, avec `DemoOverwriteController`, `templates/overwrite/` et la page d'origine de l'exemple (`admin_dashboard_page_demo`). Une entrée de l'ancien format bloque la construction du cache. Un écran remplacé par un contrôleur de `src/Overwrite/Controller/` est à refaire sous la nouvelle forme, avec un provider ou un processor pour l'API et un écran dans `assets/overwrite/` ([#552](https://github.com/counteraccro/natheo/issues/552))
+- Tags : l'écran Twig et ses routes `admin_tag_index`, `admin_tag_add`, `admin_tag_update`, `admin_tag_save`, `admin_tag_load_grid_data`, `admin_tag_update_disabled`, `admin_tag_ajax_delete` et `admin_tag_stats` sont supprimés, ainsi que `TagForm.vue` et `TagTranslate`. Seules restent l'autocomplétion et la création à la volée de l'éditeur de pages (`admin_tag_search`, `admin_tag_tag_by_name`). Une surcharge ou un lien vers ces routes passe par l'écran `/admin/<langue>/tags` ou par l'API `/api/v2/admin/tags` ([#563](https://github.com/counteraccro/natheo/issues/563))
 
 ### Ajouté
 
@@ -38,6 +39,8 @@ Le format suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), avec un
 - Nouveau back-office : une application Vue sert les écrans des modules migrés sous `/admin/<langue>/`, avec la sidebar du registre des modules et le thème Natheo-Studio. Les textes de l'interface sont servis par `GET /api/v2/admin/translations` (liste des domaines) et `GET /api/v2/admin/translations/{domain}`, revalidés par `ETag` ([#551](https://github.com/counteraccro/natheo/issues/551))
 - Surcharge de l'API et du nouveau back-office : `config/cms/overwrite.yaml` donne à une opération de l'API v2, désignée par son nom, un autre provider ou processor, sans changer son adresse ni ses droits. Un fichier de `assets/overwrite/vue/Components/Admin/` remplace l'écran ou le composant du même chemin, et un `module.ts` de ce dossier ajoute un écran. L'écran « Exemple de surcharge » du menu Outils est un tutoriel qui montre les deux avec le code de l'exemple ([#552](https://github.com/counteraccro/natheo/issues/552))
 - API v2 : champ `extra` de `GET /api/v2/info`, rempli par une surcharge du provider et `null` sans surcharge ([#552](https://github.com/counteraccro/natheo/issues/552))
+- API v2 : opérations d'administration des tags (`GET`, `POST`, `PATCH` et `DELETE` sur `/api/v2/admin/tags`), réponse 409 pour la suppression d'un tag utilisé par une page, filtre `author=me` sur les collections d'administration ([#563](https://github.com/counteraccro/natheo/issues/563))
+- Requête SQL des listes du nouveau back-office : le super administrateur l'affiche avec les filtres, le tri et la page en cours, l'exécute telle quelle sous MySQL comme sous PostgreSQL et l'enregistre dans le gestionnaire SQL (`sql=true` sur les collections d'administration, `POST /api/v2/admin/sql_queries`) ([#563](https://github.com/counteraccro/natheo/issues/563))
 
 ### Modifié
 
@@ -54,6 +57,7 @@ Le format suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), avec un
 - Options système, tokens API, documentation de l'API, emails, traductions et aide de première connexion du tableau de bord sont ouverts aux administrateurs, et plus seulement au super administrateur ([#550](https://github.com/counteraccro/natheo/issues/550))
 - Logo Nathéo sur les pages de connexion, de mot de passe et d'installation ([#517](https://github.com/counteraccro/natheo/issues/517))
 - Back-office : une adresse inconnue sous `/admin/<langue>/` affiche la page « Page introuvable » du nouveau back-office, avec son menu, au lieu de la page d'erreur 404. En environnement dev, le catalogue du design system s'ouvre dans la nouvelle application ([#551](https://github.com/counteraccro/natheo/issues/551))
+- Tags : la liste et le formulaire passent dans le nouveau back-office (`/admin/<langue>/tags`). Recherche, tri, filtres par statut et « Mes éléments », actions groupées, libellé recopié dans les autres langues à la création, couleurs proposées et aperçu du tag avec le thème actif du site, dans chaque langue et en mode sombre. Les tags désactivés sont signalés par un badge et la colonne « Pages » indique leur utilisation ([#563](https://github.com/counteraccro/natheo/issues/563))
 
 ### Déprécié
 
@@ -67,6 +71,7 @@ Le format suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), avec un
 - Éditeur de page : la barre de statut indique « Aucune modification » à l'ouverture au lieu de « Modifications non sauvegardées », dans la langue de l'interface ([#523](https://github.com/counteraccro/natheo/issues/523))
 - Back-office : la confirmation avant de quitter une page ne s'affiche plus après une recherche, un filtre, un lien ouvert dans un nouvel onglet ou sur les pages de connexion ; elle couvre désormais le retour du navigateur, le rechargement, la fermeture de l'onglet et les modifications sans saisie (glisser-déposer) ([#542](https://github.com/counteraccro/natheo/issues/542))
 - Recherche globale : un contributeur ne trouve plus les comptes du back-office, réservés au super administrateur. Chaque onglet suit le module de ses éléments ([#550](https://github.com/counteraccro/natheo/issues/550))
+- Tags : l'unicité d'un libellé et la recherche ne tiennent plus compte de la casse, avec le même résultat sous MySQL et PostgreSQL ; un libellé saisi dans l'éditeur de pages avec une autre casse reprend le tag existant au lieu d'en créer un second ([#563](https://github.com/counteraccro/natheo/issues/563))
 
 ### Sécurité
 

@@ -26,7 +26,13 @@ export function buildUiLabels(t: UiTranslator): UiLabels {
     },
     tabs: { hasErrors: t('admin_ui.tabs.has_errors') },
     input: { counter: (count, max) => t('admin_ui.input.counter', { count, max }) },
-    colorInput: { picker: t('admin_ui.color_input.picker'), hex: t('admin_ui.color_input.hex') },
+    colorInput: {
+      picker: t('admin_ui.color_input.picker'),
+      hex: t('admin_ui.color_input.hex'),
+      suggestions: t('admin_ui.color_input.suggestions'),
+      more: t('admin_ui.color_input.more'),
+      use: (color: string) => t('admin_ui.color_input.use', { color }),
+    },
     pagination: {
       nav: t('admin_ui.pagination.nav'),
       previous: t('admin_ui.pagination.previous'),
@@ -58,6 +64,7 @@ export function buildUiLabels(t: UiTranslator): UiLabels {
       sqlShow: t('admin_ui.data_table.sql_show'),
       sqlTitle: t('admin_ui.data_table.sql_title'),
       sqlSave: t('admin_ui.data_table.sql_save'),
+      sqlSaved: t('admin_ui.data_table.sql_saved'),
       sqlCopy: t('admin_ui.data_table.sql_copy'),
       sqlCopied: t('admin_ui.data_table.sql_copied'),
       sqlHide: t('admin_ui.data_table.sql_hide'),

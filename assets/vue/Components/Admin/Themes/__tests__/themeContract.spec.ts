@@ -13,6 +13,8 @@ describe('Thèmes du back-office', () => {
     expect(theme.layout).toBeTruthy();
     expect(typeof theme.layout).toBe('object');
     expect(theme.notFound).toBeTruthy();
+    expect(theme.screens.collection).toBeTruthy();
+    expect(theme.screens.form).toBeTruthy();
   });
 
   it('donne à chaque thème un identifiant unique', () => {

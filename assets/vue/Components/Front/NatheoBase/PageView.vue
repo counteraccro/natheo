@@ -15,6 +15,7 @@ import BlockText from '@/vue/Components/Front/NatheoBase/Block/BlockText.vue';
 import BlockFaq from '@/vue/Components/Front/NatheoBase/Block/BlockFaq.vue';
 import BlockListing from '@/vue/Components/Front/NatheoBase/Block/BlockListing.vue';
 import PageComments from '@/vue/Components/Front/NatheoBase/PageComments.vue';
+import TagList from '@/vue/Components/Front/NatheoBase/TagList.vue';
 import type { Page } from '@/ts/Front/Api/Page.type';
 
 const props = defineProps<{ page: Page }>();
@@ -77,16 +78,7 @@ const updatedAt = computed(() => format.date(props.page.updatedAt, 'short'));
       </section>
     </div>
 
-    <ul v-if="page.tags.length" class="flex flex-wrap gap-2">
-      <li
-        v-for="tag in page.tags"
-        :key="tag.id"
-        class="px-2 py-0.5 text-sm rounded text-white"
-        :style="{ backgroundColor: tag.color }"
-      >
-        {{ tag.label }}
-      </li>
-    </ul>
+    <TagList :tags="page.tags" />
 
     <PageComments v-if="showComments && !datas.preview" :page="page" />
   </article>

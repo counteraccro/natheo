@@ -61,7 +61,7 @@ function ratio(a: string, b: string): number {
 /** [premier plan, fond, ratio minimal] */
 const PAIRS: [string, string, number][] = [
   ...['--fg', '--fg-muted', '--fg-subtle'].flatMap((fg) =>
-    ['--bg', '--canvas', '--surface', '--surface-raised'].map((bg): [string, string, number] => [fg, bg, 4.5])
+    ['--bg', '--canvas', '--surface', '--surface-raised', '--row-disabled'].map((bg): [string, string, number] => [fg, bg, 4.5])
   ),
   ['--primary', '--bg', 4.5],
   ['--primary', '--canvas', 4.5],
@@ -83,9 +83,15 @@ const PAIRS: [string, string, number][] = [
   ['--field', '--bg', 3],
   ['--focus', '--bg', 3],
   ['--focus', '--canvas', 3],
-  ...['--on-code', '--on-code-muted', '--code-keyword', '--code-string', '--code-number', '--code-identifier'].map(
-    (fg): [string, string, number] => [fg, '--code-bg', 4.5]
-  ),
+  ...[
+    '--on-code',
+    '--on-code-muted',
+    '--code-keyword',
+    '--code-string',
+    '--code-number',
+    '--code-identifier',
+    '--code-comment',
+  ].map((fg): [string, string, number] => [fg, '--code-bg', 4.5]),
   ['--on-code-muted', '--code-raised', 4.5],
   ['--on-code-number', '--code-number', 4.5],
 ];

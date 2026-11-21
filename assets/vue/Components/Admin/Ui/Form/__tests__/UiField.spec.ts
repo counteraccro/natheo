@@ -4,6 +4,7 @@ import { mount } from '@vue/test-utils';
 import UiField from '@/vue/Components/Admin/Ui/Form/UiField.vue';
 import UiInput from '@/vue/Components/Admin/Ui/Form/UiInput.vue';
 import UiTextarea from '@/vue/Components/Admin/Ui/Form/UiTextarea.vue';
+import UiCheckbox from '@/vue/Components/Admin/Ui/Form/UiCheckbox.vue';
 import { withLabels } from '../../__tests__/support';
 
 describe('UiField', () => {
@@ -24,6 +25,20 @@ describe('UiField', () => {
     expect(wrapper.text()).toContain('field.required');
   });
 
+  it('place le contenu de below sous le contrôle, avec son propre identifiant', () => {
+    const wrapper = mount(
+      UiField,
+      withLabels({
+        props: { label: 'Libellé', required: true, id: 'tag-label' },
+        slots: { default: () => h(UiInput), below: () => h(UiCheckbox, { label: 'Recopier' }) },
+      })
+    );
+    const checkbox = wrapper.get('input[type="checkbox"]');
+    expect(checkbox.attributes('id')).not.toBe('tag-label');
+    expect(checkbox.attributes('required')).toBeUndefined();
+    expect(wrapper.get('input[type="text"]').attributes('id')).toBe('tag-label');
+  });
+
   it("n'a ni aide ni erreur par défaut", () => {
     const wrapper = mount(UiField, withLabels({ props: { label: 'Nom' }, slots: { default: () => h(UiInput) } }));
     const input = wrapper.get('input');
@@ -40,7 +55,8 @@ describe('UiField', () => {
       })
     );
     await nextTick();
-    const row = wrapper.get('[id$="-error"]').element.parentElement;
+    // Erreurs dans la colonne de gauche de la ligne, compteur à droite
+    const row = wrapper.get('[id$="-error"]').element.parentElement?.parentElement;
     expect(row?.textContent).toContain('Obligatoire');
     expect(row?.textContent).toContain('input.counter(3,40)');
     expect(wrapper.text().match(/input\.counter/g)).toHaveLength(1);

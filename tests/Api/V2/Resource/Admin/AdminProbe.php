@@ -18,12 +18,16 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\QueryParameter;
 use App\Api\V2\Concurrency\VersionedResourceInterface;
+use App\Api\V2\Exception\ConflictException;
 use App\Api\V2\Exception\PreconditionFailedException;
 use App\Api\V2\Filter\Admin\AdminOrderFilter;
+use App\Api\V2\Filter\Admin\AuthorFilter;
 use App\Api\V2\Filter\Admin\SearchFilter;
 use App\Api\V2\Filter\Admin\StatusFilter;
 use App\Api\V2\Metadata\OperationSecurityMetadataFactory;
-use App\Api\V2\Output\Admin\Permissions;
+use App\Api\V2\Output\Admin\Global\AdminAuthor;
+use App\Api\V2\Output\Admin\Global\AdminLabelTranslation;
+use App\Api\V2\Output\Admin\Global\Permissions;
 use App\Tests\Api\V2\Module\ProbeModule;
 use App\Tests\Api\V2\State\AdminProbeProcessor;
 use App\Tests\Api\V2\State\AdminProbeProvider;
@@ -33,7 +37,9 @@ use Symfony\Component\Serializer\Attribute\Groups;
     ApiResource(
         shortName: 'AdminProbe',
         extraProperties: [OperationSecurityMetadataFactory::MODULE => ProbeModule::ID],
-        normalizationContext: ['groups' => ['admin_probe:read', Permissions::GROUP]],
+        normalizationContext: [
+            'groups' => ['admin_probe:read', Permissions::GROUP, AdminAuthor::GROUP, AdminLabelTranslation::GROUP],
+        ],
         denormalizationContext: ['groups' => ['admin_probe:write']],
         operations: [
             new GetCollection(
@@ -47,6 +53,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
                         properties: ['id', 'name'],
                     ),
                     StatusFilter::PARAMETER => new QueryParameter(filter: StatusFilter::class, property: 'disabled'),
+                    AuthorFilter::PARAMETER => new QueryParameter(filter: AuthorFilter::class, property: 'author'),
                 ],
             ),
             new Get(name: 'admin_probe_get', uriTemplate: '/admin/probes/{id}', provider: AdminProbeProvider::class),
@@ -69,7 +76,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
             new Delete(
                 name: 'admin_probe_delete',
                 uriTemplate: '/admin/probes/{id}',
-                errors: [PreconditionFailedException::class],
+                errors: [PreconditionFailedException::class, ConflictException::class],
                 security: "is_granted('ROLE_ADMIN')",
                 provider: AdminProbeProvider::class,
                 processor: AdminProbeProcessor::class,
@@ -84,6 +91,12 @@ final class AdminProbe implements VersionedResourceInterface
      * @var int
      */
     public const int EXISTING_ID = 1;
+
+    /**
+     * Identifiant de la sonde dont la suppression est refusée en 409
+     * @var int
+     */
+    public const int USED_ID = 3;
 
     /**
      * Version des sondes lues
@@ -108,6 +121,17 @@ final class AdminProbe implements VersionedResourceInterface
     #[ApiProperty(required: true)]
     #[Groups(['admin_probe:read'])]
     public bool $disabled = false;
+
+    /**
+     * @var AdminLabelTranslation[]
+     */
+    #[ApiProperty(required: true, genId: false)]
+    #[Groups(['admin_probe:read'])]
+    public array $translations = [];
+
+    #[ApiProperty(required: true, genId: false)]
+    #[Groups(['admin_probe:read'])]
+    public ?AdminAuthor $author = null;
 
     #[ApiProperty(required: true)]
     #[Groups(['admin_probe:read'])]
@@ -146,6 +170,7 @@ final class AdminProbe implements VersionedResourceInterface
         $probe->id = $id;
         $probe->name = $name;
         $probe->disabled = $disabled;
+        $probe->translations = [new AdminLabelTranslation('fr', $name), new AdminLabelTranslation('en', $name)];
         $probe->permissions = new Permissions(edit: true, disable: true, delete: false);
         return $probe;
     }

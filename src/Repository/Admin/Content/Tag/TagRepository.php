@@ -11,9 +11,9 @@ namespace App\Repository\Admin\Content\Tag;
 
 use App\Entity\Admin\Content\Tag\Tag;
 use App\Entity\Admin\Content\Tag\TagTranslation;
-use App\Entity\Admin\System\User;
+use App\Dto\Api\Admin\AdminCollectionQuery;
+use App\Repository\Trait\AdminCollectionQueryTrait;
 use App\Repository\Trait\LikeQueryTrait;
-use App\Repository\Trait\OrderedQueryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
@@ -28,8 +28,8 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class TagRepository extends ServiceEntityRepository
 {
+    use AdminCollectionQueryTrait;
     use LikeQueryTrait;
-    use OrderedQueryTrait;
 
     public function __construct(ManagerRegistry $registry)
     {
@@ -55,56 +55,49 @@ class TagRepository extends ServiceEntityRepository
     }
 
     /**
-     * Retourne une liste de tag Paginé
-     * La jointure sur les traductions est limitée à la locale courante (tri et recherche par libellé)
-     * @param int $page
-     * @param int $limit
-     * @param array $queryParams
-     * @param int|null $userId filtre sur le propriétaire du tag
+     * Page de la collection d'administration. Chaque ligne vaut [0 => Tag, 'label' => libellé de $locale, à défaut
+     * de $defaultLocale, 'pageCount' => nombre de pages, 'authorId', 'authorLogin'] ; l'auteur du tag reste un
+     * proxy non chargé, seuls son identifiant et son login sont lus
+     * @param AdminCollectionQuery $query
+     * @param string $locale
+     * @param string $defaultLocale
      * @return Paginator
      */
-    public function getAllPaginate(int $page, int $limit, array $queryParams, ?int $userId = null): Paginator
+    public function getAdminCollection(AdminCollectionQuery $query, string $locale, string $defaultLocale): Paginator
     {
-        $orderField = $queryParams['orderField'] ?? '';
-        $search = (string) ($queryParams['search'] ?? '');
+        $qb = $this->createQueryBuilder('tag')
+            ->addSelect('author.id AS authorId', 'author.login AS authorLogin', 'SIZE(tag.pages) AS pageCount')
+            ->leftJoin('tag.user', 'author')
+            ->leftJoin('tag.tagTranslations', 'translation', 'WITH', 'translation.locale = :locale')
+            ->setParameter('locale', $locale);
 
-        $query = $this->createQueryBuilder(Tag::DEFAULT_ALIAS)
-            ->addSelect(User::DEFAULT_ALIAS)
-            ->leftJoin(Tag::DEFAULT_ALIAS . '.user', User::DEFAULT_ALIAS);
-        if ($orderField === 'label' || $search !== '') {
-            // LEFT JOIN : un tag sans libellé dans la locale reste visible lors du tri
-            $query
-                ->leftJoin(
-                    Tag::DEFAULT_ALIAS . '.tagTranslations',
-                    TagTranslation::DEFAULT_ALIAS,
-                    'WITH',
-                    TagTranslation::DEFAULT_ALIAS . '.locale = :locale',
-                )
-                ->setParameter('locale', (string) ($queryParams['locale'] ?? ''));
+        $label = 'translation.label';
+        if ($locale !== $defaultLocale) {
+            $label = 'COALESCE(translation.label, default_translation.label)';
+            $qb->leftJoin(
+                'tag.tagTranslations',
+                'default_translation',
+                'WITH',
+                'default_translation.locale = :default_locale',
+            )->setParameter('default_locale', $defaultLocale);
         }
+        $qb->addSelect($label . ' AS label');
 
-        if ($orderField === 'label') {
-            $this->applyOrdering($query, TagTranslation::class, $queryParams);
-        } else {
-            $this->applyOrdering($query, Tag::class, $queryParams);
-        }
-
-        if ($search !== '') {
-            $query
-                ->andWhere(TagTranslation::DEFAULT_ALIAS . '.label like :search')
-                ->setParameter('search', '%' . $this->escapeLike($search) . '%');
-        }
-
-        if ($userId !== null) {
-            $query->andWhere(Tag::DEFAULT_ALIAS . '.user = :userId')->setParameter('userId', $userId);
-        }
-
-        $paginator = new Paginator($query->getQuery(), true);
-        $paginator
-            ->getQuery()
-            ->setFirstResult($limit * ($page - 1))
-            ->setMaxResults($limit);
-        return $paginator;
+        return $this->paginateAdminCollection(
+            $qb,
+            $query,
+            [
+                'id' => 'tag.id',
+                'label' => $label,
+                'color' => 'tag.color',
+                'createdAt' => 'tag.createdAt',
+                'updatedAt' => 'tag.updateAt',
+            ],
+            'tag.disabled',
+            'tag.id',
+            'tag.user',
+            orderFields: ['label' => 'label'],
+        );
     }
 
     /**

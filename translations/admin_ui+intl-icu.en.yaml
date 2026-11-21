@@ -2,7 +2,10 @@ admin_ui.alert.close: 'Dismiss alert'
 admin_ui.breadcrumb.nav: Breadcrumb
 admin_ui.button.loading: Loading…
 admin_ui.color_input.hex: 'Hex code'
+admin_ui.color_input.more: 'Other colors'
 admin_ui.color_input.picker: 'Pick a color'
+admin_ui.color_input.suggestions: 'Suggested colors'
+admin_ui.color_input.use: 'Choose {color}'
 admin_ui.confirm_dialog.cancel: Cancel
 admin_ui.confirm_dialog.confirm: Confirm
 admin_ui.data_table.actions: Actions
@@ -28,6 +31,7 @@ admin_ui.data_table.sql_copied: Copied
 admin_ui.data_table.sql_copy: Copy
 admin_ui.data_table.sql_hide: Hide
 admin_ui.data_table.sql_save: Save
+admin_ui.data_table.sql_saved: Saved
 admin_ui.data_table.sql_show: 'Show SQL'
 admin_ui.data_table.sql_title: 'SQL query'
 admin_ui.debug_bar.close: 'Close the debug bar'

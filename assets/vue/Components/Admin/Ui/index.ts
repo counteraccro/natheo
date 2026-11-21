@@ -50,6 +50,7 @@ export type {
   DataTableSearchMode,
 } from '@/ts/Admin/Ui/Data/UiDataTable.type';
 export { useTableSearch } from '@/vue/Composables/Admin/Ui/useTableSearch';
+export { randomHexColor } from '@/vue/Composables/Admin/Ui/randomHexColor';
 export type { TableSearch, TableSearchOptions } from '@/vue/Composables/Admin/Ui/useTableSearch';
 export { useAppearance, setMode, setTheme } from '@/vue/Composables/Admin/Ui/useAppearance';
 export type { ColorMode, ThemeColor } from '@/ts/Admin/Layout/AdminHeader.type';

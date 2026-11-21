@@ -24,6 +24,8 @@ export interface HydraCollection<T> {
   member: T[];
   totalItems: number;
   view?: HydraView;
+  /** Requête SQL de la page, collections d'administration avec sql=true */
+  sql?: string;
 }
 
 /** Collection lue par le client : membres et position dans la pagination */
@@ -32,6 +34,8 @@ export interface Paginated<T> {
   total: number;
   page: number;
   lastPage: number;
+  /** Requête SQL de la page, collections d'administration avec sql=true */
+  sql?: string;
 }
 
 /** Ressource lue avec son ETag, renvoyé dans If-Match pour la modifier */

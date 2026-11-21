@@ -1,0 +1,5 @@
+{
+    "contributor": { "email": "contributeur@e2e.natheo.test", "login": "e2e-contributeur", "password": "E2e-Contributeur-1", "role": "ROLE_CONTRIBUTEUR" },
+    "admin": { "email": "admin@e2e.natheo.test", "login": "e2e-admin", "password": "E2e-Admin-1", "role": "ROLE_ADMIN" },
+    "superAdmin": { "email": "superadmin@e2e.natheo.test", "login": "e2e-superadmin", "password": "E2e-SuperAdmin-1", "role": "ROLE_SUPER_ADMIN" }
+}

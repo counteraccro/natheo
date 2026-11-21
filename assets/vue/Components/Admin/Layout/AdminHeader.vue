@@ -81,10 +81,10 @@ onBeforeUnmount(() => window.removeEventListener('keydown', focusSearch));
             <span class="h-4 w-px bg-line-strong max-md:hidden" aria-hidden="true" />
           </template>
           <span
-            v-if="section.icon"
+            v-if="section.icon || section.iconName"
             class="-mr-0.5 grid size-[26px] shrink-0 place-items-center rounded-sm bg-primary-soft text-on-primary-soft"
           >
-            <UiIcon :path="section.icon" class="size-4" />
+            <UiIcon :name="section.iconName" :path="section.icon" class="size-4" />
           </span>
           <b class="truncate text-base font-semibold text-fg">{{ section.label }}</b>
         </template>

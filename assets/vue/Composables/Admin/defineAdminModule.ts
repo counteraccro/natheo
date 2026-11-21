@@ -4,6 +4,9 @@
  * Déclaration des écrans d'un module dans l'application du back-office (module.ts du dossier du module)
  */
 import type { RouteRecordRaw } from 'vue-router';
+import type { CollectionScreenDescriptor } from '@/ts/Admin/Screen/CollectionScreen.type';
+import type { FormScreenDescriptor } from '@/ts/Admin/Screen/FormScreen.type';
+import type { ScreenItem } from '@/ts/Admin/Screen/Screen.type';
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -32,6 +35,51 @@ export interface AdminModuleDefinition {
  */
 export function defineAdminModule(definition: AdminModuleDefinition): AdminModuleDefinition {
   return definition;
+}
+
+/** Composant socle des écrans décrits par des données, rendus par le thème actif */
+const adminScreen = () => import('@admin/App/AdminScreen.vue');
+
+/**
+ * Route d'un écran de liste décrit par des données
+ * @param path
+ * @param name
+ * @param descriptor
+ * @param breadcrumb noms des routes du fil d'Ariane
+ */
+export function collectionRoute<T extends ScreenItem>(
+  path: string,
+  name: string,
+  descriptor: CollectionScreenDescriptor<T>,
+  breadcrumb: string[] = [name]
+): RouteRecordRaw {
+  return { path, name, component: adminScreen, props: { kind: 'collection', descriptor }, meta: { breadcrumb } };
+}
+
+/**
+ * Route d'un écran de formulaire décrit par des données, création sans paramètre id
+ * @param path
+ * @param name
+ * @param descriptor
+ * @param breadcrumb noms des routes du fil d'Ariane
+ */
+export function formRoute<T extends ScreenItem>(
+  path: string,
+  name: string,
+  descriptor: FormScreenDescriptor<T>,
+  breadcrumb: string[] = [name]
+): RouteRecordRaw {
+  return {
+    path,
+    name,
+    component: adminScreen,
+    props: (route) => ({
+      kind: 'form',
+      descriptor,
+      id: typeof route.params.id === 'string' ? route.params.id : null,
+    }),
+    meta: { breadcrumb },
+  };
 }
 
 /**

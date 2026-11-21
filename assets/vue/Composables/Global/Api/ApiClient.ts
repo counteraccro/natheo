@@ -61,7 +61,7 @@ export class ApiClient {
     const collection = (await (await this.send({ method: 'GET', url })).json()) as HydraCollection<T>;
     const page = ApiClient.pageOf(url) ?? 1;
     const lastPage = collection.view?.last ? (ApiClient.pageOf(collection.view.last) ?? page) : page;
-    return { members: collection.member, total: collection.totalItems, page, lastPage };
+    return { members: collection.member, total: collection.totalItems, page, lastPage, sql: collection.sql };
   }
 
   async post<T>(path: string, body: object): Promise<T> {

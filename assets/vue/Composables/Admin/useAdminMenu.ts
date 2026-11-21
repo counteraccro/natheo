@@ -9,6 +9,7 @@ import type { AdminModule } from '@/ts/Admin/Api/AdminModule.type';
 import type { AdminMenuItem } from '@/ts/Admin/Api/AdminMenuItem.type';
 import type { SidebarItem } from '@/ts/Admin/Layout/AdminSidebar.type';
 import type { HeaderSection, HeaderShortcut } from '@/ts/Admin/Layout/AdminHeader.type';
+import type { AdminPage } from '@/ts/Admin/App/AdminPage.type';
 import { useAdminContext } from '@/vue/Composables/Admin/useAdminContext';
 
 /** Route courante, réduite à ce que lit le menu */
@@ -16,6 +17,8 @@ export interface MenuLocation {
   name: string | null;
   /** Noms des routes du fil d'Ariane, de la racine à la page */
   breadcrumb?: string[];
+  /** Écran affiché : son icône, et son titre quand sa route n'a pas d'entrée de menu (édition…) */
+  page?: AdminPage | null;
 }
 
 export interface AdminMenu {
@@ -109,7 +112,11 @@ export function createAdminMenu(api: ApiClient, basePath: string): AdminMenu {
       const active = activeOf(location);
       if (active === null) return null;
       const parent = items.value.find((item) => item.id === active.parent);
-      return { group: parent?.label, label: active.label, icon: active.icon || undefined };
+      const page = location.page;
+      const label = active.route !== location.name && page ? page.title : active.label;
+      return page?.icon
+        ? { group: parent?.label, label, iconName: page.icon }
+        : { group: parent?.label, label, icon: active.icon || undefined };
     },
     shortcuts(): HeaderShortcut[] {
       return items.value.flatMap((item) => {

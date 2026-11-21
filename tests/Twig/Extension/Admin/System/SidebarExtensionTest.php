@@ -75,13 +75,13 @@ class SidebarExtensionTest extends AppWebTestCase
     public function testEditPage(): void
     {
         $user = $this->createUserContributeur();
-        $tag = $this->createTag($user);
+        $faq = $this->createFaq($user);
         $this->client->loginUser($user, 'admin');
-        $this->client->request('GET', $this->router->generate('admin_tag_update', ['id' => $tag->getId()]));
+        $this->client->request('GET', $this->router->generate('admin_faq_update', ['id' => $faq->getId()]));
 
         $this->assertResponseIsSuccessful();
         $this->assertSelectorExists(
-            '#submenu-tag.open a.active[href="' . $this->router->generate('admin_tag_index') . '"]',
+            '#submenu-faq.open a.active[href="' . $this->router->generate('admin_faq_index') . '"]',
         );
     }
 
@@ -141,12 +141,12 @@ class SidebarExtensionTest extends AppWebTestCase
         $this->client->request('GET', $this->router->generate('admin_dashboard_index'));
         $this->assertResponseIsSuccessful();
         $links = $this->client->getCrawler()->filter('#newContentDropdown a')->each(fn($link) => $link->attr('href'));
-        $expected = array_map(fn($route) => $this->router->generate($route), [
-            'admin_menu_add',
-            'admin_page_add',
-            'admin_tag_add',
-            'admin_faq_add',
-        ]);
+        $expected = [
+            $this->router->generate('admin_menu_add'),
+            $this->router->generate('admin_page_add'),
+            $this->router->generate('admin_app', ['path' => 'tags/new']),
+            $this->router->generate('admin_faq_add'),
+        ];
         $this->assertSame($expected, $links);
 
         $user = $this->createUser();
