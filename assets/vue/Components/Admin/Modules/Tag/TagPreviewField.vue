@@ -23,7 +23,9 @@ const locale = ref(props.screen.currentLocale);
 const dark = ref(false);
 const height = ref(MIN_HEIGHT);
 const ready = ref(false);
-const frame = ref<HTMLIFrameElement | null>(null);
+// Par langue : en changeant d'onglet, le cadre retiré ne doit pas effacer celui qui vient d'apparaître
+const frames = new Map<string, HTMLIFrameElement>();
+const frame = (): HTMLIFrameElement | undefined => frames.get(locale.value);
 const tabs = props.screen.locales.map((code) => ({ id: code, label: localeName(code, bootstrap.locale) }));
 const src = computed(() => `${bootstrap.basePath}tag/preview/${locale.value}`);
 
@@ -33,18 +35,19 @@ const tag = computed(() => ({
   color: props.data.color ?? '#000000',
 }));
 
-const setFrame = (element: unknown): void => {
-  frame.value = element instanceof HTMLIFrameElement ? element : null;
+const setFrame = (code: string, element: unknown): void => {
+  if (element instanceof HTMLIFrameElement) frames.set(code, element);
+  else frames.delete(code);
 };
 
 const send = (): void => {
   if (!ready.value) return;
-  postPreviewMessage(frame.value?.contentWindow, { type: 'data', data: { ...tag.value } });
-  postPreviewMessage(frame.value?.contentWindow, { type: 'scheme', dark: dark.value });
+  postPreviewMessage(frame()?.contentWindow, { type: 'data', data: { ...tag.value } });
+  postPreviewMessage(frame()?.contentWindow, { type: 'scheme', dark: dark.value });
 };
 
 const onMessage = (event: MessageEvent): void => {
-  const message = readPreviewMessage(event, frame.value?.contentWindow);
+  const message = readPreviewMessage(event, frame()?.contentWindow);
   if (message?.type === 'ready') {
     ready.value = true;
     send();
@@ -79,7 +82,7 @@ onBeforeUnmount(() => window.removeEventListener('message', onMessage));
       <template v-for="tab in tabs" :key="tab.id" #[tab.id]>
         <iframe
           v-if="tab.id === locale"
-          :ref="setFrame"
+          :ref="(element) => setFrame(tab.id, element)"
           :src="src"
           :title="t('tag.editor.preview')"
           class="block w-full rounded-md border border-line"
