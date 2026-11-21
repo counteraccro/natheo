@@ -34,7 +34,9 @@ final readonly class AdminTagMapper
     public function map(Tag $tag, int $pageCount, Permissions $permissions): AdminTag
     {
         $label = $tag->getTagTranslationByLocale($this->locale, $this->defaultLocale)?->getLabel();
-        $resource = $this->mapSummary($tag, $label, $pageCount, $permissions);
+        $user = $tag->getUser();
+        $author = $user === null ? null : new AdminAuthor((int) $user->getId(), (string) $user->getLogin());
+        $resource = $this->mapSummary($tag, $label, $pageCount, $author, $permissions);
         foreach ($this->locales as $locale) {
             $translation = $tag->getTagTranslations()->findFirst(fn($key, $t) => $t->getLocale() === $locale);
             if ($translation !== null) {
@@ -45,23 +47,28 @@ final readonly class AdminTagMapper
     }
 
     /**
-     * Ressource d'une collection, libellé lu par la requête
+     * Ressource d'une collection, libellé et auteur lus par la requête
      * @param Tag $tag
      * @param string|null $label
      * @param int $pageCount
+     * @param AdminAuthor|null $author
      * @param Permissions $permissions
      * @return AdminTag
      */
-    public function mapSummary(Tag $tag, ?string $label, int $pageCount, Permissions $permissions): AdminTag
-    {
+    public function mapSummary(
+        Tag $tag,
+        ?string $label,
+        int $pageCount,
+        ?AdminAuthor $author,
+        Permissions $permissions,
+    ): AdminTag {
         $resource = new AdminTag();
         $resource->id = (int) $tag->getId();
         $resource->label = (string) $label;
         $resource->color = (string) $tag->getColor();
         $resource->disabled = (bool) $tag->isDisabled();
         $resource->pageCount = $pageCount;
-        $user = $tag->getUser();
-        $resource->author = $user === null ? null : new AdminAuthor((int) $user->getId(), (string) $user->getLogin());
+        $resource->author = $author;
         $resource->createdAt = $tag->getCreatedAt()?->format(\DateTimeInterface::ATOM);
         $resource->updatedAt = $tag->getUpdateAt()?->format(\DateTimeInterface::ATOM);
         $resource->permissions = $permissions;

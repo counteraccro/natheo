@@ -112,7 +112,8 @@ class TagRepository extends ServiceEntityRepository
 
     /**
      * Page de la collection d'administration. Chaque ligne vaut [0 => Tag, 'label' => libellé de $locale, à défaut
-     * de $defaultLocale, 'pageCount' => nombre de pages], auteur chargé avec le tag
+     * de $defaultLocale, 'pageCount' => nombre de pages, 'authorId', 'authorLogin'] ; l'auteur du tag reste un
+     * proxy non chargé, seuls son identifiant et son login sont lus
      * @param AdminCollectionQuery $query
      * @param string $locale
      * @param string $defaultLocale
@@ -121,28 +122,29 @@ class TagRepository extends ServiceEntityRepository
     public function getAdminCollection(AdminCollectionQuery $query, string $locale, string $defaultLocale): Paginator
     {
         $qb = $this->createQueryBuilder('tag')
-            ->addSelect(
-                'author',
-                'COALESCE(translation.label, default_translation.label) AS label',
-                'SIZE(tag.pages) AS pageCount',
-            )
+            ->addSelect('author.id AS authorId', 'author.login AS authorLogin', 'SIZE(tag.pages) AS pageCount')
             ->leftJoin('tag.user', 'author')
             ->leftJoin('tag.tagTranslations', 'translation', 'WITH', 'translation.locale = :locale')
-            ->leftJoin(
+            ->setParameter('locale', $locale);
+
+        $label = 'translation.label';
+        if ($locale !== $defaultLocale) {
+            $label = 'COALESCE(translation.label, default_translation.label)';
+            $qb->leftJoin(
                 'tag.tagTranslations',
                 'default_translation',
                 'WITH',
                 'default_translation.locale = :default_locale',
-            )
-            ->setParameter('locale', $locale)
-            ->setParameter('default_locale', $defaultLocale);
+            )->setParameter('default_locale', $defaultLocale);
+        }
+        $qb->addSelect($label . ' AS label');
 
         return $this->paginateAdminCollection(
             $qb,
             $query,
             [
                 'id' => 'tag.id',
-                'label' => 'translation.label',
+                'label' => $label,
                 'color' => 'tag.color',
                 'createdAt' => 'tag.createdAt',
                 'updatedAt' => 'tag.updateAt',
@@ -150,6 +152,7 @@ class TagRepository extends ServiceEntityRepository
             'tag.disabled',
             'tag.id',
             'tag.user',
+            orderFields: ['label' => 'label'],
         );
     }
 

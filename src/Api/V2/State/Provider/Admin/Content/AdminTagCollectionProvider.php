@@ -13,6 +13,7 @@ use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\Pagination\TraversablePaginator;
 use ApiPlatform\State\ProviderInterface;
 use App\Api\V2\Mapper\Admin\Content\AdminTagMapper;
+use App\Api\V2\Output\Admin\Global\AdminAuthor;
 use App\Api\V2\Resource\Admin\Content\AdminTag;
 use App\Api\V2\Security\AdminPermissionResolver;
 use App\Api\V2\State\Provider\Admin\AdminCollectionPaginator;
@@ -53,6 +54,7 @@ final readonly class AdminTagCollectionProvider implements ProviderInterface
                 $row[0],
                 $row['label'],
                 (int) $row['pageCount'],
+                $row['authorId'] === null ? null : new AdminAuthor((int) $row['authorId'], (string) $row['authorLogin']),
                 $this->permissionResolver->forContent($row[0]),
             ),
         );

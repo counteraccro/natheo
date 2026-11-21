@@ -71,6 +71,24 @@ class AdminTagGetCollectionTest extends AdminTagTestCase
     }
 
     /**
+     * Sans traduction dans la langue demandée, la recherche et le tri portent sur le libellé de la langue par défaut
+     * @return void
+     */
+    public function testSearchOnDefaultLabel(): void
+    {
+        $headers = $this->contributorHeaders($user);
+        $translated = $this->createLabelledTag($user, 'Zeta');
+        $untranslated = $this->createTag($user, ['color' => '#112233', 'disabled' => false]);
+        $this->createTagTranslation($untranslated, ['locale' => 'fr', 'label' => 'Omega']);
+
+        $this->assertSame([$untranslated->getId()], $this->ids('/admin/tags?search=omeg&locale=en', $headers));
+        $this->assertSame(
+            [$untranslated->getId(), $translated->getId()],
+            $this->ids('/admin/tags?order[label]=asc&locale=en', $headers),
+        );
+    }
+
+    /**
      * La requête SQL renvoyée au super administrateur s'exécute sur la base et rend les mêmes tags, dans le même
      * ordre, que la réponse
      * @return void
@@ -100,6 +118,7 @@ class AdminTagGetCollectionTest extends AdminTagTestCase
             $this->assertEquals(200, $response->getStatusCode(), $path);
             $content = $this->decode($response);
             $this->assertNotSame([], $content['member'], $path);
+            $this->assertStringNotContainsString('password', $content['sql'], $path);
             $rows = $connection->executeQuery($content['sql'])->fetchAllAssociative();
             $this->assertSame(
                 array_column($content['member'], 'id'),

@@ -25,6 +25,8 @@ trait AdminCollectionQueryTrait
      * @param string $defaultOrder chemin DQL du tri par défaut
      * @param string|null $authorField chemin DQL de l'auteur, null si la ressource n'en a pas
      * @param bool $fetchJoinCollection vrai seulement si la requête joint une collection to-many
+     * @param array<string, string> $orderFields tri d'un champ qui diffère de $fields (alias de résultat quand le
+     *   chemin est une expression que DQL refuse dans ORDER BY, comme COALESCE)
      * @return Paginator
      */
     protected function paginateAdminCollection(
@@ -35,6 +37,7 @@ trait AdminCollectionQueryTrait
         string $defaultOrder,
         ?string $authorField = null,
         bool $fetchJoinCollection = false,
+        array $orderFields = [],
     ): Paginator {
         $searchPaths = array_values(array_intersect_key($fields, array_flip($query->searchFields)));
         if ($query->search !== null && $searchPaths !== []) {
@@ -59,9 +62,11 @@ trait AdminCollectionQueryTrait
             );
         }
 
-        $qb->orderBy($fields[$query->orderField ?? ''] ?? $defaultOrder, $query->orderDirection);
+        $qb->orderBy(($orderFields + $fields)[$query->orderField ?? ''] ?? $defaultOrder, $query->orderDirection);
 
         $qb->setFirstResult(max(0, $query->limit * ($query->page - 1)))->setMaxResults($query->limit);
-        return new Paginator($qb->getQuery(), $fetchJoinCollection);
+        $paginator = new Paginator($qb->getQuery(), $fetchJoinCollection);
+        // Sans collection jointe, le comptage n'a pas besoin de reprendre toute la requête en sous-requête
+        return $paginator->setUseOutputWalkers($fetchJoinCollection);
     }
 }
