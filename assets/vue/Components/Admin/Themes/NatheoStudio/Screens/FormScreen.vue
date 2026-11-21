@@ -96,7 +96,7 @@ const meta = computed(() => {
       <UiAlert v-if="conflict" variant="warning" :title="t('admin_app.resource.conflict_title')">
         {{ t('admin_app.resource.conflict_text') }}
         <template #action>
-          <UiButton size="sm" icon="arrows-sort" @click="screen.reload()">{{
+          <UiButton size="sm" icon="refresh" @click="screen.reload()">{{
             t('admin_app.screen.form_reload')
           }}</UiButton>
         </template>
