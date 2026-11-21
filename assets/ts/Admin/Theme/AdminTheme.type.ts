@@ -1,7 +1,8 @@
 /**
  * @author Gourdon Aymeric
  * @version 1.0
- * Contrat d'un thème du back-office : layout autour des écrans et page introuvable
+ * Contrat d'un thème du back-office : layout autour des écrans, page introuvable et rendus des écrans décrits
+ * par des données
  */
 import type { Component } from 'vue';
 import type { AdminBootstrap } from '@/ts/Admin/App/AdminBootstrap.type';
@@ -26,6 +27,11 @@ export interface AdminNotFoundProps {
   dashboardUrl: string;
 }
 
+/** Props des rendus d'écran : état calculé par le socle (CollectionScreenState, FormScreenState) */
+export interface AdminScreenProps<S> {
+  screen: S;
+}
+
 export interface AdminTheme {
   /** Identifiant du thème (natheo_studio) */
   id: string;
@@ -33,4 +39,6 @@ export interface AdminTheme {
   layout: Component;
   /** Reçoit AdminNotFoundProps, affiché dans le layout */
   notFound: ThemeComponent;
+  /** Rendus des écrans de liste et de formulaire, reçoivent AdminScreenProps */
+  screens: { collection: ThemeComponent; form: ThemeComponent };
 }

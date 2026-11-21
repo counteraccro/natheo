@@ -3,19 +3,20 @@
  * @author Gourdon Aymeric
  * @version 1.1
  * Racine de l'application du back-office : libellés des composants, layout du thème autour de l'écran courant,
- * notifications, confirmation unique, liens sans rechargement et départ d'un formulaire modifié
+ * notifications, confirmation unique, liens sans rechargement, départ d'un formulaire modifié et thème des écrans
  */
-import { computed, onBeforeUnmount, onMounted } from 'vue';
+import { computed, onBeforeUnmount, onMounted, provide } from 'vue';
 import { RouterView, useRoute, useRouter } from 'vue-router';
 import { buildUiLabels, notify, provideUiLabels, UiConfirmDialog, UiToastRegion } from '@ui';
 import { useAdminContext } from '@/vue/Composables/Admin/useAdminContext';
 import { useConfirm } from '@/vue/Composables/Admin/useConfirm';
 import { createAdminLinks } from '@/vue/Composables/Admin/adminLinks';
 import { NOT_FOUND_ROUTE } from '@/vue/Composables/Admin/adminRouter';
+import { ADMIN_THEME } from '@/vue/Composables/Admin/Screen/adminTheme';
 import type { AdminTheme } from '@/ts/Admin/Theme/AdminTheme.type';
 import type { HeaderSection } from '@/ts/Admin/Layout/AdminHeader.type';
 
-defineProps<{ theme: AdminTheme }>();
+const props = defineProps<{ theme: AdminTheme }>();
 
 const { t, leave, menu, bootstrap } = useAdminContext();
 const { current, answer } = useConfirm();
@@ -23,6 +24,7 @@ const route = useRoute();
 const router = useRouter();
 
 provideUiLabels(buildUiLabels(t));
+provide(ADMIN_THEME, props.theme);
 
 const location = computed(() => ({
   name: typeof route.name === 'string' ? route.name : null,
