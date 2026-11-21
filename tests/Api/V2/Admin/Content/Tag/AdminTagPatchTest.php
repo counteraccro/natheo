@@ -74,7 +74,7 @@ class AdminTagPatchTest extends AdminTagTestCase
     }
 
     /**
-     * Un contributeur ne modifie pas le tag d'un autre, un administrateur modifie tout ; 404 avant 403
+     * Un contributeur ne modifie pas le tag d'un autre, même sans effet, un administrateur modifie tout ; 404 avant 403
      * @return void
      */
     public function testRights(): void
@@ -89,6 +89,8 @@ class AdminTagPatchTest extends AdminTagTestCase
         );
         $this->assertSame($this->translator->trans('tag.error.forbidden', domain: 'tag'), $content['detail']);
         $this->assertProblem($this->requestV2('PATCH', $path, body: ['disabled' => true], headers: $headers), 403);
+        $this->assertProblem($this->requestV2('PATCH', $path, body: ['disabled' => false], headers: $headers), 403);
+        $this->assertProblem($this->requestV2('PATCH', $path, body: [], headers: $headers), 403);
         $this->assertProblem($this->requestV2('PATCH', '/admin/tags/999999', body: [], headers: $headers), 404);
 
         $response = $this->requestV2('PATCH', $path, body: ['disabled' => true], headers: $this->adminHeaders());
