@@ -86,7 +86,10 @@ class AdminSqlQueryTest extends AppApiV2TestCase
     public function testSqlParameterAccess(): void
     {
         $admin = $this->adminSessionHeaders($this->createUserAdmin(['disabled' => false, 'anonymous' => false]));
-        $this->assertProblem($this->requestV2('GET', '/admin/probes?sql=true', headers: $admin), 403);
+        foreach (['true', 'TRUE', 'True', '1'] as $value) {
+            $this->assertProblem($this->requestV2('GET', '/admin/probes?sql=' . $value, headers: $admin), 403);
+        }
+        $this->assertEquals(200, $this->requestV2('GET', '/admin/probes?sql=FALSE', headers: $admin)->getStatusCode());
         $this->assertEquals(200, $this->requestV2('GET', '/admin/probes?sql=false', headers: $admin)->getStatusCode());
         $this->assertEquals(200, $this->requestV2('GET', '/admin/probes', headers: $admin)->getStatusCode());
 

@@ -46,8 +46,9 @@ final readonly class AdminSqlParameterMetadataFactory implements ResourceMetadat
                 }
                 $parameters = $operation->getParameters() ?? new Parameters();
                 $parameters->add(SqlParameter::KEY, new SqlParameter());
+                // Liste des valeurs fausses plutôt que des vraies : toute autre écriture exige le rôle
                 $condition = sprintf(
-                    "(request.query.get('%s') not in ['true', '1'] or is_granted('%s'))",
+                    "((request.query.get('%s') ?? '') matches '/^(false|0)?$/i' or is_granted('%s'))",
                     SqlParameter::KEY,
                     SqlParameter::ROLE,
                 );
