@@ -61,7 +61,8 @@ final class TagModule implements AdminModuleInterface
                 icon: SvgIcon::LIST->value,
                 parent: self::ID,
                 position: 10,
-                legacyRoute: 'admin_tag_index',
+                route: 'tag_index',
+                path: 'tags',
             ),
             new AdminMenuItem(
                 id: 'tag_new',
@@ -69,7 +70,8 @@ final class TagModule implements AdminModuleInterface
                 icon: SvgIcon::PLUS->value,
                 parent: self::ID,
                 position: 20,
-                legacyRoute: 'admin_tag_add',
+                route: 'tag_new',
+                path: 'tags/new',
                 shortcut: true,
             ),
         ];

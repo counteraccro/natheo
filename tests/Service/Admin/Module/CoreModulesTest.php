@@ -252,13 +252,15 @@ class CoreModulesTest extends AppWebTestCase
         $projectDir = $this->container->getParameter('kernel.project_dir');
         $idPattern = "/\\bid:\\s*'([^']+)'/";
         $routePattern = "/\\{[^{}]*?\\bpath:\\s*'([^']*)'[^{}]*?\\bname:\\s*'([^']+)'/";
+        $screenPattern = "/\\b(?:collectionRoute|formRoute)\\(\\s*'([^']*)',\\s*'([^']+)'/";
         foreach (self::APP_MODULES_DIRS as $directory) {
             foreach (glob($projectDir . '/' . $directory . '/*/module.ts') as $file) {
                 $source = (string) file_get_contents($file);
                 $this->assertSame(1, preg_match($idPattern, $source, $id), sprintf('id absent de %s', $file));
                 preg_match_all($routePattern, $source, $matches, PREG_SET_ORDER);
+                preg_match_all($screenPattern, $source, $screens, PREG_SET_ORDER);
                 $routes[$id[1]] = [];
-                foreach ($matches as [, $path, $name]) {
+                foreach ([...$matches, ...$screens] as [, $path, $name]) {
                     $routes[$id[1]][$name] = $path;
                 }
             }

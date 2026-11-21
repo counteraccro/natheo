@@ -151,7 +151,7 @@ class GlobalSearchService extends AppAdminService
                 'update' => $tag->getUpdateAt()->format('d/m/y H:i'),
             ],
             'urls' => [
-                'edit' => $router->generate('admin_tag_update', ['id' => $tag->getId()]),
+                'edit' => $router->generate('admin_app', ['path' => 'tags/' . $tag->getId()]),
             ],
         ];
     }

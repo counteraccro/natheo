@@ -87,6 +87,7 @@ class GlobalSearchServiceTest extends AppWebTestCase
         foreach ($result['elements'] as $tagElement) {
             if ($tagElement['id'] == $tag->getId()) {
                 $verif = true;
+                $this->assertSame('/admin/fr/tags/' . $tag->getId(), $tagElement['urls']['edit']);
             }
         }
         $this->assertTrue($verif);
