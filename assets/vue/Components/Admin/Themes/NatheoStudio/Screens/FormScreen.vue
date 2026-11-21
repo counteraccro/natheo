@@ -16,6 +16,7 @@ import {
   UiErrorSummary,
   UiField,
   UiForm,
+  UiIcon,
   UiInput,
   UiSelect,
   UiSkeleton,
@@ -25,6 +26,7 @@ import {
 } from '@ui';
 import { useAdminContext } from '@/vue/Composables/Admin/useAdminContext';
 import { toComponent } from '@/vue/Composables/Admin/Screen/adminTheme';
+import { SECTION_ICONS } from '@/vue/Composables/Admin/Screen/sectionKinds';
 import { formatDateTime, formatRelative, localeName } from '@/vue/Composables/Admin/Screen/screenFormat';
 import type { AdminScreenProps } from '@/ts/Admin/Theme/AdminTheme.type';
 import type { FormField, FormScreenState, TranslationsField } from '@/ts/Admin/Screen/FormScreen.type';
@@ -110,7 +112,17 @@ const meta = computed(() => {
 
       <section v-for="section in descriptor.sections" v-else :key="section.title" :class="PANEL">
         <header :class="PANEL_HEAD">
-          <h2 :class="PANEL_TITLE">{{ t(section.title) }}</h2>
+          <span
+            v-if="section.kind"
+            class="grid size-8 shrink-0 place-items-center rounded-sm bg-surface text-fg-muted"
+            aria-hidden="true"
+          >
+            <UiIcon :name="SECTION_ICONS[section.kind]" class="size-[18px]" />
+          </span>
+          <div class="min-w-0">
+            <h2 :class="PANEL_TITLE">{{ t(section.title) }}</h2>
+            <p v-if="section.description" class="m-0 mt-0.5 text-sm text-fg-subtle">{{ t(section.description) }}</p>
+          </div>
         </header>
         <div class="flex flex-col gap-[18px] p-5">
           <template v-for="field in section.fields" :key="field.name">

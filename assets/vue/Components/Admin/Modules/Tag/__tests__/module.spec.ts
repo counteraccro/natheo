@@ -28,6 +28,7 @@ function keysOf(): string[] {
   ];
   tagForm.sections.forEach((section) => {
     keys.push(section.title);
+    if (section.description) keys.push(section.description);
     section.fields.forEach((field) => {
       if (field.label) keys.push(field.label);
       if (field.help) keys.push(field.help);

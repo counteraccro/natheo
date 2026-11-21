@@ -66,6 +66,8 @@ export const tagForm = defineFormScreen<AdminTag>({
   sections: [
     {
       title: t('tag.editor.section_label'),
+      description: t('tag.editor.section_label_description'),
+      kind: 'label',
       fields: [
         {
           type: 'translations',
@@ -79,6 +81,8 @@ export const tagForm = defineFormScreen<AdminTag>({
     },
     {
       title: t('tag.editor.section_style'),
+      description: t('tag.editor.section_style_description'),
+      kind: 'appearance',
       fields: [
         {
           type: 'color',
@@ -96,6 +100,8 @@ export const tagForm = defineFormScreen<AdminTag>({
     },
     {
       title: t('tag.editor.section_status'),
+      description: t('tag.editor.section_status_description'),
+      kind: 'status',
       fields: [
         { type: 'switch', name: 'disabled', label: t('tag.editor.disabled'), help: t('tag.editor.disabled_help') },
       ],

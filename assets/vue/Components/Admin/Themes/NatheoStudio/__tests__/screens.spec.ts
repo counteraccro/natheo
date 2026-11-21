@@ -130,7 +130,12 @@ describe('FormScreen (Natheo-Studio)', () => {
           title: 'tag.form.section_label',
           fields: [{ type: 'translations', name: 'translations', field: 'label', label: 'tag.form.label' }],
         },
-        { title: 'tag.form.section_style', fields: [{ type: 'color', name: 'color', label: 'tag.form.color' }] },
+        {
+          title: 'tag.form.section_style',
+          description: 'tag.form.section_style_description',
+          kind: 'appearance',
+          fields: [{ type: 'color', name: 'color', label: 'tag.form.color' }],
+        },
       ],
       meta: ['author'],
       update: { operation: 'admin_tag_patch' },
@@ -154,6 +159,10 @@ describe('FormScreen (Natheo-Studio)', () => {
     await flushPromises();
     expect(wrapper.find('h1').text()).toBe('tag.form.title_edit {"id":"4"}');
     expect(wrapper.findAll('[role="tab"]')).toHaveLength(3);
+    const [labelHead, styleHead] = wrapper.findAll('form section > header');
+    expect(labelHead.find('[aria-hidden="true"] svg').exists()).toBe(false);
+    expect(styleHead.find('[aria-hidden="true"] svg').exists()).toBe(true);
+    expect(styleHead.text()).toContain('tag.form.section_style_description');
     expect((wrapper.find('input[type="text"]').element as HTMLInputElement).value).toBe('Été');
     expect(wrapper.text()).toContain('R-Admin');
     expect(wrapper.text()).toContain('admin_app.screen.action_delete');

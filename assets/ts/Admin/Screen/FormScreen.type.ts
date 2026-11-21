@@ -7,6 +7,7 @@ import type { Ref } from 'vue';
 import type { AdminResource } from '@/vue/Composables/Admin/useAdminResource';
 import type { IconName } from '@/ts/Global/Ui/UiIcon.type';
 import type { ScreenComponent, ScreenItem } from '@/ts/Admin/Screen/Screen.type';
+import type { SectionKind } from '@/vue/Composables/Admin/Screen/sectionKinds';
 
 interface BaseField {
   /** Propriété de la ressource, chemin des erreurs de l'API */
@@ -30,7 +31,11 @@ export type FormField =
 export type TranslationsField = Extract<FormField, { type: 'translations' }>;
 
 export interface FormSection {
+  /** Clés de traduction du titre et du sous-titre */
   title: string;
+  description?: string;
+  /** Type de la section, qui fixe son icône (SECTION_ICONS) */
+  kind?: SectionKind;
   fields: FormField[];
 }
 
