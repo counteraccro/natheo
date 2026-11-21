@@ -62,3 +62,4 @@ sql_manager.no.query.manager.title: No se ha encontrado ninguna consulta
 sql_manager.no.query.manager.text: Esta consulta no existe o ha sido eliminada. Puede volver a la lista o crear una nueva
 sql_manager.button.back: Volver
 sql_manager.button.new: Crear una consulta SQL
+sql_manager.api.default_name: 'Consulta generada desde una tabla'

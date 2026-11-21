@@ -20,6 +20,7 @@ api_errors.find.option.system.not.found: Option système non disponible
 api_errors.find.admin_module.not_found: 'Module du back-office non disponible'
 api_errors.find.translation_catalogue.not_found: 'Catalogue de traduction introuvable'
 api_errors.find.admin_menu_item.not_found: 'Entrée de menu non disponible'
+api_errors.find.sql_query.not_found: 'Requête SQL introuvable'
 api_errors.comment.by.page.not.id.slug.together: 'Le paramètre id ou page_slug doit être présent'
 api_errors.comment.by.page.id.slug.together: Les paramètres id et page_slug ne peuvent pas être utilisés ensemble
 api_errors.comment.wait.validation: 'En attente de validation'

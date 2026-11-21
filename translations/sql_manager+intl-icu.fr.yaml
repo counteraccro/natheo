@@ -62,3 +62,4 @@ sql_manager.no.query.manager.title: 'Aucune requête trouvée'
 sql_manager.no.query.manager.text: Cette requête n'existe pas ou a été supprimée. Vous pouvez retourner à la liste ou en créer une nouvelle
 sql_manager.button.back: Retour
 sql_manager.button.new: 'Créer une requête SQL'
+sql_manager.api.default_name: 'Requête générée depuis une grille'

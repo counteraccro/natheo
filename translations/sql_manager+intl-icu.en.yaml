@@ -62,3 +62,4 @@ sql_manager.no.query.manager.title: No query found
 sql_manager.no.query.manager.text: This query does not exist or has been deleted. You can go back to the list or create a new one
 sql_manager.button.back: Back
 sql_manager.button.new: Create an SQL query
+sql_manager.api.default_name: 'Query generated from a grid'
