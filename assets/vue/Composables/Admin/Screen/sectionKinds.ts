@@ -18,6 +18,8 @@ export const SECTION_ICONS = {
   seo: 'search',
   /** Droits, utilisateurs */
   rights: 'user',
+  /** Informations sur l'élément (auteur, dates) */
+  info: 'info',
 } as const satisfies Record<string, IconName>;
 
 export type SectionKind = keyof typeof SECTION_ICONS;

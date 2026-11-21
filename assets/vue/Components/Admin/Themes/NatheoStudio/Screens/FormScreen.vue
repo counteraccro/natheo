@@ -292,7 +292,13 @@ const meta = computed(() => {
 
       <section v-if="!isNew && data && meta.length" :class="PANEL">
         <header :class="PANEL_HEAD">
-          <h2 :class="PANEL_TITLE">{{ t('admin_app.screen.meta_title') }}</h2>
+          <span class="grid size-8 shrink-0 place-items-center rounded-sm bg-surface text-fg-muted" aria-hidden="true">
+            <UiIcon :name="SECTION_ICONS.info" class="size-[18px]" />
+          </span>
+          <div class="min-w-0">
+            <h2 :class="PANEL_TITLE">{{ t('admin_app.screen.meta_title') }}</h2>
+            <p class="m-0 mt-0.5 text-sm text-fg-subtle">{{ t('admin_app.screen.meta_description') }}</p>
+          </div>
         </header>
         <dl class="m-0 flex flex-col gap-3 p-5 text-sm">
           <div v-for="item in meta" :key="item.name" class="flex justify-between gap-4">
