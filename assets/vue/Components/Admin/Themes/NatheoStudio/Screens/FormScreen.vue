@@ -244,25 +244,35 @@ const meta = computed(() => {
             {{ dirty ? t('admin_app.screen.form_dirty') : t('admin_app.screen.form_clean') }}
           </p>
         </header>
-        <div class="flex flex-col gap-2.5 p-5">
-          <UiButton
-            v-if="canEdit"
-            type="submit"
-            :form="formId"
-            variant="primary"
-            icon="check"
-            class="w-full"
-            :loading="saving"
-            :disabled="loading"
-          >
-            {{ isNew ? t('admin_app.screen.form_create') : t('admin_app.screen.form_save') }}
-          </UiButton>
-          <UiButton icon="chevron-left" class="w-full" @click="screen.back()">
-            {{ t('admin_app.screen.form_back') }}
-          </UiButton>
+        <div class="flex flex-col gap-3 px-5 py-4">
+          <div class="flex gap-2">
+            <UiButton size="sm" icon="chevron-left" class="flex-1" @click="screen.back()">
+              {{ t('admin_app.screen.form_back') }}
+            </UiButton>
+            <UiButton
+              v-if="canEdit"
+              type="submit"
+              :form="formId"
+              size="sm"
+              variant="primary"
+              icon="check"
+              class="flex-1"
+              :loading="saving"
+              :disabled="loading"
+            >
+              {{ isNew ? t('admin_app.screen.form_create') : t('admin_app.screen.form_save') }}
+            </UiButton>
+          </div>
           <template v-if="canDelete">
-            <hr class="my-1.5 border-0 border-t border-line" />
-            <UiButton variant="danger-soft" icon="trash" class="w-full" :disabled="saving" @click="screen.remove()">
+            <hr class="m-0 border-0 border-t border-line" />
+            <UiButton
+              size="sm"
+              variant="danger-soft"
+              icon="trash"
+              class="self-start"
+              :disabled="saving"
+              @click="screen.remove()"
+            >
               {{ t('admin_app.screen.action_delete') }}
             </UiButton>
           </template>
