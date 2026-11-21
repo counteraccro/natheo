@@ -18,7 +18,7 @@ import type { HeaderSection } from '@/ts/Admin/Layout/AdminHeader.type';
 
 const props = defineProps<{ theme: AdminTheme }>();
 
-const { t, leave, menu, bootstrap } = useAdminContext();
+const { t, leave, menu, bootstrap, pageTitle } = useAdminContext();
 const { current, answer } = useConfirm();
 const route = useRoute();
 const router = useRouter();
@@ -29,6 +29,7 @@ provide(ADMIN_THEME, props.theme);
 const location = computed(() => ({
   name: typeof route.name === 'string' ? route.name : null,
   breadcrumb: route.meta.breadcrumb,
+  title: pageTitle.value,
 }));
 const items = computed(() => menu.tree(location.value));
 const shortcuts = computed(() => menu.shortcuts());

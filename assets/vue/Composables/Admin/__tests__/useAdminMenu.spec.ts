@@ -59,6 +59,12 @@ describe('createAdminMenu', () => {
   it('donne la section courante et les raccourcis', async () => {
     const { menu } = await loadedMenu();
     expect(menu.section({ name: 'tag_index' })).toEqual({ group: 'Tags', label: 'Liste', icon: undefined });
+    expect(menu.section({ name: 'tag_index', title: 'Gestion des tags' })?.label).toBe('Liste');
+    expect(menu.section({ name: 'tag_edit', breadcrumb: ['tag_index'], title: 'Édition du tag #4' })).toEqual({
+      group: 'Tags',
+      label: 'Édition du tag #4',
+      icon: undefined,
+    });
     expect(menu.section({ name: 'inconnue' })).toBeNull();
     expect(menu.shortcuts().map((shortcut) => [shortcut.id, shortcut.href])).toEqual([
       ['tag_new', '/admin/fr/tags/new'],

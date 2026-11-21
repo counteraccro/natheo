@@ -3,7 +3,7 @@
  * @version 1.0
  * Contexte de l'application du back-office : données de démarrage, client API, traductions, menu, droits et départ
  */
-import { inject, type InjectionKey } from 'vue';
+import { inject, ref, type InjectionKey, type Ref } from 'vue';
 import { ApiClient } from '@/vue/Composables/Global/Api/ApiClient';
 import { createAdminAccessToken, type AdminAccessTokenOptions } from '@/vue/Composables/Admin/adminAccessToken';
 import { createAdminLeave, type AdminLeave } from '@/vue/Composables/Admin/adminLeave';
@@ -23,6 +23,8 @@ export interface AdminContext {
   menu: AdminMenu;
   can: AdminCan;
   leave: AdminLeave;
+  /** Titre de l'écran affiché, renseigné par les écrans décrits par des données */
+  pageTitle: Ref<string | null>;
 }
 
 export const ADMIN_CONTEXT: InjectionKey<AdminContext> = Symbol('natheo.admin.context');
@@ -66,6 +68,7 @@ export function createAdminContext(bootstrap: AdminBootstrap, options: AdminAcce
         confirmIcon: 'logout',
       }),
     }),
+    pageTitle: ref(null),
   };
 }
 

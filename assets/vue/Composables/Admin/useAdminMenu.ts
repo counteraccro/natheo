@@ -16,6 +16,8 @@ export interface MenuLocation {
   name: string | null;
   /** Noms des routes du fil d'Ariane, de la racine à la page */
   breadcrumb?: string[];
+  /** Titre de l'écran, montré par la section quand sa route n'a pas d'entrée de menu (édition…) */
+  title?: string | null;
 }
 
 export interface AdminMenu {
@@ -109,7 +111,8 @@ export function createAdminMenu(api: ApiClient, basePath: string): AdminMenu {
       const active = activeOf(location);
       if (active === null) return null;
       const parent = items.value.find((item) => item.id === active.parent);
-      return { group: parent?.label, label: active.label, icon: active.icon || undefined };
+      const label = active.route !== location.name && location.title ? location.title : active.label;
+      return { group: parent?.label, label, icon: active.icon || undefined };
     },
     shortcuts(): HeaderShortcut[] {
       return items.value.flatMap((item) => {
