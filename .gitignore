@@ -51,3 +51,9 @@ public/assets/thumbnails/*
 /public/build/
 ###< pentatrion/vite-bundle ###
 /.ai/
+
+###> playwright ###
+/test-results/
+/playwright-report/
+/tests/e2e/.auth/
+###< playwright ###
