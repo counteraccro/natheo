@@ -11,7 +11,9 @@ namespace App\Repository\Admin\Content\Tag;
 
 use App\Entity\Admin\Content\Tag\Tag;
 use App\Entity\Admin\Content\Tag\TagTranslation;
+use App\Dto\Api\Admin\AdminCollectionQuery;
 use App\Entity\Admin\System\User;
+use App\Repository\Trait\AdminCollectionQueryTrait;
 use App\Repository\Trait\LikeQueryTrait;
 use App\Repository\Trait\OrderedQueryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -28,6 +30,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class TagRepository extends ServiceEntityRepository
 {
+    use AdminCollectionQueryTrait;
     use LikeQueryTrait;
     use OrderedQueryTrait;
 
@@ -105,6 +108,49 @@ class TagRepository extends ServiceEntityRepository
             ->setFirstResult($limit * ($page - 1))
             ->setMaxResults($limit);
         return $paginator;
+    }
+
+    /**
+     * Page de la collection d'administration. Chaque ligne vaut [0 => Tag, 'label' => libellé de $locale, à défaut
+     * de $defaultLocale, 'pageCount' => nombre de pages], auteur chargé avec le tag
+     * @param AdminCollectionQuery $query
+     * @param string $locale
+     * @param string $defaultLocale
+     * @return Paginator
+     */
+    public function getAdminCollection(AdminCollectionQuery $query, string $locale, string $defaultLocale): Paginator
+    {
+        $qb = $this->createQueryBuilder('tag')
+            ->addSelect(
+                'author',
+                'COALESCE(translation.label, default_translation.label) AS label',
+                'SIZE(tag.pages) AS pageCount',
+            )
+            ->leftJoin('tag.user', 'author')
+            ->leftJoin('tag.tagTranslations', 'translation', 'WITH', 'translation.locale = :locale')
+            ->leftJoin(
+                'tag.tagTranslations',
+                'default_translation',
+                'WITH',
+                'default_translation.locale = :default_locale',
+            )
+            ->setParameter('locale', $locale)
+            ->setParameter('default_locale', $defaultLocale);
+
+        return $this->paginateAdminCollection(
+            $qb,
+            $query,
+            [
+                'id' => 'tag.id',
+                'label' => 'translation.label',
+                'color' => 'tag.color',
+                'createdAt' => 'tag.createdAt',
+                'updatedAt' => 'tag.updateAt',
+            ],
+            'tag.disabled',
+            'tag.id',
+            'tag.user',
+        );
     }
 
     /**

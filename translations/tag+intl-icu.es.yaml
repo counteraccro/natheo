@@ -61,5 +61,10 @@ tag.error.label.length: El nombre de la etiqueta no puede superar los 255 caract
 tag.error.color: 'El color debe tener el formato #rrggbb.'
 tag.error.label.duplicate: El nombre <strong>{label}</strong> ya lo utiliza otra etiqueta.
 tag.error.delete.used: Esta etiqueta se utiliza en {nb, plural, one {# página} other {# páginas}}, no se puede eliminar. Corrija su nombre o retírela de esas páginas.
+tag.error.delete_used: 'Esta etiqueta se utiliza en {count, plural, one {# página} other {# páginas}}, no se puede eliminar. Corrija su nombre o retírela de esas páginas.'
+tag.error.translations_required: 'Indique al menos un nombre.'
+tag.error.locale: 'Idioma no admitido: {locale}.'
+tag.error.locale_duplicate: 'El idioma {locale} se envía dos veces.'
+tag.error.duplicate_label: 'El nombre «{label}» ya lo utiliza otra etiqueta en este idioma.'
 tag.error.tag_by_name: El nombre o el idioma de la etiqueta no es válido.
 tag.form.input.color.help: Elija un color para identificar visualmente esta etiqueta

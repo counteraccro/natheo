@@ -40,4 +40,25 @@ class TagTranslationRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    /**
+     * Libellé d'une langue égal à $label sans tenir compte de la casse, hors tag $excludedTagId
+     * @param string $locale
+     * @param string $label
+     * @param int|null $excludedTagId
+     * @return TagTranslation|null
+     */
+    public function findOneByLabel(string $locale, string $label, ?int $excludedTagId = null): ?TagTranslation
+    {
+        $qb = $this->createQueryBuilder('translation')
+            ->where('translation.locale = :locale')
+            ->andWhere('LOWER(translation.label) = :label')
+            ->setParameter('locale', $locale)
+            ->setParameter('label', mb_strtolower(trim($label)))
+            ->setMaxResults(1);
+        if ($excludedTagId !== null) {
+            $qb->andWhere('IDENTITY(translation.tag) <> :tag')->setParameter('tag', $excludedTagId);
+        }
+        return $qb->getQuery()->getOneOrNullResult();
+    }
 }
