@@ -132,7 +132,7 @@ class TagController extends AppAdminController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/ajax/delete/{id}', name: 'delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
+    #[Route('/ajax/delete/{id}', name: 'ajax_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(
         #[MapEntity(id: 'id')] Tag $tag,
         TagService $tagService,

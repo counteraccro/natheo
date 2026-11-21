@@ -166,7 +166,7 @@ class TagService extends AppAdminService
                 ],
                 'type' => 'delete',
                 'color' => 'danger',
-                'url' => $router->generate('admin_tag_delete', ['id' => $tag->getId()]),
+                'url' => $router->generate('admin_tag_ajax_delete', ['id' => $tag->getId()]),
                 'ajax' => true,
                 'confirm' => true,
                 'msgConfirm' => $translator->trans('tag.confirm.delete.message', ['label' => $label], 'tag'),

@@ -14,7 +14,7 @@
     {% set description = 'tag.update.description' | trans({}, 'tag') %}
     {% set url_stats =  path('admin_tag_stats', {'id' : tag.id}) %}
     {% set url_update =  path('admin_tag_update', {'id' : tag.id}) %}
-    {% set url_delete = path('admin_tag_delete', {'id' : tag.id}) %}
+    {% set url_delete = path('admin_tag_ajax_delete', {'id' : tag.id}) %}
 {% endif %}
 
  {% block title %}

@@ -156,9 +156,9 @@ class TagControllerTest extends AppWebTestCase
         $usedTag = $this->createTagWithTranslations($userContributeur, ['disabled' => false]);
         $this->createPageTag(tag: $usedTag);
         $this->createPageTag(tag: $usedTag);
-        $url = $this->router->generate('admin_tag_delete', ['id' => $tag->getId()]);
+        $url = $this->router->generate('admin_tag_ajax_delete', ['id' => $tag->getId()]);
 
-        $this->checkNoAccess('admin_tag_delete', ['id' => $tag->getId()], 'DELETE');
+        $this->checkNoAccess('admin_tag_ajax_delete', ['id' => $tag->getId()], 'DELETE');
 
         $this->client->loginUser($userContributeur, 'admin');
         $this->client->request('DELETE', $url);
@@ -170,7 +170,7 @@ class TagControllerTest extends AppWebTestCase
         $otherTag = $this->createTagWithTranslations();
         $this->client->request(
             'DELETE',
-            $this->router->generate('admin_tag_delete', ['id' => $otherTag->getId()]),
+            $this->router->generate('admin_tag_ajax_delete', ['id' => $otherTag->getId()]),
             server: ['HTTP_X-CSRF-TOKEN' => $csrf],
         );
         $this->assertResponseStatusCodeSame(403);
@@ -179,7 +179,7 @@ class TagControllerTest extends AppWebTestCase
         // Tag utilisé par 2 pages
         $this->client->request(
             'DELETE',
-            $this->router->generate('admin_tag_delete', ['id' => $usedTag->getId()]),
+            $this->router->generate('admin_tag_ajax_delete', ['id' => $usedTag->getId()]),
             server: ['HTTP_X-CSRF-TOKEN' => $csrf],
         );
         $this->assertResponseStatusCodeSame(403);
