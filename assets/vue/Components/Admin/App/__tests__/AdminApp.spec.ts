@@ -21,11 +21,22 @@ const theme = defineAdminTheme({
   notFound: defineComponent({ render: () => h('p', { class: 'not-found' }) }),
 });
 
+/** Écran qui ne lit sa prop qu'à sa création, comme AdminScreen */
+const SharedScreen = defineComponent({
+  props: { kind: { type: String, required: true } },
+  setup(props) {
+    const kind = props.kind;
+    return () => h('p', { class: 'shared' }, kind);
+  },
+});
+
 async function mountApp(path = '/') {
   const router = createRouter({
     history: createMemoryHistory('/admin/fr/'),
     routes: [
       { path: '/', component: defineComponent({ render: () => h('p', { class: 'screen' }, 'Écran') }) },
+      { path: '/tags', component: SharedScreen, props: { kind: 'collection' } },
+      { path: '/tags/new', component: SharedScreen, props: { kind: 'form' } },
       { path: '/:path(.*)*', name: NOT_FOUND_ROUTE, component: theme.notFound },
     ],
   });
@@ -39,7 +50,7 @@ async function mountApp(path = '/') {
     global: { plugins: [router], provide: { [ADMIN_CONTEXT as symbol]: context } },
   });
   await router.isReady();
-  return { wrapper, onClick, onBeforeUnload };
+  return { wrapper, router, onClick, onBeforeUnload };
 }
 
 describe('AdminApp', () => {
@@ -50,6 +61,14 @@ describe('AdminApp', () => {
     expect(onClick).toHaveBeenCalled();
     window.dispatchEvent(new Event('beforeunload'));
     expect(onBeforeUnload).toHaveBeenCalled();
+  });
+
+  it('recrée l’écran quand une autre route monte le même composant', async () => {
+    const { wrapper, router } = await mountApp('/tags');
+    expect(wrapper.find('.shared').text()).toBe('collection');
+    await router.push('/tags/new');
+    await flushPromises();
+    expect(wrapper.find('.shared').text()).toBe('form');
   });
 
   it('nomme la page introuvable dans la section courante', async () => {

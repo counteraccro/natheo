@@ -59,7 +59,8 @@ onBeforeUnmount(() => {
 
 <template>
   <component :is="theme.layout" :items="items" :section="section" :shortcuts="shortcuts" :bootstrap="bootstrap">
-    <RouterView />
+    <!-- Clé par chemin : des routes qui montent le même composant (liste, création, édition) le recréent -->
+    <RouterView :key="route.path" />
   </component>
   <UiToastRegion />
   <UiConfirmDialog
