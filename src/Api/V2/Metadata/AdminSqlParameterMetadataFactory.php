@@ -4,7 +4,8 @@ declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
  * @version 1.0
- * Ajoute SqlParameter à chaque collection d'administration, réservé au super administrateur quand il est envoyé
+ * Ajoute SqlParameter à chaque collection d'administration, réservé au super administrateur quand il est envoyé (403
+ * documenté)
  */
 
 namespace App\Api\V2\Metadata;
@@ -14,6 +15,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Parameters;
 use ApiPlatform\Metadata\Resource\Factory\ResourceMetadataCollectionFactoryInterface;
 use ApiPlatform\Metadata\Resource\ResourceMetadataCollection;
+use App\Api\V2\Exception\ForbiddenException;
 use Symfony\Component\DependencyInjection\Attribute\AsDecorator;
 use Symfony\Component\DependencyInjection\Attribute\AutowireDecorated;
 
@@ -53,10 +55,15 @@ final readonly class AdminSqlParameterMetadataFactory implements ResourceMetadat
                     SqlParameter::ROLE,
                 );
                 $security = $operation->getSecurity();
+                $errors = $operation->getErrors() ?? [];
+                if (!in_array(ForbiddenException::class, $errors, true)) {
+                    $errors[] = ForbiddenException::class;
+                }
                 $operations->add(
                     $name,
                     $operation
                         ->withParameters($parameters)
+                        ->withErrors($errors)
                         ->withSecurity(
                             $security === null || $security === ''
                                 ? $condition

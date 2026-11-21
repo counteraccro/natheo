@@ -9,6 +9,10 @@ declare(strict_types=1);
 
 namespace App\Tests\Api\V2\Admin\Tools;
 
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Resource\Factory\ResourceMetadataCollectionFactoryInterface;
+use App\Api\V2\Exception\ForbiddenException;
+use App\Api\V2\Resource\Admin\Content\AdminTag;
 use App\Api\V2\Resource\Admin\Tools\AdminSqlQuery;
 use App\Entity\Admin\System\ActionLog;
 use App\Entity\Admin\Tools\SqlManager;
@@ -101,5 +105,18 @@ class AdminSqlQueryTest extends AppApiV2TestCase
             $this->requestV2('GET', '/admin/probes?sql=true', headers: $superAdmin)->getStatusCode(),
         );
         $this->assertProblem($this->requestV2('GET', '/admin/probes?sql=peut-etre', headers: $superAdmin), 422);
+    }
+
+    /**
+     * Le 403 du paramètre est déclaré dans les erreurs de chaque collection d'administration
+     * @return void
+     */
+    public function testSqlParameterError(): void
+    {
+        $factory = static::getContainer()->get('api_platform.metadata.resource.metadata_collection_factory');
+        $this->assertInstanceOf(ResourceMetadataCollectionFactoryInterface::class, $factory);
+        $collection = $factory->create(AdminTag::class)->getOperation('admin_tag_get_collection');
+        $this->assertInstanceOf(GetCollection::class, $collection);
+        $this->assertContains(ForbiddenException::class, $collection->getErrors() ?? []);
     }
 }
