@@ -269,7 +269,7 @@ const meta = computed(() => {
               size="sm"
               variant="danger-soft"
               icon="trash"
-              class="self-start"
+              class="w-full"
               :disabled="saving"
               @click="screen.remove()"
             >
