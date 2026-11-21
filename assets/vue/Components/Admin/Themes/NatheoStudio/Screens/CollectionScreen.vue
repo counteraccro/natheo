@@ -73,9 +73,7 @@ onMounted(() => void props.screen.collection.load());
     :loading="loading"
     :actions-for="(row) => screen.actionsFor(asItem(row))"
     :row-label="(row) => descriptor.rowLabel(asItem(row))"
-    :row-class="
-      (row) => (row.disabled ? 'bg-[color-mix(in_srgb,var(--surface)_60%,transparent)] text-fg-subtle' : undefined)
-    "
+    :row-class="(row) => (row.disabled ? 'bg-row-disabled text-fg-subtle' : undefined)"
     :selectable="screen.bulkActions.length > 0"
     :bulk-actions="screen.bulkActions"
     :sql="screen.canSql ? sql : null"

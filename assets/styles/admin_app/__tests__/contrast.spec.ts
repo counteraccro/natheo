@@ -61,7 +61,7 @@ function ratio(a: string, b: string): number {
 /** [premier plan, fond, ratio minimal] */
 const PAIRS: [string, string, number][] = [
   ...['--fg', '--fg-muted', '--fg-subtle'].flatMap((fg) =>
-    ['--bg', '--canvas', '--surface', '--surface-raised'].map((bg): [string, string, number] => [fg, bg, 4.5])
+    ['--bg', '--canvas', '--surface', '--surface-raised', '--row-disabled'].map((bg): [string, string, number] => [fg, bg, 4.5])
   ),
   ['--primary', '--bg', 4.5],
   ['--primary', '--canvas', 4.5],

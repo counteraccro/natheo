@@ -12,6 +12,7 @@
     --color-bg: var(--bg);
     --color-surface: var(--surface);
     --color-raised: var(--surface-raised);
+    --color-row-disabled: var(--row-disabled);
     --color-fg: var(--fg);
     --color-fg-muted: var(--fg-muted);
     --color-fg-subtle: var(--fg-subtle);

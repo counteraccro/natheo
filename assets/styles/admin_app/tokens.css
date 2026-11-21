@@ -9,6 +9,7 @@
     --bg: #ffffff;
     --surface: #f4f4f5;
     --surface-raised: #ffffff;
+    --row-disabled: #f8f8f9;
     --fg: #18181b;
     --fg-muted: #4a4a52;
     --fg-subtle: #5f5f69;
@@ -102,6 +103,7 @@
     --bg: #18181b;
     --surface: #202024;
     --surface-raised: #1f1f23;
+    --row-disabled: #1d1d21;
     --fg: #ededef;
     --fg-muted: #a8a8b0;
     --fg-subtle: #8e8e97;
