@@ -5,7 +5,7 @@
  * Racine de l'application du back-office : libellés des composants, layout du thème autour de l'écran courant,
  * notifications, confirmation unique, liens sans rechargement, départ d'un formulaire modifié et thème des écrans
  */
-import { computed, onBeforeUnmount, onMounted, provide } from 'vue';
+import { computed, onBeforeUnmount, onMounted, provide, watchEffect } from 'vue';
 import { RouterView, useRoute, useRouter } from 'vue-router';
 import { buildUiLabels, notify, provideUiLabels, UiConfirmDialog, UiToastRegion } from '@ui';
 import { useAdminContext } from '@/vue/Composables/Admin/useAdminContext';
@@ -18,7 +18,7 @@ import type { HeaderSection } from '@/ts/Admin/Layout/AdminHeader.type';
 
 const props = defineProps<{ theme: AdminTheme }>();
 
-const { t, leave, menu, bootstrap, pageTitle } = useAdminContext();
+const { t, leave, menu, bootstrap, page } = useAdminContext();
 const { current, answer } = useConfirm();
 const route = useRoute();
 const router = useRouter();
@@ -29,7 +29,7 @@ provide(ADMIN_THEME, props.theme);
 const location = computed(() => ({
   name: typeof route.name === 'string' ? route.name : null,
   breadcrumb: route.meta.breadcrumb,
-  title: pageTitle.value,
+  page: page.value,
 }));
 const items = computed(() => menu.tree(location.value));
 const shortcuts = computed(() => menu.shortcuts());
@@ -37,6 +37,12 @@ const section = computed<HeaderSection | null>(
   () =>
     menu.section(location.value) ?? (route.name === NOT_FOUND_ROUTE ? { label: t('admin_app.not_found.title') } : null)
 );
+
+// Même forme que les pages Twig : « titre – nom du site »
+watchEffect(() => {
+  const title = page.value?.title ?? section.value?.label;
+  document.title = title ? `${title} – ${bootstrap.site.name}` : bootstrap.site.name;
+});
 
 // Menu ou catalogue de traduction illisible : la navigation est annulée
 router.onError((error: unknown) => {

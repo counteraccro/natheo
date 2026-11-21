@@ -26,16 +26,17 @@ const screen =
     : useFormScreen(props.descriptor as FormScreenDescriptor, props.id ?? null);
 const component = toComponent(props.kind === 'collection' ? theme.screens.collection : theme.screens.form);
 
-const { t, pageTitle } = useAdminContext();
+const { t, page } = useAdminContext();
 const title = computed(() =>
   props.kind === 'collection'
     ? t((props.descriptor as CollectionScreenDescriptor).title)
     : (screen as FormScreenState).title.value
 );
-watchEffect(() => (pageTitle.value = title.value));
-// L'écran suivant a pu renseigner son titre avant ce démontage
+const current = computed(() => ({ title: title.value, icon: props.descriptor.icon }));
+watchEffect(() => (page.value = current.value));
+// L'écran suivant a pu se déclarer avant ce démontage
 onBeforeUnmount(() => {
-  if (pageTitle.value === title.value) pageTitle.value = null;
+  if (page.value === current.value) page.value = null;
 });
 </script>
 

@@ -12,6 +12,7 @@ import { createCan, type AdminCan } from '@/vue/Composables/Admin/useCan';
 import { useConfirm } from '@/vue/Composables/Admin/useConfirm';
 import { createTranslator, type Translator } from '@/vue/Composables/Admin/useTranslate';
 import type { AdminBootstrap } from '@/ts/Admin/App/AdminBootstrap.type';
+import type { AdminPage } from '@/ts/Admin/App/AdminPage.type';
 import type { AdminTranslationCatalogue } from '@/ts/Admin/Api/AdminTranslationCatalogue.type';
 
 export interface AdminContext {
@@ -23,8 +24,8 @@ export interface AdminContext {
   menu: AdminMenu;
   can: AdminCan;
   leave: AdminLeave;
-  /** Titre de l'écran affiché, renseigné par les écrans décrits par des données */
-  pageTitle: Ref<string | null>;
+  /** Écran affiché (titre, icône), renseigné par les écrans décrits par des données */
+  page: Ref<AdminPage | null>;
 }
 
 export const ADMIN_CONTEXT: InjectionKey<AdminContext> = Symbol('natheo.admin.context');
@@ -68,7 +69,7 @@ export function createAdminContext(bootstrap: AdminBootstrap, options: AdminAcce
         confirmIcon: 'logout',
       }),
     }),
-    pageTitle: ref(null),
+    page: ref(null),
   };
 }
 

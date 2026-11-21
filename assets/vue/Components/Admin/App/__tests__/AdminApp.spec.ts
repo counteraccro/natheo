@@ -71,10 +71,11 @@ describe('AdminApp', () => {
     expect(wrapper.find('.shared').text()).toBe('form');
   });
 
-  it('nomme la page introuvable dans la section courante', async () => {
+  it('nomme la page introuvable dans la section courante et l’onglet du navigateur', async () => {
     const { wrapper } = await mountApp('/inconnue');
     expect(wrapper.find('.not-found').exists()).toBe(true);
     expect(wrapper.find('.layout').attributes('data-section')).toBe('admin_app.not_found.title');
+    expect(document.title).toBe(`admin_app.not_found.title – ${bootstrap().site.name}`);
   });
 
   it('affiche la confirmation demandée et transmet la réponse', async () => {
