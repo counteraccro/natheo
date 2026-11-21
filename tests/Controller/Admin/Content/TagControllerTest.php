@@ -12,6 +12,7 @@ namespace App\Tests\Controller\Admin\Content;
 use App\Entity\Admin\Content\Tag\Tag;
 use App\Entity\Admin\System\User;
 use App\Enum\Admin\System\Options\OptionSystem;
+use App\Enum\Front\Template;
 use App\Repository\Admin\Content\Tag\TagRepository;
 use App\Service\Admin\System\OptionSystemService;
 use App\Tests\AppWebTestCase;
@@ -541,5 +542,37 @@ class TagControllerTest extends AppWebTestCase
         $this->container
             ->get(OptionSystemService::class)
             ->saveValueByKee(OptionSystem::OS_ALLOW_DELETE_DATA->value, $allow ? '1' : '0');
+    }
+
+    /**
+     * Test méthode preview() : aperçu au rendu du thème actif dans chaque langue, sans les scripts du site
+     * @return void
+     */
+    public function testPreview(): void
+    {
+        $this->checkNoAccess('admin_tag_preview', ['locale' => 'fr']);
+        $optionSystemService = $this->container->get(OptionSystemService::class);
+        $optionSystemService->saveValueByKee(
+            OptionSystem::OS_FRONT_SCRIPT_TOP->value,
+            '<script>window.scriptSite = true;</script>',
+        );
+
+        $this->client->loginUser($this->createUserContributeur(), 'admin');
+        foreach ($this->locales as $locale) {
+            $this->client->request('GET', $this->router->generate('admin_tag_preview', ['locale' => $locale]));
+            $this->assertResponseIsSuccessful();
+            $this->assertResponseHeaderSame('X-Robots-Tag', 'noindex');
+            $content = (string) $this->client->getResponse()->getContent();
+            $this->assertStringNotContainsString('scriptSite', $content);
+            $this->assertSelectorExists('html[lang="' . $locale . '"]');
+            $this->assertStringContainsString('Front/NatheoHorizon/TagPreview', $content);
+        }
+
+        $optionSystemService->saveValueByKee(OptionSystem::OS_THEME_FRONT_SITE->value, Template::NATHEO_STORM->value);
+        $this->client->request('GET', $this->router->generate('admin_tag_preview', ['locale' => 'fr']));
+        $this->assertStringContainsString(
+            'Front/StormFront/TagPreview',
+            (string) $this->client->getResponse()->getContent(),
+        );
     }
 }

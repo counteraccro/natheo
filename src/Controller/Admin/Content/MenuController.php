@@ -298,7 +298,7 @@ class MenuController extends AppAdminController
         FrontTranslate $frontTranslate,
         string $locale,
     ): Response {
-        $theme = $frontThemeService->getMenuPreviewTemplate();
+        $theme = $frontThemeService->getPreviewTemplate(FrontThemeService::MENU_PREVIEW);
 
         $response = $this->render($theme['template'], [
             'urls' => $frontThemeService->getUrls(),

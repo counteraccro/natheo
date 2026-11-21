@@ -29,6 +29,8 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use App\Enum\Admin\Global\FlashKey;
+use App\Service\Front\FrontThemeService;
+use App\Translation\Front\FrontTranslate;
 
 #[Route('/admin/{_locale}/tag', name: 'admin_tag_', requirements: ['_locale' => '%app.supported_locales%'])]
 #[IsGranted('ROLE_CONTRIBUTEUR')]
@@ -336,6 +338,41 @@ class TagController extends AppAdminController
 
         $result = $tagService->searchByLocale($locale, $search);
         return $this->json(['result' => $result]);
+    }
+
+    /**
+     * Aperçu d'un tag au rendu du thème du site public, affiché dans une iframe du formulaire qui lui envoie le tag
+     * @param FrontThemeService $frontThemeService
+     * @param FrontTranslate $frontTranslate
+     * @param string $locale langue du libellé
+     * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[
+        Route(
+            '/preview/{locale}',
+            name: 'preview',
+            requirements: ['locale' => '%app.supported_locales%'],
+            methods: ['GET'],
+        ),
+    ]
+    public function preview(
+        FrontThemeService $frontThemeService,
+        FrontTranslate $frontTranslate,
+        string $locale,
+    ): Response {
+        $theme = $frontThemeService->getPreviewTemplate(FrontThemeService::TAG_PREVIEW);
+
+        $response = $this->render($theme['template'], [
+            'urls' => $frontThemeService->getUrls(),
+            'datas' => $frontThemeService->getDatas($locale),
+            'translate' => $frontTranslate->getTranslate($locale),
+            'scriptsTag' => $theme['scriptsTag'],
+            'locale' => $locale,
+        ]);
+        $response->headers->set('X-Robots-Tag', 'noindex');
+        return $response;
     }
 
     /**

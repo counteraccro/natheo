@@ -10,7 +10,7 @@ import { Menu, PageLocales } from '@/ts/Menu/Menu.type';
 import { MenuPreviewPage, MenuPreviewSlugs, MenuPreviewTranslate } from '@/ts/Menu/MenuPreview.type';
 import type { Menu as ApiMenu } from '@/ts/Front/Api/Menu.type';
 import { toApiMenu } from '@/vue/Composables/Admin/Menu/menuPreview';
-import { postMenuPreviewMessage, readMenuPreviewMessage } from '@/vue/Composables/Global/menuPreviewMessage';
+import { postPreviewMessage, readPreviewMessage } from '@/vue/Composables/Global/previewMessage';
 
 /** Hauteur du cadre avant la première mesure envoyée par l'aperçu */
 const MIN_HEIGHT = 120;
@@ -76,7 +76,7 @@ export default defineComponent({
     },
 
     onMessage(event: MessageEvent): void {
-      const message = readMenuPreviewMessage(event, this.frame());
+      const message = readPreviewMessage(event, this.frame());
       if (message?.type === 'ready') {
         this.ready = true;
         this.sendScheme();
@@ -92,13 +92,13 @@ export default defineComponent({
     sendMenu(): void {
       if (this.ready && this.apiMenu !== null) {
         // Copie simple : un objet réactif ne passe pas par postMessage
-        postMenuPreviewMessage(this.frame(), { type: 'menu', menu: JSON.parse(JSON.stringify(this.apiMenu)) });
+        postPreviewMessage(this.frame(), { type: 'data', data: JSON.parse(JSON.stringify(this.apiMenu)) });
       }
     },
 
     sendScheme(): void {
       if (this.ready) {
-        postMenuPreviewMessage(this.frame(), { type: 'scheme', dark: this.dark });
+        postPreviewMessage(this.frame(), { type: 'scheme', dark: this.dark });
       }
     },
   },
