@@ -20,6 +20,7 @@ const { t, bootstrap } = useAdminContext();
 const router = useRouter();
 const descriptor = props.screen.descriptor;
 const { items, total, loading, sort, page, itemsPerPage, search, selected, sql } = props.screen.collection;
+const { savedSql } = props.screen;
 const { status, author } = props.screen.filter;
 
 const createHref = computed(() => (descriptor.create ? router.resolve({ name: descriptor.create.route }).href : ''));
@@ -76,6 +77,7 @@ onMounted(() => void props.screen.collection.load());
     :selectable="screen.bulkActions.length > 0"
     :bulk-actions="screen.bulkActions"
     :sql="screen.canSql ? sql : null"
+    :sql-saved="sql !== null && savedSql === sql"
     @search="search = $event"
     @action="({ id, row }) => screen.runAction(id, asItem(row))"
     @bulk-action="({ id, keys }) => screen.runBulk(id, keys)"

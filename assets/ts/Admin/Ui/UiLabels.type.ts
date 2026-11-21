@@ -49,6 +49,7 @@ export interface UiLabels {
     sqlShow: string;
     sqlTitle: string;
     sqlSave: string;
+    sqlSaved: string;
     sqlCopy: string;
     sqlCopied: string;
     sqlHide: string;

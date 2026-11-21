@@ -95,6 +95,8 @@ export interface CollectionScreenState<T extends ScreenItem = ScreenItem> {
   runBulk(id: string, keys: (string | number)[]): Promise<BulkResult | null>;
   /** Sélectionne toute la collection (plafonnée) */
   selectAll(): Promise<void>;
+  /** Dernière requête enregistrée, une même requête n'est enregistrée qu'une fois */
+  savedSql: Ref<string | null>;
   saveSql(sql: string): Promise<void>;
   /** Valeur d'un filtre générique, liée à la collection */
   filter: Record<CollectionFilter, Ref<string>>;

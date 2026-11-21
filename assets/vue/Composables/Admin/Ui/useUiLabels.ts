@@ -64,6 +64,7 @@ export function buildUiLabels(t: UiTranslator): UiLabels {
       sqlShow: t('admin_ui.data_table.sql_show'),
       sqlTitle: t('admin_ui.data_table.sql_title'),
       sqlSave: t('admin_ui.data_table.sql_save'),
+      sqlSaved: t('admin_ui.data_table.sql_saved'),
       sqlCopy: t('admin_ui.data_table.sql_copy'),
       sqlCopied: t('admin_ui.data_table.sql_copied'),
       sqlHide: t('admin_ui.data_table.sql_hide'),

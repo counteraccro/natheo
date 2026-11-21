@@ -31,6 +31,7 @@ admin_ui.data_table.sql_copied: Copié
 admin_ui.data_table.sql_copy: Copier
 admin_ui.data_table.sql_hide: Masquer
 admin_ui.data_table.sql_save: Enregistrer
+admin_ui.data_table.sql_saved: Enregistrée
 admin_ui.data_table.sql_show: 'Afficher le SQL'
 admin_ui.data_table.sql_title: 'Requête SQL'
 admin_ui.debug_bar.close: 'Fermer la barre de debug'

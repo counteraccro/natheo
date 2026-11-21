@@ -189,6 +189,16 @@ describe('createCollectionScreen', () => {
     const { screen, api } = screenWith([]);
     await screen.saveSql('SELECT 1');
     expect(api.post).toHaveBeenCalledWith('/admin/sql_queries', { query: 'SELECT 1' });
+    expect(screen.savedSql.value).toBe('SELECT 1');
+  });
+
+  it("n'enregistre qu'une fois la même requête, même sur un double clic", async () => {
+    const { screen, api } = screenWith([]);
+    await Promise.all([screen.saveSql('SELECT 1'), screen.saveSql('SELECT 1')]);
+    await screen.saveSql('SELECT 1');
+    expect(api.post).toHaveBeenCalledTimes(1);
+    await screen.saveSql('SELECT 2');
+    expect(api.post).toHaveBeenCalledTimes(2);
   });
 });
 

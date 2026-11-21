@@ -4,7 +4,7 @@
  * État et actions d'un écran de liste décrit par des données : colonnes, actions visibles selon les droits,
  * confirmations, requêtes, notifications et actions groupées (une requête par élément, quatre à la fois)
  */
-import { computed, type Ref } from 'vue';
+import { computed, ref, type Ref } from 'vue';
 import { useRouter, type Router } from 'vue-router';
 import { notify } from '@/vue/Composables/Global/toast';
 import { ApiError } from '@/vue/Composables/Global/Api/ApiError';
@@ -86,6 +86,8 @@ export function createCollectionScreen<T extends ScreenItem>(
   const actionOf = <K extends CollectionRowAction['type']>(type: K) =>
     descriptor.actions?.find((action) => action.type === type) as Extract<CollectionRowAction, { type: K }> | undefined;
   const label = (row: T): string => descriptor.rowLabel(row);
+  const savedSql = ref<string | null>(null);
+  let savingSql: string | null = null;
 
   const fail = (caught: unknown): void => {
     const error = caught instanceof ApiError ? caught : ApiError.fromNetwork(caught);
@@ -253,12 +255,18 @@ export function createCollectionScreen<T extends ScreenItem>(
         fail(caught);
       }
     },
+    savedSql,
     async saveSql(sql: string): Promise<void> {
+      if (savedSql.value === sql || savingSql === sql) return;
+      savingSql = sql;
       try {
         await api.post('/admin/sql_queries', { query: sql });
+        savedSql.value = sql;
         notify('success', t('admin_app.screen.sql_saved'));
       } catch (caught) {
         fail(caught);
+      } finally {
+        savingSql = null;
       }
     },
     filter: { status: filterRef('status'), author: filterRef('author') },

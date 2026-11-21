@@ -45,6 +45,8 @@ const props = withDefaults(
     searchable?: boolean;
     /** Requête de la grille, montrée au super administrateur */
     sql?: string | null;
+    /** La requête affichée est déjà enregistrée dans le gestionnaire SQL */
+    sqlSaved?: boolean;
     /** Cases de sélection et barre des actions groupées */
     selectable?: boolean;
     bulkActions?: DataTableAction[];
@@ -310,7 +312,13 @@ const clearSelection = async (): Promise<void> => {
       </div>
     </div>
 
-    <UiSqlBlock v-if="sql && sqlVisible" :sql="sql" @save="emit('saveSql', sql)" @hide="sqlVisible = false" />
+    <UiSqlBlock
+      v-if="sql && sqlVisible"
+      :sql="sql"
+      :saved="sqlSaved"
+      @save="emit('saveSql', sql)"
+      @hide="sqlVisible = false"
+    />
 
     <div class="overflow-x-auto" :aria-busy="busy || undefined">
       <table :aria-label="label" class="w-full border-separate border-spacing-0 tabular-nums max-md:block">
