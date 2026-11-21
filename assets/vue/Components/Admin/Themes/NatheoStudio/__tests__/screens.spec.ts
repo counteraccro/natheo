@@ -160,6 +160,10 @@ describe('FormScreen (Natheo-Studio)', () => {
 
     await wrapper.find('form').trigger('submit');
     expect(save).toHaveBeenCalled();
+    // Le panneau d'actions de la colonne de droite est hors du formulaire, relié par son id
+    const formId = wrapper.get('form').attributes('id');
+    expect(formId).toBeTruthy();
+    expect(wrapper.get('aside button[type="submit"]').attributes('form')).toBe(formId);
 
     resource.conflict.value = true;
     await flushPromises();

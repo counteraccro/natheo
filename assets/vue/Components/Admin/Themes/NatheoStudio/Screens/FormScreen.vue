@@ -3,9 +3,10 @@
  * @author Gourdon Aymeric
  * @version 1.0
  * Rendu Natheo-Studio d'un écran de formulaire : sections, champs par langue en onglets, erreurs de l'API,
- * conflit d'enregistrement, informations de l'élément et barre d'actions collée en bas
+ * conflit d'enregistrement, panneau d'actions collé dans la colonne de droite (barre collée en bas sur écran étroit)
+ * et informations de l'élément
  */
-import { computed, ref } from 'vue';
+import { computed, ref, useId } from 'vue';
 import {
   AdminPageHeader,
   UiAlert,
@@ -39,6 +40,7 @@ const { isNew, title, canEdit, canDelete, copying, dirty } = props.screen;
 const PANEL = 'rounded-lg border border-line bg-bg shadow-panel';
 const PANEL_HEAD = 'flex items-center gap-3 border-b border-line px-5 py-4';
 const PANEL_TITLE = 'm-0 text-md font-[650]';
+const formId = useId();
 
 const row = computed(() => (data.value ?? {}) as Record<string, unknown>);
 const locales = props.screen.locales;
@@ -88,7 +90,7 @@ const meta = computed(() => {
   <AdminPageHeader :title="title" :icon="descriptor.icon" />
 
   <div class="grid grid-cols-[minmax(0,1fr)_320px] items-start gap-5 max-xl:grid-cols-[minmax(0,1fr)]">
-    <UiForm :errors="errors" @submit="screen.save()">
+    <UiForm :id="formId" :errors="errors" @submit="screen.save()">
       <UiAlert v-if="conflict" variant="warning" :title="t('admin_app.resource.conflict_title')">
         {{ t('admin_app.resource.conflict_text') }}
         <template #action>
@@ -199,9 +201,9 @@ const meta = computed(() => {
       </section>
 
       <div
-        class="sticky bottom-4 z-20 flex flex-wrap items-center gap-2.5 rounded-lg bg-raised py-2.5 pr-3 pl-4 shadow-overlay"
+        class="sticky bottom-4 z-20 flex flex-wrap items-center gap-2.5 rounded-lg bg-raised py-2.5 pr-3 pl-4 shadow-overlay xl:hidden"
       >
-        <span v-if="canEdit" class="flex items-center gap-2 text-sm text-fg-muted" aria-live="polite">
+        <span v-if="canEdit" class="flex items-center gap-2 text-sm text-fg-muted">
           <span class="size-2 rounded-full" :class="dirty ? 'bg-warning' : 'bg-success'" aria-hidden="true"></span>
           {{ dirty ? t('admin_app.screen.form_dirty') : t('admin_app.screen.form_clean') }}
         </span>
@@ -234,16 +236,50 @@ const meta = computed(() => {
       </div>
     </UiForm>
 
-    <aside v-if="!isNew && data && meta.length" :class="PANEL">
-      <header :class="PANEL_HEAD">
-        <h2 :class="PANEL_TITLE">{{ t('admin_app.screen.meta_title') }}</h2>
-      </header>
-      <dl class="m-0 flex flex-col gap-3 p-5 text-sm">
-        <div v-for="item in meta" :key="item.name" class="flex justify-between gap-4">
-          <dt class="text-fg-subtle">{{ item.label }}</dt>
-          <dd class="m-0 font-semibold text-fg" :title="item.title">{{ item.value }}</dd>
+    <aside class="flex flex-col gap-5 xl:sticky xl:top-20">
+      <section :class="PANEL" class="max-xl:hidden">
+        <header v-if="canEdit" :class="PANEL_HEAD">
+          <span class="size-2 rounded-full" :class="dirty ? 'bg-warning' : 'bg-success'" aria-hidden="true"></span>
+          <p class="m-0 text-sm text-fg-muted">
+            {{ dirty ? t('admin_app.screen.form_dirty') : t('admin_app.screen.form_clean') }}
+          </p>
+        </header>
+        <div class="flex flex-col gap-2.5 p-5">
+          <UiButton
+            v-if="canEdit"
+            type="submit"
+            :form="formId"
+            variant="primary"
+            icon="check"
+            class="w-full"
+            :loading="saving"
+            :disabled="loading"
+          >
+            {{ isNew ? t('admin_app.screen.form_create') : t('admin_app.screen.form_save') }}
+          </UiButton>
+          <UiButton icon="chevron-left" class="w-full" @click="screen.back()">
+            {{ t('admin_app.screen.form_back') }}
+          </UiButton>
+          <template v-if="canDelete">
+            <hr class="my-1.5 border-0 border-t border-line" />
+            <UiButton variant="danger-soft" icon="trash" class="w-full" :disabled="saving" @click="screen.remove()">
+              {{ t('admin_app.screen.action_delete') }}
+            </UiButton>
+          </template>
         </div>
-      </dl>
+      </section>
+
+      <section v-if="!isNew && data && meta.length" :class="PANEL">
+        <header :class="PANEL_HEAD">
+          <h2 :class="PANEL_TITLE">{{ t('admin_app.screen.meta_title') }}</h2>
+        </header>
+        <dl class="m-0 flex flex-col gap-3 p-5 text-sm">
+          <div v-for="item in meta" :key="item.name" class="flex justify-between gap-4">
+            <dt class="text-fg-subtle">{{ item.label }}</dt>
+            <dd class="m-0 font-semibold text-fg" :title="item.title">{{ item.value }}</dd>
+          </div>
+        </dl>
+      </section>
     </aside>
   </div>
 </template>
