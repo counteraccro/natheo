@@ -22,4 +22,5 @@ _PHPUnit (MySQL / PostgreSQL), `yarn build` et Playwright (`yarn test:e2e`) sont
 - [ ] Traductions fr / en / es à jour
 - [ ] Migration Doctrine : aucune / ajoutée
 - [ ] Fixtures et helpers de test à jour
+- [ ] Écrans du back-office contrôlés dans les deux thèmes (Natheo-Studio, Natheo-Atelier) / sans objet
 - [ ] `CHANGELOG.md` : ligne ajoutée dans « Non publié » / sans objet

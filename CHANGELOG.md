@@ -41,6 +41,7 @@ Le format suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), avec un
 - API v2 : champ `extra` de `GET /api/v2/info`, rempli par une surcharge du provider et `null` sans surcharge ([#552](https://github.com/counteraccro/natheo/issues/552))
 - API v2 : opérations d'administration des tags (`GET`, `POST`, `PATCH` et `DELETE` sur `/api/v2/admin/tags`), réponse 409 pour la suppression d'un tag utilisé par une page, filtre `author=me` sur les collections d'administration ([#563](https://github.com/counteraccro/natheo/issues/563))
 - Requête SQL des listes du nouveau back-office : le super administrateur l'affiche avec les filtres, le tri et la page en cours, l'exécute telle quelle sous MySQL comme sous PostgreSQL et l'enregistre dans le gestionnaire SQL (`sql=true` sur les collections d'administration, `POST /api/v2/admin/sql_queries`) ([#563](https://github.com/counteraccro/natheo/issues/563))
+- Back-office : chaque utilisateur choisit sa disposition depuis le menu « Apparence » (rubrique « Disposition ») ou ses options. Second thème Natheo-Atelier : navigation en haut par sections et onglets de modules, palette de commandes (`Ctrl K` / `⌘ K`), liste et élément ouverts côte à côte. API v2 : options de l'utilisateur de la session (`GET` et `PATCH /api/v2/admin/user_options/{id}`) ([#557](https://github.com/counteraccro/natheo/issues/557))
 
 ### Modifié
 
