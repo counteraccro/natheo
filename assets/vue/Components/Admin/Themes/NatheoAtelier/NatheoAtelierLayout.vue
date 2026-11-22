@@ -182,8 +182,10 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
             :href="module.href"
             :aria-current="module.active ? 'page' : undefined"
             class="atelier-tab"
-            >{{ module.label }}</a
           >
+            <UiIcon v-if="module.icon" :path="module.icon" class="size-4 shrink-0" />
+            {{ module.label }}
+          </a>
           <UiDropdown v-else :label="module.label" variant="ghost" size="sm" class="h-full">
             <template #trigger="{ props: triggerProps, setRef }">
               <button
@@ -193,6 +195,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
                 class="atelier-tab cursor-pointer border-0 bg-transparent"
                 :data-active="isActive(module) || undefined"
               >
+                <UiIcon v-if="module.icon" :path="module.icon" class="size-4 shrink-0" />
                 {{ module.label }}
                 <UiIcon name="chevron-down" class="size-3.5" />
               </button>
@@ -256,7 +259,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
   position: relative;
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   height: 100%;
   padding: 0 10px;
   color: var(--fg-muted);
