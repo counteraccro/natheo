@@ -2,13 +2,7 @@
     "extends": "../../tsconfig.json",
     "compilerOptions": {
         "allowImportingTsExtensions": true,
-        "types": ["vite/client", "node"],
-        "paths": {
-            "@/*": ["assets/*"],
-            "@ui": ["assets/vue/Components/Admin/Ui/index.ts"],
-            "@admin/*": ["assets/overwrite/vue/Components/Admin/*", "assets/vue/Components/Admin/*"],
-            "@tests/*": ["tests/js/*"]
-        }
+        "types": ["vite/client", "node"]
     },
     "include": ["**/*.ts", "../../assets/**/*.ts", "../../assets/**/*.d.ts", "../../assets/**/*.vue"]
 }

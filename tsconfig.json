@@ -19,7 +19,8 @@
     "paths": {
       "@/*": ["assets/*"],
       "@ui": ["assets/vue/Components/Admin/Ui/index.ts"],
-      "@admin/*": ["assets/overwrite/vue/Components/Admin/*", "assets/vue/Components/Admin/*"]
+      "@admin/*": ["assets/overwrite/vue/Components/Admin/*", "assets/vue/Components/Admin/*"],
+      "@tests/*": ["tests/js/*"]
     }
   },
   "include": [
