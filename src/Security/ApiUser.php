@@ -49,6 +49,19 @@ final readonly class ApiUser implements UserInterface
     }
 
     /**
+     * Utilisateur réel d'un utilisateur de sécurité : le User du back-office ou l'utilisateur de la session API
+     * @param UserInterface|null $user
+     * @return User|null null pour un token d'API seul ou un anonyme
+     */
+    public static function realUser(?UserInterface $user): ?User
+    {
+        if ($user instanceof self) {
+            return $user->getUser();
+        }
+        return $user instanceof User ? $user : null;
+    }
+
+    /**
      * Rôles du token, rôle de son type et, avec une session, rôles de l'utilisateur
      * @return string[]
      */

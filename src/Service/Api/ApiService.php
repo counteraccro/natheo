@@ -19,18 +19,6 @@ use App\Service\Global\Token\TokenHasher;
 class ApiService extends AppApiService
 {
     /**
-     * Attribut de requête : token d'API de l'appel (celui de la session pour un access token utilisateur)
-     * @var string
-     */
-    public const string ATTRIBUTE_API_TOKEN = '_api_token';
-
-    /**
-     * Attribut de requête : session utilisateur de l'appel, absent pour un token d'API seul
-     * @var string
-     */
-    public const string ATTRIBUTE_USER_SESSION = '_api_user_session';
-
-    /**
      * Détermine si on peut accéder à l'API ou non
      * @return bool
      * @throws ContainerExceptionInterface
@@ -90,7 +78,6 @@ class ApiService extends AppApiService
         }
 
         $this->updateLastUsedAt($apiToken);
-        $this->getRequestStack()->getCurrentRequest()?->attributes->set(self::ATTRIBUTE_API_TOKEN, $apiToken);
         return new ApiUser($apiToken);
     }
 
@@ -112,10 +99,6 @@ class ApiService extends AppApiService
         if ($session === null) {
             return null;
         }
-
-        $attributes = $this->getRequestStack()->getCurrentRequest()?->attributes;
-        $attributes?->set(self::ATTRIBUTE_API_TOKEN, $session->getApiToken());
-        $attributes?->set(self::ATTRIBUTE_USER_SESSION, $session);
         return new ApiUser($session->getApiToken(), $session);
     }
 

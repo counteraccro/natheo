@@ -56,4 +56,24 @@ class ApiUserTest extends AppWebTestCase
         $this->assertSame(count($roles), count(array_unique($roles)));
         $this->assertSame($user->getUserIdentifier(), $apiUser->getUserIdentifier());
     }
+
+    /**
+     * L'utilisateur réel est le User reçu ou celui de la session, null pour un token seul ou un anonyme
+     * @return void
+     */
+    public function testRealUser(): void
+    {
+        $user = $this->createUserContributeur();
+        $apiToken = $this->createApiToken([
+            'roles' => ['ROLE_ADMIN_API'],
+            'scope' => ApiTokenScope::BACK_OFFICE,
+            'disabled' => false,
+        ]);
+        $session = $this->createUserSession(['user' => $user, 'apiToken' => $apiToken]);
+
+        $this->assertSame($user, ApiUser::realUser($user));
+        $this->assertSame($user, ApiUser::realUser(new ApiUser($apiToken, $session)));
+        $this->assertNull(ApiUser::realUser(new ApiUser($apiToken)));
+        $this->assertNull(ApiUser::realUser(null));
+    }
 }

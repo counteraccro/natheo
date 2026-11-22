@@ -13,7 +13,6 @@ use App\Controller\Api\v1\AppApiController;
 use App\Dto\Api\Authentication\ApiAuthUserDto;
 use App\Resolver\Api\ApiAuthUserResolver;
 use App\Security\ApiUser;
-use App\Service\Api\ApiService;
 use App\Service\Api\System\User\UserSessionService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -99,9 +98,11 @@ class ApiAuthenticationController extends AppApiController
             );
         }
 
+        /** @var ApiUser $apiUser */
+        $apiUser = $this->getUser();
         $tokens = $userSessionService->create(
             $result->user,
-            $request->attributes->get(ApiService::ATTRIBUTE_API_TOKEN),
+            $apiUser->getApiToken(),
             $request->headers->get('User-Agent'),
             $clientIp,
         );

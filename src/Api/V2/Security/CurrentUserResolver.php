@@ -4,7 +4,7 @@ declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
  * @version 1.0
- * Utilisateur du back-office de la requête, authentifié par l'access token de sa session
+ * Utilisateur, session et token d'API de l'appel à l'API
  */
 
 namespace App\Api\V2\Security;
@@ -13,14 +13,14 @@ use App\Api\V2\Exception\ForbiddenException;
 use App\Entity\Admin\System\ApiToken;
 use App\Entity\Admin\System\User;
 use App\Entity\Admin\System\UserSession;
-use App\Service\Api\ApiService;
-use Symfony\Component\HttpFoundation\RequestStack;
+use App\Security\ApiUser;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final readonly class CurrentUserResolver
 {
     public function __construct(
-        private RequestStack $requestStack,
+        private Security $security,
         private TranslatorInterface $translator,
     ) {}
 
@@ -30,8 +30,7 @@ final readonly class CurrentUserResolver
      */
     public function getSession(): ?UserSession
     {
-        $session = $this->requestStack->getCurrentRequest()?->attributes->get(ApiService::ATTRIBUTE_USER_SESSION);
-        return $session instanceof UserSession ? $session : null;
+        return $this->getApiUser()?->getSession();
     }
 
     /**
@@ -51,7 +50,7 @@ final readonly class CurrentUserResolver
      */
     public function getUser(): ?User
     {
-        return $this->getSession()?->getUser();
+        return $this->getApiUser()?->getUser();
     }
 
     /**
@@ -60,7 +59,16 @@ final readonly class CurrentUserResolver
      */
     public function getApiToken(): ?ApiToken
     {
-        $apiToken = $this->requestStack->getCurrentRequest()?->attributes->get(ApiService::ATTRIBUTE_API_TOKEN);
-        return $apiToken instanceof ApiToken ? $apiToken : null;
+        return $this->getApiUser()?->getApiToken();
+    }
+
+    /**
+     * Utilisateur de sécurité du pare-feu API, null hors d'un appel à l'API
+     * @return ApiUser|null
+     */
+    private function getApiUser(): ?ApiUser
+    {
+        $user = $this->security->getUser();
+        return $user instanceof ApiUser ? $user : null;
     }
 }
