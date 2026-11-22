@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Options de l'utilisateur lues et modifiées par l'API d'administration, d'après la configuration options_user.yaml
  */
 
@@ -11,11 +11,9 @@ namespace App\Service\Api\Admin\System;
 
 use App\Entity\Admin\System\OptionUser;
 use App\Entity\Admin\System\User;
-use App\Service\Admin\System\OptionUserService;
 use App\Service\Api\AppApiService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use Symfony\Component\Yaml\Yaml;
 
 class ApiAdminUserOptionService extends AppApiService
 {
@@ -27,18 +25,32 @@ class ApiAdminUserOptionService extends AppApiService
      */
     public function getConfigs(): array
     {
-        $file =
-            $this->getContainerBag()->get('kernel.project_dir') .
-            '/config/cms/' .
-            OptionUserService::OPTION_USER_CONFIG_FILE;
-        $categories = Yaml::parseFile($file);
-        $configs = [];
-        foreach (reset($categories) ?: [] as $category) {
-            foreach ($category['options'] ?? [] as $key => $config) {
-                $configs[$key] = $config;
+        return $this->getOptionConfigService()->flatten($this->getOptionUserService()->getOptionsUserConfig());
+    }
+
+    /**
+     * Libellés traduits d'une option : libellé, aide et valeurs d'une liste (« valeur:clé de traduction|… »)
+     * @param string $key
+     * @param array $config
+     * @return array{label: string, help: string|null, choices: array<string, string>}
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getLabels(string $key, array $config): array
+    {
+        $translator = $this->getTranslator();
+        $choices = [];
+        if (($config['type'] ?? null) === 'select' && isset($config['list_value'])) {
+            foreach (explode('|', (string) $config['list_value']) as $item) {
+                [$value, $label] = array_pad(explode(':', $item, 2), 2, '');
+                $choices[$value] = $translator->trans($label);
             }
         }
-        return $configs;
+        return [
+            'label' => $translator->trans((string) ($config['label'] ?? $key)),
+            'help' => isset($config['help']) ? $translator->trans((string) $config['help']) : null,
+            'choices' => $choices,
+        ];
     }
 
     /**
@@ -114,12 +126,6 @@ class ApiAdminUserOptionService extends AppApiService
      */
     public function update(User $user, string $key, string $value): void
     {
-        $optionUser = $this->getRepository(OptionUser::class)->findOneBy(['user' => $user, 'key' => $key]);
-        if (!($optionUser instanceof OptionUser)) {
-            $optionUser = (new OptionUser())->setKey($key);
-            $user->addOptionsUser($optionUser);
-        }
-        $optionUser->setValue($value);
-        $this->save($optionUser);
+        $this->getOptionUserService()->saveValueForUser($user, $key, $value);
     }
 }

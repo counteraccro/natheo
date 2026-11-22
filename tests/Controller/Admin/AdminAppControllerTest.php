@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller\Admin;
 
+use App\Entity\Admin\System\OptionUser as OptionUserEntity;
 use App\Entity\Admin\System\User;
 use App\Enum\Admin\AdminTemplate;
 use App\Enum\Admin\System\Options\OptionUser;
@@ -199,10 +200,12 @@ class AdminAppControllerTest extends AppWebTestCase
             $bootstrap['themes'],
         );
 
-        $option = $this->createOptionUser($this->em->find(User::class, $user->getId()), [
+        $option = $this->em->getRepository(OptionUserEntity::class)->findOneBy([
+            'user' => $user->getId(),
             'key' => OptionUser::OU_ADMIN_THEME->value,
-            'value' => AdminTemplate::NATHEO_ATELIER->value,
         ]);
+        $option->setValue(AdminTemplate::NATHEO_ATELIER->value);
+        $this->persistAndFlush($option);
         $this->client->request('GET', '/admin/fr/inconnu', server: self::HTML);
         $this->assertSame(AdminTemplate::NATHEO_ATELIER->value, $this->getBootstrap()['theme']);
 

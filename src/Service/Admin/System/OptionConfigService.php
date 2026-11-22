@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Service de lecture et validation des fichiers de config des options (options_system.yaml, options_user.yaml)
  */
 
@@ -21,12 +21,21 @@ class OptionConfigService extends AppAdminService
      */
     public function findByKey(array $config, string $key): ?array
     {
+        return $this->flatten($config)[$key] ?? null;
+    }
+
+    /**
+     * Configuration de chaque option indexée par sa clé, dans l'ordre du fichier, sans les catégories
+     * @param array $config fichier de config lu
+     * @return array<string, array>
+     */
+    public function flatten(array $config): array
+    {
+        $options = [];
         foreach (reset($config) ?: [] as $category) {
-            if (isset($category['options'][$key])) {
-                return $category['options'][$key];
-            }
+            $options += $category['options'] ?? [];
         }
-        return null;
+        return $options;
     }
 
     /**

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Provider d'une option de l'utilisateur de la session
  */
 
@@ -58,7 +58,12 @@ final readonly class AdminUserOptionProvider implements ProviderInterface
     public function map(User $user, string $key, array $config): AdminUserOption
     {
         $value = $this->userOptionService->getValue($this->userOptionService->getValues($user), $key, $config);
-        return (new AdminUserOptionMapper($this->translator))->map($key, $config, $value);
+        return (new AdminUserOptionMapper())->map(
+            $key,
+            $config,
+            $value,
+            $this->userOptionService->getLabels($key, $config),
+        );
     }
 
     /**

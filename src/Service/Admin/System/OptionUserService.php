@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 /**
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 1.2
  * Service lier aux options user
  */
 
@@ -15,6 +15,7 @@ use App\Enum\Admin\System\Options\OptionSystem as OptionSystemEnum;
 use App\Entity\Admin\System\OptionSystem;
 use App\Entity\Admin\System\OptionUser;
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\AdminTemplate;
 use App\Service\Admin\AppAdminService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -56,6 +57,7 @@ class OptionUserService extends AppAdminService
 
         $options = [
             OptionUserEnum::OU_DEFAULT_PERSONAL_DATA_RENDER->value => 'email',
+            OptionUserEnum::OU_ADMIN_THEME->value => AdminTemplate::default()->value,
         ];
         foreach ($options as $key => $value) {
             $optionUser = new OptionUser();
@@ -202,22 +204,35 @@ class OptionUserService extends AppAdminService
     {
         $requestStack = $this->getRequestStack();
 
-        $repo = $this->getRepository(OptionUser::class);
-        /* @var OptionUser $optionUser */
-        $optionUser = $this->getByKey($key);
-        // Users créés avant l'ajout d'une option n'ont pas encore la ligne en base
-        if ($optionUser === null) {
-            /** @var User $user */
-            $user = $this->getSecurity()->getUser();
-            $optionUser = (new OptionUser())->setKey($key);
-            $user->addOptionsUser($optionUser);
-        }
-        $optionUser->setValue($value);
-        $repo->save($optionUser, true);
+        /** @var User $user */
+        $user = $this->getSecurity()->getUser();
+        $this->saveValueForUser($user, $key, $value);
 
         // Mise à jour de la session avec les options sauvegardées
         $tabOptions = $requestStack->getSession()->get(self::KEY_SESSION_TAB_OPTIONS, []);
         $tabOptions[$key] = $value;
         $requestStack->getSession()->set(self::KEY_SESSION_TAB_OPTIONS, $tabOptions);
+    }
+
+    /**
+     * Enregistre la valeur d'une option d'un utilisateur, sans passer par la session
+     * @param User $user
+     * @param string $key
+     * @param string $value
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function saveValueForUser(User $user, string $key, string $value): void
+    {
+        $repo = $this->getRepository(OptionUser::class);
+        $optionUser = $repo->findOneBy(['key' => $key, 'user' => $user]);
+        // Users créés avant l'ajout d'une option n'ont pas encore la ligne en base
+        if (!($optionUser instanceof OptionUser)) {
+            $optionUser = (new OptionUser())->setKey($key);
+            $user->addOptionsUser($optionUser);
+        }
+        $optionUser->setValue($value);
+        $repo->save($optionUser, true);
     }
 }

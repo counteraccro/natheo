@@ -112,7 +112,7 @@ class AdminUserOptionTest extends AppApiV2TestCase
         $this->assertMatchesResourceItemJsonSchema(AdminUserOption::class);
         $this->assertSame('natheo_atelier', $this->decode($response)['value']);
         $this->assertSame('natheo_atelier', $this->storedValue($user));
-        $this->assertNull($this->storedValue($other));
+        $this->assertSame(AdminTemplate::NATHEO_STUDIO->value, $this->storedValue($other));
 
         $log = $this->em->getRepository(ActionLog::class)->findOneBy(['module' => 'my_account']);
         $this->assertInstanceOf(ActionLog::class, $log);
