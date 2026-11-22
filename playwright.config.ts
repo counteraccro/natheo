@@ -1,6 +1,6 @@
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Tests de bout en bout du back-office : serveur PHP intégré en environnement de test, sur la base de test
  */
 import { defineConfig, devices } from '@playwright/test';
@@ -30,6 +30,13 @@ export default defineConfig({
       name: 'natheo_studio',
       use: { ...devices['Desktop Chrome'] },
       dependencies: ['setup'],
+    },
+    // La disposition est une option de l'utilisateur en base : Natheo-Atelier est choisi après les tests de Studio
+    { name: 'setup_atelier', testMatch: /layout\.setup\.ts/, dependencies: ['natheo_studio'] },
+    {
+      name: 'natheo_atelier',
+      use: { ...devices['Desktop Chrome'] },
+      dependencies: ['setup_atelier'],
     },
   ],
   // Port occupé : échec plutôt que de jouer les tests sur un autre serveur (base de dev)
