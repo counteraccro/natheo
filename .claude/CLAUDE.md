@@ -26,7 +26,8 @@ yarn install
 yarn dev                # vite dev server with HMR (assets/, watches templates)
 yarn build              # vue-tsc type-check + vite build
 yarn type-check         # vue-tsc --noEmit only
-yarn test               # Vitest (specs in tests/js/, mirroring assets/, outside vue-tsc)
+yarn test               # Vitest (specs in tests/js/, mirroring assets/)
+yarn type-check:tests   # vue-tsc on the Vitest specs (tests/js/tsconfig.json)
 yarn test:e2e           # Playwright (tests/e2e/): rebuilds and fills the test DB, needs `yarn build`
 ```
 
@@ -141,7 +142,7 @@ A form is protected against leaving the page with unsaved changes only when it d
 ### Tests
 `tests/AppWebTestCase` (extends Symfony's `WebTestCase`, uses `FixturesTrait`) is the base class for controller/service tests and provides helpers such as `checkNoAccess()`, `createUser*()`, and domain fixture factories (e.g. `createPage()`) from `tests/Helper/Fixtures/`. It boots the client against locale `fr` and seeds default system options in `setUp()`. Test structure under `tests/` mirrors `src/` (`Controller/Admin/Content/...`, `Service/Admin/...`, etc.).
 
-Vitest specs live in `tests/js/`, which mirrors `assets/` (`assets/vue/Composables/Admin/useCan.ts` → `tests/js/vue/Composables/Admin/useCan.spec.ts`): files of `assets/` are imported with `@/…`, `@admin/…` or `@ui`, shared helpers of the tests (`support.ts`) with `@tests/…` (`vitest.config.mts`); `tests/js/tsconfig.json` only serves the IDE, `vue-tsc` checks `assets/` alone.
+Vitest specs live in `tests/js/`, which mirrors `assets/` (`assets/vue/Composables/Admin/useCan.ts` → `tests/js/vue/Composables/Admin/useCan.spec.ts`): files of `assets/` are imported with `@/…`, `@admin/…` or `@ui`, shared helpers of the tests (`support.ts`) with `@tests/…` (`vitest.config.mts`, `paths` of `tsconfig.json`). `yarn type-check` checks `assets/` alone, `yarn type-check:tests` checks the specs with `tests/js/tsconfig.json` (CI job « Build front »).
 
 Playwright tests the back-office journeys in `tests/e2e/` (`yarn test:e2e`, job « Bout en bout » of the CI, MySQL): `global-setup.ts` rebuilds the test DB and fills it with `tests/e2e/seed.php` (accounts of `accounts.json`, contents of the journeys, refuses a database whose name does not end with `_test`), `global-teardown.ts` empties it for PHPUnit; the PHP built-in server (`tests/e2e/router.php`, port 8765, `E2E_PORT`) runs in the test env. Locators use roles and accessible names (`getByRole('textbox', { name })`), the setup project logs each account in once (`storageState`). One Playwright project per back-office theme.
 
