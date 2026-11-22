@@ -20,6 +20,7 @@ import {
 import NatheoStudioUserMenu from '@admin/Themes/NatheoStudio/NatheoStudioUserMenu.vue';
 import AtelierCommandPalette from '@admin/Themes/NatheoAtelier/AtelierCommandPalette.vue';
 import AtelierList from '@admin/Themes/NatheoAtelier/AtelierList.vue';
+import { ATELIER_PANE_TOP } from '@admin/Themes/NatheoAtelier/atelier';
 import { useAdminContext } from '@/vue/Composables/Admin/useAdminContext';
 import { useLayoutActions } from '@/vue/Composables/Admin/Layout/useLayoutActions';
 import { useScreenGroup } from '@/vue/Composables/Admin/Screen/useScreenGroup';
@@ -227,9 +228,9 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
       <div
         class="min-h-0 min-w-0 overflow-auto bg-bg"
         :class="{ 'max-[860px]:hidden': group.isCollection }"
-        aria-live="polite"
       >
-        <slot />
+        <div :id="ATELIER_PANE_TOP" />
+        <div aria-live="polite"><slot /></div>
       </div>
     </main>
     <main v-else class="flex min-h-0 flex-1 flex-col overflow-auto">

@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { flushPromises, mount } from '@vue/test-utils';
 import { createMemoryHistory, createRouter } from 'vue-router';
 import AtelierList from '@/vue/Components/Admin/Themes/NatheoAtelier/AtelierList.vue';
+import { ATELIER_PANE_TOP } from '@/vue/Components/Admin/Themes/NatheoAtelier/atelier';
 import CollectionScreen from '@/vue/Components/Admin/Themes/NatheoAtelier/Screens/CollectionScreen.vue';
 import { ADMIN_CONTEXT, createAdminContext } from '@/vue/Composables/Admin/useAdminContext';
 import { defineCollectionScreen } from '@/vue/Composables/Admin/Screen/defineScreen';
@@ -54,13 +55,13 @@ const tag = (id: number, values: Partial<Tag> = {}): Tag => ({
   ...values,
 });
 
-async function mountList(path = '/tags/2') {
+async function mountList(path = '/tags/2', sql: string | null = null) {
   const getCollection = vi.fn().mockResolvedValue({
     members: [tag(1), tag(2, { disabled: true })],
     total: 2,
     page: 1,
     lastPage: 1,
-    sql: null,
+    sql,
   });
   const router = createRouter({
     history: createMemoryHistory('/admin/fr/'),
@@ -73,6 +74,7 @@ async function mountList(path = '/tags/2') {
   await router.push(path);
   const context = { ...createAdminContext(bootstrap()), t, can, api: { getCollection } as unknown as ApiClient };
   const wrapper = mount(AtelierList, {
+    attachTo: document.body,
     props: { descriptor: descriptor as unknown as CollectionScreenDescriptor },
     global: { plugins: [router], provide: { [ADMIN_CONTEXT as symbol]: context, [UI_LABELS as symbol]: labels } },
   });
@@ -105,6 +107,23 @@ describe('AtelierList', () => {
     await flushPromises();
     expect(getCollection.mock.calls.length).toBe(calls + 1);
     wrapper.unmount();
+  });
+
+  it('affiche la requête SQL en tête du volet', async () => {
+    const top = document.createElement('div');
+    top.id = ATELIER_PANE_TOP;
+    document.body.append(top);
+    const { wrapper } = await mountList('/tags/2', 'SELECT 1');
+    await wrapper.get('button[aria-label="data_table.options"]').trigger('click');
+    await flushPromises();
+    [...document.querySelectorAll<HTMLElement>('[role="menuitemcheckbox"]')]
+      .find((item) => item.textContent?.includes('data_table.sql_show'))!
+      .click();
+    await flushPromises();
+    expect(top.textContent).toContain('SELECT 1');
+    expect(wrapper.element.textContent).not.toContain('SELECT 1');
+    wrapper.unmount();
+    top.remove();
   });
 
   it('montre les actions groupées pour une sélection', async () => {

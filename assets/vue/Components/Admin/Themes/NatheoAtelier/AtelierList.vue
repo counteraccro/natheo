@@ -3,9 +3,10 @@
  * @author Gourdon Aymeric
  * @version 1.0
  * Liste de l'établi Natheo-Atelier, gardée à gauche de l'élément ouvert : recherche, filtres en pastilles, tri,
- * sélection et actions groupées, lignes compactes avec leurs actions, requête SQL dans les options
+ * sélection et actions groupées, lignes compactes avec leurs actions, requête SQL en tête du volet
  */
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { ATELIER_PANE_TOP, NARROW_QUERY } from '@admin/Themes/NatheoAtelier/atelier';
 import { useRoute, useRouter } from 'vue-router';
 import {
   UiButton,
@@ -37,6 +38,13 @@ const descriptor = props.descriptor;
 const title = t(descriptor.title);
 const term = ref('');
 const sqlVisible = ref(false);
+const media = window.matchMedia(NARROW_QUERY);
+const narrow = ref(media.matches);
+const onMedia = (event: MediaQueryListEvent): void => {
+  narrow.value = event.matches;
+};
+media.addEventListener('change', onMedia);
+onBeforeUnmount(() => media.removeEventListener('change', onMedia));
 let timer: ReturnType<typeof setTimeout> | undefined;
 watch(term, (value) => {
   clearTimeout(timer);
@@ -199,14 +207,17 @@ onMounted(() => void screen.collection.load());
       <span v-if="sort">{{ sortLabel }} {{ sort.direction === 'asc' ? '↑' : '↓' }}</span>
     </div>
 
-    <UiSqlBlock
-      v-if="screen.canSql && sql && sqlVisible"
-      :sql="sql"
-      :saved="screen.savedSql.value === sql"
-      class="mx-3.5 mb-2.5 ml-[18px]"
-      @save="screen.saveSql(sql)"
-      @hide="sqlVisible = false"
-    />
+    <!-- Volet de droite plus large que la colonne : la requête s'y affiche, sauf sur écran étroit (volet masqué) -->
+    <Teleport defer :to="`#${ATELIER_PANE_TOP}`" :disabled="narrow">
+      <UiSqlBlock
+        v-if="screen.canSql && sql && sqlVisible"
+        :sql="sql"
+        :saved="screen.savedSql.value === sql"
+        :class="narrow ? 'mx-3.5 mb-2.5 ml-[18px]' : 'mx-10 mt-[26px] -mb-2 max-md:mx-5'"
+        @save="screen.saveSql(sql)"
+        @hide="sqlVisible = false"
+      />
+    </Teleport>
 
     <ul
       class="m-0 min-h-0 flex-1 list-none overflow-auto pt-0 pr-0 pb-3 pl-2"
