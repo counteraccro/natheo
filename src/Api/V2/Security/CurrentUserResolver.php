@@ -4,7 +4,7 @@ declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
  * @version 1.0
- * Utilisateur du back-office de la requête, authentifié par l'access token de sa session
+ * Utilisateur, session et token d'API de l'appel à l'API
  */
 
 namespace App\Api\V2\Security;
