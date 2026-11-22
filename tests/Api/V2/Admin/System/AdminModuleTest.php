@@ -45,9 +45,9 @@ class AdminModuleTest extends AppApiV2TestCase
     {
         $adminModules = ['option_system', 'api_token', 'api_doc', 'mail', 'translation'];
         $cases = [
-            'createUser' => ['dashboard'],
-            'createUserContributeur' => [...self::CONTENT_MODULES, ProbeModule::ID],
-            'createUserAdmin' => [...self::CONTENT_MODULES, ...$adminModules, ProbeModule::ID],
+            'createUser' => ['dashboard', 'my_account'],
+            'createUserContributeur' => [...self::CONTENT_MODULES, 'my_account', ProbeModule::ID],
+            'createUserAdmin' => [...self::CONTENT_MODULES, ...$adminModules, 'my_account', ProbeModule::ID],
         ];
         foreach ($cases as $factory => $expected) {
             $headers = $this->adminSessionHeaders($this->$factory(['disabled' => false, 'anonymous' => false]));

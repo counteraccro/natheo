@@ -1,29 +1,25 @@
 <script setup lang="ts" generic="T extends ScreenItem">
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Rendu Natheo-Studio d'un écran de liste : en-tête, filtres, grille, actions par ligne et groupées, requête SQL
  */
 import { computed, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
 import { AdminPageHeader, UiBadge, UiButton, UiDataTable, UiSelect, type DataTableRow } from '@ui';
 import { useAdminContext } from '@/vue/Composables/Admin/useAdminContext';
 import { toComponent } from '@/vue/Composables/Admin/Screen/adminTheme';
-import { formatDateTime } from '@/vue/Composables/Admin/Screen/screenFormat';
 import type { AdminScreenProps } from '@/ts/Admin/Theme/AdminTheme.type';
 import type { CollectionColumn, CollectionScreenState } from '@/ts/Admin/Screen/CollectionScreen.type';
-import type { ScreenAuthor, ScreenItem } from '@/ts/Admin/Screen/Screen.type';
+import type { ScreenItem } from '@/ts/Admin/Screen/Screen.type';
 
 const props = defineProps<AdminScreenProps<CollectionScreenState<T>>>();
 
-const { t, bootstrap } = useAdminContext();
-const router = useRouter();
+const { t } = useAdminContext();
 const descriptor = props.screen.descriptor;
 const { items, total, loading, sort, page, itemsPerPage, search, selected, sql } = props.screen.collection;
 const { savedSql } = props.screen;
 const { status, author } = props.screen.filter;
 
-const createHref = computed(() => (descriptor.create ? router.resolve({ name: descriptor.create.route }).href : ''));
 const customColumns = descriptor.columns.filter((column) => (column.type ?? 'text') !== 'text' || column.component);
 const components = new Map(
   customColumns
@@ -31,21 +27,10 @@ const components = new Map(
     .map((column) => [column.key, toComponent(column.component!)] as const)
 );
 
-const statusOptions = [
-  { value: '', label: t('admin_app.screen.filter_status_all') },
-  { value: 'enabled', label: t('admin_app.screen.filter_status_enabled') },
-  { value: 'disabled', label: t('admin_app.screen.filter_status_disabled') },
-];
-const authorOptions = [
-  { value: '', label: t('admin_app.screen.filter_author_all') },
-  { value: 'me', label: t('admin_app.screen.filter_author_me') },
-];
-
 const rows = computed(() => items.value as unknown as DataTableRow[]);
 const asItem = (row: DataTableRow): T => row as unknown as T;
 const colorOf = (column: CollectionColumn, row: DataTableRow): string =>
   column.color ? String(row[column.color] ?? '') : '';
-const authorOf = (value: unknown): string => (value as ScreenAuthor | null)?.login ?? '—';
 
 onMounted(() => void props.screen.collection.load());
 </script>
@@ -57,7 +42,7 @@ onMounted(() => void props.screen.collection.load());
     :icon="descriptor.icon"
   >
     <template v-if="screen.canCreate && descriptor.create" #actions>
-      <UiButton variant="primary" icon="plus" :href="createHref">{{ t(descriptor.create.label) }}</UiButton>
+      <UiButton variant="primary" icon="plus" :href="screen.createHref">{{ t(descriptor.create.label) }}</UiButton>
     </template>
   </AdminPageHeader>
 
@@ -89,7 +74,7 @@ onMounted(() => void props.screen.collection.load());
         <UiSelect
           v-model="status"
           size="sm"
-          :options="statusOptions"
+          :options="screen.statusOptions"
           :aria-label="t('admin_app.screen.filter_status')"
         />
       </div>
@@ -97,7 +82,7 @@ onMounted(() => void props.screen.collection.load());
         <UiSelect
           v-model="author"
           size="sm"
-          :options="authorOptions"
+          :options="screen.authorOptions"
           :aria-label="t('admin_app.screen.filter_author')"
         />
       </div>
@@ -124,9 +109,9 @@ onMounted(() => void props.screen.collection.load());
         <UiBadge v-if="row.disabled" tone="warning" :dot="false">{{ t('admin_app.screen.status_disabled') }}</UiBadge>
       </span>
       <time v-else-if="column.type === 'date'" :datetime="String(value ?? '')" class="whitespace-nowrap">
-        {{ formatDateTime(value as string | null, bootstrap.locale) }}
+        {{ screen.cellText(column, asItem(row)) }}
       </time>
-      <template v-else-if="column.type === 'author'">{{ authorOf(value) }}</template>
+      <template v-else-if="column.type === 'author'">{{ screen.cellText(column, asItem(row)) }}</template>
       <template v-else>{{ value }}</template>
     </template>
   </UiDataTable>

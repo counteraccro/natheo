@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.2
+ * @version 1.3
  * Class qui charge les class nécessaire en autowrite pour l'API front
  */
 namespace App\Service\Api;
@@ -14,6 +14,7 @@ use App\Service\Admin\MarkdownEditorService;
 use App\Service\Admin\System\ApiTokenService;
 use App\Service\Admin\System\OptionConfigService;
 use App\Service\Admin\System\OptionSystemService;
+use App\Service\Admin\System\OptionUserService;
 use App\Service\Admin\System\User\UserService;
 use App\Service\Api\Content\ApiMenuService;
 use App\Service\Api\Content\Page\ApiPageContentService;
@@ -54,6 +55,7 @@ class AppApiHandlerService
                 'optionSystemService' => OptionSystemService::class,
                 'supportedLocales' => SupportedLocales::class,
                 'optionConfigService' => OptionConfigService::class,
+                'optionUserService' => OptionUserService::class,
                 'pageService' => PageService::class,
                 'pageDraftService' => PageDraftService::class,
                 'apiMenuService' => ApiMenuService::class,
@@ -181,6 +183,17 @@ class AppApiHandlerService
     protected function getOptionConfigService(): OptionConfigService
     {
         return $this->handlers->get('optionConfigService');
+    }
+
+    /**
+     * Retourne la class OptionUserService
+     * @return OptionUserService
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getOptionUserService(): OptionUserService
+    {
+        return $this->handlers->get('optionUserService');
     }
 
     /**

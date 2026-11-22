@@ -92,8 +92,9 @@ describe('CollectionScreen (Natheo-Studio)', () => {
       t,
       can,
       confirm: vi.fn(),
-      router: { push: vi.fn() },
+      router: { push: vi.fn(), resolve: () => ({ href: '' }) },
       collection: createAdminCollection<Tag>(api, '/admin/tags', { withSql: true }),
+      locale: 'fr',
     });
 
     const wrapper = mount(CollectionScreen, {

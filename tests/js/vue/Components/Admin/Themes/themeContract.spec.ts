@@ -18,6 +18,10 @@ describe('Thèmes du back-office', () => {
     expect(theme.notFound).toBeTruthy();
     expect(theme.screens.collection).toBeTruthy();
     expect(theme.screens.form).toBeTruthy();
+    for (const [route, page] of Object.entries(theme.pages ?? {})) {
+      expect(route).toMatch(/^[a-z][a-z0-9_]*$/);
+      expect(page).toBeTruthy();
+    }
   });
 
   it('donne à chaque thème un identifiant unique', () => {

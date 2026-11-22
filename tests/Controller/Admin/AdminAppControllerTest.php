@@ -3,13 +3,16 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Tests de la page de l'application Vue du back-office et du renouvellement de son access token
  */
 
 namespace App\Tests\Controller\Admin;
 
+use App\Entity\Admin\System\OptionUser as OptionUserEntity;
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\AdminTemplate;
+use App\Enum\Admin\System\Options\OptionUser;
 use App\Service\Api\System\User\UserSessionService;
 use App\Tests\AppWebTestCase;
 
@@ -177,6 +180,39 @@ class AdminAppControllerTest extends AppWebTestCase
             ->findByAccessToken($bootstrap['api']['accessToken']);
         $this->assertSame($target->getId(), $session?->getUser()->getId());
         $this->assertSame($superAdmin->getId(), $session->getImpersonator()?->getId());
+    }
+
+    /**
+     * Thème de l'utilisateur lu en base, Natheo-Studio sans choix ou pour une valeur inconnue, et thèmes proposés
+     * @return void
+     */
+    public function testIndexTheme(): void
+    {
+        $user = $this->loginContributeur();
+        $this->client->request('GET', '/admin/fr/inconnu', server: self::HTML);
+        $bootstrap = $this->getBootstrap();
+        $this->assertSame(AdminTemplate::NATHEO_STUDIO->value, $bootstrap['theme']);
+        $this->assertSame(
+            [
+                ['id' => 'natheo_studio', 'label' => 'Natheo-Studio'],
+                ['id' => 'natheo_atelier', 'label' => 'Natheo-Atelier'],
+            ],
+            $bootstrap['themes'],
+        );
+
+        $option = $this->em->getRepository(OptionUserEntity::class)->findOneBy([
+            'user' => $user->getId(),
+            'key' => OptionUser::OU_ADMIN_THEME->value,
+        ]);
+        $option->setValue(AdminTemplate::NATHEO_ATELIER->value);
+        $this->persistAndFlush($option);
+        $this->client->request('GET', '/admin/fr/inconnu', server: self::HTML);
+        $this->assertSame(AdminTemplate::NATHEO_ATELIER->value, $this->getBootstrap()['theme']);
+
+        $option->setValue('inconnu');
+        $this->persistAndFlush($option);
+        $this->client->request('GET', '/admin/fr/inconnu', server: self::HTML);
+        $this->assertSame(AdminTemplate::NATHEO_STUDIO->value, $this->getBootstrap()['theme']);
     }
 
     /**

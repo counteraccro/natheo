@@ -5,6 +5,7 @@ import { createCollectionScreen, runPool } from '@/vue/Composables/Admin/Screen/
 import { defineCollectionScreen } from '@/vue/Composables/Admin/Screen/defineScreen';
 import { ApiError } from '@/vue/Composables/Global/Api/ApiError';
 import * as toast from '@/vue/Composables/Global/toast';
+import { onResourceChange } from '@/vue/Composables/Admin/Screen/resourceChanges';
 import type { ApiClient } from '@/vue/Composables/Global/Api/ApiClient';
 import type { AdminCan } from '@/vue/Composables/Admin/useCan';
 
@@ -76,7 +77,7 @@ function screenWith(rows: Tag[], options: { operations?: string[]; confirm?: boo
   const client = api as unknown as ApiClient;
   const collection = createAdminCollection<Tag>(client, '/admin/tags', { itemsPerPage: 10 });
   const confirm = vi.fn().mockResolvedValue(options.confirm ?? true);
-  const router = { push: vi.fn() };
+  const router = { push: vi.fn(), resolve: vi.fn((to: { name: string }) => ({ href: `/admin/fr/${to.name}` })) };
   const screen = createCollectionScreen(descriptor, {
     api: client,
     t,
@@ -84,6 +85,7 @@ function screenWith(rows: Tag[], options: { operations?: string[]; confirm?: boo
     confirm,
     router,
     collection,
+    locale: 'fr',
   });
   return { screen, api, confirm, router, collection };
 }
@@ -164,6 +166,30 @@ describe('createCollectionScreen', () => {
     expect(result).toEqual({ done: 1, failed: 3 });
     expect(notify).toHaveBeenLastCalledWith('warning', 'admin_app.screen.bulk_result {"done":1,"failed":3}');
     expect(collection.selected.value).toEqual([]);
+  });
+
+  it('annonce ses écritures aux formulaires ouverts, éléments touchés et suppression', async () => {
+    const changed = vi.fn();
+    const stop = onResourceChange('/admin/tags', changed);
+    const rows = [tag(1), tag(2), tag(3)];
+    const { screen, collection } = screenWith(rows, {
+      api: {
+        delete: vi
+          .fn()
+          .mockImplementation((path: string) =>
+            path.endsWith('/3') ? Promise.reject(new Error('412')) : Promise.resolve()
+          ),
+      },
+    });
+    await collection.load();
+
+    await screen.runAction('disable', tag(1));
+    expect(changed).toHaveBeenLastCalledWith({ ids: [1], deleted: false, source: collection });
+    await screen.runAction('delete', tag(2));
+    expect(changed).toHaveBeenLastCalledWith({ ids: [2], deleted: true, source: collection });
+    await screen.runBulk('delete', [1, 3]);
+    expect(changed).toHaveBeenLastCalledWith({ ids: [1], deleted: true, source: collection });
+    stop();
   });
 
   it('ne désactive en groupe que les éléments encore actifs', async () => {

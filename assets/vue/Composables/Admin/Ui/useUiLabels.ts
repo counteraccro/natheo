@@ -82,6 +82,8 @@ export function buildUiLabels(t: UiTranslator): UiLabels {
       searchPlaceholder: t('admin_ui.header.search_placeholder'),
       new: t('admin_ui.header.new'),
       appearance: t('admin_ui.header.appearance'),
+      layout: t('admin_ui.header.layout'),
+      layoutHelp: t('admin_ui.header.layout_help'),
       mode: t('admin_ui.header.mode'),
       modeLight: t('admin_ui.header.mode_light'),
       modeDark: t('admin_ui.header.mode_dark'),

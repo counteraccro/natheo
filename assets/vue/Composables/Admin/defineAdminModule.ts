@@ -1,6 +1,6 @@
 /**
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 1.2
  * Déclaration des écrans d'un module dans l'application du back-office (module.ts du dossier du module)
  */
 import type { RouteRecordRaw } from 'vue-router';
@@ -16,6 +16,8 @@ declare module 'vue-router' {
     domains?: string[];
     /** Noms des routes du fil d'Ariane, de la racine à la page, lus par le menu */
     breadcrumb?: string[];
+    /** Route de la liste dont l'écran fait partie (la liste elle-même, ou le retour d'un formulaire) */
+    screenGroup?: string;
   }
 }
 
@@ -53,7 +55,13 @@ export function collectionRoute<T extends ScreenItem>(
   descriptor: CollectionScreenDescriptor<T>,
   breadcrumb: string[] = [name]
 ): RouteRecordRaw {
-  return { path, name, component: adminScreen, props: { kind: 'collection', descriptor }, meta: { breadcrumb } };
+  return {
+    path,
+    name,
+    component: adminScreen,
+    props: { kind: 'collection', descriptor },
+    meta: { breadcrumb, screenGroup: name },
+  };
 }
 
 /**
@@ -78,7 +86,7 @@ export function formRoute<T extends ScreenItem>(
       descriptor,
       id: typeof route.params.id === 'string' ? route.params.id : null,
     }),
-    meta: { breadcrumb },
+    meta: { breadcrumb, screenGroup: descriptor.back },
   };
 }
 

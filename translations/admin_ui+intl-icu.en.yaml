@@ -46,6 +46,8 @@ admin_ui.header.appearance: Appearance
 admin_ui.header.color: Color
 admin_ui.header.impersonation: 'Signed in as {name}'
 admin_ui.header.impersonation_exit: 'Back to my account'
+admin_ui.header.layout: 'Layout'
+admin_ui.header.layout_help: 'Reloads the page, saved in your options'
 admin_ui.header.mode: Mode
 admin_ui.header.mode_dark: Dark
 admin_ui.header.mode_light: Light

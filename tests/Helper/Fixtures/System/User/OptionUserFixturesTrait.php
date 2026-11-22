@@ -11,6 +11,7 @@ namespace App\Tests\Helper\Fixtures\System\User;
 use App\Enum\Admin\System\Options\OptionUser as OptionUserEnum;
 use App\Entity\Admin\System\OptionUser;
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\AdminTemplate;
 use App\Tests\Helper\FakerTrait;
 
 trait OptionUserFixturesTrait
@@ -71,6 +72,12 @@ trait OptionUserFixturesTrait
         $data = [
             'key' => OptionUserEnum::OU_DEFAULT_PERSONAL_DATA_RENDER->value,
             'value' => 'email',
+        ];
+        $this->createOptionUser($user, $data);
+
+        $data = [
+            'key' => OptionUserEnum::OU_ADMIN_THEME->value,
+            'value' => AdminTemplate::default()->value,
         ];
         $this->createOptionUser($user, $data);
     }

@@ -84,6 +84,11 @@ export function bootstrap(values: Partial<AdminBootstrap> = {}): AdminBootstrap 
       notifications: '/admin/fr/notification/index',
     },
     options: { notifications: true, confirmLeave: true, itemsPerPage: 20 },
+    theme: 'natheo_studio',
+    themes: [
+      { id: 'natheo_studio', label: 'Natheo-Studio' },
+      { id: 'natheo_atelier', label: 'Natheo-Atelier' },
+    ],
     messages: { admin_app: { 'admin_app.leave.title': 'Quitter la page ?' } },
     debug: null,
     ...values,

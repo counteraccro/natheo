@@ -155,6 +155,42 @@ describe('AdminHeader', () => {
     expect(green?.getAttribute('aria-checked')).toBe('true');
   });
 
+  it('propose les dispositions et transmet celle choisie', async () => {
+    const layouts = [
+      { id: 'natheo_studio', label: 'Natheo-Studio' },
+      { id: 'natheo_atelier', label: 'Natheo-Atelier' },
+    ];
+    const wrapper = mount(
+      AdminHeader,
+      withLabels({ props: { layouts, layout: 'natheo_studio' }, attachTo: document.body })
+    );
+    await wrapper.get('button[aria-label="header.appearance"]').trigger('click');
+    await nextTick();
+    await nextTick();
+    const group = document.querySelector<HTMLElement>('[role="group"][aria-labelledby^="ui-appearance-layout"]');
+    expect(group).not.toBeNull();
+    const radios = [...group!.querySelectorAll<HTMLElement>('[role="menuitemradio"]')];
+    expect(radios.map((radio) => [radio.textContent?.trim(), radio.getAttribute('aria-checked')])).toEqual([
+      ['Natheo-Studio', 'true'],
+      ['Natheo-Atelier', 'false'],
+    ]);
+    radios[1].click();
+    expect(wrapper.emitted('selectLayout')).toEqual([['natheo_atelier']]);
+    wrapper.unmount();
+  });
+
+  it('masque la disposition quand une seule est proposée', async () => {
+    const wrapper = mount(
+      AdminHeader,
+      withLabels({ props: { layouts: [{ id: 'natheo_studio', label: 'Natheo-Studio' }] }, attachTo: document.body })
+    );
+    await wrapper.get('button[aria-label="header.appearance"]').trigger('click');
+    await nextTick();
+    await nextTick();
+    expect(document.querySelector('[aria-labelledby^="ui-appearance-layout"]')).toBeNull();
+    wrapper.unmount();
+  });
+
   it('retire le mode sombre des pages Twig en repassant en clair', () => {
     setMode('dark');
     setMode('light');

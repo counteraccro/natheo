@@ -46,6 +46,8 @@ admin_ui.header.appearance: Apariencia
 admin_ui.header.color: Color
 admin_ui.header.impersonation: 'Conectado como {name}'
 admin_ui.header.impersonation_exit: 'Volver a mi cuenta'
+admin_ui.header.layout: 'Disposición'
+admin_ui.header.layout_help: 'Recarga la página, guardado en sus opciones'
 admin_ui.header.mode: Modo
 admin_ui.header.mode_dark: Oscuro
 admin_ui.header.mode_light: Claro

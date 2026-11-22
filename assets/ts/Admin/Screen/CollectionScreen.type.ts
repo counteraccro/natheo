@@ -1,6 +1,6 @@
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Description d'un écran de liste, état calculé par useCollectionScreen() et affiché par le thème
  */
 import type { Ref } from 'vue';
@@ -72,6 +72,12 @@ export interface CollectionScreenDescriptor<T extends ScreenItem = ScreenItem> {
   messages: CollectionMessages;
 }
 
+/** Valeur d'un filtre et son libellé traduit */
+export interface ScreenOption {
+  value: string;
+  label: string;
+}
+
 /** Résultat d'une action groupée */
 export interface BulkResult {
   done: number;
@@ -86,6 +92,14 @@ export interface CollectionScreenState<T extends ScreenItem = ScreenItem> {
   columns: DataTableColumn[];
   /** Le bouton de création est montré */
   canCreate: boolean;
+  /** Adresse de l'écran de création, vide sans création */
+  createHref: string;
+  /** Valeurs traduites du filtre de statut, la première pour tous */
+  statusOptions: ScreenOption[];
+  /** Valeurs traduites du filtre d'auteur, la première pour tous */
+  authorOptions: ScreenOption[];
+  /** Valeur d'une cellule en texte : login de l'auteur, date et heure, valeur brute sinon */
+  cellText(column: CollectionColumn, row: T): string;
   /** La requête SQL est demandée et peut être enregistrée (super administrateur) */
   canSql: boolean;
   bulkActions: DataTableAction[];

@@ -62,6 +62,8 @@ export interface UiLabels {
     searchPlaceholder: string;
     new: string;
     appearance: string;
+    layout: string;
+    layoutHelp: string;
     mode: string;
     modeLight: string;
     modeDark: string;

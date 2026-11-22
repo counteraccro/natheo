@@ -3,6 +3,7 @@ import { createAdminResource } from '@/vue/Composables/Admin/useAdminResource';
 import { createFormScreen } from '@/vue/Composables/Admin/Screen/useFormScreen';
 import { defineFormScreen } from '@/vue/Composables/Admin/Screen/defineScreen';
 import { leaveGuard } from '@/vue/Composables/Admin/leaveGuard';
+import { onResourceChange } from '@/vue/Composables/Admin/Screen/resourceChanges';
 import type { ApiClient } from '@/vue/Composables/Global/Api/ApiClient';
 import type { AdminCan } from '@/vue/Composables/Admin/useCan';
 import type { TranslationsField } from '@/ts/Admin/Screen/FormScreen.type';
@@ -120,6 +121,8 @@ describe('createFormScreen', () => {
       etag: '"v1"',
     });
     const { screen, resource, router } = screenWith(null, { postResource });
+    const changed = vi.fn();
+    const stop = onResourceChange('/admin/tags', changed);
     await resource.load();
     screen.setTranslation(labelField, 'fr', 'Été');
     screen.setCopying(false);
@@ -137,6 +140,8 @@ describe('createFormScreen', () => {
     });
     expect(router.replace).toHaveBeenCalledWith({ name: 'tag_edit', params: { id: '9' } });
     expect(screen.isNew.value).toBe(false);
+    expect(changed).toHaveBeenCalledOnce();
+    stop();
   });
 
   it('ne recopie pas en édition tant que la recopie n’est pas cochée, et suit les droits de l’élément', async () => {
@@ -177,5 +182,56 @@ describe('createFormScreen', () => {
     expect(confirm.mock.lastCall?.[0]).toMatchObject({ title: 'tag.confirm.delete {"label":"Été"}', tone: 'danger' });
     expect(remove).toHaveBeenCalledWith('/admin/tags/4', { ifMatch: '"v1"' });
     expect(router.push).toHaveBeenCalledWith({ name: 'tag_index' });
+  });
+
+  describe('écriture faite ailleurs', () => {
+    const loaded = (disabled: boolean, etag: string) => ({
+      data: { id: 4, color: '#000000', disabled, translations: [{ locale: 'fr', label: 'Été' }] },
+      etag,
+    });
+
+    it('recharge l’élément non modifié, avec sa nouvelle version', async () => {
+      const getResource = vi
+        .fn()
+        .mockResolvedValueOnce(loaded(false, '"v1"'))
+        .mockResolvedValueOnce(loaded(true, '"v2"'));
+      const { screen, resource } = screenWith(4, { getResource });
+      await resource.load();
+      await screen.externalChange({ ids: [4] });
+      expect(resource.etag.value).toBe('"v2"');
+      expect(resource.data.value?.disabled).toBe(true);
+      expect(resource.conflict.value).toBe(false);
+    });
+
+    it('signale le conflit sans écraser les modifications en cours', async () => {
+      const getResource = vi.fn().mockResolvedValue(loaded(false, '"v1"'));
+      const { screen, resource } = screenWith(4, { getResource });
+      await resource.load();
+      screen.setTranslation(labelField, 'fr', 'Automne');
+      await screen.externalChange({ ids: [4] });
+      expect(getResource).toHaveBeenCalledOnce();
+      expect(resource.conflict.value).toBe(true);
+      expect(screen.translation(labelField, 'fr')).toBe('Automne');
+    });
+
+    it('revient à la liste quand l’élément est supprimé, sans demander de confirmer le départ', async () => {
+      const getResource = vi.fn().mockResolvedValue(loaded(false, '"v1"'));
+      const { screen, resource, router } = screenWith(4, { getResource });
+      await resource.load();
+      screen.setTranslation(labelField, 'fr', 'Automne');
+      await screen.externalChange({ ids: ['4'], deleted: true });
+      expect(router.push).toHaveBeenCalledWith({ name: 'tag_index' });
+      expect(leaveGuard.isDirty('tag')).toBe(false);
+    });
+
+    it('ignore ses propres écritures et celles des autres éléments', async () => {
+      const getResource = vi.fn().mockResolvedValue(loaded(false, '"v1"'));
+      const { screen, resource, router } = screenWith(4, { getResource });
+      await resource.load();
+      await screen.externalChange({ ids: [5], deleted: true });
+      await screen.externalChange({ ids: [4], source: resource });
+      expect(getResource).toHaveBeenCalledOnce();
+      expect(router.push).not.toHaveBeenCalled();
+    });
   });
 });

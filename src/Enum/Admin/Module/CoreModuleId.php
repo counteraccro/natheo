@@ -27,6 +27,8 @@ enum CoreModuleId: string
 
     case USER = 'user';
 
+    case MY_ACCOUNT = 'my_account';
+
     case API_TOKEN = 'api_token';
 
     case API_DOC = 'api_doc';

@@ -41,6 +41,7 @@ export type { AlertVariant } from '@/ts/Admin/Ui/Feedback/UiAlert.type';
 export type { NotificationItem, NotificationType } from '@/ts/Toast/Toast.type';
 export { default as UiDropdownSeparator } from '@admin/Ui/Overlay/UiDropdownSeparator.vue';
 export { default as UiPagination } from '@admin/Ui/Data/UiPagination.vue';
+export { default as UiSqlBlock } from '@admin/Ui/Data/UiSqlBlock.vue';
 export { default as UiDataTable } from '@admin/Ui/Data/UiDataTable.vue';
 export type {
   DataTableAction,
@@ -64,7 +65,10 @@ export { default as AdminHeader } from '@admin/Layout/AdminHeader.vue';
 export { default as AdminBreadcrumb } from '@admin/Layout/AdminBreadcrumb.vue';
 export { default as AdminPageHeader } from '@admin/Layout/AdminPageHeader.vue';
 export { default as AdminDebugBar } from '@admin/Layout/AdminDebugBar.vue';
+export { default as AdminAppearanceMenu } from '@admin/Layout/AdminAppearanceMenu.vue';
+export { default as AdminUserMenu } from '@admin/Layout/AdminUserMenu.vue';
+export { default as AdminNotFound } from '@admin/Layout/AdminNotFound.vue';
 export type { SidebarItem, SidebarUser } from '@/ts/Admin/Layout/AdminSidebar.type';
-export type { HeaderSection, HeaderShortcut } from '@/ts/Admin/Layout/AdminHeader.type';
+export type { HeaderSection, HeaderShortcut, LayoutChoice } from '@/ts/Admin/Layout/AdminHeader.type';
 export type { BreadcrumbItem } from '@/ts/Admin/Layout/AdminBreadcrumb.type';
 export type { DebugSection, DebugUser } from '@/ts/Admin/Layout/AdminDebugBar.type';

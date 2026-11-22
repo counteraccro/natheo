@@ -1,16 +1,23 @@
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.2
  * État et actions d'un écran de formulaire décrit par des données : lecture, champs par langue (recopie de la
- * langue de l'interface, cochée par défaut à la création), enregistrement, suppression et retour à la liste
+ * langue de l'interface, cochée par défaut à la création), enregistrement, suppression, retour à la liste et
+ * suivi des écritures faites ailleurs
  */
-import { computed, ref } from 'vue';
+import { computed, onScopeDispose, ref } from 'vue';
 import { useRouter, type Router } from 'vue-router';
 import { notify } from '@/vue/Composables/Global/toast';
 import { useAdminContext } from '@/vue/Composables/Admin/useAdminContext';
 import { useConfirm, type ConfirmRequest } from '@/vue/Composables/Admin/useConfirm';
 import { useAdminResource, type AdminResource } from '@/vue/Composables/Admin/useAdminResource';
 import { leaveGuard } from '@/vue/Composables/Admin/leaveGuard';
+import {
+  changeConcerns,
+  notifyResourceChange,
+  onResourceChange,
+  type ResourceChange,
+} from '@/vue/Composables/Admin/Screen/resourceChanges';
 import type { AdminCan } from '@/vue/Composables/Admin/useCan';
 import type { Translator } from '@/vue/Composables/Admin/useTranslate';
 import type { FormScreenDescriptor, FormScreenState, TranslationsField } from '@/ts/Admin/Screen/FormScreen.type';
@@ -88,6 +95,7 @@ export function createFormScreen<T extends ScreenItem>(
     }),
     locales,
     currentLocale,
+    activeLocale: ref(currentLocale),
     canEdit: computed(() => isNew.value || can.can('edit', descriptor.update.operation, resource.data.value)),
     canDelete: computed(
       () =>
@@ -115,6 +123,7 @@ export function createFormScreen<T extends ScreenItem>(
       const created = isNew.value;
       const saved = await resource.save(payload());
       if (saved === null) return;
+      notifyResourceChange(descriptor.resource, { ids: [saved.id], source: resource });
       notify('success', t(created ? descriptor.messages.created : descriptor.messages.saved, { label: label() }));
       if (created) {
         await router.replace({ name: descriptor.editRoute, params: { id: String(saved.id) } });
@@ -130,12 +139,25 @@ export function createFormScreen<T extends ScreenItem>(
         confirmIcon: 'trash',
       });
       const deleted = label();
-      if (confirmed && (await resource.remove())) {
+      const id = resource.id.value;
+      if (confirmed && id !== null && (await resource.remove())) {
+        notifyResourceChange(descriptor.resource, { ids: [id], deleted: true, source: resource });
         notify('success', t(descriptor.messages.deleted, { label: deleted }));
         await router.push({ name: descriptor.back });
       }
     },
     reload: () => resource.load(),
+    async externalChange(change: ResourceChange): Promise<void> {
+      if (change.source === resource || isNew.value || !changeConcerns(change, resource.id.value)) return;
+      if (change.deleted) {
+        resource.dispose();
+        await router.push({ name: descriptor.back });
+      } else if (leaveGuard.isDirty(descriptor.leaveKey)) {
+        resource.conflict.value = true;
+      } else {
+        await resource.load();
+      }
+    },
     back(): void {
       void router.push({ name: descriptor.back });
     },
@@ -165,6 +187,8 @@ export function useFormScreen<T extends ScreenItem>(
     locales: bootstrap.locales,
     currentLocale: bootstrap.locale,
   });
+  // Une action de la liste affichée à côté a modifié ou supprimé l'élément
+  onScopeDispose(onResourceChange(descriptor.resource, (change) => void screen.externalChange(change)));
   void resource.load();
   return screen;
 }

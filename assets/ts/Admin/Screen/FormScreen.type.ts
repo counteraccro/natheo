@@ -1,6 +1,6 @@
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Description d'un écran de formulaire, état calculé par useFormScreen() et affiché par le thème
  */
 import type { Ref } from 'vue';
@@ -8,6 +8,7 @@ import type { AdminResource } from '@/vue/Composables/Admin/useAdminResource';
 import type { IconName } from '@/ts/Global/Ui/UiIcon.type';
 import type { ScreenComponent, ScreenItem } from '@/ts/Admin/Screen/Screen.type';
 import type { SectionKind } from '@/vue/Composables/Admin/Screen/sectionKinds';
+import type { ResourceChange } from '@/vue/Composables/Admin/Screen/resourceChanges';
 
 interface BaseField {
   /** Propriété de la ressource, chemin des erreurs de l'API */
@@ -77,6 +78,8 @@ export interface FormScreenState<T extends ScreenItem = ScreenItem> {
   locales: string[];
   /** Langue de l'interface, recopiée vers les autres quand la recopie est cochée */
   currentLocale: string;
+  /** Langue ouverte dans les onglets des champs par langue, la même pour toutes les sections */
+  activeLocale: Ref<string>;
   /** Modifications non enregistrées */
   dirty: Ref<boolean>;
   canDelete: Ref<boolean>;
@@ -95,5 +98,10 @@ export interface FormScreenState<T extends ScreenItem = ScreenItem> {
   save(): Promise<void>;
   remove(): Promise<void>;
   reload(): Promise<void>;
+  /**
+   * Écriture faite ailleurs : recharge l'élément, signale le conflit s'il est modifié,
+   * revient à la liste s'il est supprimé
+   */
+  externalChange(change: ResourceChange): Promise<void>;
   back(): void;
 }

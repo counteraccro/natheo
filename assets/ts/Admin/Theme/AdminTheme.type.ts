@@ -1,8 +1,8 @@
 /**
  * @author Gourdon Aymeric
- * @version 1.0
- * Contrat d'un thème du back-office : layout autour des écrans, page introuvable et rendus des écrans décrits
- * par des données
+ * @version 1.1
+ * Contrat d'un thème du back-office : layout autour des écrans, page introuvable, rendus des écrans décrits
+ * par des données et écrans spécifiques redéfinis
  */
 import type { Component } from 'vue';
 import type { AdminBootstrap } from '@/ts/Admin/App/AdminBootstrap.type';
@@ -41,4 +41,6 @@ export interface AdminTheme {
   notFound: ThemeComponent;
   /** Rendus des écrans de liste et de formulaire, reçoivent AdminScreenProps */
   screens: { collection: ThemeComponent; form: ThemeComponent };
+  /** Écrans spécifiques redéfinis, par nom de route ; une route absente garde le composant de son module */
+  pages?: Record<string, ThemeComponent>;
 }

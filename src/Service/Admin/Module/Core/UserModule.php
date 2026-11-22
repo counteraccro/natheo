@@ -3,8 +3,8 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.1
- * Module des utilisateurs du back-office. Les pages personnelles (compte, options, mot de passe) restent ouvertes à tous
+ * @version 1.2
+ * Module des utilisateurs du back-office, sans les pages personnelles de chacun
  */
 
 namespace App\Service\Admin\Module\Core;
@@ -39,16 +39,7 @@ final class UserModule implements AdminModuleInterface
             description: t('admin_module.module.user.description', domain: 'admin_module'),
             locked: true,
             routePrefixes: ['admin_user_'],
-            routeExceptions: [
-                'admin_user_my_option',
-                'admin_user_ajax_update_my_option',
-                'admin_user_my_account',
-                'admin_user_delete_avatar',
-                'admin_user_change_my_password',
-                'admin_user_self_disabled',
-                'admin_user_self_delete',
-                'admin_user_update_user_data',
-            ],
+            routeExceptions: MyAccountModule::ROUTES,
         );
     }
 

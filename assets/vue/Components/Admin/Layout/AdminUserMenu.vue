@@ -1,10 +1,11 @@
 <script setup lang="ts">
 /**
  * @author Gourdon Aymeric
- * @version 1.0
- * Entrées du menu utilisateur, dans la sidebar et dans l'en-tête
+ * @version 1.1
+ * Entrées du menu utilisateur des thèmes : mon compte, mes options, déconnexion
  */
-import { UiDropdownItem, UiDropdownSeparator } from '@ui';
+import UiDropdownItem from '@admin/Ui/Overlay/UiDropdownItem.vue';
+import UiDropdownSeparator from '@admin/Ui/Overlay/UiDropdownSeparator.vue';
 import { useAdminContext } from '@/vue/Composables/Admin/useAdminContext';
 
 const { t, bootstrap } = useAdminContext();

@@ -60,6 +60,8 @@ admin_module.module.media.description: 'Gestion des médias'
 admin_module.module.media.label: Médiathèque
 admin_module.module.menu.description: 'Gestion des menus'
 admin_module.module.menu.label: Menus
+admin_module.module.my_account.description: 'Pages personnelles de chaque utilisateur : compte, options, mot de passe'
+admin_module.module.my_account.label: 'Mon compte'
 admin_module.module.option_system.description: 'Configuration du CMS'
 admin_module.module.option_system.label: 'Options système'
 admin_module.module.page.description: 'Gestion des pages'
