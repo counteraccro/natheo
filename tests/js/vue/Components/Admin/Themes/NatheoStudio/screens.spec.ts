@@ -16,6 +16,8 @@ import { labels } from '@tests/vue/Components/Admin/Ui/support';
 import { UI_LABELS } from '@/vue/Composables/Admin/Ui/useUiLabels';
 import type { ApiClient } from '@/vue/Composables/Global/Api/ApiClient';
 import type { AdminCan } from '@/vue/Composables/Admin/useCan';
+import type { CollectionScreenState } from '@/ts/Admin/Screen/CollectionScreen.type';
+import type { FormScreenState } from '@/ts/Admin/Screen/FormScreen.type';
 
 type Tag = {
   id: number;
@@ -94,7 +96,11 @@ describe('CollectionScreen (Natheo-Studio)', () => {
       collection: createAdminCollection<Tag>(api, '/admin/tags', { withSql: true }),
     });
 
-    const wrapper = mount(CollectionScreen, { props: { screen }, ...mountOptions() });
+    const wrapper = mount(CollectionScreen, {
+      // mount() ne déduit pas le générique du composant, qui reste à ScreenItem
+      props: { screen: screen as unknown as CollectionScreenState },
+      ...mountOptions(),
+    });
     await flushPromises();
     expect(getCollection).toHaveBeenCalledTimes(1);
     expect(wrapper.find('h1').text()).toBe('tag.index.title');
@@ -155,7 +161,11 @@ describe('FormScreen (Natheo-Studio)', () => {
     const save = vi.spyOn(screen, 'save').mockResolvedValue();
     await resource.load();
 
-    const wrapper = mount(FormScreen, { props: { screen }, ...mountOptions() });
+    const wrapper = mount(FormScreen, {
+      // mount() ne déduit pas le générique du composant, qui reste à ScreenItem
+      props: { screen: screen as unknown as FormScreenState },
+      ...mountOptions(),
+    });
     await flushPromises();
     expect(wrapper.find('h1').text()).toBe('tag.form.title_edit {"id":"4"}');
     expect(wrapper.findAll('[role="tab"]')).toHaveLength(3);

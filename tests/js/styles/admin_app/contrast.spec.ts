@@ -2,7 +2,8 @@ import { readFileSync } from 'node:fs';
 import { resolve as resolvePath } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
-const css = readFileSync(resolvePath(__dirname, '../../../../assets/styles/admin_app/tokens.css'), 'utf8');
+// Lu depuis la racine du projet : Vitest vide les fichiers CSS importés, même avec ?raw
+const css = readFileSync(resolvePath(process.cwd(), 'assets/styles/admin_app/tokens.css'), 'utf8');
 
 const THEMES = ['violet', 'blue', 'green', 'red'] as const;
 const MODES = ['light', 'dark'] as const;

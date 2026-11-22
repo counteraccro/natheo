@@ -19,6 +19,7 @@ const theme = defineAdminTheme({
     },
   }),
   notFound: defineComponent({ render: () => h('p', { class: 'not-found' }) }),
+  screens: { collection: defineComponent({ render: () => null }), form: defineComponent({ render: () => null }) },
 });
 
 /** Écran qui ne lit sa prop qu'à sa création, comme AdminScreen */

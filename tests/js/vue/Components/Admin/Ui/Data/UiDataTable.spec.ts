@@ -81,7 +81,7 @@ describe('UiDataTable', () => {
 
   it('montre un squelette pendant le chargement et un état vide sans ligne', async () => {
     const wrapper = mountTable({ loading: true });
-    expect(wrapper.get('[aria-busy="true"]').exists()).toBe(true);
+    expect(wrapper.find('[aria-busy="true"]').exists()).toBe(true);
     expect(wrapper.findAll('.ui-skeleton').length).toBeGreaterThan(0);
     await wrapper.setProps({ loading: false, rows: [], totalItems: 0 });
     expect(wrapper.text()).toContain('data_table.empty_title');
