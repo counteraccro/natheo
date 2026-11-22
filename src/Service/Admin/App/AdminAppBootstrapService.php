@@ -3,13 +3,14 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Données de démarrage de l'application Vue du back-office : session API, utilisateur, site, liens, options et textes
  */
 
 namespace App\Service\Admin\App;
 
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\AdminTemplate;
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Enum\Admin\System\Options\OptionUser;
 use App\Enum\Admin\System\User\Role;
@@ -115,6 +116,8 @@ class AdminAppBootstrapService extends AppAdminService
                 'confirmLeave' => $optionSystem->getValueByKey(OptionSystem::OS_CONFIRM_LEAVE_FORM->value) === '1',
                 'itemsPerPage' => (int) $this->optionUserService->getValueByKey(OptionUser::OU_NB_ELEMENT->value),
             ],
+            'theme' => $this->getTheme()->value,
+            'themes' => $this->getThemes(),
             'messages' => $this->getMessages($locale),
             'debug' => $this->getDebug(),
         ];
@@ -151,6 +154,37 @@ class AdminAppBootstrapService extends AppAdminService
             'accessToken' => $accessToken->token,
             'expiresAt' => $accessToken->expiresAt->format(\DateTimeInterface::ATOM),
         ];
+    }
+
+    /**
+     * Thème du back-office de l'utilisateur, lu en base et non en session : l'API le modifie hors de la session PHP
+     * @return AdminTemplate
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function getTheme(): AdminTemplate
+    {
+        return AdminTemplate::fromValueOrDefault(
+            $this->optionUserService->getValueByKey(OptionUser::OU_ADMIN_THEME->value, false),
+        );
+    }
+
+    /**
+     * Thèmes du back-office proposés, avec leur nom traduit
+     * @return array<int, array{id: string, label: string}>
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function getThemes(): array
+    {
+        $translator = $this->getTranslator();
+        return array_map(
+            fn(AdminTemplate $theme) => [
+                'id' => $theme->value,
+                'label' => $translator->trans('options_user.admin_theme.value.' . $theme->value),
+            ],
+            AdminTemplate::cases(),
+        );
     }
 
     /**
