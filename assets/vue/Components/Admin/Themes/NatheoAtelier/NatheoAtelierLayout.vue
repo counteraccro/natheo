@@ -204,7 +204,8 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
               v-for="child in module.children ?? []"
               :key="child.id"
               :href="child.href"
-              :checked="child.active"
+              :icon-path="child.icon"
+              :aria-current="child.active ? 'page' : undefined"
             >
               {{ child.label }}
             </UiDropdownItem>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Élément d'un UiDropdown : action, lien, case (menuitemcheckbox) ou choix unique (menuitemradio)
  */
 import { computed, inject } from 'vue';
@@ -13,6 +13,8 @@ import type { DropdownItemType } from '@/ts/Admin/Ui/Overlay/UiDropdown.type';
 const props = withDefaults(
   defineProps<{
     icon?: IconName;
+    /** Tracé SVG reçu de l'API (entrée du menu), à la place d'une icône du registre */
+    iconPath?: string;
     href?: string;
     danger?: boolean;
     disabled?: boolean;
@@ -57,7 +59,13 @@ const select = (event: Event): void => {
       class="size-4 text-primary"
       :class="checked ? 'visible' : 'invisible'"
     />
-    <UiIcon v-else-if="icon" :name="icon" class="size-4" :class="danger ? 'text-danger' : 'text-fg-subtle'" />
+    <UiIcon
+      v-else-if="icon || iconPath"
+      :name="icon"
+      :path="iconPath"
+      class="size-4"
+      :class="danger ? 'text-danger' : 'text-fg-subtle'"
+    />
     <span class="flex-1"><slot /></span>
     <kbd v-if="shortcut" class="ml-auto font-sans text-xs text-fg-subtle">{{ shortcut }}</kbd>
   </component>

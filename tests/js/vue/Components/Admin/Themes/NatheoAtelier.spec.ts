@@ -19,8 +19,8 @@ const items: SidebarItem[] = [
         id: 'tag',
         label: 'Tags',
         children: [
-          { id: 'tag_index', label: 'Gestion des tags', href: '/admin/fr/tags', active: true },
-          { id: 'tag_new', label: 'Nouveau tag', href: '/admin/fr/tags/new' },
+          { id: 'tag_index', label: 'Gestion des tags', href: '/admin/fr/tags', icon: 'M1 1h2', active: true },
+          { id: 'tag_new', label: 'Nouveau tag', href: '/admin/fr/tags/new', icon: 'M2 2h3' },
         ],
       },
       { id: 'media', label: 'Médiathèque', href: '/admin/fr/media/index' },
@@ -77,6 +77,15 @@ describe('NatheoAtelierLayout', () => {
     expect(modules.get('a[href="/admin/fr/media/index"]').attributes('aria-current')).toBeUndefined();
     expect(modules.get('[data-active]').text()).toContain('Tags');
     expect(layout.find('main .screen').exists()).toBe(true);
+  });
+
+  it('montre les sous-pages d’un module avec leur icône et la page courante', async () => {
+    const layout = mountWith(NatheoAtelierLayout, { items, section: null, shortcuts, bootstrap: bootstrap() });
+    await layout.get('nav[aria-label="Contenus"] [data-active]').trigger('click');
+    await nextTick();
+    const entries = [...document.querySelectorAll<HTMLElement>('[role="menuitem"]')];
+    expect(entries.map((entry) => entry.querySelector('path')?.getAttribute('d'))).toEqual(['M1 1h2', 'M2 2h3']);
+    expect(entries[0].getAttribute('aria-current')).toBe('page');
   });
 
   it('affiche les modules d’une autre section choisie', async () => {
