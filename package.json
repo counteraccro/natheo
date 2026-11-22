@@ -6,6 +6,7 @@
         "build": "vue-tsc && vite build",
         "preview": "vite preview",
         "type-check": "vue-tsc --noEmit",
+        "type-check:tests": "vue-tsc --noEmit -p tests/js/tsconfig.json",
         "test": "vitest run",
         "test:watch": "vitest",
         "test:e2e": "playwright test",

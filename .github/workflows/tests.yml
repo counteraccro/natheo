@@ -125,6 +125,9 @@ jobs:
       - name: Tests front (Vitest)
         run: yarn test
 
+      - name: Types des tests front
+        run: yarn type-check:tests
+
       - name: Build (vue-tsc + vite)
         run: yarn build
 
