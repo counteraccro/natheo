@@ -13,7 +13,6 @@ use App\Entity\Admin\Content\Faq\Faq;
 use App\Entity\Admin\Content\Menu\Menu;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\Content\Tag\Tag;
-use App\Entity\Admin\System\User;
 use App\Security\ApiUser;
 use App\Service\Admin\System\OptionSystemService;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -81,11 +80,8 @@ class ContentVoter extends Voter
         TokenInterface $token,
         ?Vote $vote = null,
     ): bool {
-        $user = $token->getUser();
-        if ($user instanceof ApiUser) {
-            $user = $user->getUser();
-        }
-        if (!($user instanceof User)) {
+        $user = ApiUser::realUser($token->getUser());
+        if ($user === null) {
             return false;
         }
 
