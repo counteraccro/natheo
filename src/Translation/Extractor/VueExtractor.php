@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 1.2
  * Extracteur de translation:extract pour les clés des appels t('domaine.ecran.element') du code Vue et TypeScript
  */
 
@@ -67,8 +67,7 @@ final class VueExtractor implements ExtractorInterface
         $files = (new Finder())
             ->files()
             ->in($directories)
-            ->name(['*.vue', '*.ts'])
-            ->notPath('__tests__');
+            ->name(['*.vue', '*.ts']);
         foreach ($files as $file) {
             foreach ($this->extractKeys($file->getContents()) as $key) {
                 $catalogue->set($key, $this->prefix . $key, strstr($key, '.', true));
