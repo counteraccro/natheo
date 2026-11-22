@@ -1,8 +1,8 @@
 /**
  * @author Gourdon Aymeric
  * @version 1.1
- * Routeur de l'application du back-office : routes des modules (écrans spécifiques du thème), page introuvable et gardes (départ d'un formulaire,
- * module visible, domaines chargés)
+ * Routeur de l'application du back-office : routes des modules (écrans spécifiques du thème), page introuvable
+ * et gardes (départ d'un formulaire, module visible, domaines chargés)
  */
 import {
   createRouter,

@@ -1,8 +1,9 @@
 /**
  * @author Gourdon Aymeric
- * @version 1.0
- * Chargement à la demande du thème du back-office choisi par l'utilisateur
+ * @version 1.1
+ * Chargement à la demande du thème du back-office choisi par l'utilisateur, miniatures de tous les thèmes
  */
+import type { Component } from 'vue';
 import type { AdminTheme } from '@/ts/Admin/Theme/AdminTheme.type';
 
 /** Thème utilisé pour un identifiant inconnu */
@@ -28,16 +29,48 @@ export function themeFolder(id: string): string {
  * @param overwrite chargeurs de overwrite/vue/Components/Admin/Themes/
  */
 export function themeLoaders(core: AdminThemeLoaders, overwrite: AdminThemeLoaders = {}): AdminThemeLoaders {
-  const byFolder: AdminThemeLoaders = {};
-  for (const loaders of [core, overwrite]) {
-    for (const [path, loader] of Object.entries(loaders)) {
-      const folder = path.match(/\/Themes\/([^/]+)\/theme\.ts$/)?.[1];
-      if (folder !== undefined) {
-        byFolder[folder] = loader;
+  return byThemeFolder('theme.ts', core, overwrite);
+}
+
+/**
+ * Fichiers d'un même nom indexés par dossier de thème, ceux de la surcharge remplaçant ceux du cœur
+ * @param file nom du fichier dans le dossier du thème
+ * @param core résultat de import.meta.glob sur Components/Admin/Themes/
+ * @param overwrite résultat de import.meta.glob sur overwrite/vue/Components/Admin/Themes/
+ */
+export function byThemeFolder<V>(
+  file: string,
+  core: Record<string, V>,
+  overwrite: Record<string, V> = {}
+): Record<string, V> {
+  const byFolder: Record<string, V> = {};
+  for (const entries of [core, overwrite]) {
+    for (const [path, value] of Object.entries(entries)) {
+      const match = path.match(/\/Themes\/([^/]+)\/([^/]+)$/);
+      if (match !== null && match[2] === file) {
+        byFolder[match[1]] = value;
       }
     }
   }
   return byFolder;
+}
+
+/** Miniatures des thèmes (Thumbnail.vue du dossier du thème), montrées dans le choix de la disposition */
+const thumbnails = byThemeFolder<Component>(
+  'Thumbnail.vue',
+  import.meta.glob<Component>('../../Components/Admin/Themes/*/Thumbnail.vue', { eager: true, import: 'default' }),
+  import.meta.glob<Component>('../../../overwrite/vue/Components/Admin/Themes/*/Thumbnail.vue', {
+    eager: true,
+    import: 'default',
+  })
+);
+
+/**
+ * Miniature d'un thème, undefined s'il n'en fournit pas
+ * @param id
+ */
+export function themeThumbnail(id: string): Component | undefined {
+  return thumbnails[themeFolder(id)];
 }
 
 /**

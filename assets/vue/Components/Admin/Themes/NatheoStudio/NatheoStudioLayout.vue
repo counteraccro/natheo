@@ -2,11 +2,10 @@
 /**
  * @author Gourdon Aymeric
  * @version 1.2
- * Layout du thème Natheo-Studio : sidebar du registre, en-tête (section, recherche, « Nouveau », apparence et disposition,
- * notifications, menu utilisateur), écran courant et barre de debug en dev
+ * Layout du thème Natheo-Studio : sidebar du registre, en-tête (section, recherche, « Nouveau », apparence et
+ * disposition, notifications, menu utilisateur), écran courant et barre de debug en dev
  */
-import { AdminDebugBar, AdminHeader, AdminShell, AdminSidebar } from '@ui';
-import NatheoStudioUserMenu from '@admin/Themes/NatheoStudio/NatheoStudioUserMenu.vue';
+import { AdminDebugBar, AdminHeader, AdminShell, AdminSidebar, AdminUserMenu } from '@ui';
 import { useAdminContext } from '@/vue/Composables/Admin/useAdminContext';
 import { useLayoutActions } from '@/vue/Composables/Admin/Layout/useLayoutActions';
 import type { AdminLayoutProps } from '@/ts/Admin/Theme/AdminTheme.type';
@@ -32,7 +31,7 @@ const { user, impersonating, debugSections, debugUsers, submitSearch, openNotifi
         @close="close"
         @navigate="close"
       >
-        <template #user-menu><NatheoStudioUserMenu /></template>
+        <template #user-menu><AdminUserMenu /></template>
       </AdminSidebar>
     </template>
     <template #header="{ openNav }">
@@ -49,7 +48,7 @@ const { user, impersonating, debugSections, debugUsers, submitSearch, openNotifi
         @submit-search="submitSearch"
         @open-notifications="openNotifications"
       >
-        <template #user-menu><NatheoStudioUserMenu /></template>
+        <template #user-menu><AdminUserMenu /></template>
       </AdminHeader>
     </template>
 

@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { loadAdminTheme, themeFolder, themeLoaders } from '@/vue/Composables/Admin/loadAdminTheme';
+import {
+  byThemeFolder,
+  loadAdminTheme,
+  themeFolder,
+  themeLoaders,
+  themeThumbnail,
+} from '@/vue/Composables/Admin/loadAdminTheme';
 import type { AdminTheme } from '@/ts/Admin/Theme/AdminTheme.type';
 
 const theme = (id: string): AdminTheme => ({
@@ -42,5 +48,20 @@ describe('loadAdminTheme', () => {
 
   it('échoue sans aucun thème', async () => {
     await expect(loadAdminTheme('natheo_studio', {})).rejects.toThrow();
+  });
+
+  it('indexe un fichier par dossier de thème, la surcharge en dernier', () => {
+    const files = byThemeFolder(
+      'Thumbnail.vue',
+      { '../Themes/NatheoStudio/Thumbnail.vue': 'cœur', '../Themes/NatheoStudio/theme.ts': 'autre' },
+      { '../overwrite/Themes/NatheoStudio/Thumbnail.vue': 'surcharge' }
+    );
+    expect(files).toEqual({ NatheoStudio: 'surcharge' });
+  });
+
+  it('trouve la miniature de chaque thème du cœur', () => {
+    expect(themeThumbnail('natheo_studio')).toBeDefined();
+    expect(themeThumbnail('natheo_atelier')).toBeDefined();
+    expect(themeThumbnail('inconnu')).toBeUndefined();
   });
 });

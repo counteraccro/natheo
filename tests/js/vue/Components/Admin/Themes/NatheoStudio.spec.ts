@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { flushPromises, mount } from '@vue/test-utils';
 import { createMemoryHistory, createRouter } from 'vue-router';
 import NatheoStudioLayout from '@/vue/Components/Admin/Themes/NatheoStudio/NatheoStudioLayout.vue';
-import NatheoStudioNotFound from '@/vue/Components/Admin/Themes/NatheoStudio/NatheoStudioNotFound.vue';
+import { AdminNotFound } from '@ui';
 import { ADMIN_CONTEXT, createAdminContext } from '@/vue/Composables/Admin/useAdminContext';
 import { buildUiLabels, UI_LABELS } from '@/vue/Composables/Admin/Ui/useUiLabels';
 import { bootstrap } from '@tests/vue/Composables/Admin/support';
@@ -87,9 +87,9 @@ describe('NatheoStudioLayout', () => {
   });
 });
 
-describe('NatheoStudioNotFound', () => {
+describe('AdminNotFound', () => {
   it('montre l’adresse demandée et le lien vers le tableau de bord', () => {
-    const { wrapper } = mountWith(NatheoStudioNotFound, {
+    const { wrapper } = mountWith(AdminNotFound, {
       path: '/admin/fr/tagz/12',
       dashboardUrl: '/admin/fr/dashboard/index',
     });

@@ -1,15 +1,17 @@
 <script setup lang="ts">
 /**
  * @author Gourdon Aymeric
- * @version 1.1
- * Sélecteur d'apparence de la barre du haut : disposition (thème du back-office), miniatures du back-office en clair et
- * en sombre à la couleur choisie, puis pastilles en blocs des couleurs ; le panneau reste ouvert pour comparer
+ * @version 1.2
+ * Sélecteur d'apparence de la barre du haut : disposition (thème du back-office et sa miniature), miniatures du
+ * back-office en clair et en sombre à la couleur choisie, puis pastilles en blocs des couleurs ; le panneau reste
+ * ouvert pour comparer
  */
 import { computed, useId } from 'vue';
 import UiIcon from '@/vue/Components/Global/Ui/UiIcon.vue';
 import UiDropdown from '@admin/Ui/Overlay/UiDropdown.vue';
 import { useUiLabels } from '@/vue/Composables/Admin/Ui/useUiLabels';
 import { useAppearance } from '@/vue/Composables/Admin/Ui/useAppearance';
+import { themeThumbnail } from '@/vue/Composables/Admin/loadAdminTheme';
 import type { ColorMode, LayoutChoice } from '@/ts/Admin/Layout/AdminHeader.type';
 
 withDefaults(
@@ -96,23 +98,7 @@ const moveFocus = (event: KeyboardEvent): void => {
               aria-hidden="true"
               class="relative block h-[64px] overflow-hidden rounded-[6px] border border-line-strong bg-canvas transition-[border-color,box-shadow] duration-150 group-aria-checked:border-primary group-aria-checked:shadow-[0_0_0_1px_var(--primary)]"
             >
-              <template v-if="option.id === 'natheo_studio'">
-                <span class="absolute inset-y-0 left-0 w-[26%] bg-side" />
-                <span class="absolute top-0 right-0 left-[26%] h-[12px] border-b border-line bg-bg" />
-                <span
-                  class="absolute top-[19px] right-[6%] bottom-[7px] left-[32%] rounded-[3px] border border-line bg-bg"
-                />
-              </template>
-              <template v-else-if="option.id === 'natheo_atelier'">
-                <span class="absolute inset-x-0 top-0 h-[16px] border-b border-line bg-bg" />
-                <span
-                  class="absolute top-[4px] left-[30%] h-[8px] w-[40%] rounded-[3px] border border-line-strong bg-surface"
-                />
-                <span class="absolute bottom-0 left-0 top-[16px] w-[36%] bg-canvas" />
-                <span class="absolute top-[28px] left-[4%] h-[9px] w-[32%] rounded-l-[3px] bg-bg" />
-                <span class="absolute right-0 bottom-0 left-[36%] top-[16px] bg-bg" />
-                <span class="absolute top-[24px] left-[42%] h-[4px] w-[30%] rounded-full bg-primary" />
-              </template>
+              <component :is="themeThumbnail(option.id)" v-if="themeThumbnail(option.id)" />
               <span v-else class="absolute inset-x-0 top-0 h-[12px] border-b border-line bg-bg" />
             </span>
             <span class="mt-1.5 flex items-center gap-1.5 px-0.5 text-sm">

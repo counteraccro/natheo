@@ -9,7 +9,7 @@ import NatheoAtelierLayout from '@admin/Themes/NatheoAtelier/NatheoAtelierLayout
 export default defineAdminTheme({
   id: 'natheo_atelier',
   layout: NatheoAtelierLayout,
-  notFound: () => import('@admin/Themes/NatheoStudio/NatheoStudioNotFound.vue'),
+  notFound: () => import('@admin/Layout/AdminNotFound.vue'),
   screens: {
     collection: () => import('@admin/Themes/NatheoAtelier/Screens/CollectionScreen.vue'),
     form: () => import('@admin/Themes/NatheoAtelier/Screens/FormScreen.vue'),

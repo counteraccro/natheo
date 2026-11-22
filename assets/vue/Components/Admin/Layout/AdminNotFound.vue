@@ -1,10 +1,10 @@
 <script setup lang="ts">
 /**
  * @author Gourdon Aymeric
- * @version 1.0
- * Page introuvable du thème Natheo-Studio : grille de blocs dont le dernier tiers est tombé, sa place marquée « 404 »
+ * @version 1.1
+ * Page introuvable commune aux thèmes : grille de blocs dont le dernier tiers est tombé, sa place marquée « 404 »
  */
-import { UiButton } from '@ui';
+import UiButton from '@admin/Ui/Form/UiButton.vue';
 import { useAdminContext } from '@/vue/Composables/Admin/useAdminContext';
 import type { AdminNotFoundProps } from '@/ts/Admin/Theme/AdminTheme.type';
 

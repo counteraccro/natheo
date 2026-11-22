@@ -9,6 +9,7 @@ import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import {
   AdminAppearanceMenu,
   AdminDebugBar,
+  AdminUserMenu,
   BrandLogo,
   UiButton,
   UiDropdown,
@@ -17,7 +18,6 @@ import {
   useUiLabels,
   type SidebarItem,
 } from '@ui';
-import NatheoStudioUserMenu from '@admin/Themes/NatheoStudio/NatheoStudioUserMenu.vue';
 import AtelierCommandPalette from '@admin/Themes/NatheoAtelier/AtelierCommandPalette.vue';
 import AtelierList from '@admin/Themes/NatheoAtelier/AtelierList.vue';
 import { ATELIER_PANE_TOP } from '@admin/Themes/NatheoAtelier/atelier';
@@ -167,7 +167,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
                 {{ bootstrap.user.initials }}
               </button>
             </template>
-            <NatheoStudioUserMenu />
+            <AdminUserMenu />
           </UiDropdown>
         </div>
       </header>
@@ -225,10 +225,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
         :descriptor="group.descriptor"
         :class="{ 'max-[860px]:hidden': !group.isCollection }"
       />
-      <div
-        class="min-h-0 min-w-0 overflow-auto bg-bg"
-        :class="{ 'max-[860px]:hidden': group.isCollection }"
-      >
+      <div class="min-h-0 min-w-0 overflow-auto bg-bg" :class="{ 'max-[860px]:hidden': group.isCollection }">
         <div :id="ATELIER_PANE_TOP" />
         <div aria-live="polite"><slot /></div>
       </div>
