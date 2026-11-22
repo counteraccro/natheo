@@ -1,6 +1,6 @@
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Confirmation avant de quitter un formulaire modifié de l'application : navigation interne, liens qui rechargent et
  * fermeture de l'onglet
  */
@@ -14,6 +14,8 @@ export interface AdminLeave {
   /** Clic sur un lien qui recharge la page */
   onClick(event: MouseEvent): void;
   onBeforeUnload(event: BeforeUnloadEvent): void;
+  /** Départ déjà accepté : le rechargement qui suit ne redemande rien */
+  allowUnload(): void;
 }
 
 export interface AdminLeaveOptions {
@@ -55,6 +57,9 @@ export function createAdminLeave(options: AdminLeaveOptions): AdminLeave {
       if (options.enabled && !leaving && leaveGuard.isDirty()) {
         event.preventDefault();
       }
+    },
+    allowUnload(): void {
+      leaving = true;
     },
   };
 }

@@ -1,6 +1,6 @@
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * État et actions d'un écran de formulaire décrit par des données : lecture, champs par langue (recopie de la
  * langue de l'interface, cochée par défaut à la création), enregistrement, suppression et retour à la liste
  */
@@ -11,6 +11,7 @@ import { useAdminContext } from '@/vue/Composables/Admin/useAdminContext';
 import { useConfirm, type ConfirmRequest } from '@/vue/Composables/Admin/useConfirm';
 import { useAdminResource, type AdminResource } from '@/vue/Composables/Admin/useAdminResource';
 import { leaveGuard } from '@/vue/Composables/Admin/leaveGuard';
+import { notifyResourceChange } from '@/vue/Composables/Admin/Screen/resourceChanges';
 import type { AdminCan } from '@/vue/Composables/Admin/useCan';
 import type { Translator } from '@/vue/Composables/Admin/useTranslate';
 import type { FormScreenDescriptor, FormScreenState, TranslationsField } from '@/ts/Admin/Screen/FormScreen.type';
@@ -115,6 +116,7 @@ export function createFormScreen<T extends ScreenItem>(
       const created = isNew.value;
       const saved = await resource.save(payload());
       if (saved === null) return;
+      notifyResourceChange(descriptor.resource);
       notify('success', t(created ? descriptor.messages.created : descriptor.messages.saved, { label: label() }));
       if (created) {
         await router.replace({ name: descriptor.editRoute, params: { id: String(saved.id) } });
@@ -131,6 +133,7 @@ export function createFormScreen<T extends ScreenItem>(
       });
       const deleted = label();
       if (confirmed && (await resource.remove())) {
+        notifyResourceChange(descriptor.resource);
         notify('success', t(descriptor.messages.deleted, { label: deleted }));
         await router.push({ name: descriptor.back });
       }

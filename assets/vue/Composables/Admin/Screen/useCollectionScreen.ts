@@ -1,15 +1,16 @@
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * État et actions d'un écran de liste décrit par des données : colonnes, actions visibles selon les droits,
  * confirmations, requêtes, notifications et actions groupées (une requête par élément, quatre à la fois)
  */
-import { computed, ref, type Ref } from 'vue';
+import { computed, onScopeDispose, ref, type Ref } from 'vue';
 import { useRouter, type Router } from 'vue-router';
 import { notify } from '@/vue/Composables/Global/toast';
 import { ApiError } from '@/vue/Composables/Global/Api/ApiError';
 import { useAdminContext } from '@/vue/Composables/Admin/useAdminContext';
 import { useConfirm, type ConfirmRequest } from '@/vue/Composables/Admin/useConfirm';
+import { onResourceChange } from '@/vue/Composables/Admin/Screen/resourceChanges';
 import {
   createAdminCollection,
   SELECT_ALL_LIMIT,
@@ -285,6 +286,8 @@ export function useCollectionScreen<T extends ScreenItem>(
     itemsPerPage: bootstrap.options.itemsPerPage,
     withSql: can.canOperation(SQL_QUERY_OPERATION),
   });
+  // Un formulaire affiché à côté de la liste l'a modifiée
+  onScopeDispose(onResourceChange(descriptor.resource, () => void collection.load()));
   return createCollectionScreen(descriptor, {
     api,
     t,

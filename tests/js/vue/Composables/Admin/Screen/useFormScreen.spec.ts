@@ -3,6 +3,7 @@ import { createAdminResource } from '@/vue/Composables/Admin/useAdminResource';
 import { createFormScreen } from '@/vue/Composables/Admin/Screen/useFormScreen';
 import { defineFormScreen } from '@/vue/Composables/Admin/Screen/defineScreen';
 import { leaveGuard } from '@/vue/Composables/Admin/leaveGuard';
+import { onResourceChange } from '@/vue/Composables/Admin/Screen/resourceChanges';
 import type { ApiClient } from '@/vue/Composables/Global/Api/ApiClient';
 import type { AdminCan } from '@/vue/Composables/Admin/useCan';
 import type { TranslationsField } from '@/ts/Admin/Screen/FormScreen.type';
@@ -120,6 +121,8 @@ describe('createFormScreen', () => {
       etag: '"v1"',
     });
     const { screen, resource, router } = screenWith(null, { postResource });
+    const changed = vi.fn();
+    const stop = onResourceChange('/admin/tags', changed);
     await resource.load();
     screen.setTranslation(labelField, 'fr', 'Été');
     screen.setCopying(false);
@@ -137,6 +140,8 @@ describe('createFormScreen', () => {
     });
     expect(router.replace).toHaveBeenCalledWith({ name: 'tag_edit', params: { id: '9' } });
     expect(screen.isNew.value).toBe(false);
+    expect(changed).toHaveBeenCalledOnce();
+    stop();
   });
 
   it('ne recopie pas en édition tant que la recopie n’est pas cochée, et suit les droits de l’élément', async () => {

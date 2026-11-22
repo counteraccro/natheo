@@ -47,6 +47,7 @@ loadAdminTheme(bootstrap.theme, loaders).then((theme) => {
     menu: context.menu,
     translator: context.translator,
     notFound: theme.notFound,
+    pages: theme.pages,
     dashboardUrl: bootstrap.urls.dashboard,
     confirmLeave: () => context.leave.confirmLeave(),
   });

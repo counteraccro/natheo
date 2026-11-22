@@ -1,7 +1,7 @@
 /**
  * @author Gourdon Aymeric
- * @version 1.0
- * Routeur de l'application du back-office : routes des modules, page introuvable et gardes (départ d'un formulaire,
+ * @version 1.1
+ * Routeur de l'application du back-office : routes des modules (écrans spécifiques du thème), page introuvable et gardes (départ d'un formulaire,
  * module visible, domaines chargés)
  */
 import {
@@ -10,6 +10,7 @@ import {
   type RouteLocationNormalized,
   type RouteLocationRaw,
   type Router,
+  type RouteRecordRaw,
   type RouterHistory,
 } from 'vue-router';
 import { routesOf, type AdminModuleDefinition } from '@/vue/Composables/Admin/defineAdminModule';
@@ -29,6 +30,8 @@ export interface AdminRouterOptions {
   translator: Translator;
   /** Écran « Page introuvable » du thème */
   notFound: ThemeComponent;
+  /** Écrans spécifiques redéfinis par le thème, par nom de route */
+  pages?: Record<string, ThemeComponent>;
   /** Tableau de bord, page Twig tant qu'il n'est pas migré */
   dashboardUrl: string;
   /** Confirmation de départ d'un formulaire modifié */
@@ -53,6 +56,21 @@ function notFoundAt(to: RouteLocationNormalized): RouteLocationRaw {
 }
 
 /**
+ * Routes dont le thème redéfinit l'écran, les autres gardent le composant de leur module
+ * @param routes
+ * @param pages écrans du thème par nom de route
+ */
+export function applyThemePages(
+  routes: RouteRecordRaw[],
+  pages: Record<string, ThemeComponent> = {}
+): RouteRecordRaw[] {
+  return routes.map((route) => {
+    const page = typeof route.name === 'string' ? pages[route.name] : undefined;
+    return page === undefined ? route : ({ ...route, component: page } as RouteRecordRaw);
+  });
+}
+
+/**
  * Crée le routeur
  * @param options
  */
@@ -70,7 +88,7 @@ export function createAdminRouter(options: AdminRouterOptions): Router {
           return false;
         },
       },
-      ...routesOf(options.modules, options.debug),
+      ...applyThemePages(routesOf(options.modules, options.debug), options.pages),
       {
         path: '/:path(.*)*',
         name: NOT_FOUND_ROUTE,

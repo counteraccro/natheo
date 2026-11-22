@@ -86,4 +86,13 @@ describe('createAdminLeave', () => {
     leave.onBeforeUnload(unload);
     expect(unload.defaultPrevented).toBe(true);
   });
+
+  it('laisse recharger après un départ déjà accepté', () => {
+    makeDirty();
+    const { leave } = leaveWith(true);
+    leave.allowUnload();
+    const unload = new Event('beforeunload', { cancelable: true }) as BeforeUnloadEvent;
+    leave.onBeforeUnload(unload);
+    expect(unload.defaultPrevented).toBe(false);
+  });
 });

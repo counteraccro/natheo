@@ -10,7 +10,9 @@ import { menuApi, moduleOf } from '@tests/vue/Composables/Admin/support';
 const Screen = defineComponent({ render: () => null });
 const NotFound = defineComponent({ render: () => null });
 
-function routerWith(options: { visible?: string[]; leave?: boolean; debug?: boolean } = {}) {
+function routerWith(
+  options: { visible?: string[]; leave?: boolean; debug?: boolean; pages?: Record<string, object> } = {}
+) {
   const { api } = menuApi(
     (options.visible ?? ['tag']).map((id) => moduleOf(id)),
     []
@@ -37,6 +39,7 @@ function routerWith(options: { visible?: string[]; leave?: boolean; debug?: bool
     menu: createAdminMenu(api, '/admin/fr/'),
     translator,
     notFound: NotFound,
+    pages: options.pages,
     dashboardUrl: '/admin/fr/dashboard/index',
     confirmLeave,
     history: createMemoryHistory('/admin/fr/'),
@@ -91,5 +94,16 @@ describe('createAdminRouter', () => {
     const prod = routerWith({ debug: false });
     await prod.router.push('/design-system');
     expect(prod.router.currentRoute.value.name).toBe(NOT_FOUND_ROUTE);
+  });
+
+  it('remplace l’écran d’une route redéfinie par le thème, garde celui du module sinon', async () => {
+    const ThemePage = defineComponent({ render: () => null });
+    const themed = routerWith({ pages: { tag_index: ThemePage } });
+    await themed.router.push('/tags');
+    expect(themed.router.currentRoute.value.matched[0].components?.default).toBe(ThemePage);
+
+    const plain = routerWith();
+    await plain.router.push('/tags');
+    expect(plain.router.currentRoute.value.matched[0].components?.default).toBe(Screen);
   });
 });
