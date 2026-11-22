@@ -1,9 +1,9 @@
 <script setup lang="ts">
 /**
  * @author Gourdon Aymeric
- * @version 1.0
- * Palette de commandes de Natheo-Atelier : écrans du menu et raccourcis « Nouveau » filtrés au clavier, recherche dans
- * tout le site quand rien ne correspond (combobox et listbox dans une boîte de dialogue modale)
+ * @version 1.1
+ * Palette de commandes de Natheo-Atelier : écrans du menu (avec leur compteur) et raccourcis « Nouveau » filtrés au
+ * clavier, recherche dans tout le site quand rien ne correspond (combobox et listbox dans une boîte de dialogue modale)
  */
 import { computed, nextTick, ref, useId, watch } from 'vue';
 import { UiIcon } from '@ui';
@@ -16,6 +16,8 @@ interface Command {
   label: string;
   /** Section du menu, affichée à droite */
   where?: string;
+  /** Compteur de l'entrée du menu (commentaires à modérer…) */
+  badge?: number;
   group: 'screens' | 'create' | 'search';
   run(): void;
 }
@@ -65,6 +67,7 @@ const commands = computed<Command[]>(() => {
       id: `screen-${item.id}`,
       label: item.label,
       where: section,
+      badge: item.badge,
       group: 'screens',
       run: () => emit('openHref', item.href as string),
     }));
@@ -198,6 +201,11 @@ const onKeydown = (event: KeyboardEvent): void => {
             class="size-4 shrink-0"
           />
           <span class="truncate">{{ command.label }}</span>
+          <span
+            v-if="command.badge"
+            class="grid h-[18px] min-w-[18px] place-items-center rounded-full bg-primary px-1.5 text-[11px] leading-none font-bold text-on-primary tabular-nums"
+            >{{ command.badge }}</span
+          >
           <span v-if="command.where" class="ml-auto shrink-0 text-[12.5px] opacity-80">{{ command.where }}</span>
         </div>
       </div>

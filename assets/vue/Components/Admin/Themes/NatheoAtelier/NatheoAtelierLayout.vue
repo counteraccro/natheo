@@ -1,8 +1,8 @@
 <script setup lang="ts">
 /**
  * @author Gourdon Aymeric
- * @version 1.0
- * Layout du thème Natheo-Atelier : barre du haut (sections du menu, palette de commandes, « Nouveau », apparence,
+ * @version 1.1
+ * Layout du thème Natheo-Atelier : barre du haut (sections du menu et leurs compteurs, palette de commandes, « Nouveau », apparence,
  * notifications, menu utilisateur), onglets des modules de la section, établi et barre de debug en dev
  */
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
@@ -44,6 +44,13 @@ const group = useScreenGroup();
  * @param item
  */
 const isActive = (item: SidebarItem): boolean => item.active === true || (item.children ?? []).some(isActive);
+
+/**
+ * Compteur d'une entrée, ou somme de ceux de ses enfants (une section ne porte pas le sien)
+ * @param item
+ */
+const badgeOf = (item: SidebarItem): number =>
+  item.badge ?? (item.children ?? []).reduce((total, child) => total + badgeOf(child), 0);
 
 const activeSection = computed(() => props.items.find(isActive) ?? null);
 const selectedId = ref<string | null>(activeSection.value?.id ?? null);
@@ -106,10 +113,15 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
             type="button"
             :aria-pressed="item.children?.length ? item.id === selectedId : undefined"
             :aria-current="!item.children?.length && item.active ? 'page' : undefined"
-            class="ui-ring h-[34px] cursor-pointer rounded-lg border-0 bg-transparent px-3 font-[550] text-fg-muted hover:bg-surface hover:text-fg aria-pressed:bg-surface aria-pressed:text-fg aria-[current=page]:bg-surface aria-[current=page]:text-fg"
+            class="ui-ring inline-flex h-[34px] cursor-pointer items-center gap-1.5 rounded-lg border-0 bg-transparent px-3 font-[550] text-fg-muted hover:bg-surface hover:text-fg aria-pressed:bg-surface aria-pressed:text-fg aria-[current=page]:bg-surface aria-[current=page]:text-fg"
             @click="selectSection(item)"
           >
             {{ item.label }}
+            <span
+              v-if="badgeOf(item)"
+              class="grid h-[18px] min-w-[18px] place-items-center rounded-full bg-primary px-1.5 text-[11px] leading-none font-bold text-on-primary tabular-nums"
+              >{{ badgeOf(item) }}</span
+            >
           </button>
         </nav>
 
@@ -186,6 +198,11 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
           >
             <UiIcon v-if="module.icon" :path="module.icon" class="size-4 shrink-0" />
             {{ module.label }}
+            <span
+              v-if="badgeOf(module)"
+              class="grid h-[18px] min-w-[18px] place-items-center rounded-full bg-primary px-1.5 text-[11px] leading-none font-bold text-on-primary tabular-nums"
+              >{{ badgeOf(module) }}</span
+            >
           </a>
           <UiDropdown v-else :label="module.label" variant="ghost" size="sm" class="h-full">
             <template #trigger="{ props: triggerProps, setRef }">
@@ -198,6 +215,11 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
               >
                 <UiIcon v-if="module.icon" :path="module.icon" class="size-4 shrink-0" />
                 {{ module.label }}
+                <span
+                  v-if="badgeOf(module)"
+                  class="grid h-[18px] min-w-[18px] place-items-center rounded-full bg-primary px-1.5 text-[11px] leading-none font-bold text-on-primary tabular-nums"
+                  >{{ badgeOf(module) }}</span
+                >
                 <UiIcon name="chevron-down" class="size-3.5" />
               </button>
             </template>
@@ -208,7 +230,14 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
               :icon-path="child.icon"
               :aria-current="child.active ? 'page' : undefined"
             >
-              {{ child.label }}
+              <span class="flex items-center gap-2">
+                <span class="flex-1">{{ child.label }}</span>
+                <span
+                  v-if="badgeOf(child)"
+                  class="grid h-[18px] min-w-[18px] place-items-center rounded-full bg-primary px-1.5 text-[11px] leading-none font-bold text-on-primary tabular-nums"
+                  >{{ badgeOf(child) }}</span
+                >
+              </span>
             </UiDropdownItem>
           </UiDropdown>
         </template>
