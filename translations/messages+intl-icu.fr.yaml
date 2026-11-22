@@ -226,6 +226,10 @@ options_system.user_session_validity.label: 'Durée des sessions API des utilisa
 options_system.user_session_validity.value.one_day: '1 jour'
 options_system.user_session_validity.value.seven_days: '7 jours'
 options_system.user_session_validity.value.thirty_days: '30 jours'
+options_user.admin_theme.help: "Organisation des écrans du back-office : menu sur le côté (Natheo-Studio) ou en haut avec la liste et l'élément côte à côte (Natheo-Atelier)"
+options_user.admin_theme.label: "Disposition de l'administration"
+options_user.admin_theme.value.natheo_atelier: Natheo-Atelier
+options_user.admin_theme.value.natheo_studio: Natheo-Studio
 options_user.category.interface.description: Personnaliser l'administration avec ces options
 options_user.category.interface.label: Interface
 options_user.category.interface.title: Personnalisation de l'administration

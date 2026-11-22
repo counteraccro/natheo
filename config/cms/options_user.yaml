@@ -16,6 +16,12 @@ options_user:
                 list_value: '5:5|10:10|20:20|50:50|100:100'
                 help: 'options_user.nb_element.help'
                 default: '20'
+            OU_ADMIN_THEME:
+                type: 'select'
+                label: 'options_user.admin_theme.label'
+                list_value: 'natheo_studio:options_user.admin_theme.value.natheo_studio|natheo_atelier:options_user.admin_theme.value.natheo_atelier'
+                help: 'options_user.admin_theme.help'
+                default: 'natheo_studio'
     options_user.category.personal_data.label:
         title: 'options_user.category.personal_data.title'
         description: 'options_user.category.personal_data.description'

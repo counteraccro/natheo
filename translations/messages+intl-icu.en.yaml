@@ -226,6 +226,10 @@ options_system.user_session_validity.label: 'Lifetime of back-office users'' API
 options_system.user_session_validity.value.one_day: '1 day'
 options_system.user_session_validity.value.seven_days: '7 days'
 options_system.user_session_validity.value.thirty_days: '30 days'
+options_user.admin_theme.help: "Layout of the back-office screens: side menu (Natheo-Studio) or top menu with the list and the item side by side (Natheo-Atelier)"
+options_user.admin_theme.label: "Administration layout"
+options_user.admin_theme.value.natheo_atelier: Natheo-Atelier
+options_user.admin_theme.value.natheo_studio: Natheo-Studio
 options_user.category.interface.description: Customize the administration with these options
 options_user.category.interface.label: Interface
 options_user.category.interface.title: Administration customization
