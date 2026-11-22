@@ -1,3 +1,15 @@
+admin_app.atelier.command: 'Aller à un écran, une action'
+admin_app.atelier.group_create: 'Créer'
+admin_app.atelier.group_screens: 'Écrans'
+admin_app.atelier.group_search: 'Recherche'
+admin_app.atelier.hint_choose: '↑ ↓ pour choisir'
+admin_app.atelier.hint_open: 'Entrée pour ouvrir'
+admin_app.atelier.hint_search: 'Sans résultat, recherche dans tout le site'
+admin_app.atelier.key_escape: 'Échap'
+admin_app.atelier.palette_input: 'Rechercher une commande'
+admin_app.atelier.palette_label: 'Palette de commandes'
+admin_app.atelier.search_site: 'Rechercher « {term} » dans tout le site'
+admin_app.atelier.sections: 'Sections'
 admin_app.debug.application: Application
 admin_app.debug.branch: Branche
 admin_app.debug.commit: Commit
