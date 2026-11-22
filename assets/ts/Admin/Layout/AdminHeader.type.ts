@@ -1,6 +1,6 @@
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Types de AdminHeader et de l'apparence du back-office
  */
 import type { IconName } from '@/ts/Global/Ui/UiIcon.type';
@@ -14,6 +14,12 @@ export interface HeaderSection {
   label: string;
   icon?: string;
   iconName?: IconName;
+}
+
+/** Disposition du back-office proposée par le menu Apparence (thème) */
+export interface LayoutChoice {
+  id: string;
+  label: string;
 }
 
 export interface HeaderShortcut {

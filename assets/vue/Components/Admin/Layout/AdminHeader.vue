@@ -12,7 +12,7 @@ import UiDropdown from '@admin/Ui/Overlay/UiDropdown.vue';
 import UiDropdownItem from '@admin/Ui/Overlay/UiDropdownItem.vue';
 import AdminAppearanceMenu from '@admin/Layout/AdminAppearanceMenu.vue';
 import { useUiLabels } from '@/vue/Composables/Admin/Ui/useUiLabels';
-import type { HeaderSection, HeaderShortcut } from '@/ts/Admin/Layout/AdminHeader.type';
+import type { HeaderSection, HeaderShortcut, LayoutChoice } from '@/ts/Admin/Layout/AdminHeader.type';
 
 withDefaults(
   defineProps<{
@@ -25,11 +25,19 @@ withDefaults(
     searchable?: boolean;
     /** Cloche des notifications (option OS_NOTIFICATION) */
     notifiable?: boolean;
+    /** Dispositions du menu Apparence et celle de l'utilisateur */
+    layouts?: LayoutChoice[];
+    layout?: string;
   }>(),
-  { searchable: true, notifiable: true }
+  { searchable: true, notifiable: true, layouts: () => [], layout: '' }
 );
 const search = defineModel<string>('search', { default: '' });
-const emit = defineEmits<{ openNav: []; submitSearch: [term: string]; openNotifications: [] }>();
+const emit = defineEmits<{
+  openNav: [];
+  submitSearch: [term: string];
+  openNotifications: [];
+  selectLayout: [id: string];
+}>();
 defineSlots<{ 'user-menu'?: () => unknown; actions?: () => unknown }>();
 
 const labels = useUiLabels();
@@ -125,7 +133,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', focusSearch));
           </UiDropdownItem>
         </UiDropdown>
         <slot name="actions" />
-        <AdminAppearanceMenu />
+        <AdminAppearanceMenu :layouts="layouts" :layout="layout" @select-layout="emit('selectLayout', $event)" />
         <span v-if="notifiable" class="relative inline-flex">
           <UiButton
             variant="ghost"

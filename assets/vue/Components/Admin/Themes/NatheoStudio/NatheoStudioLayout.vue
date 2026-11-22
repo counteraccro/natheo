@@ -1,20 +1,22 @@
 <script setup lang="ts">
 /**
  * @author Gourdon Aymeric
- * @version 1.0
- * Layout du thème Natheo-Studio : sidebar du registre, en-tête (section, recherche, « Nouveau », apparence,
+ * @version 1.1
+ * Layout du thème Natheo-Studio : sidebar du registre, en-tête (section, recherche, « Nouveau », apparence et disposition,
  * notifications, menu utilisateur), écran courant et barre de debug en dev
  */
 import { computed } from 'vue';
 import { AdminDebugBar, AdminHeader, AdminShell, AdminSidebar, type DebugSection, type DebugUser } from '@ui';
 import NatheoStudioUserMenu from '@admin/Themes/NatheoStudio/NatheoStudioUserMenu.vue';
 import { useAdminContext } from '@/vue/Composables/Admin/useAdminContext';
+import { useAdminThemeChoice } from '@/vue/Composables/Admin/useAdminThemeChoice';
 import type { AdminLayoutProps } from '@/ts/Admin/Theme/AdminTheme.type';
 
 const props = defineProps<AdminLayoutProps>();
 defineSlots<{ default?: () => unknown }>();
 
 const { t, leave } = useAdminContext();
+const themeChoice = useAdminThemeChoice();
 
 const user = computed(() => ({
   name: props.bootstrap.user.name,
@@ -114,7 +116,10 @@ const openNotifications = async (): Promise<void> => {
         :user-initials="bootstrap.user.initials"
         :impersonating="impersonating"
         :notifiable="bootstrap.options.notifications"
+        :layouts="bootstrap.themes"
+        :layout="bootstrap.theme"
         @open-nav="openNav"
+        @select-layout="themeChoice.choose"
         @submit-search="submitSearch"
         @open-notifications="openNotifications"
       >

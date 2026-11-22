@@ -1,18 +1,30 @@
 <script setup lang="ts">
 /**
  * @author Gourdon Aymeric
- * @version 1.0
- * Sélecteur d'apparence de la barre du haut : miniatures du back-office en clair et en sombre, à la couleur choisie,
- * puis pastilles en blocs des couleurs ; le panneau reste ouvert pour comparer
+ * @version 1.1
+ * Sélecteur d'apparence de la barre du haut : disposition (thème du back-office), miniatures du back-office en clair et
+ * en sombre à la couleur choisie, puis pastilles en blocs des couleurs ; le panneau reste ouvert pour comparer
  */
 import { computed, useId } from 'vue';
 import UiIcon from '@/vue/Components/Global/Ui/UiIcon.vue';
 import UiDropdown from '@admin/Ui/Overlay/UiDropdown.vue';
 import { useUiLabels } from '@/vue/Composables/Admin/Ui/useUiLabels';
 import { useAppearance } from '@/vue/Composables/Admin/Ui/useAppearance';
-import type { ColorMode } from '@/ts/Admin/Layout/AdminHeader.type';
+import type { ColorMode, LayoutChoice } from '@/ts/Admin/Layout/AdminHeader.type';
+
+withDefaults(
+  defineProps<{
+    /** Dispositions proposées, rubrique masquée s'il y en a moins de deux */
+    layouts?: LayoutChoice[];
+    /** Disposition de l'utilisateur */
+    layout?: string;
+  }>(),
+  { layouts: () => [], layout: '' }
+);
+const emit = defineEmits<{ selectLayout: [id: string] }>();
 
 const labels = useUiLabels();
+const layoutLabelId = `ui-appearance-layout-${useId()}`;
 const { theme, mode, themes, setTheme, setMode } = useAppearance();
 const colorLabelId = `ui-appearance-color-${useId()}`;
 
@@ -63,6 +75,53 @@ const moveFocus = (event: KeyboardEvent): void => {
     width="w-[300px]"
   >
     <div class="p-1.5" @keydown="moveFocus">
+      <template v-if="layouts.length > 1">
+        <div class="px-1">
+          <span :id="layoutLabelId" class="text-sm font-medium">{{ labels.header.layout }}</span>
+          <p class="mt-0.5 text-xs text-fg-muted">{{ labels.header.layoutHelp }}</p>
+        </div>
+        <div role="group" :aria-labelledby="layoutLabelId" class="mt-1.5 mb-3 grid grid-cols-2 gap-2">
+          <button
+            v-for="option in layouts"
+            :key="option.id"
+            type="button"
+            role="menuitemradio"
+            tabindex="-1"
+            :aria-checked="layout === option.id"
+            class="ui-ring group cursor-pointer rounded-md border-0 bg-transparent p-1 text-left text-fg hover:bg-surface focus:bg-surface focus:outline-none"
+            @click="emit('selectLayout', option.id)"
+            @keydown.space.prevent="emit('selectLayout', option.id)"
+          >
+            <span
+              aria-hidden="true"
+              class="relative block h-[64px] overflow-hidden rounded-[6px] border border-line-strong bg-canvas transition-[border-color,box-shadow] duration-150 group-aria-checked:border-primary group-aria-checked:shadow-[0_0_0_1px_var(--primary)]"
+            >
+              <template v-if="option.id === 'natheo_studio'">
+                <span class="absolute inset-y-0 left-0 w-[26%] bg-side" />
+                <span class="absolute top-0 right-0 left-[26%] h-[12px] border-b border-line bg-bg" />
+                <span
+                  class="absolute top-[19px] right-[6%] bottom-[7px] left-[32%] rounded-[3px] border border-line bg-bg"
+                />
+              </template>
+              <template v-else-if="option.id === 'natheo_atelier'">
+                <span class="absolute inset-x-0 top-0 h-[16px] border-b border-line bg-bg" />
+                <span
+                  class="absolute top-[4px] left-[30%] h-[8px] w-[40%] rounded-[3px] border border-line-strong bg-surface"
+                />
+                <span class="absolute bottom-0 left-0 top-[16px] w-[36%] bg-canvas" />
+                <span class="absolute top-[28px] left-[4%] h-[9px] w-[32%] rounded-l-[3px] bg-bg" />
+                <span class="absolute right-0 bottom-0 left-[36%] top-[16px] bg-bg" />
+                <span class="absolute top-[24px] left-[42%] h-[4px] w-[30%] rounded-full bg-primary" />
+              </template>
+              <span v-else class="absolute inset-x-0 top-0 h-[12px] border-b border-line bg-bg" />
+            </span>
+            <span class="mt-1.5 flex items-center gap-1.5 px-0.5 text-sm">
+              <span class="flex-1 truncate">{{ option.label }}</span>
+              <UiIcon name="check" class="size-4 text-primary invisible group-aria-checked:visible" />
+            </span>
+          </button>
+        </div>
+      </template>
       <div role="group" :aria-label="labels.header.mode" class="grid grid-cols-2 gap-2">
         <button
           v-for="option in modes"
