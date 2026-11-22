@@ -1,6 +1,6 @@
 /**
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 1.2
  * État et actions d'un écran de liste décrit par des données : colonnes, actions visibles selon les droits,
  * confirmations, requêtes, notifications et actions groupées (une requête par élément, quatre à la fois)
  */
@@ -10,7 +10,8 @@ import { notify } from '@/vue/Composables/Global/toast';
 import { ApiError } from '@/vue/Composables/Global/Api/ApiError';
 import { useAdminContext } from '@/vue/Composables/Admin/useAdminContext';
 import { useConfirm, type ConfirmRequest } from '@/vue/Composables/Admin/useConfirm';
-import { onResourceChange } from '@/vue/Composables/Admin/Screen/resourceChanges';
+import { formatDateTime } from '@/vue/Composables/Admin/Screen/screenFormat';
+import { notifyResourceChange, onResourceChange } from '@/vue/Composables/Admin/Screen/resourceChanges';
 import {
   createAdminCollection,
   SELECT_ALL_LIMIT,
@@ -22,12 +23,13 @@ import type { Translator } from '@/vue/Composables/Admin/useTranslate';
 import type { DataTableAction } from '@/ts/Admin/Ui/Data/UiDataTable.type';
 import type {
   BulkResult,
+  CollectionColumn,
   CollectionFilter,
   CollectionRowAction,
   CollectionScreenDescriptor,
   CollectionScreenState,
 } from '@/ts/Admin/Screen/CollectionScreen.type';
-import type { ScreenItem } from '@/ts/Admin/Screen/Screen.type';
+import type { ScreenAuthor, ScreenItem } from '@/ts/Admin/Screen/Screen.type';
 
 /** Requêtes lancées en même temps par une action groupée */
 export const BULK_CONCURRENCY = 4;
@@ -40,8 +42,10 @@ export interface CollectionScreenDeps<T> {
   t: Translator['t'];
   can: AdminCan;
   confirm: (request: ConfirmRequest) => Promise<boolean>;
-  router: Pick<Router, 'push'>;
+  router: Pick<Router, 'push'> & { resolve(to: { name: string }): { href: string } };
   collection: AdminCollection<T>;
+  /** Langue de l'interface, pour les dates */
+  locale: string;
 }
 
 /**
@@ -82,13 +86,17 @@ export function createCollectionScreen<T extends ScreenItem>(
   descriptor: CollectionScreenDescriptor<T>,
   deps: CollectionScreenDeps<T>
 ): CollectionScreenState<T> {
-  const { api, t, can, confirm, router, collection } = deps;
+  const { api, t, can, confirm, router, collection, locale } = deps;
   const itemPath = (row: T): string => `${descriptor.resource}/${row.id}`;
   const actionOf = <K extends CollectionRowAction['type']>(type: K) =>
     descriptor.actions?.find((action) => action.type === type) as Extract<CollectionRowAction, { type: K }> | undefined;
   const label = (row: T): string => descriptor.rowLabel(row);
   const savedSql = ref<string | null>(null);
   let savingSql: string | null = null;
+
+  // Annonce l'écriture aux formulaires ouverts ; la liste s'ignore et se recharge elle-même
+  const announce = (ids: (string | number)[], deleted: boolean): void =>
+    notifyResourceChange(descriptor.resource, { ids, deleted, source: collection });
 
   const fail = (caught: unknown): void => {
     const error = caught instanceof ApiError ? caught : ApiError.fromNetwork(caught);
@@ -138,6 +146,7 @@ export function createCollectionScreen<T extends ScreenItem>(
     }
     try {
       await api.patch(itemPath(row), { disabled });
+      announce([row.id], false);
       notify(
         'success',
         t(disabled ? descriptor.messages.disabled : descriptor.messages.enabled, { label: label(row) })
@@ -160,6 +169,7 @@ export function createCollectionScreen<T extends ScreenItem>(
     if (!confirmed) return;
     try {
       await api.delete(itemPath(row));
+      announce([row.id], true);
       notify('success', t(descriptor.messages.deleted, { label: label(row) }));
       collection.selected.value = collection.selected.value.filter((key) => key !== row.id);
       await collection.load();
@@ -211,9 +221,12 @@ export function createCollectionScreen<T extends ScreenItem>(
       if (!confirmed) return null;
     }
 
-    const result = await runPool(eligible, BULK_CONCURRENCY, (row) =>
-      isDelete ? api.delete(itemPath(row)) : api.patch(itemPath(row), { disabled: action.type === 'disable' })
-    );
+    const written: (string | number)[] = [];
+    const result = await runPool(eligible, BULK_CONCURRENCY, async (row) => {
+      await (isDelete ? api.delete(itemPath(row)) : api.patch(itemPath(row), { disabled: action.type === 'disable' }));
+      written.push(row.id);
+    });
+    if (written.length > 0) announce(written, isDelete);
     result.failed += kept;
     notify(result.failed > 0 ? 'warning' : 'success', t('admin_app.screen.bulk_result', { ...result }));
     collection.selected.value = [];
@@ -233,6 +246,22 @@ export function createCollectionScreen<T extends ScreenItem>(
       align: column.type === 'number' ? 'end' : undefined,
     })),
     canCreate: descriptor.create !== undefined && can.canOperation(descriptor.create.operation),
+    createHref: descriptor.create ? router.resolve({ name: descriptor.create.route }).href : '',
+    statusOptions: [
+      { value: '', label: t('admin_app.screen.filter_status_all') },
+      { value: 'enabled', label: t('admin_app.screen.filter_status_enabled') },
+      { value: 'disabled', label: t('admin_app.screen.filter_status_disabled') },
+    ],
+    authorOptions: [
+      { value: '', label: t('admin_app.screen.filter_author_all') },
+      { value: 'me', label: t('admin_app.screen.filter_author_me') },
+    ],
+    cellText(column: CollectionColumn, row: T): string {
+      const value = (row as unknown as Record<string, unknown>)[column.key];
+      if (column.type === 'author') return (value as ScreenAuthor | null)?.login ?? '—';
+      if (column.type === 'date') return formatDateTime(value as string | null, locale);
+      return String(value ?? '');
+    },
     canSql: can.canOperation(SQL_QUERY_OPERATION),
     bulkActions,
     actionsFor,
@@ -287,7 +316,11 @@ export function useCollectionScreen<T extends ScreenItem>(
     withSql: can.canOperation(SQL_QUERY_OPERATION),
   });
   // Un formulaire affiché à côté de la liste l'a modifiée
-  onScopeDispose(onResourceChange(descriptor.resource, () => void collection.load()));
+  onScopeDispose(
+    onResourceChange(descriptor.resource, (change) => {
+      if (change.source !== collection) void collection.load();
+    })
+  );
   return createCollectionScreen(descriptor, {
     api,
     t,
@@ -295,5 +328,6 @@ export function useCollectionScreen<T extends ScreenItem>(
     confirm: useConfirm().confirm,
     router: useRouter(),
     collection,
+    locale: bootstrap.locale,
   });
 }

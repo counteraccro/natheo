@@ -1,11 +1,11 @@
 <script setup lang="ts">
 /**
  * @author Gourdon Aymeric
- * @version 1.0
- * Liste de l'établi Natheo-Atelier, gardée à gauche de l'élément ouvert : recherche, filtres en pastilles, tri,
- * sélection et actions groupées, lignes compactes avec leurs actions, requête SQL en tête du volet
+ * @version 1.1
+ * Liste de l'établi Natheo-Atelier, gardée à gauche de l'élément ouvert : recherche en deux temps, filtres en
+ * pastilles, tri, sélection et actions groupées, lignes compactes avec leurs actions, requête SQL en tête du volet
  */
-import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import { ATELIER_PANE_TOP, NARROW_QUERY } from '@admin/Themes/NatheoAtelier/atelier';
 import { useRoute, useRouter } from 'vue-router';
 import {
@@ -16,17 +16,19 @@ import {
   UiIcon,
   UiPagination,
   UiSqlBlock,
+  useTableSearch,
   useUiLabels,
+  type DataTableRow,
 } from '@ui';
 import { useAdminContext } from '@/vue/Composables/Admin/useAdminContext';
 import { useCollectionScreen } from '@/vue/Composables/Admin/Screen/useCollectionScreen';
-import { formatDateTime } from '@/vue/Composables/Admin/Screen/screenFormat';
-import type { CollectionColumn, CollectionScreenDescriptor } from '@/ts/Admin/Screen/CollectionScreen.type';
-import type { ScreenAuthor, ScreenItem } from '@/ts/Admin/Screen/Screen.type';
+import { toComponent } from '@/vue/Composables/Admin/Screen/adminTheme';
+import type { CollectionScreenDescriptor } from '@/ts/Admin/Screen/CollectionScreen.type';
+import type { ScreenItem } from '@/ts/Admin/Screen/Screen.type';
 
 const props = defineProps<{ descriptor: CollectionScreenDescriptor }>();
 
-const { t, bootstrap } = useAdminContext();
+const { t } = useAdminContext();
 const labels = useUiLabels();
 const router = useRouter();
 const route = useRoute();
@@ -36,7 +38,6 @@ const { status, author } = screen.filter;
 const descriptor = props.descriptor;
 
 const title = t(descriptor.title);
-const term = ref('');
 const sqlVisible = ref(false);
 const media = window.matchMedia(NARROW_QUERY);
 const narrow = ref(media.matches);
@@ -45,39 +46,35 @@ const onMedia = (event: MediaQueryListEvent): void => {
 };
 media.addEventListener('change', onMedia);
 onBeforeUnmount(() => media.removeEventListener('change', onMedia));
-let timer: ReturnType<typeof setTimeout> | undefined;
-watch(term, (value) => {
-  clearTimeout(timer);
-  timer = setTimeout(() => (search.value = value.trim()), 300);
+const tableSearch = useTableSearch<DataTableRow>({
+  rows: () => items.value as unknown as DataTableRow[],
+  columns: () => screen.columns,
+  loading: () => loading.value,
+  search: (value) => (search.value = value),
+  resetPage: () => (page.value = 1),
 });
-onBeforeUnmount(() => clearTimeout(timer));
+const { term } = tableSearch;
+const rows = computed(() => tableSearch.displayed.value as unknown as ScreenItem[]);
 
+// Colonne du libellé : la pastille, sinon le premier texte ; l'identifiant est montré en fin de ligne
 const badge = descriptor.columns.find((column) => column.type === 'badge');
+const labelColumn =
+  badge ?? descriptor.columns.find((column) => (column.type ?? 'text') === 'text' && column.key !== 'id');
 const metaColumns = descriptor.columns.filter(
-  (column) => !column.hidden && ['number', 'author', 'date'].includes(column.type ?? 'text')
+  (column) => !column.hidden && column !== labelColumn && column.key !== 'id'
+);
+const components = new Map(
+  metaColumns.filter((column) => column.component).map((column) => [column.key, toComponent(column.component!)])
 );
 const sortable = screen.columns.filter((column) => column.sortable);
 const editAction = descriptor.actions?.find((action) => action.type === 'edit');
-const createHref = computed(() => (descriptor.create ? router.resolve({ name: descriptor.create.route }).href : ''));
 const currentId = computed(() => (typeof route.params.id === 'string' ? route.params.id : null));
 const selectable = screen.bulkActions.length > 0;
-
-const statusChips = [
-  { value: '', label: t('admin_app.screen.filter_status_all') },
-  { value: 'enabled', label: t('admin_app.screen.filter_status_enabled') },
-  { value: 'disabled', label: t('admin_app.screen.filter_status_disabled') },
-];
 
 const fieldOf = (row: ScreenItem, key: string): unknown => (row as unknown as Record<string, unknown>)[key];
 const hrefOf = (row: ScreenItem): string | undefined =>
   editAction ? router.resolve({ name: editAction.route, params: { id: String(row.id) } }).href : undefined;
 const colorOf = (row: ScreenItem): string => (badge?.color ? String(fieldOf(row, badge.color) ?? '') : '');
-const valueOf = (column: CollectionColumn, row: ScreenItem): string => {
-  const value = fieldOf(row, column.key);
-  if (column.type === 'author') return (value as ScreenAuthor | null)?.login ?? '—';
-  if (column.type === 'date') return formatDateTime(value as string | null, bootstrap.locale);
-  return String(value ?? '');
-};
 const rowActions = (row: ScreenItem) => screen.actionsFor(row).filter((action) => action.id !== 'edit');
 const isSelected = (row: ScreenItem): boolean => selected.value.includes(row.id);
 const toggle = (row: ScreenItem): void => {
@@ -108,7 +105,7 @@ onMounted(() => void screen.collection.load());
       <h2 class="m-0 flex-1 text-[15px] font-[650]">
         {{ title }} <span class="font-medium text-fg-subtle">{{ total }}</span>
       </h2>
-      <UiButton v-if="screen.canCreate && descriptor.create" size="sm" icon="plus" :href="createHref">
+      <UiButton v-if="screen.canCreate && descriptor.create" size="sm" icon="plus" :href="screen.createHref">
         {{ t(descriptor.create.label) }}
       </UiButton>
     </div>
@@ -124,6 +121,8 @@ onMounted(() => void screen.collection.load());
           type="search"
           :placeholder="labels.dataTable.searchPlaceholder"
           class="min-w-0 flex-1 border-0 bg-transparent text-fg outline-none placeholder:text-fg-subtle"
+          @input="tableSearch.onInput()"
+          @keydown.enter.prevent="tableSearch.searchRemote()"
         />
       </label>
       <UiDropdown
@@ -155,7 +154,7 @@ onMounted(() => void screen.collection.load());
     <div v-if="descriptor.filters?.length" class="flex flex-wrap gap-1.5 pr-3.5 pb-2.5 pl-[18px]">
       <template v-if="descriptor.filters.includes('status')">
         <button
-          v-for="chip in statusChips"
+          v-for="chip in screen.statusOptions"
           :key="chip.value"
           type="button"
           :aria-pressed="status === chip.value"
@@ -172,7 +171,7 @@ onMounted(() => void screen.collection.load());
         class="atelier-chip"
         @click="author = author === 'me' ? '' : 'me'"
       >
-        {{ t('admin_app.screen.filter_author_me') }}
+        {{ screen.authorOptions[1].label }}
       </button>
     </div>
 
@@ -202,8 +201,25 @@ onMounted(() => void screen.collection.load());
       </button>
     </div>
 
-    <div class="flex items-center justify-between pt-1 pr-3.5 pb-1.5 pl-[18px] text-[12.5px] text-fg-subtle">
-      <span>{{ t('admin_app.atelier.count', { count: total }) }}</span>
+    <div
+      class="flex items-center justify-between gap-2 pt-1 pr-3.5 pb-1.5 pl-[18px] text-[12.5px] text-fg-subtle"
+      aria-live="polite"
+    >
+      <span v-if="tableSearch.mode.value === 'local'">
+        {{ labels.dataTable.searchLocal(rows.length, items.length) }}
+      </span>
+      <span v-else-if="tableSearch.mode.value === 'pending'">{{ labels.dataTable.searchPending }}</span>
+      <span v-else-if="tableSearch.mode.value === 'remote'">
+        {{ labels.dataTable.searchRemote(total) }}
+        <button
+          type="button"
+          class="ui-ring cursor-pointer rounded-sm border-0 bg-transparent p-0 font-[650] text-fg-muted underline underline-offset-3"
+          @click="tableSearch.clear()"
+        >
+          {{ labels.dataTable.searchBack }}
+        </button>
+      </span>
+      <span v-else>{{ t('admin_app.atelier.count', { count: total }) }}</span>
       <span v-if="sort">{{ sortLabel }} {{ sort.direction === 'asc' ? '↑' : '↓' }}</span>
     </div>
 
@@ -221,14 +237,14 @@ onMounted(() => void screen.collection.load());
 
     <ul
       class="m-0 min-h-0 flex-1 list-none overflow-auto pt-0 pr-0 pb-3 pl-2"
-      :aria-busy="loading || undefined"
+      :aria-busy="loading || tableSearch.mode.value === 'pending' || undefined"
       :aria-label="title"
     >
-      <li v-if="!loading && items.length === 0" class="px-2.5 py-6 text-center text-sm text-fg-subtle">
+      <li v-if="!loading && rows.length === 0" class="px-2.5 py-6 text-center text-sm text-fg-subtle">
         {{ labels.dataTable.emptyTitle }}
       </li>
       <li
-        v-for="row in items"
+        v-for="row in rows"
         :key="row.id"
         class="atelier-row group"
         :aria-current="String(row.id) === currentId ? 'true' : undefined"
@@ -259,7 +275,14 @@ onMounted(() => void screen.collection.load());
           </a>
           <div v-if="metaColumns.length" class="mt-0.5 flex flex-wrap gap-x-3.5 pl-[17px] text-[12.5px] text-fg-subtle">
             <span v-for="column in metaColumns" :key="column.key">
-              {{ t(column.label) }} <b class="font-semibold text-fg-muted">{{ valueOf(column, row) }}</b>
+              {{ t(column.label) }}
+              <component
+                :is="components.get(column.key)"
+                v-if="components.has(column.key)"
+                :row="row"
+                :value="fieldOf(row, column.key)"
+              />
+              <b v-else class="font-semibold text-fg-muted">{{ screen.cellText(column, row) }}</b>
             </span>
           </div>
         </div>

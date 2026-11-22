@@ -135,16 +135,16 @@ describe('AtelierList', () => {
 
 describe('CollectionScreen (Natheo-Atelier)', () => {
   it('présente l’écran et invite à créer sans charger la collection', async () => {
-    const router = createRouter({
-      history: createMemoryHistory('/admin/fr/'),
-      routes: [{ path: '/tags/new', name: 'tag_new', component: { render: () => null } }],
-    });
     const load = vi.fn();
-    const screen = { descriptor, canCreate: true, collection: { load } } as unknown as CollectionScreenState;
+    const screen = {
+      descriptor,
+      canCreate: true,
+      createHref: '/admin/fr/tags/new',
+      collection: { load },
+    } as unknown as CollectionScreenState;
     const wrapper = mount(CollectionScreen, {
       props: { screen },
       global: {
-        plugins: [router],
         provide: {
           [ADMIN_CONTEXT as symbol]: { ...createAdminContext(bootstrap()), t },
           [UI_LABELS as symbol]: labels,
