@@ -19,8 +19,10 @@ import {
 } from '@ui';
 import NatheoStudioUserMenu from '@admin/Themes/NatheoStudio/NatheoStudioUserMenu.vue';
 import AtelierCommandPalette from '@admin/Themes/NatheoAtelier/AtelierCommandPalette.vue';
+import AtelierList from '@admin/Themes/NatheoAtelier/AtelierList.vue';
 import { useAdminContext } from '@/vue/Composables/Admin/useAdminContext';
 import { useLayoutActions } from '@/vue/Composables/Admin/Layout/useLayoutActions';
+import { useScreenGroup } from '@/vue/Composables/Admin/Screen/useScreenGroup';
 import type { AdminLayoutProps } from '@/ts/Admin/Theme/AdminTheme.type';
 
 const props = defineProps<AdminLayoutProps>();
@@ -34,6 +36,7 @@ const { impersonating, debugSections, debugUsers, themeChoice } = actions;
 const isMac = /Mac|iPhone|iPad/.test(navigator.userAgent);
 const shortcutKey = isMac ? { label: '⌘ K', aria: 'Meta+K' } : { label: 'Ctrl K', aria: 'Control+K' };
 const paletteOpen = ref(false);
+const group = useScreenGroup();
 
 /**
  * Entrée courante ou ancêtre de l'entrée courante
@@ -208,7 +211,17 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
       <div v-else class="border-b border-line" />
     </div>
 
-    <main class="flex min-h-0 flex-1 flex-col">
+    <main v-if="group" class="grid min-h-0 flex-1 grid-cols-[360px_minmax(0,1fr)] max-[860px]:grid-cols-1">
+      <AtelierList
+        :key="group.name"
+        :descriptor="group.descriptor"
+        :class="{ 'max-[860px]:hidden': !group.isCollection }"
+      />
+      <div class="min-w-0 bg-bg" :class="{ 'max-[860px]:hidden': group.isCollection }" aria-live="polite">
+        <slot />
+      </div>
+    </main>
+    <main v-else class="flex min-h-0 flex-1 flex-col">
       <slot />
     </main>
 

@@ -41,6 +41,7 @@ export type { AlertVariant } from '@/ts/Admin/Ui/Feedback/UiAlert.type';
 export type { NotificationItem, NotificationType } from '@/ts/Toast/Toast.type';
 export { default as UiDropdownSeparator } from '@admin/Ui/Overlay/UiDropdownSeparator.vue';
 export { default as UiPagination } from '@admin/Ui/Data/UiPagination.vue';
+export { default as UiSqlBlock } from '@admin/Ui/Data/UiSqlBlock.vue';
 export { default as UiDataTable } from '@admin/Ui/Data/UiDataTable.vue';
 export type {
   DataTableAction,

@@ -1,4 +1,5 @@
 admin_app.atelier.command: 'Ir a una pantalla, una acción'
+admin_app.atelier.count: '{count, plural, =0 {Ningún elemento} one {# elemento} other {# elementos}}'
 admin_app.atelier.group_create: 'Crear'
 admin_app.atelier.group_screens: 'Pantallas'
 admin_app.atelier.group_search: 'Búsqueda'
@@ -8,8 +9,13 @@ admin_app.atelier.hint_search: 'Sin resultado: búsqueda en todo el sitio'
 admin_app.atelier.key_escape: 'Esc'
 admin_app.atelier.palette_input: 'Buscar un comando'
 admin_app.atelier.palette_label: 'Paleta de comandos'
+admin_app.atelier.pane_choose_text: 'Abra un elemento de la lista: se muestra en este panel y la lista sigue al lado.'
+admin_app.atelier.pane_choose_title: 'Elegir un elemento'
+admin_app.atelier.pane_create_text: 'El formulario se abre en este panel.'
 admin_app.atelier.search_site: 'Buscar «{term}» en todo el sitio'
 admin_app.atelier.sections: 'Secciones'
+admin_app.atelier.sort: 'Orden'
+admin_app.atelier.sort_by: 'Ordenar por {column}'
 admin_app.debug.application: Aplicación
 admin_app.debug.branch: Rama
 admin_app.debug.commit: Commit

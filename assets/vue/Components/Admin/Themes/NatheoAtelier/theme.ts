@@ -11,7 +11,7 @@ export default defineAdminTheme({
   layout: NatheoAtelierLayout,
   notFound: () => import('@admin/Themes/NatheoStudio/NatheoStudioNotFound.vue'),
   screens: {
-    collection: () => import('@admin/Themes/NatheoStudio/Screens/CollectionScreen.vue'),
-    form: () => import('@admin/Themes/NatheoStudio/Screens/FormScreen.vue'),
+    collection: () => import('@admin/Themes/NatheoAtelier/Screens/CollectionScreen.vue'),
+    form: () => import('@admin/Themes/NatheoAtelier/Screens/FormScreen.vue'),
   },
 });

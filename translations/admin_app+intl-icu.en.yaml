@@ -1,4 +1,5 @@
 admin_app.atelier.command: 'Go to a screen, an action'
+admin_app.atelier.count: '{count, plural, =0 {No item} one {# item} other {# items}}'
 admin_app.atelier.group_create: 'Create'
 admin_app.atelier.group_screens: 'Screens'
 admin_app.atelier.group_search: 'Search'
@@ -8,8 +9,13 @@ admin_app.atelier.hint_search: 'No result: search the whole site'
 admin_app.atelier.key_escape: 'Esc'
 admin_app.atelier.palette_input: 'Search for a command'
 admin_app.atelier.palette_label: 'Command palette'
+admin_app.atelier.pane_choose_text: 'Open an item from the list: it shows in this pane, the list stays alongside.'
+admin_app.atelier.pane_choose_title: 'Choose an item'
+admin_app.atelier.pane_create_text: 'The form opens in this pane.'
 admin_app.atelier.search_site: 'Search “{term}” in the whole site'
 admin_app.atelier.sections: 'Sections'
+admin_app.atelier.sort: 'Sort'
+admin_app.atelier.sort_by: 'Sort by {column}'
 admin_app.debug.application: Application
 admin_app.debug.branch: Branch
 admin_app.debug.commit: Commit
