@@ -209,3 +209,5 @@ user.change_password.input.password_current: 'Contraseña actual'
 user.change_password.error.current_password: 'La contraseña actual es incorrecta'
 user.change_password.error.rule: 'La contraseña no cumple las reglas de seguridad'
 user.update.title: 'Edición de la cuenta'
+user.option.error.not_found: "Esta opción no existe."
+user.option.error.value: "Este valor no lo ofrece la opción, o la opción no se puede modificar."
