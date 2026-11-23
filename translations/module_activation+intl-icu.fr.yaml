@@ -1,1 +1,5 @@
 module_activation.error.disabled: 'Cette fonctionnalité est désactivée.'
+module_activation.error.module_locked: 'Ce module est verrouillé, il ne peut pas être désactivé.'
+module_activation.error.module_not_found: 'Ce module n''existe pas.'
+module_activation.error.operation_locked: 'Cette opération est verrouillée, elle ne peut pas être désactivée.'
+module_activation.error.operation_not_found: 'Cette opération n''existe pas.'

@@ -136,8 +136,23 @@ final class AdminMenuBuilder implements ResetInterface
     /**
      * Modules visibles, rangés par la position de leur première entrée dans le menu
      * @return AdminModule[]
+     * @throws InvalidArgumentException
      */
     public function getVisibleModules(): array
+    {
+        return array_values(
+            array_filter(
+                $this->getModulesInMenuOrder(),
+                fn(AdminModule $module) => $this->isModuleVisible($module->id),
+            ),
+        );
+    }
+
+    /**
+     * Tous les modules, rangés par la position de leur première entrée dans le menu, ceux sans entrée à la fin
+     * @return AdminModule[]
+     */
+    public function getModulesInMenuOrder(): array
     {
         $order = [];
         foreach ($this->menuRegistry->flatten() as $index => $item) {
@@ -147,10 +162,7 @@ final class AdminMenuBuilder implements ResetInterface
             }
         }
 
-        $modules = array_filter(
-            $this->moduleRegistry->all(),
-            fn(AdminModule $module) => $this->isModuleVisible($module->id),
-        );
+        $modules = $this->moduleRegistry->all();
         uasort(
             $modules,
             fn(AdminModule $a, AdminModule $b) => [$order[$a->id] ?? PHP_INT_MAX, $a->id] <=> [

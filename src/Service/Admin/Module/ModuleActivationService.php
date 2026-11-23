@@ -154,6 +154,15 @@ final class ModuleActivationService implements ResetInterface
     }
 
     /**
+     * Opérations des modules, avec leur verrou
+     * @return AdminModuleOperationFinder
+     */
+    public function getOperationFinder(): AdminModuleOperationFinder
+    {
+        return $this->operationFinder;
+    }
+
+    /**
      * Vide le cache, relu au prochain appel
      * @return void
      * @throws InvalidArgumentException

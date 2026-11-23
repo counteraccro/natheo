@@ -1,1 +1,5 @@
 module_activation.error.disabled: 'This feature is disabled.'
+module_activation.error.module_locked: 'This module is locked and cannot be disabled.'
+module_activation.error.module_not_found: 'This module does not exist.'
+module_activation.error.operation_locked: 'This operation is locked and cannot be disabled.'
+module_activation.error.operation_not_found: 'This operation does not exist.'
