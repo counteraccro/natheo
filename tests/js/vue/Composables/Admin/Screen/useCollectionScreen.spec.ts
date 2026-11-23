@@ -107,7 +107,7 @@ describe('createCollectionScreen', () => {
       'delete',
     ]);
     const readOnly = tag(3, { permissions: { edit: false, disable: false, delete: false } });
-    expect(screen.actionsFor(readOnly)).toEqual([]);
+    expect(screen.actionsFor(readOnly).map((action) => action.id)).toEqual(['view']);
   });
 
   it('cache ce que les opérations du module ne permettent pas', () => {
@@ -123,6 +123,8 @@ describe('createCollectionScreen', () => {
     const { screen, api, confirm, router } = screenWith([tag(1)]);
     await screen.runAction('edit', tag(1));
     expect(router.push).toHaveBeenCalledWith({ name: 'tag_edit', params: { id: '1' } });
+    await screen.runAction('view', tag(2));
+    expect(router.push).toHaveBeenLastCalledWith({ name: 'tag_edit', params: { id: '2' } });
 
     await screen.runAction('disable', tag(1));
     expect(confirm).toHaveBeenCalledTimes(1);

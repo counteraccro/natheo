@@ -114,8 +114,12 @@ export function createCollectionScreen<T extends ScreenItem>(
   const actionsFor = (row: T): DataTableAction[] => {
     const actions: DataTableAction[] = [];
     const edit = actionOf('edit');
-    if (edit && can.can('edit', edit.operation, row)) {
-      actions.push({ id: 'edit', label: t('admin_app.screen.action_edit'), icon: 'edit' });
+    if (edit) {
+      actions.push(
+        can.can('edit', edit.operation, row)
+          ? { id: 'edit', label: t('admin_app.screen.action_edit'), icon: 'edit' }
+          : { id: 'view', label: t('admin_app.screen.action_view'), icon: 'file' }
+      );
     }
     const toggle = actionOf('toggle');
     if (toggle && can.can('disable', toggle.operation, row)) {
@@ -266,7 +270,7 @@ export function createCollectionScreen<T extends ScreenItem>(
     bulkActions,
     actionsFor,
     async runAction(id: string, row: T): Promise<void> {
-      if (id === 'edit') {
+      if (id === 'edit' || id === 'view') {
         const edit = actionOf('edit');
         if (edit) await router.push({ name: edit.route, params: { id: String(row.id) } });
       } else if (id === 'disable' || id === 'enable') {
