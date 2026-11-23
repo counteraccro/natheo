@@ -9,7 +9,7 @@ module_activation.error.module_locked: 'Este módulo está bloqueado, no se pued
 module_activation.error.module_not_found: 'Este módulo no existe.'
 module_activation.error.operation_locked: 'Esta operación está bloqueada, no se puede desactivar.'
 module_activation.error.operation_not_found: 'Esta operación no existe.'
-module_activation.index.description: 'Active o desactive los módulos del back-office y sus operaciones de API. El sitio público no se ve afectado.'
+module_activation.index.description: 'Active o desactive los módulos del back-office y su acceso a la API.'
 module_activation.index.disabled: 'Desactivado'
 module_activation.index.module_disabled_hint: 'Activar una operación también activa el módulo; sus demás operaciones siguen desactivadas.'
 module_activation.index.module_locked: 'Este módulo es necesario para el back-office, no se puede desactivar.'

@@ -9,7 +9,7 @@ module_activation.error.module_locked: 'This module is locked and cannot be disa
 module_activation.error.module_not_found: 'This module does not exist.'
 module_activation.error.operation_locked: 'This operation is locked and cannot be disabled.'
 module_activation.error.operation_not_found: 'This operation does not exist.'
-module_activation.index.description: 'Enable or disable the back-office modules and their API operations. The public site is not affected.'
+module_activation.index.description: 'Enable or disable the back-office modules and their API access.'
 module_activation.index.disabled: 'Disabled'
 module_activation.index.module_disabled_hint: 'Enabling an operation also enables the module; its other operations stay disabled.'
 module_activation.index.module_locked: 'This module is required by the back-office and cannot be disabled.'

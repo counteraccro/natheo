@@ -9,7 +9,7 @@ module_activation.error.module_locked: 'Ce module est verrouillé, il ne peut pa
 module_activation.error.module_not_found: 'Ce module n''existe pas.'
 module_activation.error.operation_locked: 'Cette opération est verrouillée, elle ne peut pas être désactivée.'
 module_activation.error.operation_not_found: 'Cette opération n''existe pas.'
-module_activation.index.description: 'Activez ou désactivez les modules du back-office et leurs opérations d''API. Le site public n''est pas concerné.'
+module_activation.index.description: 'Activez ou désactivez les modules du back-office et leurs accès d''API.'
 module_activation.index.disabled: 'Désactivé'
 module_activation.index.module_disabled_hint: 'Réactiver une opération réactive aussi le module ; ses autres opérations restent désactivées.'
 module_activation.index.module_locked: 'Ce module est nécessaire au back-office, il ne peut pas être désactivé.'
