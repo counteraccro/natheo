@@ -20,6 +20,7 @@ admin_module.menu.media.label: 'Media library'
 admin_module.menu.menu.label: Menus
 admin_module.menu.menu_index.label: 'Menu management'
 admin_module.menu.menu_new.label: 'New menu'
+admin_module.menu.module_activation.label: Modules
 admin_module.menu.option_system.label: 'System options'
 admin_module.menu.page.label: Pages
 admin_module.menu.page_index.label: 'Page management'
@@ -60,6 +61,8 @@ admin_module.module.media.description: 'Media management'
 admin_module.module.media.label: 'Media library'
 admin_module.module.menu.description: 'Menu management'
 admin_module.module.menu.label: Menus
+admin_module.module.module_activation.description: 'Activation of the back-office modules and their API operations'
+admin_module.module.module_activation.label: Modules
 admin_module.module.my_account.description: 'Personal pages of each user: account, options, password'
 admin_module.module.my_account.label: 'My account'
 admin_module.module.option_system.description: 'CMS configuration'

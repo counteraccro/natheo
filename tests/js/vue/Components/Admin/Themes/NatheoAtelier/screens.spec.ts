@@ -29,6 +29,7 @@ const can: AdminCan = { canOperation: () => true, can: () => true, hasRole: () =
 
 const descriptor = defineCollectionScreen<Tag>({
   resource: '/admin/tags',
+  read: { operation: 'admin_tag_get_collection' },
   title: 'tag.index.title',
   columns: [
     { key: 'label', label: 'tag.index.column_label', type: 'badge', color: 'color' },

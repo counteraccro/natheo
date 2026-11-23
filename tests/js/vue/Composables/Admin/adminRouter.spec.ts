@@ -11,10 +11,16 @@ const Screen = defineComponent({ render: () => null });
 const NotFound = defineComponent({ render: () => null });
 
 function routerWith(
-  options: { visible?: string[]; leave?: boolean; debug?: boolean; pages?: Record<string, object> } = {}
+  options: {
+    visible?: string[];
+    operations?: string[];
+    leave?: boolean;
+    debug?: boolean;
+    pages?: Record<string, object>;
+  } = {}
 ) {
   const { api } = menuApi(
-    (options.visible ?? ['tag']).map((id) => moduleOf(id)),
+    (options.visible ?? ['tag']).map((id) => moduleOf(id, options.operations ?? ['admin_tag_post'])),
     []
   );
   const loader = vi.fn().mockResolvedValue({});
@@ -27,7 +33,10 @@ function routerWith(
       defineAdminModule({
         id: 'tag',
         domains: ['tag'],
-        routes: [{ path: '/tags', name: 'tag_index', component: Screen }],
+        routes: [
+          { path: '/tags', name: 'tag_index', component: Screen },
+          { path: '/tags/new', name: 'tag_new', component: Screen, meta: { operation: 'admin_tag_post' } },
+        ],
       }),
       defineAdminModule({
         id: 'design_system',
@@ -62,6 +71,17 @@ describe('createAdminRouter', () => {
     await router.push('/tags?page=2');
     expect(router.currentRoute.value.name).toBe(NOT_FOUND_ROUTE);
     expect(router.currentRoute.value.fullPath).toBe('/tags?page=2');
+  });
+
+  it('affiche la page introuvable quand l’opération de l’écran est désactivée', async () => {
+    const allowed = routerWith().router;
+    await allowed.push('/tags/new');
+    expect(allowed.currentRoute.value.name).toBe('tag_new');
+
+    const { router } = routerWith({ operations: [] });
+    await router.push('/tags/new');
+    expect(router.currentRoute.value.name).toBe(NOT_FOUND_ROUTE);
+    expect(router.currentRoute.value.fullPath).toBe('/tags/new');
   });
 
   it('affiche la page introuvable pour une adresse inconnue', async () => {

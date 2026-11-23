@@ -33,7 +33,10 @@ use Symfony\Component\Serializer\Attribute\Groups;
 #[
     ApiResource(
         shortName: 'AdminUserOption',
-        extraProperties: [OperationSecurityMetadataFactory::MODULE => CoreModuleId::MY_ACCOUNT->value],
+        extraProperties: [
+            OperationSecurityMetadataFactory::MODULE => CoreModuleId::MY_ACCOUNT->value,
+            OperationSecurityMetadataFactory::LOCKED => true,
+        ],
         normalizationContext: [
             'groups' => ['admin_user_option:read', Permissions::GROUP, AdminOptionChoice::GROUP],
         ],

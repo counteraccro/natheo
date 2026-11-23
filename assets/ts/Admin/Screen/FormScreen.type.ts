@@ -46,10 +46,10 @@ export type FormMeta = 'createdAt' | 'updatedAt' | 'author' | 'pageCount';
 export interface FormScreenDescriptor<T extends ScreenItem = ScreenItem> {
   /** Chemin de la collection (/admin/tags) */
   resource: string;
-  /** Clés de traduction, {id} dans celle de l'édition */
-  title: { create: string; edit: string };
-  /** Clés de traduction du texte sous le titre */
-  description?: { create: string; edit: string };
+  /** Clés de traduction, {id} dans celles de l'édition et de la consultation (élément non modifiable) */
+  title: { create: string; edit: string; view: string };
+  /** Clés de traduction du texte sous le titre, aucun texte en consultation sans view */
+  description?: { create: string; edit: string; view?: string };
   icon?: IconName;
   /** Route de la liste */
   back: string;
@@ -59,6 +59,10 @@ export interface FormScreenDescriptor<T extends ScreenItem = ScreenItem> {
   initial: () => Partial<T>;
   sections: FormSection[];
   meta?: FormMeta[];
+  /** Opération de lecture : page d'édition introuvable sans elle */
+  read: { operation: string };
+  /** Opération de création, exigée par une route de création : page introuvable sans elle */
+  create?: { operation: string };
   /** Opération de modification, pour savoir si l'élément est modifiable */
   update: { operation: string };
   delete?: { operation: string };

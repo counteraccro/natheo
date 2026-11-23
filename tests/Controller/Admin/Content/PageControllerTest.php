@@ -16,7 +16,9 @@ use App\Entity\Admin\System\User;
 use App\Enum\Admin\Content\Page\PageContentType;
 use App\Enum\Admin\Content\Page\PageStatus;
 use App\Enum\Admin\Content\Page\PageValidationStatus;
+use App\Enum\Admin\Module\CoreModuleId;
 use App\Enum\Admin\System\Options\OptionSystem;
+use App\Service\Admin\Module\ModuleActivationService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Tests\AppWebTestCase;
 use App\Service\Admin\Content\Page\PageHistory;
@@ -295,6 +297,42 @@ class PageControllerTest extends AppWebTestCase
         $this->client->loginUser($this->createUserAdmin(), 'admin');
         $this->client->request('GET', $this->router->generate('admin_page_update', ['id' => $pageOther->getId()]));
         $this->assertResponseIsSuccessful();
+    }
+
+    /**
+     * L'éditeur ne reçoit pas les adresses des tags et de la médiathèque quand leur module est désactivé
+     * @return void
+     */
+    public function testAddWithoutDisabledModules(): void
+    {
+        $this->client->loginUser($this->createUserContributeur(), 'admin');
+        $this->assertNotNull($this->getEditorUrls()['auto_complete_tag']);
+        $this->assertNotNull($this->getEditorUrls()['load_media']);
+
+        $activationService = $this->container->get(ModuleActivationService::class);
+        $activationService->setModuleDisabled(CoreModuleId::TAG->value, true);
+        $activationService->setModuleDisabled(CoreModuleId::MEDIA->value, true);
+        $urls = $this->getEditorUrls();
+        $this->assertNull($urls['auto_complete_tag']);
+        $this->assertNull($urls['tag_by_name']);
+        $this->assertNull($urls['load_media']);
+    }
+
+    /**
+     * Adresses reçues par l'éditeur de page
+     * @return array<string, string|null>
+     */
+    private function getEditorUrls(): array
+    {
+        $this->client->request('GET', $this->router->generate('admin_page_add'));
+        $this->assertResponseIsSuccessful();
+        return json_decode(
+            $this->client
+                ->getCrawler()
+                ->filter('[data-symfony--ux-vue--vue-component-value="Admin/Content/Page/Page"]')
+                ->attr('data-symfony--ux-vue--vue-props-value'),
+            true,
+        )['urls'];
     }
 
     /**

@@ -1,7 +1,7 @@
 <script setup lang="ts" generic="T extends ScreenItem">
 /**
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 1.2
  * Champs d'une section d'un écran de formulaire décrit par des données, communs aux thèmes : champs par langue en
  * onglets (langue partagée par les sections), texte, zone de texte, liste, couleur, interrupteur et composant du module
  */
@@ -61,7 +61,7 @@ const selectOptions = (field: Extract<FormField, { type: 'select' }>) =>
             :model-value="screen.translation(field, tab.id)"
             :maxlength="field.maxlength"
             :counter="field.maxlength !== undefined"
-            :disabled="screen.isCopied(field, tab.id)"
+            :disabled="!canEdit || screen.isCopied(field, tab.id)"
             @update:model-value="screen.setTranslation(field, tab.id, String($event ?? ''))"
           />
           <template v-if="field.copyFromCurrent && canEdit" #below>
@@ -79,6 +79,7 @@ const selectOptions = (field: Extract<FormField, { type: 'select' }>) =>
         v-model="row[field.name] as string"
         :maxlength="field.maxlength"
         :counter="field.maxlength !== undefined"
+        :disabled="!canEdit"
       />
     </UiField>
     <UiField v-else-if="field.type === 'textarea'" :name="field.name" :label="labelOf(field)" :help="helpOf(field)">
@@ -86,19 +87,26 @@ const selectOptions = (field: Extract<FormField, { type: 'select' }>) =>
         v-model="row[field.name] as string"
         :maxlength="field.maxlength"
         :counter="field.maxlength !== undefined"
+        :disabled="!canEdit"
       />
     </UiField>
     <UiField v-else-if="field.type === 'select'" :name="field.name" :label="labelOf(field)" :help="helpOf(field)">
-      <UiSelect v-model="row[field.name] as string" :options="selectOptions(field)" />
+      <UiSelect v-model="row[field.name] as string" :options="selectOptions(field)" :disabled="!canEdit" />
     </UiField>
     <UiField v-else-if="field.type === 'color'" :name="field.name" :label="labelOf(field)">
-      <UiColorInput v-model="row[field.name] as string" :suggestions="field.suggestions" :hint="helpOf(field)" />
+      <UiColorInput
+        v-model="row[field.name] as string"
+        :suggestions="field.suggestions"
+        :hint="helpOf(field)"
+        :disabled="!canEdit"
+      />
     </UiField>
     <UiSwitch
       v-else-if="field.type === 'switch'"
       v-model="row[field.name] as boolean"
       :label="labelOf(field)"
       :description="helpOf(field)"
+      :disabled="!canEdit"
     />
     <component :is="components.get(field.name)" v-else-if="field.type === 'component'" :data="row" :screen="screen" />
   </template>

@@ -37,7 +37,6 @@ final class MenuModule implements AdminModuleInterface
             role: 'ROLE_CONTRIBUTEUR',
             label: t('admin_module.module.menu.label', domain: 'admin_module'),
             description: t('admin_module.module.menu.description', domain: 'admin_module'),
-            locked: true,
             routePrefixes: ['admin_menu_'],
         );
     }

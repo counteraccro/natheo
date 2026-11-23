@@ -26,7 +26,11 @@ export interface AdminMenu {
   items: ShallowRef<AdminMenuItem[]>;
   /** Chargement des modules et des entrées, partagé par tous les appelants */
   load(): Promise<void>;
+  /** Nouveau chargement, après un changement des modules activés */
+  reload(): Promise<void>;
   isModuleVisible(id: string): boolean;
+  /** L'opération appartient à un module visible et n'est pas désactivée */
+  hasOperation(name: string): boolean;
   /** Arbre de la sidebar, entrée de la route courante active */
   tree(location: MenuLocation): SidebarItem[];
   /** Dossier et entrée de la route courante */
@@ -82,28 +86,37 @@ export function createAdminMenu(api: ApiClient, basePath: string): AdminMenu {
         ];
       });
 
+  const load = (): Promise<void> => {
+    loading ??= Promise.all([
+      api.getCollection<AdminModule>('/admin/modules'),
+      api.getCollection<AdminMenuItem>('/admin/menu_items'),
+    ]).then(
+      ([loadedModules, loadedItems]) => {
+        modules.value = loadedModules.members;
+        // Déjà dans l'ordre du menu
+        items.value = loadedItems.members;
+      },
+      (error: unknown) => {
+        loading = null;
+        throw error;
+      }
+    );
+    return loading;
+  };
+
   return {
     modules,
     items,
-    load(): Promise<void> {
-      loading ??= Promise.all([
-        api.getCollection<AdminModule>('/admin/modules'),
-        api.getCollection<AdminMenuItem>('/admin/menu_items'),
-      ]).then(
-        ([loadedModules, loadedItems]) => {
-          modules.value = loadedModules.members;
-          // Déjà dans l'ordre du menu
-          items.value = loadedItems.members;
-        },
-        (error: unknown) => {
-          loading = null;
-          throw error;
-        }
-      );
-      return loading;
+    load,
+    reload(): Promise<void> {
+      loading = null;
+      return load();
     },
     isModuleVisible(id: string): boolean {
       return modules.value.some((module) => module.id === id);
+    },
+    hasOperation(name: string): boolean {
+      return modules.value.some((module) => module.operations.includes(name));
     },
     tree(location: MenuLocation): SidebarItem[] {
       return build(null, activeOf(location)?.id ?? null);

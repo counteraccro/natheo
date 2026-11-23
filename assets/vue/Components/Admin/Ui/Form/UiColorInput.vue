@@ -1,7 +1,7 @@
 <script setup lang="ts">
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Couleur : sélecteur natif et code hexadécimal, seule une valeur #rrggbb est transmise ; couleurs proposées au
  * hasard en option, à droite du texte d'aide hint
  */
@@ -20,6 +20,7 @@ const props = withDefaults(
     suggestions?: number;
     /** Aide placée à gauche des couleurs proposées, à la place de celle du UiField */
     hint?: string;
+    disabled?: boolean;
   }>(),
   {
     suggestions: 0,
@@ -57,12 +58,16 @@ const onText = (value: string): void => {
 
 <template>
   <div class="flex items-center gap-2">
-    <span class="relative size-9 shrink-0 overflow-hidden rounded-md shadow-[inset_0_0_0_1px_var(--field)]">
+    <span
+      class="relative size-9 shrink-0 overflow-hidden rounded-md shadow-[inset_0_0_0_1px_var(--field)]"
+      :class="{ 'opacity-60': disabled }"
+    >
       <input
         type="color"
         :value="HEX.test(model) ? model : '#000000'"
         :aria-label="labels.colorInput.picker"
-        class="absolute -inset-2 size-[52px] cursor-pointer border-0 p-0"
+        :disabled="disabled"
+        class="absolute -inset-2 size-[52px] cursor-pointer border-0 p-0 disabled:cursor-not-allowed"
         @input="model = ($event.target as HTMLInputElement).value"
       />
     </span>
@@ -75,6 +80,7 @@ const onText = (value: string): void => {
       spellcheck="false"
       autocomplete="off"
       :title="labels.colorInput.hex"
+      :disabled="disabled"
       :class="[CONTROL_CLASSES, 'h-9 w-32 px-3 font-mono text-sm lowercase']"
       @input="onText(($event.target as HTMLInputElement).value)"
     />
@@ -82,7 +88,7 @@ const onText = (value: string): void => {
   <div v-if="suggestions > 0 || hint" class="mt-2 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
     <p v-if="hint" :id="hintId" class="m-0 text-sm text-fg-subtle">{{ hint }}</p>
     <div
-      v-if="suggestions > 0"
+      v-if="suggestions > 0 && !disabled"
       class="ml-auto flex flex-wrap items-center gap-1.5"
       role="group"
       :aria-label="labels.colorInput.suggestions"

@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace App\Tests\Api\V2\Admin\System;
 
 use App\Api\V2\Resource\Admin\System\AdminModule;
+use App\Service\Admin\Module\ModuleActivationService;
 use App\Tests\Api\V2\AppApiV2TestCase;
 use App\Tests\Api\V2\Module\ProbeModule;
 
@@ -98,5 +99,30 @@ class AdminModuleTest extends AppApiV2TestCase
 
         $this->assertProblem($this->requestV2('GET', '/admin/modules/user', headers: $headers), 404);
         $this->assertProblem($this->requestV2('GET', '/admin/modules/inconnu', headers: $headers), 404);
+    }
+
+    /**
+     * Un module désactivé est absent de la liste, une opération désactivée de ses opérations
+     * @return void
+     */
+    public function testDisabled(): void
+    {
+        $headers = $this->adminSessionHeaders(
+            $this->createUserContributeur(['disabled' => false, 'anonymous' => false]),
+        );
+        $activationService = $this->container->get(ModuleActivationService::class);
+
+        $activationService->setOperationDisabled('admin_probe_delete', true);
+        $probe = $this->decode($this->requestV2('GET', '/admin/modules/' . ProbeModule::ID, headers: $headers));
+        $this->assertNotContains('admin_probe_delete', $probe['operations']);
+        $this->assertContains('admin_probe_get', $probe['operations']);
+
+        $activationService->setModuleDisabled(ProbeModule::ID, true);
+        $ids = array_column(
+            $this->decode($this->requestV2('GET', '/admin/modules', headers: $headers))['member'],
+            'id',
+        );
+        $this->assertNotContains(ProbeModule::ID, $ids);
+        $this->assertProblem($this->requestV2('GET', '/admin/modules/' . ProbeModule::ID, headers: $headers), 404);
     }
 }

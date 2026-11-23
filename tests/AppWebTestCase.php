@@ -3,6 +3,7 @@
 declare(strict_types=1);
 namespace App\Tests;
 
+use App\Service\Admin\Module\ModuleActivationService;
 use App\Tests\Helper\Fixtures\FixturesTrait;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -52,6 +53,8 @@ class AppWebTestCase extends WebTestCase
         $session->set('_locale', 'fr');
 
         $this->generateDefaultOptionSystem();
+        // La base est remise à zéro après chaque test, le cache des modules désactivés non
+        $this->container->get(CacheInterface::class)->delete(ModuleActivationService::CACHE_KEY);
     }
 
     /**

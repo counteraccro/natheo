@@ -11,6 +11,8 @@ namespace App\Service\Api;
 use App\Service\Admin\Content\Page\PageDraftService;
 use App\Service\Admin\Content\Page\PageService;
 use App\Service\Admin\MarkdownEditorService;
+use App\Service\Admin\Module\AdminMenuBuilder;
+use App\Service\Admin\Module\ModuleActivationService;
 use App\Service\Admin\System\ApiTokenService;
 use App\Service\Admin\System\OptionConfigService;
 use App\Service\Admin\System\OptionSystemService;
@@ -66,6 +68,8 @@ class AppApiHandlerService
                 'userService' => UserService::class,
                 'userSessionService' => UserSessionService::class,
                 'apiTokenService' => ApiTokenService::class,
+                'moduleActivationService' => ModuleActivationService::class,
+                'adminMenuBuilder' => AdminMenuBuilder::class,
                 'apiAuthUserLimiter' => new SubscribedService(
                     'apiAuthUserLimiter',
                     RateLimiterFactoryInterface::class,
@@ -337,5 +341,25 @@ class AppApiHandlerService
     protected function getAccessDecisionManager(): AccessDecisionManagerInterface
     {
         return $this->handlers->get('accessDecisionManager');
+    }
+
+    /**
+     * @return ModuleActivationService
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getModuleActivationService(): ModuleActivationService
+    {
+        return $this->handlers->get('moduleActivationService');
+    }
+
+    /**
+     * @return AdminMenuBuilder
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getAdminMenuBuilder(): AdminMenuBuilder
+    {
+        return $this->handlers->get('adminMenuBuilder');
     }
 }

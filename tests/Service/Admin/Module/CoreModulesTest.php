@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Service\Admin\Module;
 
+use App\Api\V2\Metadata\AdminModuleOperationFinder;
 use App\Service\Admin\Module\AdminMenuRegistry;
 use App\Service\Admin\Module\AdminModuleRegistry;
 use App\Tests\Api\V2\Module\ProbeModule;
@@ -31,6 +32,12 @@ class CoreModulesTest extends AppWebTestCase
      * @var string[]
      */
     private const array LOCALES = ['fr', 'en', 'es'];
+
+    /**
+     * Entrées de l'application affichées sans opération d'API de leur module
+     * @var string[]
+     */
+    private const array ITEMS_WITHOUT_OPERATION = [];
 
     /**
      * Dossiers des modules de l'application Vue du back-office, surcharges en dernier
@@ -82,6 +89,46 @@ class CoreModulesTest extends AppWebTestCase
                     $moduleId,
                 ),
             );
+        }
+    }
+
+    /**
+     * Chaque entrée de l'application d'un module qui a des opérations déclare la sienne (exceptions listées), qui
+     * existe et appartient au module de l'entrée
+     * @return void
+     */
+    public function testMenuOperations(): void
+    {
+        $finder = $this->container->get(AdminModuleOperationFinder::class);
+        $registry = $this->getMenuRegistry();
+        foreach ($registry->all() as $item) {
+            $moduleId = $registry->getModule($item->id)?->id;
+            if ($item->operation === null) {
+                $this->assertTrue(
+                    !$item->isAppRoute() ||
+                        $moduleId === null ||
+                        $finder->find($moduleId) === [] ||
+                        in_array($item->id, self::ITEMS_WITHOUT_OPERATION, true),
+                    sprintf('Opération d\'API absente de l\'entrée « %s »', $item->id),
+                );
+                continue;
+            }
+            $this->assertSame(
+                $moduleId,
+                $finder->get($item->operation)['module'] ?? null,
+                sprintf('Opération « %s » de l\'entrée « %s » absente de son module', $item->operation, $item->id),
+            );
+        }
+    }
+
+    /**
+     * Chaque opération d'un module porte le préfixe lu par le finder
+     * @return void
+     */
+    public function testOperationPrefix(): void
+    {
+        foreach (array_keys($this->container->get(AdminModuleOperationFinder::class)->all()) as $name) {
+            $this->assertStringStartsWith(AdminModuleOperationFinder::NAME_PREFIX, $name);
         }
     }
 

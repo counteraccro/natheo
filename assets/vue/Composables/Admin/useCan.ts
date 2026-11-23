@@ -29,7 +29,7 @@ export interface AdminCan {
  */
 export function createCan(roles: string[], menu: AdminMenu): AdminCan {
   const reached = new Set(roles);
-  const canOperation = (name: string): boolean => menu.modules.value.some((module) => module.operations.includes(name));
+  const canOperation = (name: string): boolean => menu.hasOperation(name);
 
   return {
     canOperation,

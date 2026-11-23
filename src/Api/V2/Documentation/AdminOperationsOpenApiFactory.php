@@ -3,8 +3,9 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
- * Retire les opérations d'administration, et les schémas qu'elles seules utilisent, de la documentation publique
+ * @version 1.1
+ * Retire les opérations d'administration, et les schémas qu'elles seules utilisent, de la documentation publique ;
+ * retire de la documentation du back-office les opérations désactivées
  */
 
 namespace App\Api\V2\Documentation;
@@ -14,6 +15,8 @@ use ApiPlatform\OpenApi\Model\Paths;
 use ApiPlatform\OpenApi\Model\Tag;
 use ApiPlatform\OpenApi\OpenApi;
 use App\Api\V2\Metadata\OperationSecurityMetadataFactory;
+use App\Service\Admin\Module\ModuleActivationService;
+use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Attribute\AsDecorator;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\DependencyInjection\Attribute\AutowireDecorated;
@@ -33,9 +36,16 @@ final readonly class AdminOperationsOpenApiFactory implements OpenApiFactoryInte
      */
     private const string SCHEMA_REF = '#/components/schemas/';
 
+    /**
+     * Méthodes HTTP d'un PathItem
+     * @var string[]
+     */
+    private const array METHODS = ['Get', 'Put', 'Post', 'Delete', 'Patch'];
+
     public function __construct(
         #[AutowireDecorated] private OpenApiFactoryInterface $decorated,
         #[Autowire('%app.api_v2.prefix%')] private string $apiPrefix,
+        private ModuleActivationService $activationService,
     ) {}
 
     /**
@@ -46,7 +56,7 @@ final readonly class AdminOperationsOpenApiFactory implements OpenApiFactoryInte
     {
         $openApi = ($this->decorated)($context);
         if (($context[self::WITH_ADMIN] ?? false) === true) {
-            return $openApi;
+            return $this->withoutDisabled($openApi);
         }
 
         $adminPrefix = rtrim($this->apiPrefix, '/') . OperationSecurityMetadataFactory::ADMIN_PREFIX;
@@ -61,7 +71,7 @@ final readonly class AdminOperationsOpenApiFactory implements OpenApiFactoryInte
             }
             $public->addPath($path, $pathItem);
             $this->collectRefs($pathItem, $publicRefs);
-            foreach (['Get', 'Put', 'Post', 'Delete', 'Patch'] as $method) {
+            foreach (self::METHODS as $method) {
                 array_push($tags, ...$pathItem->{'get' . $method}()?->getTags() ?? []);
             }
         }
@@ -75,6 +85,51 @@ final readonly class AdminOperationsOpenApiFactory implements OpenApiFactoryInte
             ->withComponents($openApi->getComponents()->withSchemas($publicSchemas))
             ->withTags(
                 array_values(array_filter($openApi->getTags(), fn(Tag $tag) => in_array($tag->getName(), $tags, true))),
+            );
+    }
+
+    /**
+     * Documentation sans les opérations désactivées ni les schémas qu'elles seules utilisaient
+     * @param OpenApi $openApi
+     * @return OpenApi
+     * @throws InvalidArgumentException
+     */
+    private function withoutDisabled(OpenApi $openApi): OpenApi
+    {
+        $paths = new Paths();
+        $refs = [];
+        $removed = false;
+        foreach ($openApi->getPaths()->getPaths() as $path => $pathItem) {
+            $kept = false;
+            foreach (self::METHODS as $method) {
+                $operation = $pathItem->{'get' . $method}();
+                if ($operation === null) {
+                    continue;
+                }
+                if ($this->activationService->isOperationEnabled((string) $operation->getOperationId())) {
+                    $kept = true;
+                } else {
+                    $pathItem = $pathItem->{'with' . $method}(null);
+                    $removed = true;
+                }
+            }
+            if ($kept) {
+                $paths->addPath($path, $pathItem);
+                $this->collectRefs($pathItem, $refs);
+            }
+        }
+        if (!$removed) {
+            return $openApi;
+        }
+
+        $schemas = $openApi->getComponents()->getSchemas() ?? new \ArrayObject();
+        $used = array_flip($this->closure($refs, $schemas));
+        return $openApi
+            ->withPaths($paths)
+            ->withComponents(
+                $openApi
+                    ->getComponents()
+                    ->withSchemas(new \ArrayObject(array_intersect_key($schemas->getArrayCopy(), $used))),
             );
     }
 

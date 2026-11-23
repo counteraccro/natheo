@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace App\Service\Admin\Module;
 
+use Psr\Cache\InvalidArgumentException;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Service\ResetInterface;
@@ -28,6 +29,7 @@ final class AdminMenuBuilder implements ResetInterface
         private readonly Security $security,
         private readonly TranslatorInterface $translator,
         private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly ModuleActivationService $activationService,
     ) {}
 
     /**
@@ -118,21 +120,39 @@ final class AdminMenuBuilder implements ResetInterface
     }
 
     /**
-     * Indique si l'utilisateur courant a accès au module
+     * Indique si l'utilisateur courant a accès au module, activé
      * @param string $id
      * @return bool
+     * @throws InvalidArgumentException
      */
     public function isModuleVisible(string $id): bool
     {
         $module = $this->moduleRegistry->get($id);
-        return $module !== null && $this->security->isGranted($module->role);
+        return $module !== null &&
+            $this->security->isGranted($module->role) &&
+            $this->activationService->isModuleEnabled($id);
     }
 
     /**
      * Modules visibles, rangés par la position de leur première entrée dans le menu
      * @return AdminModule[]
+     * @throws InvalidArgumentException
      */
     public function getVisibleModules(): array
+    {
+        return array_values(
+            array_filter(
+                $this->getModulesInMenuOrder(),
+                fn(AdminModule $module) => $this->isModuleVisible($module->id),
+            ),
+        );
+    }
+
+    /**
+     * Tous les modules, rangés par la position de leur première entrée dans le menu, ceux sans entrée à la fin
+     * @return AdminModule[]
+     */
+    public function getModulesInMenuOrder(): array
     {
         $order = [];
         foreach ($this->menuRegistry->flatten() as $index => $item) {
@@ -142,10 +162,7 @@ final class AdminMenuBuilder implements ResetInterface
             }
         }
 
-        $modules = array_filter(
-            $this->moduleRegistry->all(),
-            fn(AdminModule $module) => $this->isModuleVisible($module->id),
-        );
+        $modules = $this->moduleRegistry->all();
         uasort(
             $modules,
             fn(AdminModule $a, AdminModule $b) => [$order[$a->id] ?? PHP_INT_MAX, $a->id] <=> [
@@ -263,11 +280,20 @@ final class AdminMenuBuilder implements ResetInterface
     }
 
     /**
+     * Rôles de l'entrée accordés, module et opération de l'entrée activés
      * @param AdminMenuItem $item
      * @return bool
+     * @throws InvalidArgumentException
      */
     private function isItemGranted(AdminMenuItem $item): bool
     {
+        $module = $this->menuRegistry->getModule($item->id);
+        if ($module !== null && !$this->activationService->isModuleEnabled($module->id)) {
+            return false;
+        }
+        if ($item->operation !== null && !$this->activationService->isOperationEnabled($item->operation)) {
+            return false;
+        }
         foreach ($this->menuRegistry->getRoles($item->id) as $role) {
             if (!$this->security->isGranted($role)) {
                 return false;

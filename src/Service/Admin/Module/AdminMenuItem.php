@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.2
+ * @version 1.3
  * Entrée du menu du back-office, dossier ou lien vers une page
  */
 
@@ -26,6 +26,7 @@ final readonly class AdminMenuItem
      * @param bool $hidden entrée connue du registre mais absente de la sidebar
      * @param string|null $route nom de la route Vue d'une entrée de l'application, à la place de $legacyRoute
      * @param string|null $path chemin de cette route sous /admin/<langue>/ (tags, tags/new), donné avec $route
+     * @param string|null $operation opération d'API du module sans laquelle l'entrée est masquée (admin_tag_post)
      */
     public function __construct(
         public string $id,
@@ -40,6 +41,7 @@ final readonly class AdminMenuItem
         public bool $hidden = false,
         public ?string $route = null,
         public ?string $path = null,
+        public ?string $operation = null,
     ) {}
 
     /**

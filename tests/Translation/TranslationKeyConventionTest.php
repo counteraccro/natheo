@@ -45,6 +45,7 @@ class TranslationKeyConventionTest extends TestCase
         'media',
         'menu',
         'messages',
+        'module_activation',
         'notification',
         'option_system',
         'page',

@@ -20,6 +20,7 @@ admin_module.menu.media.label: Mediateca
 admin_module.menu.menu.label: Menús
 admin_module.menu.menu_index.label: 'Gestión de los menús'
 admin_module.menu.menu_new.label: 'Nuevo menú'
+admin_module.menu.module_activation.label: Módulos
 admin_module.menu.option_system.label: 'Opciones del sistema'
 admin_module.menu.page.label: Páginas
 admin_module.menu.page_index.label: 'Gestión de las páginas'
@@ -60,6 +61,8 @@ admin_module.module.media.description: 'Gestión de los medios'
 admin_module.module.media.label: Mediateca
 admin_module.module.menu.description: 'Gestión de los menús'
 admin_module.module.menu.label: Menús
+admin_module.module.module_activation.description: 'Activación de los módulos del back-office y de sus operaciones de API'
+admin_module.module.module_activation.label: Módulos
 admin_module.module.my_account.description: 'Páginas personales de cada usuario: cuenta, opciones, contraseña'
 admin_module.module.my_account.label: 'Mi cuenta'
 admin_module.module.option_system.description: 'Configuración del CMS'

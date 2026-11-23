@@ -37,7 +37,6 @@ final class TagModule implements AdminModuleInterface
             role: 'ROLE_CONTRIBUTEUR',
             label: t('admin_module.module.tag.label', domain: 'admin_module'),
             description: t('admin_module.module.tag.description', domain: 'admin_module'),
-            locked: true,
             routePrefixes: ['admin_tag_'],
         );
     }
@@ -63,6 +62,7 @@ final class TagModule implements AdminModuleInterface
                 position: 10,
                 route: 'tag_index',
                 path: 'tags',
+                operation: 'admin_tag_get_collection',
             ),
             new AdminMenuItem(
                 id: 'tag_new',
@@ -73,6 +73,7 @@ final class TagModule implements AdminModuleInterface
                 route: 'tag_new',
                 path: 'tags/new',
                 shortcut: true,
+                operation: 'admin_tag_post',
             ),
         ];
     }

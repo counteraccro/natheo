@@ -36,7 +36,6 @@ final class MediaModule implements AdminModuleInterface
             role: 'ROLE_CONTRIBUTEUR',
             label: t('admin_module.module.media.label', domain: 'admin_module'),
             description: t('admin_module.module.media.description', domain: 'admin_module'),
-            locked: true,
             routePrefixes: ['admin_media_'],
         );
     }

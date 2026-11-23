@@ -75,6 +75,7 @@ describe('CollectionScreen (Natheo-Studio)', () => {
     const api = { getCollection } as unknown as ApiClient;
     const descriptor = defineCollectionScreen<Tag>({
       resource: '/admin/tags',
+      read: { operation: 'admin_tag_get_collection' },
       title: 'tag.index.title',
       columns: [
         { key: 'label', label: 'tag.index.column_label', type: 'badge', color: 'color' },
@@ -127,7 +128,9 @@ describe('FormScreen (Natheo-Studio)', () => {
     });
     const descriptor = defineFormScreen<Tag>({
       resource: '/admin/tags',
-      title: { create: 'tag.form.title_new', edit: 'tag.form.title_edit' },
+      read: { operation: 'admin_tag_get' },
+      create: { operation: 'admin_tag_post' },
+      title: { create: 'tag.form.title_new', edit: 'tag.form.title_edit', view: 'tag.form.title_view' },
       back: 'tag_index',
       editRoute: 'tag_edit',
       leaveKey: 'tag_form_test',
@@ -189,5 +192,63 @@ describe('FormScreen (Natheo-Studio)', () => {
     await flushPromises();
     expect(wrapper.text()).toContain('admin_app.resource.conflict_title');
     leaveGuard.untrack('tag_form_test');
+  });
+
+  it('grise les champs et titre en consultation quand l’élément n’est pas modifiable', async () => {
+    const getResource = vi.fn().mockResolvedValue({
+      data: tag(4, {
+        translations: [{ locale: 'fr', label: 'Été' }],
+        permissions: { edit: false, disable: false, delete: false },
+      }),
+      etag: '"v1"',
+    });
+    const resource = createAdminResource<Tag>({ getResource } as unknown as ApiClient, t, '/admin/tags', 4, {
+      leaveKey: 'tag_view_test',
+    });
+    const descriptor = defineFormScreen<Tag>({
+      resource: '/admin/tags',
+      read: { operation: 'admin_tag_get' },
+      title: { create: 'tag.form.title_new', edit: 'tag.form.title_edit', view: 'tag.form.title_view' },
+      back: 'tag_index',
+      editRoute: 'tag_edit',
+      leaveKey: 'tag_view_test',
+      initial: () => ({}),
+      sections: [
+        {
+          title: 'tag.form.section_label',
+          fields: [
+            { type: 'translations', name: 'translations', field: 'label', label: 'tag.form.label' },
+            { type: 'color', name: 'color', label: 'tag.form.color', suggestions: 3 },
+            { type: 'switch', name: 'disabled', label: 'tag.form.disabled' },
+          ],
+        },
+      ],
+      update: { operation: 'admin_tag_patch' },
+      messages: { created: 'a', saved: 'b', confirmDelete: 'c', deleted: 'd' },
+      rowLabel: (item) => item.label,
+    });
+    const screen = createFormScreen(descriptor, {
+      t,
+      can,
+      confirm: vi.fn(),
+      router: { push: vi.fn(), replace: vi.fn() },
+      resource,
+      locales: ['fr', 'en', 'es'],
+      currentLocale: 'fr',
+    });
+    await resource.load();
+
+    const wrapper = mount(FormScreen, {
+      props: { screen: screen as unknown as FormScreenState },
+      ...mountOptions(),
+    });
+    await flushPromises();
+    expect(wrapper.find('h1').text()).toBe('tag.form.title_view {"id":"4"}');
+    const controls = wrapper.findAll('form input, form [role="switch"]');
+    expect(controls.length).toBeGreaterThan(2);
+    expect(controls.every((control) => control.attributes('disabled') !== undefined)).toBe(true);
+    expect(wrapper.findAll('[role="tab"]').every((tab) => tab.attributes('disabled') === undefined)).toBe(true);
+    expect(wrapper.find('[aria-pressed]').exists()).toBe(false);
+    leaveGuard.untrack('tag_view_test');
   });
 });

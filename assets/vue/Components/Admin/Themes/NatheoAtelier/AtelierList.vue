@@ -75,7 +75,7 @@ const fieldOf = (row: ScreenItem, key: string): unknown => (row as unknown as Re
 const hrefOf = (row: ScreenItem): string | undefined =>
   editAction ? router.resolve({ name: editAction.route, params: { id: String(row.id) } }).href : undefined;
 const colorOf = (row: ScreenItem): string => (badge?.color ? String(fieldOf(row, badge.color) ?? '') : '');
-const rowActions = (row: ScreenItem) => screen.actionsFor(row).filter((action) => action.id !== 'edit');
+const rowActions = (row: ScreenItem) => screen.actionsFor(row).filter((action) => action.id !== 'edit' && action.id !== 'view');
 const isSelected = (row: ScreenItem): boolean => selected.value.includes(row.id);
 const toggle = (row: ScreenItem): void => {
   selected.value = isSelected(row) ? selected.value.filter((id) => id !== row.id) : [...selected.value, row.id];

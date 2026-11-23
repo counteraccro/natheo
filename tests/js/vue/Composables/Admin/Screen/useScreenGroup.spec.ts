@@ -7,6 +7,7 @@ import type { ScreenItem } from '@/ts/Admin/Screen/Screen.type';
 
 const list = defineCollectionScreen<ScreenItem>({
   resource: '/admin/tags',
+  read: { operation: 'admin_tag_get_collection' },
   title: 'tag.index.title',
   icon: 'tag',
   columns: [],
@@ -16,7 +17,9 @@ const list = defineCollectionScreen<ScreenItem>({
 
 const form = defineFormScreen<ScreenItem>({
   resource: '/admin/tags',
-  title: { create: 'tag.form.title_new', edit: 'tag.form.title_edit' },
+  read: { operation: 'admin_tag_get' },
+  create: { operation: 'admin_tag_post' },
+  title: { create: 'tag.form.title_new', edit: 'tag.form.title_edit', view: 'tag.form.title_view' },
   back: 'tag_index',
   editRoute: 'tag_edit',
   leaveKey: 'tag',
