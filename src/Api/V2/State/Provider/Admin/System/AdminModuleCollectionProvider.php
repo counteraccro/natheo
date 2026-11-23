@@ -4,7 +4,7 @@ declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
  * @version 1.1
- * Provider de la liste des modules du back-office visibles par l'utilisateur de la session
+ * Provider de la liste des modules du back-office visibles par l'utilisateur de la session, avec leurs opérations activées
  */
 
 namespace App\Api\V2\State\Provider\Admin\System;
@@ -16,6 +16,7 @@ use App\Api\V2\Metadata\AdminModuleOperationFinder;
 use App\Api\V2\Resource\Admin\System\AdminModule;
 use App\Service\Admin\Module\AdminMenuBuilder;
 use App\Service\Admin\Module\AdminModule as AdminModuleDefinition;
+use App\Service\Admin\Module\ModuleActivationService;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -27,6 +28,7 @@ final readonly class AdminModuleCollectionProvider implements ProviderInterface
         private AdminMenuBuilder $menuBuilder,
         private AdminModuleOperationFinder $operationFinder,
         private TranslatorInterface $translator,
+        private ModuleActivationService $activationService,
     ) {}
 
     /**
@@ -43,7 +45,12 @@ final readonly class AdminModuleCollectionProvider implements ProviderInterface
                 $definition,
                 $definition->label->trans($this->translator),
                 $definition->description->trans($this->translator),
-                $this->operationFinder->find($definition->id),
+                array_values(
+                    array_filter(
+                        $this->operationFinder->find($definition->id),
+                        fn(string $name) => $this->activationService->isOperationEnabled($name),
+                    ),
+                ),
             ),
             $this->menuBuilder->getVisibleModules(),
         );
