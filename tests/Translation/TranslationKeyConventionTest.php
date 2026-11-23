@@ -45,6 +45,7 @@ class TranslationKeyConventionTest extends TestCase
         'media',
         'menu',
         'messages',
+        'module_activation',
         'notification',
         'option_system',
         'page',
@@ -57,14 +58,7 @@ class TranslationKeyConventionTest extends TestCase
     /**
      * Préfixes d'origine des clés du domaine messages, traduites sans domaine
      */
-    private const MESSAGES_PREFIXES = [
-        'date',
-        'global',
-        'mail',
-        'options_system',
-        'options_user',
-        'response',
-    ];
+    private const MESSAGES_PREFIXES = ['date', 'global', 'mail', 'options_system', 'options_user', 'response'];
 
     private const LOCALES = ['fr', 'en', 'es'];
 

@@ -27,7 +27,10 @@ use Symfony\Component\Serializer\Attribute\Groups;
 #[
     ApiResource(
         shortName: 'AdminTranslationCatalogue',
-        extraProperties: [OperationSecurityMetadataFactory::MODULE => CoreModuleId::DASHBOARD->value],
+        extraProperties: [
+            OperationSecurityMetadataFactory::MODULE => CoreModuleId::DASHBOARD->value,
+            OperationSecurityMetadataFactory::LOCKED => true,
+        ],
         operations: [
             new GetCollection(
                 name: 'admin_translation_catalogue_get_collection',

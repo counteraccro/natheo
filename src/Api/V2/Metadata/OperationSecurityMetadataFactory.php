@@ -42,6 +42,12 @@ final readonly class OperationSecurityMetadataFactory implements ResourceMetadat
     public const string FRONT_ALLOWED = 'frontAllowed';
 
     /**
+     * Clé d'extraProperties d'une opération d'administration qui ne peut pas être désactivée
+     * @var string
+     */
+    public const string LOCKED = 'locked';
+
+    /**
      * Préfixe des adresses des opérations d'administration
      * @var string
      */

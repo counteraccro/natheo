@@ -36,7 +36,6 @@ final class TranslationModule implements AdminModuleInterface
             role: 'ROLE_ADMIN',
             label: t('admin_module.module.translation.label', domain: 'admin_module'),
             description: t('admin_module.module.translation.description', domain: 'admin_module'),
-            locked: true,
             routePrefixes: ['admin_translation_'],
         );
     }

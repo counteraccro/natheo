@@ -38,7 +38,6 @@ final class ApiTokenModule implements AdminModuleInterface
             role: 'ROLE_ADMIN',
             label: t('admin_module.module.api_token.label', domain: 'admin_module'),
             description: t('admin_module.module.api_token.description', domain: 'admin_module'),
-            locked: true,
             routePrefixes: ['admin_api_token_'],
         );
     }

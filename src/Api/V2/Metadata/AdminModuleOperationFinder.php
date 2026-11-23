@@ -3,21 +3,23 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
- * Noms des opérations d'API rattachées à chaque module du back-office
+ * @version 1.1
+ * Opérations d'API rattachées à chaque module du back-office, avec leur verrou
  */
 
 namespace App\Api\V2\Metadata;
 
+use ApiPlatform\Metadata\HttpOperation;
 use ApiPlatform\Metadata\Resource\Factory\ResourceMetadataCollectionFactoryInterface;
 use ApiPlatform\Metadata\Resource\Factory\ResourceNameCollectionFactoryInterface;
 use ApiPlatform\Metadata\Resource\ResourceNameCollection;
+use App\Enum\Admin\Module\CoreModuleId;
 
 final class AdminModuleOperationFinder
 {
     /**
-     * Noms des opérations indexés par identifiant de module, construits au premier appel
-     * @var array<string, string[]>|null
+     * Opérations indexées par nom, construites au premier appel
+     * @var array<string, array{name: string, module: string, method: string, path: string, locked: bool}>|null
      */
     private ?array $operations = null;
 
@@ -33,15 +35,32 @@ final class AdminModuleOperationFinder
      */
     public function find(string $module): array
     {
-        if ($this->operations === null) {
-            $this->operations = $this->build($this->resourceNameCollectionFactory->create());
-        }
-        return $this->operations[$module] ?? [];
+        return array_keys(array_filter($this->all(), fn(array $operation) => $operation['module'] === $module));
+    }
+
+    /**
+     * Opération du nom, null si elle n'appartient à aucun module
+     * @param string $name
+     * @return array{name: string, module: string, method: string, path: string, locked: bool}|null
+     */
+    public function get(string $name): ?array
+    {
+        return $this->all()[$name] ?? null;
+    }
+
+    /**
+     * Toutes les opérations des modules, triées par nom. Les opérations de la gestion des modules sont toujours
+     * verrouillées, pour qu'elle reste accessible
+     * @return array<string, array{name: string, module: string, method: string, path: string, locked: bool}>
+     */
+    public function all(): array
+    {
+        return $this->operations ??= $this->build($this->resourceNameCollectionFactory->create());
     }
 
     /**
      * @param ResourceNameCollection $resourceClasses
-     * @return array<string, string[]>
+     * @return array<string, array{name: string, module: string, method: string, path: string, locked: bool}>
      */
     private function build(ResourceNameCollection $resourceClasses): array
     {
@@ -49,17 +68,25 @@ final class AdminModuleOperationFinder
         foreach ($resourceClasses as $resourceClass) {
             foreach ($this->resourceMetadataCollectionFactory->create($resourceClass) as $resource) {
                 foreach ($resource->getOperations() ?? [] as $operation) {
-                    $module = $operation->getExtraProperties()[OperationSecurityMetadataFactory::MODULE] ?? null;
-                    if (is_string($module) && $operation->getName() !== null) {
-                        $operations[$module][] = $operation->getName();
+                    $extra = $operation->getExtraProperties();
+                    $module = $extra[OperationSecurityMetadataFactory::MODULE] ?? null;
+                    $name = $operation->getName();
+                    if (!is_string($module) || $name === null || isset($operations[$name])) {
+                        continue;
                     }
+                    $operations[$name] = [
+                        'name' => $name,
+                        'module' => $module,
+                        'method' => $operation instanceof HttpOperation ? $operation->getMethod() : 'GET',
+                        'path' => $operation instanceof HttpOperation ? (string) $operation->getUriTemplate() : '',
+                        'locked' =>
+                            ($extra[OperationSecurityMetadataFactory::LOCKED] ?? false) === true ||
+                            $module === CoreModuleId::MODULE_ACTIVATION->value,
+                    ];
                 }
             }
         }
-        foreach ($operations as &$names) {
-            $names = array_values(array_unique($names));
-            sort($names);
-        }
+        ksort($operations);
         return $operations;
     }
 }

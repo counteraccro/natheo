@@ -37,7 +37,6 @@ final class TagModule implements AdminModuleInterface
             role: 'ROLE_CONTRIBUTEUR',
             label: t('admin_module.module.tag.label', domain: 'admin_module'),
             description: t('admin_module.module.tag.description', domain: 'admin_module'),
-            locked: true,
             routePrefixes: ['admin_tag_'],
         );
     }

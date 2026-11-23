@@ -23,7 +23,14 @@ class ExtractedKeysTest extends KernelTestCase
      * Domaines vérifiés
      * @var string[]
      */
-    private const array DOMAINS = ['admin_ui', 'admin_module', 'admin_app', 'demo_overwrite', 'tag'];
+    private const array DOMAINS = [
+        'admin_ui',
+        'admin_module',
+        'admin_app',
+        'demo_overwrite',
+        'module_activation',
+        'tag',
+    ];
 
     private static ?MessageCatalogue $extracted = null;
 
