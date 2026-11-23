@@ -1,11 +1,12 @@
 <script setup lang="ts">
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Écran d'activation des modules du back-office : un interrupteur par module et par opération d'API
  */
 import { onMounted, ref } from 'vue';
-import { AdminPageHeader, UiBadge, UiButton, UiIcon, UiSkeleton, UiSwitch, UiTooltip } from '@ui';
+import { AdminPageHeader, UiBadge, UiButton, UiSkeleton, UiSwitch } from '@ui';
+import LockedIcon from '@admin/Modules/ModuleActivation/LockedIcon.vue';
 import { useAdminContext } from '@/vue/Composables/Admin/useAdminContext';
 import { useModuleActivation } from '@/vue/Composables/Admin/ModuleActivation/useModuleActivation';
 
@@ -41,8 +42,8 @@ onMounted(() => void screen.load());
     <li
       v-for="module in modules"
       :key="module.id"
-      class="rounded-lg border border-line bg-bg shadow-panel"
-      :class="{ 'bg-row-disabled': module.disabled }"
+      class="rounded-lg border border-line shadow-panel"
+      :class="module.disabled ? 'bg-row-disabled' : 'bg-bg'"
     >
       <div class="flex items-start gap-4 px-5 py-4">
         <div class="min-w-0 flex-1">
@@ -54,11 +55,7 @@ onMounted(() => void screen.load());
             @update:model-value="screen.setModuleDisabled(module, !$event)"
           />
         </div>
-        <UiTooltip v-if="module.locked" :text="t('module_activation.index.module_locked')">
-          <span class="inline-flex text-fg-subtle">
-            <UiIcon name="lock" class="size-4" :label="t('module_activation.index.module_locked')" />
-          </span>
-        </UiTooltip>
+        <LockedIcon v-if="module.locked" :label="t('module_activation.index.module_locked')" />
         <UiBadge v-else-if="module.disabled" tone="warning">{{ t('module_activation.index.disabled') }}</UiBadge>
       </div>
 
@@ -85,11 +82,7 @@ onMounted(() => void screen.load());
                 @update:model-value="screen.setOperationDisabled(module, operation, !$event)"
               />
             </div>
-            <UiTooltip v-if="operation.locked" :text="t('module_activation.index.operation_locked')">
-              <span class="inline-flex text-fg-subtle">
-                <UiIcon name="lock" class="size-4" :label="t('module_activation.index.operation_locked')" />
-              </span>
-            </UiTooltip>
+            <LockedIcon v-if="operation.locked" :label="t('module_activation.index.operation_locked')" />
           </li>
         </ul>
         <p v-if="opened.has(module.id) && module.disabled" class="mt-2 text-sm text-fg-subtle">

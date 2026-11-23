@@ -86,29 +86,31 @@ export function createAdminMenu(api: ApiClient, basePath: string): AdminMenu {
         ];
       });
 
+  const load = (): Promise<void> => {
+    loading ??= Promise.all([
+      api.getCollection<AdminModule>('/admin/modules'),
+      api.getCollection<AdminMenuItem>('/admin/menu_items'),
+    ]).then(
+      ([loadedModules, loadedItems]) => {
+        modules.value = loadedModules.members;
+        // Déjà dans l'ordre du menu
+        items.value = loadedItems.members;
+      },
+      (error: unknown) => {
+        loading = null;
+        throw error;
+      }
+    );
+    return loading;
+  };
+
   return {
     modules,
     items,
-    load(): Promise<void> {
-      loading ??= Promise.all([
-        api.getCollection<AdminModule>('/admin/modules'),
-        api.getCollection<AdminMenuItem>('/admin/menu_items'),
-      ]).then(
-        ([loadedModules, loadedItems]) => {
-          modules.value = loadedModules.members;
-          // Déjà dans l'ordre du menu
-          items.value = loadedItems.members;
-        },
-        (error: unknown) => {
-          loading = null;
-          throw error;
-        }
-      );
-      return loading;
-    },
+    load,
     reload(): Promise<void> {
       loading = null;
-      return this.load();
+      return load();
     },
     isModuleVisible(id: string): boolean {
       return modules.value.some((module) => module.id === id);
