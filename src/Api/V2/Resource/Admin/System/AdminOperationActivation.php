@@ -57,7 +57,8 @@ use Symfony\Component\Serializer\Attribute\Groups;
                     summary: 'Active ou désactive une opération d\'API du back-office',
                     description: 'Une opération désactivée répond 404 et disparaît de la documentation ; ' .
                         'activer une opération d\'un module désactivé réactive le module, ses autres opérations ' .
-                        'restant désactivées ; refusé en 409 pour une opération verrouillée.',
+                        'restant désactivées ; désactiver la dernière opération active désactive le module ; ' .
+                        'refusé en 409 pour une opération verrouillée.',
                 ),
                 input: UpdateActivationInput::class,
                 provider: AdminOperationActivationProvider::class,

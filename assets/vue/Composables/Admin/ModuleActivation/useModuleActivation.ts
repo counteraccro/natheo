@@ -119,11 +119,15 @@ export function useModuleActivation(context: Pick<AdminContext, 'api' | 'menu' |
       disabled: boolean
     ): Promise<void> {
       const label = `${operation.method} ${operation.path}`;
+      const last =
+        !module.locked && module.operations.every((candidate) => candidate.id === operation.id || candidate.disabled);
       if (
         disabled &&
         !(await confirm({
           title: t('module_activation.dialog.disable_operation', { label }),
-          message: t('module_activation.dialog.disable_operation_text'),
+          message: last
+            ? t('module_activation.dialog.disable_last_operation_text', { label: module.label })
+            : t('module_activation.dialog.disable_operation_text'),
           tone: 'danger',
           icon: 'ban',
           confirmLabel: t('module_activation.dialog.disable'),
@@ -133,19 +137,9 @@ export function useModuleActivation(context: Pick<AdminContext, 'api' | 'menu' |
         return;
       }
       await run(operation.id, async () => {
-        const updated = await api.patch<AdminOperationActivation>(`/admin/operation_activations/${operation.id}`, {
-          disabled,
-        });
-        const current = modules.value.find((candidate) => candidate.id === module.id) ?? module;
-        if (current.disabled) {
-          // Le module réactivé par l'opération change aussi l'état de ses autres opérations
-          replaceModule(await api.get<AdminModuleActivation>(`/admin/module_activations/${module.id}`));
-        } else {
-          replaceModule({
-            ...current,
-            operations: current.operations.map((candidate) => (candidate.id === updated.id ? updated : candidate)),
-          });
-        }
+        await api.patch<AdminOperationActivation>(`/admin/operation_activations/${operation.id}`, { disabled });
+        // Une opération peut activer ou désactiver son module, et donc l'état affiché des autres
+        replaceModule(await api.get<AdminModuleActivation>(`/admin/module_activations/${module.id}`));
         await menu.reload();
         notify(
           'success',

@@ -1,5 +1,6 @@
 module_activation.dialog.disable: 'Desactivar'
 module_activation.dialog.disable_module: '¿Desactivar el módulo «{label}»?'
+module_activation.dialog.disable_last_operation_text: 'Es la última operación activa: el módulo «{label}» se desactivará y desaparecerá del menú.'
 module_activation.dialog.disable_module_text: 'El módulo desaparece del menú, y sus páginas y operaciones de API responden 404 hasta que se reactive. El sitio público no se ve afectado.'
 module_activation.dialog.disable_operation: '¿Desactivar la operación «{label}»?'
 module_activation.dialog.disable_operation_text: 'La acción que la utiliza desaparece de las pantallas y la operación responde 404 hasta que se reactive.'

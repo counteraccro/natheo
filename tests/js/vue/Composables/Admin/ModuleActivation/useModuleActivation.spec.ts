@@ -103,6 +103,7 @@ describe('useModuleActivation', () => {
 
   it('désactive une opération et met à jour son module', async () => {
     const { screen, api } = screenOf(() => operationOf('admin_tag_delete', { disabled: true }));
+    api.get.mockResolvedValueOnce(moduleOf({ operations: [operationOf('admin_tag_delete', { disabled: true })] }));
     await screen.load();
     const module = screen.modules.value[0];
 
@@ -113,6 +114,21 @@ describe('useModuleActivation', () => {
     expect(api.patch).toHaveBeenCalledWith('/admin/operation_activations/admin_tag_delete', { disabled: true });
     expect(screen.modules.value[0].operations[0].disabled).toBe(true);
     expect(screen.kindLabel(module.operations[0])).toBe('module_activation.kind.delete');
+  });
+
+  it('prévient que la dernière opération active désactive le module', async () => {
+    const { screen } = screenOf(() => operationOf('admin_tag_delete', { disabled: true }));
+    await screen.load();
+    const module = moduleOf({
+      operations: [operationOf('admin_tag_delete'), operationOf('admin_tag_get', { disabled: true })],
+    });
+
+    const pending = screen.setOperationDisabled(module, module.operations[0], true);
+    expect(useConfirm().current.value?.message).toBe(
+      'module_activation.dialog.disable_last_operation_text {"label":"Tags"}'
+    );
+    useConfirm().answer(false);
+    await pending;
   });
 
   it('relit le module quand une opération réactive son module désactivé', async () => {

@@ -147,7 +147,8 @@ class ApiAdminModuleActivationService extends AppApiService
 
     /**
      * Active ou désactive une opération. Activer une opération d'un module désactivé réactive le module, ses autres
-     * opérations restant désactivées
+     * opérations restant désactivées ; désactiver la dernière opération active désactive le module, qui retrouve
+     * toutes ses opérations à sa réactivation
      * @param string $name
      * @param bool $disabled
      * @return void
@@ -174,6 +175,35 @@ class ApiAdminModuleActivationService extends AppApiService
             $service->setModuleDisabled($module, false);
         }
         $service->setOperationDisabled($name, $disabled);
+        if ($disabled && $module !== null) {
+            $this->disableModuleWithoutOperation($module);
+        }
+    }
+
+    /**
+     * Désactive le module dont plus aucune opération n'est active, ses opérations retrouvant leur état par défaut
+     * @param string $module
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws InvalidArgumentException
+     */
+    private function disableModuleWithoutOperation(string $module): void
+    {
+        $service = $this->getModuleActivationService();
+        if (!$service->isModuleEnabled($module) || $service->isModuleLocked($module)) {
+            return;
+        }
+        $operations = $this->getOperationFinder()->find($module);
+        foreach ($operations as $operation) {
+            if ($service->isOperationEnabled($operation)) {
+                return;
+            }
+        }
+        foreach ($operations as $operation) {
+            $service->setOperationDisabled($operation, false);
+        }
+        $service->setModuleDisabled($module, true);
     }
 
     /**

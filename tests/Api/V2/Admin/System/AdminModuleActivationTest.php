@@ -163,6 +163,35 @@ class AdminModuleActivationTest extends AppApiV2TestCase
     }
 
     /**
+     * Désactiver la dernière opération active désactive le module, qui retrouve toutes ses opérations à sa réactivation
+     * @return void
+     */
+    public function testLastOperationDisablesModule(): void
+    {
+        $headers = $this->superAdminHeaders();
+        $path = '/admin/module_activations/' . ProbeModule::ID;
+        $operations = array_column(
+            $this->decode($this->requestV2('GET', $path, headers: $headers))['operations'],
+            'id',
+        );
+
+        foreach ($operations as $index => $name) {
+            $this->requestV2(
+                'PATCH',
+                '/admin/operation_activations/' . $name,
+                body: ['disabled' => true],
+                headers: $headers,
+            );
+            $module = $this->decode($this->requestV2('GET', $path, headers: $headers));
+            $this->assertSame($index === array_key_last($operations), $module['disabled']);
+        }
+
+        $this->requestV2('PATCH', $path, body: ['disabled' => false], headers: $headers);
+        $module = $this->decode($this->requestV2('GET', $path, headers: $headers));
+        $this->assertNotContains(true, array_column($module['operations'], 'disabled'));
+    }
+
+    /**
      * La gestion des modules, les modules et les opérations verrouillés sont refusés en 409
      * @return void
      */
