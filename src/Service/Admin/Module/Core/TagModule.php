@@ -62,6 +62,7 @@ final class TagModule implements AdminModuleInterface
                 position: 10,
                 route: 'tag_index',
                 path: 'tags',
+                operation: 'admin_tag_get_collection',
             ),
             new AdminMenuItem(
                 id: 'tag_new',
@@ -72,6 +73,7 @@ final class TagModule implements AdminModuleInterface
                 route: 'tag_new',
                 path: 'tags/new',
                 shortcut: true,
+                operation: 'admin_tag_post',
             ),
         ];
     }

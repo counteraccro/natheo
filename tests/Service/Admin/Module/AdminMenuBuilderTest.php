@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 1.2
  * Test du menu construit pour l'utilisateur courant et de son rendu dans la sidebar
  */
 
@@ -88,6 +88,39 @@ class AdminMenuBuilderTest extends AppWebTestCase
         );
         $this->assertFalse($builder->isModuleVisible('page'));
         $this->assertSame(['tag', 'token'], array_map(fn($module) => $module->id, $builder->getVisibleModules()));
+    }
+
+    /**
+     * Une entrée dont l'opération est désactivée disparaît du menu et des raccourcis, son module restant visible
+     * @return void
+     */
+    public function testDisabledOperation(): void
+    {
+        $probe = fn() => $this->createTestModule(
+            'probe',
+            items: [
+                $this->createTestMenuItem('probe', 'content', 30, 'admin_page_index'),
+                $this->createTestMenuItem('probe_new', 'probe', 10, 'admin_page_index', [
+                    'shortcut' => true,
+                    'operation' => 'admin_probe_post',
+                ]),
+            ],
+        );
+        $shortcuts = fn(AdminMenuBuilder $builder) => array_map(
+            fn(AdminMenuNode $node) => $node->item->id,
+            $builder->getShortcuts(),
+        );
+        $this->assertContains('probe_new', $shortcuts($this->createBuilder($this->createUserSuperAdmin(), [$probe()])));
+
+        $this->container->get(ModuleActivationService::class)->setOperationDisabled('admin_probe_post', true);
+        $builder = $this->createBuilder($this->createUserSuperAdmin(), [$probe()]);
+
+        $this->assertNotContains('probe_new', $shortcuts($builder));
+        $this->assertNotContains(
+            'probe_new',
+            array_map(fn(AdminMenuNode $node) => $node->item->id, $builder->getFlatList()),
+        );
+        $this->assertTrue($builder->isModuleVisible('probe'));
     }
 
     /**

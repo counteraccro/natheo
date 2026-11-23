@@ -280,7 +280,7 @@ final class AdminMenuBuilder implements ResetInterface
     }
 
     /**
-     * Rôles de l'entrée accordés et module de l'entrée activé
+     * Rôles de l'entrée accordés, module et opération de l'entrée activés
      * @param AdminMenuItem $item
      * @return bool
      * @throws InvalidArgumentException
@@ -289,6 +289,9 @@ final class AdminMenuBuilder implements ResetInterface
     {
         $module = $this->menuRegistry->getModule($item->id);
         if ($module !== null && !$this->activationService->isModuleEnabled($module->id)) {
+            return false;
+        }
+        if ($item->operation !== null && !$this->activationService->isOperationEnabled($item->operation)) {
             return false;
         }
         foreach ($this->menuRegistry->getRoles($item->id) as $role) {

@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Service\Admin\Module;
 
+use App\Api\V2\Metadata\AdminModuleOperationFinder;
 use App\Service\Admin\Module\AdminMenuRegistry;
 use App\Service\Admin\Module\AdminModuleRegistry;
 use App\Tests\Api\V2\Module\ProbeModule;
@@ -83,6 +84,29 @@ class CoreModulesTest extends AppWebTestCase
                 ),
             );
         }
+    }
+
+    /**
+     * L'opération d'une entrée existe et appartient au module de l'entrée
+     * @return void
+     */
+    public function testMenuOperationsBelongToModule(): void
+    {
+        $finder = $this->container->get(AdminModuleOperationFinder::class);
+        $registry = $this->getMenuRegistry();
+        $checked = 0;
+        foreach ($registry->all() as $item) {
+            if ($item->operation === null) {
+                continue;
+            }
+            $this->assertSame(
+                $registry->getModule($item->id)?->id,
+                $finder->get($item->operation)['module'] ?? null,
+                sprintf('Opération « %s » de l\'entrée « %s » absente de son module', $item->operation, $item->id),
+            );
+            $checked++;
+        }
+        $this->assertGreaterThan(0, $checked);
     }
 
     /**
