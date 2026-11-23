@@ -122,6 +122,17 @@ class CoreModulesTest extends AppWebTestCase
     }
 
     /**
+     * Chaque opération d'un module porte le préfixe lu par le finder
+     * @return void
+     */
+    public function testOperationPrefix(): void
+    {
+        foreach (array_keys($this->container->get(AdminModuleOperationFinder::class)->all()) as $name) {
+            $this->assertStringStartsWith(AdminModuleOperationFinder::NAME_PREFIX, $name);
+        }
+    }
+
+    /**
      * Libellés des modules et des entrées traduits dans chaque langue
      * @return void
      */

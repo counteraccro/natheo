@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 1.2
  * Opérations d'API rattachées à chaque module du back-office, avec leur verrou
  */
 
@@ -17,6 +17,12 @@ use App\Enum\Admin\Module\CoreModuleId;
 
 final class AdminModuleOperationFinder
 {
+    /**
+     * Préfixe du nom de toute opération d'un module
+     * @var string
+     */
+    public const string NAME_PREFIX = 'admin_';
+
     /**
      * Opérations indexées par nom, construites au premier appel
      * @var array<string, array{name: string, module: string, method: string, path: string, locked: bool}>|null
@@ -45,6 +51,9 @@ final class AdminModuleOperationFinder
      */
     public function get(string $name): ?array
     {
+        if (!str_starts_with($name, self::NAME_PREFIX)) {
+            return null;
+        }
         return $this->all()[$name] ?? null;
     }
 
