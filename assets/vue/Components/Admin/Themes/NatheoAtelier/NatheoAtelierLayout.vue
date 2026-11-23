@@ -259,8 +259,10 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
         <div aria-live="polite"><slot /></div>
       </div>
     </main>
-    <main v-else class="flex min-h-0 flex-1 flex-col overflow-auto">
-      <slot />
+    <main v-else class="min-h-0 flex-1 overflow-auto">
+      <div class="flex flex-col gap-5 px-[18px] pt-6 pb-14 max-md:px-2.5 max-md:pt-4">
+        <slot />
+      </div>
     </main>
 
     <AtelierCommandPalette
