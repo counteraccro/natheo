@@ -11,16 +11,11 @@ namespace App\Api\V2\Mapper\Admin\System;
 
 use App\Api\V2\Resource\Admin\System\AdminModuleActivation;
 use App\Api\V2\Resource\Admin\System\AdminOperationActivation;
+use App\Enum\Admin\Module\OperationKind;
 use App\Service\Admin\Module\AdminModule;
 
 final readonly class AdminModuleActivationMapper
 {
-    /**
-     * Suffixes des noms d'opération, du plus long au plus court
-     * @var string[]
-     */
-    private const array KINDS = ['get_collection', 'get', 'post', 'put', 'patch', 'delete'];
-
     /**
      * @param AdminModule $definition
      * @param array{label: string, description: string} $texts libellé et description traduits
@@ -72,11 +67,11 @@ final readonly class AdminModuleActivationMapper
      */
     private function getKind(string $name, string $method): string
     {
-        foreach (self::KINDS as $kind) {
-            if (str_ends_with($name, '_' . $kind)) {
-                return $kind;
+        foreach (OperationKind::cases() as $kind) {
+            if (str_ends_with($name, '_' . $kind->getSlug())) {
+                return $kind->getSlug();
             }
         }
-        return strtolower($method);
+        return (OperationKind::tryFromSlug(strtolower($method)) ?? OperationKind::GET)->getSlug();
     }
 }

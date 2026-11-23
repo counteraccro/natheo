@@ -20,10 +20,12 @@ use App\Api\V2\Exception\ConflictException;
 use App\Api\V2\Exception\NotFoundException;
 use App\Api\V2\Exception\PreconditionFailedException;
 use App\Api\V2\Input\Admin\System\UpdateActivationInput;
+use App\Api\V2\Metadata\EnumSlugPropertyMetadataFactory;
 use App\Api\V2\Metadata\OperationSecurityMetadataFactory;
 use App\Api\V2\State\Processor\Admin\System\UpdateAdminOperationActivationProcessor;
 use App\Api\V2\State\Provider\Admin\System\AdminOperationActivationProvider;
 use App\Enum\Admin\Module\CoreModuleId;
+use App\Enum\Admin\Module\OperationKind;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 #[
@@ -94,7 +96,12 @@ final class AdminOperationActivation implements VersionedResourceInterface
     /**
      * Nature de l'opération : get_collection, get, post, put, patch ou delete
      */
-    #[ApiProperty(required: true)]
+    #[
+        ApiProperty(
+            required: true,
+            extraProperties: [EnumSlugPropertyMetadataFactory::EXTRA_PROPERTY => OperationKind::class],
+        ),
+    ]
     #[Groups(['admin_operation_activation:read', 'admin_module_activation:read', 'admin_module_activation:list'])]
     public string $kind = '';
 
