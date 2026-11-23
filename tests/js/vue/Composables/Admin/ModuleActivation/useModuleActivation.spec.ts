@@ -41,6 +41,7 @@ function screenOf(patch: (path: string, body: { disabled: boolean }) => unknown)
   const api = {
     getCollection: vi.fn(() => Promise.resolve({ members: [moduleOf()], total: 1, page: 1, lastPage: 1 })),
     patch: vi.fn((path: string, body: { disabled: boolean }) => Promise.resolve(patch(path, body))),
+    get: vi.fn(() => Promise.resolve(moduleOf())),
   };
   const menu = { reload: vi.fn(() => Promise.resolve()) };
   const t = (key: string, params?: Record<string, unknown>) => (params ? `${key} ${JSON.stringify(params)}` : key);
@@ -112,6 +113,21 @@ describe('useModuleActivation', () => {
     expect(api.patch).toHaveBeenCalledWith('/admin/operation_activations/admin_tag_delete', { disabled: true });
     expect(screen.modules.value[0].operations[0].disabled).toBe(true);
     expect(screen.kindLabel(module.operations[0])).toBe('module_activation.kind.delete');
+  });
+
+  it('relit le module quand une opération réactive son module désactivé', async () => {
+    const { screen, api } = screenOf(() => operationOf('admin_tag_delete'));
+    await screen.load();
+    screen.modules.value = [
+      moduleOf({ disabled: true, operations: [operationOf('admin_tag_delete', { disabled: true })] }),
+    ];
+    const module = screen.modules.value[0];
+
+    await screen.setOperationDisabled(module, module.operations[0], false);
+
+    expect(api.get).toHaveBeenCalledWith('/admin/module_activations/tag');
+    expect(screen.modules.value[0].disabled).toBe(false);
+    expect(screen.modules.value[0].operations[0].disabled).toBe(false);
   });
 
   it('affiche l’erreur de l’API, sans changer l’état', async () => {

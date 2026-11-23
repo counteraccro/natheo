@@ -18,7 +18,7 @@ export interface AdminOperationActivation extends JsonLdResource {
   path: string;
   kind: OperationKind;
   locked: boolean;
-  /** Désactivation propre de l'opération, sans tenir compte de son module */
+  /** Opération désactivée par elle-même ou par son module */
   disabled: boolean;
 }
 

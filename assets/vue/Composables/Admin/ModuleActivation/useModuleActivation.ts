@@ -137,10 +137,15 @@ export function useModuleActivation(context: Pick<AdminContext, 'api' | 'menu' |
           disabled,
         });
         const current = modules.value.find((candidate) => candidate.id === module.id) ?? module;
-        replaceModule({
-          ...current,
-          operations: current.operations.map((candidate) => (candidate.id === updated.id ? updated : candidate)),
-        });
+        if (current.disabled) {
+          // Le module réactivé par l'opération change aussi l'état de ses autres opérations
+          replaceModule(await api.get<AdminModuleActivation>(`/admin/module_activations/${module.id}`));
+        } else {
+          replaceModule({
+            ...current,
+            operations: current.operations.map((candidate) => (candidate.id === updated.id ? updated : candidate)),
+          });
+        }
         await menu.reload();
         notify(
           'success',

@@ -56,7 +56,8 @@ use Symfony\Component\Serializer\Attribute\Groups;
                 openapi: new OpenApiOperation(
                     summary: 'Active ou désactive une opération d\'API du back-office',
                     description: 'Une opération désactivée répond 404 et disparaît de la documentation ; ' .
-                        'refusé en 409 pour une opération verrouillée.',
+                        'activer une opération d\'un module désactivé réactive le module, ses autres opérations ' .
+                        'restant désactivées ; refusé en 409 pour une opération verrouillée.',
                 ),
                 input: UpdateActivationInput::class,
                 provider: AdminOperationActivationProvider::class,
@@ -101,7 +102,7 @@ final class AdminOperationActivation implements VersionedResourceInterface
     public bool $locked = false;
 
     /**
-     * Désactivation propre de l'opération, sans tenir compte de son module
+     * Opération désactivée par elle-même ou par son module
      */
     #[ApiProperty(required: true)]
     #[Groups(['admin_operation_activation:read', 'admin_module_activation:read', 'admin_module_activation:list'])]

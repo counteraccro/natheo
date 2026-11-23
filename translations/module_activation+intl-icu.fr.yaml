@@ -10,7 +10,7 @@ module_activation.error.operation_locked: 'Cette opération est verrouillée, el
 module_activation.error.operation_not_found: 'Cette opération n''existe pas.'
 module_activation.index.description: 'Activez ou désactivez les modules du back-office et leurs opérations d''API. Le site public n''est pas concerné.'
 module_activation.index.disabled: 'Désactivé'
-module_activation.index.module_disabled_hint: 'Toutes les opérations d''un module désactivé répondent 404, quel que soit leur état.'
+module_activation.index.module_disabled_hint: 'Réactiver une opération réactive aussi le module ; ses autres opérations restent désactivées.'
 module_activation.index.module_locked: 'Ce module est nécessaire au back-office, il ne peut pas être désactivé.'
 module_activation.index.operation_locked: 'Cette opération est nécessaire au back-office, elle ne peut pas être désactivée.'
 module_activation.index.operations: '{count, plural, one {# opération d''API} other {# opérations d''API}}'

@@ -133,6 +133,36 @@ class AdminModuleActivationTest extends AppApiV2TestCase
     }
 
     /**
+     * Les opérations d'un module désactivé le sont aussi ; en réactiver une réactive le module, pas les autres
+     * @return void
+     */
+    public function testOperationOfDisabledModule(): void
+    {
+        $headers = $this->superAdminHeaders();
+        $path = '/admin/module_activations/' . ProbeModule::ID;
+        $this->requestV2('PATCH', $path, body: ['disabled' => true], headers: $headers);
+
+        $module = $this->decode($this->requestV2('GET', $path, headers: $headers));
+        $this->assertNotContains(false, array_column($module['operations'], 'disabled'));
+
+        $response = $this->requestV2(
+            'PATCH',
+            '/admin/operation_activations/admin_probe_get_collection',
+            body: ['disabled' => false],
+            headers: $headers,
+        );
+        $this->assertFalse($this->decode($response)['disabled']);
+
+        $module = $this->decode($this->requestV2('GET', $path, headers: $headers));
+        $this->assertFalse($module['disabled']);
+        $disabled = array_column($module['operations'], 'disabled', 'id');
+        $this->assertFalse($disabled['admin_probe_get_collection']);
+        $this->assertTrue($disabled['admin_probe_get']);
+        $this->assertEquals(200, $this->requestV2('GET', '/admin/probes', headers: $headers)->getStatusCode());
+        $this->assertProblem($this->requestV2('GET', '/admin/probes/1', headers: $headers), 404);
+    }
+
+    /**
      * La gestion des modules, les modules et les opérations verrouillés sont refusés en 409
      * @return void
      */

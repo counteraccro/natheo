@@ -101,8 +101,8 @@ class ApiAdminModuleActivationService extends AppApiService
     }
 
     /**
-     * Désactivation propre de l'opération, sans tenir compte de son module, toujours fausse si elle est verrouillée
-     * @param array{name: string, locked: bool} $operation
+     * Opération désactivée par elle-même ou par son module
+     * @param array{name: string} $operation
      * @return bool
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -110,7 +110,7 @@ class ApiAdminModuleActivationService extends AppApiService
      */
     public function isOperationDisabled(array $operation): bool
     {
-        return !$operation['locked'] && $this->getModuleActivationService()->isOperationDisabled($operation['name']);
+        return !$this->getModuleActivationService()->isOperationEnabled($operation['name']);
     }
 
     /**
@@ -146,7 +146,8 @@ class ApiAdminModuleActivationService extends AppApiService
     }
 
     /**
-     * Active ou désactive une opération
+     * Active ou désactive une opération. Activer une opération d'un module désactivé réactive le module, ses autres
+     * opérations restant désactivées
      * @param string $name
      * @param bool $disabled
      * @return void
@@ -162,6 +163,15 @@ class ApiAdminModuleActivationService extends AppApiService
             throw new ConflictException(
                 $this->getTranslator()->trans('module_activation.error.operation_locked', domain: 'module_activation'),
             );
+        }
+        $module = $this->findOperation($name)['module'] ?? null;
+        if (!$disabled && $module !== null && !$service->isModuleEnabled($module)) {
+            foreach ($this->getOperationFinder()->find($module) as $sibling) {
+                if ($sibling !== $name && !$service->isOperationLocked($sibling)) {
+                    $service->setOperationDisabled($sibling, true);
+                }
+            }
+            $service->setModuleDisabled($module, false);
         }
         $service->setOperationDisabled($name, $disabled);
     }

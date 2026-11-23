@@ -74,12 +74,7 @@ onMounted(() => void screen.load());
           {{ t('module_activation.index.operations', { count: module.operations.length }) }}
         </UiButton>
 
-        <ul
-          v-if="opened.has(module.id)"
-          :id="`module-operations-${module.id}`"
-          class="mt-2 divide-y divide-line"
-          :class="{ 'opacity-60': module.disabled }"
-        >
+        <ul v-if="opened.has(module.id)" :id="`module-operations-${module.id}`" class="mt-2 divide-y divide-line">
           <li v-for="operation in module.operations" :key="operation.id" class="flex items-center gap-4 py-2.5">
             <div class="min-w-0 flex-1">
               <UiSwitch
