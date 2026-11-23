@@ -11,7 +11,7 @@ export const SECTION_ICONS = {
   /** Couleur, rendu sur le site */
   appearance: 'palette',
   /** Activation, visibilité */
-  status: 'eye',
+  status: 'check-circle',
   /** Contenu rédigé */
   content: 'file',
   /** Référencement */

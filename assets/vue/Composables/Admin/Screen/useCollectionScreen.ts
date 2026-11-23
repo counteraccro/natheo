@@ -118,15 +118,15 @@ export function createCollectionScreen<T extends ScreenItem>(
       actions.push(
         can.can('edit', edit.operation, row)
           ? { id: 'edit', label: t('admin_app.screen.action_edit'), icon: 'edit' }
-          : { id: 'view', label: t('admin_app.screen.action_view'), icon: 'file' }
+          : { id: 'view', label: t('admin_app.screen.action_view'), icon: 'eye' }
       );
     }
     const toggle = actionOf('toggle');
     if (toggle && can.can('disable', toggle.operation, row)) {
       actions.push(
         row.disabled
-          ? { id: 'enable', label: t('admin_app.screen.action_enable'), icon: 'eye' }
-          : { id: 'disable', label: t('admin_app.screen.action_disable'), icon: 'eye-slash' }
+          ? { id: 'enable', label: t('admin_app.screen.action_enable'), icon: 'check-circle' }
+          : { id: 'disable', label: t('admin_app.screen.action_disable'), icon: 'ban' }
       );
     }
     const remove = actionOf('delete');
@@ -141,9 +141,9 @@ export function createCollectionScreen<T extends ScreenItem>(
       disabled &&
       !(await confirm({
         title: t(descriptor.messages.confirmDisable, { label: label(row) }),
-        icon: 'eye-slash',
+        icon: 'ban',
         confirmLabel: t('admin_app.screen.action_disable'),
-        confirmIcon: 'eye-slash',
+        confirmIcon: 'ban',
       }))
     ) {
       return;
@@ -192,7 +192,7 @@ export function createCollectionScreen<T extends ScreenItem>(
           : action.type === 'disable'
             ? t('admin_app.screen.action_disable')
             : t('admin_app.screen.action_enable'),
-      icon: action.type === 'delete' ? 'trash' : action.type === 'disable' ? 'eye-slash' : 'eye',
+      icon: action.type === 'delete' ? 'trash' : action.type === 'disable' ? 'ban' : 'check-circle',
       danger: action.type === 'delete',
     }));
 
@@ -218,9 +218,9 @@ export function createCollectionScreen<T extends ScreenItem>(
           : t('admin_app.screen.bulk_disable_title', { count: eligible.length }),
         message: t('admin_app.screen.bulk_kept', { kept }),
         tone: isDelete ? 'danger' : undefined,
-        icon: isDelete ? 'trash' : 'eye-slash',
+        icon: isDelete ? 'trash' : 'ban',
         confirmLabel: isDelete ? t('admin_app.screen.action_delete') : t('admin_app.screen.action_disable'),
-        confirmIcon: isDelete ? 'trash' : 'eye-slash',
+        confirmIcon: isDelete ? 'trash' : 'ban',
       });
       if (!confirmed) return null;
     }
