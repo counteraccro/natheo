@@ -26,6 +26,8 @@ const labelField: TranslationsField = {
 
 const descriptor = defineFormScreen<Tag>({
   resource: '/admin/tags',
+  read: { operation: 'admin_tag_get' },
+  create: { operation: 'admin_tag_post' },
   title: { create: 'tag.form.title_new', edit: 'tag.form.title_edit' },
   back: 'tag_index',
   editRoute: 'tag_edit',

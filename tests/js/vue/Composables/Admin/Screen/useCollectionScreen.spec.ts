@@ -29,6 +29,7 @@ const tag = (id: number, values: Partial<Tag> = {}): Tag => ({
 
 const descriptor = defineCollectionScreen<Tag>({
   resource: '/admin/tags',
+  read: { operation: 'admin_tag_get_collection' },
   title: 'tag.index.title',
   columns: [
     { key: 'id', label: 'tag.index.column_id', sortable: true },

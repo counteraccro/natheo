@@ -62,7 +62,7 @@ export function collectionRoute<T extends ScreenItem>(
     name,
     component: adminScreen,
     props: { kind: 'collection', descriptor },
-    meta: { breadcrumb, screenGroup: name, operation: descriptor.read?.operation },
+    meta: { breadcrumb, screenGroup: name, operation: descriptor.read.operation },
   };
 }
 
@@ -79,6 +79,10 @@ export function formRoute<T extends ScreenItem>(
   descriptor: FormScreenDescriptor<T>,
   breadcrumb: string[] = [name]
 ): RouteRecordRaw {
+  const creation = !path.includes(':id');
+  if (creation && descriptor.create === undefined) {
+    throw new Error(`Opération de création absente de l'écran de la route « ${name} »`);
+  }
   return {
     path,
     name,
@@ -91,7 +95,7 @@ export function formRoute<T extends ScreenItem>(
     meta: {
       breadcrumb,
       screenGroup: descriptor.back,
-      operation: path.includes(':id') ? descriptor.read?.operation : descriptor.create?.operation,
+      operation: creation ? descriptor.create?.operation : descriptor.read.operation,
     },
   };
 }

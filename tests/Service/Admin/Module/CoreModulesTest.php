@@ -34,6 +34,12 @@ class CoreModulesTest extends AppWebTestCase
     private const array LOCALES = ['fr', 'en', 'es'];
 
     /**
+     * Entrées de l'application affichées sans opération d'API de leur module
+     * @var string[]
+     */
+    private const array ITEMS_WITHOUT_OPERATION = [];
+
+    /**
      * Dossiers des modules de l'application Vue du back-office, surcharges en dernier
      * @var string[]
      */
@@ -87,26 +93,32 @@ class CoreModulesTest extends AppWebTestCase
     }
 
     /**
-     * L'opération d'une entrée existe et appartient au module de l'entrée
+     * Chaque entrée de l'application d'un module qui a des opérations déclare la sienne (exceptions listées), qui
+     * existe et appartient au module de l'entrée
      * @return void
      */
-    public function testMenuOperationsBelongToModule(): void
+    public function testMenuOperations(): void
     {
         $finder = $this->container->get(AdminModuleOperationFinder::class);
         $registry = $this->getMenuRegistry();
-        $checked = 0;
         foreach ($registry->all() as $item) {
+            $moduleId = $registry->getModule($item->id)?->id;
             if ($item->operation === null) {
+                $this->assertTrue(
+                    !$item->isAppRoute() ||
+                        $moduleId === null ||
+                        $finder->find($moduleId) === [] ||
+                        in_array($item->id, self::ITEMS_WITHOUT_OPERATION, true),
+                    sprintf('Opération d\'API absente de l\'entrée « %s »', $item->id),
+                );
                 continue;
             }
             $this->assertSame(
-                $registry->getModule($item->id)?->id,
+                $moduleId,
                 $finder->get($item->operation)['module'] ?? null,
                 sprintf('Opération « %s » de l\'entrée « %s » absente de son module', $item->operation, $item->id),
             );
-            $checked++;
         }
-        $this->assertGreaterThan(0, $checked);
     }
 
     /**

@@ -60,6 +60,7 @@ final class ModuleActivationModule implements AdminModuleInterface
                 position: 90,
                 route: 'module_activation_index',
                 path: 'modules',
+                operation: 'admin_module_activation_get_collection',
             ),
         ];
     }

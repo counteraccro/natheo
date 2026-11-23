@@ -60,7 +60,7 @@ export interface CollectionScreenDescriptor<T extends ScreenItem = ScreenItem> {
   description?: string;
   icon?: IconName;
   /** Opération de lecture de la liste : page introuvable sans elle */
-  read?: { operation: string };
+  read: { operation: string };
   columns: CollectionColumn[];
   filters?: CollectionFilter[];
   /** Route de création et opération qui la permet */

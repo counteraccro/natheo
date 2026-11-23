@@ -13,6 +13,7 @@ export default defineAdminModule({
       path: '/modules',
       name: 'module_activation_index',
       component: () => import('@admin/Modules/ModuleActivation/ModuleActivationScreen.vue'),
+      meta: { operation: 'admin_module_activation_get_collection' },
     },
   ],
 });
