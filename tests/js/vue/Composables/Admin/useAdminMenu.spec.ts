@@ -34,6 +34,12 @@ describe('createAdminMenu', () => {
     expect(menu.isModuleVisible('faq')).toBe(false);
   });
 
+  it('recharge les modules et les entrées à la demande', async () => {
+    const { menu, getCollection } = await loadedMenu();
+    await menu.reload();
+    expect(getCollection).toHaveBeenCalledTimes(4);
+  });
+
   it('construit l’arbre sans les entrées masquées ni les dossiers vides', async () => {
     const { menu } = await loadedMenu();
     const tree = menu.tree({ name: null });

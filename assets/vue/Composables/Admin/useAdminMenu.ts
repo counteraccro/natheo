@@ -26,6 +26,8 @@ export interface AdminMenu {
   items: ShallowRef<AdminMenuItem[]>;
   /** Chargement des modules et des entrées, partagé par tous les appelants */
   load(): Promise<void>;
+  /** Nouveau chargement, après un changement des modules activés */
+  reload(): Promise<void>;
   isModuleVisible(id: string): boolean;
   /** Arbre de la sidebar, entrée de la route courante active */
   tree(location: MenuLocation): SidebarItem[];
@@ -101,6 +103,10 @@ export function createAdminMenu(api: ApiClient, basePath: string): AdminMenu {
         }
       );
       return loading;
+    },
+    reload(): Promise<void> {
+      loading = null;
+      return this.load();
     },
     isModuleVisible(id: string): boolean {
       return modules.value.some((module) => module.id === id);

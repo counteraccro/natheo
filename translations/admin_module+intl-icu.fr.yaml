@@ -20,6 +20,7 @@ admin_module.menu.media.label: Médiathèque
 admin_module.menu.menu.label: Menus
 admin_module.menu.menu_index.label: 'Gestion des menus'
 admin_module.menu.menu_new.label: 'Nouveau menu'
+admin_module.menu.module_activation.label: Modules
 admin_module.menu.option_system.label: 'Options système'
 admin_module.menu.page.label: Pages
 admin_module.menu.page_index.label: 'Gestion des pages'
