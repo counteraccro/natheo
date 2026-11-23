@@ -82,21 +82,24 @@ export function createFormScreen<T extends ScreenItem>(
 
   const label = (): string => (resource.data.value ? descriptor.rowLabel(resource.data.value) : '');
 
+  const canEdit = computed(() => isNew.value || can.can('edit', descriptor.update.operation, resource.data.value));
+  const mode = computed(() => (isNew.value ? 'create' : canEdit.value ? 'edit' : 'view'));
+
   return {
     descriptor,
     resource,
     isNew,
     title: computed(() =>
-      isNew.value ? t(descriptor.title.create) : t(descriptor.title.edit, { id: String(resource.id.value) })
+      isNew.value ? t(descriptor.title.create) : t(descriptor.title[mode.value], { id: String(resource.id.value) })
     ),
     description: computed(() => {
-      const keys = descriptor.description;
-      return keys ? t(isNew.value ? keys.create : keys.edit) : '';
+      const key = descriptor.description?.[mode.value];
+      return key ? t(key) : '';
     }),
     locales,
     currentLocale,
     activeLocale: ref(currentLocale),
-    canEdit: computed(() => isNew.value || can.can('edit', descriptor.update.operation, resource.data.value)),
+    canEdit,
     canDelete: computed(
       () =>
         !isNew.value &&

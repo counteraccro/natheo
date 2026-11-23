@@ -28,7 +28,7 @@ const descriptor = defineFormScreen<Tag>({
   resource: '/admin/tags',
   read: { operation: 'admin_tag_get' },
   create: { operation: 'admin_tag_post' },
-  title: { create: 'tag.form.title_new', edit: 'tag.form.title_edit' },
+  title: { create: 'tag.form.title_new', edit: 'tag.form.title_edit', view: 'tag.form.title_view' },
   back: 'tag_index',
   editRoute: 'tag_edit',
   leaveKey: 'tag',
@@ -169,6 +169,17 @@ describe('createFormScreen', () => {
     expect(screen.translation(labelField, 'es')).toBe('');
     expect(screen.canEdit.value).toBe(true);
     expect(screen.canDelete.value).toBe(false);
+  });
+
+  it('titre en consultation un élément que l’utilisateur ne peut pas modifier', async () => {
+    const getResource = vi.fn().mockResolvedValue({
+      data: { id: 4, color: '#000000', disabled: false, translations: [], permissions: { edit: false } },
+      etag: '"v1"',
+    });
+    const { screen, resource } = screenWith(4, { getResource });
+    await resource.load();
+    expect(screen.canEdit.value).toBe(false);
+    expect(screen.title.value).toBe('tag.form.title_view {"id":"4"}');
   });
 
   it('supprime après confirmation puis revient à la liste', async () => {

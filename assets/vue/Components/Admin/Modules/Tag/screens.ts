@@ -51,7 +51,7 @@ export const tagCollection = defineCollectionScreen<AdminTag>({
 
 export const tagForm = defineFormScreen<AdminTag>({
   resource: RESOURCE,
-  title: { create: t('tag.editor.title_new'), edit: t('tag.editor.title_edit') },
+  title: { create: t('tag.editor.title_new'), edit: t('tag.editor.title_edit'), view: t('tag.editor.title_view') },
   description: { create: t('tag.editor.description_new'), edit: t('tag.editor.description_edit') },
   icon: 'tag',
   back: 'tag_index',
