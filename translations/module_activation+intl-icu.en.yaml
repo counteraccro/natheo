@@ -4,6 +4,7 @@ module_activation.dialog.disable_last_operation_text: 'This is the last enabled 
 module_activation.dialog.disable_module_text: 'The module leaves the menu, and its pages and API operations answer 404 until it is enabled again. The public site is not affected.'
 module_activation.dialog.disable_operation: 'Disable the “{label}” operation?'
 module_activation.dialog.disable_operation_text: 'The action that uses it leaves the screens and the operation answers 404 until it is enabled again.'
+module_activation.error.concurrent: 'This item has just been changed by another request, reload the page.'
 module_activation.error.disabled: 'This feature is disabled.'
 module_activation.error.module_locked: 'This module is locked and cannot be disabled.'
 module_activation.error.module_not_found: 'This module does not exist.'

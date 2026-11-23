@@ -4,6 +4,7 @@ module_activation.dialog.disable_last_operation_text: 'Es la última operación 
 module_activation.dialog.disable_module_text: 'El módulo desaparece del menú, y sus páginas y operaciones de API responden 404 hasta que se reactive. El sitio público no se ve afectado.'
 module_activation.dialog.disable_operation: '¿Desactivar la operación «{label}»?'
 module_activation.dialog.disable_operation_text: 'La acción que la utiliza desaparece de las pantallas y la operación responde 404 hasta que se reactive.'
+module_activation.error.concurrent: 'Este elemento acaba de ser modificado por otra solicitud, recargue la página.'
 module_activation.error.disabled: 'Esta funcionalidad está desactivada.'
 module_activation.error.module_locked: 'Este módulo está bloqueado, no se puede desactivar.'
 module_activation.error.module_not_found: 'Este módulo no existe.'

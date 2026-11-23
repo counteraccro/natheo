@@ -14,6 +14,7 @@ use App\Entity\Admin\System\ModuleActivation;
 use App\Enum\Admin\Module\ActivationType;
 use App\Enum\Admin\Module\CoreModuleId;
 use App\Repository\Admin\System\ModuleActivationRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Service\ResetInterface;
@@ -32,7 +33,14 @@ final class ModuleActivationService implements ResetInterface
      */
     private ?array $disabled = null;
 
+    /**
+     * Écritures en cours dans une transaction, le cache n'est vidé qu'à sa fin
+     * @var bool
+     */
+    private bool $inTransaction = false;
+
     public function __construct(
+        private readonly EntityManagerInterface $entityManager,
         private readonly ModuleActivationRepository $repository,
         private readonly CacheInterface $cache,
         private readonly AdminModuleRegistry $moduleRegistry,
@@ -42,6 +50,37 @@ final class ModuleActivationService implements ResetInterface
     public function reset(): void
     {
         $this->disabled = null;
+    }
+
+    /**
+     * Module de l'identifiant, null s'il n'existe pas
+     * @param string $id
+     * @return AdminModule|null
+     */
+    public function getModule(string $id): ?AdminModule
+    {
+        return $this->moduleRegistry->get($id);
+    }
+
+    /**
+     * Exécute plusieurs écritures en une transaction, puis vide le cache une seule fois
+     * @param callable(): void $writes
+     * @return void
+     * @throws InvalidArgumentException
+     */
+    public function transactional(callable $writes): void
+    {
+        if ($this->inTransaction) {
+            $writes();
+            return;
+        }
+        $this->inTransaction = true;
+        try {
+            $this->entityManager->wrapInTransaction(fn() => $writes());
+        } finally {
+            $this->inTransaction = false;
+            $this->clearCache();
+        }
     }
 
     /**
@@ -182,13 +221,20 @@ final class ModuleActivationService implements ResetInterface
      */
     private function write(ActivationType $type, string $name, bool $disabled): void
     {
+        $current = $this->getDisabled();
         $entity = $this->repository->findOneBy(['type' => $type, 'name' => $name]);
         if ($disabled && $entity === null) {
             $this->repository->save((new ModuleActivation())->setType($type)->setName($name), true);
         } elseif (!$disabled && $entity !== null) {
             $this->repository->remove($entity, true);
         }
-        $this->clearCache();
+        if (!$this->inTransaction) {
+            $this->clearCache();
+            return;
+        }
+        // Le cache partagé ne doit pas voir un état non validé : seule la copie de la requête suit
+        $names = array_values(array_diff($current[$type->value], [$name]));
+        $this->disabled = [...$current, $type->value => $disabled ? [...$names, $name] : $names];
     }
 
     /**

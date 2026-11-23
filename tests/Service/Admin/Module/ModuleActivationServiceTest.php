@@ -139,4 +139,30 @@ class ModuleActivationServiceTest extends AppWebTestCase
         $this->expectException(\LogicException::class);
         $this->service->setModuleDisabled('module_inconnu', true);
     }
+
+    /**
+     * Les écritures d'une transaction sont lues pendant celle-ci, puis annulées ensemble en cas d'erreur
+     * @return void
+     */
+    public function testTransactional(): void
+    {
+        $this->service->transactional(function (): void {
+            $this->service->setOperationDisabled('admin_probe_get', true);
+            $this->service->setModuleDisabled(ProbeModule::ID, true);
+            $this->assertFalse($this->service->isModuleEnabled(ProbeModule::ID));
+        });
+        $this->service->reset();
+        $this->assertFalse($this->service->isModuleEnabled(ProbeModule::ID));
+        $this->assertCount(2, $this->em->getRepository(ModuleActivation::class)->findAll());
+
+        try {
+            $this->service->transactional(function (): void {
+                $this->service->setModuleDisabled(ProbeModule::ID, false);
+                $this->service->setModuleDisabled('module_inconnu', true);
+            });
+            $this->fail('Exception attendue');
+        } catch (\LogicException) {
+        }
+        $this->assertFalse($this->service->isModuleEnabled(ProbeModule::ID));
+    }
 }

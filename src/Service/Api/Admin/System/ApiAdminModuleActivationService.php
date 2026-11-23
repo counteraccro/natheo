@@ -13,6 +13,7 @@ use App\Api\V2\Exception\ConflictException;
 use App\Api\V2\Metadata\AdminModuleOperationFinder;
 use App\Service\Admin\Module\AdminModule;
 use App\Service\Api\AppApiService;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Psr\Cache\InvalidArgumentException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -39,12 +40,7 @@ class ApiAdminModuleActivationService extends AppApiService
      */
     public function findModule(string $id): ?AdminModule
     {
-        foreach ($this->getModules() as $module) {
-            if ($module->id === $id) {
-                return $module;
-            }
-        }
-        return null;
+        return $this->getModuleActivationService()->getModule($id);
     }
 
     /**
@@ -142,7 +138,7 @@ class ApiAdminModuleActivationService extends AppApiService
                 $this->getTranslator()->trans('module_activation.error.module_locked', domain: 'module_activation'),
             );
         }
-        $service->setModuleDisabled($id, $disabled);
+        $this->transactional(fn() => $service->setModuleDisabled($id, $disabled));
     }
 
     /**
@@ -166,17 +162,39 @@ class ApiAdminModuleActivationService extends AppApiService
             );
         }
         $module = $this->findOperation($name)['module'] ?? null;
-        if (!$disabled && $module !== null && !$service->isModuleEnabled($module)) {
-            foreach ($this->getOperationFinder()->find($module) as $sibling) {
-                if ($sibling !== $name && !$service->isOperationLocked($sibling)) {
-                    $service->setOperationDisabled($sibling, true);
+        $this->transactional(function () use ($service, $name, $disabled, $module): void {
+            if (!$disabled && $module !== null && !$service->isModuleEnabled($module)) {
+                foreach ($this->getOperationFinder()->find($module) as $sibling) {
+                    if ($sibling !== $name && !$service->isOperationLocked($sibling)) {
+                        $service->setOperationDisabled($sibling, true);
+                    }
                 }
+                $service->setModuleDisabled($module, false);
             }
-            $service->setModuleDisabled($module, false);
-        }
-        $service->setOperationDisabled($name, $disabled);
-        if ($disabled && $module !== null) {
-            $this->disableModuleWithoutOperation($module);
+            $service->setOperationDisabled($name, $disabled);
+            if ($disabled && $module !== null) {
+                $this->disableModuleWithoutOperation($module);
+            }
+        });
+    }
+
+    /**
+     * Écritures en une transaction ; une écriture simultanée du même élément répond 409
+     * @param callable(): void $writes
+     * @return void
+     * @throws ConflictException si un autre appel vient d'écrire le même élément
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws InvalidArgumentException
+     */
+    private function transactional(callable $writes): void
+    {
+        try {
+            $this->getModuleActivationService()->transactional($writes);
+        } catch (UniqueConstraintViolationException) {
+            throw new ConflictException(
+                $this->getTranslator()->trans('module_activation.error.concurrent', domain: 'module_activation'),
+            );
         }
     }
 
