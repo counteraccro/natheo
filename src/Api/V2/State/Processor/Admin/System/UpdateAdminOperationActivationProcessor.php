@@ -61,7 +61,7 @@ final class UpdateAdminOperationActivationProcessor extends AbstractAdminProcess
     }
 
     /**
-     * Nom de l'opération, son identifiant
+     * Adresse de l'opération, libellé de l'entrée du journal
      * @param mixed $resource
      * @return string|null
      */
