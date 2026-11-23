@@ -29,6 +29,8 @@ export interface AdminMenu {
   /** Nouveau chargement, après un changement des modules activés */
   reload(): Promise<void>;
   isModuleVisible(id: string): boolean;
+  /** L'opération appartient à un module visible et n'est pas désactivée */
+  hasOperation(name: string): boolean;
   /** Arbre de la sidebar, entrée de la route courante active */
   tree(location: MenuLocation): SidebarItem[];
   /** Dossier et entrée de la route courante */
@@ -110,6 +112,9 @@ export function createAdminMenu(api: ApiClient, basePath: string): AdminMenu {
     },
     isModuleVisible(id: string): boolean {
       return modules.value.some((module) => module.id === id);
+    },
+    hasOperation(name: string): boolean {
+      return modules.value.some((module) => module.operations.includes(name));
     },
     tree(location: MenuLocation): SidebarItem[] {
       return build(null, activeOf(location)?.id ?? null);

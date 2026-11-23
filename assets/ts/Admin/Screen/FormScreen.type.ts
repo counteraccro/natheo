@@ -59,6 +59,9 @@ export interface FormScreenDescriptor<T extends ScreenItem = ScreenItem> {
   initial: () => Partial<T>;
   sections: FormSection[];
   meta?: FormMeta[];
+  /** Opérations de lecture et de création : page d'édition ou de création introuvable sans elles */
+  read?: { operation: string };
+  create?: { operation: string };
   /** Opération de modification, pour savoir si l'élément est modifiable */
   update: { operation: string };
   delete?: { operation: string };

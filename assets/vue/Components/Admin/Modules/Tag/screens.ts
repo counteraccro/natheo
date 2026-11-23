@@ -18,6 +18,7 @@ export const tagCollection = defineCollectionScreen<AdminTag>({
   title: t('tag.collection.title'),
   description: t('tag.collection.description'),
   icon: 'tag',
+  read: { operation: 'admin_tag_get_collection' },
   columns: [
     { key: 'id', label: t('tag.collection.column_id'), sortable: true, hidden: false },
     { key: 'label', label: t('tag.collection.column_label'), sortable: true, type: 'badge', color: 'color' },
@@ -102,6 +103,8 @@ export const tagForm = defineFormScreen<AdminTag>({
     },
   ],
   meta: ['createdAt', 'updatedAt', 'author', 'pageCount'],
+  read: { operation: 'admin_tag_get' },
+  create: { operation: 'admin_tag_post' },
   update: { operation: 'admin_tag_patch' },
   delete: { operation: 'admin_tag_delete' },
   messages: {

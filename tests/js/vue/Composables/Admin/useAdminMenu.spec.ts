@@ -20,7 +20,7 @@ const items = [
 ];
 
 async function loadedMenu() {
-  const { api, getCollection } = menuApi([moduleOf('tag'), moduleOf('page')], items);
+  const { api, getCollection } = menuApi([moduleOf('tag', ['admin_tag_post']), moduleOf('page')], items);
   const menu = createAdminMenu(api, '/admin/fr/');
   await Promise.all([menu.load(), menu.load()]);
   return { menu, getCollection };
@@ -32,6 +32,8 @@ describe('createAdminMenu', () => {
     expect(getCollection).toHaveBeenCalledTimes(2);
     expect(menu.isModuleVisible('tag')).toBe(true);
     expect(menu.isModuleVisible('faq')).toBe(false);
+    expect(menu.hasOperation('admin_tag_post')).toBe(true);
+    expect(menu.hasOperation('admin_tag_delete')).toBe(false);
   });
 
   it('recharge les modules et les entrées à la demande', async () => {

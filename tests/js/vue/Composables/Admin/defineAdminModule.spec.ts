@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { mergeModules, type AdminModuleDefinition } from '@/vue/Composables/Admin/defineAdminModule';
+import {
+  collectionRoute,
+  formRoute,
+  mergeModules,
+  type AdminModuleDefinition,
+} from '@/vue/Composables/Admin/defineAdminModule';
+import { tagCollection, tagForm } from '@admin/Modules/Tag/screens';
 
 const module = (id: string, path: string): AdminModuleDefinition => ({
   id,
@@ -18,5 +24,13 @@ describe('mergeModules', () => {
       ['faq', '/faqs'],
       ['tag', '/mes-tags'],
     ]);
+  });
+});
+
+describe('collectionRoute / formRoute', () => {
+  it('donnent à chaque écran l’opération sans laquelle il est introuvable', () => {
+    expect(collectionRoute('/tags', 'tag_index', tagCollection).meta?.operation).toBe('admin_tag_get_collection');
+    expect(formRoute('/tags/new', 'tag_new', tagForm).meta?.operation).toBe('admin_tag_post');
+    expect(formRoute('/tags/:id(\\d+)', 'tag_edit', tagForm).meta?.operation).toBe('admin_tag_get');
   });
 });

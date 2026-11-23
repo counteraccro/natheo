@@ -18,6 +18,8 @@ declare module 'vue-router' {
     breadcrumb?: string[];
     /** Route de la liste dont l'écran fait partie (la liste elle-même, ou le retour d'un formulaire) */
     screenGroup?: string;
+    /** Opération d'API sans laquelle l'écran est introuvable */
+    operation?: string;
   }
 }
 
@@ -60,12 +62,12 @@ export function collectionRoute<T extends ScreenItem>(
     name,
     component: adminScreen,
     props: { kind: 'collection', descriptor },
-    meta: { breadcrumb, screenGroup: name },
+    meta: { breadcrumb, screenGroup: name, operation: descriptor.read?.operation },
   };
 }
 
 /**
- * Route d'un écran de formulaire décrit par des données, création sans paramètre id
+ * Route d'un écran de formulaire décrit par des données, création sans paramètre id (opération create, read sinon)
  * @param path
  * @param name
  * @param descriptor
@@ -86,7 +88,11 @@ export function formRoute<T extends ScreenItem>(
       descriptor,
       id: typeof route.params.id === 'string' ? route.params.id : null,
     }),
-    meta: { breadcrumb, screenGroup: descriptor.back },
+    meta: {
+      breadcrumb,
+      screenGroup: descriptor.back,
+      operation: path.includes(':id') ? descriptor.read?.operation : descriptor.create?.operation,
+    },
   };
 }
 

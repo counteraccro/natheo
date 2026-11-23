@@ -2,7 +2,7 @@
  * @author Gourdon Aymeric
  * @version 1.1
  * Routeur de l'application du back-office : routes des modules (écrans spécifiques du thème), page introuvable
- * et gardes (départ d'un formulaire, module visible, domaines chargés)
+ * et gardes (départ d'un formulaire, module et opération visibles, domaines chargés)
  */
 import {
   createRouter,
@@ -107,7 +107,10 @@ export function createAdminRouter(options: AdminRouterOptions): Router {
       return false;
     }
     await options.menu.load();
-    if (to.meta.module !== undefined && !options.menu.isModuleVisible(to.meta.module)) {
+    if (
+      (to.meta.module !== undefined && !options.menu.isModuleVisible(to.meta.module)) ||
+      (to.meta.operation !== undefined && !options.menu.hasOperation(to.meta.operation))
+    ) {
       return notFoundAt(to);
     }
     await Promise.all((to.meta.domains ?? []).map((domain) => options.translator.loadDomain(domain)));
