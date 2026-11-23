@@ -16,6 +16,7 @@ use App\Service\Admin\Module\AdminMenuNode;
 use App\Service\Admin\Module\AdminMenuRegistry;
 use App\Service\Admin\Module\AdminModuleInterface;
 use App\Service\Admin\Module\AdminModuleRegistry;
+use App\Service\Admin\Module\ModuleActivationService;
 use App\Tests\AppWebTestCase;
 use App\Twig\Extension\Admin\System\SidebarExtension;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -69,6 +70,24 @@ class AdminMenuBuilderTest extends AppWebTestCase
             ['page', 'tag', 'token'],
             array_map(fn($module) => $module->id, $builder->getVisibleModules()),
         );
+    }
+
+    /**
+     * Un module désactivé disparaît du menu, des raccourcis et des modules visibles
+     * @return void
+     */
+    public function testDisabledModule(): void
+    {
+        $this->container->get(ModuleActivationService::class)->setModuleDisabled('page', true);
+        $builder = $this->createBuilder($this->createUserSuperAdmin());
+
+        $this->assertSame(['tag'], $this->ids($builder->getTree()[0]->children));
+        $this->assertSame(
+            ['token_new'],
+            array_map(fn(AdminMenuNode $node) => $node->item->id, $builder->getShortcuts()),
+        );
+        $this->assertFalse($builder->isModuleVisible('page'));
+        $this->assertSame(['tag', 'token'], array_map(fn($module) => $module->id, $builder->getVisibleModules()));
     }
 
     /**
@@ -322,6 +341,7 @@ class AdminMenuBuilderTest extends AppWebTestCase
             $this->container->get(Security::class),
             $this->translator,
             $this->router,
+            $this->container->get(ModuleActivationService::class),
         );
     }
 

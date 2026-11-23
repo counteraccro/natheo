@@ -99,8 +99,10 @@ export interface MarkdownEditorKeyWord {
 
 /** Réponse de la route admin_markdown_load-datas */
 export interface MarkdownEditorDatas {
-  media: string;
-  internalLinks: string;
+  /** null quand la médiathèque est masquée */
+  media: string | null;
+  /** null quand le module Pages est masqué */
+  internalLinks: string | null;
 }
 
 // ─── Traductions (MarkdownEditorTranslate.php) ───────────────────────────────

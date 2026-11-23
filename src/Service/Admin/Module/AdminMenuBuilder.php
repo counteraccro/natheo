@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace App\Service\Admin\Module;
 
+use Psr\Cache\InvalidArgumentException;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Service\ResetInterface;
@@ -28,6 +29,7 @@ final class AdminMenuBuilder implements ResetInterface
         private readonly Security $security,
         private readonly TranslatorInterface $translator,
         private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly ModuleActivationService $activationService,
     ) {}
 
     /**
@@ -118,14 +120,17 @@ final class AdminMenuBuilder implements ResetInterface
     }
 
     /**
-     * Indique si l'utilisateur courant a accès au module
+     * Indique si l'utilisateur courant a accès au module, activé
      * @param string $id
      * @return bool
+     * @throws InvalidArgumentException
      */
     public function isModuleVisible(string $id): bool
     {
         $module = $this->moduleRegistry->get($id);
-        return $module !== null && $this->security->isGranted($module->role);
+        return $module !== null &&
+            $this->security->isGranted($module->role) &&
+            $this->activationService->isModuleEnabled($id);
     }
 
     /**
@@ -263,11 +268,17 @@ final class AdminMenuBuilder implements ResetInterface
     }
 
     /**
+     * Rôles de l'entrée accordés et module de l'entrée activé
      * @param AdminMenuItem $item
      * @return bool
+     * @throws InvalidArgumentException
      */
     private function isItemGranted(AdminMenuItem $item): bool
     {
+        $module = $this->menuRegistry->getModule($item->id);
+        if ($module !== null && !$this->activationService->isModuleEnabled($module->id)) {
+            return false;
+        }
         foreach ($this->menuRegistry->getRoles($item->id) as $role) {
             if (!$this->security->isGranted($role)) {
                 return false;

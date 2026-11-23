@@ -76,6 +76,9 @@ export default defineComponent({
       }, 300);
     },
     searchTags() {
+      if (this.urls.auto_complete_tag === null) {
+        return;
+      }
       this.isSearching = true;
       axios
         .get(
@@ -109,6 +112,9 @@ export default defineComponent({
       this.fetchOrCreateTag();
     },
     fetchOrCreateTag() {
+      if (this.urls.tag_by_name === null) {
+        return;
+      }
       axios
         .post(
           this.urls.tag_by_name,
