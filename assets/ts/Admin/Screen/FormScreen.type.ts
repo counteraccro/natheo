@@ -1,6 +1,6 @@
 /**
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 1.2
  * Description d'un écran de formulaire, état calculé par useFormScreen() et affiché par le thème
  */
 import type { Ref } from 'vue';
@@ -9,6 +9,7 @@ import type { IconName } from '@/ts/Global/Ui/UiIcon.type';
 import type { ScreenComponent, ScreenItem } from '@/ts/Admin/Screen/Screen.type';
 import type { SectionKind } from '@/vue/Composables/Admin/Screen/sectionKinds';
 import type { ResourceChange } from '@/vue/Composables/Admin/Screen/resourceChanges';
+import type { AdminEditorKeyword, AdminEditorPreset } from '@/ts/Admin/Editor/AdminEditor.type';
 
 interface BaseField {
   /** Propriété de la ressource, chemin des erreurs de l'API */
@@ -18,13 +19,33 @@ interface BaseField {
   help?: string;
 }
 
+/** Réglages de l'éditeur de texte d'un champ */
+interface TextEditorOptions {
+  preset?: AdminEditorPreset;
+  /** Hauteur minimale en lignes */
+  rows?: number;
+  /** Clé de traduction du texte d'aide affiché dans la zone vide */
+  placeholder?: string;
+  /** Mots-clés insérables, lus dans l'élément (e-mails) */
+  keywords?: (data: Record<string, unknown>) => AdminEditorKeyword[];
+}
+
 export type FormField =
   | (BaseField & { type: 'text' | 'textarea'; maxlength?: number })
   | (BaseField & { type: 'switch' })
   | (BaseField & { type: 'select'; options: { value: string; label: string }[] })
   | (BaseField & { type: 'color'; suggestions?: number })
-  /** Un champ par langue du site dans la liste translations ({ locale, <field> }) */
-  | (BaseField & { type: 'translations'; field: string; maxlength?: number; copyFromCurrent?: boolean })
+  /** Texte mis en forme, enregistré en Markdown */
+  | (BaseField & TextEditorOptions & { type: 'textEditor' })
+  /** Un champ par langue du site dans la liste translations ({ locale, <field> }), éditeur de texte avec textEditor */
+  | (BaseField &
+      TextEditorOptions & {
+        type: 'translations';
+        field: string;
+        input?: 'text' | 'textEditor';
+        maxlength?: number;
+        copyFromCurrent?: boolean;
+      })
   /** Composant du module, reçoit { data, screen } ; non envoyé à l'API */
   | (BaseField & { type: 'component'; component: ScreenComponent });
 
