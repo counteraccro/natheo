@@ -3,8 +3,8 @@ import { defineComponent, h, nextTick, reactive } from 'vue';
 import { mount } from '@vue/test-utils';
 import { EditorContent } from '@tiptap/vue-3';
 import { modulesForPreset, natheoEditorModules } from '@/vue/Composables/Admin/Editor/NatheoEditor/natheoEditorModules';
-import { markdownOf, useNatheoEditor } from '@/vue/Composables/Admin/Editor/NatheoEditor/useNatheoEditor';
-import { coreEditor } from '@tests/vue/Components/Admin/Editors/NatheoEditor/Modules/support';
+import { useNatheoEditor } from '@/vue/Composables/Admin/Editor/NatheoEditor/useNatheoEditor';
+import { rewrite } from '@tests/vue/Components/Admin/Editors/NatheoEditor/Modules/support';
 import { editorProps } from '@tests/vue/Composables/Admin/Editor/NatheoEditor/support';
 import type { NatheoEditorState } from '@/ts/Admin/Editor/NatheoEditor/NatheoEditor.type';
 
@@ -104,7 +104,9 @@ const corpus: Record<string, string> = {
 };
 
 /** Markdown réécrit par les modules du cœur */
-const rewrite = (markdown: string): string => markdownOf(coreEditor(markdown), natheoEditorModules());
+
+/** Délai des tests qui relisent tout le corpus, plusieurs secondes sur la CI */
+const LONG_TEST = 60_000;
 
 describe('fidélité de Natheo-Editor', () => {
   it('lit les contenus des fixtures', () => {
@@ -137,17 +139,25 @@ describe('fidélité de Natheo-Editor', () => {
     }
   });
 
-  it('réécrit chaque contenu dans une forme fixe et stable', () => {
-    for (const [name, text] of Object.entries(corpus)) {
-      const after = rewrite(text);
-      expect(rewrite(after), name).toBe(after);
-    }
-  });
+  it(
+    'réécrit chaque contenu dans une forme fixe et stable',
+    () => {
+      for (const [name, text] of Object.entries(corpus)) {
+        const after = rewrite(text);
+        expect(rewrite(after), name).toBe(after);
+      }
+    },
+    LONG_TEST
+  );
 
-  it('garde les paires avant / après comparées par le rendu du serveur', async () => {
-    const pairs = Object.entries(corpus).map(([name, before]) => ({ name, before, after: rewrite(before) }));
-    await expect(JSON.stringify(pairs, null, 2) + '\n').toMatchFileSnapshot(
-      '../../../../../fixtures/natheo-editor/pairs.json'
-    );
-  });
+  it(
+    'garde les paires avant / après comparées par le rendu du serveur',
+    async () => {
+      const pairs = Object.entries(corpus).map(([name, before]) => ({ name, before, after: rewrite(before) }));
+      await expect(JSON.stringify(pairs, null, 2) + '\n').toMatchFileSnapshot(
+        '../../../../../fixtures/natheo-editor/pairs.json'
+      );
+    },
+    LONG_TEST
+  );
 });
