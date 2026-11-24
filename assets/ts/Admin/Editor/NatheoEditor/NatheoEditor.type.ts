@@ -9,8 +9,12 @@ import type { Editor as VueEditor } from '@tiptap/vue-3';
 import type { AdminEditorProps } from '@/ts/Admin/Editor/AdminEditor.type';
 import type { IconName } from '@/ts/Global/Ui/UiIcon.type';
 
-/** Groupe d'une commande, dans lequel le rendu la range ; table : commandes affichées dans un tableau */
-export type NatheoEditorGroup = 'history' | 'block' | 'inline' | 'list' | 'insert' | 'table' | 'keyword' | 'other';
+/**
+ * Groupe d'une commande, dans lequel le rendu la range : heading (paragraphe et titres), block (citation, code),
+ * table (commandes affichées dans un tableau)
+ */
+export type NatheoEditorGroup =
+  'history' | 'heading' | 'block' | 'inline' | 'list' | 'insert' | 'table' | 'keyword' | 'other';
 
 /** Commande montrée par le rendu (barre, barre flottante, menu « / ») */
 export interface NatheoEditorCommand {
@@ -42,6 +46,7 @@ export interface NatheoEditorDialogProps {
   editor: Editor;
   /** Commande qui l'a ouverte */
   command: string;
+  t: NatheoEditorTranslate;
 }
 
 /** Ce que reçoit un module pour construire ses extensions */
@@ -85,4 +90,44 @@ export interface NatheoEditorState {
   setSourceText: (value: string) => void;
   /** Hauteur de la zone de saisie : minimum de props.rows lignes, puis défilement */
   height: ComputedRef<{ minHeight: string; maxHeight: string }>;
+}
+
+/** Fenêtre de module ouverte */
+export interface NatheoEditorOpenDialog {
+  component: Component;
+  command: string;
+}
+
+/** Traduit une clé complète */
+export type NatheoEditorTranslate = (key: string, params?: Record<string, string | number>) => string;
+
+/** Ce que reçoit le rendu du thème : état de l'éditeur, commandes et textes */
+export interface NatheoEditorView extends NatheoEditorState {
+  props: AdminEditorProps;
+  /** Commandes de tous les modules, dans l'ordre des modules */
+  commands: ComputedRef<NatheoEditorCommand[]>;
+  /** Commandes d'un groupe montrées à la position du curseur */
+  group: (group: NatheoEditorGroup) => NatheoEditorCommand[];
+  /** Commande de bloc active (paragraphe, titre, liste…), null si aucune */
+  currentBlock: () => NatheoEditorCommand | null;
+  /** Lance la commande, ou ouvre la fenêtre de son module */
+  run: (command: NatheoEditorCommand) => void;
+  isActive: (command: NatheoEditorCommand) => boolean;
+  isEnabled: (command: NatheoEditorCommand) => boolean;
+  label: (command: NatheoEditorCommand) => string;
+  hint: (command: NatheoEditorCommand) => string | undefined;
+  shortLabel: (command: NatheoEditorCommand) => string;
+  /** Raccourci lisible (⌘B, Ctrl+B), undefined sans raccourci */
+  shortcut: (command: NatheoEditorCommand) => string | undefined;
+  /** Libellé et raccourci, pour l'infobulle d'un bouton */
+  tooltip: (command: NatheoEditorCommand) => string;
+  t: NatheoEditorTranslate;
+  /** Fenêtre ouverte par une commande */
+  dialog: ShallowRef<NatheoEditorOpenDialog | null>;
+  closeDialog: () => void;
+}
+
+/** Props du rendu de Natheo-Editor dans un thème (Themes/<Theme>/Editor/NatheoEditor.vue) */
+export interface NatheoEditorRenderProps {
+  view: NatheoEditorView;
 }

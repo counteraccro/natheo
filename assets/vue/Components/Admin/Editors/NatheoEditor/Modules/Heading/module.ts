@@ -22,7 +22,7 @@ const heading = (level: Level, label: string, hint: string): NatheoEditorCommand
   markdown: '#'.repeat(level),
   icon: 'heading',
   shortcut: `Mod-Alt-${level}`,
-  group: 'block',
+  group: 'heading',
   run: (editor) => editor.chain().focus().toggleHeading({ level }).run(),
   isActive: (editor) => editor.isActive('heading', { level }),
 });
@@ -38,7 +38,7 @@ export default defineNatheoEditorModule({
       hint: t('admin_ui.natheo_editor.hint.paragraph'),
       icon: 'file',
       shortcut: 'Mod-Alt-0',
-      group: 'block',
+      group: 'heading',
       run: (editor) => editor.chain().focus().setParagraph().run(),
       isActive: (editor) => editor.isActive('paragraph'),
     },

@@ -69,6 +69,7 @@ export default defineNatheoEditorModule({
       isAllowedUri: (url) => isAllowedLink(url),
     }),
   ],
+  dialog: () => import('@admin/Editors/NatheoEditor/Modules/Link/LinkDialog.vue').then((loaded) => loaded.default),
   commands: [
     {
       id: 'link',

@@ -12,6 +12,7 @@ export default defineNatheoEditorModule({
   position: 110,
   // Dans le texte comme en Markdown, où une image est un élément du paragraphe
   extensions: () => [Image.configure({ inline: true, allowBase64: false })],
+  dialog: () => import('@admin/Editors/NatheoEditor/Modules/Image/ImageDialog.vue').then((loaded) => loaded.default),
   commands: [
     {
       id: 'image',

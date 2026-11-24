@@ -4,11 +4,20 @@
  * Module codeBlock de Natheo-Editor : bloc de code avec sa langue
  */
 import CodeBlock from '@tiptap/extension-code-block';
+import { mergeAttributes } from '@tiptap/core';
 import { defineNatheoEditorModule } from '@/vue/Composables/Admin/Editor/NatheoEditor/defineNatheoEditorModule';
 import { translationKey as t } from '@/vue/Composables/Admin/Screen/defineScreen';
 
-/** Clôture plus longue que la plus longue suite d'accents graves du code */
+/** Clôture plus longue que la plus longue suite d'accents graves du code ; langue montrée sur le bloc */
 const FencedCodeBlock = CodeBlock.extend({
+  renderHTML({ node, HTMLAttributes }) {
+    const language = node.attrs.language as string | null;
+    return [
+      'pre',
+      mergeAttributes(this.options.HTMLAttributes, HTMLAttributes, { 'data-language': language || undefined }),
+      ['code', { class: language ? this.options.languageClassPrefix + language : null }, 0],
+    ];
+  },
   renderMarkdown(node, helpers) {
     const code = helpers.renderChildren(node.content ?? []);
     const longest = Math.max(0, ...(code.match(/`+/g) ?? []).map((run: string) => run.length));
