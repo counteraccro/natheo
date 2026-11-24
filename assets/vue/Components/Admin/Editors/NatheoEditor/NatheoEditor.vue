@@ -8,7 +8,11 @@ import { defineAsyncComponent, inject } from 'vue';
 import { routerKey } from 'vue-router';
 import { ADMIN_CONTEXT } from '@/vue/Composables/Admin/useAdminContext';
 import { useSiteRender } from '@/vue/Composables/Admin/Editor/NatheoEditor/siteRender';
-import { modulesForPreset, natheoEditorModules } from '@/vue/Composables/Admin/Editor/NatheoEditor/natheoEditorModules';
+import {
+  moduleDomains,
+  modulesForPreset,
+  natheoEditorModules,
+} from '@/vue/Composables/Admin/Editor/NatheoEditor/natheoEditorModules';
 import { useNatheoEditorView } from '@/vue/Composables/Admin/Editor/NatheoEditor/useNatheoEditorView';
 import { natheoEditorRender } from '@/vue/Composables/Admin/Editor/NatheoEditor/natheoEditorRenders';
 import type { AdminEditorProps } from '@/ts/Admin/Editor/AdminEditor.type';
@@ -25,6 +29,10 @@ const modules = modulesForPreset(
   props.preset,
   (module) => context?.menu.isModuleVisible(module) ?? true
 );
+// Libellés affichés par leur clé tant que le domaine n'est pas chargé
+for (const domain of moduleDomains(modules)) {
+  context?.translator.loadDomain(domain).catch(() => undefined);
+}
 const view = useNatheoEditorView(props, (value) => emit('update:modelValue', value), modules, t, {
   theme: context?.bootstrap.site.theme ?? null,
   render: useSiteRender(inject(routerKey, null)),

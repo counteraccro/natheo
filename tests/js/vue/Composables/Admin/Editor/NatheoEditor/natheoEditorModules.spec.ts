@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   mergeEditorModules,
+  moduleDomains,
   modulesForPreset,
   natheoEditorModules,
 } from '@/vue/Composables/Admin/Editor/NatheoEditor/natheoEditorModules';
@@ -32,6 +33,15 @@ describe('natheoEditorModules', () => {
   it('masque un module dont le module du back-office n’est pas visible', () => {
     const modules = [module('bold'), module('media', { requires: 'media' })];
     expect(modulesForPreset(modules, 'full', (id) => id !== 'media').map((m) => m.id)).toEqual(['bold']);
+  });
+
+  it('liste les domaines de traduction des modules sans doublon', () => {
+    const modules = [
+      module('bold'),
+      module('note', { domains: ['demo'] }),
+      module('aside', { domains: ['demo', 'x'] }),
+    ];
+    expect(moduleDomains(modules)).toEqual(['demo', 'x']);
   });
 
   it('lit les modules déclarés sans erreur', () => {

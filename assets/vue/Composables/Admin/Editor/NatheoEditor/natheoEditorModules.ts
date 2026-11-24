@@ -46,6 +46,14 @@ export function modulesForPreset(
   );
 }
 
+/**
+ * Domaines de traduction des modules, sans doublon
+ * @param modules
+ */
+export function moduleDomains(modules: NatheoEditorModule[]): string[] {
+  return [...new Set(modules.flatMap((module) => module.domains ?? []))];
+}
+
 let registered: NatheoEditorModule[] | null = null;
 
 /**

@@ -71,6 +71,8 @@ export interface NatheoEditorModule {
   dialog?: () => Promise<Component>;
   /** Module du back-office sans lequel le module est masqué */
   requires?: string;
+  /** Domaines de traduction de ses textes, chargés par l'éditeur (admin_ui est toujours chargé) */
+  domains?: string[];
 }
 
 /** État de l'éditeur, passé au rendu du thème */
