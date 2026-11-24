@@ -31,6 +31,7 @@ import {
   UiSwitch,
   UiTabs,
   UiTextarea,
+  UiTextEditor,
   UiTooltip,
   notify,
   useFormErrors,
@@ -43,6 +44,30 @@ import {
 // Formulaire : l'enregistrement simule la réponse 422 de l'API
 const tagLabels = reactive<Record<string, string>>({ fr: 'Version', en: 'Release', es: '' });
 const descriptions = reactive<Record<string, string>>({ fr: '', en: '', es: '' });
+const EDITOR_SAMPLE = [
+  '## Bienvenue',
+  '',
+  'Un texte **gras**, *italique*, ~~barré~~ et du `code`. Lien vers [une page du site](P#12) et vers [Nathéo](https://natheo.fr).',
+  '',
+  '- Premier point',
+  '- Second point',
+  '',
+  '> Une citation mise en avant.',
+  '',
+  '```php',
+  "echo 'Bonjour';",
+  '```',
+  '',
+  '| Colonne | Valeur |',
+  '| --- | --- |',
+  '| A | 1 |',
+  '',
+  '<div class="note">HTML brut</div>',
+  '',
+  'Bonjour [[user.login]], voici un attribut {.lead}',
+].join('\n');
+const contents = reactive<Record<string, string>>({ fr: EDITOR_SAMPLE, en: '', es: '' });
+const comment = ref('Un commentaire **court** avec une [adresse](https://natheo.fr).');
 const color = ref('#6530e0');
 const locale = ref<string | number | null>('fr');
 const enabled = ref(true);
@@ -253,6 +278,20 @@ const PANEL_TITLE = 'm-0 text-md font-[650]';
               </UiField>
               <UiField :name="`translations[${tab.id}].description`" :label="`Description (${tab.label})`">
                 <UiTextarea v-model="descriptions[tab.id]" :maxlength="200" counter />
+              </UiField>
+              <UiField :name="`translations[${tab.id}].content`" :label="`Contenu (${tab.label})`">
+                <UiTextEditor
+                  v-model="contents[tab.id]"
+                  :lang="tab.id"
+                  placeholder="Saisissez le contenu…"
+                  :keywords="[
+                    { keyword: '[[user.login]]', label: 'Identifiant' },
+                    { keyword: '[[site.name]]', label: 'Nom du site' },
+                  ]"
+                />
+              </UiField>
+              <UiField label="Commentaire (préréglage basic)">
+                <UiTextEditor v-model="comment" preset="basic" :rows="4" />
               </UiField>
             </div>
           </template>
