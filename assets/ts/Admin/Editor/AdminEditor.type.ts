@@ -5,8 +5,8 @@
  */
 import type { Component } from 'vue';
 
-/** Jeu de commandes : basic (gras, italique, lien, listes), full (toutes) */
-export type AdminEditorPreset = 'basic' | 'full';
+/** Jeu de commandes : basic (gras, italique, lien, listes), full (toutes) ou liste d'ids de modules */
+export type AdminEditorPreset = 'basic' | 'full' | string[];
 
 /** Mot-clé inséré dans le texte et remplacé à l'envoi (e-mails) */
 export interface AdminEditorKeyword {
