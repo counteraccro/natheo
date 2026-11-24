@@ -73,5 +73,7 @@ admin_ui.sidebar.nav: 'Menu principal'
 admin_ui.sidebar.user_menu: 'Menu utilisateur'
 admin_ui.sidebar.version: 'Version {version}'
 admin_ui.tabs.has_errors: 'contient des erreurs'
+admin_ui.text_editor.load_error: 'L''éditeur n''a pas pu être chargé. Le texte reste modifiable en Markdown.'
+admin_ui.text_editor.loading: 'Chargement de l''éditeur…'
 admin_ui.toast.close: 'Fermer la notification'
 admin_ui.toast.region: Notifications

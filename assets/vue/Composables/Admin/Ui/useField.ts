@@ -47,6 +47,14 @@ export function useFieldControl(invalid?: ComputedRef<boolean>) {
 }
 
 /**
+ * Identifiant du libellé du UiField parent, undefined hors d'un champ
+ */
+export function useFieldLabel(): ComputedRef<string | undefined> {
+  const field = inject(FIELD, null);
+  return computed(() => field?.labelId.value);
+}
+
+/**
  * Confie le compteur de caractères au UiField parent, qui l'aligne avec les erreurs
  * @param text texte du compteur, undefined quand il est masqué
  * @return true quand le UiField l'affiche, false quand le contrôle doit l'afficher lui-même
