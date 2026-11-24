@@ -3,7 +3,7 @@
  * @author Gourdon Aymeric
  * @version 1.0
  * Zone de saisie de Natheo-Editor : éditeur visuel, ou texte Markdown en mode source ; hauteur entre le minimum du
- * champ et 60 % de l'écran
+ * champ et 60 % de l'écran ; nom du thème du site quand son rendu est montré
  */
 import { computed } from 'vue';
 import { EditorContent } from '@tiptap/vue-3';
@@ -23,6 +23,12 @@ const onInput = (event: Event): void => props.view.setSourceText((event.target a
 <template>
   <div class="natheo-editor-surface relative" :style="style">
     <EditorContent v-show="!view.source.value" :editor="view.editor.value" />
+    <span
+      v-if="view.siteRender.value && view.siteTheme && !view.source.value"
+      class="pointer-events-none absolute top-2 right-3 rounded-full bg-surface px-2 py-px text-[11px] font-semibold text-fg-muted"
+    >
+      {{ view.siteTheme.label }}
+    </span>
     <textarea
       v-if="view.source.value"
       class="natheo-editor-source"

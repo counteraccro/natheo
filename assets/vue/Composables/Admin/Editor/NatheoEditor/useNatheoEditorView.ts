@@ -4,14 +4,16 @@
  * Vue de Natheo-Editor passée au rendu du thème : commandes des modules résolues, traduites et rangées par groupe,
  * fenêtres des modules, raccourcis des commandes à fenêtre, infobulles des liens vers une page ou un mot-clé
  */
-import { computed, markRaw, shallowRef, type Component } from 'vue';
+import { computed, markRaw, shallowRef, watch, type Component, type Ref } from 'vue';
 import { Extension, type Editor } from '@tiptap/core';
 import { Plugin, PluginKey } from '@tiptap/pm/state';
 import { Decoration, DecorationSet } from '@tiptap/pm/view';
 import type { Node as ProseMirrorNode } from '@tiptap/pm/model';
 import { useNatheoEditor } from '@/vue/Composables/Admin/Editor/NatheoEditor/useNatheoEditor';
 import { defineNatheoEditorModule } from '@/vue/Composables/Admin/Editor/NatheoEditor/defineNatheoEditorModule';
+import { loadSiteStylesheet } from '@/vue/Composables/Admin/Editor/NatheoEditor/siteRender';
 import type { AdminEditorProps } from '@/ts/Admin/Editor/AdminEditor.type';
+import type { AdminBootstrapSiteTheme } from '@/ts/Admin/App/AdminBootstrap.type';
 import type {
   NatheoEditorCommand,
   NatheoEditorContext,
@@ -86,12 +88,14 @@ function linkTitles(doc: ProseMirrorNode, t: NatheoEditorTranslate): DecorationS
  * @param emit émet le Markdown modifié
  * @param modules modules retenus pour le préréglage
  * @param t traducteur
+ * @param site thème du site et choix partagé du rendu du site
  */
 export function useNatheoEditorView(
   props: AdminEditorProps,
   emit: (value: string) => void,
   modules: NatheoEditorModule[],
-  t: NatheoEditorTranslate
+  t: NatheoEditorTranslate,
+  site: { theme: AdminBootstrapSiteTheme | null; render: Ref<boolean> } = { theme: null, render: shallowRef(false) }
 ): NatheoEditorView {
   const context: NatheoEditorContext = { props };
   const commands = computed(() => commandsOf(modules, context));
@@ -151,6 +155,21 @@ export function useNatheoEditorView(
   const state = useNatheoEditor(props, emit, [...modules, viewModule]);
   const editor = (): Editor => state.editor.value;
 
+  // Rendu du site : classe du texte et couleurs du thème sur la zone seule, feuille chargée au premier passage
+  const siteTheme = site.theme?.stylesheet ? site.theme : null;
+  watch(
+    site.render,
+    (render) => {
+      if (render && siteTheme?.stylesheet) {
+        loadSiteStylesheet(siteTheme.stylesheet);
+        state.contentAttributes.value = { class: siteTheme.textClass, 'data-front-theme': siteTheme.id };
+      } else {
+        state.contentAttributes.value = { class: 'natheo-editor-admin' };
+      }
+    },
+    { immediate: true }
+  );
+
   const isActive = (command: NatheoEditorCommand): boolean => command.isActive?.(editor()) ?? false;
   const group = (name: NatheoEditorGroup): NatheoEditorCommand[] =>
     commands.value.filter((command) => command.group === name && (command.visible?.(editor()) ?? true));
@@ -182,6 +201,11 @@ export function useNatheoEditorView(
       return keys ? `${label(command)} (${keys})` : label(command);
     },
     t,
+    siteTheme,
+    siteRender: site.render,
+    toggleSiteRender: () => {
+      site.render.value = !site.render.value;
+    },
     dialog,
     closeDialog: () => {
       dialog.value = null;

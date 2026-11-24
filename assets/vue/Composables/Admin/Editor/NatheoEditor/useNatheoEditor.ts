@@ -81,8 +81,15 @@ export function useNatheoEditor(
   const valueOf = (editor: Editor): string =>
     editor.state.doc.eq(originalDoc) ? original : markdownOf(editor, modules);
 
+  // Style du texte : celui du back-office, ou celui du thème du site (classe et data-front-theme)
+  const contentAttributes = ref<Record<string, string>>({ class: 'natheo-editor-admin' });
+  const attributes = (): Record<string, string> => {
+    const own = editableAttributes(props);
+    return { ...contentAttributes.value, ...own, class: `${own.class} ${contentAttributes.value.class ?? ''}`.trim() };
+  };
+
   const editorProps = () => ({
-    attributes: editableAttributes(props),
+    attributes: attributes(),
     transformPastedHTML: cleanPastedHtml,
     handlePaste: (_view: EditorView, event: ClipboardEvent): boolean => pasteMarkdown(event),
   });
@@ -174,11 +181,7 @@ export function useNatheoEditor(
   );
 
   watch(editable, (value) => editor.value.setEditable(value, false));
-  watch(
-    () => editableAttributes(props),
-    () => editor.value.setOptions({ editorProps: editorProps() }),
-    { deep: true }
-  );
+  watch(attributes, () => editor.value.setOptions({ editorProps: editorProps() }), { deep: true });
 
   onBeforeUnmount(() => editor.value.destroy());
 
@@ -192,6 +195,7 @@ export function useNatheoEditor(
     sourceText,
     toggleSource,
     setSourceText,
+    contentAttributes,
     height: computed(() => ({ minHeight: `${props.rows * LINE_HEIGHT}em`, maxHeight: '60vh' })),
   };
 }

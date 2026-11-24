@@ -1,12 +1,12 @@
 import { afterEach, describe, expect, it } from 'vitest';
-import { defineComponent, nextTick } from 'vue';
+import { defineComponent, nextTick, ref } from 'vue';
 import { flushPromises } from '@vue/test-utils';
 import { modulesForPreset, natheoEditorModules } from '@/vue/Composables/Admin/Editor/NatheoEditor/natheoEditorModules';
 import { defineNatheoEditorModule } from '@/vue/Composables/Admin/Editor/NatheoEditor/defineNatheoEditorModule';
 import { commandsOf, formatShortcut } from '@/vue/Composables/Admin/Editor/NatheoEditor/useNatheoEditorView';
 import { editorProps } from '@tests/vue/Composables/Admin/Editor/NatheoEditor/support';
 import EditorSurface from '@admin/Editors/NatheoEditor/Parts/EditorSurface.vue';
-import { mountView } from '@tests/vue/Components/Admin/Editors/NatheoEditor/support';
+import { mountView, siteTheme } from '@tests/vue/Components/Admin/Editors/NatheoEditor/support';
 import type { NatheoEditorCommand } from '@/ts/Admin/Editor/NatheoEditor/NatheoEditor.type';
 
 const byId = (commands: NatheoEditorCommand[], id: string): NatheoEditorCommand => {
@@ -120,5 +120,36 @@ describe('useNatheoEditorView', () => {
     const titles = wrapper.findAll('[title]').map((element) => element.attributes('title'));
     expect(titles).toEqual(['link_page(12)', 'link_keyword([[user.url]])']);
     expect(wrapper.find('.natheo-editor-internal').text()).toBe('Accueil');
+  });
+
+  it('montre le texte comme sur le site : classe et thème sur la zone, feuille chargée', async () => {
+    const render = ref(false);
+    const { wrapper, view } = await mountView(EditorSurface, { modelValue: 'Texte' }, undefined, {
+      theme: siteTheme,
+      render,
+    });
+    unmount = () => wrapper.unmount();
+    const zone = () => wrapper.get('.natheo-editor-content');
+    expect(zone().classes()).toContain('natheo-editor-admin');
+    view.toggleSiteRender();
+    await nextTick();
+    expect(zone().classes()).toContain('nh-prose');
+    expect(zone().classes()).not.toContain('natheo-editor-admin');
+    expect(zone().attributes('data-front-theme')).toBe('natheo_horizon');
+    expect(document.head.querySelector(`link[href="${siteTheme.stylesheet}"]`)).not.toBeNull();
+    expect(wrapper.text()).toContain('Natheo-Horizon');
+    render.value = false;
+    await nextTick();
+    expect(zone().classes()).toContain('natheo-editor-admin');
+    expect(zone().attributes('data-front-theme')).toBeUndefined();
+  });
+
+  it('ne propose pas le rendu du site pour un thème sans feuille de texte', async () => {
+    const { wrapper, view } = await mountView(null, {}, undefined, {
+      theme: { ...siteTheme, stylesheet: null },
+      render: ref(false),
+    });
+    unmount = () => wrapper.unmount();
+    expect(view.siteTheme).toBeNull();
   });
 });

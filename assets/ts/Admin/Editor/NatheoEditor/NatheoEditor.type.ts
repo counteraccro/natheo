@@ -7,6 +7,7 @@ import type { Component, ComputedRef, Ref, ShallowRef } from 'vue';
 import type { AnyExtension, Editor } from '@tiptap/core';
 import type { Editor as VueEditor } from '@tiptap/vue-3';
 import type { AdminEditorProps } from '@/ts/Admin/Editor/AdminEditor.type';
+import type { AdminBootstrapSiteTheme } from '@/ts/Admin/App/AdminBootstrap.type';
 import type { IconName } from '@/ts/Global/Ui/UiIcon.type';
 
 /**
@@ -88,6 +89,8 @@ export interface NatheoEditorState {
   /** Ouvre le mode source ou revient à l'éditeur, l'historique d'annulation repartant de zéro */
   toggleSource: () => void;
   setSourceText: (value: string) => void;
+  /** Attributs ajoutés à la zone de saisie : classe du style du texte (natheo-editor-admin par défaut), data-front-theme */
+  contentAttributes: Ref<Record<string, string>>;
   /** Hauteur de la zone de saisie : minimum de props.rows lignes, puis défilement */
   height: ComputedRef<{ minHeight: string; maxHeight: string }>;
 }
@@ -122,6 +125,11 @@ export interface NatheoEditorView extends NatheoEditorState {
   /** Libellé et raccourci, pour l'infobulle d'un bouton */
   tooltip: (command: NatheoEditorCommand) => string;
   t: NatheoEditorTranslate;
+  /** Thème du site dont le texte peut être montré, null sans feuille de texte */
+  siteTheme: AdminBootstrapSiteTheme | null;
+  /** Texte montré comme sur le site, choix partagé par les éditeurs de l'écran */
+  siteRender: Ref<boolean>;
+  toggleSiteRender: () => void;
   /** Fenêtre ouverte par une commande */
   dialog: ShallowRef<NatheoEditorOpenDialog | null>;
   closeDialog: () => void;

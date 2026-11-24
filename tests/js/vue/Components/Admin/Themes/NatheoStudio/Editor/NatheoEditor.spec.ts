@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it } from 'vitest';
-import { nextTick } from 'vue';
+import { nextTick, ref } from 'vue';
 import StudioEditor from '@admin/Themes/NatheoStudio/Editor/NatheoEditor.vue';
-import { mountView } from '@tests/vue/Components/Admin/Editors/NatheoEditor/support';
+import { mountView, siteTheme } from '@tests/vue/Components/Admin/Editors/NatheoEditor/support';
 
 describe('Natheo-Editor dans Natheo-Studio', () => {
   let unmount: () => void = () => undefined;
@@ -79,5 +79,21 @@ describe('Natheo-Editor dans Natheo-Studio', () => {
     expect(wrapper.find('[role="toolbar"]').exists()).toBe(false);
     expect(wrapper.text()).not.toContain('markdown');
     expect(wrapper.get('[contenteditable]').attributes('contenteditable')).toBe('false');
+  });
+
+  it('propose le rendu du site seulement avec un thème et hors du mode Markdown', async () => {
+    const { wrapper } = await mountView(StudioEditor, { modelValue: 'texte' });
+    expect(wrapper.text()).not.toContain('site_render');
+    wrapper.unmount();
+
+    const themed = await mountView(StudioEditor, { modelValue: 'texte' }, undefined, {
+      theme: siteTheme,
+      render: ref(false),
+    });
+    unmount = () => themed.wrapper.unmount();
+    expect(themed.wrapper.text()).toContain('site_render');
+    themed.view.toggleSource();
+    await nextTick();
+    expect(themed.wrapper.text()).not.toContain('site_render');
   });
 });
