@@ -1,10 +1,11 @@
 /*!
  * Author : Gourdon Aymeric
- * Version : 2.0
+ * Version : 2.1
  * Jetons de couleur du thème Natheo-Horizon, clair et sombre (contrastes WCAG 2.2 AA)
  */
 
-:root {
+/* Sur l'élément qui porte l'identifiant du thème, et ses descendants */
+[data-front-theme='natheo_horizon'] {
     --bg: #ffffff;
     --surface: #f5f3fc;
     --fg: #13112a;
@@ -40,7 +41,8 @@
     color-scheme: light;
 }
 
-:root.dark {
+[data-front-theme='natheo_horizon'].dark,
+.dark [data-front-theme='natheo_horizon'] {
     --bg: #0f0a24;
     --surface: #181134;
     --fg: #ece8fb;

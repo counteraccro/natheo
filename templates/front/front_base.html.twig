@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="{{ locale|default(app.request.locale) }}">
+{# Identifiant du thème, tiré de son entrée Vite front_<thème> : porte ses couleurs #}
+<html lang="{{ locale|default(app.request.locale) }}" data-front-theme="{{ scriptsTag|slice(6) }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />

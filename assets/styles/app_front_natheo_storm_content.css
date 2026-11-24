@@ -1,0 +1,11 @@
+/*!
+ * Author : Gourdon Aymeric
+ * Version : 1.0
+ * Texte des blocs du thème StormFront montré dans l'éditeur du back-office : couleurs, polices et texte, sans Tailwind
+ */
+
+@import '@fontsource-variable/geist';
+@import '@fontsource-variable/geist-mono';
+@import './front/stormFront/variables.css';
+@import './front/stormFront/prose.css';
+@import './front/stormFront/content.css';

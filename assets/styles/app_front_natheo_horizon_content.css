@@ -1,0 +1,10 @@
+/*!
+ * Author : Gourdon Aymeric
+ * Version : 1.0
+ * Texte des blocs du thème Natheo-Horizon montré dans l'éditeur du back-office : couleurs, polices et texte, sans Tailwind
+ */
+
+@import '@fontsource-variable/schibsted-grotesk';
+@import './front/natheoHorizon/variables.css';
+@import './front/natheoHorizon/prose.css';
+@import './front/natheoHorizon/content.css';

@@ -1,10 +1,11 @@
 /*!
  * Author : Gourdon Aymeric
- * Version : 1.0
+ * Version : 1.1
  * Jetons de couleur du thème StormFront, clair et sombre (contrastes WCAG 2.2 AA)
  */
 
-:root {
+/* Sur l'élément qui porte l'identifiant du thème, et ses descendants */
+[data-front-theme='natheo_storm'] {
     /* Volet de lecture et fil */
     --page: #f4f6f7;
     --thread: #dfe4e7;
@@ -36,7 +37,8 @@
     color-scheme: light;
 }
 
-:root.dark {
+[data-front-theme='natheo_storm'].dark,
+.dark [data-front-theme='natheo_storm'] {
     --page: #12171a;
     --thread: #182024;
     --fg: #e3e8eb;

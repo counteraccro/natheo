@@ -1,0 +1,8 @@
+/*!
+ * Author : Gourdon Aymeric
+ * Version : 1.0
+ * Texte des blocs du thème Natheo-Base montré dans l'éditeur du back-office : couleurs, polices et texte, sans Tailwind
+ */
+
+@import './front/natheoBase/prose.css';
+@import './front/natheoBase/content.css';
