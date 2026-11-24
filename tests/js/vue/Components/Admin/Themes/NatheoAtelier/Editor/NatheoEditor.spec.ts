@@ -21,6 +21,7 @@ describe('Natheo-Editor dans Natheo-Atelier', () => {
       undefined,
       'command.bold',
       'command.italic',
+      'command.clear_formatting',
       'command.link',
     ]);
     expect(wrapper.text()).toContain('slash_hint');

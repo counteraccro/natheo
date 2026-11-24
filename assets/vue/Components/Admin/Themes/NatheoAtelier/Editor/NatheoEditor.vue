@@ -3,7 +3,7 @@
  * @author Gourdon Aymeric
  * @version 1.0
  * Natheo-Editor dans Natheo-Atelier : rien au repos, barre compacte pendant la saisie (menus « Paragraphe » et
- * « Insérer », gras, italique, lien), barre flottante sur une sélection et menu « / » sur une ligne vide
+ * « Insérer », gras, italique, effacer la mise en forme, lien), barre flottante sur une sélection et menu « / » sur une ligne vide
  */
 import { computed, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
 import { PluginKey, TextSelection } from '@tiptap/pm/state';
@@ -29,7 +29,7 @@ const view = props.view;
 const { onFocusin, onKeydown } = useRovingToolbar();
 
 /** Commandes en bouton dans la barre compacte, les autres passent par les menus */
-const QUICK = ['bold', 'italic', 'link'];
+const QUICK = ['bold', 'italic', 'link', 'clearFormatting'];
 
 /** Groupes du menu « / », avec leur intitulé */
 const SLASH_GROUPS: { groups: NatheoEditorGroup[]; label: string }[] = [
