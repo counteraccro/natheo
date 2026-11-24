@@ -73,7 +73,7 @@ export function bootstrap(values: Partial<AdminBootstrap> = {}): AdminBootstrap 
       role: 'Administrateur',
       impersonating: null,
     },
-    site: { name: 'Nathéo', version: '2.1.0-dev', url: '/' },
+    site: { name: 'Nathéo', version: '2.1.0-dev', url: '/', theme: null },
     urls: {
       dashboard: '/admin/fr/dashboard/index',
       logout: '/admin/fr/logout',

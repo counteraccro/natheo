@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 1.2
  * Tests de la page de l'application Vue du back-office et du renouvellement de son access token
  */
 
@@ -213,6 +213,21 @@ class AdminAppControllerTest extends AppWebTestCase
         $this->persistAndFlush($option);
         $this->client->request('GET', '/admin/fr/inconnu', server: self::HTML);
         $this->assertSame(AdminTemplate::NATHEO_STUDIO->value, $this->getBootstrap()['theme']);
+    }
+
+    /**
+     * Thème actif du site, son nom, la classe et la feuille de son texte pour le rendu du site dans l'éditeur
+     * @return void
+     */
+    public function testIndexSiteTheme(): void
+    {
+        $this->loginContributeur();
+        $this->client->request('GET', '/admin/fr/inconnu', server: self::HTML);
+        $theme = $this->getBootstrap()['site']['theme'];
+        $this->assertSame('natheo_horizon', $theme['id']);
+        $this->assertSame('Natheo-Horizon', $theme['label']);
+        $this->assertSame('nh-prose', $theme['textClass']);
+        $this->assertStringContainsString('front_natheo_horizon_content', (string) $theme['stylesheet']);
     }
 
     /**

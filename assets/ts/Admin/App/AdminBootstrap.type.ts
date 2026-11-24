@@ -1,6 +1,6 @@
 /**
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 1.2
  * Données de démarrage de l'application du back-office, lues dans la page (AdminAppBootstrapService)
  */
 
@@ -77,6 +77,17 @@ export interface AdminBootstrapTheme {
   label: string;
 }
 
+/** Thème actif du site public, pour montrer le texte comme sur le site */
+export interface AdminBootstrapSiteTheme {
+  /** Identifiant (natheo_horizon), posé en data-front-theme */
+  id: string;
+  label: string;
+  /** Classe du texte des blocs (nh-prose) */
+  textClass: string;
+  /** Feuille des couleurs, polices et texte du thème, null si le thème n'en a pas */
+  stylesheet: string | null;
+}
+
 export interface AdminBootstrap {
   api: AdminBootstrapApi;
   locale: string;
@@ -84,7 +95,7 @@ export interface AdminBootstrap {
   /** /admin/<langue>/ */
   basePath: string;
   user: AdminBootstrapUser;
-  site: { name: string; version: string; url: string };
+  site: { name: string; version: string; url: string; theme: AdminBootstrapSiteTheme | null };
   urls: AdminBootstrapUrls;
   options: AdminBootstrapOptions;
   /** Thème de l'utilisateur, natheo_studio pour une valeur inconnue */
