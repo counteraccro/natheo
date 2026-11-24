@@ -6,6 +6,7 @@
  */
 import { computed, onBeforeUnmount, ref, shallowRef, watch } from 'vue';
 import { Editor } from '@tiptap/vue-3';
+import type { Editor as CoreEditor } from '@tiptap/core';
 import { Markdown } from '@tiptap/markdown';
 import { CharacterCount, Placeholder } from '@tiptap/extensions';
 import { EditorState } from '@tiptap/pm/state';
@@ -42,6 +43,15 @@ export function editableAttributes(props: AdminEditorProps): Record<string, stri
 }
 
 /**
+ * Markdown du document, retouché par les modules
+ * @param editor
+ * @param modules
+ */
+export function markdownOf(editor: Editor | CoreEditor, modules: NatheoEditorModule[]): string {
+  return modules.reduce((markdown, module) => module.transformMarkdown?.(markdown) ?? markdown, editor.getMarkdown());
+}
+
+/**
  * Crée l'éditeur et le détruit avec le composant
  * @param props props du contrat, réactives
  * @param emit émet le Markdown modifié
@@ -60,7 +70,8 @@ export function useNatheoEditor(
   let originalDoc!: ProseMirrorNode;
   let emitted = props.modelValue;
 
-  const valueOf = (editor: Editor): string => (editor.state.doc.eq(originalDoc) ? original : editor.getMarkdown());
+  const valueOf = (editor: Editor): string =>
+    editor.state.doc.eq(originalDoc) ? original : markdownOf(editor, modules);
 
   const editorProps = () => ({
     attributes: editableAttributes(props),

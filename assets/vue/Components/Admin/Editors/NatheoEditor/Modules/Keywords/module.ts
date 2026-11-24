@@ -1,81 +1,76 @@
 /**
  * @author Gourdon Aymeric
  * @version 1.0
- * Module keywords de Natheo-Editor : mots-clés [[x]] gardés tels quels, insérés depuis la liste donnée par le champ
+ * Module keywords de Natheo-Editor : mots-clés [[x]] gardés en texte sans échappement et montrés en pastille, insérés
+ * depuis la liste donnée par le champ
  */
-import { Node, nodeInputRule } from '@tiptap/core';
+import { Extension } from '@tiptap/core';
+import { Plugin, PluginKey } from '@tiptap/pm/state';
+import { Decoration, DecorationSet } from '@tiptap/pm/view';
+import type { Node as ProseMirrorNode } from '@tiptap/pm/model';
 import { defineNatheoEditorModule } from '@/vue/Composables/Admin/Editor/NatheoEditor/defineNatheoEditorModule';
 
-/** Mot-clé en tête du texte : [[user.login]] */
-const KEYWORD = /^\[\[([\w.-]+)\]\]/;
+/** Mot-clé dans le texte : [[user.login]] */
+const KEYWORD = /\[\[[\w.-]+\]\]/g;
 
-/** Mot-clé atomique, rendu en pastille */
-export const Keyword = Node.create({
-  name: 'keyword',
-  group: 'inline',
-  inline: true,
-  atom: true,
-  selectable: true,
+/** Mot-clé échappé par l'écriture du Markdown, _ compris */
+const ESCAPED_KEYWORD = /\\\[\\\[((?:\\_|[\w.-])+)\\\]\\\]/g;
 
-  addAttributes() {
-    return { name: { default: '' } };
-  },
+/**
+ * Pastilles des mots-clés du document
+ * @param doc
+ */
+function keywordDecorations(doc: ProseMirrorNode): DecorationSet {
+  const decorations: Decoration[] = [];
+  doc.descendants((node, position) => {
+    if (!node.isText || node.marks.some((mark) => mark.type.spec.code)) return;
+    for (const match of node.text?.matchAll(KEYWORD) ?? []) {
+      const from = position + (match.index ?? 0);
+      decorations.push(Decoration.inline(from, from + match[0].length, { class: 'natheo-editor-keyword' }));
+    }
+  });
+  return DecorationSet.create(doc, decorations);
+}
 
-  parseHTML() {
-    return [{ tag: 'span[data-keyword]', getAttrs: (element) => ({ name: element.getAttribute('data-keyword') }) }];
-  },
+/** Mots-clés montrés en pastille, sans changer le texte */
+export const Keywords = Extension.create({
+  name: 'keywords',
 
-  renderHTML({ node }) {
-    return ['span', { 'data-keyword': node.attrs.name, class: 'natheo-editor-keyword' }, `[[${node.attrs.name}]]`];
-  },
-
-  renderText({ node }) {
-    return `[[${node.attrs.name}]]`;
-  },
-
-  addInputRules() {
-    // Sans groupe capturant : la règle remplace tout le texte trouvé, crochets compris
+  addProseMirrorPlugins() {
     return [
-      nodeInputRule({
-        find: /\[\[[\w.-]+\]\]$/,
-        type: this.type,
-        getAttributes: (match) => ({ name: match[0].slice(2, -2) }),
+      new Plugin({
+        key: new PluginKey('natheoEditorKeywords'),
+        state: {
+          init: (_, state) => keywordDecorations(state.doc),
+          apply: (transaction, decorations) =>
+            transaction.docChanged ? keywordDecorations(transaction.doc) : decorations,
+        },
+        props: {
+          decorations(state) {
+            return this.getState(state);
+          },
+        },
       }),
     ];
   },
-
-  markdownTokenizer: {
-    name: 'keyword',
-    level: 'inline',
-    start: (src: string) => src.indexOf('[['),
-    tokenize: (src: string) => {
-      const match = KEYWORD.exec(src);
-      return match ? { type: 'keyword', raw: match[0], text: match[1] } : undefined;
-    },
-  },
-
-  parseMarkdown: (token, helpers) => helpers.createNode('keyword', { name: token.text }),
-
-  renderMarkdown: (node) => `[[${node.attrs?.name ?? ''}]]`,
 });
 
 export default defineNatheoEditorModule({
   id: 'keywords',
   position: 140,
-  // Toujours lu pour que [[x]] ne soit jamais échappé ; les commandes n'existent qu'avec des mots-clés
+  // Toujours chargé pour que [[x]] ne soit jamais échappé ; les commandes n'existent qu'avec des mots-clés
   always: true,
-  extensions: () => [Keyword],
+  extensions: () => [Keywords],
+  transformMarkdown: (markdown) =>
+    markdown.replace(ESCAPED_KEYWORD, (_, name: string) => `[[${name.replace(/\\_/g, '_')}]]`),
   commands: ({ props }) =>
-    props.keywords.map((keyword) => {
-      const name = keyword.keyword.replace(/^\[\[|\]\]$/g, '');
-      return {
-        id: `keyword:${name}`,
-        label: keyword.label,
-        hint: keyword.keyword,
-        translated: true,
-        icon: 'tag',
-        group: 'keyword',
-        run: (editor) => editor.chain().focus().insertContent({ type: 'keyword', attrs: { name } }).run(),
-      };
-    }),
+    props.keywords.map((keyword) => ({
+      id: `keyword:${keyword.keyword.replace(/^\[\[|\]\]$/g, '')}`,
+      label: keyword.label,
+      hint: keyword.keyword,
+      translated: true,
+      icon: 'tag',
+      group: 'keyword',
+      run: (editor) => editor.chain().focus().insertContent(keyword.keyword).run(),
+    })),
 });

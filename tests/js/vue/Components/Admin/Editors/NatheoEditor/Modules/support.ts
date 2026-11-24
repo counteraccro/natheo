@@ -1,6 +1,7 @@
 import { Editor } from '@tiptap/core';
 import { Markdown } from '@tiptap/markdown';
 import { modulesForPreset, natheoEditorModules } from '@/vue/Composables/Admin/Editor/NatheoEditor/natheoEditorModules';
+import { markdownOf } from '@/vue/Composables/Admin/Editor/NatheoEditor/useNatheoEditor';
 import { editorProps } from '@tests/vue/Composables/Admin/Editor/NatheoEditor/support';
 import type { AdminEditorProps } from '@/ts/Admin/Editor/AdminEditor.type';
 import type { NatheoEditorCommand } from '@/ts/Admin/Editor/NatheoEditor/NatheoEditor.type';
@@ -25,7 +26,7 @@ export function coreEditor(markdown: string, overrides: Partial<AdminEditorProps
  * Markdown relu puis réécrit par les modules du cœur
  * @param markdown
  */
-export const rewrite = (markdown: string): string => coreEditor(markdown).getMarkdown();
+export const rewrite = (markdown: string): string => markdownOf(coreEditor(markdown), natheoEditorModules());
 
 /**
  * Commande d'un module du cœur

@@ -2,9 +2,18 @@ import { describe, expect, it } from 'vitest';
 import { command, coreEditor, rewrite } from '@tests/vue/Components/Admin/Editors/NatheoEditor/Modules/support';
 
 describe('module keywords', () => {
-  it('garde les mots-clés sans les échapper, même sans liste de mots-clés', () => {
+  it('garde les mots-clés sans les échapper, même sans liste de mots-clés et dans un lien', () => {
     expect(rewrite('Bonjour [[user.login]],')).toBe('Bonjour [[user.login]],');
-    expect(coreEditor('[[a]] et [[b.c]]', { preset: 'basic' }).getMarkdown()).toBe('[[a]] et [[b.c]]');
+    expect(rewrite('Site [[[global.site_name]]]([[global.url_change_psw]]).')).toBe(
+      'Site [[[global.site_name]]]([[global.url_change_psw]]).'
+    );
+    expect(rewrite('**[[url.time]] minutes**')).toBe('**[[url.time]] minutes**');
+  });
+
+  it('montre les mots-clés en pastille sans changer le texte', () => {
+    const editor = coreEditor('Bonjour [[user.login]] et `[[code]]`');
+    const pills = editor.view.dom.querySelectorAll('.natheo-editor-keyword');
+    expect(Array.from(pills).map((pill) => pill.textContent)).toEqual(['[[user.login]]']);
   });
 
   it('crée une commande par mot-clé donné par le champ', () => {
@@ -14,18 +23,6 @@ describe('module keywords', () => {
     const editor = coreEditor('Bonjour ');
     editor.commands.setTextSelection(9);
     insert.run?.(editor);
-    expect(editor.getMarkdown()).toBe('Bonjour [[user.login]]');
-  });
-
-  it('change un mot-clé tapé en pastille', () => {
-    const editor = coreEditor('');
-    editor.commands.insertContent('[[user.login]');
-    const { from, to } = editor.state.selection;
-    editor.view.someProp('handleTextInput', (handle) => handle(editor.view, from, to, ']', () => editor.state.tr));
-    expect(editor.getJSON().content?.[0]?.content?.[0]).toMatchObject({
-      type: 'keyword',
-      attrs: { name: 'user.login' },
-    });
-    expect(editor.getMarkdown()).toBe('[[user.login]]');
+    expect(rewrite(editor.getMarkdown())).toBe('Bonjour [[user.login]]');
   });
 });

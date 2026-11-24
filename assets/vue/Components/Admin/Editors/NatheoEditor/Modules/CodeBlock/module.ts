@@ -7,10 +7,20 @@ import CodeBlock from '@tiptap/extension-code-block';
 import { defineNatheoEditorModule } from '@/vue/Composables/Admin/Editor/NatheoEditor/defineNatheoEditorModule';
 import { translationKey as t } from '@/vue/Composables/Admin/Screen/defineScreen';
 
+/** Clôture plus longue que la plus longue suite d'accents graves du code */
+const FencedCodeBlock = CodeBlock.extend({
+  renderMarkdown(node, helpers) {
+    const code = helpers.renderChildren(node.content ?? []);
+    const longest = Math.max(0, ...(code.match(/`+/g) ?? []).map((run: string) => run.length));
+    const fence = '`'.repeat(Math.max(3, longest + 1));
+    return `${fence}${node.attrs?.language ?? ''}\n${code}\n${fence}`;
+  },
+});
+
 export default defineNatheoEditorModule({
   id: 'codeBlock',
   position: 90,
-  extensions: () => [CodeBlock],
+  extensions: () => [FencedCodeBlock],
   commands: [
     {
       id: 'codeBlock',

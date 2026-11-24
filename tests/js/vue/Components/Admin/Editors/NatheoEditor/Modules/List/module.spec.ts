@@ -7,6 +7,12 @@ describe('module list', () => {
     expect(rewrite('* a\n* b')).toBe('- a\n- b');
   });
 
+  it('garde une liste espacée et sépare les listes voisines', () => {
+    expect(rewrite('- a\n\n- b')).toBe('- a\n\n- b');
+    expect(rewrite('- a\n\n* b')).toBe('- a\n\n+ b');
+    expect(rewrite('1. a\n\n1) b')).toBe('1. a\n\n1) b');
+  });
+
   it('change un paragraphe en liste', () => {
     const editor = coreEditor('Texte');
     command('bulletList').run?.(editor);

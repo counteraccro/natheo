@@ -58,6 +58,8 @@ export interface NatheoEditorModule {
   always?: boolean;
   /** Extensions TipTap, chacune avec sa conversion Markdown */
   extensions: (context: NatheoEditorContext) => AnyExtension[];
+  /** Retouche du Markdown écrit par les extensions (échappement d'une syntaxe propre) */
+  transformMarkdown?: (markdown: string) => string;
   commands?: NatheoEditorCommand[] | ((context: NatheoEditorContext) => NatheoEditorCommand[]);
   /** Fenêtre ouverte par une commande sans run */
   dialog?: () => Promise<Component>;
