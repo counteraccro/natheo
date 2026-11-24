@@ -4,12 +4,8 @@ import { MenuElement, MenuElementTranslation, MenuTreeTranslate } from '@/ts/Men
 import Sortable from 'sortablejs';
 
 export default defineComponent({
+  // Composant récursif : le template s'appelle lui-même par ce nom
   name: 'MenuTree',
-
-  // Composant récursif — il s'appelle lui-même
-  components: {
-    MenuTree: () => import('./MenuTree.vue') as any,
-  },
 
   props: {
     translate: {
