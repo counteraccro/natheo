@@ -2,7 +2,7 @@
  * @author Gourdon Aymeric
  * @version 1.0
  * Moteur de Natheo-Editor : instance TipTap construite depuis les modules, Markdown émis (texte reçu rendu tel quel
- * tant que le document n'a pas changé), comptage des mots, lecture seule, hauteur, collage nettoyé
+ * tant que le document n'a pas changé), mode source, comptage des mots, lecture seule, hauteur, collage nettoyé
  */
 import { computed, onBeforeUnmount, ref, shallowRef, watch } from 'vue';
 import { Editor } from '@tiptap/vue-3';
@@ -40,6 +40,14 @@ export function editableAttributes(props: AdminEditorProps): Record<string, stri
   return Object.fromEntries(
     Object.entries(attributes).filter((entry): entry is [string, string] => entry[1] !== undefined)
   );
+}
+
+/**
+ * Mots d'un texte Markdown, la syntaxe seule (#, -, |) n'en étant pas un
+ * @param markdown
+ */
+export function countWords(markdown: string): number {
+  return markdown.split(/\s+/).filter((word) => /[\p{L}\p{N}]/u.test(word)).length;
 }
 
 /**
@@ -127,11 +135,41 @@ export function useNatheoEditor(
     words.value = current.storage.characterCount.words();
   };
 
+  // Mode source : le texte de la zone est la valeur émise tant qu'elle est ouverte
+  const source = ref(false);
+  const sourceText = ref('');
+
+  /**
+   * Ouvre le mode source sur la valeur courante, ou revient à l'éditeur en relisant le texte
+   */
+  const toggleSource = (): void => {
+    if (source.value) {
+      replaceContent(sourceText.value);
+    } else {
+      sourceText.value = valueOf(editor.value);
+    }
+    source.value = !source.value;
+  };
+
+  /**
+   * Texte saisi dans le mode source
+   * @param value
+   */
+  const setSourceText = (value: string): void => {
+    if (!source.value || !editable.value || value === sourceText.value) return;
+    sourceText.value = value;
+    words.value = countWords(value);
+    emitted = value;
+    emit(value);
+  };
+
   // Valeur remplacée par le formulaire (rechargement, conflit)
   watch(
     () => props.modelValue,
     (value) => {
-      if (value !== emitted) replaceContent(value);
+      if (value === emitted) return;
+      replaceContent(value);
+      if (source.value) sourceText.value = value;
     }
   );
 
@@ -150,6 +188,10 @@ export function useNatheoEditor(
     words,
     editable,
     replaceContent,
+    source,
+    sourceText,
+    toggleSource,
+    setSourceText,
     height: computed(() => ({ minHeight: `${props.rows * LINE_HEIGHT}em`, maxHeight: '60vh' })),
   };
 }

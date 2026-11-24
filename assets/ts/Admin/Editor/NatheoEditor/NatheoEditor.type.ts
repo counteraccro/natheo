@@ -76,6 +76,13 @@ export interface NatheoEditorState {
   editable: ComputedRef<boolean>;
   /** Remplace le texte sans l'émettre, historique d'annulation repris de zéro */
   replaceContent: (value: string) => void;
+  /** Mode source ouvert : la zone de texte Markdown remplace l'éditeur */
+  source: Ref<boolean>;
+  /** Texte du mode source, valeur émise tant qu'il est ouvert */
+  sourceText: Ref<string>;
+  /** Ouvre le mode source ou revient à l'éditeur, l'historique d'annulation repartant de zéro */
+  toggleSource: () => void;
+  setSourceText: (value: string) => void;
   /** Hauteur de la zone de saisie : minimum de props.rows lignes, puis défilement */
   height: ComputedRef<{ minHeight: string; maxHeight: string }>;
 }

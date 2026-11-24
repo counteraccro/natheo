@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import { nextTick } from 'vue';
-import { editableAttributes } from '@/vue/Composables/Admin/Editor/NatheoEditor/useNatheoEditor';
+import { countWords, editableAttributes } from '@/vue/Composables/Admin/Editor/NatheoEditor/useNatheoEditor';
 import { editorProps, mountEditor } from '@tests/vue/Composables/Admin/Editor/NatheoEditor/support';
 
 /** Collage simulé : happy-dom ne fournit pas de DataTransfer rempli */
@@ -89,5 +89,55 @@ describe('useNatheoEditor', () => {
       'aria-multiline': 'true',
       class: 'natheo-editor-content',
     });
+  });
+});
+
+describe('mode source de useNatheoEditor', () => {
+  let unmount: () => void = () => undefined;
+  afterEach(() => unmount());
+
+  it('montre le texte reçu tant que rien n’est modifié, la forme écrite sinon', async () => {
+    const { wrapper, state, editor } = await mountEditor({ modelValue: 'Un __texte__' });
+    unmount = () => wrapper.unmount();
+    state.toggleSource();
+    expect(state.source.value).toBe(true);
+    expect(state.sourceText.value).toBe('Un __texte__');
+    state.toggleSource();
+    editor().commands.insertContentAt(1, 'X');
+    state.toggleSource();
+    expect(state.sourceText.value).toBe('XUn **texte**');
+  });
+
+  it('émet le texte saisi puis le relit au retour, historique repris de zéro', async () => {
+    const { wrapper, state, editor, emitted } = await mountEditor({ modelValue: 'Avant' });
+    unmount = () => wrapper.unmount();
+    editor().commands.insertContentAt(1, 'X');
+    state.toggleSource();
+    state.setSourceText('Après *modifié* ici');
+    expect(emitted[emitted.length - 1]).toBe('Après *modifié* ici');
+    expect(state.words.value).toBe(3);
+    state.toggleSource();
+    expect(state.source.value).toBe(false);
+    expect(wrapper.get('.ProseMirror em').text()).toBe('modifié');
+    expect(editor().can().undo()).toBe(false);
+    expect(emitted[emitted.length - 1]).toBe('Après *modifié* ici');
+  });
+
+  it('suit une valeur remplacée par le formulaire et refuse la saisie en lecture seule', async () => {
+    const { wrapper, state, props, emitted } = await mountEditor({ modelValue: 'Avant' });
+    unmount = () => wrapper.unmount();
+    state.toggleSource();
+    props.modelValue = 'Rechargé';
+    await nextTick();
+    expect(state.sourceText.value).toBe('Rechargé');
+    props.readonly = true;
+    await nextTick();
+    state.setSourceText('Interdit');
+    expect(state.sourceText.value).toBe('Rechargé');
+    expect(emitted).toEqual([]);
+  });
+
+  it('compte les mots du Markdown sans sa syntaxe', () => {
+    expect(countWords('## Titre\n\n- un *deux* | 3 |')).toBe(4);
   });
 });
