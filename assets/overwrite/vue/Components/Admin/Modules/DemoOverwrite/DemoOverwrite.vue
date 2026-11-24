@@ -1,12 +1,12 @@
 <script setup lang="ts">
 /**
  * @author Gourdon Aymeric
- * @version 2.0
- * Tutoriel de la surcharge : opération de l'API, écran ou composant remplacé, écran ajouté. Les blocs de code
+ * @version 2.1
+ * Tutoriel de la surcharge : opération de l'API, écran ou composant remplacé, écran ajouté, éditeur de texte. Les blocs de code
  * affichent les fichiers réels de l'exemple
  */
 import { computed, onMounted, ref } from 'vue';
-import { AdminPageHeader, UiAlert, UiBadge, UiSkeleton } from '@ui';
+import { AdminPageHeader, UiAlert, UiBadge, UiField, UiSkeleton, UiTextEditor } from '@ui';
 import DemoOverwriteCode from '@admin/Modules/DemoOverwrite/DemoOverwriteCode.vue';
 import DemoOverwriteText from '@admin/Modules/DemoOverwrite/DemoOverwriteText.vue';
 import { useAdminContext } from '@/vue/Composables/Admin/useAdminContext';
@@ -15,6 +15,8 @@ import infoProviderSource from '/src/Overwrite/Api/State/Provider/System/InfoPro
 import overwriteConfigSource from '/config/cms/overwrite.yaml?raw';
 import moduleSource from '/assets/overwrite/vue/Components/Admin/Modules/DemoOverwrite/module.ts?raw';
 import moduleClassSource from '/src/Overwrite/Module/DemoOverwriteModule.php?raw';
+import noteModuleSource from '/assets/overwrite/vue/Components/Admin/Editors/NatheoEditor/Modules/Note/module.ts?raw';
+import plainEditorSource from '/assets/overwrite/vue/Components/Admin/Modules/DemoOverwrite/Examples/PlainTextEditor.vue?raw';
 
 interface TutorialStep {
   title: string;
@@ -35,6 +37,16 @@ const info = ref<Info | null>(null);
 const failed = ref(false);
 const icon = computed(() => menu.items.value.find((item) => item.id === 'demo_overwrite')?.icon);
 const extra = computed(() => (info.value?.extra ? JSON.stringify(info.value.extra, null, 2) : null));
+
+const PLAIN_EDITOR_DECLARATION = [
+  "import PlainTextEditor from '@admin/Editors/PlainText/PlainTextEditor.vue';",
+  "import { defineAdminEditor } from '@/vue/Composables/Admin/Editor/defineAdminEditor';",
+  '',
+  "export default defineAdminEditor({ id: 'plain_text', component: PlainTextEditor });",
+  '',
+].join('\n');
+
+const noteText = ref(`> **Note**\n>\n> ${t('demo_overwrite.tutorial.editor_sample')}`);
 
 const parts = computed<TutorialPart[]>(() => [
   {
@@ -79,6 +91,41 @@ const parts = computed<TutorialPart[]>(() => [
       {
         title: t('demo_overwrite.tutorial.module_step3_title'),
         texts: [t('demo_overwrite.tutorial.module_step3_text')],
+      },
+    ],
+  },
+  {
+    id: 'editor',
+    title: t('demo_overwrite.tutorial.editor_title'),
+    intro: t('demo_overwrite.tutorial.editor_intro'),
+    steps: [
+      {
+        title: t('demo_overwrite.tutorial.editor_step1_title'),
+        texts: [t('demo_overwrite.tutorial.editor_step1_text'), t('demo_overwrite.tutorial.editor_step1_markdown')],
+        code: {
+          file: 'assets/overwrite/vue/Components/Admin/Editors/NatheoEditor/Modules/Note/module.ts',
+          source: noteModuleSource,
+        },
+      },
+      {
+        title: t('demo_overwrite.tutorial.editor_step2_title'),
+        texts: [t('demo_overwrite.tutorial.editor_step2_text')],
+      },
+      {
+        title: t('demo_overwrite.tutorial.editor_step3_title'),
+        texts: [t('demo_overwrite.tutorial.editor_step3_text'), t('demo_overwrite.tutorial.editor_step3_example')],
+        code: {
+          file: 'assets/overwrite/vue/Components/Admin/Editors/PlainText/PlainTextEditor.vue',
+          source: plainEditorSource,
+        },
+      },
+      {
+        title: t('demo_overwrite.tutorial.editor_step4_title'),
+        texts: [t('demo_overwrite.tutorial.editor_step4_text')],
+        code: {
+          file: 'assets/overwrite/vue/Components/Admin/Editors/PlainText/editor.ts',
+          source: PLAIN_EDITOR_DECLARATION,
+        },
       },
     ],
   },
@@ -185,6 +232,10 @@ const PANEL_BODY = 'flex flex-col gap-4 px-6 py-5';
               <DemoOverwriteText :text="t('demo_overwrite.tutorial.screen_text_3')" />
               <UiAlert variant="info">{{ t('demo_overwrite.tutorial.screen_note') }}</UiAlert>
             </template>
+
+            <UiField v-if="part.id === 'editor'" :label="t('demo_overwrite.tutorial.editor_try')">
+              <UiTextEditor v-model="noteText" :rows="5" />
+            </UiField>
 
             <ol v-if="part.steps.length > 0" class="m-0 flex list-none flex-col gap-6 p-0">
               <li

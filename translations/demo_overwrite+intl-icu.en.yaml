@@ -1,3 +1,5 @@
+demo_overwrite.editor.note_hint: 'Box saved as a quote'
+demo_overwrite.editor.note_label: 'Note'
 demo_overwrite.menu.label: 'Override example'
 demo_overwrite.module.description: 'Example of overriding an API operation and a back-office screen'
 demo_overwrite.module.label: 'Override example'
@@ -13,13 +15,27 @@ demo_overwrite.tutorial.api_step3_errors: "On an error, building the cache stops
 demo_overwrite.tutorial.api_step3_text: "Add an entry under `overwrite.api` in `config/cms/overwrite.yaml`, with the name of the operation and the class under the `provider` key, or `processor` for a write. The file is read when the cache is built. In development, the cache rebuilds itself after a change. In production, run `php bin/console cache:clear`."
 demo_overwrite.tutorial.api_step3_title: 'Declare the override'
 demo_overwrite.tutorial.api_title: 'Override an API operation'
+demo_overwrite.tutorial.editor_intro: 'Natheo-Editor, the text editor of the back-office, is extended with modules. A project can also replace it with another editor. The Note module of this example is active in the whole back-office, and the field below lets you try it with the Note button of the toolbar.'
+demo_overwrite.tutorial.editor_sample: 'This note is saved as a quote.'
+demo_overwrite.tutorial.editor_step1_markdown: 'The site displays the saved Markdown without knowing your modules. The note is therefore written as a quote whose first line is `**Note**`. The site shows it as a quote, and the editor reads it back as a note.'
+demo_overwrite.tutorial.editor_step1_text: 'Create a folder in `assets/overwrite/vue/Components/Admin/Editors/NatheoEditor/Modules/`, here `Note`, with a `module.ts` file. It declares the TipTap extensions of the module, with how they read and write Markdown, then its commands, which each back-office theme places in its toolbar. A module that reuses the identifier of a Nathéo module replaces it.'
+demo_overwrite.tutorial.editor_step1_title: 'Add a module to Natheo-Editor'
+demo_overwrite.tutorial.editor_step2_text: 'Command labels are full keys, written with `translationKey`. The domain of these keys is listed in `domains` of the module, and the editor loads it before showing its commands. The `full` preset of a field shows every module, `basic` the modules of its list, and a field can also give its own list of identifiers.'
+demo_overwrite.tutorial.editor_step2_title: 'Translate the commands'
+demo_overwrite.tutorial.editor_step3_example: 'This example, a plain text area, is not installed, so that the demo keeps Natheo-Editor. Its code is stored in the folder of this screen, under `Examples/`.'
+demo_overwrite.tutorial.editor_step3_text: 'Another editor is a Vue component placed in `assets/overwrite/vue/Components/Admin/Editors/`, here in the `PlainText` folder. It receives the props of `AdminEditorProps` and emits `update:modelValue` with the modified Markdown. Its input area takes `id`, `aria-labelledby` and `aria-invalid`, so that the label and the errors of the field stay linked to it.'
+demo_overwrite.tutorial.editor_step3_title: 'Write another editor'
+demo_overwrite.tutorial.editor_step4_text: 'The `editor.ts` file of the same folder declares the component with `defineAdminEditor()`. Every text field of the back-office then uses this editor, loaded on first use. The override accepts a single editor.'
+demo_overwrite.tutorial.editor_step4_title: 'Declare the editor'
+demo_overwrite.tutorial.editor_title: 'Extend or replace the text editor'
+demo_overwrite.tutorial.editor_try: 'Try the Note module'
 demo_overwrite.tutorial.error: 'Reading GET /api/v2/info failed.'
 demo_overwrite.tutorial.field_api_version: 'API version'
 demo_overwrite.tutorial.field_extra: 'extra field'
 demo_overwrite.tutorial.field_natheo_version: 'Nathéo version'
 demo_overwrite.tutorial.field_site_name: 'Site name'
 demo_overwrite.tutorial.inactive_text: 'The extra field is null because config/cms/overwrite.yaml no longer overrides the info_get operation. Put the entry back, then clear the cache.'
-demo_overwrite.tutorial.intro_text_1: "An override replaces a part of Nathéo with your code. It applies to an operation of the API v2 or to the Vue files of the back-office. The three parts of this tutorial cover each case."
+demo_overwrite.tutorial.intro_text_1: "An override replaces a part of Nathéo with your code. It applies to an operation of the API v2 or to the Vue files of the back-office. The four parts of this tutorial cover each case."
 demo_overwrite.tutorial.intro_text_2: "Your PHP code goes in `src/Overwrite/` and your Vue files in `assets/overwrite/`. A Nathéo update does not touch these two folders. A file changed elsewhere, in `src/Api/` or `assets/vue/` for example, would be replaced by the next update."
 demo_overwrite.tutorial.intro_text_3: 'You need to know Symfony and Vue 3, and to have a development installation where you can run `php bin/console` and `yarn`.'
 demo_overwrite.tutorial.intro_title: 'Before you start'
@@ -34,7 +50,7 @@ demo_overwrite.tutorial.module_step2_title: 'Create the module class'
 demo_overwrite.tutorial.module_step3_text: "The texts of the screen are written with the `t()` function and the full key, like `demo_overwrite.screen.title`. The `php bin/console translation:extract --force --format=yaml fr` command adds the new keys to `translations/demo_overwrite+intl-icu.fr.yaml`, and the same goes for `en` and `es`. The domain is listed in `domains` of `module.ts`, and the application loads it before showing the screen."
 demo_overwrite.tutorial.module_step3_title: 'Add the texts'
 demo_overwrite.tutorial.module_title: 'Add a screen'
-demo_overwrite.tutorial.remove_text: "Delete the `info_get` entry from `config/cms/overwrite.yaml`, then the `src/Overwrite/Api/`, `src/Overwrite/Module/`, `assets/overwrite/` and `tests/Overwrite/` folders with the `translations/demo_overwrite+intl-icu.*.yaml` files. Also remove `demo_overwrite` from the `DOMAINS` constant of `tests/Translation/ExtractedKeysTest.php` and `tests/Translation/TranslationKeyConventionTest.php`. Then run `php bin/console cache:clear` and `yarn build`."
+demo_overwrite.tutorial.remove_text: "Delete the `info_get` entry from `config/cms/overwrite.yaml`, then the `src/Overwrite/Api/`, `src/Overwrite/Module/`, `assets/overwrite/` `tests/Overwrite/` and `tests/js/overwrite/` folders with the `translations/demo_overwrite+intl-icu.*.yaml` files. Also remove `demo_overwrite` from the `DOMAINS` constant of `tests/Translation/ExtractedKeysTest.php` and `tests/Translation/TranslationKeyConventionTest.php`. Then run `php bin/console cache:clear` and `yarn build`."
 demo_overwrite.tutorial.remove_title: 'Remove the example'
 demo_overwrite.tutorial.screen_note: 'Composables and the API client cannot be overridden this way. To change data, override the API operation that provides it.'
 demo_overwrite.tutorial.screen_text_1: 'The back-office files are in `assets/vue/Components/Admin/`. Copy the one to change into `assets/overwrite/vue/Components/Admin/`, at the same path, then edit the copy. A version of `assets/overwrite/vue/Components/Admin/Ui/Form/UiButton.vue` thus replaces the button across the whole back-office.'
