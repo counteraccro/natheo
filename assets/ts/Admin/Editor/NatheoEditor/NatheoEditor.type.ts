@@ -9,21 +9,39 @@ import type { Editor as VueEditor } from '@tiptap/vue-3';
 import type { AdminEditorProps } from '@/ts/Admin/Editor/AdminEditor.type';
 import type { IconName } from '@/ts/Global/Ui/UiIcon.type';
 
-/** Groupe d'une commande, dans lequel le rendu la range */
-export type NatheoEditorGroup = 'history' | 'block' | 'inline' | 'list' | 'insert' | 'other';
+/** Groupe d'une commande, dans lequel le rendu la range ; table : commandes affichées dans un tableau */
+export type NatheoEditorGroup = 'history' | 'block' | 'inline' | 'list' | 'insert' | 'table' | 'keyword' | 'other';
 
 /** Commande montrée par le rendu (barre, barre flottante, menu « / ») */
 export interface NatheoEditorCommand {
   id: string;
   /** Clé de traduction complète, écrite avec translationKey */
   label: string;
+  /** Libellé court (sous-barre), clé de traduction */
+  shortLabel?: string;
+  /** Aide sous le libellé dans les menus, clé de traduction */
+  hint?: string;
+  /** label et hint sont déjà traduits (mots-clés donnés par le champ) */
+  translated?: boolean;
+  /** Syntaxe Markdown rappelée dans les menus (##) */
+  markdown?: string;
   icon: IconName;
   /** Raccourci affiché dans l'infobulle (Mod-b) */
   shortcut?: string;
   group: NatheoEditorGroup;
-  run: (editor: Editor) => void;
+  /** Action ; sans run, la commande ouvre la fenêtre du module */
+  run?: (editor: Editor) => void;
   isActive?: (editor: Editor) => boolean;
   isEnabled?: (editor: Editor) => boolean;
+  /** Commande montrée seulement selon la position du curseur */
+  visible?: (editor: Editor) => boolean;
+}
+
+/** Props de la fenêtre d'un module, qui émet close */
+export interface NatheoEditorDialogProps {
+  editor: Editor;
+  /** Commande qui l'a ouverte */
+  command: string;
 }
 
 /** Ce que reçoit un module pour construire ses extensions */
@@ -40,8 +58,8 @@ export interface NatheoEditorModule {
   always?: boolean;
   /** Extensions TipTap, chacune avec sa conversion Markdown */
   extensions: (context: NatheoEditorContext) => AnyExtension[];
-  commands?: NatheoEditorCommand[];
-  /** Fenêtre ouverte par une commande */
+  commands?: NatheoEditorCommand[] | ((context: NatheoEditorContext) => NatheoEditorCommand[]);
+  /** Fenêtre ouverte par une commande sans run */
   dialog?: () => Promise<Component>;
   /** Module du back-office sans lequel le module est masqué */
   requires?: string;
