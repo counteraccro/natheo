@@ -76,3 +76,6 @@ faq.edit.confirm.delete.question.body: You are about to delete this question, ar
 faq.error.forbidden: You are not allowed to perform this action on this FAQ.
 faq.error.not_found: This FAQ does not exist or has been deleted.
 faq.error.delete.used: This FAQ is used by {nb, plural, one {# page} other {# pages}}, it cannot be deleted. Remove it from those pages first.
+faq.default.category_title: 'New category'
+faq.default.question_title: 'New question'
+faq.default.question_answer: 'Answer to write'

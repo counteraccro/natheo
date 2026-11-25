@@ -4,7 +4,7 @@ declare(strict_types=1);
 /**
  * Permet de créer une FAQ ainsi que l'ensemble de ses données associées
  * @author Gourdon Aymeric
- * @version 1.3
+ * @version 1.4
  */
 namespace App\Factory\Admin\Content\Faq;
 
@@ -13,9 +13,8 @@ use App\Entity\Admin\Content\Faq\FaqCategory;
 use App\Entity\Admin\Content\Faq\FaqCategoryTranslation;
 use App\Entity\Admin\Content\Faq\FaqQuestion;
 use App\Entity\Admin\Content\Faq\FaqQuestionTranslation;
-use App\Entity\Admin\Content\Faq\FaqStatistique;
 use App\Entity\Admin\Content\Faq\FaqTranslation;
-use App\Enum\Admin\Content\Faq\FaqStatistiqueKey;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class FaqFactory
 {
@@ -29,8 +28,14 @@ class FaqFactory
      */
     private array $locales;
 
-    public function __construct(array $locales)
-    {
+    /**
+     * @param array $locales langues des traductions créées
+     * @param TranslatorInterface $translator textes par défaut des catégories et questions
+     */
+    public function __construct(
+        array $locales,
+        private readonly TranslatorInterface $translator,
+    ) {
         $this->locales = $locales;
     }
 
@@ -44,8 +49,6 @@ class FaqFactory
         $this->faq->setDisabled(false);
         $this->createFaqTranslation();
         $this->faq = $this->createFaqCategory($this->faq);
-        $this->createFaqStatistique(FaqStatistiqueKey::NB_CATEGORIES->value, '1');
-        $this->createFaqStatistique(FaqStatistiqueKey::NB_QUESTIONS->value, '1');
         return $this;
     }
 
@@ -100,7 +103,7 @@ class FaqFactory
         foreach ($this->locales as $locale) {
             $faqCategoryTranslation = new FaqCategoryTranslation();
             $faqCategoryTranslation->setFaqCategory($faqCategory);
-            $faqCategoryTranslation->setTitle($locale . '-Nouvelle Catégorie');
+            $faqCategoryTranslation->setTitle($this->defaultText('faq.default.category_title', $locale));
             $faqCategoryTranslation->setLocale($locale);
             $faqCategory->addFaqCategoryTranslation($faqCategoryTranslation);
         }
@@ -133,8 +136,8 @@ class FaqFactory
         foreach ($this->locales as $locale) {
             $faqQuestionTranslation = new FaqQuestionTranslation();
             $faqQuestionTranslation->setLocale($locale);
-            $faqQuestionTranslation->setTitle($locale . '-Titre nouvelle question');
-            $faqQuestionTranslation->setAnswer($locale . '-Contenu nouvelle question');
+            $faqQuestionTranslation->setTitle($this->defaultText('faq.default.question_title', $locale));
+            $faqQuestionTranslation->setAnswer($this->defaultText('faq.default.question_answer', $locale));
             $faqQuestionTranslation->setFaqQuestion($faqQuestion);
             $faqQuestion->addFaqQuestionTranslation($faqQuestionTranslation);
         }
@@ -142,18 +145,13 @@ class FaqFactory
     }
 
     /**
-     * Création d'une FAQStatistiques
+     * Texte par défaut traduit dans $locale
      * @param string $key
-     * @param string $value
-     * @return void
+     * @param string $locale
+     * @return string
      */
-    private function createFaqStatistique(string $key, string $value): void
+    private function defaultText(string $key, string $locale): string
     {
-        $faqStatistique = new FaqStatistique();
-        $faqStatistique->setFaq($this->faq);
-        $faqStatistique->setKey($key);
-        $faqStatistique->setValue($value);
-
-        $this->faq->addFaqStatistique($faqStatistique);
+        return $this->translator->trans($key, domain: 'faq', locale: $locale);
     }
 }

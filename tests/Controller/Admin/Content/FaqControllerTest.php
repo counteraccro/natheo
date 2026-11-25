@@ -12,7 +12,6 @@ namespace App\Tests\Controller\Admin\Content;
 use App\Entity\Admin\Content\Faq\Faq;
 use App\Entity\Admin\Content\Faq\FaqCategory;
 use App\Entity\Admin\Content\Faq\FaqQuestion;
-use App\Enum\Admin\Content\Faq\FaqStatistiqueKey;
 use App\Enum\Admin\Content\Page\PageContentType;
 use App\Repository\Admin\Content\Faq\FaqRepository;
 use App\Tests\AppWebTestCase;
@@ -327,8 +326,7 @@ class FaqControllerTest extends AppWebTestCase
             'Question modifiée',
             $question->getFaqQuestionTranslations()->filter(fn($t) => $t->getLocale() === 'fr')->first()->getTitle(),
         );
-        $this->assertEquals('2', $verif->getFaqStatistiqueByKey(FaqStatistiqueKey::NB_CATEGORIES->value)->getValue());
-        $this->assertEquals('6', $verif->getFaqStatistiqueByKey(FaqStatistiqueKey::NB_QUESTIONS->value)->getValue());
+        $this->assertCount(2, $verif->getFaqCategories());
 
         // FAQ d'un autre contributeur
         $faqOther = $this->createFaqAllDataDefault();

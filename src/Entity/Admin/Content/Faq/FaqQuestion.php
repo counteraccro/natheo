@@ -35,7 +35,7 @@ class FaqQuestion
 
     #[
         ORM\OneToMany(
-            mappedBy: 'FaqQuestion',
+            mappedBy: 'faqQuestion',
             targetEntity: FaqQuestionTranslation::class,
             cascade: ['persist'],
             orphanRemoval: true,

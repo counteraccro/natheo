@@ -14,8 +14,6 @@ use App\Entity\Admin\Content\Faq\FaqCategory;
 use App\Entity\Admin\Content\Faq\FaqQuestion;
 use App\Service\Admin\Content\Faq\FaqService;
 use App\Tests\AppWebTestCase;
-use App\Enum\Admin\Content\Faq\FaqStatistiqueAction;
-use App\Enum\Admin\Content\Faq\FaqStatistiqueKey;
 use App\Enum\Admin\Content\Page\PageContentType;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -99,75 +97,19 @@ class FaqServiceTest extends AppWebTestCase
     }
 
     /**
-     * Test méthode updateFaqStatistique()
+     * Test méthode countQuestions()
      * @return void
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
-    public function testUpdateFaqStatistique(): void
+    public function testCountQuestions(): void
     {
         $faq = $this->createFaq();
-        $faqStat1 = $this->createFaqStatistique($faq, [
-            'key' => FaqStatistiqueKey::NB_CATEGORIES->value,
-            'value' => strval(self::getFaker()->numberBetween(1, 10)),
-        ]);
-        $faqStat2 = $this->createFaqStatistique($faq, [
-            'key' => FaqStatistiqueKey::NB_QUESTIONS->value,
-            'value' => strval(self::getFaker()->numberBetween(12, 40)),
-        ]);
-        $faqStat3 = $this->createFaqStatistique($faq, [
-            'key' => 'key-3',
-            'value' => strval(self::getFaker()->numberBetween(12, 40)),
-        ]);
+        $this->assertEquals(0, $this->faqService->countQuestions($faq));
 
-        $this->faqService->updateFaqStatistique(
-            $faq,
-            FaqStatistiqueKey::NB_CATEGORIES->value,
-            FaqStatistiqueAction::ADD,
-            10,
-        );
-        $this->faqService->updateFaqStatistique(
-            $faq,
-            FaqStatistiqueKey::NB_QUESTIONS->value,
-            FaqStatistiqueAction::SUB,
-            10,
-        );
-        $this->faqService->updateFaqStatistique($faq, 'key-3', FaqStatistiqueAction::OVERWRITE, 99);
-        $verif = $this->faqService->findOneById(Faq::class, $faq->getId());
-
-        $stat1 = $verif->getFaqStatistiqueByKey(FaqStatistiqueKey::NB_CATEGORIES->value);
-        $stat2 = $verif->getFaqStatistiqueByKey(FaqStatistiqueKey::NB_QUESTIONS->value);
-        $stat3 = $verif->getFaqStatistiqueByKey('key-3');
-
-        $this->assertEquals($faqStat1->getValue(), $stat1->getValue());
-        $this->assertEquals($faqStat2->getValue(), $stat2->getValue());
-        $this->assertEquals(99, $stat3->getValue());
-    }
-
-    /**
-     * Test méthode updateFaqStatistique() : statistique absente créée
-     * @return void
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    public function testUpdateFaqStatistiqueMissing(): void
-    {
-        $faq = $this->createFaq();
-        $this->assertNull($faq->getFaqStatistiqueByKey(FaqStatistiqueKey::NB_QUESTIONS->value));
-        $this->assertEquals(0, $this->faqService->getStatistiqueValue($faq, FaqStatistiqueKey::NB_QUESTIONS));
-
-        $this->faqService->updateFaqStatistique(
-            $faq,
-            FaqStatistiqueKey::NB_QUESTIONS->value,
-            FaqStatistiqueAction::SUB,
-            3,
-        );
-        $this->assertEquals(0, $this->faqService->getStatistiqueValue($faq, FaqStatistiqueKey::NB_QUESTIONS));
-
-        $this->faqService->updateFaqStatistique($faq, FaqStatistiqueKey::NB_QUESTIONS->value, value: 4);
-        $this->em->clear();
-        $verif = $this->faqService->findOneById(Faq::class, $faq->getId());
-        $this->assertEquals(4, $this->faqService->getStatistiqueValue($verif, FaqStatistiqueKey::NB_QUESTIONS));
+        $category = $this->createFaqCategory($faq);
+        $this->createFaqQuestion($category);
+        $this->createFaqQuestion($category);
+        $this->createFaqQuestion($this->createFaqCategory($faq));
+        $this->assertEquals(3, $this->faqService->countQuestions($faq));
     }
 
     /**

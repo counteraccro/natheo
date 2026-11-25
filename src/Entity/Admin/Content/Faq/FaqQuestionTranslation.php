@@ -21,7 +21,7 @@ class FaqQuestionTranslation
 
     #[ORM\ManyToOne(inversedBy: 'faqQuestionTranslations')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?FaqQuestion $FaqQuestion = null;
+    private ?FaqQuestion $faqQuestion = null;
 
     #[ORM\Column(length: 10)]
     private ?string $locale = null;
@@ -39,12 +39,12 @@ class FaqQuestionTranslation
 
     public function getFaqQuestion(): ?FaqQuestion
     {
-        return $this->FaqQuestion;
+        return $this->faqQuestion;
     }
 
-    public function setFaqQuestion(?FaqQuestion $FaqQuestion): static
+    public function setFaqQuestion(?FaqQuestion $faqQuestion): static
     {
-        $this->FaqQuestion = $FaqQuestion;
+        $this->faqQuestion = $faqQuestion;
 
         return $this;
     }

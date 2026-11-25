@@ -10,11 +10,8 @@ declare(strict_types=1);
 namespace App\Service\Admin\Content\Faq;
 
 use App\Entity\Admin\Content\Faq\Faq;
-use App\Entity\Admin\Content\Faq\FaqStatistique;
 use App\Entity\Admin\Content\Page\PageContent;
 use App\Enum\Admin\Content\Faq\FaqCsrfToken;
-use App\Enum\Admin\Content\Faq\FaqStatistiqueAction;
-use App\Enum\Admin\Content\Faq\FaqStatistiqueKey;
 use App\Enum\Admin\Content\Page\PageContentType;
 use App\Repository\Admin\Content\Page\PageContentRepository;
 use App\Security\Voter\ContentVoter;
@@ -66,14 +63,8 @@ class FaqService extends AppAdminService
             $data[] = [
                 $translator->trans('faq.grid.id', domain: 'faq') => $element->getId(),
                 $translator->trans('faq.grid.title', domain: 'faq') => $this->getEscapedTitle($element, $locale),
-                $translator->trans('faq.grid.nb_categories', domain: 'faq') => $this->getStatistiqueValue(
-                    $element,
-                    FaqStatistiqueKey::NB_CATEGORIES,
-                ),
-                $translator->trans('faq.grid.nb_questions', domain: 'faq') => $this->getStatistiqueValue(
-                    $element,
-                    FaqStatistiqueKey::NB_QUESTIONS,
-                ),
+                $translator->trans('faq.grid.nb_categories', domain: 'faq') => $element->getFaqCategories()->count(),
+                $translator->trans('faq.grid.nb_questions', domain: 'faq') => $this->countQuestions($element),
                 $translator->trans('faq.grid.update_at', domain: 'faq') => $element->getUpdateAt()->format('d/m/y H:i'),
                 GridService::KEY_ACTION => $this->generateTabAction($element, $locale, $csrfTokens),
                 'isDisabled' => $element->isDisabled(),
@@ -195,14 +186,17 @@ class FaqService extends AppAdminService
     }
 
     /**
-     * Retourne la valeur d'une statistique de la FAQ, 0 si elle n'existe pas
+     * Retourne le nombre de questions de la FAQ
      * @param Faq $faq
-     * @param FaqStatistiqueKey $key
      * @return int
      */
-    public function getStatistiqueValue(Faq $faq, FaqStatistiqueKey $key): int
+    public function countQuestions(Faq $faq): int
     {
-        return intval($faq->getFaqStatistiqueByKey($key->value)?->getValue() ?? 0);
+        $nb = 0;
+        foreach ($faq->getFaqCategories() as $faqCategory) {
+            $nb += $faqCategory->getFaqQuestions()->count();
+        }
+        return $nb;
     }
 
     /**
@@ -217,41 +211,5 @@ class FaqService extends AppAdminService
         /** @var PageContentRepository $repo */
         $repo = $this->getRepository(PageContent::class);
         return $repo->countPagesByTypeAndTypeId(PageContentType::FAQ->value, $faq->getId());
-    }
-
-    /**
-     * Met à jour une statistique de la FAQ en fonction de sa clé, de son action et de sa valeur
-     * La statistique est créée si elle n'existe pas
-     * @param Faq $faq
-     * @param string $key
-     * @param FaqStatistiqueAction $action
-     * @param int $value
-     * @param bool $flush
-     * @return void
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    public function updateFaqStatistique(
-        Faq $faq,
-        string $key,
-        FaqStatistiqueAction $action = FaqStatistiqueAction::ADD,
-        int $value = 1,
-        bool $flush = true,
-    ): void {
-        $faqStat = $faq->getFaqStatistiqueByKey($key);
-        if ($faqStat === null) {
-            $faqStat = new FaqStatistique();
-            $faqStat->setKey($key)->setValue('0');
-            $faq->addFaqStatistique($faqStat);
-        }
-
-        $val = intval($faqStat->getValue());
-        $val = match ($action) {
-            FaqStatistiqueAction::ADD => $val + $value,
-            FaqStatistiqueAction::SUB => max(0, $val - $value),
-            FaqStatistiqueAction::OVERWRITE => $value,
-        };
-        $faqStat->setValue(strval($val));
-        $this->save($faqStat, $flush);
     }
 }

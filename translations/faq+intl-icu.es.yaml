@@ -76,3 +76,6 @@ faq.edit.confirm.delete.question.body: Está a punto de eliminar esta pregunta, 
 faq.error.forbidden: No tiene permisos para realizar esta acción en esta FAQ.
 faq.error.not_found: Esta FAQ no existe o ha sido eliminada.
 faq.error.delete.used: Esta FAQ se utiliza en {nb, plural, one {# página} other {# páginas}}, no se puede eliminar. Retírela primero de esas páginas.
+faq.default.category_title: 'Nueva categoría'
+faq.default.question_title: 'Nueva pregunta'
+faq.default.question_answer: 'Respuesta por redactar'

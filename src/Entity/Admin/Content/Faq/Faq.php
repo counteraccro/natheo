@@ -50,14 +50,10 @@ class Faq
     #[ORM\OrderBy(['renderOrder' => \SortDirection::Ascending])]
     private Collection $faqCategories;
 
-    #[ORM\OneToMany(targetEntity: FaqStatistique::class, mappedBy: 'faq', cascade: ['persist'], orphanRemoval: true)]
-    private Collection $faqStatistiques;
-
     public function __construct()
     {
         $this->faqTranslations = new ArrayCollection();
         $this->faqCategories = new ArrayCollection();
-        $this->faqStatistiques = new ArrayCollection();
     }
 
     #[ORM\PrePersist]
@@ -198,36 +194,6 @@ class Faq
     }
 
     /**
-     * @return Collection<int, FaqStatistique>
-     */
-    public function getFaqStatistiques(): Collection
-    {
-        return $this->faqStatistiques;
-    }
-
-    public function addFaqStatistique(FaqStatistique $faqStatistique): static
-    {
-        if (!$this->faqStatistiques->contains($faqStatistique)) {
-            $this->faqStatistiques->add($faqStatistique);
-            $faqStatistique->setFaq($this);
-        }
-
-        return $this;
-    }
-
-    public function removeFaqStatistique(FaqStatistique $faqStatistique): static
-    {
-        if ($this->faqStatistiques->removeElement($faqStatistique)) {
-            // set the owning side to null (unless already changed)
-            if ($faqStatistique->getFaq() === $this) {
-                $faqStatistique->setFaq(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * Retourne la traduction de $locale, à défaut celle de $defaultLocale, à défaut la première disponible
      * @param string $locale
      * @param string|null $defaultLocale
@@ -236,21 +202,6 @@ class Faq
     public function getFaqTranslationByLocale(string $locale, ?string $defaultLocale = null): ?FaqTranslation
     {
         return $this->findTranslationByLocale($this->getFaqTranslations(), $locale, $defaultLocale);
-    }
-
-    /**
-     * Retourne une statistique en fonction de sa clé
-     * @param string $key
-     * @return FaqStatistique;
-     */
-    public function getFaqStatistiqueByKey(string $key): ?FaqStatistique
-    {
-        $faqStatistique = $this->getFaqStatistiques()
-            ->filter(function (FaqStatistique $faqStatistique) use ($key) {
-                return $faqStatistique->getKey() === $key;
-            })
-            ->first();
-        return $faqStatistique === false ? null : $faqStatistique;
     }
 
     /**

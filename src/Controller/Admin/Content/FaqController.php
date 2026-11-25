@@ -12,8 +12,6 @@ namespace App\Controller\Admin\Content;
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\Content\Faq\Faq;
 use App\Enum\Admin\Content\Faq\FaqCsrfToken;
-use App\Enum\Admin\Content\Faq\FaqStatistiqueAction;
-use App\Enum\Admin\Content\Faq\FaqStatistiqueKey;
 use App\Enum\Admin\Global\Breadcrumb;
 use App\Enum\Admin\System\Options\OptionUser;
 use App\Service\Admin\Content\Faq\FaqService;
@@ -291,26 +289,6 @@ class FaqController extends AppAdminController
 
         $faqPopulate = new FaqPopulate($faq, $data['faq']);
         $faq = $faqPopulate->populate()->getFaq();
-        $faqService->updateFaqStatistique(
-            $faq,
-            FaqStatistiqueKey::NB_CATEGORIES->value,
-            FaqStatistiqueAction::OVERWRITE,
-            $faq->getFaqCategories()->count(),
-            false,
-        );
-
-        $nbQuestions = 0;
-        foreach ($faq->getFaqCategories() as $faqCategory) {
-            $nbQuestions += $faqCategory->getFaqQuestions()->count();
-        }
-        $faqService->updateFaqStatistique(
-            $faq,
-            FaqStatistiqueKey::NB_QUESTIONS->value,
-            FaqStatistiqueAction::OVERWRITE,
-            $nbQuestions,
-            false,
-        );
-
         $msg = $translator->trans('faq.save.success', domain: 'faq');
         $faqService->save($faq);
         return $this->json($faqService->getResponseAjax($msg));
@@ -341,7 +319,7 @@ class FaqController extends AppAdminController
             );
         }
 
-        $faqFactory = new FaqFactory($faqService->getLocales()['locales']);
+        $faqFactory = new FaqFactory($faqService->getLocales()['locales'], $translator);
 
         $faq = $faqFactory->create()->getFaq();
         $faq->setUser($this->getUser());
