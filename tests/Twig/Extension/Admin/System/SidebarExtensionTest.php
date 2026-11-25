@@ -75,13 +75,13 @@ class SidebarExtensionTest extends AppWebTestCase
     public function testEditPage(): void
     {
         $user = $this->createUserContributeur();
-        $faq = $this->createFaq($user);
+        $menu = $this->createMenu($user);
         $this->client->loginUser($user, 'admin');
-        $this->client->request('GET', $this->router->generate('admin_faq_update', ['id' => $faq->getId()]));
+        $this->client->request('GET', $this->router->generate('admin_menu_update', ['id' => $menu->getId()]));
 
         $this->assertResponseIsSuccessful();
         $this->assertSelectorExists(
-            '#submenu-faq.open a.active[href="' . $this->router->generate('admin_faq_index') . '"]',
+            '#submenu-menu.open a.active[href="' . $this->router->generate('admin_menu_index') . '"]',
         );
     }
 
@@ -145,7 +145,7 @@ class SidebarExtensionTest extends AppWebTestCase
             $this->router->generate('admin_menu_add'),
             $this->router->generate('admin_page_add'),
             $this->router->generate('admin_app', ['path' => 'tags/new']),
-            $this->router->generate('admin_faq_add'),
+            $this->router->generate('admin_app', ['path' => 'faqs/new']),
         ];
         $this->assertSame($expected, $links);
 

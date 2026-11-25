@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 1.2
  * Module des FAQ
  */
 
@@ -60,7 +60,9 @@ final class FaqModule implements AdminModuleInterface
                 icon: SvgIcon::LIST->value,
                 parent: self::ID,
                 position: 10,
-                legacyRoute: 'admin_faq_index',
+                route: 'faq_index',
+                path: 'faqs',
+                operation: 'admin_faq_get_collection',
             ),
             new AdminMenuItem(
                 id: 'faq_new',
@@ -68,8 +70,10 @@ final class FaqModule implements AdminModuleInterface
                 icon: SvgIcon::PLUS->value,
                 parent: self::ID,
                 position: 20,
-                legacyRoute: 'admin_faq_add',
+                route: 'faq_new',
+                path: 'faqs/new',
                 shortcut: true,
+                operation: 'admin_faq_post',
             ),
         ];
     }
