@@ -1,6 +1,6 @@
 /**
  * @author Gourdon Aymeric
- * @version 1.2
+ * @version 1.3
  * État et actions d'un écran de formulaire décrit par des données : lecture, champs par langue (recopie de la
  * langue de l'interface, cochée par défaut à la création), enregistrement, suppression, retour à la liste et
  * suivi des écritures faites ailleurs
@@ -65,10 +65,14 @@ export function createFormScreen<T extends ScreenItem>(
   const copyToOthers = (field: TranslationsField, value: string): void =>
     locales.filter((other) => other !== currentLocale).forEach((other) => write(field, other, value));
 
-  /** Données envoyées : champs déclarés, lignes par langue dans l'ordre des langues du site */
+  const sections = computed(() =>
+    descriptor.sections.filter((section) => section.on === undefined || (section.on === 'create') === isNew.value)
+  );
+
+  /** Données envoyées : champs des sections affichées, lignes par langue dans l'ordre des langues du site */
   const payload = (): Row => {
     const body: Row = {};
-    descriptor.sections
+    sections.value
       .flatMap((section) => section.fields)
       .forEach((field) => {
         if (field.type === 'component') return;
@@ -96,6 +100,7 @@ export function createFormScreen<T extends ScreenItem>(
       const key = descriptor.description?.[mode.value];
       return key ? t(key) : '';
     }),
+    sections,
     locales,
     currentLocale,
     activeLocale: ref(currentLocale),
