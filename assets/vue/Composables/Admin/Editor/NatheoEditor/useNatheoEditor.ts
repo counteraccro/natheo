@@ -73,6 +73,10 @@ export function useNatheoEditor(
   const editable = computed(() => !props.readonly && !props.disabled);
   const words = ref(0);
 
+  // Mode source : le texte de la zone est la valeur émise tant qu'elle est ouverte
+  const source = ref(false);
+  const sourceText = ref('');
+
   // Texte reçu et document lu depuis celui-ci : rendu tel quel tant que le document est identique
   let original = props.modelValue;
   let originalDoc!: ProseMirrorNode;
@@ -83,8 +87,10 @@ export function useNatheoEditor(
 
   // Style du texte : celui du back-office, ou celui du thème du site (classe et data-front-theme)
   const contentAttributes = ref<Record<string, string>>({ class: 'natheo-editor-admin' });
+  // L'identifiant du champ passe à la zone de texte du mode source, pour que libellé et erreurs y mènent
   const attributes = (): Record<string, string> => {
-    const own = editableAttributes(props);
+    const { id, ...own } = editableAttributes(props);
+    if (!source.value && id !== undefined) own.id = id;
     return { ...contentAttributes.value, ...own, class: `${own.class} ${contentAttributes.value.class ?? ''}`.trim() };
   };
 
@@ -141,10 +147,6 @@ export function useNatheoEditor(
     originalDoc = current.state.doc;
     words.value = current.storage.characterCount.words();
   };
-
-  // Mode source : le texte de la zone est la valeur émise tant qu'elle est ouverte
-  const source = ref(false);
-  const sourceText = ref('');
 
   /**
    * Ouvre le mode source sur la valeur courante, ou revient à l'éditeur en relisant le texte

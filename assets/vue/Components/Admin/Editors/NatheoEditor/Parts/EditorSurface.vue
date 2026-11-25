@@ -31,6 +31,7 @@ const onInput = (event: Event): void => props.view.setSourceText((event.target a
     </span>
     <textarea
       v-if="view.source.value"
+      :id="view.props.id"
       class="natheo-editor-source"
       :value="view.sourceText.value"
       :aria-labelledby="view.props.labelledBy"

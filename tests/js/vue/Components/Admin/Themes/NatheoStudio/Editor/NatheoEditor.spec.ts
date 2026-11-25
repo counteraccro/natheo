@@ -68,6 +68,8 @@ describe('Natheo-Editor dans Natheo-Studio', () => {
       ?.trigger('click');
     const source = wrapper.get('textarea.natheo-editor-source');
     expect((source.element as HTMLTextAreaElement).value).toBe('Deux mots');
+    expect(source.attributes('id')).toBe('champ');
+    expect(wrapper.findAll('#champ')).toHaveLength(1);
     await source.setValue('Trois mots ici');
     expect(emitted[emitted.length - 1]).toBe('Trois mots ici');
     expect(wrapper.text()).toContain('words(3)');

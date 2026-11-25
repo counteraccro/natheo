@@ -123,6 +123,17 @@ describe('mode source de useNatheoEditor', () => {
     expect(emitted[emitted.length - 1]).toBe('Après *modifié* ici');
   });
 
+  it('retire l’identifiant du champ de la zone éditable, masquée, puis le lui rend', async () => {
+    const { wrapper, state } = await mountEditor({ modelValue: 'Texte' });
+    unmount = () => wrapper.unmount();
+    state.toggleSource();
+    await nextTick();
+    expect(wrapper.get('.ProseMirror').attributes('id')).toBeUndefined();
+    state.toggleSource();
+    await nextTick();
+    expect(wrapper.get('.ProseMirror').attributes('id')).toBe('champ');
+  });
+
   it('suit une valeur remplacée par le formulaire et refuse la saisie en lecture seule', async () => {
     const { wrapper, state, props, emitted } = await mountEditor({ modelValue: 'Avant' });
     unmount = () => wrapper.unmount();
