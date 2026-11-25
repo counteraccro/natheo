@@ -30,6 +30,17 @@ class AppFrontService extends AppFrontHandlerService
     }
 
     /**
+     * Identifiant du thème actif (natheo_horizon), porté par data-front-theme pour ses couleurs
+     * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getThemeId(): string
+    {
+        return $this->resolveTemplate('front_error.index.no_template')->value;
+    }
+
+    /**
      * Retourne la clé de l'entrée Vite du thème actif (front_<thème>), pour ses scripts et ses styles
      * @return string
      * @throws ContainerExceptionInterface

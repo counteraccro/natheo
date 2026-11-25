@@ -68,6 +68,17 @@ class AppFrontController extends AbstractController
     }
 
     /**
+     * Identifiant du thème actif, porté par data-front-theme
+     * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getThemeId(): string
+    {
+        return $this->optionSystemFrontService->getThemeId();
+    }
+
+    /**
      * Retourne la cle scriptTag pour les scripts et css côté front, si template null, retourne le template courant
      * @return string
      * @throws ContainerExceptionInterface

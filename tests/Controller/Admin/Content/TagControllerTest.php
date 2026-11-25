@@ -152,7 +152,7 @@ class TagControllerTest extends AppWebTestCase
             $this->assertResponseHeaderSame('X-Robots-Tag', 'noindex');
             $content = (string) $this->client->getResponse()->getContent();
             $this->assertStringNotContainsString('scriptSite', $content);
-            $this->assertSelectorExists('html[lang="' . $locale . '"]');
+            $this->assertSelectorExists('html[lang="' . $locale . '"][data-front-theme="natheo_horizon"]');
             $this->assertStringContainsString('Front/NatheoHorizon/TagPreview', $content);
         }
 

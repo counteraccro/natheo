@@ -116,7 +116,7 @@ class IndexController extends AppFrontController
         if (!$this->isOpenSite()) {
             return $this->render(
                 $this->getPathTemplate() . DIRECTORY_SEPARATOR . 'close.html.twig',
-                ['scriptsTag' => $this->getScriptTags(), 'locale' => $locale],
+                ['scriptsTag' => $this->getScriptTags(), 'theme' => $this->getThemeId(), 'locale' => $locale],
                 new Response(status: Response::HTTP_SERVICE_UNAVAILABLE),
             );
         }
@@ -175,6 +175,7 @@ class IndexController extends AppFrontController
             'datas' => $datas,
             'translate' => $frontTranslate->getTranslate($locale),
             'scriptsTag' => $this->getScriptTags(),
+            'theme' => $this->getThemeId(),
             'frontScripts' => $frontScripts,
             'consentRequired' => $consentRequired,
             'metaSeo' => $this->getMetaSeo($locale, $slug),
