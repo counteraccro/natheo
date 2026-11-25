@@ -9,9 +9,11 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller\Admin;
 
+use App\Entity\Admin\System\OptionSystem as OptionSystemEntity;
 use App\Entity\Admin\System\OptionUser as OptionUserEntity;
 use App\Entity\Admin\System\User;
 use App\Enum\Admin\AdminTemplate;
+use App\Enum\Admin\System\Options\OptionSystem;
 use App\Enum\Admin\System\Options\OptionUser;
 use App\Service\Api\System\User\UserSessionService;
 use App\Tests\AppWebTestCase;
@@ -229,6 +231,23 @@ class AdminAppControllerTest extends AppWebTestCase
         $this->assertSame('Natheo-Horizon', $theme['label']);
         $this->assertSame('nh-prose', $theme['textClass']);
         $this->assertStringContainsString('front_natheo_horizon_content', (string) $theme['stylesheet']);
+    }
+
+    /**
+     * Thème du site inconnu de l'enum : pas de rendu du site dans l'éditeur
+     * @return void
+     */
+    public function testIndexSiteThemeUnknown(): void
+    {
+        $option = $this->em->getRepository(OptionSystemEntity::class)->findOneBy([
+            'key' => OptionSystem::OS_THEME_FRONT_SITE->value,
+        ]);
+        $option->setValue('inconnu');
+        $this->persistAndFlush($option);
+
+        $this->loginContributeur();
+        $this->client->request('GET', '/admin/fr/inconnu', server: self::HTML);
+        $this->assertNull($this->getBootstrap()['site']['theme']);
     }
 
     /**
