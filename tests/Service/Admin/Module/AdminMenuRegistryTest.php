@@ -36,7 +36,7 @@ class AdminMenuRegistryTest extends TestCase
                 ),
                 $this->createTestModule(
                     'tag',
-                    items: [$this->createTestMenuItem('tag', 'content', 20, 'admin_faq_index')],
+                    items: [$this->createTestMenuItem('tag', 'content', 20, 'admin_menu_index')],
                 ),
             ],
             [
@@ -161,7 +161,7 @@ class AdminMenuRegistryTest extends TestCase
     {
         return [
             'deux liens' => [
-                ['legacyRoute' => 'admin_faq_add', 'route' => 'tag_new', 'path' => 'tags/new'],
+                ['legacyRoute' => 'admin_menu_add', 'route' => 'tag_new', 'path' => 'tags/new'],
                 'a une route Twig et une route de l\'application',
             ],
             'route sans chemin' => [['route' => 'tag_new'], 'doit avoir sa route et son chemin'],

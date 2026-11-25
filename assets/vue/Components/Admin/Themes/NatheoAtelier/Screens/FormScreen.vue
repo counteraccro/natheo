@@ -23,7 +23,7 @@ const router = useRouter();
 const group = useScreenGroup();
 const descriptor = props.screen.descriptor;
 const { data, errors, loading, saving, conflict } = props.screen.resource;
-const { isNew, title, description, canEdit, canDelete, dirty } = props.screen;
+const { isNew, title, description, sections, canEdit, canDelete, dirty } = props.screen;
 const meta = useFormMeta(props.screen);
 const formId = useId();
 const backHref = computed(() => router.resolve({ name: descriptor.back }).href);
@@ -85,12 +85,12 @@ const backHref = computed(() => router.resolve({ name: descriptor.back }).href);
       <UiErrorSummary />
 
       <template v-if="loading || !data">
-        <div v-for="section in descriptor.sections" :key="section.title" class="border-t border-line py-[22px]">
+        <div v-for="section in sections" :key="section.title" class="border-t border-line py-[22px]">
           <UiSkeleton :lines="3" />
         </div>
       </template>
       <section
-        v-for="section in descriptor.sections"
+        v-for="section in sections"
         v-else
         :key="section.title"
         class="grid grid-cols-[200px_minmax(0,1fr)] gap-6 border-t border-line py-[22px] max-[860px]:grid-cols-1 max-[860px]:gap-3"

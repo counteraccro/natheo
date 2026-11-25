@@ -1,78 +1,122 @@
-faq.new.title: Creación de una nueva FAQ
-faq.new.sub_title: Introduzca simplemente un título para crear su FAQ
-faq.new.input.title: Título de la FAQ
-faq.new.help: Al crear la FAQ, el título estará en el idioma por defecto del sitio; podrá modificar los demás textos al editar la FAQ
-faq.new.button: Crear la FAQ
-faq.new.button_cancel: Volver
-faq.new.input.error.empty: Debe introducir un título para su nueva FAQ
-faq.edit.title: Datos generales
-faq.edit.sub_title: Los datos generales de la FAQ
-faq.edit.input.title: Título de la FAQ
-faq.edit.input.title_help: Texto que aparecerá en la parte superior de su FAQ
-faq.edit.input.title_error: Este campo no puede estar vacío
-faq.select.locale: Seleccionar el idioma
-faq.edit.button.save: Guardar
-faq.edit.button.cancel: Volver
-faq.edit.text.no_change: Ningún cambio por el momento
-faq.edit.text.change_no_save: Se han realizado cambios que aún no se han guardado
-faq.edit.text.error: Se han detectado uno o varios errores de validación
-faq.edit.no.questions: Ninguna pregunta
-faq.edit.one.question: 1 pregunta
-faq.edit.multiple.questions: preguntas
-faq.edit.question.label: Pregunta
-faq.edit.answer.label: Respuesta
-faq.edit.question.error: Esta pregunta no es válida
-faq.edit.text.error_not_question: Ninguna pregunta — añada una o arrastre aquí una desde otra categoría.
-faq.edit.button.new.question: Añadir una pregunta
-faq.edit.button.new.category: Añadir una categoría
-faq.edit.new.question.fr: Nouvelle question
-faq.edit.new.question.es: Nueva pregunta
-faq.edit.new.question.en: New question
-faq.edit.new.answer.fr: Nouvelle réponse
-faq.edit.new.answer.en: New answer
-faq.edit.new.answer.es: Nueva respuesta
-faq.edit.new.category.fr: Nouvelle catégorie
-faq.edit.new.category.en: New category
-faq.edit.new.category.es: Nueva categoría
-faq.success.no.disabled: La FAQ <b>{label}</b> se ha restaurado correctamente
-faq.success.disabled: La FAQ <b>{label}</b> se ha desactivado correctamente
-faq.remove.success: La FAQ <b>{label}</b> se ha eliminado correctamente
-faq.save.success: Su FAQ se ha guardado correctamente
-faq.create.success: Su FAQ se ha creado correctamente, será redirigido a la edición
-faq.grid.id: '#'
-faq.grid.title: Título
-faq.grid.nb_categories: Número de categorías
-faq.grid.nb_questions: Número de preguntas
-faq.grid.update_at: Última modificación
-faq.confirm.disabled.message: ¿Confirma la desactivación de la FAQ <b>{label}</b>? Esta FAQ quedará inaccesible
-faq.confirm.delete.message: ¿Confirma la eliminación de la FAQ <b>{label}</b>? Esta acción es definitiva
-faq.add.title: Nueva FAQ
-faq.add.description: Cree una nueva FAQ para su sitio web
-faq.update.title_id: 'Edición de la FAQ #{id}'
-faq.update.title: Edición de la FAQ
-faq.update.description: Desde esta página, modifique su FAQ, reordénela o añada / elimine preguntas y respuestas
-faq.update.not.found.faq.title: No se ha encontrado ninguna FAQ
-faq.update.not.found.faq.description: Esta FAQ no existe o ha sido eliminada. Puede volver a la lista o crear una nueva.
-faq.update.not.found.button.return: Volver
-faq.update.not.found.button.new_faq: Crear una FAQ
-faq.index.modal.help.title: Ayuda
-faq.index.modal.help.disabled: Desactivar la FAQ
-faq.index.modal.help.enable: Activar la FAQ
-faq.index.modal.help.delete: Eliminar
-faq.index.modal.help.edit: Modificar
-faq.index.title: Gestión de las FAQ
-faq.index.button.new: Nueva FAQ
-faq.index.description: Gestione las FAQ de su sitio web
-faq.edit.disabled.label: Desactivada
-faq.edit.input.disabled.label: FAQ visible en el sitio
-faq.edit.input.disabled.help: Su FAQ es visible para todos
-faq.edit.input.disabled.help_disabled: Su FAQ está desactivada actualmente
-faq.edit.button.confirm_ok: Sí, confirmo
-faq.edit.button.confirm_ko: 'No'
-faq.edit.confirm.delete.category.title: Eliminación de una categoría
-faq.edit.confirm.delete.category.body: Está a punto de eliminar esta categoría y todas sus preguntas, ¿está seguro?
-faq.edit.confirm.delete.question.title: Eliminación de una pregunta
-faq.edit.confirm.delete.question.body: Está a punto de eliminar esta pregunta, ¿está seguro?
 faq.error.forbidden: No tiene permisos para realizar esta acción en esta FAQ.
 faq.error.not_found: Esta FAQ no existe o ha sido eliminada.
 faq.error.delete.used: Esta FAQ se utiliza en {nb, plural, one {# página} other {# páginas}}, no se puede eliminar. Retírela primero de esas páginas.
+faq.default.category_title: 'Nueva categoría'
+faq.default.question_title: 'Nueva pregunta'
+faq.default.question_answer: 'Respuesta por redactar'
+faq.error.category_not_found: 'Esta categoría no existe o ha sido eliminada.'
+faq.error.question_not_found: 'Esta pregunta no existe o ha sido eliminada.'
+faq.error.locale: 'Idioma no admitido: {locale}.'
+faq.error.locale_duplicate: 'El idioma {locale} se envía dos veces.'
+faq.error.title_blank: 'El título no puede estar vacío.'
+faq.error.title_length: 'El título no puede superar los 255 caracteres.'
+faq.error.answer_blank: 'La respuesta no puede estar vacía.'
+faq.error.translations_required: 'Indique el texto de cada idioma, falta: {locales}.'
+faq.error.category_other_faq: 'La categoría debe pertenecer a la FAQ de la pregunta.'
+faq.collection.title: 'Gestión de las FAQ'
+faq.collection.description: 'Las FAQ agrupan preguntas por categoría y se muestran en los bloques FAQ de las páginas. Una FAQ mostrada por una página no se puede eliminar.'
+faq.collection.column_id: 'ID'
+faq.collection.column_title: 'Título'
+faq.collection.column_categories: 'Categorías'
+faq.collection.column_questions: 'Preguntas'
+faq.collection.column_pages: 'Páginas'
+faq.collection.column_author: 'Autor'
+faq.collection.column_updated_at: 'Actualización'
+faq.collection.button_new: 'Nueva FAQ'
+faq.dialog.confirm_disable: '¿Desactivar la FAQ «{label}»?'
+faq.dialog.confirm_delete: '¿Eliminar la FAQ «{label}»?'
+faq.dialog.category_disable_title: '¿Desactivar la categoría?'
+faq.dialog.category_disable_text: '«{title}» dejará de mostrarse en el sitio{count, plural, =0 {} one {, y # pregunta activa se desactivará con ella} other {, y # preguntas activas se desactivarán con ella}}.'
+faq.dialog.category_disable_confirm: 'Desactivar'
+faq.dialog.category_delete_title: '¿Eliminar la categoría?'
+faq.dialog.category_delete_text: '«{title}» se eliminará{count, plural, =0 {} one { con su pregunta} other { con sus # preguntas}}. Esta acción es definitiva.'
+faq.dialog.category_delete_confirm: 'Eliminar'
+faq.dialog.question_delete_title: '¿Eliminar la pregunta?'
+faq.dialog.question_delete_text: '«{title}» se eliminará en todos los idiomas. Esta acción es definitiva.'
+faq.dialog.question_delete_confirm: 'Eliminar'
+faq.dialog.leave_title: '¿Descartar los cambios?'
+faq.dialog.leave_text: 'Los cambios de la línea abierta no están guardados.'
+faq.dialog.leave_confirm: 'Descartar'
+faq.notify.created: 'FAQ «{label}» creada.'
+faq.notify.saved: 'FAQ «{label}» guardada.'
+faq.notify.disabled: 'FAQ «{label}» desactivada.'
+faq.notify.enabled: 'FAQ «{label}» activada.'
+faq.notify.deleted: 'FAQ «{label}» eliminada.'
+faq.notify.category_created: 'Categoría creada.'
+faq.notify.category_saved: 'Categoría guardada.'
+faq.notify.category_moved: 'Categoría movida a la posición {position}.'
+faq.notify.category_enabled: '{count, plural, =0 {Categoría activada.} one {Categoría activada, # pregunta sigue desactivada.} other {Categoría activada, # preguntas siguen desactivadas.}}'
+faq.notify.category_disabled: '{count, plural, =0 {Categoría desactivada.} one {Categoría desactivada con su pregunta.} other {Categoría desactivada con sus # preguntas.}}'
+faq.notify.category_deleted: '{count, plural, =0 {Categoría eliminada.} one {Categoría eliminada con su pregunta.} other {Categoría eliminada con sus # preguntas.}}'
+faq.notify.question_created: 'Pregunta creada.'
+faq.notify.question_saved: 'Pregunta guardada.'
+faq.notify.question_moved: 'Pregunta movida a la posición {position}.'
+faq.notify.question_moved_to: 'Pregunta movida a «{category}».'
+faq.notify.question_enabled: 'Pregunta activada.'
+faq.notify.question_disabled: 'Pregunta desactivada.'
+faq.notify.question_deleted: 'Pregunta eliminada.'
+faq.editor.title_new: 'Nueva FAQ'
+faq.editor.title_edit: 'Edición de la FAQ #{id}'
+faq.editor.title_view: 'FAQ #{id}'
+faq.editor.description_new: 'La FAQ se crea con una primera categoría y una primera pregunta, que modificará después.'
+faq.editor.description_edit: 'Las categorías y las preguntas se guardan una a una, el título y el estado con el botón de abajo.'
+faq.editor.section_title: 'Título'
+faq.editor.section_title_description: 'Nombre de la FAQ en cada idioma, mostrado en la lista y en la elección del bloque FAQ de las páginas.'
+faq.editor.title: 'Título'
+faq.editor.section_content: 'Contenido'
+faq.editor.section_content_description: 'Categorías y preguntas, en el orden del sitio.'
+faq.editor.section_status: 'Estado'
+faq.editor.section_status_description: 'Una FAQ desactivada ya no se muestra en los bloques de las páginas.'
+faq.editor.disabled: 'Desactivada'
+faq.editor.disabled_help: 'Las páginas que la usan ya no muestran el bloque.'
+faq.content.count: '{categories, plural, one {# categoría} other {# categorías}} · {questions, plural, one {# pregunta} other {# preguntas}}'
+faq.content.saving: 'Guardando…'
+faq.content.saved: 'Guardado'
+faq.content.saved_at: 'Guardado a las {time}'
+faq.content.note: 'Un desplazamiento, una activación o una eliminación se guarda en cuanto lo hace. Un título o una respuesta modificados se guardan al hacer clic en «Guardar» debajo del texto.'
+faq.content.add_category: 'Añadir una categoría'
+faq.content.add_question: 'Añadir una pregunta'
+faq.content.categories: 'Categorías'
+faq.content.empty: 'Ninguna categoría en esta FAQ.'
+faq.content.empty_category: 'Ninguna pregunta en esta categoría.'
+faq.content.badge_disabled: 'Desactivada'
+faq.content.question_count: '{count, plural, one {# pregunta} other {# preguntas}}'
+faq.content.menu_category: 'Acciones de la categoría «{title}»'
+faq.content.menu_question: 'Acciones de la pregunta «{title}»'
+faq.content.handle_category: 'Mover la categoría'
+faq.content.handle_question: 'Mover la pregunta'
+faq.content.action_edit: 'Modificar'
+faq.content.action_add_question: 'Añadir una pregunta'
+faq.content.action_up: 'Subir'
+faq.content.action_down: 'Bajar'
+faq.content.action_move_to: 'Mover a'
+faq.content.action_enable: 'Activar'
+faq.content.action_disable: 'Desactivar'
+faq.content.action_delete: 'Eliminar'
+faq.category.heading_new: 'Nueva categoría'
+faq.category.heading_edit: 'Modificar la categoría'
+faq.category.title_label: 'Título ({language})'
+faq.category.copy: 'Copiar el título de la pestaña {language} en los demás idiomas'
+faq.category.copied: 'Copiado desde la pestaña {language}'
+faq.category.off: 'Esta categoría está desactivada, ni ella ni sus preguntas se muestran en el sitio.'
+faq.category.enable: 'Activar'
+faq.question.heading_new: 'Nueva pregunta en «{category}»'
+faq.question.heading_edit: 'Modificar la pregunta'
+faq.question.heading_view: 'Pregunta'
+faq.question.title_label: 'Pregunta ({language})'
+faq.question.answer_label: 'Respuesta ({language})'
+faq.question.off: 'Esta pregunta está desactivada, no se muestra en el sitio.'
+faq.question.off_both: 'Esta pregunta y su categoría «{category}» están desactivadas, no se muestran en el sitio.'
+faq.question.off_category: 'La categoría «{category}» está desactivada, esta pregunta no se muestra en el sitio.'
+faq.question.enable: 'Activar'
+faq.question.enable_both: 'Activar la pregunta y la categoría'
+faq.line.languages: 'Idiomas'
+faq.line.cancel: 'Cancelar'
+faq.line.save: 'Guardar'
+faq.line.create: 'Crear'
+faq.line.close: 'Cerrar'
+faq.line.dirty: 'Cambios sin guardar'
+faq.line.clean: 'Ningún cambio'
+faq.line.conflict_title: 'Modificado mientras tanto'
+faq.line.conflict_text: 'Alguien guardó este elemento después de abrirlo. Vuelva a cargarlo para ver la última versión y repita sus cambios.'
+faq.line.reload: 'Volver a cargar'

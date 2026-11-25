@@ -14,9 +14,11 @@ use ApiPlatform\State\ProcessorInterface;
 use App\Api\V2\Concurrency\Etag;
 use App\Api\V2\Concurrency\VersionedResourceInterface;
 use App\Api\V2\Exception\PreconditionFailedException;
+use App\Api\V2\Input\Admin\StatusInputInterface;
 use App\Api\V2\Metadata\OperationSecurityMetadataFactory;
 use App\Api\V2\Security\CurrentUserResolver;
 use App\Enum\Admin\System\ActionLog\ActionLogAction;
+use App\Security\Voter\ContentVoter;
 use App\Service\Api\Admin\ActionLogService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Service\Attribute\Required;
@@ -71,19 +73,65 @@ abstract class AbstractAdminProcessor implements ProcessorInterface
         $this->checkPrecondition($current, $context['request'] ?? null);
         $result = $this->write($data, $operation, $uriVariables, $context);
 
-        $module = $operation->getExtraProperties()[OperationSecurityMetadataFactory::MODULE] ?? null;
-        if (is_string($module)) {
-            $resource = $result ?? $current;
-            $this->actionLogService->log(
-                $this->currentUserResolver->getSession(),
-                $module,
-                $this->getLogAction($operation, $data),
-                (string) $operation->getShortName(),
-                $this->getLogResourceId($resource, $uriVariables),
-                $this->getLogLabel($resource),
-            );
-        }
+        $resource = $result ?? $current;
+        $this->log(
+            $operation,
+            $this->getLogAction($operation, $data),
+            (string) $operation->getShortName(),
+            $this->getLogResourceId($resource, $uriVariables),
+            $this->getLogLabel($resource),
+        );
         return $result;
+    }
+
+    /**
+     * Trace une action dans le journal, au nom du module de l'opération
+     * @param Operation $operation
+     * @param string $action valeur de ActionLogAction ou action propre au module
+     * @param string $resource nom court de la ressource
+     * @param string|null $resourceId
+     * @param string|null $label
+     * @return void
+     */
+    protected function log(
+        Operation $operation,
+        string $action,
+        string $resource,
+        ?string $resourceId,
+        ?string $label,
+    ): void {
+        $module = $operation->getExtraProperties()[OperationSecurityMetadataFactory::MODULE] ?? null;
+        if (!is_string($module)) {
+            return;
+        }
+        $this->actionLogService->log(
+            $this->currentUserResolver->getSession(),
+            $module,
+            $action,
+            $resource,
+            $resourceId,
+            $label,
+        );
+    }
+
+    /**
+     * Droits de ContentVoter d'une modification : désactivation quand le statut change, modification pour tout autre
+     * champ ou pour un PATCH sans effet, écrit et journalisé
+     * @param StatusInputInterface $input
+     * @param bool $disabled statut actuel de l'élément
+     * @return string[]
+     */
+    protected function getUpdateAttributes(StatusInputInterface $input, bool $disabled): array
+    {
+        $statusChanged = $input->getDisabled() !== null && $input->getDisabled() !== $disabled;
+        $attributes = [];
+        if (!$input->isStatusOnly() || !$statusChanged) {
+            $attributes[] = ContentVoter::EDIT;
+        }
+        if ($statusChanged) {
+            $attributes[] = ContentVoter::DISABLE;
+        }
+        return $attributes;
     }
 
     /**
@@ -97,13 +145,16 @@ abstract class AbstractAdminProcessor implements ProcessorInterface
     abstract protected function write(mixed $data, Operation $operation, array $uriVariables, array $context): mixed;
 
     /**
-     * Action tracée dans le journal, déduite de la méthode HTTP par défaut
+     * Action tracée dans le journal : disable ou enable quand seul le statut change, sinon déduite de la méthode HTTP
      * @param Operation $operation
      * @param mixed $data
      * @return string valeur de ActionLogAction ou action propre au module
      */
     protected function getLogAction(Operation $operation, mixed $data): string
     {
+        if ($data instanceof StatusInputInterface && $data->isStatusOnly()) {
+            return ($data->getDisabled() ? ActionLogAction::DISABLE : ActionLogAction::ENABLE)->value;
+        }
         return ActionLogAction::fromMethod($operation->getMethod())->value;
     }
 

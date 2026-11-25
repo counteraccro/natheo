@@ -1,21 +1,30 @@
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Gestes d'un écran de liste qui diffèrent d'un thème du back-office à l'autre
  */
 import type { Locator, Page } from '@playwright/test';
 
+/** Écran de liste : adresse et titre */
+export interface ListScreen {
+  path: string;
+  title: string;
+}
+
+export const TAG_LIST: ListScreen = { path: '/admin/fr/tags', title: 'Gestion des tags' };
+export const FAQ_LIST: ListScreen = { path: '/admin/fr/faqs', title: 'Gestion des FAQ' };
+
 export interface ThemeScreens {
-  /** Ouvre la liste des tags et attend ses lignes */
-  openList(page: Page): Promise<void>;
+  /** Ouvre une liste (les tags par défaut) et attend ses lignes */
+  openList(page: Page, list?: ListScreen): Promise<void>;
   /** Ligne d'un élément, d'après son libellé */
-  row(page: Page, label: string): Locator;
+  row(page: Page, label: string, list?: ListScreen): Locator;
   /** Lignes affichées */
-  rows(page: Page): Locator;
+  rows(page: Page, list?: ListScreen): Locator;
   /** Lance une action de ligne (Désactiver, Activer, Supprimer) */
-  rowAction(page: Page, label: string, action: string): Promise<void>;
+  rowAction(page: Page, label: string, action: string, list?: ListScreen): Promise<void>;
   /** Actions de ligne proposées à l'utilisateur (vide si aucune) */
-  rowActions(page: Page, label: string): Locator;
+  rowActions(page: Page, label: string, list?: ListScreen): Locator;
   /** Recherche dans la liste */
   search(page: Page, term: string): Promise<void>;
   /** Tri par libellé */

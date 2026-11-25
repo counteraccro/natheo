@@ -1,21 +1,22 @@
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Gestes de liste de Natheo-Studio : grille, actions par ligne et barre de sélection
  */
 import { expect } from '@playwright/test';
-import type { ThemeScreens } from './theme';
+import { TAG_LIST, type ListScreen, type ThemeScreens } from './theme';
 
-const table = (page: Parameters<ThemeScreens['openList']>[0]) => page.getByRole('table', { name: 'Gestion des tags' });
+const table = (page: Parameters<ThemeScreens['openList']>[0], list: ListScreen) =>
+  page.getByRole('table', { name: list.title });
 
 export const natheoStudio: ThemeScreens = {
-  async openList(page) {
-    await page.goto('/admin/fr/tags');
-    await expect(page.getByRole('heading', { level: 1, name: 'Gestion des tags' })).toBeVisible();
-    await expect(table(page).getByRole('row').nth(1)).toBeVisible();
+  async openList(page, list = TAG_LIST) {
+    await page.goto(list.path);
+    await expect(page.getByRole('heading', { level: 1, name: list.title })).toBeVisible();
+    await expect(table(page, list).getByRole('row').nth(1)).toBeVisible();
   },
   row: (page, label) => page.getByRole('row', { name: new RegExp(`Sélectionner ${label} `) }),
-  rows: (page) => table(page).getByRole('rowgroup').nth(1).getByRole('row'),
+  rows: (page, list = TAG_LIST) => table(page, list).getByRole('rowgroup').nth(1).getByRole('row'),
   async rowAction(page, label, action) {
     const row = natheoStudio.row(page, label);
     if (action === 'Supprimer') {

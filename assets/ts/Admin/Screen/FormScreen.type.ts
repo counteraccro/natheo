@@ -1,6 +1,6 @@
 /**
  * @author Gourdon Aymeric
- * @version 1.2
+ * @version 1.3
  * Description d'un écran de formulaire, état calculé par useFormScreen() et affiché par le thème
  */
 import type { Ref } from 'vue';
@@ -58,6 +58,8 @@ export interface FormSection {
   description?: string;
   /** Type de la section, qui fixe son icône (SECTION_ICONS) */
   kind?: SectionKind;
+  /** Section affichée seulement à la création (create) ou sur un élément enregistré (edit), toujours sans */
+  on?: 'create' | 'edit';
   fields: FormField[];
 }
 
@@ -100,6 +102,8 @@ export interface FormScreenState<T extends ScreenItem = ScreenItem> {
   title: Ref<string>;
   /** Texte sous le titre, vide sans description */
   description: Ref<string>;
+  /** Sections affichées, selon leur option on */
+  sections: Ref<FormSection[]>;
   locales: string[];
   /** Langue de l'interface, recopiée vers les autres quand la recopie est cochée */
   currentLocale: string;

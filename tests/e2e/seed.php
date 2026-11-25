@@ -3,10 +3,14 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
- * Données des tests de bout en bout : options du site, comptes de accounts.json et tags du parcours
+ * @version 1.1
+ * Données des tests de bout en bout : options du site, comptes de accounts.json, tags et FAQ des parcours
  */
 
+use App\Entity\Admin\Content\Faq\Faq;
+use App\Entity\Admin\Content\Tag\Tag;
+use App\Entity\Admin\System\User;
+use App\Enum\Admin\Content\Page\PageContentType;
 use App\Kernel;
 use App\Tests\Helper\Fixtures\FixturesTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -58,21 +62,72 @@ $seeder = new class ($kernel->getContainer()->get('test.service_container')) {
         $this->createPageTag($this->createPage($users['contributor'], ['disabled' => false]), $used);
         $this->createTagWithLabels($users['contributor'], '#2f8a4c', ['Tutoriel', 'Tutorial', 'Tutorial ES']);
         $this->createTagWithLabels($users['admin'], '#9e2e2e', ['Archive', 'Archive EN', 'Archivo'], true);
+
+        $usedFaq = $this->createFaqWithTree($users['contributor'], 'FAQ Produit', [
+            'Achat' => ['Délai de livraison ?', 'Retour possible ?'],
+            'Paiement' => ['Moyens de paiement ?'],
+        ]);
+        $this->createPageContent(
+            $this->createPage($users['contributor'], ['disabled' => false]),
+            ['type' => PageContentType::FAQ->value, 'typeId' => $usedFaq->getId()],
+        );
+        $this->createFaqWithTree($users['admin'], 'FAQ Interne', ['Équipe' => ['Qui contacter ?']]);
     }
 
     /**
-     * @param \App\Entity\Admin\System\User $user
+     * FAQ active, ses catégories et leurs questions, textes français repris en anglais et en espagnol avec le suffixe
+     * de la langue
+     * @param User $user
+     * @param string $title
+     * @param array<string, string[]> $tree titre de catégorie => titres de ses questions
+     * @return Faq
+     */
+    private function createFaqWithTree(
+        User $user,
+        string $title,
+        array $tree,
+    ): Faq {
+        $text = fn(string $value, string $locale): string => $locale === 'fr' ? $value : $value . ' ' . $locale;
+        $faq = $this->createFaq($user, ['disabled' => false]);
+        foreach ($this->locales as $locale) {
+            $this->createFaqTranslation($faq, ['locale' => $locale, 'title' => $text($title, $locale)]);
+        }
+        $position = 1;
+        foreach ($tree as $categoryTitle => $questions) {
+            $category = $this->createFaqCategory($faq, ['renderOrder' => $position++, 'disabled' => false]);
+            foreach ($this->locales as $locale) {
+                $this->createFaqCategoryTranslation($category, [
+                    'locale' => $locale,
+                    'title' => $text($categoryTitle, $locale),
+                ]);
+            }
+            foreach (array_values($questions) as $i => $questionTitle) {
+                $question = $this->createFaqQuestion($category, ['renderOrder' => $i + 1, 'disabled' => false]);
+                foreach ($this->locales as $locale) {
+                    $this->createFaqQuestionTranslation($question, [
+                        'locale' => $locale,
+                        'title' => $text($questionTitle, $locale),
+                        'answer' => $text('Réponse à « ' . $questionTitle . ' »', $locale),
+                    ]);
+                }
+            }
+        }
+        return $faq;
+    }
+
+    /**
+     * @param User $user
      * @param string $color
      * @param string[] $labels libellés fr, en, es
      * @param bool $disabled
-     * @return \App\Entity\Admin\Content\Tag\Tag
+     * @return Tag
      */
     private function createTagWithLabels(
-        \App\Entity\Admin\System\User $user,
+        User $user,
         string $color,
         array $labels,
         bool $disabled = false,
-    ): \App\Entity\Admin\Content\Tag\Tag {
+    ): Tag {
         $tag = $this->createTag($user, ['color' => $color, 'disabled' => $disabled]);
         foreach ($this->locales as $i => $locale) {
             $this->createTagTranslation($tag, ['locale' => $locale, 'label' => $labels[$i]]);

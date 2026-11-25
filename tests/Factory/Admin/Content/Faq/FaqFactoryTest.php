@@ -21,11 +21,10 @@ class FaqFactoryTest extends AppWebTestCase
      */
     public function testCreate(): void
     {
-        $faqFactory = new FaqFactory($this->locales);
+        $faqFactory = new FaqFactory($this->locales, $this->translator);
         $faq = $faqFactory->create()->getFaq();
         $this->assertInstanceOf(Faq::class, $faq);
         $this->assertCount(1, $faq->getFaqCategories());
-        $this->assertCount(2, $faq->getFaqStatistiques());
         $faqCategory = $faq->getFaqCategories()->first();
         $this->assertCount(3, $faqCategory->getFaqCategoryTranslations());
         $this->assertEquals(1, $faqCategory->getRenderOrder());
@@ -38,7 +37,19 @@ class FaqFactoryTest extends AppWebTestCase
         $this->assertCount(3, $faqQuestion->getFaqQuestionTranslations());
         foreach ($faqQuestion->getFaqQuestionTranslations() as $faqQuestionTranslation) {
             $this->assertTrue(in_array($faqQuestionTranslation->getLocale(), $this->locales));
+            $this->assertEquals(
+                $this->translator->trans(
+                    'faq.default.question_title',
+                    domain: 'faq',
+                    locale: $faqQuestionTranslation->getLocale(),
+                ),
+                $faqQuestionTranslation->getTitle(),
+            );
         }
+        $this->assertEquals(
+            'New category',
+            $faqCategory->getFaqCategoryTranslationByLocale('en')->getTitle(),
+        );
     }
 
     /**
@@ -48,7 +59,7 @@ class FaqFactoryTest extends AppWebTestCase
     public function testCreateFaqCategory(): void
     {
         $faq = $this->createFaq();
-        $faqFactory = new FaqFactory($this->locales);
+        $faqFactory = new FaqFactory($this->locales, $this->translator);
         $faq = $faqFactory->createFaqCategory($faq);
         $this->assertCount(1, $faq->getFaqCategories());
         $faqCategory = $faq->getFaqCategories()->first();
@@ -81,7 +92,7 @@ class FaqFactoryTest extends AppWebTestCase
     public function testCreateFaqQuestion(): void
     {
         $faqCategory = $this->createFaqCategory();
-        $faqFactory = new FaqFactory($this->locales);
+        $faqFactory = new FaqFactory($this->locales, $this->translator);
         $faqCategory = $faqFactory->createFaqQuestion($faqCategory);
         $this->assertCount(1, $faqCategory->getFaqQuestions());
 

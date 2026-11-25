@@ -212,7 +212,7 @@ class GlobalSearchService extends AppAdminService
             ],
             'author' => $this->highlightText($search, $personalData->getPersonalData()),
             'urls' => [
-                'edit' => $router->generate('admin_faq_update', ['id' => $faq->getId()]),
+                'edit' => $router->generate('admin_app', ['path' => 'faqs/' . $faq->getId()]),
             ],
         ];
     }

@@ -86,6 +86,16 @@ const saveForm = (): void => {
   if (violations.length === 0) notify('success', 'Tag enregistré');
 };
 
+// Groupe avec ses propres erreurs dans le formulaire, sans <form> imbriqué
+const groupTitle = ref('');
+const groupErrors = useFormErrors();
+const saveGroup = (): void => {
+  groupErrors.set(
+    groupTitle.value.trim() === '' ? [{ propertyPath: 'title', message: 'Cette valeur ne doit pas être vide.' }] : []
+  );
+  if (groupTitle.value.trim() !== '') notify('success', 'Catégorie enregistrée');
+};
+
 const languageTab = ref('fr');
 const tabs = [
   { id: 'fr', label: 'Français' },
@@ -315,6 +325,20 @@ const PANEL_TITLE = 'm-0 text-md font-[650]';
           label="Afficher dans le nuage de tags"
           description="Sur la page d'accueil du thème"
         />
+        <UiForm
+          tag="div"
+          :errors="groupErrors"
+          id-prefix="ds-group"
+          aria-label="Groupe imbriqué"
+          class="rounded-lg border border-line p-4"
+        >
+          <UiField name="title" label="Catégorie (groupe imbriqué)" help="Erreurs propres au groupe, ids préfixés">
+            <UiInput v-model="groupTitle" @keydown.enter.prevent="saveGroup" />
+          </UiField>
+          <div class="flex justify-end">
+            <UiButton size="sm" icon="check" @click="saveGroup">Valider le groupe</UiButton>
+          </div>
+        </UiForm>
         <div class="flex justify-end gap-2">
           <UiButton icon="close" @click="formErrors.clearAll()">Effacer les erreurs</UiButton>
           <UiButton type="submit" variant="primary" icon="check">Enregistrer</UiButton>

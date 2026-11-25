@@ -64,14 +64,14 @@ const can: AdminCan = {
   hasRole: () => false,
 };
 
-function screenWith(id: number | null, api: object = {}) {
+function screenWith(id: number | null, api: object = {}, screenDescriptor = descriptor) {
   const resource = createAdminResource<Tag>(api as unknown as ApiClient, t, '/admin/tags', id, {
     initial: () => descriptor.initial() as Tag,
     leaveKey: 'tag',
   });
   const router = { push: vi.fn(), replace: vi.fn() };
   const confirm = vi.fn().mockResolvedValue(true);
-  const screen = createFormScreen(descriptor, {
+  const screen = createFormScreen(screenDescriptor, {
     t,
     can,
     confirm,
@@ -246,5 +246,33 @@ describe('createFormScreen', () => {
       expect(getResource).toHaveBeenCalledOnce();
       expect(router.push).not.toHaveBeenCalled();
     });
+  });
+
+  it('n’affiche une section on: edit que sur un élément enregistré, on: create qu’à la création, et n’envoie que leurs champs', async () => {
+    const sectioned = defineFormScreen<Tag>({
+      ...descriptor,
+      sections: [
+        { title: 'always', fields: [labelField] },
+        { title: 'edit', on: 'edit', fields: [{ type: 'switch', name: 'disabled' }] },
+        { title: 'create', on: 'create', fields: [{ type: 'color', name: 'color' }] },
+      ],
+    });
+    const postResource = vi.fn().mockResolvedValue({
+      data: { id: 9, color: '#112233', disabled: false, translations: [] },
+      etag: '"v1"',
+    });
+    const created = screenWith(null, { postResource }, sectioned);
+    expect(created.screen.sections.value.map((section) => section.title)).toEqual(['always', 'create']);
+    await created.resource.load();
+    await created.screen.save();
+    expect(Object.keys(postResource.mock.calls[0][1])).toEqual(['translations', 'color']);
+
+    const getResource = vi.fn().mockResolvedValue({
+      data: { id: 4, color: '#112233', disabled: false, translations: [] },
+      etag: '"v1"',
+    });
+    const edited = screenWith(4, { getResource }, sectioned);
+    await edited.resource.load();
+    expect(edited.screen.sections.value.map((section) => section.title)).toEqual(['always', 'edit']);
   });
 });

@@ -15,9 +15,7 @@ use App\Entity\Admin\Content\Faq\FaqCategory;
 use App\Entity\Admin\Content\Faq\FaqCategoryTranslation;
 use App\Entity\Admin\Content\Faq\FaqQuestion;
 use App\Entity\Admin\Content\Faq\FaqQuestionTranslation;
-use App\Entity\Admin\Content\Faq\FaqStatistique;
 use App\Entity\Admin\Content\Faq\FaqTranslation;
-use App\Enum\Admin\Content\Faq\FaqStatistiqueKey;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -43,15 +41,9 @@ class FaqFixtures extends AppFixtures implements FixtureGroupInterface, OrderedF
                 );
             }
 
-            $nbQuestions = 0;
             foreach (array_values($data['categories']) as $index => $category) {
                 $faq->addFaqCategory($this->createFaqCategory($category, $index + 1));
-                $nbQuestions += count($category['questions']);
             }
-            $faq->addFaqStatistique(
-                $this->createStatistique(FaqStatistiqueKey::NB_CATEGORIES, count($data['categories'])),
-            );
-            $faq->addFaqStatistique($this->createStatistique(FaqStatistiqueKey::NB_QUESTIONS, $nbQuestions));
 
             $manager->persist($faq);
             $this->addReference($ref, $faq);
@@ -102,20 +94,6 @@ class FaqFixtures extends AppFixtures implements FixtureGroupInterface, OrderedF
             );
         }
         return $faqQuestion;
-    }
-
-    /**
-     * Crée une statistique de FAQ
-     * @param FaqStatistiqueKey $key
-     * @param int $value
-     * @return FaqStatistique
-     */
-    private function createStatistique(FaqStatistiqueKey $key, int $value): FaqStatistique
-    {
-        $statistique = new FaqStatistique();
-        $statistique->setKey($key->value);
-        $statistique->setValue((string) $value);
-        return $statistique;
     }
 
     public static function getGroups(): array

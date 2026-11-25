@@ -1,18 +1,23 @@
 <script setup lang="ts">
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Formulaire sans validation du navigateur (le serveur est la seule source des règles) : relie ses champs, ses onglets
- * et son récapitulatif aux erreurs renvoyées par l'API
+ * et son récapitulatif aux erreurs renvoyées par l'API. En groupe (tag div), il se place dans un autre formulaire
+ * avec ses propres erreurs, idPrefix gardant ses identifiants de champ uniques
  */
 import { nextTick, provide, reactive } from 'vue';
 import { FORM } from '@/vue/Composables/Admin/Ui/formContext';
 import { fieldIdOf } from '@/vue/Composables/Admin/Ui/useFormErrors';
 import type { FormErrors } from '@/ts/Admin/Ui/Form/UiForm.type';
 
-const props = defineProps<{ errors: FormErrors }>();
+const props = withDefaults(defineProps<{ errors: FormErrors; tag?: 'form' | 'div'; idPrefix?: string }>(), {
+  tag: 'form',
+  idPrefix: '',
+});
 const emit = defineEmits<{ submit: [event: SubmitEvent] }>();
 
+const fieldId = (path: string): string => (props.idPrefix ? `${props.idPrefix}-` : '') + fieldIdOf(path);
 const fieldLabels = reactive(new Map<string, string>());
 const revealers = new Set<(path: string) => boolean>();
 
@@ -20,7 +25,7 @@ const reveal = async (path: string): Promise<void> => {
   let changed = false;
   revealers.forEach((revealer) => (changed = revealer(path) || changed));
   if (changed) await nextTick();
-  const target = document.getElementById(fieldIdOf(path));
+  const target = document.getElementById(fieldId(path));
   target?.focus();
   target?.scrollIntoView({ block: 'center' });
 };
@@ -30,7 +35,7 @@ provide(FORM, {
   register: (path, label) => fieldLabels.set(path, label),
   unregister: (path) => fieldLabels.delete(path),
   labelOf: (path) => fieldLabels.get(path),
-  fieldId: fieldIdOf,
+  fieldId,
   reveal,
   addRevealer: (revealer) => {
     revealers.add(revealer);
@@ -40,7 +45,10 @@ provide(FORM, {
 </script>
 
 <template>
-  <form novalidate class="flex flex-col gap-[18px]" @submit.prevent="emit('submit', $event as SubmitEvent)">
+  <div v-if="tag === 'div'" role="group" class="flex flex-col gap-[18px]">
+    <slot />
+  </div>
+  <form v-else novalidate class="flex flex-col gap-[18px]" @submit.prevent="emit('submit', $event as SubmitEvent)">
     <slot />
   </form>
 </template>

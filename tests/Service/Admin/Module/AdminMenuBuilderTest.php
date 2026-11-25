@@ -202,7 +202,7 @@ class AdminMenuBuilderTest extends AppWebTestCase
                 'archive',
                 items: [
                     $this->createTestMenuItem('archive', 'content', 30, options: ['hidden' => true]),
-                    $this->createTestMenuItem('archive_new', 'archive', 10, 'admin_faq_add', ['shortcut' => true]),
+                    $this->createTestMenuItem('archive_new', 'archive', 10, 'admin_menu_add', ['shortcut' => true]),
                 ],
             ),
         ]);
@@ -238,17 +238,20 @@ class AdminMenuBuilderTest extends AppWebTestCase
     public function testRender(): void
     {
         $builder = $this->createBuilder($this->createUserSuperAdmin());
-        $html = $this->renderSidebar($builder, 'admin_faq_index');
+        $html = $this->renderSidebar($builder, 'admin_menu_index');
 
         $this->assertCount(1, $html->filter('#submenu-content.open'));
         $this->assertCount(0, $html->filter('#submenu-system.open'));
         $this->assertCount(
             1,
             $html->filter(
-                '.active > a[aria-current="page"][href="' . $this->router->generate('admin_faq_index') . '"]',
+                '.active > a[aria-current="page"][href="' . $this->router->generate('admin_menu_index') . '"]',
             ),
         );
-        $this->assertCount(1, $html->filter('#submenu-tag a[href="' . $this->router->generate('admin_faq_add') . '"]'));
+        $this->assertCount(
+            1,
+            $html->filter('#submenu-tag a[href="' . $this->router->generate('admin_menu_add') . '"]'),
+        );
         $this->assertSame('4', trim($html->filter('#submenu-content span.rounded-full')->text()));
         $this->assertCount(1, $html->filter('span.rounded-full'));
     }
@@ -293,7 +296,7 @@ class AdminMenuBuilderTest extends AppWebTestCase
             array_map(fn(AdminMenuNode $node) => $node->url, $builder->getShortcuts()),
         );
 
-        $html = $this->renderSidebar($builder, 'admin_faq_index');
+        $html = $this->renderSidebar($builder, 'admin_menu_index');
         $this->assertCount(1, $html->filter('a[href="/admin/fr/faqs/new"]'));
     }
 
@@ -340,8 +343,8 @@ class AdminMenuBuilderTest extends AppWebTestCase
             $this->createTestModule(
                 'tag',
                 items: [
-                    $this->createTestMenuItem('tag', 'content', 10, 'admin_faq_index'),
-                    $this->createTestMenuItem('tag_stats', 'tag', 10, 'admin_faq_add'),
+                    $this->createTestMenuItem('tag', 'content', 10, 'admin_menu_index'),
+                    $this->createTestMenuItem('tag_stats', 'tag', 10, 'admin_menu_add'),
                 ],
                 badges: ['tag' => 4, 'page' => 2, 'tag_stats' => 0],
             ),

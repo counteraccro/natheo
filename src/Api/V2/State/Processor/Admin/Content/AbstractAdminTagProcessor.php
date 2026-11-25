@@ -82,6 +82,6 @@ abstract class AbstractAdminTagProcessor extends AbstractAdminProcessor
         if (!($resource instanceof AdminTag)) {
             return null;
         }
-        return $resource->getLabelByLocale($this->tagService->getDefaultLocale()) ?? $resource->label;
+        return $resource->getTranslationValue($this->tagService->getDefaultLocale(), 'label') ?? $resource->label;
     }
 }

@@ -21,7 +21,7 @@ const props = defineProps<AdminScreenProps<FormScreenState<T>>>();
 const { t } = useAdminContext();
 const descriptor = props.screen.descriptor;
 const { data, errors, loading, saving, conflict } = props.screen.resource;
-const { isNew, title, description, canEdit, canDelete, dirty } = props.screen;
+const { isNew, title, description, sections, canEdit, canDelete, dirty } = props.screen;
 
 const PANEL = 'rounded-lg border border-line bg-bg shadow-panel';
 const PANEL_HEAD = 'flex items-center gap-3 border-b border-line px-5 py-4';
@@ -46,12 +46,12 @@ const meta = useFormMeta(props.screen);
       <UiErrorSummary />
 
       <template v-if="loading || !data">
-        <section v-for="section in descriptor.sections" :key="section.title" :class="PANEL" class="p-5">
+        <section v-for="section in sections" :key="section.title" :class="PANEL" class="p-5">
           <UiSkeleton :lines="3" />
         </section>
       </template>
 
-      <section v-for="section in descriptor.sections" v-else :key="section.title" :class="PANEL">
+      <section v-for="section in sections" v-else :key="section.title" :class="PANEL">
         <header :class="PANEL_HEAD">
           <span
             v-if="section.kind"
