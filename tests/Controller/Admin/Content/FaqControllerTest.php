@@ -202,10 +202,10 @@ class FaqControllerTest extends AppWebTestCase
             $this->createPageContent($page, ['type' => PageContentType::FAQ->value, 'typeId' => $faqUsed->getId()]);
         }
 
-        $this->checkNoAccess('admin_faq_delete', ['id' => $faq->getId()], methode: 'DELETE');
+        $this->checkNoAccess('admin_faq_remove', ['id' => $faq->getId()], methode: 'DELETE');
 
         $this->client->loginUser($user, 'admin');
-        $url = $this->router->generate('admin_faq_delete', ['id' => $faq->getId()]);
+        $url = $this->router->generate('admin_faq_remove', ['id' => $faq->getId()]);
 
         $this->client->request('DELETE', $url);
         $this->assertResponseStatusCodeSame(403);
@@ -214,7 +214,7 @@ class FaqControllerTest extends AppWebTestCase
 
         $this->client->request(
             'DELETE',
-            $this->router->generate('admin_faq_delete', ['id' => $faqUsed->getId()]),
+            $this->router->generate('admin_faq_remove', ['id' => $faqUsed->getId()]),
             server: ['HTTP_X-CSRF-TOKEN' => $csrf],
         );
         $this->assertResponseStatusCodeSame(403);
@@ -223,7 +223,7 @@ class FaqControllerTest extends AppWebTestCase
 
         $this->client->request(
             'DELETE',
-            $this->router->generate('admin_faq_delete', ['id' => $faqOther->getId()]),
+            $this->router->generate('admin_faq_remove', ['id' => $faqOther->getId()]),
             server: ['HTTP_X-CSRF-TOKEN' => $csrf],
         );
         $this->assertResponseStatusCodeSame(403);
@@ -244,7 +244,7 @@ class FaqControllerTest extends AppWebTestCase
         $this->client->loginUser($this->createUserAdmin(), 'admin');
         $this->client->request(
             'DELETE',
-            $this->router->generate('admin_faq_delete', ['id' => $faqOther->getId()]),
+            $this->router->generate('admin_faq_remove', ['id' => $faqOther->getId()]),
             server: ['HTTP_X-CSRF-TOKEN' => $this->getGridCsrfToken('delete')],
         );
         $this->assertResponseIsSuccessful();

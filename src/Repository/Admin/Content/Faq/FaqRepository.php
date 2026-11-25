@@ -10,7 +10,11 @@ use App\Entity\Admin\Content\Faq\FaqCategoryTranslation;
 use App\Entity\Admin\Content\Faq\FaqQuestion;
 use App\Entity\Admin\Content\Faq\FaqQuestionTranslation;
 use App\Entity\Admin\Content\Faq\FaqTranslation;
+use App\Entity\Admin\Content\Page\PageContent;
 use App\Entity\Admin\System\User;
+use App\Dto\Api\Admin\AdminCollectionQuery;
+use App\Enum\Admin\Content\Page\PageContentType;
+use App\Repository\Trait\AdminCollectionQueryTrait;
 use App\Repository\Trait\LikeQueryTrait;
 use App\Repository\Trait\OrderedQueryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -29,6 +33,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class FaqRepository extends ServiceEntityRepository
 {
+    use AdminCollectionQueryTrait;
     use LikeQueryTrait;
     use OrderedQueryTrait;
 
@@ -65,6 +70,63 @@ class FaqRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    /**
+     * Page de la collection d'administration. Chaque ligne vaut [0 => Faq, 'title' => titre de $locale, à défaut de
+     * $defaultLocale, 'categoryCount', 'questionCount', 'pageCount', 'authorId', 'authorLogin'] ; compteurs lus en
+     * sous-requêtes, l'auteur reste un proxy non chargé
+     * @param AdminCollectionQuery $query
+     * @param string $locale
+     * @param string $defaultLocale
+     * @return Paginator
+     */
+    public function getAdminCollection(AdminCollectionQuery $query, string $locale, string $defaultLocale): Paginator
+    {
+        $qb = $this->createQueryBuilder('faq')
+            ->addSelect(
+                'author.id AS authorId',
+                'author.login AS authorLogin',
+                'SIZE(faq.faqCategories) AS categoryCount',
+                '(SELECT COUNT(question.id) FROM ' .
+                    FaqQuestion::class .
+                    ' question JOIN question.faqCategory question_category' .
+                    ' WHERE question_category.faq = faq) AS questionCount',
+                '(SELECT COUNT(DISTINCT IDENTITY(page_content.page)) FROM ' .
+                    PageContent::class .
+                    ' page_content WHERE page_content.type = :faq_type AND page_content.typeId = faq.id) AS pageCount',
+            )
+            ->leftJoin('faq.user', 'author')
+            ->leftJoin('faq.faqTranslations', 'translation', 'WITH', 'translation.locale = :locale')
+            ->setParameter('locale', $locale)
+            ->setParameter('faq_type', PageContentType::FAQ->value);
+
+        $title = 'translation.title';
+        if ($locale !== $defaultLocale) {
+            $title = 'COALESCE(translation.title, default_translation.title)';
+            $qb->leftJoin(
+                'faq.faqTranslations',
+                'default_translation',
+                'WITH',
+                'default_translation.locale = :default_locale',
+            )->setParameter('default_locale', $defaultLocale);
+        }
+        $qb->addSelect($title . ' AS title');
+
+        return $this->paginateAdminCollection(
+            $qb,
+            $query,
+            [
+                'id' => 'faq.id',
+                'title' => $title,
+                'createdAt' => 'faq.createdAt',
+                'updatedAt' => 'faq.updateAt',
+            ],
+            'faq.disabled',
+            'faq.id',
+            'faq.user',
+            orderFields: ['title' => 'title'],
+        );
     }
 
     /**

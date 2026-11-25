@@ -194,7 +194,7 @@ class FaqController extends AppAdminController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/ajax/delete/{id}', name: 'delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
+    #[Route('/ajax/delete/{id}', name: 'remove', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(
         #[MapEntity(id: 'id')] Faq $faq,
         FaqService $faqService,

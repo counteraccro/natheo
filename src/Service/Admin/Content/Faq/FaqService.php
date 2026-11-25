@@ -151,7 +151,7 @@ class FaqService extends AppAdminService
                 ],
                 'color' => 'danger',
                 'type' => 'delete',
-                'url' => $router->generate('admin_faq_delete', ['id' => $faq->getId()]),
+                'url' => $router->generate('admin_faq_remove', ['id' => $faq->getId()]),
                 'ajax' => true,
                 'confirm' => true,
                 'msgConfirm' => $translator->trans('faq.confirm.delete.message', ['label' => $label], 'faq'),
