@@ -78,7 +78,8 @@ Le format suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), avec un
 - Back-office : la confirmation avant de quitter une page ne s'affiche plus après une recherche, un filtre, un lien ouvert dans un nouvel onglet ou sur les pages de connexion ; elle couvre désormais le retour du navigateur, le rechargement, la fermeture de l'onglet et les modifications sans saisie (glisser-déposer) ([#542](https://github.com/counteraccro/natheo/issues/542))
 - Recherche globale : un contributeur ne trouve plus les comptes du back-office, réservés au super administrateur. Chaque onglet suit le module de ses éléments ([#550](https://github.com/counteraccro/natheo/issues/550))
 - Tags : l'unicité d'un libellé et la recherche ne tiennent plus compte de la casse, avec le même résultat sous MySQL et PostgreSQL ; un libellé saisi dans l'éditeur de pages avec une autre casse reprend le tag existant au lieu d'en créer un second ([#563](https://github.com/counteraccro/natheo/issues/563))
-- FAQ : deux personnes qui modifient la même FAQ ne s'écrasent plus (réponse 412), les titres et réponses vides sont refusés, chaque écriture est inscrite au journal des actions, un contributeur sans droit de désactivation ne peut plus désactiver une catégorie ou une question, et quitter une catégorie ou une question modifiée demande confirmation ([#570](https://github.com/counteraccro/natheo/issues/570))
+- FAQ : deux personnes qui modifient la même FAQ ne s'écrasent plus (réponse 412), et quitter une catégorie ou une question modifiée demande confirmation ([#570](https://github.com/counteraccro/natheo/issues/570))
+- FAQ : les titres et réponses vides sont refusés, un contributeur sans droit de désactivation ne peut plus désactiver une catégorie ou une question, et chaque écriture est inscrite au journal des actions ([#570](https://github.com/counteraccro/natheo/issues/570))
 
 ### Sécurité
 
