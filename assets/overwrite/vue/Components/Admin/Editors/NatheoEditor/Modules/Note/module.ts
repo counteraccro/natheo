@@ -72,6 +72,7 @@ export const NoteBlock = Node.create({
 export default defineNatheoEditorModule({
   id: 'note',
   position: 85,
+  requires: 'demo_overwrite',
   domains: ['demo_overwrite'],
   extensions: () => [NoteBlock],
   commands: [

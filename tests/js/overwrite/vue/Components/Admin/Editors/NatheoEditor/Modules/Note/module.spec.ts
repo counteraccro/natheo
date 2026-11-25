@@ -1,4 +1,6 @@
 import { describe, expect, it } from 'vitest';
+import noteModule from '@/overwrite/vue/Components/Admin/Editors/NatheoEditor/Modules/Note/module';
+import { modulesForPreset } from '@/vue/Composables/Admin/Editor/NatheoEditor/natheoEditorModules';
 import { command, coreEditor, rewrite } from '@tests/vue/Components/Admin/Editors/NatheoEditor/Modules/support';
 
 describe('module note de la surcharge', () => {
@@ -19,5 +21,10 @@ describe('module note de la surcharge', () => {
     expect(command('note').isActive?.(editor)).toBe(true);
     command('note').run?.(editor);
     expect(editor.getMarkdown()).toBe('Texte');
+  });
+
+  it('reste masqué pour qui ne voit pas l’écran d’exemple', () => {
+    expect(modulesForPreset([noteModule], 'full', () => false)).toEqual([]);
+    expect(modulesForPreset([noteModule], 'full', (module) => module === 'demo_overwrite')).toEqual([noteModule]);
   });
 });
