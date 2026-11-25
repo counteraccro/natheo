@@ -188,19 +188,12 @@ class AdminAppBootstrapService extends AppAdminService
             return null;
         }
 
-        // Nom affiché dans la liste de l'option : natheo_horizon:Natheo-Horizon|…
-        $label = $template->value;
-        $config = $optionSystem->getOptionConfigByKey(OptionSystem::OS_THEME_FRONT_SITE->value);
-        foreach (explode('|', (string) ($config['list_value'] ?? '')) as $item) {
-            [$value, $name] = array_pad(explode(':', $item, 2), 2, '');
-            if ($value === $template->value && $name !== '') {
-                $label = $name;
-            }
-        }
+        $config = $optionSystem->getOptionConfigByKey(OptionSystem::OS_THEME_FRONT_SITE->value) ?? [];
+        $label = $this->getOptionConfigService()->getListValues($config)[$template->value] ?? '';
 
         return [
             'id' => $template->value,
-            'label' => $label,
+            'label' => $label !== '' ? $label : $template->value,
             'textClass' => $template->getTextClass(),
             'stylesheet' => $this->getSiteThemeStylesheet($template),
         ];

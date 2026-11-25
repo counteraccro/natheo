@@ -63,6 +63,20 @@ class OptionConfigServiceTest extends AppWebTestCase
     }
 
     /**
+     * Test méthode getListValues()
+     * @return void
+     */
+    public function testGetListValues(): void
+    {
+        $this->assertSame(
+            ['fr' => 'global.fr', 'en' => '', 'es' => 'a:b'],
+            $this->optionConfigService->getListValues(['type' => 'select', 'list_value' => 'fr:global.fr|en|es:a:b']),
+        );
+        $this->assertSame([], $this->optionConfigService->getListValues(['type' => 'select']));
+        $this->assertSame([], $this->optionConfigService->getListValues(['type' => 'select', 'list_value' => '']));
+    }
+
+    /**
      * Test méthode isValidValue()
      * @return void
      */
@@ -75,6 +89,7 @@ class OptionConfigServiceTest extends AppWebTestCase
         $select = ['type' => 'select', 'list_value' => 'fr:global.fr|en:global.en'];
         $this->assertTrue($this->optionConfigService->isValidValue($select, 'en'));
         $this->assertFalse($this->optionConfigService->isValidValue($select, 'xx'));
+        $this->assertFalse($this->optionConfigService->isValidValue(['type' => 'select'], 'fr'));
 
         $required = ['type' => 'text', 'required' => true];
         $this->assertTrue($this->optionConfigService->isValidValue($required, 'Natheo'));

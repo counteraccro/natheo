@@ -40,11 +40,11 @@ class ApiAdminUserOptionService extends AppApiService
     {
         $translator = $this->getTranslator();
         $choices = [];
-        if (($config['type'] ?? null) === 'select' && isset($config['list_value'])) {
-            foreach (explode('|', (string) $config['list_value']) as $item) {
-                [$value, $label] = array_pad(explode(':', $item, 2), 2, '');
-                $choices[$value] = $translator->trans($label);
-            }
+        if (($config['type'] ?? null) === 'select') {
+            $choices = array_map(
+                fn(string $label): string => $translator->trans($label),
+                $this->getOptionConfigService()->getListValues($config),
+            );
         }
         return [
             'label' => $translator->trans((string) ($config['label'] ?? $key)),
