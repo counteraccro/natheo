@@ -12,8 +12,6 @@ namespace App\Api\V2\State\Processor\Admin\Content;
 use ApiPlatform\Metadata\Operation;
 use App\Api\V2\Input\Admin\Content\UpdateTagInput;
 use App\Api\V2\Resource\Admin\Content\AdminTag;
-use App\Enum\Admin\System\ActionLog\ActionLogAction;
-use App\Security\Voter\ContentVoter;
 
 /**
  * @extends AbstractAdminTagProcessor<UpdateTagInput, AdminTag>
@@ -30,29 +28,10 @@ final class UpdateAdminTagProcessor extends AbstractAdminTagProcessor
     protected function write(mixed $data, Operation $operation, array $uriVariables, array $context): AdminTag
     {
         $tag = $this->findTag($uriVariables);
-        $statusChanged = $data->disabled !== null && $data->disabled !== $tag->isDisabled();
-        // Un PATCH sans effet est écrit et journalisé : il exige le droit de modification
-        if ($data->color !== null || $data->translations !== null || !$statusChanged) {
-            $this->denyUnlessGranted(ContentVoter::EDIT, $tag);
-        }
-        if ($statusChanged) {
-            $this->denyUnlessGranted(ContentVoter::DISABLE, $tag);
+        foreach ($this->getUpdateAttributes($data, $tag->isDisabled()) as $attribute) {
+            $this->denyUnlessGranted($attribute, $tag);
         }
         $tag = $this->tagService->update($tag, $this->toLabels($data->translations), $data->color, $data->disabled);
         return $this->tagProvider->map($tag);
-    }
-
-    /**
-     * disable ou enable quand seul le statut change
-     * @param Operation $operation
-     * @param mixed $data
-     * @return string
-     */
-    protected function getLogAction(Operation $operation, mixed $data): string
-    {
-        if ($data instanceof UpdateTagInput && $data->isStatusOnly()) {
-            return ($data->disabled ? ActionLogAction::DISABLE : ActionLogAction::ENABLE)->value;
-        }
-        return parent::getLogAction($operation, $data);
     }
 }

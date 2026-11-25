@@ -141,7 +141,7 @@ class AdminFaqCategoryTest extends AdminFaqTestCase
         $this->assertTrue($this->reload(FaqQuestion::class, $active->getId())->isDisabled());
         $this->assertSame(
             [
-                ['disable', 'AdminFaqQuestion', (string) $active->getId(), null],
+                ['disable', 'AdminFaqQuestion', (string) $active->getId(), 'Q1'],
                 ['disable', 'AdminFaqCategory', $id, 'Achat'],
                 ['enable', 'AdminFaqCategory', $id, 'Achat'],
             ],

@@ -13,34 +13,14 @@ namespace App\Api\V2\State\Processor\Admin\Content;
 use ApiPlatform\Metadata\Operation;
 use App\Api\V2\Input\Admin\Content\UpdateFaqCategoryInput;
 use App\Api\V2\Resource\Admin\Content\AdminFaqCategory;
-use App\Api\V2\Security\CurrentUserResolver;
-use App\Enum\Admin\Module\CoreModuleId;
+use App\Api\V2\Resource\Admin\Content\AdminFaqQuestion;
 use App\Enum\Admin\System\ActionLog\ActionLogAction;
-use App\Security\Voter\ContentVoter;
-use App\Service\Api\Admin\ActionLogService;
-use Symfony\Contracts\Service\Attribute\Required;
 
 /**
  * @extends AbstractAdminFaqProcessor<UpdateFaqCategoryInput, AdminFaqCategory>
  */
 final class UpdateAdminFaqCategoryProcessor extends AbstractAdminFaqProcessor
 {
-    private ActionLogService $actionLogService;
-
-    private CurrentUserResolver $currentUserResolver;
-
-    /**
-     * @param ActionLogService $actionLogService
-     * @param CurrentUserResolver $currentUserResolver
-     * @return void
-     */
-    #[Required]
-    public function setLogServices(ActionLogService $actionLogService, CurrentUserResolver $currentUserResolver): void
-    {
-        $this->actionLogService = $actionLogService;
-        $this->currentUserResolver = $currentUserResolver;
-    }
-
     /**
      * @param mixed $data
      * @param Operation $operation
@@ -52,13 +32,8 @@ final class UpdateAdminFaqCategoryProcessor extends AbstractAdminFaqProcessor
     {
         $category = $this->findCategory((int) ($uriVariables['id'] ?? 0));
         $faq = $category->getFaq();
-        $statusChanged = $data->disabled !== null && $data->disabled !== $category->isDisabled();
-        // Un PATCH sans effet est écrit et journalisé : il exige le droit de modification
-        if ($data->translations !== null || $data->position !== null || !$statusChanged) {
-            $this->denyUnlessGranted(ContentVoter::EDIT, $faq);
-        }
-        if ($statusChanged) {
-            $this->denyUnlessGranted(ContentVoter::DISABLE, $faq);
+        foreach ($this->getUpdateAttributes($data, $category->isDisabled()) as $attribute) {
+            $this->denyUnlessGranted($attribute, $faq);
         }
 
         $disabledQuestions = $this->faqService->updateCategory(
@@ -67,13 +42,14 @@ final class UpdateAdminFaqCategoryProcessor extends AbstractAdminFaqProcessor
             $data->disabled,
             $data->position,
         );
-        foreach ($disabledQuestions as $questionId) {
-            $this->actionLogService->log(
-                $this->currentUserResolver->getSession(),
-                CoreModuleId::FAQ->value,
+        $defaultLocale = $this->faqService->getDefaultLocale();
+        foreach ($disabledQuestions as $question) {
+            $this->log(
+                $operation,
                 ActionLogAction::DISABLE->value,
-                'AdminFaqQuestion',
-                (string) $questionId,
+                (new \ReflectionClass(AdminFaqQuestion::class))->getShortName(),
+                (string) $question->getId(),
+                $question->getFaqQuestionTranslationByLocale($defaultLocale)?->getTitle(),
             );
         }
         return $this->categoryProvider->map($category);

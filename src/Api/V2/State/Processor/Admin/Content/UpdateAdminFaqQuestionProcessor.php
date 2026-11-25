@@ -13,7 +13,6 @@ namespace App\Api\V2\State\Processor\Admin\Content;
 use ApiPlatform\Metadata\Operation;
 use App\Api\V2\Input\Admin\Content\UpdateFaqQuestionInput;
 use App\Api\V2\Resource\Admin\Content\AdminFaqQuestion;
-use App\Security\Voter\ContentVoter;
 
 /**
  * @extends AbstractAdminFaqProcessor<UpdateFaqQuestionInput, AdminFaqQuestion>
@@ -31,13 +30,8 @@ final class UpdateAdminFaqQuestionProcessor extends AbstractAdminFaqProcessor
     {
         $question = $this->findQuestion((int) ($uriVariables['id'] ?? 0));
         $faq = $question->getFaqCategory()?->getFaq();
-        $statusChanged = $data->disabled !== null && $data->disabled !== $question->isDisabled();
-        // Un PATCH sans effet est écrit et journalisé : il exige le droit de modification
-        if ($data->translations !== null || $data->position !== null || $data->category !== null || !$statusChanged) {
-            $this->denyUnlessGranted(ContentVoter::EDIT, $faq);
-        }
-        if ($statusChanged) {
-            $this->denyUnlessGranted(ContentVoter::DISABLE, $faq);
+        foreach ($this->getUpdateAttributes($data, $question->isDisabled()) as $attribute) {
+            $this->denyUnlessGranted($attribute, $faq);
         }
 
         $category = $data->category === null ? null : $this->findCategory($data->category->id);

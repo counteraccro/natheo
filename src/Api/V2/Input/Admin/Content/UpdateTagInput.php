@@ -10,10 +10,11 @@ declare(strict_types=1);
 namespace App\Api\V2\Input\Admin\Content;
 
 use App\Api\V2\Input\Admin\Global\LabelTranslationInput;
+use App\Api\V2\Input\Admin\StatusInputInterface;
 use App\Api\V2\Validator\Admin\Content\ValidTagInput;
 
 #[ValidTagInput]
-final class UpdateTagInput
+final class UpdateTagInput implements StatusInputInterface
 {
     /**
      * Couleur #rrggbb
@@ -27,6 +28,14 @@ final class UpdateTagInput
      * @var LabelTranslationInput[]|null
      */
     public ?array $translations = null;
+
+    /**
+     * @return bool|null
+     */
+    public function getDisabled(): ?bool
+    {
+        return $this->disabled;
+    }
 
     /**
      * Vrai quand seul le statut est modifié

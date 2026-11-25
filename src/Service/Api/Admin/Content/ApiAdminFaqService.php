@@ -240,7 +240,7 @@ class ApiAdminFaqService extends AppApiService
      * @param array<string, string> $titles
      * @param bool|null $disabled
      * @param int|null $position à partir de 1
-     * @return int[] identifiants des questions désactivées avec la catégorie
+     * @return FaqQuestion[] questions désactivées avec la catégorie
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
@@ -255,7 +255,7 @@ class ApiAdminFaqService extends AppApiService
             foreach ($category->getFaqQuestions() as $question) {
                 if (!$question->isDisabled()) {
                     $question->setDisabled(true);
-                    $disabledQuestions[] = (int) $question->getId();
+                    $disabledQuestions[] = $question;
                 }
             }
         }

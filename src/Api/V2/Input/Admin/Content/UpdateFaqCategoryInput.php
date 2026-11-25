@@ -10,11 +10,12 @@ declare(strict_types=1);
 namespace App\Api\V2\Input\Admin\Content;
 
 use App\Api\V2\Input\Admin\Global\TitleTranslationInput;
+use App\Api\V2\Input\Admin\StatusInputInterface;
 use App\Api\V2\Validator\Admin\Content\ValidFaqInput;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ValidFaqInput]
-final class UpdateFaqCategoryInput
+final class UpdateFaqCategoryInput implements StatusInputInterface
 {
     public ?bool $disabled = null;
 
@@ -29,6 +30,14 @@ final class UpdateFaqCategoryInput
      * @var TitleTranslationInput[]|null
      */
     public ?array $translations = null;
+
+    /**
+     * @return bool|null
+     */
+    public function getDisabled(): ?bool
+    {
+        return $this->disabled;
+    }
 
     /**
      * Vrai quand seul le statut est modifié

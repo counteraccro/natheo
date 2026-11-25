@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace App\Api\V2\State\Processor\Admin\Content;
 
-use ApiPlatform\Metadata\Operation;
 use App\Api\V2\Exception\ForbiddenException;
 use App\Api\V2\Exception\NotFoundException;
 use App\Api\V2\Input\Admin\Content\FaqQuestionTranslationInput;
@@ -25,7 +24,6 @@ use App\Api\V2\State\Provider\Admin\Content\AdminFaqQuestionProvider;
 use App\Entity\Admin\Content\Faq\Faq;
 use App\Entity\Admin\Content\Faq\FaqCategory;
 use App\Entity\Admin\Content\Faq\FaqQuestion;
-use App\Enum\Admin\System\ActionLog\ActionLogAction;
 use App\Service\Api\Admin\Content\ApiAdminFaqService;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -118,20 +116,6 @@ abstract class AbstractAdminFaqProcessor extends AbstractAdminProcessor
             $texts[$translation->locale] = ['title' => $translation->title, 'answer' => $translation->answer];
         }
         return $texts;
-    }
-
-    /**
-     * disable ou enable quand seul le statut change
-     * @param Operation $operation
-     * @param mixed $data
-     * @return string
-     */
-    protected function getLogAction(Operation $operation, mixed $data): string
-    {
-        if (is_object($data) && method_exists($data, 'isStatusOnly') && $data->isStatusOnly()) {
-            return ($data->disabled ? ActionLogAction::DISABLE : ActionLogAction::ENABLE)->value;
-        }
-        return parent::getLogAction($operation, $data);
     }
 
     /**
