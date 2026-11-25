@@ -302,7 +302,7 @@ class MenuControllerTest extends AppWebTestCase
             $this->assertResponseIsSuccessful();
             $this->assertResponseHeaderSame('X-Robots-Tag', 'noindex');
             $this->assertStringNotContainsString('scriptSite', (string) $this->client->getResponse()->getContent());
-            $this->assertSelectorExists('html[lang="' . $locale . '"]');
+            $this->assertSelectorExists('html[lang="' . $locale . '"][data-front-theme="natheo_horizon"]');
             $this->assertStringContainsString(
                 'Front/NatheoHorizon/MenuPreview',
                 (string) $this->client->getResponse()->getContent(),

@@ -182,6 +182,7 @@ class IndexControllerTest extends AppWebTestCase
         $content = (string) $this->client->getResponse()->getContent();
         $this->assertStringContainsString('Front/StormFront/App', $content);
         $this->assertStringContainsString('front_natheo_storm', $content);
+        $this->assertSelectorExists('html[data-front-theme="natheo_storm"]');
 
         $props = $this->getVueProps($crawler);
         $this->assertEquals('front-token-test', $props['datas']['apiToken']);
@@ -203,6 +204,7 @@ class IndexControllerTest extends AppWebTestCase
 
         $this->client->request('GET', $this->homeUrl());
         $this->assertResponseStatusCodeSame(503);
+        $this->assertSelectorExists('html[data-front-theme="natheo_storm"]');
         $this->assertSelectorExists('body.bg-rail');
         $this->assertSelectorTextContains(
             'h1',

@@ -99,7 +99,8 @@ class AdminAppController extends AppAdminController
     }
 
     /**
-     * Politique de sécurité du contenu de la page : scripts du site avec le nonce de la page, serveur Vite en dev
+     * Politique de sécurité du contenu de la page : scripts du site avec le nonce de la page, images
+     * externes en HTTPS (textes de l'éditeur), serveur Vite en dev
      * @param string $nonce
      * @param string|null $viteServer origine du serveur Vite quand il tourne, null pour les fichiers construits
      * @return string
@@ -115,7 +116,7 @@ class AdminAppController extends AppAdminController
             'default-src' => ["'self'"],
             'script-src' => ["'self'", "'nonce-" . $nonce . "'", ...$vite],
             'style-src' => [...$styles, ...$vite],
-            'img-src' => ["'self'", 'data:'],
+            'img-src' => ["'self'", 'data:', 'https:'],
             'font-src' => ["'self'", ...$vite],
             'connect-src' => ["'self'", ...$vite, ...$viteSocket],
             'object-src' => ["'none'"],

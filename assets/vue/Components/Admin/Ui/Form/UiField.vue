@@ -1,7 +1,7 @@
 <script setup lang="ts">
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Champ de formulaire : libellé, aide et erreurs reliés au contrôle placé dans l'emplacement par défaut ; dans un UiForm,
  * name (chemin de propriété de l'API) lit ses erreurs et les efface dès que le champ est modifié ; l'emplacement below
  * place un contenu sous le contrôle, à gauche du compteur (case à cocher liée…)
@@ -36,6 +36,7 @@ const counter = ref<string>();
 const form = useFormContext();
 const uid = useId();
 const id = computed(() => props.id ?? (props.name && form ? form.fieldId(props.name) : `ui-field-${uid}`));
+const labelId = computed(() => `${id.value}-label`);
 const helpId = computed(() => `${id.value}-help`);
 const errorId = computed(() => `${id.value}-error`);
 const messages = computed(() => [
@@ -61,8 +62,15 @@ const clearErrors = (): void => {
   if (props.name) form?.errors.clear(props.name);
 };
 
+// Un label for ne donne pas le focus à une zone éditable (éditeur de texte)
+const focusControl = (): void => {
+  const control = document.getElementById(id.value);
+  if (control !== null && !('labels' in control)) control.focus();
+};
+
 provideField({
   id,
+  labelId,
   describedBy,
   invalid: computed(() => messages.value.length > 0),
   required: computed(() => props.required),
@@ -72,7 +80,13 @@ provideField({
 
 <template>
   <div class="flex flex-col gap-1.5" @input="clearErrors" @change="clearErrors">
-    <label :for="id" class="text-[13.5px] font-semibold text-fg" :class="hideLabel && 'sr-only'">
+    <label
+      :id="labelId"
+      :for="id"
+      class="text-[13.5px] font-semibold text-fg"
+      :class="hideLabel && 'sr-only'"
+      @click="focusControl"
+    >
       {{ label
       }}<template v-if="required"
         ><span class="ml-0.5 text-danger" aria-hidden="true">*</span

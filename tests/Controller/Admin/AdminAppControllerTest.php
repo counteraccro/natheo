@@ -3,15 +3,17 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 1.2
  * Tests de la page de l'application Vue du back-office et du renouvellement de son access token
  */
 
 namespace App\Tests\Controller\Admin;
 
+use App\Entity\Admin\System\OptionSystem as OptionSystemEntity;
 use App\Entity\Admin\System\OptionUser as OptionUserEntity;
 use App\Entity\Admin\System\User;
 use App\Enum\Admin\AdminTemplate;
+use App\Enum\Admin\System\Options\OptionSystem;
 use App\Enum\Admin\System\Options\OptionUser;
 use App\Service\Api\System\User\UserSessionService;
 use App\Tests\AppWebTestCase;
@@ -62,6 +64,7 @@ class AdminAppControllerTest extends AppWebTestCase
 
         $csp = (string) $response->headers->get('Content-Security-Policy');
         $this->assertMatchesRegularExpression("/script-src 'self' 'nonce-([A-Za-z0-9+\\/=]+)'/", $csp);
+        $this->assertStringContainsString("img-src 'self' data: https:", $csp);
         $this->assertStringContainsString("object-src 'none'", $csp);
         $this->assertStringContainsString("frame-ancestors 'self'", $csp);
         preg_match("/'nonce-([^']+)'/", $csp, $nonce);
@@ -213,6 +216,38 @@ class AdminAppControllerTest extends AppWebTestCase
         $this->persistAndFlush($option);
         $this->client->request('GET', '/admin/fr/inconnu', server: self::HTML);
         $this->assertSame(AdminTemplate::NATHEO_STUDIO->value, $this->getBootstrap()['theme']);
+    }
+
+    /**
+     * Thème actif du site, son nom, la classe et la feuille de son texte pour le rendu du site dans l'éditeur
+     * @return void
+     */
+    public function testIndexSiteTheme(): void
+    {
+        $this->loginContributeur();
+        $this->client->request('GET', '/admin/fr/inconnu', server: self::HTML);
+        $theme = $this->getBootstrap()['site']['theme'];
+        $this->assertSame('natheo_horizon', $theme['id']);
+        $this->assertSame('Natheo-Horizon', $theme['label']);
+        $this->assertSame('nh-prose', $theme['textClass']);
+        $this->assertStringContainsString('front_natheo_horizon_content', (string) $theme['stylesheet']);
+    }
+
+    /**
+     * Thème du site inconnu de l'enum : pas de rendu du site dans l'éditeur
+     * @return void
+     */
+    public function testIndexSiteThemeUnknown(): void
+    {
+        $option = $this->em->getRepository(OptionSystemEntity::class)->findOneBy([
+            'key' => OptionSystem::OS_THEME_FRONT_SITE->value,
+        ]);
+        $option->setValue('inconnu');
+        $this->persistAndFlush($option);
+
+        $this->loginContributeur();
+        $this->client->request('GET', '/admin/fr/inconnu', server: self::HTML);
+        $this->assertNull($this->getBootstrap()['site']['theme']);
     }
 
     /**

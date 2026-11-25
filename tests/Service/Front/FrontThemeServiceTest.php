@@ -76,7 +76,11 @@ class FrontThemeServiceTest extends AppWebTestCase
             $optionSystemService->saveValueByKee(OptionSystem::OS_THEME_FRONT_SITE->value, $template->value);
             foreach ([FrontThemeService::MENU_PREVIEW, FrontThemeService::TAG_PREVIEW] as $preview) {
                 $this->assertSame(
-                    ['template' => 'front/' . $template->value . '/' . $preview, 'scriptsTag' => 'front_' . $template->value],
+                    [
+                        'template' => 'front/' . $template->value . '/' . $preview,
+                        'scriptsTag' => 'front_' . $template->value,
+                        'theme' => $template->value,
+                    ],
                     $this->frontThemeService->getPreviewTemplate($preview),
                 );
             }

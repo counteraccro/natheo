@@ -1,0 +1,22 @@
+/*!
+ * Author : Gourdon Aymeric
+ * Version : 1.0
+ * Texte des blocs du thème Natheo-Base montré hors de ses pages : couleurs et police de la page (gray-900 sur
+ * blanc, inversé en sombre)
+ */
+
+@layer components {
+    [data-front-theme='natheo_base'].natheo-base-content {
+        background: #ffffff;
+        color: oklch(21% 0.034 264.665);
+        font:
+            1rem/1.5 ui-sans-serif,
+            system-ui,
+            sans-serif;
+    }
+
+    .dark [data-front-theme='natheo_base'].natheo-base-content {
+        background: oklch(21% 0.034 264.665);
+        color: oklch(96.7% 0.003 264.542);
+    }
+}

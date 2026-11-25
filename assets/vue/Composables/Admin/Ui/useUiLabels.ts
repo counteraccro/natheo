@@ -26,6 +26,10 @@ export function buildUiLabels(t: UiTranslator): UiLabels {
     },
     tabs: { hasErrors: t('admin_ui.tabs.has_errors') },
     input: { counter: (count, max) => t('admin_ui.input.counter', { count, max }) },
+    textEditor: {
+      loading: t('admin_ui.text_editor.loading'),
+      loadError: t('admin_ui.text_editor.load_error'),
+    },
     colorInput: {
       picker: t('admin_ui.color_input.picker'),
       hex: t('admin_ui.color_input.hex'),

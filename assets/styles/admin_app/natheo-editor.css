@@ -1,0 +1,267 @@
+/*!
+ * Author : Gourdon Aymeric
+ * Version : 1.0
+ * Contenu de Natheo-Editor : mise en page commune, style du back-office (.natheo-editor-admin), éléments gardés tels quels
+ */
+
+@layer components {
+    .natheo-editor-content {
+        display: block;
+        overflow: auto;
+        padding: 16px 20px;
+        outline: 0;
+        overflow-wrap: break-word;
+    }
+
+    /* Style du back-office, remplacé par la classe de texte du thème du site dans le rendu du site */
+    .natheo-editor-admin {
+        font-size: 15px;
+        line-height: 1.65;
+        color: var(--fg);
+    }
+
+    .natheo-editor-admin > * {
+        margin: 0;
+    }
+
+    .natheo-editor-admin > * + * {
+        margin-top: 0.85em;
+    }
+
+    .natheo-editor-admin > :first-child {
+        margin-top: 0;
+    }
+
+    .natheo-editor-content p.is-editor-empty:first-child::before {
+        content: attr(data-placeholder);
+        float: left;
+        height: 0;
+        color: var(--fg-subtle);
+        pointer-events: none;
+    }
+
+    .natheo-editor-admin h1 {
+        font-size: 1.7em;
+        line-height: 1.2;
+        font-weight: 700;
+    }
+
+    .natheo-editor-admin h2 {
+        margin-top: 1.4em;
+        font-size: 1.45em;
+        line-height: 1.25;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+    }
+
+    .natheo-editor-admin h3 {
+        margin-top: 1.2em;
+        font-size: 1.2em;
+        line-height: 1.3;
+        font-weight: 650;
+    }
+
+    .natheo-editor-admin h4 {
+        margin-top: 1.1em;
+        font-size: 1.02em;
+        font-weight: 700;
+    }
+
+    .natheo-editor-admin h5,
+    .natheo-editor-admin h6 {
+        font-size: 0.95em;
+        font-weight: 700;
+        color: var(--fg-muted);
+    }
+
+    .natheo-editor-admin a {
+        color: var(--primary);
+        text-decoration: underline;
+        text-underline-offset: 2px;
+    }
+
+    .natheo-editor-admin a:has(.natheo-editor-internal),
+    .natheo-editor-admin .natheo-editor-internal {
+        text-decoration-style: dashed;
+    }
+
+    .natheo-editor-admin ul,
+    .natheo-editor-admin ol {
+        padding-left: 1.4em;
+    }
+
+    .natheo-editor-admin ul {
+        list-style: disc;
+    }
+
+    .natheo-editor-admin ol {
+        list-style: decimal;
+    }
+
+    .natheo-editor-admin li + li {
+        margin-top: 0.25em;
+    }
+
+    .natheo-editor-content li > p {
+        margin: 0;
+    }
+
+    .natheo-editor-admin blockquote {
+        padding: 2px 0 2px 16px;
+        border-left: 3px solid var(--line-strong);
+        color: var(--fg-muted);
+    }
+
+    .natheo-editor-admin :not(pre) > code {
+        padding: 0.1em 0.35em;
+        border-radius: 4px;
+        background: var(--surface);
+        font: 0.88em var(--font-code);
+    }
+
+    .natheo-editor-admin pre {
+        position: relative;
+        overflow-x: auto;
+        padding: 14px 16px;
+        border-radius: 8px;
+        background: var(--code-bg);
+        color: var(--on-code);
+        font: 13px/1.6 var(--font-code);
+        white-space: pre;
+    }
+
+    .natheo-editor-admin pre code {
+        font: inherit;
+    }
+
+    .natheo-editor-admin pre[data-language]::after {
+        content: attr(data-language);
+        position: absolute;
+        top: 6px;
+        right: 10px;
+        color: var(--on-code-muted);
+        font: 600 11px var(--font);
+    }
+
+    .natheo-editor-admin img {
+        display: inline-block;
+        max-width: 100%;
+        border-radius: 6px;
+        outline: 1px solid var(--line);
+    }
+
+    .natheo-editor-content img.ProseMirror-selectednode {
+        outline: 2px solid var(--primary);
+        outline-offset: 2px;
+    }
+
+    .natheo-editor-admin hr {
+        margin: 1.4em 0;
+        border: 0;
+        border-top: 1px solid var(--line-strong);
+    }
+
+    .natheo-editor-content hr.ProseMirror-selectednode {
+        border-top-color: var(--primary);
+    }
+
+    .natheo-editor-content .tableWrapper {
+        overflow-x: auto;
+    }
+
+    .natheo-editor-admin table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.93em;
+    }
+
+    .natheo-editor-admin th,
+    .natheo-editor-admin td {
+        padding: 7px 10px;
+        border: 1px solid var(--line-strong);
+        text-align: left;
+        vertical-align: top;
+    }
+
+    .natheo-editor-admin th {
+        background: var(--surface);
+        font-weight: 650;
+    }
+
+    .natheo-editor-content th > p,
+    .natheo-editor-content td > p {
+        margin: 0;
+    }
+
+    .natheo-editor-content .selectedCell {
+        box-shadow: inset 0 0 0 2px var(--primary);
+    }
+
+    /* HTML brut gardé tel quel, intitulé donné par le rendu (--natheo-editor-raw-label) */
+    .natheo-editor-content pre.natheo-editor-raw {
+        position: relative;
+        padding: 26px 14px 10px;
+        border: 1px dashed var(--line-strong);
+        background: var(--surface);
+        color: var(--fg-muted);
+        font: 12.5px/1.55 var(--font-code);
+        white-space: pre-wrap;
+    }
+
+    .natheo-editor-content pre.natheo-editor-raw::before {
+        content: var(--natheo-editor-raw-label, '');
+        position: absolute;
+        top: 6px;
+        left: 12px;
+        color: var(--fg-subtle);
+        font: 600 11.5px var(--font);
+    }
+
+    .natheo-editor-content pre.natheo-editor-raw.ProseMirror-selectednode,
+    .natheo-editor-content code.natheo-editor-raw.ProseMirror-selectednode {
+        border-color: var(--primary);
+    }
+
+    /* Attributs {...} et balises HTML dans le texte */
+    .natheo-editor-content code.natheo-editor-raw {
+        display: inline-block;
+        padding: 0 5px;
+        border: 1px dashed var(--line-strong);
+        border-radius: 4px;
+        background: none;
+        color: var(--fg-subtle);
+        font: 0.8em var(--font-code);
+        vertical-align: 1px;
+    }
+
+    .natheo-editor-keyword {
+        padding: 0.05em 7px;
+        border-radius: 999px;
+        background: var(--primary-soft);
+        color: var(--on-primary-soft);
+        font-size: 0.86em;
+        font-weight: 650;
+    }
+
+    .natheo-editor-surface .natheo-editor-content,
+    .natheo-editor-surface .natheo-editor-source {
+        min-height: calc(var(--natheo-editor-min) + 32px);
+        max-height: var(--natheo-editor-max);
+    }
+
+    /* Mode source : texte Markdown */
+    .natheo-editor-source {
+        display: block;
+        overflow: auto;
+        field-sizing: content;
+        width: 100%;
+        padding: 16px 20px;
+        border: 0;
+        outline: 0;
+        resize: none;
+        background: var(--surface);
+        color: var(--fg);
+        font: 13.5px/1.65 var(--font-code);
+        tab-size: 2;
+    }
+}

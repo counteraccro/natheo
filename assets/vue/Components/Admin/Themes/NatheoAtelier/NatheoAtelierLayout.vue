@@ -25,6 +25,7 @@ import { useAdminContext } from '@/vue/Composables/Admin/useAdminContext';
 import { useLayoutActions } from '@/vue/Composables/Admin/Layout/useLayoutActions';
 import { useScreenGroup } from '@/vue/Composables/Admin/Screen/useScreenGroup';
 import type { AdminLayoutProps } from '@/ts/Admin/Theme/AdminTheme.type';
+import { isMac } from '@/vue/Composables/Global/isMac';
 
 const props = defineProps<AdminLayoutProps>();
 defineSlots<{ default?: () => unknown }>();
@@ -34,8 +35,8 @@ const labels = useUiLabels();
 const actions = useLayoutActions(props.bootstrap);
 const { impersonating, debugSections, debugUsers, themeChoice } = actions;
 
-const isMac = /Mac|iPhone|iPad/.test(navigator.userAgent);
-const shortcutKey = isMac ? { label: '⌘ K', aria: 'Meta+K' } : { label: 'Ctrl K', aria: 'Control+K' };
+const mac = isMac();
+const shortcutKey = mac ? { label: '⌘ K', aria: 'Meta+K' } : { label: 'Ctrl K', aria: 'Control+K' };
 const paletteOpen = ref(false);
 const group = useScreenGroup();
 
@@ -71,7 +72,7 @@ const selectSection = (item: SidebarItem): void => {
 };
 
 const onKeydown = (event: KeyboardEvent): void => {
-  if ((isMac ? event.metaKey : event.ctrlKey) && event.key.toLowerCase() === 'k') {
+  if ((mac ? event.metaKey : event.ctrlKey) && event.key.toLowerCase() === 'k') {
     event.preventDefault();
     paletteOpen.value = true;
   }

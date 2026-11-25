@@ -305,6 +305,7 @@ class MenuController extends AppAdminController
             'datas' => $frontThemeService->getDatas($locale),
             'translate' => $frontTranslate->getTranslate($locale),
             'scriptsTag' => $theme['scriptsTag'],
+            'theme' => $theme['theme'],
             'locale' => $locale,
         ]);
         $response->headers->set('X-Robots-Tag', 'noindex');

@@ -93,9 +93,9 @@ class FrontThemeService extends AppFrontService
     }
 
     /**
-     * Gabarit d'aperçu du thème actif et son entrée Vite, ceux de Natheo-Base si le thème n'en a pas
+     * Gabarit d'aperçu du thème actif, son entrée Vite et son identifiant, ceux de Natheo-Base si le thème n'en a pas
      * @param string $preview MENU_PREVIEW ou TAG_PREVIEW
-     * @return array{template: string, scriptsTag: string}
+     * @return array{template: string, scriptsTag: string, theme: string}
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
@@ -103,12 +103,13 @@ class FrontThemeService extends AppFrontService
     {
         $template = $this->getPathTemplate() . '/' . $preview;
         if (is_file($this->getKernel()->getProjectDir() . '/templates/' . $template)) {
-            return ['template' => $template, 'scriptsTag' => $this->getScriptTags()];
+            return ['template' => $template, 'scriptsTag' => $this->getScriptTags(), 'theme' => $this->getThemeId()];
         }
 
         return [
             'template' => 'front/' . Template::NATHEO_BASE->value . '/' . $preview,
             'scriptsTag' => 'front_' . Template::NATHEO_BASE->value,
+            'theme' => Template::NATHEO_BASE->value,
         ];
     }
 }

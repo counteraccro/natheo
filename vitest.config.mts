@@ -10,6 +10,8 @@ export default defineConfig({
     },
     test: {
         environment: 'happy-dom',
+        // Feuilles de style jamais chargées : un <link> ajouté par un composant ne doit pas écrire d'erreur
+        environmentOptions: { happyDOM: { settings: { handleDisabledFileLoadingAsSuccess: true } } },
         include: ['tests/js/**/*.spec.ts'],
         restoreMocks: true,
         setupFiles: ['./vitest.setup.ts'],

@@ -7,6 +7,8 @@ import catalogue from '/translations/admin_ui+intl-icu.fr.yaml?raw';
 const catalogueKeys = catalogue
   .split('\n')
   .filter((line) => line.startsWith('admin_ui.'))
+  // Textes de Natheo-Editor, lus par ses modules
+  .filter((line) => !line.startsWith('admin_ui.natheo_editor.'))
   .map((line) => line.slice(0, line.indexOf(':')));
 
 describe('useUiLabels', () => {

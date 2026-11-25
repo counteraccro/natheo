@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 1.2
  * Données de démarrage de l'application Vue du back-office : session API, utilisateur, site, liens, options et textes
  */
 
@@ -14,6 +14,7 @@ use App\Enum\Admin\AdminTemplate;
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Enum\Admin\System\Options\OptionUser;
 use App\Enum\Admin\System\User\Role;
+use App\Enum\Front\Template;
 use App\Service\Admin\AppAdminHandlerService;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\Dev\DevInfoService;
@@ -22,6 +23,8 @@ use App\Service\Api\System\TranslationCatalogueService;
 use App\Service\Api\System\User\UserSessionAccessToken;
 use App\Service\Api\System\User\UserSessionService;
 use App\Service\Global\User\AvatarUrl;
+use Pentatrion\ViteBundle\Exception\EntrypointNotFoundException;
+use Pentatrion\ViteBundle\Service\EntrypointsLookupCollection;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -51,6 +54,7 @@ class AdminAppBootstrapService extends AppAdminService
         ]
         private readonly ImpersonateUrlGenerator $impersonateUrlGenerator,
         private readonly RoleHierarchyInterface $roleHierarchy,
+        private readonly EntrypointsLookupCollection $entrypointsLookups,
     ) {
         parent::__construct($handlers);
     }
@@ -96,6 +100,7 @@ class AdminAppBootstrapService extends AppAdminService
                 'name' => $optionSystem->getValueByKey(OptionSystem::OS_SITE_NAME->value),
                 'version' => $this->getParameterBag()->get('app.version'),
                 'url' => $router->generate('front_no_local'),
+                'theme' => $this->getSiteTheme(),
             ],
             'urls' => [
                 'dashboard' => $router->generate('admin_dashboard_index', $parameters),
@@ -167,6 +172,48 @@ class AdminAppBootstrapService extends AppAdminService
         return AdminTemplate::fromValueOrDefault(
             $this->optionUserService->getValueByKey(OptionUser::OU_ADMIN_THEME->value, false),
         );
+    }
+
+    /**
+     * Thème actif du site : nom, classe et feuille de son texte (rendu du site dans l'éditeur), null s'il est inconnu
+     * @return array{id: string, label: string, textClass: string, stylesheet: ?string}|null
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function getSiteTheme(): ?array
+    {
+        $optionSystem = $this->getOptionSystemService();
+        $template = Template::tryFrom((string) $optionSystem->getValueByKey(OptionSystem::OS_THEME_FRONT_SITE->value));
+        if ($template === null) {
+            return null;
+        }
+
+        $config = $optionSystem->getOptionConfigByKey(OptionSystem::OS_THEME_FRONT_SITE->value) ?? [];
+        $label = $this->getOptionConfigService()->getListValues($config)[$template->value] ?? '';
+
+        return [
+            'id' => $template->value,
+            'label' => $label !== '' ? $label : $template->value,
+            'textClass' => $template->getTextClass(),
+            'stylesheet' => $this->getSiteThemeStylesheet($template),
+        ];
+    }
+
+    /**
+     * Feuille de texte d'un thème du site (entrée Vite front_<thème>_content), null s'il n'en a pas
+     * @param Template $template
+     * @return string|null
+     */
+    private function getSiteThemeStylesheet(Template $template): ?string
+    {
+        try {
+            $files = $this->entrypointsLookups
+                ->getEntrypointsLookup()
+                ->getCSSFiles('front_' . $template->value . '_content');
+        } catch (EntrypointNotFoundException) {
+            return null;
+        }
+        return $files[0] ?? null;
     }
 
     /**
