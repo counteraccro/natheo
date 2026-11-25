@@ -97,4 +97,27 @@ describe('UiForm', () => {
     expect(document.activeElement?.id).toBe('ui-field-translations-en-label');
     expect(summary.text()).toContain('error_summary.item(Libellé (en),Obligatoire)');
   });
+
+  it('en groupe dans un autre formulaire, garde ses erreurs et préfixe ses identifiants', async () => {
+    const Nested = defineComponent({
+      setup() {
+        return { outer: useFormErrors(), inner: useFormErrors() };
+      },
+      render() {
+        return h(UiForm, { errors: this.outer }, () => [
+          h(UiField, { name: 'title', label: 'Titre' }, () => h(UiInput)),
+          h(UiForm, { errors: this.inner, tag: 'div', idPrefix: 'line' }, () => [
+            h(UiField, { name: 'title', label: 'Titre de la ligne' }, () => h(UiInput)),
+          ]),
+        ]);
+      },
+    });
+    const wrapper = mount(Nested, withLabels({ attachTo: document.body }));
+    expect(wrapper.findAll('form')).toHaveLength(1);
+    expect(wrapper.find('[role="group"]').exists()).toBe(true);
+    wrapper.vm.inner.set([{ propertyPath: 'title', message: 'Titre vide' }]);
+    await nextTick();
+    expect(wrapper.get('#line-ui-field-title').attributes('aria-invalid')).toBe('true');
+    expect(wrapper.get('#ui-field-title').attributes('aria-invalid')).toBeUndefined();
+  });
 });
