@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repository\Admin\Content\Faq;
 
+use App\Dto\Api\Admin\AdminCollectionQuery;
 use App\Entity\Admin\Content\Faq\Faq;
 use App\Entity\Admin\Content\Faq\FaqCategory;
 use App\Entity\Admin\Content\Faq\FaqCategoryTranslation;
@@ -12,11 +13,11 @@ use App\Entity\Admin\Content\Faq\FaqQuestionTranslation;
 use App\Entity\Admin\Content\Faq\FaqTranslation;
 use App\Entity\Admin\Content\Page\PageContent;
 use App\Entity\Admin\System\User;
-use App\Dto\Api\Admin\AdminCollectionQuery;
 use App\Enum\Admin\Content\Page\PageContentType;
 use App\Repository\Trait\AdminCollectionQueryTrait;
 use App\Repository\Trait\LikeQueryTrait;
 use App\Repository\Trait\OrderedQueryTrait;
+use App\Repository\Trait\TranslatedFieldQueryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\AST\Join;
 use Doctrine\ORM\Query\Expr;
@@ -36,6 +37,7 @@ class FaqRepository extends ServiceEntityRepository
     use AdminCollectionQueryTrait;
     use LikeQueryTrait;
     use OrderedQueryTrait;
+    use TranslatedFieldQueryTrait;
 
     public function __construct(ManagerRegistry $registry)
     {
@@ -97,20 +99,9 @@ class FaqRepository extends ServiceEntityRepository
                     ' page_content WHERE page_content.type = :faq_type AND page_content.typeId = faq.id) AS pageCount',
             )
             ->leftJoin('faq.user', 'author')
-            ->leftJoin('faq.faqTranslations', 'translation', 'WITH', 'translation.locale = :locale')
-            ->setParameter('locale', $locale)
             ->setParameter('faq_type', PageContentType::FAQ->value);
 
-        $title = 'translation.title';
-        if ($locale !== $defaultLocale) {
-            $title = 'COALESCE(translation.title, default_translation.title)';
-            $qb->leftJoin(
-                'faq.faqTranslations',
-                'default_translation',
-                'WITH',
-                'default_translation.locale = :default_locale',
-            )->setParameter('default_locale', $defaultLocale);
-        }
+        $title = $this->joinTranslatedField($qb, 'faq.faqTranslations', 'title', $locale, $defaultLocale);
         $qb->addSelect($title . ' AS title');
 
         return $this->paginateAdminCollection(

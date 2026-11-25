@@ -9,11 +9,12 @@ declare(strict_types=1);
 
 namespace App\Repository\Admin\Content\Tag;
 
+use App\Dto\Api\Admin\AdminCollectionQuery;
 use App\Entity\Admin\Content\Tag\Tag;
 use App\Entity\Admin\Content\Tag\TagTranslation;
-use App\Dto\Api\Admin\AdminCollectionQuery;
 use App\Repository\Trait\AdminCollectionQueryTrait;
 use App\Repository\Trait\LikeQueryTrait;
+use App\Repository\Trait\TranslatedFieldQueryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
@@ -30,6 +31,7 @@ class TagRepository extends ServiceEntityRepository
 {
     use AdminCollectionQueryTrait;
     use LikeQueryTrait;
+    use TranslatedFieldQueryTrait;
 
     public function __construct(ManagerRegistry $registry)
     {
@@ -67,20 +69,9 @@ class TagRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('tag')
             ->addSelect('author.id AS authorId', 'author.login AS authorLogin', 'SIZE(tag.pages) AS pageCount')
-            ->leftJoin('tag.user', 'author')
-            ->leftJoin('tag.tagTranslations', 'translation', 'WITH', 'translation.locale = :locale')
-            ->setParameter('locale', $locale);
+            ->leftJoin('tag.user', 'author');
 
-        $label = 'translation.label';
-        if ($locale !== $defaultLocale) {
-            $label = 'COALESCE(translation.label, default_translation.label)';
-            $qb->leftJoin(
-                'tag.tagTranslations',
-                'default_translation',
-                'WITH',
-                'default_translation.locale = :default_locale',
-            )->setParameter('default_locale', $defaultLocale);
-        }
+        $label = $this->joinTranslatedField($qb, 'tag.tagTranslations', 'label', $locale, $defaultLocale);
         $qb->addSelect($label . ' AS label');
 
         return $this->paginateAdminCollection(
