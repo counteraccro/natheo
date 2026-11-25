@@ -274,6 +274,23 @@ describe('createFaqTree', () => {
       expect(tree.line.value!.resource.data.value!.translations[0].title).toBe('Q10');
     });
 
+    it('prend les textes relus après un conflit comme référence de la ligne', async () => {
+      const elsewhere = [{ locale: 'fr', title: 'Changée ailleurs', answer: 'R' }];
+      const getResource = vi
+        .fn()
+        .mockResolvedValueOnce(read(1, '"v1"'))
+        .mockResolvedValueOnce(read(1, '"v2"', elsewhere))
+        .mockResolvedValueOnce(read(2, '"v3"', elsewhere));
+      const { tree } = treeWith({ getResource });
+      const [first] = tree.categories.value;
+      await tree.openQuestion(first, first.questions[0]);
+      await tree.reloadLine();
+
+      await tree.moveQuestion(first.questions[1], first, 1);
+
+      expect(tree.line.value!.resource.etag.value).toBe('"v3"');
+    });
+
     it('active la ligne avec sa version et reprend le statut sans la marquer modifiée', async () => {
       const getResource = vi
         .fn()

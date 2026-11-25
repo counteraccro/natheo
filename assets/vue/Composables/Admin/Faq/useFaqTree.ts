@@ -68,6 +68,8 @@ export interface FaqTree {
   /** Ouvre une catégorie, une nouvelle sans argument ; false si l'utilisateur garde la ligne modifiée */
   openCategory(category?: AdminFaqTreeCategory): Promise<boolean>;
   openQuestion(category: AdminFaqTreeCategory, question?: AdminFaqTreeQuestion): Promise<boolean>;
+  /** Relit la ligne ouverte, après un conflit */
+  reloadLine(): Promise<void>;
   /** Ferme la ligne, après confirmation si elle est modifiée */
   cancelLine(): Promise<void>;
   saveLine(): Promise<void>;
@@ -324,6 +326,13 @@ export function createFaqTree(deps: FaqTreeDeps, initial: AdminFaqTreeCategory[]
       return true;
     },
 
+    async reloadLine(): Promise<void> {
+      const current = line.value;
+      if (!current) return;
+      await current.resource.load();
+      if (line.value === current) lineTexts = textsOf(current.resource.data.value);
+    },
+
     async cancelLine(): Promise<void> {
       await releaseLine();
     },
@@ -331,7 +340,7 @@ export function createFaqTree(deps: FaqTreeDeps, initial: AdminFaqTreeCategory[]
     async saveLine(): Promise<void> {
       const current = line.value;
       const data = current?.resource.data.value;
-      if (!current || !data) return;
+      if (!current || !data || current.resource.conflict.value) return;
       const created = current.id === null;
       const ordered = <R extends { locale: string }>(rows: R[]): R[] =>
         locales.map((locale) => rows.find((row) => row.locale === locale)).filter((row): row is R => !!row);
