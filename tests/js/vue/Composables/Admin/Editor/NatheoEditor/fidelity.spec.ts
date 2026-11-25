@@ -103,8 +103,6 @@ const corpus: Record<string, string> = {
   ...Object.fromEntries(Object.entries(edgeCases).map(([name, text]) => [`cas limite : ${name}`, text])),
 };
 
-/** Markdown réécrit par les modules du cœur */
-
 /** Délai des tests qui relisent tout le corpus, plusieurs secondes sur la CI */
 const LONG_TEST = 60_000;
 
