@@ -208,4 +208,88 @@ describe('createFaqTree', () => {
     expect(client.delete).toHaveBeenCalledWith('/api/v2/admin/faq_categories/1');
     expect(tree.line.value).toBeNull();
   });
+  describe('version de la ligne ouverte après une écriture de l’arbre', () => {
+    const texts = [{ locale: 'fr', title: 'Q10', answer: 'R' }];
+    const read = (position: number, etag: string, translations = texts, disabled = false) => ({
+      data: {
+        id: 10,
+        category: '/api/v2/admin/faq_categories/1',
+        position,
+        disabled,
+        translations: structuredClone(translations),
+      },
+      etag,
+    });
+
+    it('reprend la position et la version renumérotées par le serveur, sans marquer la ligne modifiée', async () => {
+      const getResource = vi.fn().mockResolvedValueOnce(read(1, '"v1"')).mockResolvedValueOnce(read(2, '"v2"'));
+      const { tree } = treeWith({ getResource });
+      const [first] = tree.categories.value;
+      await tree.openQuestion(first, first.questions[0]);
+
+      await tree.moveQuestion(first.questions[1], first, 1);
+
+      const resource = tree.line.value!.resource;
+      expect(resource.etag.value).toBe('"v2"');
+      expect(resource.data.value!.position).toBe(2);
+      expect(tree.lineDirty.value).toBe(false);
+    });
+
+    it('garde les modifications en cours et enregistre avec la nouvelle version', async () => {
+      const getResource = vi
+        .fn()
+        .mockResolvedValueOnce(read(1, '"v1"'))
+        .mockResolvedValueOnce(read(1, '"v2"', texts, true));
+      const patchResource = vi.fn().mockResolvedValue(read(1, '"v3"'));
+      const { tree } = treeWith({ getResource, patchResource });
+      const [first] = tree.categories.value;
+      await tree.openQuestion(first, first.questions[0]);
+      tree.line.value!.resource.data.value!.translations[0].title = 'Modifiée';
+
+      await tree.toggleCategory(first);
+
+      expect(tree.line.value!.resource.data.value!.disabled).toBe(true);
+      expect(tree.lineDirty.value).toBe(true);
+      await tree.saveLine();
+      expect(patchResource).toHaveBeenCalledWith(
+        '/admin/faq_questions/10',
+        { translations: [expect.objectContaining({ title: 'Modifiée' })] },
+        { ifMatch: '"v2"' }
+      );
+    });
+
+    it('garde l’ancienne version quand les textes ont changé ailleurs', async () => {
+      const elsewhere = [{ locale: 'fr', title: 'Changée ailleurs', answer: 'R' }];
+      const getResource = vi
+        .fn()
+        .mockResolvedValueOnce(read(1, '"v1"'))
+        .mockResolvedValueOnce(read(2, '"v2"', elsewhere));
+      const { tree } = treeWith({ getResource });
+      const [first] = tree.categories.value;
+      await tree.openQuestion(first, first.questions[0]);
+
+      await tree.moveQuestion(first.questions[1], first, 1);
+
+      expect(tree.line.value!.resource.etag.value).toBe('"v1"');
+      expect(tree.line.value!.resource.data.value!.translations[0].title).toBe('Q10');
+    });
+
+    it('active la ligne avec sa version et reprend le statut sans la marquer modifiée', async () => {
+      const getResource = vi
+        .fn()
+        .mockResolvedValueOnce(read(1, '"v1"', texts, true))
+        .mockResolvedValueOnce(read(1, '"v2"'));
+      const patchResource = vi.fn().mockResolvedValue(read(1, '"v2"'));
+      const { tree } = treeWith({ getResource, patchResource });
+      const [first] = tree.categories.value;
+      await tree.openQuestion(first, first.questions[0]);
+
+      await tree.enableLine();
+
+      expect(patchResource).toHaveBeenCalledWith('/admin/faq_questions/10', { disabled: false }, { ifMatch: '"v1"' });
+      expect(tree.line.value!.resource.data.value!.disabled).toBe(false);
+      expect(tree.line.value!.resource.etag.value).toBe('"v2"');
+      expect(tree.lineDirty.value).toBe(false);
+    });
+  });
 });

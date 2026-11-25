@@ -88,6 +88,10 @@ export function createFaqTree(deps: FaqTreeDeps, initial: AdminFaqTreeCategory[]
   const busy = ref(false);
   const savedAt = ref<Date | null>(null);
   const line = shallowRef<FaqTreeLine | null>(null);
+  // Textes de la ligne ouverte tels que lus, pour distinguer une écriture de l'arbre d'une modification d'ailleurs
+  let lineTexts: string | null = null;
+  const textsOf = (data: { translations?: unknown } | null | undefined): string =>
+    JSON.stringify(data?.translations ?? null);
 
   const categoryOf = (questionId: number): AdminFaqTreeCategory | undefined =>
     categories.value.find((category) => category.questions.some((question) => question.id === questionId));
@@ -97,12 +101,33 @@ export function createFaqTree(deps: FaqTreeDeps, initial: AdminFaqTreeCategory[]
     categories.value = faq.categories ?? [];
   };
 
-  /** Écriture puis relecture de l'arbre, notification et annonce à la liste */
+  /**
+   * Reprend la version de la ligne ouverte après une écriture de l'arbre, qui peut changer sa position, son statut
+   * ou sa catégorie ; des textes modifiés ailleurs gardent l'ancienne version, et le conflit à l'enregistrement
+   */
+  const refreshLine = async (): Promise<void> => {
+    const current = line.value;
+    const data = current?.resource.data.value;
+    if (!current || !data || current.id === null || current.resource.conflict.value) return;
+    const collection = current.type === 'category' ? CATEGORY_RESOURCE : QUESTION_RESOURCE;
+    const fresh = await api.getResource<AdminFaqCategory | AdminFaqQuestion>(`${collection}/${current.id}`);
+    if (line.value !== current || textsOf(fresh.data) !== lineTexts) return;
+    const wasDirty = leaveGuard.isDirty(FAQ_LINE_LEAVE_KEY);
+    data.position = fresh.data.position;
+    data.disabled = fresh.data.disabled;
+    if (current.type === 'question') {
+      (data as AdminFaqQuestion).category = (fresh.data as AdminFaqQuestion).category;
+    }
+    current.resource.etag.value = fresh.etag;
+    if (!wasDirty) leaveGuard.commit(FAQ_LINE_LEAVE_KEY);
+  };
+
+  /** Écriture puis relecture de l'arbre et de la ligne ouverte, notification et annonce à la liste */
   const run = async (write: () => Promise<unknown>, message: () => string): Promise<boolean> => {
     busy.value = true;
     try {
       await write();
-      await reload();
+      await Promise.all([reload(), refreshLine().catch(() => undefined)]);
       savedAt.value = new Date();
       notifyResourceChange(FAQ_RESOURCE, { ids: [faqId], source });
       notify('success', message());
@@ -120,6 +145,7 @@ export function createFaqTree(deps: FaqTreeDeps, initial: AdminFaqTreeCategory[]
   const closeLine = (): void => {
     line.value?.resource.dispose();
     line.value = null;
+    lineTexts = null;
   };
 
   const lineDirty = computed(() => line.value !== null && leaveGuard.isDirty(FAQ_LINE_LEAVE_KEY));
@@ -278,6 +304,7 @@ export function createFaqTree(deps: FaqTreeDeps, initial: AdminFaqTreeCategory[]
       });
       line.value = { type: 'category', id: category?.id ?? null, resource, copying: ref(category === undefined) };
       await resource.load();
+      lineTexts = textsOf(resource.data.value);
       return true;
     },
 
@@ -293,6 +320,7 @@ export function createFaqTree(deps: FaqTreeDeps, initial: AdminFaqTreeCategory[]
       });
       line.value = { type: 'question', id: question?.id ?? null, categoryId: category.id, resource };
       await resource.load();
+      lineTexts = textsOf(resource.data.value);
       return true;
     },
 
@@ -330,19 +358,14 @@ export function createFaqTree(deps: FaqTreeDeps, initial: AdminFaqTreeCategory[]
 
     async enableLine(): Promise<void> {
       const current = line.value;
-      const data = current?.resource.data.value;
-      if (!current || !data || current.resource.id.value === null) return;
+      if (!current || current.resource.id.value === null) return;
       const category = current.type === 'question' ? categories.value.find((c) => c.id === current.categoryId) : null;
-      const ok = await run(
+      // Statut repris par refreshLine(), hors des modifications en cours de la ligne
+      await run(
         async () => {
           if (category?.disabled) await api.patch(category['@id'], { disabled: false });
           const path = `${current.type === 'category' ? CATEGORY_RESOURCE : QUESTION_RESOURCE}/${current.resource.id.value}`;
-          const saved = await api.patchResource<{ disabled: boolean; position?: number }>(
-            path,
-            { disabled: false },
-            { ifMatch: current.resource.etag.value }
-          );
-          current.resource.etag.value = saved.etag;
+          await api.patchResource(path, { disabled: false }, { ifMatch: current.resource.etag.value });
         },
         () =>
           current.type === 'category'
@@ -352,12 +375,6 @@ export function createFaqTree(deps: FaqTreeDeps, initial: AdminFaqTreeCategory[]
               })
             : t('faq.notify.question_enabled')
       );
-      if (ok) {
-        // Le statut est enregistré : il ne compte pas dans les modifications en cours de la ligne
-        const wasDirty = leaveGuard.isDirty(FAQ_LINE_LEAVE_KEY);
-        data.disabled = false;
-        if (!wasDirty) leaveGuard.commit(FAQ_LINE_LEAVE_KEY);
-      }
     },
 
     dispose(): void {
