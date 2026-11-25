@@ -17,6 +17,7 @@ import EditorTableBar from '@admin/Editors/NatheoEditor/Parts/EditorTableBar.vue
 import EditorSurface from '@admin/Editors/NatheoEditor/Parts/EditorSurface.vue';
 import EditorFooter from '@admin/Editors/NatheoEditor/Parts/EditorFooter.vue';
 import { translationKey as t } from '@/vue/Composables/Admin/Screen/defineScreen';
+import { editorFrameClasses } from '@/vue/Composables/Admin/Editor/NatheoEditor/editorClasses';
 import { useRovingToolbar } from '@/vue/Composables/Admin/Editor/NatheoEditor/useRovingToolbar';
 import type {
   NatheoEditorCommand,
@@ -200,12 +201,7 @@ watch(
 <template>
   <div
     ref="root"
-    :class="[
-      view.editable.value
-        ? 'border-line-strong bg-bg focus-within:border-primary focus-within:shadow-[0_0_0_1px_var(--primary)]'
-        : 'border-dashed border-line-strong bg-surface',
-      view.props.invalid && 'border-danger! focus-within:shadow-[0_0_0_1px_var(--danger)]!',
-    ]"
+    :class="editorFrameClasses(view, 'border-line-strong')"
     class="natheo-editor-atelier relative rounded-[10px] border"
     @focusin="focused = true"
     @focusout="onFocusout"

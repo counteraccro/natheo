@@ -11,6 +11,7 @@ import EditorMenu from '@admin/Editors/NatheoEditor/Parts/EditorMenu.vue';
 import EditorTableBar from '@admin/Editors/NatheoEditor/Parts/EditorTableBar.vue';
 import EditorSurface from '@admin/Editors/NatheoEditor/Parts/EditorSurface.vue';
 import EditorFooter from '@admin/Editors/NatheoEditor/Parts/EditorFooter.vue';
+import { editorFrameClasses } from '@/vue/Composables/Admin/Editor/NatheoEditor/editorClasses';
 import { useRovingToolbar } from '@/vue/Composables/Admin/Editor/NatheoEditor/useRovingToolbar';
 import type {
   NatheoEditorCommand,
@@ -38,15 +39,7 @@ const heading = computed(
 </script>
 
 <template>
-  <div
-    :class="[
-      view.editable.value
-        ? 'border-field bg-bg focus-within:border-primary focus-within:shadow-[0_0_0_1px_var(--primary)]'
-        : 'border-dashed border-line-strong bg-surface',
-      view.props.invalid && 'border-danger! focus-within:shadow-[0_0_0_1px_var(--danger)]!',
-    ]"
-    class="relative rounded-[10px] border"
-  >
+  <div :class="editorFrameClasses(view, 'border-field')" class="relative rounded-[10px] border">
     <div v-if="view.editable.value" class="sticky top-0 z-[2] rounded-t-[10px] bg-bg">
       <div
         ref="toolbar"

@@ -5,6 +5,7 @@
  * Pied de Natheo-Editor : bascules du rendu du site et du mode Markdown, nombre de mots
  */
 import { UiIcon } from '@ui';
+import { FOOTER_TOGGLE_CLASSES } from '@/vue/Composables/Admin/Editor/NatheoEditor/editorClasses';
 import type { NatheoEditorView } from '@/ts/Admin/Editor/NatheoEditor/NatheoEditor.type';
 
 defineProps<{ view: NatheoEditorView }>();
@@ -16,7 +17,7 @@ defineProps<{ view: NatheoEditorView }>();
       v-if="view.siteTheme && !view.source.value"
       type="button"
       :aria-pressed="view.siteRender.value"
-      class="inline-flex h-7 cursor-pointer items-center gap-1.5 rounded-[7px] border-0 bg-transparent px-2.5 text-[12.5px] font-semibold text-fg-muted hover:bg-surface hover:text-fg aria-pressed:bg-primary-soft aria-pressed:text-on-primary-soft"
+      :class="FOOTER_TOGGLE_CLASSES"
       @click="view.toggleSiteRender()"
     >
       <UiIcon name="palette" class="size-4" />
@@ -26,7 +27,7 @@ defineProps<{ view: NatheoEditorView }>();
       v-if="view.editable.value"
       type="button"
       :aria-pressed="view.source.value"
-      class="inline-flex h-7 cursor-pointer items-center gap-1.5 rounded-[7px] border-0 bg-transparent px-2.5 text-[12.5px] font-semibold text-fg-muted hover:bg-surface hover:text-fg aria-pressed:bg-primary-soft aria-pressed:text-on-primary-soft"
+      :class="FOOTER_TOGGLE_CLASSES"
       @click="view.toggleSource()"
     >
       <UiIcon name="code" class="size-4" />

@@ -15,5 +15,6 @@
 @source '../overwrite/vue/Components/Admin';
 @source '../vue/Components/Global/Ui';
 @source '../vue/Composables/Admin/Ui';
+@source '../vue/Composables/Admin/Editor';
 
 @custom-variant dark (&:where(.dark, .dark *));
