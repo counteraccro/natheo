@@ -32,10 +32,8 @@ class FaqFactory
      * @param array $locales langues des traductions créées
      * @param TranslatorInterface $translator textes par défaut des catégories et questions
      */
-    public function __construct(
-        array $locales,
-        private readonly TranslatorInterface $translator,
-    ) {
+    public function __construct(array $locales, private readonly TranslatorInterface $translator)
+    {
         $this->locales = $locales;
     }
 
@@ -103,7 +101,9 @@ class FaqFactory
         foreach ($this->locales as $locale) {
             $faqCategoryTranslation = new FaqCategoryTranslation();
             $faqCategoryTranslation->setFaqCategory($faqCategory);
-            $faqCategoryTranslation->setTitle($this->defaultText('faq.default.category_title', $locale));
+            $faqCategoryTranslation->setTitle(
+                $this->translator->trans('faq.default.category_title', domain: 'faq', locale: $locale),
+            );
             $faqCategoryTranslation->setLocale($locale);
             $faqCategory->addFaqCategoryTranslation($faqCategoryTranslation);
         }
@@ -136,22 +136,15 @@ class FaqFactory
         foreach ($this->locales as $locale) {
             $faqQuestionTranslation = new FaqQuestionTranslation();
             $faqQuestionTranslation->setLocale($locale);
-            $faqQuestionTranslation->setTitle($this->defaultText('faq.default.question_title', $locale));
-            $faqQuestionTranslation->setAnswer($this->defaultText('faq.default.question_answer', $locale));
+            $faqQuestionTranslation->setTitle(
+                $this->translator->trans('faq.default.question_title', domain: 'faq', locale: $locale),
+            );
+            $faqQuestionTranslation->setAnswer(
+                $this->translator->trans('faq.default.question_answer', domain: 'faq', locale: $locale),
+            );
             $faqQuestionTranslation->setFaqQuestion($faqQuestion);
             $faqQuestion->addFaqQuestionTranslation($faqQuestionTranslation);
         }
         return $faqQuestion;
-    }
-
-    /**
-     * Texte par défaut traduit dans $locale
-     * @param string $key
-     * @param string $locale
-     * @return string
-     */
-    private function defaultText(string $key, string $locale): string
-    {
-        return $this->translator->trans($key, domain: 'faq', locale: $locale);
     }
 }

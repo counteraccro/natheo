@@ -49,7 +49,7 @@ trait FaqFixturesTrait
     }
 
     /**
-     * Création d'une FaqTranslate
+     * Création d'une FaqTranslation
      * @param Faq|null $faq
      * @param array $customData
      * @param bool $persist

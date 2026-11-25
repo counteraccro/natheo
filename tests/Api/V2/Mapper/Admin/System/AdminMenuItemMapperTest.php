@@ -23,7 +23,7 @@ class AdminMenuItemMapperTest extends TestCase
      */
     public function testMapLegacyRoute(): void
     {
-        $item = new AdminMenuItem('tag_index', new TranslatableMessage('tag'), 'M0 0', legacyRoute: 'admin_faq_index');
+        $item = new AdminMenuItem('tag_index', new TranslatableMessage('tag'), 'M0 0', legacyRoute: 'admin_menu_index');
         $resource = (new AdminMenuItemMapper())->map(new AdminMenuNode($item, 'tag', 'Tags', '/admin/fr/tag/'));
 
         $this->assertSame('/admin/fr/tag/', $resource->legacyUrl);
