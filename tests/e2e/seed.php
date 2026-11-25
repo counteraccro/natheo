@@ -7,6 +7,10 @@ declare(strict_types=1);
  * Données des tests de bout en bout : options du site, comptes de accounts.json, tags et FAQ des parcours
  */
 
+use App\Entity\Admin\Content\Faq\Faq;
+use App\Entity\Admin\Content\Tag\Tag;
+use App\Entity\Admin\System\User;
+use App\Enum\Admin\Content\Page\PageContentType;
 use App\Kernel;
 use App\Tests\Helper\Fixtures\FixturesTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -65,7 +69,7 @@ $seeder = new class ($kernel->getContainer()->get('test.service_container')) {
         ]);
         $this->createPageContent(
             $this->createPage($users['contributor'], ['disabled' => false]),
-            ['type' => \App\Enum\Admin\Content\Page\PageContentType::FAQ->value, 'typeId' => $usedFaq->getId()],
+            ['type' => PageContentType::FAQ->value, 'typeId' => $usedFaq->getId()],
         );
         $this->createFaqWithTree($users['admin'], 'FAQ Interne', ['Équipe' => ['Qui contacter ?']]);
     }
@@ -73,16 +77,16 @@ $seeder = new class ($kernel->getContainer()->get('test.service_container')) {
     /**
      * FAQ active, ses catégories et leurs questions, textes français repris en anglais et en espagnol avec le suffixe
      * de la langue
-     * @param \App\Entity\Admin\System\User $user
+     * @param User $user
      * @param string $title
      * @param array<string, string[]> $tree titre de catégorie => titres de ses questions
-     * @return \App\Entity\Admin\Content\Faq\Faq
+     * @return Faq
      */
     private function createFaqWithTree(
-        \App\Entity\Admin\System\User $user,
+        User $user,
         string $title,
         array $tree,
-    ): \App\Entity\Admin\Content\Faq\Faq {
+    ): Faq {
         $text = fn(string $value, string $locale): string => $locale === 'fr' ? $value : $value . ' ' . $locale;
         $faq = $this->createFaq($user, ['disabled' => false]);
         foreach ($this->locales as $locale) {
@@ -112,18 +116,18 @@ $seeder = new class ($kernel->getContainer()->get('test.service_container')) {
     }
 
     /**
-     * @param \App\Entity\Admin\System\User $user
+     * @param User $user
      * @param string $color
      * @param string[] $labels libellés fr, en, es
      * @param bool $disabled
-     * @return \App\Entity\Admin\Content\Tag\Tag
+     * @return Tag
      */
     private function createTagWithLabels(
-        \App\Entity\Admin\System\User $user,
+        User $user,
         string $color,
         array $labels,
         bool $disabled = false,
-    ): \App\Entity\Admin\Content\Tag\Tag {
+    ): Tag {
         $tag = $this->createTag($user, ['color' => $color, 'disabled' => $disabled]);
         foreach ($this->locales as $i => $locale) {
             $this->createTagTranslation($tag, ['locale' => $locale, 'label' => $labels[$i]]);
