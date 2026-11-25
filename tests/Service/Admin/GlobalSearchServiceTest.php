@@ -56,6 +56,7 @@ class GlobalSearchServiceTest extends AppWebTestCase
         $this->assertCount(1, $result['elements']);
         $this->assertArrayHasKey('id', $result['elements'][0]);
         $this->assertEquals($faq->getId(), $result['elements'][0]['id']);
+        $this->assertSame('/admin/fr/faqs/' . $faq->getId(), $result['elements'][0]['urls']['edit']);
 
         $menu = $this->createMenuAllDataDefault();
         $this->createMenuAllDataDefault();
