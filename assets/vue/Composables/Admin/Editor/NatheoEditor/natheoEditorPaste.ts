@@ -83,16 +83,27 @@ function cleanAttributes(element: Element): void {
   }
 }
 
+/** Attribut posé par ProseMirror sur la racine d'une copie : profondeurs ouvertes puis contexte */
+const PM_SLICE = /^\d+ \d+(?: |$)/;
+
+/**
+ * Copie depuis un éditeur ProseMirror : un élément racine porte data-pm-slice
+ * @param body
+ */
+function isEditorCopy(body: HTMLElement): boolean {
+  return Array.from(body.children).some((child) => PM_SLICE.test(child.getAttribute('data-pm-slice') ?? ''));
+}
+
 /**
  * HTML collé réduit aux éléments et attributs que les modules savent lire ; une copie depuis un éditeur
  * (data-pm-slice) est gardée telle quelle
  * @param html
  */
 export function cleanPastedHtml(html: string): string {
-  if (html.includes('data-pm-slice')) {
+  const body = new DOMParser().parseFromString(html, 'text/html').body;
+  if (isEditorCopy(body)) {
     return html;
   }
-  const body = new DOMParser().parseFromString(html, 'text/html').body;
 
   const walker = body.ownerDocument.createTreeWalker(body, NodeFilter.SHOW_COMMENT);
   const comments: Node[] = [];

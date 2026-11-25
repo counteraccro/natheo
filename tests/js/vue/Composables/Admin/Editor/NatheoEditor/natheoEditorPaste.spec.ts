@@ -31,5 +31,13 @@ describe('natheoEditorPaste', () => {
   it('garde telle quelle une copie depuis un éditeur', () => {
     const html = '<p data-pm-slice="1 1 []" style="x">a</p>';
     expect(cleanPastedHtml(html)).toBe(html);
+    const fromBrowser = '<meta charset="utf-8"><p data-pm-slice="1 1 []" style="x">a</p>';
+    expect(cleanPastedHtml(fromBrowser)).toBe(fromBrowser);
+  });
+
+  it('nettoie une page qui contient data-pm-slice ailleurs que sur un élément racine', () => {
+    expect(cleanPastedHtml('<p style="x">data-pm-slice</p>')).toBe('<p>data-pm-slice</p>');
+    expect(cleanPastedHtml('<div><p data-pm-slice="1 1 []" style="x">a</p></div>')).not.toContain('style');
+    expect(cleanPastedHtml('<p data-pm-slice="x" style="x">a</p>')).toBe('<p>a</p>');
   });
 });
