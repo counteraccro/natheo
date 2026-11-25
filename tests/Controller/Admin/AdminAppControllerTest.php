@@ -62,6 +62,7 @@ class AdminAppControllerTest extends AppWebTestCase
 
         $csp = (string) $response->headers->get('Content-Security-Policy');
         $this->assertMatchesRegularExpression("/script-src 'self' 'nonce-([A-Za-z0-9+\\/=]+)'/", $csp);
+        $this->assertStringContainsString("img-src 'self' data: https:", $csp);
         $this->assertStringContainsString("object-src 'none'", $csp);
         $this->assertStringContainsString("frame-ancestors 'self'", $csp);
         preg_match("/'nonce-([^']+)'/", $csp, $nonce);
