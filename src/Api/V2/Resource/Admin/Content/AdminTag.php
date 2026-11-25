@@ -36,6 +36,7 @@ use App\Api\V2\Metadata\OperationSecurityMetadataFactory;
 use App\Api\V2\Output\Admin\Global\AdminAuthor;
 use App\Api\V2\Output\Admin\Global\AdminLabelTranslation;
 use App\Api\V2\Output\Admin\Global\Permissions;
+use App\Api\V2\Resource\Admin\Trait\AdminTranslationsTrait;
 use App\Api\V2\State\Processor\Admin\Content\CreateAdminTagProcessor;
 use App\Api\V2\State\Processor\Admin\Content\DeleteAdminTagProcessor;
 use App\Api\V2\State\Processor\Admin\Content\UpdateAdminTagProcessor;
@@ -151,6 +152,8 @@ use Symfony\Component\Serializer\Attribute\Groups;
 ]
 final class AdminTag implements VersionedResourceInterface
 {
+    use AdminTranslationsTrait;
+
     #[ApiProperty(required: true, identifier: true)]
     #[Groups(['admin_tag:read', 'admin_tag:list'])]
     public int $id = 0;
@@ -207,22 +210,9 @@ final class AdminTag implements VersionedResourceInterface
      */
     public function getVersion(): ?string
     {
-        $labels = array_map(fn(AdminLabelTranslation $t) => [$t->locale, $t->label], $this->translations);
-        return json_encode([$this->updatedAt, $this->color, $this->disabled, $labels], JSON_THROW_ON_ERROR);
-    }
-
-    /**
-     * Libellé d'une langue, null si absent
-     * @param string $locale
-     * @return string|null
-     */
-    public function getLabelByLocale(string $locale): ?string
-    {
-        foreach ($this->translations as $translation) {
-            if ($translation->locale === $locale) {
-                return $translation->label;
-            }
-        }
-        return null;
+        return json_encode(
+            [$this->updatedAt, $this->color, $this->disabled, $this->getTranslationsFingerprint('label')],
+            JSON_THROW_ON_ERROR,
+        );
     }
 }

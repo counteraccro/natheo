@@ -28,6 +28,7 @@ use App\Api\V2\Metadata\LocaleParameter;
 use App\Api\V2\Metadata\OperationSecurityMetadataFactory;
 use App\Api\V2\Output\Admin\Content\AdminFaqQuestionTranslation;
 use App\Api\V2\Output\Admin\Global\Permissions;
+use App\Api\V2\Resource\Admin\Trait\AdminTranslationsTrait;
 use App\Api\V2\State\Processor\Admin\Content\CreateAdminFaqQuestionProcessor;
 use App\Api\V2\State\Processor\Admin\Content\DeleteAdminFaqQuestionProcessor;
 use App\Api\V2\State\Processor\Admin\Content\UpdateAdminFaqQuestionProcessor;
@@ -104,6 +105,8 @@ use Symfony\Component\Serializer\Attribute\Groups;
 ]
 final class AdminFaqQuestion implements VersionedResourceInterface
 {
+    use AdminTranslationsTrait;
+
     #[ApiProperty(required: true, identifier: true)]
     #[Groups(['admin_faq_question:read', 'admin_faq:read'])]
     public int $id = 0;
@@ -161,25 +164,14 @@ final class AdminFaqQuestion implements VersionedResourceInterface
      */
     public function getVersion(): ?string
     {
-        $texts = array_map(
-            fn(AdminFaqQuestionTranslation $t) => [$t->locale, $t->title, $t->answer],
-            $this->translations,
+        return json_encode(
+            [
+                $this->category?->id,
+                $this->position,
+                $this->disabled,
+                $this->getTranslationsFingerprint('title', 'answer'),
+            ],
+            JSON_THROW_ON_ERROR,
         );
-        return json_encode([$this->category?->id, $this->position, $this->disabled, $texts], JSON_THROW_ON_ERROR);
-    }
-
-    /**
-     * Titre d'une langue, null si absent
-     * @param string $locale
-     * @return string|null
-     */
-    public function getTitleByLocale(string $locale): ?string
-    {
-        foreach ($this->translations as $translation) {
-            if ($translation->locale === $locale) {
-                return $translation->title;
-            }
-        }
-        return null;
     }
 }

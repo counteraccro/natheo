@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace App\Api\V2\Mapper\Admin\Content;
 
+use App\Api\V2\Mapper\Admin\AdminTranslationMapper;
 use App\Api\V2\Output\Admin\Global\AdminAuthor;
 use App\Api\V2\Output\Admin\Global\AdminLabelTranslation;
 use App\Api\V2\Output\Admin\Global\Permissions;
@@ -37,12 +38,11 @@ final readonly class AdminTagMapper
         $user = $tag->getUser();
         $author = $user === null ? null : new AdminAuthor((int) $user->getId(), (string) $user->getLogin());
         $resource = $this->mapSummary($tag, $label, $pageCount, $author, $permissions);
-        foreach ($this->locales as $locale) {
-            $translation = $tag->getTagTranslations()->findFirst(fn($key, $t) => $t->getLocale() === $locale);
-            if ($translation !== null) {
-                $resource->translations[] = new AdminLabelTranslation($locale, (string) $translation->getLabel());
-            }
-        }
+        $resource->translations = AdminTranslationMapper::inSiteOrder(
+            $this->locales,
+            $tag->getTagTranslations(),
+            fn($translation, string $locale) => new AdminLabelTranslation($locale, (string) $translation->getLabel()),
+        );
         return $resource;
     }
 

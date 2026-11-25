@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace App\Api\V2\Mapper\Admin\Content;
 
+use App\Api\V2\Mapper\Admin\AdminTranslationMapper;
 use App\Api\V2\Output\Admin\Global\AdminTitleTranslation;
 use App\Api\V2\Output\Admin\Global\Permissions;
 use App\Api\V2\Resource\Admin\Content\AdminFaq;
@@ -71,14 +72,11 @@ final readonly class AdminFaqCategoryMapper
         $resource->title = (string) $category
             ->getFaqCategoryTranslationByLocale($this->locale, $this->defaultLocale)
             ?->getTitle();
-        foreach ($this->locales as $locale) {
-            $translation = $category
-                ->getFaqCategoryTranslations()
-                ->findFirst(fn($key, $t) => $t->getLocale() === $locale);
-            if ($translation !== null) {
-                $resource->translations[] = new AdminTitleTranslation($locale, (string) $translation->getTitle());
-            }
-        }
+        $resource->translations = AdminTranslationMapper::inSiteOrder(
+            $this->locales,
+            $category->getFaqCategoryTranslations(),
+            fn($translation, string $locale) => new AdminTitleTranslation($locale, (string) $translation->getTitle()),
+        );
         $resource->questions = $questions;
         return $resource;
     }

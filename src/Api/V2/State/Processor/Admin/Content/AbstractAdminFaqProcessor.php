@@ -131,6 +131,6 @@ abstract class AbstractAdminFaqProcessor extends AbstractAdminProcessor
         ) {
             return null;
         }
-        return $resource->getTitleByLocale($this->faqService->getDefaultLocale()) ?? $resource->title;
+        return $resource->getTranslationValue($this->faqService->getDefaultLocale(), 'title') ?? $resource->title;
     }
 }

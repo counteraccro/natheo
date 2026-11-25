@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace App\Api\V2\Mapper\Admin\Content;
 
+use App\Api\V2\Mapper\Admin\AdminTranslationMapper;
 use App\Api\V2\Output\Admin\Global\AdminAuthor;
 use App\Api\V2\Output\Admin\Global\AdminTitleTranslation;
 use App\Api\V2\Output\Admin\Global\Permissions;
@@ -52,12 +53,11 @@ final readonly class AdminFaqMapper
             $user === null ? null : new AdminAuthor((int) $user->getId(), (string) $user->getLogin()),
             $permissions,
         );
-        foreach ($this->locales as $locale) {
-            $translation = $faq->getFaqTranslations()->findFirst(fn($key, $t) => $t->getLocale() === $locale);
-            if ($translation !== null) {
-                $resource->translations[] = new AdminTitleTranslation($locale, (string) $translation->getTitle());
-            }
-        }
+        $resource->translations = AdminTranslationMapper::inSiteOrder(
+            $this->locales,
+            $faq->getFaqTranslations(),
+            fn($translation, string $locale) => new AdminTitleTranslation($locale, (string) $translation->getTitle()),
+        );
 
         $questionMapper = new AdminFaqQuestionMapper($this->locales, $this->locale, $this->defaultLocale);
         $questionsByCategory = [];
