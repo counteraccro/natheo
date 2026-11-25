@@ -152,6 +152,14 @@ export function createFaqTree(deps: FaqTreeDeps, initial: AdminFaqTreeCategory[]
 
   const emptyTitles = () => locales.map((locale) => ({ locale, title: '' }));
 
+  /** Place item à position (à partir de 1) dans list, renumérotée comme le fera le serveur */
+  const placeAt = <T extends { id: number; position: number }>(list: T[], item: T, position: number): T[] => {
+    const others = list.filter((entry) => entry.id !== item.id);
+    others.splice(Math.max(0, Math.min(position - 1, others.length)), 0, item);
+    others.forEach((entry, index) => (entry.position = index + 1));
+    return others;
+  };
+
   const tree: FaqTree = {
     categories,
     questionCount: computed(() => categories.value.reduce((count, category) => count + category.questions.length, 0)),
@@ -167,6 +175,8 @@ export function createFaqTree(deps: FaqTreeDeps, initial: AdminFaqTreeCategory[]
 
     async moveCategory(category, position): Promise<void> {
       if (position === category.position) return;
+      // Ordre affiché tout de suite, l'arbre relu le confirme
+      categories.value = placeAt(categories.value, category, position);
       await run(
         () => api.patch(category['@id'], { position }),
         () => t('faq.notify.category_moved', { position })
@@ -177,6 +187,12 @@ export function createFaqTree(deps: FaqTreeDeps, initial: AdminFaqTreeCategory[]
       const from = categoryOf(question.id);
       const changesCategory = from !== undefined && from.id !== target.id;
       if (!changesCategory && position === question.position) return;
+      // Ordre affiché tout de suite, l'arbre relu le confirme
+      if (changesCategory) {
+        from.questions = from.questions.filter((entry) => entry.id !== question.id);
+        from.questions.forEach((entry, index) => (entry.position = index + 1));
+      }
+      target.questions = placeAt(target.questions, question, position);
       await run(
         () => api.patch(question['@id'], changesCategory ? { category: target['@id'], position } : { position }),
         () =>

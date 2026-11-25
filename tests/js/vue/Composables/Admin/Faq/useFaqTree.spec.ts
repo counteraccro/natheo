@@ -74,6 +74,34 @@ describe('createFaqTree', () => {
     stop();
   });
 
+  it('affiche le nouvel ordre avant la réponse de l’API', async () => {
+    let answer: (value: unknown) => void = () => undefined;
+    const { tree } = treeWith({ patch: vi.fn(() => new Promise((resolve) => (answer = resolve))) });
+    const [first] = tree.categories.value;
+
+    const moving = tree.moveQuestion(first.questions[1], first, 1);
+    expect(tree.categories.value[0].questions.map((q) => [q.id, q.position])).toEqual([
+      [11, 1],
+      [10, 2],
+    ]);
+    answer({});
+    await moving;
+
+    const toOther = tree.moveQuestion(tree.categories.value[0].questions[0], tree.categories.value[1], 1);
+    expect(tree.categories.value[0].questions.map((q) => [q.id, q.position])).toEqual([[11, 1]]);
+    expect(tree.categories.value[1].questions.map((q) => q.id)).toEqual([10]);
+    answer({});
+    await toOther;
+
+    const category = tree.moveCategory(tree.categories.value[1], 1);
+    expect(tree.categories.value.map((c) => [c.id, c.position])).toEqual([
+      [2, 1],
+      [1, 2],
+    ]);
+    answer({});
+    await category;
+  });
+
   it('n’envoie rien pour un déplacement sur place, seulement la position dans la même catégorie', async () => {
     const { tree, client } = treeWith({});
     const [first] = tree.categories.value;

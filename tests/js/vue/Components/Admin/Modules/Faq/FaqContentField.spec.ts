@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { defineComponent, h, ref } from 'vue';
 import { flushPromises, mount } from '@vue/test-utils';
+import Sortable from 'sortablejs';
 import FaqContentField from '@admin/Modules/Faq/FaqContentField.vue';
 import { ADMIN_CONTEXT, createAdminContext } from '@/vue/Composables/Admin/useAdminContext';
 import { loadAdminEditor } from '@/vue/Composables/Admin/Editor/loadAdminEditor';
@@ -114,6 +115,16 @@ describe('FaqContentField', () => {
     await flushPromises();
     expect(wrapper.get('[data-faq-line]').text()).toContain('faq.question.heading_new {"category":"Achat"}');
     expect(wrapper.text()).toContain('faq.line.create');
+    wrapper.unmount();
+  });
+
+  it('garde les listes de glisser-déposer d’un rendu à l’autre', async () => {
+    const { wrapper } = mountTree();
+    const list = wrapper.get('ol[data-faq-category="1"]').element as HTMLElement;
+    const sortable = Sortable.get(list);
+    expect(sortable).toBeDefined();
+    await wrapper.get('button[aria-controls="faq-category-1"]').trigger('click');
+    expect(Sortable.get(list)).toBe(sortable);
     wrapper.unmount();
   });
 

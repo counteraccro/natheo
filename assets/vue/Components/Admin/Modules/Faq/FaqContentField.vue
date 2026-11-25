@@ -61,14 +61,16 @@ const otherCategories = (category: AdminFaqTreeCategory) => categories.value.fil
 /** Poignées de glisser-déposer : une liste des catégories, une liste des questions par catégorie */
 const sortables = new Map<string, Sortable>();
 
+/** Nœud qui suivait la ligne déplacée, ancre Vue comprise */
+let dragNext: Node | null = null;
+
 /**
- * Remet la ligne déplacée à sa place : l'arbre relu après l'écriture la replace là où le serveur l'a mise
+ * Remet la ligne déplacée à sa place exacte : Vue la redessine ensuite dans le nouvel ordre de l'arbre
  * @param event
  */
 const revert = (event: Sortable.SortableEvent): void => {
-  const { item, from, oldIndex } = event;
-  item.remove();
-  from.insertBefore(item, from.children[oldIndex ?? 0] ?? null);
+  event.from.insertBefore(event.item, dragNext);
+  dragNext = null;
 };
 
 const bindList = (key: string, element: Element | ComponentPublicInstance | null, options: Sortable.Options): void => {
@@ -80,7 +82,14 @@ const bindList = (key: string, element: Element | ComponentPublicInstance | null
   if (list && !readOnly.value) {
     sortables.set(
       key,
-      Sortable.create(list, { handle: '[data-faq-handle]', draggable: '[data-faq-item]', animation: 150, ...options })
+      Sortable.create(list, {
+        handle: '[data-faq-handle]',
+        draggable: '[data-faq-item]',
+        animation: 150,
+        disabled: busy.value,
+        onStart: (event) => (dragNext = event.item.nextSibling),
+        ...options,
+      })
     );
   }
 };
@@ -96,21 +105,32 @@ const bindCategories = (element: Element | ComponentPublicInstance | null): void
     },
   });
 
-const bindQuestions = (category: AdminFaqTreeCategory, element: Element | ComponentPublicInstance | null): void =>
-  bindList(`questions-${category.id}`, element, {
-    group: 'faq-questions',
-    onEnd: (event) => {
-      revert(event);
-      const question = category.questions[event.oldDraggableIndex ?? -1];
-      const target = categories.value.find((c) => String(c.id) === (event.to as HTMLElement).dataset.faqCategory);
-      if (question && target && event.newDraggableIndex !== undefined) {
-        void tree.moveQuestion(question, target, event.newDraggableIndex + 1);
-      }
-    },
-  });
+/** Une fonction par catégorie : une fonction neuve à chaque rendu détruirait la liste, même pendant un glisser */
+const questionRefs = new Map<number, (element: Element | ComponentPublicInstance | null) => void>();
+const questionsRef = (category: AdminFaqTreeCategory) => {
+  let bind = questionRefs.get(category.id);
+  if (!bind) {
+    const id = category.id;
+    bind = (element) =>
+      bindList(`questions-${id}`, element, {
+        group: 'faq-questions',
+        onEnd: (event) => {
+          revert(event);
+          const source = categories.value.find((c) => c.id === id);
+          const question = source?.questions[event.oldDraggableIndex ?? -1];
+          const target = categories.value.find((c) => String(c.id) === (event.to as HTMLElement).dataset.faqCategory);
+          if (question && target && event.newDraggableIndex !== undefined) {
+            void tree.moveQuestion(question, target, event.newDraggableIndex + 1);
+          }
+        },
+      });
+    questionRefs.set(id, bind);
+  }
+  return bind;
+};
 
-watch(readOnly, () => {
-  sortables.forEach((sortable) => sortable.option('disabled', readOnly.value));
+watch([readOnly, busy], () => {
+  sortables.forEach((sortable) => sortable.option('disabled', readOnly.value || busy.value));
 });
 onBeforeUnmount(() => sortables.forEach((sortable) => sortable.destroy()));
 
@@ -243,7 +263,7 @@ const openQuestion = async (category: AdminFaqTreeCategory, question?: AdminFaqT
           :class="readOnly ? 'pl-3.5' : 'pl-[30px]'"
         >
           <ol
-            :ref="(element) => bindQuestions(category, element)"
+            :ref="questionsRef(category)"
             :data-faq-category="category.id"
             class="m-0 flex list-none flex-col border-t border-line p-0"
           >
