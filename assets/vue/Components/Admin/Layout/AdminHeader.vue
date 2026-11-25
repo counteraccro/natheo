@@ -13,6 +13,7 @@ import UiDropdownItem from '@admin/Ui/Overlay/UiDropdownItem.vue';
 import AdminAppearanceMenu from '@admin/Layout/AdminAppearanceMenu.vue';
 import { useUiLabels } from '@/vue/Composables/Admin/Ui/useUiLabels';
 import type { HeaderSection, HeaderShortcut, LayoutChoice } from '@/ts/Admin/Layout/AdminHeader.type';
+import { isMac } from '@/vue/Composables/Global/isMac';
 
 withDefaults(
   defineProps<{
@@ -43,11 +44,11 @@ defineSlots<{ 'user-menu'?: () => unknown; actions?: () => unknown }>();
 const labels = useUiLabels();
 const searchId = `ui-global-search-${useId()}`;
 const searchInput = ref<HTMLInputElement | null>(null);
-const isMac = /Mac|iPhone|iPad/.test(navigator.userAgent);
-const shortcut = isMac ? { label: '⌘ K', aria: 'Meta+K' } : { label: 'Ctrl K', aria: 'Control+K' };
+const mac = isMac();
+const shortcut = mac ? { label: '⌘ K', aria: 'Meta+K' } : { label: 'Ctrl K', aria: 'Control+K' };
 
 const focusSearch = (event: KeyboardEvent): void => {
-  if (!(isMac ? event.metaKey : event.ctrlKey) || event.key.toLowerCase() !== 'k') return;
+  if (!(mac ? event.metaKey : event.ctrlKey) || event.key.toLowerCase() !== 'k') return;
   // Champ masqué sur mobile : le raccourci garde alors son comportement par défaut
   const form = searchInput.value?.closest('form');
   if (!form || getComputedStyle(form).display === 'none') return;

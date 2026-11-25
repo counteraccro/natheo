@@ -11,6 +11,7 @@ import { Decoration, DecorationSet } from '@tiptap/pm/view';
 import type { Node as ProseMirrorNode } from '@tiptap/pm/model';
 import { useNatheoEditor } from '@/vue/Composables/Admin/Editor/NatheoEditor/useNatheoEditor';
 import { defineNatheoEditorModule } from '@/vue/Composables/Admin/Editor/NatheoEditor/defineNatheoEditorModule';
+import { isMac } from '@/vue/Composables/Global/isMac';
 import { loadSiteStylesheet } from '@/vue/Composables/Admin/Editor/NatheoEditor/siteRender';
 import type { AdminEditorProps } from '@/ts/Admin/Editor/AdminEditor.type';
 import type { AdminBootstrapSiteTheme } from '@/ts/Admin/App/AdminBootstrap.type';
@@ -26,13 +27,6 @@ import type {
 
 /** Mot-clé d'e-mail utilisé comme adresse d'un lien */
 const KEYWORD_HREF = /^\[\[[\w.-]+\]\]$/;
-
-/**
- * Système d'Apple : raccourcis écrits avec des symboles
- */
-export function isMac(): boolean {
-  return typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(navigator.userAgent);
-}
 
 /**
  * Raccourci lisible : Mod-Shift-z donne ⌘⇧Z sur Mac, Ctrl+Maj+Z ailleurs
