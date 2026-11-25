@@ -1,33 +1,35 @@
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Gestes de liste de Natheo-Atelier : liste de l'établi, actions dans le menu de la ligne, tri dans les options
  */
 import { expect } from '@playwright/test';
-import type { ThemeScreens } from './theme';
+import { TAG_LIST, type ListScreen, type ThemeScreens } from './theme';
 
-const list = (page: Parameters<ThemeScreens['openList']>[0]) => page.getByRole('list', { name: 'Gestion des tags' });
+const list = (page: Parameters<ThemeScreens['openList']>[0], screen: ListScreen) =>
+  page.getByRole('list', { name: screen.title });
 
 export const natheoAtelier: ThemeScreens = {
-  async openList(page) {
-    await page.goto('/admin/fr/tags');
-    await expect(page.getByRole('heading', { level: 1, name: 'Gestion des tags' })).toBeVisible();
-    await expect(list(page).getByRole('listitem').first()).toBeVisible();
+  async openList(page, screen = TAG_LIST) {
+    await page.goto(screen.path);
+    await expect(page.getByRole('heading', { level: 1, name: screen.title })).toBeVisible();
+    await expect(list(page, screen).getByRole('listitem').first()).toBeVisible();
   },
-  row: (page, label) =>
-    list(page)
+  row: (page, label, screen = TAG_LIST) =>
+    list(page, screen)
       .getByRole('listitem')
       .filter({ has: page.getByRole('link', { name: label, exact: true }) }),
-  rows: (page) => list(page).getByRole('listitem'),
-  async rowAction(page, label, action) {
+  rows: (page, screen = TAG_LIST) => list(page, screen).getByRole('listitem'),
+  async rowAction(page, label, action, screen = TAG_LIST) {
     // Liste défilante : le défilement fait avant le clic fermerait le menu qui vient de s'ouvrir
-    const more = natheoAtelier.row(page, label).getByRole('button', { name: "Plus d'actions" });
+    const more = natheoAtelier.row(page, label, screen).getByRole('button', { name: "Plus d'actions" });
     await more.scrollIntoViewIfNeeded();
     await expect(more).toBeInViewport();
     await more.click();
     await page.getByRole('menuitem', { name: action }).click();
   },
-  rowActions: (page, label) => natheoAtelier.row(page, label).getByRole('button', { name: "Plus d'actions" }),
+  rowActions: (page, label, screen = TAG_LIST) =>
+    natheoAtelier.row(page, label, screen).getByRole('button', { name: "Plus d'actions" }),
   async search(page, term) {
     await page.getByRole('searchbox', { name: 'Rechercher dans le tableau' }).fill(term);
   },
