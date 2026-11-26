@@ -1,6 +1,6 @@
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Collection d'administration affichée dans une grille : page, nombre par page, tri, recherche, filtres, sélection,
  * chargement et erreur ; une réponse arrivée après une requête plus récente est ignorée
  */
@@ -17,6 +17,9 @@ export interface AdminCollectionOptions {
   /** Option utilisateur OU_NB_ELEMENT par défaut */
   itemsPerPage?: number;
   sort?: DataTableSort | null;
+  /** Recherche en base et page de départ (état de la liste lu dans l'adresse) */
+  search?: string;
+  page?: number;
   /** Filtres de l'opération (status…), envoyés tels quels */
   filters?: Record<string, CollectionFilterValue>;
   /** Demande la requête SQL de la page (super administrateur) */
@@ -64,10 +67,10 @@ export function createAdminCollection<T>(
   resource: string,
   options: AdminCollectionOptions = {}
 ): AdminCollection<T> {
-  const page = ref(1);
+  const page = ref(options.page ?? 1);
   const itemsPerPage = ref(options.itemsPerPage ?? 20);
   const sort = ref<DataTableSort | null>(options.sort ?? null);
-  const search = ref('');
+  const search = ref(options.search ?? '');
   const filters = reactive<Record<string, CollectionFilterValue>>({ ...options.filters });
   const items = shallowRef<T[]>([]);
   const total = ref(0);

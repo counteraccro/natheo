@@ -99,6 +99,14 @@ describe('createAdminRouter', () => {
     expect(router.currentRoute.value.name).toBe('tag_index');
   });
 
+  it('ne demande pas de confirmer le départ quand seule l’adresse de la liste change', async () => {
+    const { router, confirmLeave } = routerWith({ leave: false });
+    await router.push('/tags');
+    await router.replace({ query: { search: 'été', page: '2' } });
+    expect(confirmLeave).not.toHaveBeenCalled();
+    expect(router.currentRoute.value.fullPath).toBe('/tags?search=%C3%A9t%C3%A9&page=2');
+  });
+
   it('envoie la racine vers le tableau de bord', async () => {
     const { router, assign } = routerWith();
     await router.push('/');

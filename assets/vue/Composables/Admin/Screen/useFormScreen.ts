@@ -1,12 +1,12 @@
 /**
  * @author Gourdon Aymeric
- * @version 1.4
+ * @version 1.5
  * État et actions d'un écran de formulaire décrit par des données : lecture, champs par langue (recopie de la
- * langue de l'interface, cochée par défaut à la création), enregistrement, suppression, retour à la liste et
- * suivi des écritures faites ailleurs
+ * langue de l'interface, cochée par défaut à la création), enregistrement, suppression, retour à la liste avec sa
+ * recherche et ses filtres, suivi des écritures faites ailleurs
  */
 import { computed, onScopeDispose, ref } from 'vue';
-import { useRouter, type Router } from 'vue-router';
+import { useRoute, useRouter, type LocationQuery, type Router } from 'vue-router';
 import { notify } from '@/vue/Composables/Global/toast';
 import { useAdminContext } from '@/vue/Composables/Admin/useAdminContext';
 import { useConfirm, type ConfirmRequest } from '@/vue/Composables/Admin/useConfirm';
@@ -33,6 +33,8 @@ export interface FormScreenDeps<T> {
   resource: AdminResource<T>;
   locales: string[];
   currentLocale: string;
+  /** Adresse de la liste, reçue d'elle et rendue au retour */
+  listQuery?: () => LocationQuery;
 }
 
 /**
@@ -45,6 +47,8 @@ export function createFormScreen<T extends ScreenItem>(
   deps: FormScreenDeps<T>
 ): FormScreenState<T> {
   const { t, can, confirm, router, resource, locales, currentLocale } = deps;
+  const listQuery = deps.listQuery ?? (() => ({}));
+  const toList = (): Promise<unknown> => router.push({ name: descriptor.back, query: listQuery() });
   const data = (): Row => (resource.data.value ?? {}) as Row;
   const isNew = computed(() => resource.id.value === null);
   const rowsOf = (field: TranslationsField): Row[] => (data()[field.name] as Row[] | undefined) ?? [];
@@ -139,7 +143,7 @@ export function createFormScreen<T extends ScreenItem>(
       notifyResourceChange(descriptor.resource, { ids: [saved.id], source: resource });
       notify('success', message(created ? 'created' : 'saved', label()));
       if (created && descriptor.editRoute) {
-        await router.replace({ name: descriptor.editRoute, params: { id: String(saved.id) } });
+        await router.replace({ name: descriptor.editRoute, params: { id: String(saved.id) }, query: listQuery() });
       }
     },
     async remove(): Promise<void> {
@@ -156,7 +160,7 @@ export function createFormScreen<T extends ScreenItem>(
       if (confirmed && id !== null && (await resource.remove())) {
         notifyResourceChange(descriptor.resource, { ids: [id], deleted: true, source: resource });
         notify('success', message('deleted', deleted));
-        await router.push({ name: descriptor.back });
+        await toList();
       }
     },
     reload: () => resource.load(),
@@ -164,7 +168,7 @@ export function createFormScreen<T extends ScreenItem>(
       if (change.source === resource || isNew.value || !changeConcerns(change, resource.id.value)) return;
       if (change.deleted) {
         resource.dispose();
-        await router.push({ name: descriptor.back });
+        await toList();
       } else if (leaveGuard.isDirty(descriptor.leaveKey)) {
         resource.conflict.value = true;
       } else {
@@ -172,7 +176,7 @@ export function createFormScreen<T extends ScreenItem>(
       }
     },
     back(): void {
-      void router.push({ name: descriptor.back });
+      void toList();
     },
   };
 }
@@ -187,6 +191,7 @@ export function useFormScreen<T extends ScreenItem>(
   id: string | number | null
 ): FormScreenState<T> {
   const { t, can, bootstrap } = useAdminContext();
+  const route = useRoute();
   const resource = useAdminResource<T>(descriptor.resource, id, {
     initial: () => descriptor.initial() as T,
     leaveKey: descriptor.leaveKey,
@@ -199,6 +204,7 @@ export function useFormScreen<T extends ScreenItem>(
     resource,
     locales: bootstrap.locales,
     currentLocale: bootstrap.locale,
+    listQuery: () => route.query,
   });
   // Une action de la liste affichée à côté a modifié ou supprimé l'élément
   onScopeDispose(onResourceChange(descriptor.resource, (change) => void screen.externalChange(change)));

@@ -4,6 +4,7 @@
  * Description d'un écran de liste, état calculé par useCollectionScreen() et affiché par le thème
  */
 import type { Component, Ref, ShallowRef } from 'vue';
+import type { LocationQuery } from 'vue-router';
 import type { IconName } from '@/ts/Global/Ui/UiIcon.type';
 import type { DataTableAction, DataTableColumn } from '@/ts/Admin/Ui/Data/UiDataTable.type';
 import type { AdminCollection } from '@/vue/Composables/Admin/useAdminCollection';
@@ -154,8 +155,12 @@ export interface CollectionScreenState<T extends ScreenItem = ScreenItem> {
   columns: DataTableColumn[];
   /** Le bouton de création est montré */
   canCreate: boolean;
-  /** Adresse de l'écran de création, vide sans création */
-  createHref: string;
+  /** Adresse de l'écran de création avec celle de la liste, vide sans création */
+  readonly createHref: string;
+  /** Terme saisi dans la recherche, gardé dans l'adresse */
+  term: Ref<string>;
+  /** Adresse de la liste, à reprendre dans les liens vers ses éléments */
+  listQuery(): LocationQuery;
   /** Valeurs traduites du filtre de statut, la première pour tous */
   statusOptions: ScreenOption[];
   /** Valeurs traduites du filtre d'auteur, la première pour tous */

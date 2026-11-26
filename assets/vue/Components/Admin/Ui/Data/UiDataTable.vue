@@ -1,7 +1,7 @@
 <script setup lang="ts" generic="T extends DataTableRow">
 /**
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 1.2
  * Grille de données : tri, recherche en deux temps (page affichée puis base), colonnes réglables, requête SQL,
  * actions par ligne déjà filtrées par l'appelant, sélection multiple et actions groupées, squelette, état vide et
  * pagination ; liste empilée sous 768 px
@@ -61,6 +61,8 @@ const props = withDefaults(
 const sort = defineModel<DataTableSort | null>('sort', { default: null });
 const page = defineModel<number>('page', { default: 1 });
 const itemsPerPage = defineModel<number>('itemsPerPage', { default: 20 });
+/** Terme de la recherche, déjà cherché en base quand l'appelant le donne */
+const termModel = defineModel<string>('term', { default: '' });
 /** Clés des lignes sélectionnées, conservées d'une page à l'autre */
 const selected = defineModel<(string | number)[]>('selected', { default: () => [] });
 
@@ -125,6 +127,7 @@ const {
   resetPage: () => {
     page.value = 1;
   },
+  term: termModel,
 });
 const busy = computed(() => props.loading || mode.value === 'pending');
 const skeletonRows = computed(() => Math.min(itemsPerPage.value, props.rows.length || 5));

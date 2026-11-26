@@ -1,7 +1,7 @@
 <script setup lang="ts">
 /**
  * @author Gourdon Aymeric
- * @version 1.2
+ * @version 1.3
  * Liste de l'établi Natheo-Atelier, gardée à gauche de l'élément ouvert : composant du module, recherche en deux
  * temps, filtres en pastilles, tri, sélection et actions groupées, lignes compactes avec leurs actions, requête SQL
  * en tête du volet
@@ -56,6 +56,7 @@ const tableSearch = useTableSearch<DataTableRow>({
   loading: () => loading.value,
   search: (value) => (search.value = value),
   resetPage: () => (page.value = 1),
+  term: screen.term,
 });
 const { term } = tableSearch;
 const rows = computed(() => tableSearch.displayed.value as unknown as ScreenItem[]);
@@ -77,7 +78,9 @@ const selectable = screen.bulkActions.length > 0;
 
 const fieldOf = (row: ScreenItem, key: string): unknown => (row as unknown as Record<string, unknown>)[key];
 const hrefOf = (row: ScreenItem): string | undefined =>
-  editAction ? router.resolve({ name: editAction.route, params: { id: String(row.id) } }).href : undefined;
+  editAction
+    ? router.resolve({ name: editAction.route, params: { id: String(row.id) }, query: screen.listQuery() }).href
+    : undefined;
 const colorOf = (row: ScreenItem): string => (badge?.color ? String(fieldOf(row, badge.color) ?? '') : '');
 const rowActions = (row: ScreenItem) =>
   screen.actionsFor(row).filter((action) => action.id !== 'edit' && action.id !== 'view');

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Page d'un commentaire, colonne de la liste : lien qui filtre la liste sur cette page
  */
 import { computed } from 'vue';
@@ -14,10 +14,11 @@ const props = defineProps<{ value: unknown }>();
 const { t } = useAdminContext();
 const route = useRoute();
 const page = computed(() => props.value as AdminCommentPage | null);
-const to = computed(() => ({
-  name: route.meta.screenGroup,
-  query: { ...route.query, pageId: String(page.value?.id ?? '') },
-}));
+// Nouveau filtre : la liste repart de sa première page
+const to = computed(() => {
+  const { page: _page, ...query } = route.query;
+  return { name: route.meta.screenGroup, query: { ...query, pageId: String(page.value?.id ?? '') } };
+});
 </script>
 
 <template>

@@ -64,6 +64,9 @@ const can: AdminCan = {
   hasRole: () => false,
 };
 
+/** Adresse de la liste reçue par le formulaire */
+const LIST_QUERY = { search: 'été', page: '2' };
+
 function screenWith(id: number | null, api: object = {}, screenDescriptor = descriptor) {
   const resource = createAdminResource<Tag>(api as unknown as ApiClient, t, '/admin/tags', id, {
     initial: () => descriptor.initial() as Tag,
@@ -79,6 +82,7 @@ function screenWith(id: number | null, api: object = {}, screenDescriptor = desc
     resource,
     locales: ['fr', 'en', 'es'],
     currentLocale: 'fr',
+    listQuery: () => LIST_QUERY,
   });
   return { screen, resource, router, confirm };
 }
@@ -140,7 +144,7 @@ describe('createFormScreen', () => {
       color: '#112233',
       disabled: false,
     });
-    expect(router.replace).toHaveBeenCalledWith({ name: 'tag_edit', params: { id: '9' } });
+    expect(router.replace).toHaveBeenCalledWith({ name: 'tag_edit', params: { id: '9' }, query: LIST_QUERY });
     expect(screen.isNew.value).toBe(false);
     expect(changed).toHaveBeenCalledOnce();
     stop();
@@ -194,7 +198,13 @@ describe('createFormScreen', () => {
     await screen.remove();
     expect(confirm.mock.lastCall?.[0]).toMatchObject({ title: 'tag.confirm.delete {"label":"Été"}', tone: 'danger' });
     expect(remove).toHaveBeenCalledWith('/admin/tags/4', { ifMatch: '"v1"' });
-    expect(router.push).toHaveBeenCalledWith({ name: 'tag_index' });
+    expect(router.push).toHaveBeenCalledWith({ name: 'tag_index', query: LIST_QUERY });
+  });
+
+  it('revient à la liste avec sa recherche, ses filtres et sa page', () => {
+    const { screen, router } = screenWith(4);
+    screen.back();
+    expect(router.push).toHaveBeenCalledWith({ name: 'tag_index', query: LIST_QUERY });
   });
 
   describe('écriture faite ailleurs', () => {
@@ -233,7 +243,7 @@ describe('createFormScreen', () => {
       await resource.load();
       screen.setTranslation(labelField, 'fr', 'Automne');
       await screen.externalChange({ ids: ['4'], deleted: true });
-      expect(router.push).toHaveBeenCalledWith({ name: 'tag_index' });
+      expect(router.push).toHaveBeenCalledWith({ name: 'tag_index', query: LIST_QUERY });
       expect(leaveGuard.isDirty('tag')).toBe(false);
     });
 

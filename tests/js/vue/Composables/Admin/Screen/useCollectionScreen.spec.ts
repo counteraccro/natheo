@@ -1,11 +1,13 @@
 import { describe, expect, it, vi } from 'vitest';
 import { flushPromises } from '@vue/test-utils';
 import { createAdminCollection, SELECT_ALL_LIMIT } from '@/vue/Composables/Admin/useAdminCollection';
-import { nextTick, reactive } from 'vue';
+import { nextTick, reactive, ref } from 'vue';
 import {
-  bindFilterQuery,
+  bindListQuery,
   createCollectionScreen,
   filtersFromQuery,
+  listStateFromQuery,
+  listStateToQuery,
   runPool,
 } from '@/vue/Composables/Admin/Screen/useCollectionScreen';
 import { defineCollectionScreen } from '@/vue/Composables/Admin/Screen/defineScreen';
@@ -73,6 +75,9 @@ function canWith(operations: string[]): AdminCan {
   };
 }
 
+/** Adresse de la liste, reprise par les liens vers ses éléments */
+const LIST_QUERY = { search: 'été', page: '2' };
+
 function screenWith(
   rows: Tag[],
   options: { operations?: string[]; confirm?: boolean; api?: object; descriptor?: typeof descriptor } = {}
@@ -87,7 +92,12 @@ function screenWith(
   const client = api as unknown as ApiClient;
   const collection = createAdminCollection<Tag>(client, '/admin/tags', { itemsPerPage: 10 });
   const confirm = vi.fn().mockResolvedValue(options.confirm ?? true);
-  const router = { push: vi.fn(), resolve: vi.fn((to: { name: string }) => ({ href: `/admin/fr/${to.name}` })) };
+  const router = {
+    push: vi.fn(),
+    resolve: vi.fn((to: { name: string; query?: Record<string, unknown> }) => ({
+      href: `/admin/fr/${to.name}${to.query && Object.keys(to.query).length ? '?' + new URLSearchParams(to.query as Record<string, string>) : ''}`,
+    })),
+  };
   const screen = createCollectionScreen(options.descriptor ?? descriptor, {
     api: client,
     t,
@@ -96,6 +106,7 @@ function screenWith(
     router,
     collection,
     locale: 'fr',
+    listQuery: () => LIST_QUERY,
   });
   return { screen, api, confirm, router, collection };
 }
@@ -108,6 +119,7 @@ describe('createCollectionScreen', () => {
       ['tag.index.column_pages', 'end'],
     ]);
     expect(screen.canCreate).toBe(true);
+    expect(screen.createHref).toBe('/admin/fr/tag_new?search=%C3%A9t%C3%A9&page=2');
     expect(screen.canSql).toBe(false);
     expect(screen.actionsFor(tag(1)).map((action) => action.id)).toEqual(['edit', 'disable', 'delete']);
     expect(screen.actionsFor(tag(2, { disabled: true })).map((action) => action.id)).toEqual([
@@ -131,9 +143,9 @@ describe('createCollectionScreen', () => {
     const notify = vi.spyOn(toast, 'notify');
     const { screen, api, confirm, router } = screenWith([tag(1)]);
     await screen.runAction('edit', tag(1));
-    expect(router.push).toHaveBeenCalledWith({ name: 'tag_edit', params: { id: '1' } });
+    expect(router.push).toHaveBeenCalledWith({ name: 'tag_edit', params: { id: '1' }, query: LIST_QUERY });
     await screen.runAction('view', tag(2));
-    expect(router.push).toHaveBeenLastCalledWith({ name: 'tag_edit', params: { id: '2' } });
+    expect(router.push).toHaveBeenLastCalledWith({ name: 'tag_edit', params: { id: '2' }, query: LIST_QUERY });
 
     await screen.runAction('disable', tag(1));
     expect(confirm).toHaveBeenCalledTimes(1);
@@ -363,8 +375,11 @@ describe('filtres et actions groupées du module', () => {
   });
 });
 
-describe('bindFilterQuery', () => {
+describe('état de la liste dans l’adresse', () => {
   const params = ['moderation', 'pageId'];
+  const emptyApi = {
+    getCollection: vi.fn().mockResolvedValue({ members: [], total: 0, page: 1, lastPage: 1 }),
+  } as unknown as ApiClient;
 
   it('lit les filtres non vides de l’adresse', () => {
     expect(filtersFromQuery({ moderation: 'moderate', pageId: '', page: '2' }, params)).toEqual({
@@ -373,34 +388,86 @@ describe('bindFilterQuery', () => {
     });
   });
 
-  it('écrit les filtres dans l’adresse de la liste et les relit quand elle change', async () => {
-    const collection = createAdminCollection<Tag>(
-      {
-        getCollection: vi.fn().mockResolvedValue({ members: [], total: 0, page: 1, lastPage: 1 }),
-      } as unknown as ApiClient,
-      '/admin/tags',
-      { filters: { moderation: 'wait_validation' } }
-    );
+  it('lit et écrit filtres, recherche, page, tri et nombre par page, valeurs par défaut omises', () => {
+    const query = {
+      moderation: 'moderate',
+      search: ' été ',
+      page: '3',
+      'order[createdAt]': 'desc',
+      itemsPerPage: '50',
+      tab: 'x',
+    };
+    const state = listStateFromQuery(query, params, 20);
+    expect(state).toEqual({
+      filters: { moderation: 'moderate', pageId: undefined },
+      search: 'été',
+      page: 3,
+      sort: { key: 'createdAt', direction: 'desc' },
+      itemsPerPage: 50,
+    });
+    expect(listStateToQuery(state, params, 20, query)).toEqual({ ...query, search: 'été' });
+    expect(listStateFromQuery({ page: '-1', itemsPerPage: 'abc', 'order[id]': 'up' }, params, 20)).toMatchObject({
+      page: 1,
+      sort: null,
+      itemsPerPage: 20,
+    });
+    expect(
+      listStateToQuery({ filters: {}, search: '', page: 1, sort: null, itemsPerPage: 20 }, params, 20, query)
+    ).toEqual({ tab: 'x' });
+  });
+
+  it('écrit l’état dans l’adresse des routes du groupe et le relit quand elle change', async () => {
+    const collection = createAdminCollection<Tag>(emptyApi, '/admin/tags', {
+      filters: { moderation: 'wait_validation' },
+      itemsPerPage: 20,
+    });
+    const term = ref('');
     const route = reactive({
       name: 'comment_index',
-      query: { moderation: 'wait_validation', search: 'x' } as Record<string, string>,
+      meta: { screenGroup: 'comment_index' },
+      query: { moderation: 'wait_validation' } as Record<string, string>,
     });
     const router = { replace: vi.fn() };
-    const stop = bindFilterQuery(collection as never, params, route as never, router, 'comment_index');
+    const stop = bindListQuery(collection as never, term, params, route as never, router, 'comment_index', 20);
 
     collection.filters.pageId = '12';
+    term.value = 'été';
     await nextTick();
     expect(router.replace).toHaveBeenLastCalledWith({
-      query: { moderation: 'wait_validation', search: 'x', pageId: '12' },
+      query: { moderation: 'wait_validation', pageId: '12', search: 'été' },
     });
 
+    // Formulaire ouvert à côté de la liste : son adresse suit encore la liste
+    route.name = 'comment_edit';
+    route.query = { moderation: 'wait_validation', pageId: '12', search: 'été' };
+    await nextTick();
+    collection.page.value = 2;
+    await nextTick();
+    expect(router.replace).toHaveBeenLastCalledWith({
+      query: { moderation: 'wait_validation', pageId: '12', search: 'été', page: '2' },
+    });
+
+    // Entrée de menu de la liste sans filtres : tout est relu, recherche en base comprise
+    route.name = 'comment_index';
     route.query = {};
     await nextTick();
+    await nextTick();
     expect(collection.filters).toMatchObject({ moderation: undefined, pageId: undefined });
+    expect(term.value).toBe('');
+    expect(collection.search.value).toBe('');
+    expect(collection.page.value).toBe(1);
 
-    // Sur la route d'un élément (liste gardée à côté), l'adresse n'est ni lue ni écrite
+    // Retour à une adresse avec recherche et page : la page vient après la remise à 1
+    route.query = { search: 'abc', page: '3' };
+    await flushPromises();
+    expect(collection.search.value).toBe('abc');
+    expect(term.value).toBe('abc');
+    expect(collection.page.value).toBe(3);
+
+    // Route hors du groupe : l'adresse n'est ni lue ni écrite
     router.replace.mockClear();
-    route.name = 'comment_edit';
+    route.name = 'tag_index';
+    route.meta = { screenGroup: 'tag_index' };
     collection.filters.moderation = 'moderate';
     await nextTick();
     expect(router.replace).not.toHaveBeenCalled();

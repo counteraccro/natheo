@@ -1,11 +1,11 @@
 /**
  * @author Gourdon Aymeric
- * @version 1.3
- * État et actions d'un écran de liste décrit par des données : colonnes, filtres liés à l'adresse, actions visibles
- * selon les droits, confirmations, requêtes, notifications et actions groupées (une requête par élément, quatre à la
- * fois, dialogue du module)
+ * @version 1.4
+ * État et actions d'un écran de liste décrit par des données : colonnes, filtres, recherche, page et tri gardés dans
+ * l'adresse et repris par les liens vers ses éléments, actions visibles selon les droits, confirmations, requêtes,
+ * notifications et actions groupées (une requête par élément, quatre à la fois, dialogue du module)
  */
-import { computed, onScopeDispose, ref, shallowRef, watch, type Ref } from 'vue';
+import { computed, nextTick, onScopeDispose, ref, shallowRef, watch, type Ref } from 'vue';
 import { useRoute, useRouter, type LocationQuery, type RouteLocationNormalizedLoaded, type Router } from 'vue-router';
 import { notify } from '@/vue/Composables/Global/toast';
 import { ApiError } from '@/vue/Composables/Global/Api/ApiError';
@@ -23,7 +23,7 @@ import {
 import type { ApiClient } from '@/vue/Composables/Global/Api/ApiClient';
 import type { AdminCan } from '@/vue/Composables/Admin/useCan';
 import type { Translator } from '@/vue/Composables/Admin/useTranslate';
-import type { DataTableAction } from '@/ts/Admin/Ui/Data/UiDataTable.type';
+import type { DataTableAction, DataTableSort } from '@/ts/Admin/Ui/Data/UiDataTable.type';
 import type {
   BulkDialogRequest,
   BulkResult,
@@ -47,10 +47,14 @@ export interface CollectionScreenDeps<T> {
   t: Translator['t'];
   can: AdminCan;
   confirm: (request: ConfirmRequest) => Promise<boolean>;
-  router: Pick<Router, 'push'> & { resolve(to: { name: string }): { href: string } };
+  router: Pick<Router, 'push'> & { resolve(to: { name: string; query?: LocationQuery }): { href: string } };
   collection: AdminCollection<T>;
   /** Langue de l'interface, pour les dates */
   locale: string;
+  /** Terme saisi dans la recherche, gardé dans l'adresse */
+  term?: Ref<string>;
+  /** Adresse de la liste, reprise par les liens vers ses éléments pour la retrouver au retour */
+  listQuery?: () => LocationQuery;
 }
 
 /**
@@ -104,51 +108,158 @@ export function filtersFromQuery(query: LocationQuery, params: string[]): Record
   );
 }
 
+/** État d'une liste gardé dans son adresse */
+export interface ListState {
+  filters: Record<string, CollectionFilterValue>;
+  search: string;
+  page: number;
+  sort: DataTableSort | null;
+  itemsPerPage: number;
+}
+
+const ORDER_KEY = /^order\[(.+)\]$/;
+
 /**
- * Lie les filtres à l'adresse de la liste : relus quand l'adresse de la liste change (entrée de menu, lien),
- * écrits dedans quand la liste est la route courante
+ * État de la liste lu dans l'adresse : filtres, recherche, page, tri (order[champ]) et nombre par page
+ * @param query
+ * @param params paramètres des filtres
+ * @param itemsPerPage nombre par page de l'utilisateur, absent de l'adresse
+ */
+export function listStateFromQuery(query: LocationQuery, params: string[], itemsPerPage: number): ListState {
+  const text = (key: string): string => (typeof query[key] === 'string' ? (query[key] as string) : '');
+  const positive = (key: string, fallback: number): number => {
+    const value = Number.parseInt(text(key), 10);
+    return Number.isInteger(value) && value > 0 ? value : fallback;
+  };
+  let sort: DataTableSort | null = null;
+  for (const [key, value] of Object.entries(query)) {
+    const match = ORDER_KEY.exec(key);
+    if (match && (value === 'asc' || value === 'desc')) sort = { key: match[1], direction: value };
+  }
+  return {
+    filters: filtersFromQuery(query, params),
+    search: text('search').trim(),
+    page: positive('page', 1),
+    sort,
+    itemsPerPage: positive('itemsPerPage', itemsPerPage),
+  };
+}
+
+/**
+ * Adresse de la liste : celle reçue, dont les clés de la liste sont remplacées par son état, valeurs par défaut omises
+ * @param state
+ * @param params paramètres des filtres
+ * @param itemsPerPage nombre par page de l'utilisateur
+ * @param base adresse courante
+ */
+export function listStateToQuery(
+  state: ListState,
+  params: string[],
+  itemsPerPage: number,
+  base: LocationQuery = {}
+): LocationQuery {
+  const query: LocationQuery = Object.fromEntries(
+    Object.entries(base).filter(
+      ([key]) => !params.includes(key) && !['search', 'page', 'itemsPerPage'].includes(key) && !ORDER_KEY.test(key)
+    )
+  );
+  params.forEach((param) => {
+    const value = state.filters[param];
+    if (value !== undefined && value !== null && value !== '') query[param] = String(value);
+  });
+  if (state.search !== '') query.search = state.search;
+  if (state.sort) query[`order[${state.sort.key}]`] = state.sort.direction;
+  if (state.page > 1) query.page = String(state.page);
+  if (state.itemsPerPage !== itemsPerPage) query.itemsPerPage = String(state.itemsPerPage);
+  return query;
+}
+
+/**
+ * État courant d'une liste
  * @param collection
+ * @param term terme saisi dans la recherche
+ * @param params paramètres des filtres
+ */
+function listStateOf(collection: AdminCollection<unknown>, term: string, params: string[]): ListState {
+  return {
+    filters: Object.fromEntries(params.map((param) => [param, collection.filters[param]])),
+    search: term.trim(),
+    page: collection.page.value,
+    sort: collection.sort.value,
+    itemsPerPage: collection.itemsPerPage.value,
+  };
+}
+
+/**
+ * Lie l'état de la liste à l'adresse des routes de son groupe (liste, formulaire ouvert à côté) : relu quand
+ * l'adresse change (entrée de menu, lien, retour), écrit dedans à chaque changement, pour le retrouver au retour
+ * @param collection
+ * @param term terme saisi dans la recherche
  * @param params paramètres des filtres
  * @param route route courante, réactive
  * @param router
  * @param listName nom de la route de la liste
+ * @param itemsPerPage nombre par page de l'utilisateur
  * @return arrêt du lien
  */
-export function bindFilterQuery(
+export function bindListQuery(
   collection: AdminCollection<unknown>,
+  term: Ref<string>,
   params: string[],
   route: RouteLocationNormalizedLoaded,
   router: Pick<Router, 'replace'>,
-  listName: string
+  listName: string,
+  itemsPerPage: number
 ): () => void {
-  if (params.length === 0) return () => undefined;
+  const inGroup = (): boolean => route.name === listName || route.meta.screenGroup === listName;
+  // Écritures en cours : leur adresse, plus ancienne que l'état, n'est pas relue
+  let writing = 0;
+  const same = (a: unknown, b: unknown): boolean => JSON.stringify(a) === JSON.stringify(b);
+
   const stopRoute = watch(
-    () => (route.name === listName ? JSON.stringify(filtersFromQuery(route.query, params)) : null),
-    (key) => {
-      if (key === null) return;
-      Object.entries(filtersFromQuery(route.query, params)).forEach(([param, value]) => {
+    () => (inGroup() ? JSON.stringify(listStateFromQuery(route.query, params, itemsPerPage)) : null),
+    async (key) => {
+      if (key === null || writing > 0) return;
+      const state = JSON.parse(key) as ListState;
+      const before = listStateOf(collection, term.value, params);
+      params.forEach((param) => {
+        const value = state.filters[param] ?? undefined;
         if (collection.filters[param] !== value) collection.filters[param] = value;
       });
+      if (state.search !== before.search) {
+        term.value = state.search;
+        collection.search.value = state.search;
+      }
+      if (!same(state.sort, before.sort)) collection.sort.value = state.sort;
+      if (state.itemsPerPage !== before.itemsPerPage) collection.itemsPerPage.value = state.itemsPerPage;
+      if (state.page === collection.page.value) return;
+      // Un filtre, la recherche ou le tri changés remettent la collection en page 1 : la page vient après
+      const reset =
+        !same(state.filters, before.filters) || state.search !== before.search || !same(state.sort, before.sort);
+      if (reset) await nextTick();
+      collection.page.value = state.page;
     }
   );
-  const stopFilters = watch(
-    () => params.map((param) => collection.filters[param]),
-    (values) => {
-      if (route.name !== listName) return;
-      const query: LocationQuery = { ...route.query };
-      params.forEach((param, index) => {
-        const value = values[index];
-        if (value === undefined || value === null || value === '') delete query[param];
-        else query[param] = String(value);
-      });
-      if (JSON.stringify(filtersFromQuery(query, params)) !== JSON.stringify(filtersFromQuery(route.query, params))) {
-        void router.replace({ query });
+  const stopState = watch(
+    () => listStateOf(collection, term.value, params),
+    (state) => {
+      if (!inGroup()) return;
+      const query = listStateToQuery(state, params, itemsPerPage, route.query);
+      if (
+        !same(
+          query,
+          listStateToQuery(listStateFromQuery(route.query, params, itemsPerPage), params, itemsPerPage, route.query)
+        )
+      ) {
+        writing++;
+        void Promise.resolve(router.replace({ query })).finally(() => writing--);
       }
-    }
+    },
+    { deep: true }
   );
   return () => {
     stopRoute();
-    stopFilters();
+    stopState();
   };
 }
 
@@ -162,6 +273,8 @@ export function createCollectionScreen<T extends ScreenItem>(
   deps: CollectionScreenDeps<T>
 ): CollectionScreenState<T> {
   const { api, t, can, confirm, router, collection, locale } = deps;
+  const term = deps.term ?? ref(collection.search.value);
+  const listQuery = deps.listQuery ?? (() => ({}));
   const itemPath = (row: T): string => `${descriptor.resource}/${row.id}`;
   const actionOf = <K extends CollectionRowAction['type']>(type: K) =>
     descriptor.actions?.find((action) => action.type === type) as Extract<CollectionRowAction, { type: K }> | undefined;
@@ -392,7 +505,11 @@ export function createCollectionScreen<T extends ScreenItem>(
       align: column.type === 'number' ? 'end' : undefined,
     })),
     canCreate: descriptor.create !== undefined && can.canOperation(descriptor.create.operation),
-    createHref: descriptor.create ? router.resolve({ name: descriptor.create.route }).href : '',
+    get createHref(): string {
+      return descriptor.create ? router.resolve({ name: descriptor.create.route, query: listQuery() }).href : '';
+    },
+    term,
+    listQuery,
     statusOptions: [
       { value: '', label: t('admin_app.screen.filter_status_all') },
       { value: 'enabled', label: t('admin_app.screen.filter_status_enabled') },
@@ -427,7 +544,7 @@ export function createCollectionScreen<T extends ScreenItem>(
     async runAction(id: string, row: T): Promise<void> {
       if (id === 'edit' || id === 'view') {
         const edit = actionOf('edit');
-        if (edit) await router.push({ name: edit.route, params: { id: String(row.id) } });
+        if (edit) await router.push({ name: edit.route, params: { id: String(row.id) }, query: listQuery() });
       } else if (id === 'disable' || id === 'enable') {
         await setDisabled(row, id === 'disable');
       } else if (id === 'delete') {
@@ -484,14 +601,18 @@ export function useCollectionScreen<T extends ScreenItem>(
   const route = useRoute();
   const router = useRouter();
   const params = filterParams(descriptor as CollectionScreenDescriptor<never>);
+  const perPage = bootstrap.options.itemsPerPage;
+  const state = listStateFromQuery(route.query, params, perPage);
   const collection = createAdminCollection<T>(api, descriptor.resource, {
-    itemsPerPage: bootstrap.options.itemsPerPage,
+    ...state,
     withSql: can.canOperation(SQL_QUERY_OPERATION),
-    filters: filtersFromQuery(route.query, params),
   });
+  const term = ref(state.search);
   const listName = route.meta.screenGroup;
   if (listName !== undefined) {
-    onScopeDispose(bindFilterQuery(collection as AdminCollection<unknown>, params, route, router, listName));
+    onScopeDispose(
+      bindListQuery(collection as AdminCollection<unknown>, term, params, route, router, listName, perPage)
+    );
   }
   // Un formulaire affiché à côté de la liste l'a modifiée
   onScopeDispose(
@@ -507,5 +628,7 @@ export function useCollectionScreen<T extends ScreenItem>(
     router,
     collection,
     locale: bootstrap.locale,
+    term,
+    listQuery: () => route.query,
   });
 }

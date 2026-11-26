@@ -1,6 +1,6 @@
 /**
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 1.2
  * Menu du back-office : modules et entrées visibles lus une fois dans l'API, arbre de la sidebar et raccourcis
  */
 import { shallowRef, type ShallowRef } from 'vue';
@@ -61,15 +61,16 @@ export function createAdminMenu(api: ApiClient, basePath: string): AdminMenu {
 
   /**
    * Entrée de la route courante, sinon la dernière route du fil d'Ariane qui a une entrée ; entre plusieurs entrées
-   * de la même route, celle dont les filtres de l'adresse reprennent le plus de filtres de son chemin
+   * de la même route, celle dont les filtres de l'adresse reprennent le plus de filtres de son chemin (un formulaire
+   * garde l'adresse de sa liste)
    */
   const activeOf = (location: MenuLocation): AdminMenuItem | null => {
     const names = [...(location.breadcrumb ?? [])].reverse();
     if (location.name !== null) {
       names.unshift(location.name);
     }
-    for (const [index, name] of names.entries()) {
-      const query = index === 0 && name === location.name ? (location.query ?? {}) : {};
+    const query = location.query ?? {};
+    for (const name of names) {
       const matching = items.value
         .filter((candidate) => candidate.route === name && !candidate.hidden)
         .filter((candidate) => queryOf(candidate).every(([key, value]) => query[key] === value));

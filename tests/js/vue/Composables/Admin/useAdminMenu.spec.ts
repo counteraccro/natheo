@@ -86,10 +86,11 @@ describe('createAdminMenu', () => {
       'comment_moderate'
     );
     expect(active({ name: 'comment_index', query: { moderation: 'validate' } })).toBe('comment_index');
-    // Sur la route d'un élément, le fil d'Ariane mène à la liste sans ses filtres
+    // Sur la route d'un élément, gardée avec l'adresse de sa liste, l'entrée de la liste filtrée reste active
     expect(
       active({ name: 'comment_edit', breadcrumb: ['comment_index'], query: { moderation: 'wait_validation' } })
-    ).toBe('comment_index');
+    ).toBe('comment_moderate');
+    expect(active({ name: 'comment_edit', breadcrumb: ['comment_index'] })).toBe('comment_index');
   });
 
   it('donne la section courante et les raccourcis', async () => {

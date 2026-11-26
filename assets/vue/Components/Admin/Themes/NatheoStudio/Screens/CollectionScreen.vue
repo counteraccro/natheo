@@ -1,7 +1,7 @@
 <script setup lang="ts" generic="T extends ScreenItem">
 /**
  * @author Gourdon Aymeric
- * @version 1.2
+ * @version 1.3
  * Rendu Natheo-Studio d'un écran de liste : en-tête, composant du module, filtres, grille, actions par ligne et
  * groupées, requête SQL
  */
@@ -19,7 +19,7 @@ const props = defineProps<AdminScreenProps<CollectionScreenState<T>>>();
 const { t } = useAdminContext();
 const descriptor = props.screen.descriptor;
 const { items, total, loading, sort, page, itemsPerPage, search, selected, sql } = props.screen.collection;
-const { savedSql } = props.screen;
+const { savedSql, term } = props.screen;
 const { status, author } = props.screen.filter;
 const filters = props.screen.filter;
 const header = descriptor.header ? toComponent(descriptor.header) : null;
@@ -59,6 +59,7 @@ onMounted(() => void props.screen.collection.load());
     v-model:page="page"
     v-model:items-per-page="itemsPerPage"
     v-model:selected="selected"
+    v-model:term="term"
     :label="t(descriptor.title)"
     :columns="screen.columns"
     :rows="rows"
