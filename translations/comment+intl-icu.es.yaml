@@ -77,4 +77,6 @@ comment.see.comment.error.no.comment.text: Este comentario no existe o ha sido e
 comment.see.comment.button.back: Volver
 comment.error.not_found: Este comentario no existe o ha sido eliminado.
 comment.error.status_invalid: Este estado de comentario no existe.
+comment.error.comment_required: 'El comentario no puede estar vacío.'
+comment.error.moderation_comment_length: 'El motivo de la moderación no puede superar los {max} caracteres.'
 comment.moderation.selected: 'Comentarios seleccionados'

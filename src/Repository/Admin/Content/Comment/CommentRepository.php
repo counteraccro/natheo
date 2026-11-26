@@ -3,16 +3,20 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 2.0
+ * @version 2.1
  * Repository pour les commentaires
  */
 namespace App\Repository\Admin\Content\Comment;
 
+use App\Dto\Api\Admin\AdminCollectionQuery;
 use App\Dto\Api\Content\Comment\ApiCommentByPageDto;
 use App\Entity\Admin\Content\Comment\Comment;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\Content\Page\PageTranslation;
+use App\Enum\Admin\Comment\CommentStatus;
+use App\Repository\Trait\AdminCollectionQueryTrait;
 use App\Repository\Trait\OrderedQueryTrait;
+use App\Repository\Trait\TranslatedFieldQueryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
@@ -22,11 +26,68 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class CommentRepository extends ServiceEntityRepository
 {
+    use AdminCollectionQueryTrait;
     use OrderedQueryTrait;
+    use TranslatedFieldQueryTrait;
 
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Comment::class);
+    }
+
+    /**
+     * Page de la collection d'administration. Le titre de la page et le modérateur sont lus en scalaires dans la
+     * même requête (pageId, pageTitle, moderatorId, moderatorLogin), sans jointure de collection
+     * @param AdminCollectionQuery $query
+     * @param CommentStatus|null $status
+     * @param int|null $pageId
+     * @param string $locale langue de contenu
+     * @param string $defaultLocale
+     * @return Paginator
+     */
+    public function getAdminCollection(
+        AdminCollectionQuery $query,
+        ?CommentStatus $status,
+        ?int $pageId,
+        string $locale,
+        string $defaultLocale,
+    ): Paginator {
+        $qb = $this->createQueryBuilder('comment')
+            ->addSelect(
+                'page.id AS pageId',
+                'moderator.id AS moderatorId',
+                'moderator.login AS moderatorLogin',
+            )
+            ->innerJoin('comment.page', 'page')
+            ->leftJoin('comment.userModeration', 'moderator');
+
+        $title = $this->joinTranslatedField($qb, 'page.pageTranslations', 'titre', $locale, $defaultLocale);
+        $qb->addSelect($title . ' AS pageTitle');
+
+        if ($status !== null) {
+            $qb->andWhere('comment.status = :status')->setParameter('status', $status->value);
+        }
+        if ($pageId !== null) {
+            $qb->andWhere('page.id = :page_id')->setParameter('page_id', $pageId);
+        }
+
+        return $this->paginateAdminCollection(
+            $qb,
+            $query,
+            [
+                'id' => 'comment.id',
+                'comment' => 'comment.comment',
+                'author' => 'comment.author',
+                'email' => 'comment.email',
+                'page' => $title,
+                'status' => 'comment.status',
+                'createdAt' => 'comment.createdAt',
+            ],
+            null,
+            'comment.id',
+            'comment.userModeration',
+            orderFields: ['page' => 'pageTitle'],
+        );
     }
 
     /**

@@ -30,4 +30,14 @@ final readonly class AdminPermissionResolver
             delete: $this->authorizationChecker->isGranted(ContentVoter::DELETE, $content),
         );
     }
+
+    /**
+     * Droits d'un élément sans propriétaire. Le rôle du module, vérifié par l'opération, suffit pour le modifier ;
+     * l'élément ne se désactive pas et ne se supprime pas
+     * @return Permissions
+     */
+    public function forUnowned(): Permissions
+    {
+        return new Permissions(edit: true, disable: false, delete: false);
+    }
 }

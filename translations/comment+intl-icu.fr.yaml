@@ -77,4 +77,6 @@ comment.see.comment.error.no.comment.text: Ce commentaire n'existe pas ou a ét�
 comment.see.comment.button.back: Retour
 comment.error.not_found: 'Ce commentaire n''existe pas ou a été supprimé.'
 comment.error.status_invalid: 'Ce statut de commentaire n''existe pas.'
+comment.error.comment_required: 'Le commentaire ne peut pas être vide.'
+comment.error.moderation_comment_length: 'La raison de la modération ne peut pas dépasser {max} caractères.'
 comment.moderation.selected: 'Commentaires sélectionnés'

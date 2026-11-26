@@ -77,4 +77,6 @@ comment.see.comment.error.no.comment.text: This comment does not exist or has be
 comment.see.comment.button.back: Back
 comment.error.not_found: This comment does not exist or has been deleted.
 comment.error.status_invalid: This comment status does not exist.
+comment.error.comment_required: 'The comment cannot be empty.'
+comment.error.moderation_comment_length: 'The moderation reason cannot be longer than {max} characters.'
 comment.moderation.selected: 'Selected comments'
