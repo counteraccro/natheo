@@ -62,4 +62,14 @@ class AdminCommentGetTest extends AdminCommentTestCase
         );
         $this->assertSame($this->translator->trans('comment.error.not_found', domain: 'comment'), $content['detail']);
     }
+
+    /**
+     * Session back-office et rôle contributeur exigés
+     * @return void
+     */
+    public function testAccess(): void
+    {
+        $comment = $this->createComment($this->createTitledPage('Alpha'));
+        $this->assertAccessDenied('GET', '/admin/comments/' . $comment->getId());
+    }
 }

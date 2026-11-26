@@ -178,4 +178,13 @@ class AdminCommentGetCollectionTest extends AdminCommentTestCase
         }
         return 0;
     }
+
+    /**
+     * Session back-office et rôle contributeur exigés
+     * @return void
+     */
+    public function testAccess(): void
+    {
+        $this->assertAccessDenied('GET', '/admin/comments');
+    }
 }

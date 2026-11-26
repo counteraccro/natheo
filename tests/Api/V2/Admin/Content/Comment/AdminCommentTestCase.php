@@ -71,4 +71,27 @@ abstract class AdminCommentTestCase extends AppApiV2TestCase
         $this->assertEquals(200, $response->getStatusCode(), $path);
         return array_column($this->decode($response)['member'], 'id');
     }
+
+    /**
+     * Refus sans jeton (401), avec un jeton public, un jeton back-office sans session ou une session sans le rôle
+     * du module (403)
+     * @param string $method
+     * @param string $path
+     * @param array|null $body
+     * @return void
+     */
+    protected function assertAccessDenied(string $method, string $path, ?array $body = null): void
+    {
+        $this->assertEquals(401, $this->requestV2($method, $path, self::HEADER_NONE, $body)->getStatusCode());
+        $this->assertProblem($this->requestV2($method, $path, body: $body), 403);
+        $this->assertProblem(
+            $this->requestV2($method, $path, body: $body, headers: $this->backOfficeTokenHeaders()),
+            403,
+        );
+        $user = $this->createUser(['disabled' => false, 'anonymous' => false, 'roles' => ['ROLE_USER']]);
+        $this->assertProblem(
+            $this->requestV2($method, $path, body: $body, headers: $this->adminSessionHeaders($user)),
+            403,
+        );
+    }
 }

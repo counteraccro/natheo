@@ -51,4 +51,14 @@ class AdminCommentStatusCountTest extends AdminCommentTestCase
         $this->assertSame(1, $this->decode($response)['count']);
         $this->assertProblem($this->requestV2('GET', '/admin/comment_status_counts/spam', headers: $headers), 404);
     }
+
+    /**
+     * Session back-office et rôle contributeur exigés sur la collection et sur un statut
+     * @return void
+     */
+    public function testAccess(): void
+    {
+        $this->assertAccessDenied('GET', '/admin/comment_status_counts');
+        $this->assertAccessDenied('GET', '/admin/comment_status_counts/wait_validation');
+    }
 }

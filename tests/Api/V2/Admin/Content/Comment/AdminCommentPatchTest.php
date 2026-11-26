@@ -152,4 +152,18 @@ class AdminCommentPatchTest extends AdminCommentTestCase
         );
         $this->assertEquals(200, $response->getStatusCode());
     }
+
+    /**
+     * Session back-office et rôle contributeur exigés, commentaire inchangé
+     * @return void
+     */
+    public function testAccess(): void
+    {
+        $comment = $this->createComment($this->createTitledPage('Alpha'));
+        $this->assertAccessDenied('PATCH', '/admin/comments/' . $comment->getId(), ['status' => 'validate']);
+
+        $this->em->clear();
+        $saved = $this->em->getRepository(Comment::class)->find($comment->getId());
+        $this->assertSame(CommentStatus::WAIT_VALIDATION->value, $saved->getStatus());
+    }
 }
