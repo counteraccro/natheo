@@ -12,7 +12,6 @@ use App\Dto\Api\Admin\AdminCollectionQuery;
 use App\Dto\Api\Content\Comment\ApiCommentByPageDto;
 use App\Entity\Admin\Content\Comment\Comment;
 use App\Entity\Admin\Content\Page\Page;
-use App\Entity\Admin\Content\Page\PageTranslation;
 use App\Enum\Admin\Comment\CommentStatus;
 use App\Repository\Trait\AdminCollectionQueryTrait;
 use App\Repository\Trait\OrderedQueryTrait;
@@ -103,88 +102,6 @@ class CommentRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
-    }
-
-    /**
-     * Retourne une liste de commentaires Paginé
-     * @param int $page
-     * @param int $limit
-     * @param array $queryParams
-     * @param int|null $userId
-     * @return Paginator
-     */
-    public function getAllPaginate(int $page, int $limit, array $queryParams, ?int $userId = null): Paginator
-    {
-        $orderField = 'id';
-        if (isset($queryParams['orderField']) && $queryParams['orderField'] !== '') {
-            $orderField = $queryParams['orderField'];
-        }
-
-        $query = $this->createQueryBuilder(Comment::DEFAULT_ALIAS);
-
-        if ($orderField === 'page') {
-            $query->join(Comment::DEFAULT_ALIAS . '.page', Page::DEFAULT_ALIAS);
-            $query->join(Page::DEFAULT_ALIAS . '.pageTranslations', PageTranslation::DEFAULT_ALIAS);
-            $queryParams['orderField'] = 'titre';
-            $this->applyOrdering($query, PageTranslation::class, $queryParams);
-        } else {
-            $this->applyOrdering($query, Comment::class, $queryParams);
-        }
-
-        if ($userId !== null) {
-            $query->andwhere(Comment::DEFAULT_ALIAS . '.userModeration = :userId')->setParameter('userId', $userId);
-        }
-
-        if (isset($queryParams['search']) && $queryParams['search'] !== '') {
-            $query
-                ->andWhere(
-                    Comment::DEFAULT_ALIAS .
-                        '.comment like :search OR ' .
-                        Comment::DEFAULT_ALIAS .
-                        '.author like :search OR ' .
-                        Comment::DEFAULT_ALIAS .
-                        '.email like :search',
-                )
-                ->setParameter('search', '%' . $queryParams['search'] . '%');
-        }
-
-        $paginator = new Paginator($query->getQuery(), true);
-        $paginator
-            ->getQuery()
-            ->setFirstResult($limit * ($page - 1))
-            ->setMaxResults($limit);
-        return $paginator;
-    }
-
-    /**
-     * Retourne une liste de commentaire en fonction de ses filtres
-     * @param int $status
-     * @param int $idPage
-     * @param int $limit
-     * @param int $page
-     * @return Paginator
-     */
-    public function getListCommentsByFilter(int $status, int $idPage, int $page, int $limit): Paginator
-    {
-        $query = $this->createQueryBuilder(Comment::DEFAULT_ALIAS)->addOrderBy(
-            Comment::DEFAULT_ALIAS . '.id',
-            \SortDirection::Descending,
-        );
-
-        if ($status !== 0) {
-            $query->andWhere(Comment::DEFAULT_ALIAS . '.status = :status')->setParameter('status', $status);
-        }
-
-        if ($idPage !== 0) {
-            $query->andWhere(Comment::DEFAULT_ALIAS . '.page = :page')->setParameter('page', $idPage);
-        }
-
-        $paginator = new Paginator($query->getQuery(), true);
-        $paginator
-            ->getQuery()
-            ->setFirstResult($limit * ($page - 1))
-            ->setMaxResults($limit);
-        return $paginator;
     }
 
     /**

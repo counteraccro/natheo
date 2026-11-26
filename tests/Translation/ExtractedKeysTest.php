@@ -27,6 +27,7 @@ class ExtractedKeysTest extends KernelTestCase
         'admin_ui',
         'admin_module',
         'admin_app',
+        'comment',
         'demo_overwrite',
         'faq',
         'module_activation',

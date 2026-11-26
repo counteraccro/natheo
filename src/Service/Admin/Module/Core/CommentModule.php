@@ -42,7 +42,6 @@ final class CommentModule implements AdminModuleInterface, AdminMenuBadgeInterfa
             role: 'ROLE_CONTRIBUTEUR',
             label: t('admin_module.module.comment.label', domain: 'admin_module'),
             description: t('admin_module.module.comment.description', domain: 'admin_module'),
-            routePrefixes: ['admin_comment_'],
         );
     }
 
