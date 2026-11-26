@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 1.2
  * Module des commentaires des pages et de leur modération
  */
 
@@ -65,7 +65,9 @@ final class CommentModule implements AdminModuleInterface, AdminMenuBadgeInterfa
                 icon: SvgIcon::LIST->value,
                 parent: self::ID,
                 position: 10,
-                legacyRoute: 'admin_comment_index',
+                route: 'comment_index',
+                path: 'comments',
+                operation: 'admin_comment_get_collection',
             ),
             new AdminMenuItem(
                 id: 'comment_moderate',
@@ -73,7 +75,9 @@ final class CommentModule implements AdminModuleInterface, AdminMenuBadgeInterfa
                 icon: 'M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z',
                 parent: self::ID,
                 position: 20,
-                legacyRoute: 'admin_comment_moderate_comments',
+                route: 'comment_index',
+                path: 'comments?moderation=' . CommentStatus::WAIT_VALIDATION->getSlug(),
+                operation: 'admin_comment_get_collection',
             ),
         ];
     }

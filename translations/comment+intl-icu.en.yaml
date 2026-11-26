@@ -1,82 +1,139 @@
 comment.index.modal.help.title: Help
 comment.index.modal.help.edit: Moderate
-comment.index.title: Comment management
-comment.index.description: Manage the comments of your website
+comment.index.title: 'Comment management'
+comment.index.description: 'Manage the comments of your website'
 comment.grid.id: '#'
 comment.grid.comment: Comment
 comment.grid.author: Author
 comment.grid.status: Status
-comment.grid.created_at: Created on
+comment.grid.created_at: 'Created on'
 comment.grid.page: Page
-comment.status.wait.validation: Awaiting approval
+comment.status.wait.validation: 'Awaiting approval'
 comment.status.validate: Approved
 comment.status.moderate: Moderated
 comment.status.unknown: Unknown
-comment.moderate.comments.title: Comment moderation
+comment.moderate.comments.title: 'Comment moderation'
 comment.see.title: Comment
 comment.see.title_id: 'Comment #{id}'
-comment.index.button.moderate: Bulk moderation
-comment.see.loading: Loading the comment
+comment.index.button.moderate: 'Bulk moderation'
+comment.see.loading: 'Loading the comment'
 comment.see.author: Author
 comment.see.created: 'Created on '
-comment.see.title_info: Comment information
+comment.see.title_info: 'Comment information'
 comment.see.ip: IP
-comment.see.user_agent: Other information
-comment.see.moderation.comment: Moderation comment
+comment.see.user_agent: 'Other information'
+comment.see.moderation.comment: 'Moderation comment'
 comment.see.moderation.author: Moderator
-comment.see.button.edit: Edit the comment
-comment.see.save.success: Comment updated successfully
+comment.see.button.edit: 'Edit the comment'
+comment.see.save.success: 'Comment updated successfully'
 comment.index.info: Information
-comment.index.info_comment_open: Comments are open on the site
-comment.index.info_comment_moderate: and await approval by default.
-comment.index.info_comment_close: Comments are disabled on the site
-comment.index.info_change_option: Change the options
-comment.moderation.loading: Loading the list of comments
-comment.moderate.comments.description: Approve or moderate a list of comments at once
+comment.index.info_comment_open: 'Comments are open on the site'
+comment.index.info_comment_moderate: 'and await approval by default.'
+comment.index.info_comment_close: 'Comments are disabled on the site'
+comment.index.info_change_option: 'Change the options'
+comment.moderation.loading: 'Loading the list of comments'
+comment.moderate.comments.description: 'Approve or moderate a list of comments at once'
 comment.moderation.legend.search: Filter
-comment.moderation.status.label: Sort by status
-comment.moderation.pages.label: Sort by page
-comment.moderation.pages.default: All pages
-comment.moderation.selection.title: Moderation action
-comment.moderation.status.default: All statuses
+comment.moderation.status.label: 'Sort by status'
+comment.moderation.pages.label: 'Sort by page'
+comment.moderation.pages.default: 'All pages'
+comment.moderation.selection.title: 'Moderation action'
+comment.moderation.status.default: 'All statuses'
 comment.index.button.moderate_nb_wait_validation_2: ' awaiting approval'
 comment.moderation.paginate.page: page
 comment.moderation.paginate.on: of
 comment.moderation.paginate.row: comment(s)
-comment.moderation.comment.date: written on
-comment.moderation.comment.update: Moderated on
+comment.moderation.comment.date: 'written on'
+comment.moderation.comment.update: 'Moderated on'
 comment.moderation.comment.author: by
 comment.moderation.comment.comment: Content
-comment.moderation.comment.page: Posted on the page
+comment.moderation.comment.page: 'Posted on the page'
 comment.moderation.comment.info: Information
 comment.moderation.comment.ip: IP
-comment.moderation.comment.user_agent: User Agent
-comment.moderation.comment.moderator: Moderated by
+comment.moderation.comment.user_agent: 'User Agent'
+comment.moderation.comment.moderator: 'Moderated by'
 comment.moderation.selection.comment: selected
-comment.moderation.selection.status: New status
-comment.moderation.selection.comment_moderation: Moderation comment
+comment.moderation.selection.status: 'New status'
+comment.moderation.selection.comment_moderation: 'Moderation comment'
 comment.moderation.selection.submit: Update
-comment.moderation.update.success: comment(s) updated successfully
-comment.moderation.no_result: No comment found for the selected status
+comment.moderation.update.success: 'comment(s) updated successfully'
+comment.moderation.no_result: 'No comment found for the selected status'
 comment.see.cancel: Back
-comment.see.comment.title: Comment content
+comment.see.comment.title: 'Comment content'
 comment.see.comment.status: Status
-comment.see.comment.status_current: Current status
-comment.see.comment.status_label: Change the status
-comment.see.comment.page.associated: Associated page
+comment.see.comment.status_current: 'Current status'
+comment.see.comment.status_label: 'Change the status'
+comment.see.comment.page.associated: 'Associated page'
 comment.see.comment.page.created: 'Created on '
-comment.see.comment.page.link: See the page
-comment.moderation.comment.select.all: Select all
-comment.moderation.comment.unselect.all: Unselect all
-comment.moderation.statistics: Overall statistics
+comment.see.comment.page.link: 'See the page'
+comment.moderation.comment.select.all: 'Select all'
+comment.moderation.comment.unselect.all: 'Unselect all'
+comment.moderation.statistics: 'Overall statistics'
 comment.moderation.status.short.validate: Approved
 comment.moderation.status.short.moderate: Moderated
 comment.moderation.status.short.waiting: Pending
-comment.see.comment.error.no.comment.title: No comment found
-comment.see.comment.error.no.comment.text: This comment does not exist or has been deleted. You can go back to the list
+comment.see.comment.error.no.comment.title: 'No comment found'
+comment.see.comment.error.no.comment.text: 'This comment does not exist or has been deleted. You can go back to the list'
 comment.see.comment.button.back: Back
-comment.error.not_found: This comment does not exist or has been deleted.
-comment.error.status_invalid: This comment status does not exist.
+comment.error.not_found: 'This comment does not exist or has been deleted.'
+comment.error.status_invalid: 'This comment status does not exist.'
 comment.error.comment_required: 'The comment cannot be empty.'
 comment.error.moderation_comment_length: 'The moderation reason cannot be longer than {max} characters.'
 comment.moderation.selected: 'Selected comments'
+comment.state.wait_validation: 'Pending'
+comment.state.validate: 'Approved'
+comment.state.moderate: 'Moderated'
+comment.collection.title: 'Comments'
+comment.collection.description: 'Comments left under the pages of the site, to approve or moderate.'
+comment.collection.column_id: '#'
+comment.collection.column_excerpt: 'Comment'
+comment.collection.column_author: 'Author'
+comment.collection.column_page: 'Page'
+comment.collection.column_status: 'Status'
+comment.collection.column_created_at: 'Sent on'
+comment.collection.filter_moderation: 'Moderation status'
+comment.collection.filter_moderation_all: 'All statuses'
+comment.collection.bulk_validate: 'Approve'
+comment.collection.bulk_wait_validation: 'Set back to pending'
+comment.collection.bulk_moderate: 'Moderate'
+comment.collection.filter_author_me: 'Moderated by me'
+comment.editor.title_edit: 'Editing comment #{id}'
+comment.editor.title_view: 'Comment #{id}'
+comment.editor.description_edit: 'Correct the text or change the moderation of the comment.'
+comment.editor.description_view: 'You can read this comment without changing it.'
+comment.editor.section_comment: 'Comment'
+comment.editor.section_comment_description: 'Text published under the page. Fix a typo or remove personal data.'
+comment.editor.comment: 'Text'
+comment.editor.section_moderation: 'Moderation'
+comment.editor.section_moderation_description: 'What the site shows of this comment.'
+comment.editor.status: 'Status'
+comment.editor.moderation_comment: 'Moderation comment'
+comment.editor.moderation_comment_help: 'Visible to moderators only, never on the site.'
+comment.editor.meta_author: 'Author'
+comment.editor.meta_email: 'Email'
+comment.editor.meta_page: 'Page'
+comment.editor.meta_ip: 'IP address'
+comment.editor.meta_user_agent: 'Browser'
+comment.notify.saved: 'Comment from {label} saved'
+comment.banner.page_unknown: 'page #{id}'
+comment.banner.open: 'Comments are open on the site'
+comment.banner.closed: 'Comments are closed on the site'
+comment.banner.wait_on: 'New comments wait for approval'
+comment.banner.wait_off: 'New comments are published without approval'
+comment.banner.options_link: 'Change in the system options'
+comment.banner.page_filter: 'Page: {title}'
+comment.banner.page_filter_remove: 'Remove the page filter'
+comment.editor.status_help_validate: 'The site shows the author and the text.'
+comment.editor.status_help_moderate: 'The site shows the author and the words "Moderated comment", without the text.'
+comment.editor.status_help_wait_validation: 'The site shows "Comment awaiting approval", without the author or the text.'
+comment.editor.status_help_moderator: 'You will be recorded as the moderator.'
+comment.editor.status_help_cleared: 'The moderation comment and the moderator will be cleared.'
+comment.editor.moderated_by: 'Moderated by {login} on {date}'
+comment.collection.page_filter_title: 'Show the comments of this page'
+comment.dialog.moderate_title: 'Moderate {count, plural, one {# comment} other {# comments}}'
+comment.dialog.moderate_text: '{count, plural, one {The site will no longer show its text, only the name of its author and the words "Moderated comment".} other {The site will no longer show their text, only the name of their author and the words "Moderated comment".}} You will be recorded as the moderator.'
+comment.dialog.moderate_kept: '{kept, plural, one {# selected comment is kept: you cannot change it.} other {# selected comments are kept: you cannot change them.}}'
+comment.dialog.moderate_reason: 'Moderation comment'
+comment.dialog.moderate_help: '{count, plural, one {Optional, visible to moderators only.} other {Optional, the same for each comment, visible to moderators only.}}'
+comment.dialog.moderate_cancel: 'Cancel'
+comment.dialog.moderate_confirm: 'Moderate'
