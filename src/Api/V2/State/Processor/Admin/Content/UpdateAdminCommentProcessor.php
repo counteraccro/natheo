@@ -23,6 +23,12 @@ use App\Service\Api\Admin\Content\ApiAdminCommentService;
  */
 final class UpdateAdminCommentProcessor extends AbstractAdminProcessor
 {
+    /**
+     * Nouveau statut quand l'écriture en cours le change, null sinon
+     * @var string|null
+     */
+    private ?string $changedStatus = null;
+
     public function __construct(
         private readonly ApiAdminCommentService $commentService,
         private readonly AdminCommentProvider $commentProvider,
@@ -38,6 +44,11 @@ final class UpdateAdminCommentProcessor extends AbstractAdminProcessor
      */
     protected function write(mixed $data, Operation $operation, array $uriVariables, array $context): AdminComment
     {
+        $previous = $context['previous_data'] ?? null;
+        $this->changedStatus =
+            $data->status !== null && (!$previous instanceof AdminComment || $previous->status !== $data->status)
+                ? $data->status
+                : null;
         $comment = $this->commentService->update(
             $this->commentProvider->find($uriVariables),
             $data->comment,
@@ -49,17 +60,15 @@ final class UpdateAdminCommentProcessor extends AbstractAdminProcessor
     }
 
     /**
-     * Le statut seul est tracé sous son nom (validate, moderate, wait_validation), toute autre modification en update
+     * Un changement de statut est tracé sous son nom (validate, moderate, wait_validation), avec ou sans raison ni
+     * texte, toute autre modification en update
      * @param Operation $operation
      * @param mixed $data
      * @return string
      */
     protected function getLogAction(Operation $operation, mixed $data): string
     {
-        if ($data instanceof UpdateCommentInput && $data->isStatusOnly()) {
-            return (string) $data->status;
-        }
-        return parent::getLogAction($operation, $data);
+        return $this->changedStatus ?? parent::getLogAction($operation, $data);
     }
 
     /**

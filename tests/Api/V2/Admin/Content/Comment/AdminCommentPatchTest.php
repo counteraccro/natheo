@@ -16,8 +16,8 @@ use App\Enum\Admin\Comment\CommentStatus;
 class AdminCommentPatchTest extends AdminCommentTestCase
 {
     /**
-     * Modérer enregistre l'utilisateur et la raison sans balises, valider les efface ; le statut seul est tracé
-     * sous son nom
+     * Modérer enregistre l'utilisateur et la raison sans balises, valider les efface ; un changement de statut est
+     * tracé sous son nom, avec ou sans raison ni texte, le même statut renvoyé en update
      * @return void
      */
     public function testModerate(): void
@@ -46,8 +46,14 @@ class AdminCommentPatchTest extends AdminCommentTestCase
         $this->assertNull($content['moderator']);
 
         $this->requestV2('PATCH', $path, body: ['status' => 'wait_validation'], headers: $headers);
+        $this->requestV2('PATCH', $path, body: ['status' => 'wait_validation', 'comment' => 'Merci'], headers: $headers);
         $this->assertSame(
-            [['update', $id, 'Camille'], ['validate', $id, 'Camille'], ['wait_validation', $id, 'Camille']],
+            [
+                ['moderate', $id, 'Camille'],
+                ['validate', $id, 'Camille'],
+                ['wait_validation', $id, 'Camille'],
+                ['update', $id, 'Camille'],
+            ],
             $this->logs(),
         );
 

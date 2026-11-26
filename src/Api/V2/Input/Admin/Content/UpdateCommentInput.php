@@ -31,13 +31,4 @@ final class UpdateCommentInput
      * Raison de la modération, gardée seulement avec le statut moderate
      */
     public ?string $moderationComment = null;
-
-    /**
-     * Vrai quand seul le statut est modifié
-     * @return bool
-     */
-    public function isStatusOnly(): bool
-    {
-        return $this->status !== null && $this->comment === null && $this->moderationComment === null;
-    }
 }
