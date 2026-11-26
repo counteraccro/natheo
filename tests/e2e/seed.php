@@ -3,13 +3,15 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.1
- * Données des tests de bout en bout : options du site, comptes de accounts.json, tags et FAQ des parcours
+ * @version 1.2
+ * Données des tests de bout en bout : options du site, comptes de accounts.json, tags, FAQ et commentaires des
+ * parcours
  */
 
 use App\Entity\Admin\Content\Faq\Faq;
 use App\Entity\Admin\Content\Tag\Tag;
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\Comment\CommentStatus;
 use App\Enum\Admin\Content\Page\PageContentType;
 use App\Kernel;
 use App\Tests\Helper\Fixtures\FixturesTrait;
@@ -72,6 +74,36 @@ $seeder = new class ($kernel->getContainer()->get('test.service_container')) {
             ['type' => PageContentType::FAQ->value, 'typeId' => $usedFaq->getId()],
         );
         $this->createFaqWithTree($users['admin'], 'FAQ Interne', ['Équipe' => ['Qui contacter ?']]);
+
+        $this->createComments($users['contributor']);
+    }
+
+    /**
+     * Page publiée et ses commentaires, chaque auteur en double (suffixe « Studio » ou « Atelier »), un par projet
+     * @param User $user
+     * @return void
+     */
+    private function createComments(User $user): void
+    {
+        $page = $this->createPage($user, ['disabled' => false]);
+        foreach ($this->locales as $locale) {
+            $this->createPageTranslation($page, ['locale' => $locale, 'titre' => 'Page commentée ' . $locale]);
+        }
+        $comments = [
+            'Alice' => CommentStatus::WAIT_VALIDATION,
+            'Bruno' => CommentStatus::WAIT_VALIDATION,
+            'Chloé' => CommentStatus::VALIDATE,
+            'Denis' => CommentStatus::VALIDATE,
+        ];
+        foreach ($comments as $author => $status) {
+            foreach ([$author . ' Studio', $author . ' Atelier'] as $name) {
+                $this->createComment($page, null, [
+                    'author' => $name,
+                    'comment' => 'Commentaire de ' . $name,
+                    'status' => $status->value,
+                ]);
+            }
+        }
     }
 
     /**

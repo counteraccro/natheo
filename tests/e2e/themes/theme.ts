@@ -13,6 +13,7 @@ export interface ListScreen {
 
 export const TAG_LIST: ListScreen = { path: '/admin/fr/tags', title: 'Gestion des tags' };
 export const FAQ_LIST: ListScreen = { path: '/admin/fr/faqs', title: 'Gestion des FAQ' };
+export const COMMENT_LIST: ListScreen = { path: '/admin/fr/comments', title: 'Commentaires' };
 
 export interface ThemeScreens {
   /** Ouvre une liste (les tags par défaut) et attend ses lignes */
