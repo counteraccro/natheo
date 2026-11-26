@@ -1,7 +1,7 @@
 /**
  * @author Gourdon Aymeric
- * @version 1.0
- * Informations d'un élément affichées par les écrans de formulaire (auteur, pages, dates)
+ * @version 1.1
+ * Informations d'un élément affichées par les écrans de formulaire : auteur, pages, dates et informations du module
  */
 import { computed, type ComputedRef } from 'vue';
 import { useAdminContext } from '@/vue/Composables/Admin/useAdminContext';
@@ -15,6 +15,8 @@ export interface FormMetaItem {
   value: string;
   /** Date complète au survol */
   title?: string;
+  /** Lien de la valeur */
+  href?: string;
 }
 
 /**
@@ -28,6 +30,17 @@ export function useFormMeta<T extends ScreenItem>(screen: FormScreenState<T>): C
   return computed(() => {
     const item = row.value;
     return (descriptor.meta ?? []).map((name): FormMetaItem => {
+      if (typeof name === 'object') {
+        const element = screen.resource.data.value as T;
+        const value = name.value(element);
+        return {
+          name: name.name,
+          label: t(name.label),
+          value: name.date ? formatRelative(value, bootstrap.locale) : value || '—',
+          title: name.date ? formatDateTime(value, bootstrap.locale) : undefined,
+          href: (value && name.href?.(element)) || undefined,
+        };
+      }
       if (name === 'author') {
         const author = item.author as ScreenAuthor | null | undefined;
         return {

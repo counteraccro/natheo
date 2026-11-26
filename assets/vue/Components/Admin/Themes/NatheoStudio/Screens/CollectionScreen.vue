@@ -1,11 +1,13 @@
 <script setup lang="ts" generic="T extends ScreenItem">
 /**
  * @author Gourdon Aymeric
- * @version 1.1
- * Rendu Natheo-Studio d'un écran de liste : en-tête, filtres, grille, actions par ligne et groupées, requête SQL
+ * @version 1.2
+ * Rendu Natheo-Studio d'un écran de liste : en-tête, composant du module, filtres, grille, actions par ligne et
+ * groupées, requête SQL
  */
 import { computed, onMounted } from 'vue';
 import { AdminPageHeader, UiBadge, UiButton, UiDataTable, UiSelect, type DataTableRow } from '@ui';
+import ScreenBulkDialog from '@admin/App/Screen/ScreenBulkDialog.vue';
 import { useAdminContext } from '@/vue/Composables/Admin/useAdminContext';
 import { toComponent } from '@/vue/Composables/Admin/Screen/adminTheme';
 import type { AdminScreenProps } from '@/ts/Admin/Theme/AdminTheme.type';
@@ -19,6 +21,10 @@ const descriptor = props.screen.descriptor;
 const { items, total, loading, sort, page, itemsPerPage, search, selected, sql } = props.screen.collection;
 const { savedSql } = props.screen;
 const { status, author } = props.screen.filter;
+const filters = props.screen.filter;
+const header = descriptor.header ? toComponent(descriptor.header) : null;
+// Un filtre posé par l'adresse n'a pas de champ
+const hasFilters = (descriptor.filters ?? []).some((filter) => typeof filter === 'string' || filter.type === 'select');
 
 const customColumns = descriptor.columns.filter((column) => (column.type ?? 'text') !== 'text' || column.component);
 const components = new Map(
@@ -46,6 +52,8 @@ onMounted(() => void props.screen.collection.load());
     </template>
   </AdminPageHeader>
 
+  <component :is="header" v-if="header" :screen="screen" />
+
   <UiDataTable
     v-model:sort="sort"
     v-model:page="page"
@@ -69,8 +77,8 @@ onMounted(() => void props.screen.collection.load());
     @select-all="screen.selectAll()"
     @save-sql="screen.saveSql($event)"
   >
-    <template v-if="descriptor.filters?.length" #filters>
-      <div v-if="descriptor.filters.includes('status')" class="w-44">
+    <template v-if="hasFilters" #filters>
+      <div v-if="descriptor.filters?.includes('status')" class="w-44">
         <UiSelect
           v-model="status"
           size="sm"
@@ -78,12 +86,20 @@ onMounted(() => void props.screen.collection.load());
           :aria-label="t('admin_app.screen.filter_status')"
         />
       </div>
-      <div v-if="descriptor.filters.includes('author')" class="w-44">
+      <div v-if="descriptor.filters?.includes('author')" class="w-44">
         <UiSelect
           v-model="author"
           size="sm"
           :options="screen.authorOptions"
           :aria-label="t('admin_app.screen.filter_author')"
+        />
+      </div>
+      <div v-for="filter in screen.selectFilters" :key="filter.param" class="w-44">
+        <UiSelect
+          v-model="filters[filter.param].value"
+          size="sm"
+          :options="filter.options"
+          :aria-label="filter.label"
         />
       </div>
     </template>
@@ -115,4 +131,6 @@ onMounted(() => void props.screen.collection.load());
       <template v-else>{{ value }}</template>
     </template>
   </UiDataTable>
+
+  <ScreenBulkDialog :screen="screen" />
 </template>

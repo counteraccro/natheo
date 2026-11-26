@@ -1,7 +1,13 @@
 import { describe, expect, it, vi } from 'vitest';
 import { flushPromises } from '@vue/test-utils';
 import { createAdminCollection, SELECT_ALL_LIMIT } from '@/vue/Composables/Admin/useAdminCollection';
-import { createCollectionScreen, runPool } from '@/vue/Composables/Admin/Screen/useCollectionScreen';
+import { nextTick, reactive } from 'vue';
+import {
+  bindFilterQuery,
+  createCollectionScreen,
+  filtersFromQuery,
+  runPool,
+} from '@/vue/Composables/Admin/Screen/useCollectionScreen';
 import { defineCollectionScreen } from '@/vue/Composables/Admin/Screen/defineScreen';
 import { ApiError } from '@/vue/Composables/Global/Api/ApiError';
 import * as toast from '@/vue/Composables/Global/toast';
@@ -67,7 +73,10 @@ function canWith(operations: string[]): AdminCan {
   };
 }
 
-function screenWith(rows: Tag[], options: { operations?: string[]; confirm?: boolean; api?: object } = {}) {
+function screenWith(
+  rows: Tag[],
+  options: { operations?: string[]; confirm?: boolean; api?: object; descriptor?: typeof descriptor } = {}
+) {
   const api = {
     getCollection: vi.fn().mockResolvedValue({ members: rows, total: rows.length, page: 1, lastPage: 1 }),
     patch: vi.fn().mockResolvedValue({}),
@@ -79,7 +88,7 @@ function screenWith(rows: Tag[], options: { operations?: string[]; confirm?: boo
   const collection = createAdminCollection<Tag>(client, '/admin/tags', { itemsPerPage: 10 });
   const confirm = vi.fn().mockResolvedValue(options.confirm ?? true);
   const router = { push: vi.fn(), resolve: vi.fn((to: { name: string }) => ({ href: `/admin/fr/${to.name}` })) };
-  const screen = createCollectionScreen(descriptor, {
+  const screen = createCollectionScreen(options.descriptor ?? descriptor, {
     api: client,
     t,
     can: canWith(options.operations ?? ['admin_tag_post', 'admin_tag_patch', 'admin_tag_delete']),
@@ -228,6 +237,174 @@ describe('createCollectionScreen', () => {
     expect(api.post).toHaveBeenCalledTimes(1);
     await screen.saveSql('SELECT 2');
     expect(api.post).toHaveBeenCalledTimes(2);
+  });
+});
+
+type Comment = Tag & { status: string };
+const comment = (id: number, status: string, values: Partial<Tag> = {}): Comment => ({ ...tag(id, values), status });
+const Dialog = { name: 'ModerateDialog', render: () => null };
+const commentScreen = defineCollectionScreen<Comment>({
+  resource: '/admin/tags',
+  read: { operation: 'admin_tag_get_collection' },
+  title: 'comment.collection.title',
+  columns: [],
+  filters: [
+    'author',
+    {
+      type: 'select',
+      param: 'moderation',
+      label: 'comment.filter.moderation',
+      allLabel: 'comment.filter.moderation_all',
+      options: [{ value: 'wait_validation', label: 'comment.status.wait_validation' }],
+    },
+    { type: 'query', param: 'pageId' },
+  ],
+  bulkActions: [
+    {
+      type: 'patch',
+      id: 'validate',
+      label: 'comment.bulk.validate',
+      icon: 'check-circle',
+      operation: 'admin_tag_patch',
+      payload: { status: 'validate' },
+      eligible: (row) => row.status !== 'validate',
+      confirm: 'comment.bulk.validate_title',
+    },
+    {
+      type: 'patch',
+      id: 'moderate',
+      label: 'comment.bulk.moderate',
+      icon: 'ban',
+      operation: 'admin_tag_patch',
+      payload: { status: 'moderate' },
+      dialog: Dialog,
+    },
+  ],
+  rowLabel: (row) => row.label,
+  messages: { authorMe: 'comment.filter.author_me' },
+});
+
+describe('filtres et actions groupées du module', () => {
+  const withComments = (rows: Comment[], confirm = true) =>
+    screenWith(rows as Tag[], { confirm, descriptor: commentScreen as unknown as typeof descriptor });
+
+  it('traduit les filtres du module et les lie à la collection', async () => {
+    const { screen, api } = withComments([]);
+    expect(screen.authorOptions[1].label).toBe('comment.filter.author_me');
+    expect(screen.selectFilters).toEqual([
+      {
+        param: 'moderation',
+        label: 'comment.filter.moderation',
+        options: [
+          { value: '', label: 'comment.filter.moderation_all' },
+          { value: 'wait_validation', label: 'comment.status.wait_validation' },
+        ],
+      },
+    ]);
+    screen.filter.moderation.value = 'wait_validation';
+    screen.filter.pageId.value = '12';
+    await flushPromises();
+    expect(api.getCollection.mock.lastCall?.[1]).toMatchObject({ moderation: 'wait_validation', pageId: '12' });
+  });
+
+  it('envoie le corps de l’action aux seuls éléments modifiables et concernés, après confirmation', async () => {
+    const rows = [
+      comment(1, 'wait_validation'),
+      comment(2, 'validate'),
+      comment(3, 'moderate', { permissions: { ...all, edit: false } }),
+    ];
+    const { screen, api, confirm, collection } = withComments(rows);
+    await collection.load();
+    expect(screen.bulkActions.map((action) => [action.id, action.label])).toEqual([
+      ['validate', 'comment.bulk.validate'],
+      ['moderate', 'comment.bulk.moderate'],
+    ]);
+
+    const result = await screen.runBulk('validate', [1, 2, 3]);
+    expect(confirm.mock.lastCall?.[0]).toMatchObject({
+      title: 'comment.bulk.validate_title {"count":1}',
+      message: 'admin_app.screen.bulk_kept {"kept":2}',
+      confirmLabel: 'comment.bulk.validate',
+    });
+    expect(api.patch).toHaveBeenCalledTimes(1);
+    expect(api.patch).toHaveBeenCalledWith('/admin/tags/1', { status: 'validate' });
+    expect(result).toEqual({ done: 1, failed: 2 });
+  });
+
+  it('n’envoie rien sans confirmation', async () => {
+    const { screen, api, collection } = withComments([comment(1, 'wait_validation')], false);
+    await collection.load();
+    expect(await screen.runBulk('validate', [1])).toBeNull();
+    expect(api.patch).not.toHaveBeenCalled();
+  });
+
+  it('ouvre le dialogue du module et ajoute sa réponse au corps envoyé', async () => {
+    const { screen, api, confirm, collection } = withComments([comment(1, 'wait_validation'), comment(2, 'validate')]);
+    await collection.load();
+
+    const running = screen.runBulk('moderate', [1, 2]);
+    await nextTick();
+    expect(screen.bulkDialog.value).toMatchObject({ component: Dialog, count: 2, kept: 0 });
+    screen.answerBulkDialog({ moderationComment: 'Hors sujet' });
+    expect(await running).toEqual({ done: 2, failed: 0 });
+    expect(confirm).not.toHaveBeenCalled();
+    expect(screen.bulkDialog.value).toBeNull();
+    expect(api.patch).toHaveBeenCalledWith('/admin/tags/2', { status: 'moderate', moderationComment: 'Hors sujet' });
+  });
+
+  it('n’envoie rien quand le dialogue est annulé', async () => {
+    const { screen, api, collection } = withComments([comment(1, 'wait_validation')]);
+    await collection.load();
+    const running = screen.runBulk('moderate', [1]);
+    await nextTick();
+    screen.answerBulkDialog(null);
+    expect(await running).toBeNull();
+    expect(api.patch).not.toHaveBeenCalled();
+  });
+});
+
+describe('bindFilterQuery', () => {
+  const params = ['moderation', 'pageId'];
+
+  it('lit les filtres non vides de l’adresse', () => {
+    expect(filtersFromQuery({ moderation: 'moderate', pageId: '', page: '2' }, params)).toEqual({
+      moderation: 'moderate',
+      pageId: undefined,
+    });
+  });
+
+  it('écrit les filtres dans l’adresse de la liste et les relit quand elle change', async () => {
+    const collection = createAdminCollection<Tag>(
+      {
+        getCollection: vi.fn().mockResolvedValue({ members: [], total: 0, page: 1, lastPage: 1 }),
+      } as unknown as ApiClient,
+      '/admin/tags',
+      { filters: { moderation: 'wait_validation' } }
+    );
+    const route = reactive({
+      name: 'comment_index',
+      query: { moderation: 'wait_validation', search: 'x' } as Record<string, string>,
+    });
+    const router = { replace: vi.fn() };
+    const stop = bindFilterQuery(collection as never, params, route as never, router, 'comment_index');
+
+    collection.filters.pageId = '12';
+    await nextTick();
+    expect(router.replace).toHaveBeenLastCalledWith({
+      query: { moderation: 'wait_validation', search: 'x', pageId: '12' },
+    });
+
+    route.query = {};
+    await nextTick();
+    expect(collection.filters).toMatchObject({ moderation: undefined, pageId: undefined });
+
+    // Sur la route d'un élément (liste gardée à côté), l'adresse n'est ni lue ni écrite
+    router.replace.mockClear();
+    route.name = 'comment_edit';
+    collection.filters.moderation = 'moderate';
+    await nextTick();
+    expect(router.replace).not.toHaveBeenCalled();
+    stop();
   });
 });
 

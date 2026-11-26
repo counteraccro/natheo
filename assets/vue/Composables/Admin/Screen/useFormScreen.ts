@@ -1,6 +1,6 @@
 /**
  * @author Gourdon Aymeric
- * @version 1.3
+ * @version 1.4
  * État et actions d'un écran de formulaire décrit par des données : lecture, champs par langue (recopie de la
  * langue de l'interface, cochée par défaut à la création), enregistrement, suppression, retour à la liste et
  * suivi des écritures faites ailleurs
@@ -69,13 +69,15 @@ export function createFormScreen<T extends ScreenItem>(
     descriptor.sections.filter((section) => section.on === undefined || (section.on === 'create') === isNew.value)
   );
 
-  /** Données envoyées : champs des sections affichées, lignes par langue dans l'ordre des langues du site */
+  /**
+   * Données envoyées : champs affichés des sections affichées, lignes par langue dans l'ordre des langues du site
+   */
   const payload = (): Row => {
     const body: Row = {};
     sections.value
       .flatMap((section) => section.fields)
       .forEach((field) => {
-        if (field.type === 'component') return;
+        if (field.type === 'component' || field.visibleWhen?.(data()) === false) return;
         body[field.name] =
           field.type === 'translations'
             ? locales.map((locale) => ({ locale, [field.field]: translation(field, locale) }))
@@ -85,6 +87,9 @@ export function createFormScreen<T extends ScreenItem>(
   };
 
   const label = (): string => (resource.data.value ? descriptor.rowLabel(resource.data.value) : '');
+  // created, confirmDelete et deleted sont exigés par defineFormScreen avec leur opération
+  const message = (key: keyof FormScreenDescriptor['messages'], value: string): string =>
+    t(descriptor.messages[key] ?? '', { label: value });
 
   const canEdit = computed(() => isNew.value || can.can('edit', descriptor.update.operation, resource.data.value));
   const mode = computed(() => (isNew.value ? 'create' : canEdit.value ? 'edit' : 'view'));
@@ -132,14 +137,14 @@ export function createFormScreen<T extends ScreenItem>(
       const saved = await resource.save(payload());
       if (saved === null) return;
       notifyResourceChange(descriptor.resource, { ids: [saved.id], source: resource });
-      notify('success', t(created ? descriptor.messages.created : descriptor.messages.saved, { label: label() }));
-      if (created) {
+      notify('success', message(created ? 'created' : 'saved', label()));
+      if (created && descriptor.editRoute) {
         await router.replace({ name: descriptor.editRoute, params: { id: String(saved.id) } });
       }
     },
     async remove(): Promise<void> {
       const confirmed = await confirm({
-        title: t(descriptor.messages.confirmDelete, { label: label() }),
+        title: message('confirmDelete', label()),
         message: t('admin_app.screen.confirm_irreversible'),
         tone: 'danger',
         icon: 'trash',
@@ -150,7 +155,7 @@ export function createFormScreen<T extends ScreenItem>(
       const id = resource.id.value;
       if (confirmed && id !== null && (await resource.remove())) {
         notifyResourceChange(descriptor.resource, { ids: [id], deleted: true, source: resource });
-        notify('success', t(descriptor.messages.deleted, { label: deleted }));
+        notify('success', message('deleted', deleted));
         await router.push({ name: descriptor.back });
       }
     },

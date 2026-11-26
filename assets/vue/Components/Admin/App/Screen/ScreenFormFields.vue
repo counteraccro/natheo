@@ -1,8 +1,8 @@
 <script setup lang="ts" generic="T extends ScreenItem">
 /**
  * @author Gourdon Aymeric
- * @version 1.3
- * Champs d'une section d'un écran de formulaire décrit par des données, communs aux thèmes : champs par langue en
+ * @version 1.4
+ * Champs affichés d'une section d'un écran de formulaire décrit par des données, communs aux thèmes : champs par langue en
  * onglets (langue partagée par les sections), texte, zone de texte, éditeur de texte, liste, couleur, interrupteur et
  * composant du module
  */
@@ -22,6 +22,7 @@ const { data } = props.screen.resource;
 const { canEdit, copying, activeLocale } = props.screen;
 
 const row = computed(() => (data.value ?? {}) as Record<string, unknown>);
+const visible = computed(() => props.fields.filter((field) => field.visibleWhen?.(row.value) !== false));
 const locales = props.screen.locales;
 const tabs = locales.map((code) => ({ id: code, label: localeName(code, bootstrap.locale) }));
 const currentLocaleName = localeName(props.screen.currentLocale, bootstrap.locale);
@@ -44,7 +45,7 @@ const selectOptions = (field: Extract<FormField, { type: 'select' }>) =>
 </script>
 
 <template>
-  <template v-for="field in fields" :key="field.name">
+  <template v-for="field in visible" :key="field.name">
     <UiTabs
       v-if="field.type === 'translations'"
       v-model="activeLocale"

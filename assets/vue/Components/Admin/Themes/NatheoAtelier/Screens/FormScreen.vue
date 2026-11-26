@@ -1,7 +1,7 @@
 <script setup lang="ts" generic="T extends ScreenItem">
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Rendu Natheo-Atelier d'un écran de formulaire, dans le volet : actions en haut, sections séparées par des filets,
  * informations de l'élément en pied ; lien de retour à la liste sur écran étroit
  */
@@ -112,7 +112,12 @@ const backHref = computed(() => router.resolve({ name: descriptor.back }).href);
     >
       <div v-for="item in meta" :key="item.name" class="grid gap-0.5">
         <dt class="text-[12.5px] text-fg-subtle">{{ item.label }}</dt>
-        <dd class="m-0 text-[13.5px] font-semibold" :title="item.title">{{ item.value }}</dd>
+        <dd class="m-0 text-[13.5px] font-semibold break-words" :title="item.title">
+          <a v-if="item.href" :href="item.href" class="ui-ring rounded-sm text-primary underline underline-offset-3">{{
+            item.value
+          }}</a>
+          <template v-else>{{ item.value }}</template>
+        </dd>
       </div>
     </dl>
   </div>

@@ -1,9 +1,10 @@
 <script setup lang="ts">
 /**
  * @author Gourdon Aymeric
- * @version 1.1
- * Liste de l'établi Natheo-Atelier, gardée à gauche de l'élément ouvert : recherche en deux temps, filtres en
- * pastilles, tri, sélection et actions groupées, lignes compactes avec leurs actions, requête SQL en tête du volet
+ * @version 1.2
+ * Liste de l'établi Natheo-Atelier, gardée à gauche de l'élément ouvert : composant du module, recherche en deux
+ * temps, filtres en pastilles, tri, sélection et actions groupées, lignes compactes avec leurs actions, requête SQL
+ * en tête du volet
  */
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import { ATELIER_PANE_TOP, NARROW_QUERY } from '@admin/Themes/NatheoAtelier/atelier';
@@ -23,6 +24,7 @@ import {
 import { useAdminContext } from '@/vue/Composables/Admin/useAdminContext';
 import { useCollectionScreen } from '@/vue/Composables/Admin/Screen/useCollectionScreen';
 import { toComponent } from '@/vue/Composables/Admin/Screen/adminTheme';
+import ScreenBulkDialog from '@admin/App/Screen/ScreenBulkDialog.vue';
 import type { CollectionScreenDescriptor } from '@/ts/Admin/Screen/CollectionScreen.type';
 import type { ScreenItem } from '@/ts/Admin/Screen/Screen.type';
 
@@ -35,7 +37,9 @@ const route = useRoute();
 const screen = useCollectionScreen(props.descriptor);
 const { items, total, page, itemsPerPage, sort, search, selected, sql, loading } = screen.collection;
 const { status, author } = screen.filter;
+const filters = screen.filter;
 const descriptor = props.descriptor;
+const header = descriptor.header ? toComponent(descriptor.header) : null;
 
 const title = t(descriptor.title);
 const sqlVisible = ref(false);
@@ -75,7 +79,8 @@ const fieldOf = (row: ScreenItem, key: string): unknown => (row as unknown as Re
 const hrefOf = (row: ScreenItem): string | undefined =>
   editAction ? router.resolve({ name: editAction.route, params: { id: String(row.id) } }).href : undefined;
 const colorOf = (row: ScreenItem): string => (badge?.color ? String(fieldOf(row, badge.color) ?? '') : '');
-const rowActions = (row: ScreenItem) => screen.actionsFor(row).filter((action) => action.id !== 'edit' && action.id !== 'view');
+const rowActions = (row: ScreenItem) =>
+  screen.actionsFor(row).filter((action) => action.id !== 'edit' && action.id !== 'view');
 const isSelected = (row: ScreenItem): boolean => selected.value.includes(row.id);
 const toggle = (row: ScreenItem): void => {
   selected.value = isSelected(row) ? selected.value.filter((id) => id !== row.id) : [...selected.value, row.id];
@@ -108,6 +113,10 @@ onMounted(() => void screen.collection.load());
       <UiButton v-if="screen.canCreate && descriptor.create" size="sm" icon="plus" :href="screen.createHref">
         {{ t(descriptor.create.label) }}
       </UiButton>
+    </div>
+
+    <div v-if="header" class="pr-3.5 pb-2.5 pl-[18px]">
+      <component :is="header" :screen="screen" />
     </div>
 
     <div class="flex gap-1.5 pr-3.5 pb-2.5 pl-[18px]">
@@ -151,7 +160,10 @@ onMounted(() => void screen.collection.load());
       </UiDropdown>
     </div>
 
-    <div v-if="descriptor.filters?.length" class="flex flex-wrap gap-1.5 pr-3.5 pb-2.5 pl-[18px]">
+    <div
+      v-if="descriptor.filters?.includes('status') || descriptor.filters?.includes('author')"
+      class="flex flex-wrap gap-1.5 pr-3.5 pb-2.5 pl-[18px]"
+    >
       <template v-if="descriptor.filters.includes('status')">
         <button
           v-for="chip in screen.statusOptions"
@@ -172,6 +184,25 @@ onMounted(() => void screen.collection.load());
         @click="author = author === 'me' ? '' : 'me'"
       >
         {{ screen.authorOptions[1].label }}
+      </button>
+    </div>
+
+    <div
+      v-for="filter in screen.selectFilters"
+      :key="filter.param"
+      role="group"
+      :aria-label="filter.label"
+      class="flex flex-wrap gap-1.5 pr-3.5 pb-2.5 pl-[18px]"
+    >
+      <button
+        v-for="chip in filter.options"
+        :key="chip.value"
+        type="button"
+        :aria-pressed="filters[filter.param].value === chip.value"
+        class="atelier-chip"
+        @click="filters[filter.param].value = chip.value"
+      >
+        {{ chip.label }}
       </button>
     </div>
 
@@ -320,6 +351,7 @@ onMounted(() => void screen.collection.load());
     <div v-if="total > itemsPerPage" class="border-t border-line px-3 py-2">
       <UiPagination v-model:page="page" v-model:items-per-page="itemsPerPage" :total-items="total" />
     </div>
+    <ScreenBulkDialog :screen="screen" />
   </section>
 </template>
 

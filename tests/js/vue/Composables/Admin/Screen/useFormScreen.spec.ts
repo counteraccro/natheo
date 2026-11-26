@@ -275,4 +275,45 @@ describe('createFormScreen', () => {
     await edited.resource.load();
     expect(edited.screen.sections.value.map((section) => section.title)).toEqual(['always', 'edit']);
   });
+
+  it('n’envoie pas un champ masqué par visibleWhen', async () => {
+    const conditional = defineFormScreen<Tag>({
+      ...descriptor,
+      sections: [
+        {
+          title: 'style',
+          fields: [
+            { type: 'switch', name: 'disabled' },
+            { type: 'color', name: 'color', visibleWhen: (data) => data.disabled === true },
+          ],
+        },
+      ],
+    });
+    const postResource = vi.fn().mockResolvedValue({
+      data: { id: 9, color: '#112233', disabled: false, translations: [] },
+      etag: '"v1"',
+    });
+    const { screen, resource } = screenWith(null, { postResource }, conditional);
+    await resource.load();
+    await screen.save();
+    expect(postResource.mock.calls[0][1]).toEqual({ disabled: false });
+  });
+
+  it('se passe de création et de suppression sans leurs textes', async () => {
+    const readOnly = defineFormScreen<Tag>({
+      ...descriptor,
+      create: undefined,
+      delete: undefined,
+      editRoute: undefined,
+      messages: { saved: 'tag.notify.saved' },
+    });
+    const getResource = vi.fn().mockResolvedValue({
+      data: { id: 4, color: '#112233', disabled: false, translations: [] },
+      etag: '"v1"',
+    });
+    const { screen, resource } = screenWith(4, { getResource }, readOnly);
+    await resource.load();
+    expect(screen.canDelete.value).toBe(false);
+    expect(screen.canEdit.value).toBe(true);
+  });
 });
