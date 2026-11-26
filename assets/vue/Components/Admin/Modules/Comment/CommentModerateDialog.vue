@@ -7,9 +7,7 @@
 import { ref, useId } from 'vue';
 import { UiButton, UiDialog, UiField, UiIcon, UiTextarea } from '@ui';
 import { useAdminContext } from '@/vue/Composables/Admin/useAdminContext';
-
-/** Longueur maximale du commentaire de modération, celle de l'API */
-const MAX_LENGTH = 1000;
+import { MODERATION_COMMENT_MAX_LENGTH } from '@/vue/Composables/Admin/Comment/commentStatus';
 
 defineProps<{ count: number; kept: number }>();
 const emit = defineEmits<{ submit: [payload: Record<string, unknown>]; cancel: [] }>();
@@ -44,7 +42,7 @@ const submit = (): void => {
       :label="t('comment.dialog.moderate_reason')"
       :help="t('comment.dialog.moderate_help', { count })"
     >
-      <UiTextarea v-model="reason" :maxlength="MAX_LENGTH" counter />
+      <UiTextarea v-model="reason" :maxlength="MODERATION_COMMENT_MAX_LENGTH" counter />
     </UiField>
     <template #footer>
       <UiButton variant="secondary" @click="emit('cancel')">{{ t('comment.dialog.moderate_cancel') }}</UiButton>

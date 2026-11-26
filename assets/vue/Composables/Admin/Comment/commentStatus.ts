@@ -16,6 +16,9 @@ export interface CommentStatusDefinition {
   icon: IconName;
 }
 
+/** Longueur maximale de la raison de la modération, celle de ValidCommentInputValidator */
+export const MODERATION_COMMENT_MAX_LENGTH = 1000;
+
 /** Statuts dans l'ordre de CommentStatus */
 export const COMMENT_STATUSES: CommentStatusDefinition[] = [
   { value: 'wait_validation', label: t('comment.state.wait_validation'), tone: 'warning', icon: 'hourglass' },

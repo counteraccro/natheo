@@ -8,7 +8,7 @@ import {
   defineFormScreen,
   translationKey as t,
 } from '@/vue/Composables/Admin/Screen/defineScreen';
-import { COMMENT_STATUSES } from '@/vue/Composables/Admin/Comment/commentStatus';
+import { COMMENT_STATUSES, MODERATION_COMMENT_MAX_LENGTH } from '@/vue/Composables/Admin/Comment/commentStatus';
 import type { AdminComment } from '@/ts/Admin/Api/AdminComment.type';
 
 const RESOURCE = '/admin/comments';
@@ -131,7 +131,7 @@ export const commentForm = defineFormScreen<AdminComment>({
           name: 'moderationComment',
           label: t('comment.editor.moderation_comment'),
           help: t('comment.editor.moderation_comment_help'),
-          maxlength: 1000,
+          maxlength: MODERATION_COMMENT_MAX_LENGTH,
           visibleWhen: (data) => data.status === 'moderate',
         },
       ],
