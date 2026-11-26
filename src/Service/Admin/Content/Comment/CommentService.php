@@ -318,14 +318,7 @@ class CommentService extends AppAdminService
 
         foreach ($comments as $comment) {
             /** @var Comment $comment */
-            $comment->setStatus($status->value);
-            if ($status !== CommentStatus::MODERATE) {
-                $comment->setModerationComment(null);
-                $comment->setUserModeration(null);
-            } else {
-                $comment->setModerationComment(strip_tags((string) ($data['moderateComment'] ?? '')));
-                $comment->setUserModeration($user);
-            }
+            $comment->moderate($status, (string) ($data['moderateComment'] ?? ''), $user);
             $this->save($comment);
         }
         return true;

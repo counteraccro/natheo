@@ -287,7 +287,7 @@ class ApiCommentService extends AppApiService
     }
 
     /**
-     * Applique le statut et le message de modération au commentaire
+     * Change le statut du commentaire puis l'enregistre
      * @param Comment $comment
      * @param CommentStatus $status
      * @param string $moderationComment
@@ -302,9 +302,7 @@ class ApiCommentService extends AppApiService
         string $moderationComment,
         User $user,
     ): void {
-        $comment->setModerationComment(strip_tags($moderationComment));
-        $comment->setStatus($status->value);
-        $comment->setUserModeration($user);
+        $comment->moderate($status, $moderationComment, $user);
         $this->save($comment);
     }
 }
