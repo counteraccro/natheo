@@ -50,7 +50,7 @@ comment.editor.status_help_moderate: 'The site shows the author and the words "M
 comment.editor.status_help_wait_validation: 'The site shows the words "Comment awaiting approval" in place of the author and the text.'
 comment.editor.status_help_moderator: 'You will be recorded as the moderator.'
 comment.editor.status_help_cleared: 'The moderation comment and the moderator will be cleared.'
-comment.editor.moderated_by: 'Moderated by {login} on {date}'
+comment.editor.moderated_by: 'Moderated by {login}'
 comment.collection.page_filter_title: 'Show the comments of this page'
 comment.dialog.moderate_title: 'Moderate {count, plural, one {# comment} other {# comments}}'
 comment.dialog.moderate_text: '{count, plural, one {The site will show the name of its author and the words "Moderated comment" in place of the text.} other {The site will show the name of their author and the words "Moderated comment" in place of the text.}} You will be recorded as the moderator.'

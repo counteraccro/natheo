@@ -50,7 +50,7 @@ comment.editor.status_help_moderate: 'Le site affiche l''auteur et la mention «
 comment.editor.status_help_wait_validation: 'Le site affiche la mention « Commentaire en attente de validation » à la place de l''auteur et du texte.'
 comment.editor.status_help_moderator: 'Vous serez enregistré comme modérateur.'
 comment.editor.status_help_cleared: 'Le commentaire de modération et le modérateur seront effacés.'
-comment.editor.moderated_by: 'Modéré par {login} le {date}'
+comment.editor.moderated_by: 'Modéré par {login}'
 comment.collection.page_filter_title: 'Afficher les commentaires de cette page'
 comment.dialog.moderate_title: 'Modérer {count, plural, one {# commentaire} other {# commentaires}}'
 comment.dialog.moderate_text: '{count, plural, one {Le site affichera le nom de son auteur et la mention « Commentaire modéré » à la place du texte.} other {Le site affichera le nom de leur auteur et la mention « Commentaire modéré » à la place du texte.}} Vous serez enregistré comme modérateur.'

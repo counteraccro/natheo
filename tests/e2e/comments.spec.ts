@@ -68,7 +68,7 @@ test.describe('administrateur', () => {
     await reason.fill('Propos déplacés');
     await page.getByRole('button', { name: 'Enregistrer' }).first().click();
     await expect(toasts(page)).toContainText(`Commentaire de ${author('Chloé')} enregistré`);
-    await expect(page.getByText(/Modéré par e2e-admin le /)).toBeVisible();
+    await expect(page.getByText(/Modéré par e2e-admin/)).toBeVisible();
   });
 
   test('modification concurrente refusée (412)', async ({ page, browser }) => {

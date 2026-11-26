@@ -8,13 +8,12 @@
 import { computed } from 'vue';
 import { UiIcon } from '@ui';
 import { useAdminContext } from '@/vue/Composables/Admin/useAdminContext';
-import { formatDateTime } from '@/vue/Composables/Admin/Screen/screenFormat';
 import type { FormScreenState } from '@/ts/Admin/Screen/FormScreen.type';
 import type { AdminComment } from '@/ts/Admin/Api/AdminComment.type';
 
 const props = defineProps<{ data: Partial<AdminComment>; screen: FormScreenState<AdminComment> }>();
 
-const { t, bootstrap } = useAdminContext();
+const { t } = useAdminContext();
 const moderated = computed(() => props.data.status === 'moderate');
 // Le modérateur n'est rempli qu'une fois la modération enregistrée
 const saved = computed(() => props.data.moderator ?? null);
@@ -36,12 +35,7 @@ const change = computed(() => {
     <p class="m-0">{{ help }} {{ change }}</p>
     <p v-if="moderated && saved" class="m-0 flex items-center gap-2">
       <UiIcon name="user" class="size-4 shrink-0" />
-      {{
-        t('comment.editor.moderated_by', {
-          login: saved.login,
-          date: formatDateTime(data.updatedAt ?? null, bootstrap.locale),
-        })
-      }}
+      {{ t('comment.editor.moderated_by', { login: saved.login }) }}
     </p>
   </div>
 </template>

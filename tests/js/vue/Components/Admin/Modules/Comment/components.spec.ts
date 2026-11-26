@@ -156,7 +156,7 @@ describe('CommentStatusNote', () => {
   });
 
   it('nomme le modérateur d’un commentaire modéré', () => {
-    const data = { status: 'moderate' as const, moderator, updatedAt: '2026-11-26T10:00:00+00:00' };
+    const data = { status: 'moderate' as const, moderator };
     const wrapper = mount(CommentStatusNote, { props: { data, screen }, global: globalWith().global });
     expect(wrapper.text()).toContain('comment.editor.moderated_by');
     expect(wrapper.text()).toContain('N-Editeur');
