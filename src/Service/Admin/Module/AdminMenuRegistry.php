@@ -17,7 +17,8 @@ final class AdminMenuRegistry
      * Chemin d'un écran de l'application : segments en minuscules séparés par « / », sans « / » au début ni à la fin
      * @var string
      */
-    private const string APP_PATH_PATTERN = '#^[a-z0-9][a-z0-9_-]*(/[a-z0-9][a-z0-9_-]*)*$#';
+    private const string APP_PATH_PATTERN =
+        '#^[a-z0-9][a-z0-9_-]*(/[a-z0-9][a-z0-9_-]*)*(\?[a-zA-Z0-9_]+=[a-z0-9_-]+(&[a-zA-Z0-9_]+=[a-z0-9_-]+)*)?$#';
 
     /**
      * Entrées indexées par identifiant, construites au premier appel

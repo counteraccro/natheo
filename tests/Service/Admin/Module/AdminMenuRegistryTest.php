@@ -155,6 +155,30 @@ class AdminMenuRegistryTest extends TestCase
     }
 
     /**
+     * Le chemin d'une entrée de l'application peut porter les filtres de sa liste
+     * @return void
+     */
+    public function testAppRouteWithQuery(): void
+    {
+        $registry = $this->createRegistry(
+            [
+                $this->createTestModule(
+                    'tag',
+                    items: [
+                        $this->createTestMenuItem(
+                            'tag_disabled',
+                            options: ['route' => 'tag_index', 'path' => 'tags?status=disabled&author=me'],
+                        ),
+                    ],
+                ),
+            ],
+            [],
+        );
+
+        $this->assertSame('tags?status=disabled&author=me', $registry->get('tag_disabled')?->path);
+    }
+
+    /**
      * @return array<string, array{array<string, mixed>, string}>
      */
     public static function invalidAppRouteProvider(): array
@@ -168,6 +192,11 @@ class AdminMenuRegistryTest extends TestCase
             'chemin sans route' => [['path' => 'tags/new'], 'doit avoir sa route et son chemin'],
             'chemin absolu' => [['route' => 'tag_new', 'path' => '/tags/new'], 'a un chemin invalide « /tags/new »'],
             'chemin vide' => [['route' => 'tag_new', 'path' => ''], 'a un chemin invalide «  »'],
+            'requête vide' => [['route' => 'tag_new', 'path' => 'tags?'], 'a un chemin invalide « tags? »'],
+            'requête sans valeur' => [
+                ['route' => 'tag_new', 'path' => 'tags?status'],
+                'a un chemin invalide « tags?status »',
+            ],
             'paramètres Twig' => [
                 ['route' => 'tag_new', 'path' => 'tags/new', 'routeParameters' => ['scope' => 'public']],
                 'a des paramètres de route Twig',

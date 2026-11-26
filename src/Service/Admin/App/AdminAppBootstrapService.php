@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.2
+ * @version 1.3
  * Données de démarrage de l'application Vue du back-office : session API, utilisateur, site, liens, options et textes
  */
 
@@ -120,6 +120,9 @@ class AdminAppBootstrapService extends AppAdminService
                 'notifications' => $optionSystem->getValueByKey(OptionSystem::OS_NOTIFICATION->value) === '1',
                 'confirmLeave' => $optionSystem->getValueByKey(OptionSystem::OS_CONFIRM_LEAVE_FORM->value) === '1',
                 'itemsPerPage' => (int) $this->optionUserService->getValueByKey(OptionUser::OU_NB_ELEMENT->value),
+                'openComment' => $optionSystem->getValueByKey(OptionSystem::OS_OPEN_COMMENT->value) === '1',
+                'commentWaitValidation' =>
+                    $optionSystem->getValueByKey(OptionSystem::OS_NEW_COMMENT_WAIT_VALIDATION->value) === '1',
             ],
             'theme' => $this->getTheme()->value,
             'themes' => $this->getThemes(),

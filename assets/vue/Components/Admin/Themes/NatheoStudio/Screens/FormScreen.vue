@@ -162,7 +162,7 @@ const meta = useFormMeta(props.screen);
         <dl class="m-0 flex flex-col gap-3 p-5 text-sm">
           <div v-for="item in meta" :key="item.name" class="flex justify-between gap-4">
             <dt class="shrink-0 text-fg-subtle">{{ item.label }}</dt>
-            <dd class="m-0 min-w-0 text-right font-semibold break-words text-fg" :title="item.title">
+            <dd class="m-0 min-w-0 text-right font-semibold [overflow-wrap:anywhere] text-fg" :title="item.title">
               <a
                 v-if="item.href"
                 :href="item.href"

@@ -47,7 +47,13 @@ describe('NatheoStudioLayout', () => {
 
   it('masque la cloche sans notifications et montre l’usurpation', () => {
     const data = bootstrap({
-      options: { notifications: false, confirmLeave: true, itemsPerPage: 20 },
+      options: {
+        notifications: false,
+        confirmLeave: true,
+        itemsPerPage: 20,
+        openComment: true,
+        commentWaitValidation: true,
+      },
       user: { ...bootstrap().user, impersonating: 'Grace' },
       urls: { ...bootstrap().urls, impersonationExit: '/admin/fr/dashboard/index?_switch_user=_exit' },
     });

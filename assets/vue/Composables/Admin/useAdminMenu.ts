@@ -1,6 +1,6 @@
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Menu du back-office : modules et entrées visibles lus une fois dans l'API, arbre de la sidebar et raccourcis
  */
 import { shallowRef, type ShallowRef } from 'vue';
@@ -19,6 +19,8 @@ export interface MenuLocation {
   breadcrumb?: string[];
   /** Écran affiché : son icône, et son titre quand sa route n'a pas d'entrée de menu (édition…) */
   page?: AdminPage | null;
+  /** Paramètres de l'adresse, comparés aux filtres du chemin des entrées */
+  query?: Record<string, unknown>;
 }
 
 export interface AdminMenu {
@@ -52,14 +54,26 @@ export function createAdminMenu(api: ApiClient, basePath: string): AdminMenu {
   const hrefOf = (item: AdminMenuItem): string | undefined =>
     item.path !== null ? basePath + item.path.replace(/^\//, '') : (item.legacyUrl ?? undefined);
 
-  /** Entrée de la route courante, sinon la dernière route du fil d'Ariane qui a une entrée */
+  /** Filtres du chemin d'une entrée (comments?moderation=wait_validation) */
+  const queryOf = (item: AdminMenuItem): [string, string][] => [
+    ...new URLSearchParams(item.path?.split('?')[1] ?? '').entries(),
+  ];
+
+  /**
+   * Entrée de la route courante, sinon la dernière route du fil d'Ariane qui a une entrée ; entre plusieurs entrées
+   * de la même route, celle dont les filtres de l'adresse reprennent le plus de filtres de son chemin
+   */
   const activeOf = (location: MenuLocation): AdminMenuItem | null => {
     const names = [...(location.breadcrumb ?? [])].reverse();
     if (location.name !== null) {
       names.unshift(location.name);
     }
-    for (const name of names) {
-      const item = items.value.find((candidate) => candidate.route === name && !candidate.hidden);
+    for (const [index, name] of names.entries()) {
+      const query = index === 0 && name === location.name ? (location.query ?? {}) : {};
+      const matching = items.value
+        .filter((candidate) => candidate.route === name && !candidate.hidden)
+        .filter((candidate) => queryOf(candidate).every(([key, value]) => query[key] === value));
+      const item = matching.sort((a, b) => queryOf(b).length - queryOf(a).length)[0];
       if (item) return item;
     }
     return null;

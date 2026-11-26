@@ -112,7 +112,7 @@ const backHref = computed(() => router.resolve({ name: descriptor.back }).href);
     >
       <div v-for="item in meta" :key="item.name" class="grid gap-0.5">
         <dt class="text-[12.5px] text-fg-subtle">{{ item.label }}</dt>
-        <dd class="m-0 text-[13.5px] font-semibold break-words" :title="item.title">
+        <dd class="m-0 text-[13.5px] font-semibold [overflow-wrap:anywhere]" :title="item.title">
           <a v-if="item.href" :href="item.href" class="ui-ring rounded-sm text-primary underline underline-offset-3">{{
             item.value
           }}</a>

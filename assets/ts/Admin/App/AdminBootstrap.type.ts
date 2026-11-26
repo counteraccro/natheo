@@ -1,6 +1,6 @@
 /**
  * @author Gourdon Aymeric
- * @version 1.2
+ * @version 1.3
  * Données de démarrage de l'application du back-office, lues dans la page (AdminAppBootstrapService)
  */
 
@@ -47,6 +47,10 @@ export interface AdminBootstrapOptions {
   /** Confirmation avant de quitter un formulaire modifié */
   confirmLeave: boolean;
   itemsPerPage: number;
+  /** Commentaires ouverts sur le site (OS_OPEN_COMMENT) */
+  openComment: boolean;
+  /** Nouveaux commentaires en attente de validation (OS_NEW_COMMENT_WAIT_VALIDATION) */
+  commentWaitValidation: boolean;
 }
 
 export interface AdminDebugUser {

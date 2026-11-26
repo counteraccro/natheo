@@ -1,7 +1,7 @@
 <script setup lang="ts">
 /**
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 1.2
  * Racine de l'application du back-office : libellés des composants, layout du thème autour de l'écran courant,
  * notifications, confirmation unique, liens sans rechargement, départ d'un formulaire modifié et thème des écrans
  */
@@ -30,6 +30,7 @@ const location = computed(() => ({
   name: typeof route.name === 'string' ? route.name : null,
   breadcrumb: route.meta.breadcrumb,
   page: page.value,
+  query: route.query,
 }));
 const items = computed(() => menu.tree(location.value));
 const shortcuts = computed(() => menu.shortcuts());

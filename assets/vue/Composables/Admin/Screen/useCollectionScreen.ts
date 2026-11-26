@@ -400,7 +400,10 @@ export function createCollectionScreen<T extends ScreenItem>(
     ],
     authorOptions: [
       { value: '', label: t('admin_app.screen.filter_author_all') },
-      { value: 'me', label: t(descriptor.messages.authorMe ?? 'admin_app.screen.filter_author_me') },
+      {
+        value: 'me',
+        label: descriptor.messages.authorMe ? t(descriptor.messages.authorMe) : t('admin_app.screen.filter_author_me'),
+      },
     ],
     selectFilters: (descriptor.filters ?? [])
       .filter((filter) => typeof filter !== 'string' && filter.type === 'select')

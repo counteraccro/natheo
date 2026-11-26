@@ -80,7 +80,7 @@ class CoreModulesTest extends AppWebTestCase
             }
             $moduleId = $registry->getModule($item->id)?->id;
             $this->assertSame(
-                '/' . $item->path,
+                '/' . strtok($item->path, '?'),
                 $appRoutes[$moduleId][$item->route] ?? null,
                 sprintf(
                     'Route Vue « %s » de l\'entrée « %s » absente du module « %s »',

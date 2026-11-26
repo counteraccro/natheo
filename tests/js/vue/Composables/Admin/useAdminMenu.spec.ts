@@ -64,6 +64,34 @@ describe('createAdminMenu', () => {
     expect(activeIds(menu.tree({ name: 'inconnue' }))).toEqual([]);
   });
 
+  it('active, entre deux entrées de la même liste, celle dont l’adresse reprend les filtres', async () => {
+    const filtered = [
+      itemOf('comment_index', { module: 'comment', route: 'comment_index', path: 'comments' }),
+      itemOf('comment_moderate', {
+        module: 'comment',
+        route: 'comment_index',
+        path: 'comments?moderation=wait_validation',
+      }),
+    ];
+    const { api } = menuApi([moduleOf('comment')], filtered);
+    const menu = createAdminMenu(api, '/admin/fr/');
+    await menu.load();
+    const active = (location: Parameters<typeof menu.tree>[0]) => menu.tree(location).find((item) => item.active)?.id;
+
+    expect(menu.tree({ name: null }).map((item) => item.href)).toEqual([
+      '/admin/fr/comments',
+      '/admin/fr/comments?moderation=wait_validation',
+    ]);
+    expect(active({ name: 'comment_index', query: { moderation: 'wait_validation', search: 'x' } })).toBe(
+      'comment_moderate'
+    );
+    expect(active({ name: 'comment_index', query: { moderation: 'validate' } })).toBe('comment_index');
+    // Sur la route d'un élément, le fil d'Ariane mène à la liste sans ses filtres
+    expect(
+      active({ name: 'comment_edit', breadcrumb: ['comment_index'], query: { moderation: 'wait_validation' } })
+    ).toBe('comment_index');
+  });
+
   it('donne la section courante et les raccourcis', async () => {
     const { menu } = await loadedMenu();
     expect(menu.section({ name: 'tag_index' })).toEqual({ group: 'Tags', label: 'Liste', icon: undefined });

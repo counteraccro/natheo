@@ -1,11 +1,14 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import {
   collectionRoute,
+  defineAdminModule,
   formRoute,
   mergeModules,
+  reloadMenuBadges,
   type AdminModuleDefinition,
 } from '@/vue/Composables/Admin/defineAdminModule';
 import { tagCollection, tagForm } from '@admin/Modules/Tag/screens';
+import { notifyResourceChange } from '@/vue/Composables/Admin/Screen/resourceChanges';
 
 const module = (id: string, path: string): AdminModuleDefinition => ({
   id,
@@ -32,5 +35,25 @@ describe('collectionRoute / formRoute', () => {
     expect(collectionRoute('/tags', 'tag_index', tagCollection).meta?.operation).toBe('admin_tag_get_collection');
     expect(formRoute('/tags/new', 'tag_new', tagForm).meta?.operation).toBe('admin_tag_post');
     expect(formRoute('/tags/:id(\\d+)', 'tag_edit', tagForm).meta?.operation).toBe('admin_tag_get');
+  });
+});
+
+describe('reloadMenuBadges', () => {
+  it('recharge le menu une fois par écriture d’une ressource déclarée', () => {
+    const menu = { reload: vi.fn().mockResolvedValue(undefined) };
+    const stop = reloadMenuBadges(
+      [
+        defineAdminModule({ id: 'comment', badges: ['/admin/comments'], routes: [] }),
+        defineAdminModule({ id: 'other', badges: ['/admin/comments'], routes: [] }),
+      ],
+      menu
+    );
+    notifyResourceChange('/admin/tags');
+    expect(menu.reload).not.toHaveBeenCalled();
+    notifyResourceChange('/admin/comments', { ids: [1] });
+    expect(menu.reload).toHaveBeenCalledOnce();
+    stop();
+    notifyResourceChange('/admin/comments');
+    expect(menu.reload).toHaveBeenCalledOnce();
   });
 });
