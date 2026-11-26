@@ -9,29 +9,11 @@ declare(strict_types=1);
 
 namespace App\Api\V2\Filter;
 
-use ApiPlatform\Metadata\BackwardCompatibleFilterDescriptionTrait;
-use ApiPlatform\Metadata\FilterInterface;
-use ApiPlatform\Metadata\JsonSchemaFilterInterface;
 use ApiPlatform\Metadata\Operation;
-use ApiPlatform\Metadata\Parameter;
 use App\Enum\Admin\Content\Menu\MenuPosition;
 
-final class MenuPositionFilter implements FilterInterface, JsonSchemaFilterInterface
+final class MenuPositionFilter extends AbstractEnumSlugFilter
 {
-    use BackwardCompatibleFilterDescriptionTrait;
-
-    /**
-     * @param Parameter $parameter
-     * @return array<string, mixed>
-     */
-    public function getSchema(Parameter $parameter): array
-    {
-        return [
-            'type' => 'string',
-            'enum' => MenuPosition::getSlugs(),
-        ];
-    }
-
     /**
      * Retourne la position demandée sur l'opération, null si absente
      * @param Operation $operation
@@ -39,7 +21,22 @@ final class MenuPositionFilter implements FilterInterface, JsonSchemaFilterInter
      */
     public static function getValue(Operation $operation): ?MenuPosition
     {
-        $value = $operation->getParameters()?->get('position')?->getValue(null);
-        return MenuPosition::tryFromSlug(is_string($value) ? $value : null);
+        return MenuPosition::tryFromSlug(self::getSlug($operation));
+    }
+
+    /**
+     * @return class-string<MenuPosition>
+     */
+    protected static function getEnum(): string
+    {
+        return MenuPosition::class;
+    }
+
+    /**
+     * @return string
+     */
+    protected static function getParameterName(): string
+    {
+        return 'position';
     }
 }

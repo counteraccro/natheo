@@ -9,29 +9,11 @@ declare(strict_types=1);
 
 namespace App\Api\V2\Filter;
 
-use ApiPlatform\Metadata\BackwardCompatibleFilterDescriptionTrait;
-use ApiPlatform\Metadata\FilterInterface;
-use ApiPlatform\Metadata\JsonSchemaFilterInterface;
 use ApiPlatform\Metadata\Operation;
-use ApiPlatform\Metadata\Parameter;
 use App\Enum\Admin\Content\Page\PageCategory;
 
-final class PageCategoryFilter implements FilterInterface, JsonSchemaFilterInterface
+final class PageCategoryFilter extends AbstractEnumSlugFilter
 {
-    use BackwardCompatibleFilterDescriptionTrait;
-
-    /**
-     * @param Parameter $parameter
-     * @return array<string, mixed>
-     */
-    public function getSchema(Parameter $parameter): array
-    {
-        return [
-            'type' => 'string',
-            'enum' => PageCategory::getSlugs(),
-        ];
-    }
-
     /**
      * Retourne la catégorie demandée sur l'opération, null si absente
      * @param Operation $operation
@@ -39,7 +21,22 @@ final class PageCategoryFilter implements FilterInterface, JsonSchemaFilterInter
      */
     public static function getValue(Operation $operation): ?PageCategory
     {
-        $value = $operation->getParameters()?->get('category')?->getValue(null);
-        return PageCategory::tryFromSlug(is_string($value) ? $value : null);
+        return PageCategory::tryFromSlug(self::getSlug($operation));
+    }
+
+    /**
+     * @return class-string<PageCategory>
+     */
+    protected static function getEnum(): string
+    {
+        return PageCategory::class;
+    }
+
+    /**
+     * @return string
+     */
+    protected static function getParameterName(): string
+    {
+        return 'category';
     }
 }

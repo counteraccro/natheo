@@ -9,31 +9,17 @@ declare(strict_types=1);
 
 namespace App\Api\V2\Filter\Admin;
 
-use ApiPlatform\Metadata\BackwardCompatibleFilterDescriptionTrait;
-use ApiPlatform\Metadata\FilterInterface;
-use ApiPlatform\Metadata\JsonSchemaFilterInterface;
 use ApiPlatform\Metadata\Operation;
-use ApiPlatform\Metadata\Parameter;
+use App\Api\V2\Filter\AbstractEnumSlugFilter;
 use App\Enum\Admin\Comment\CommentStatus;
 
-final class CommentStatusFilter implements FilterInterface, JsonSchemaFilterInterface
+final class CommentStatusFilter extends AbstractEnumSlugFilter
 {
-    use BackwardCompatibleFilterDescriptionTrait;
-
     /**
      * Nom du paramètre déclaré sur les opérations
      * @var string
      */
     public const string PARAMETER = 'moderation';
-
-    /**
-     * @param Parameter $parameter
-     * @return array<string, mixed>
-     */
-    public function getSchema(Parameter $parameter): array
-    {
-        return ['type' => 'string', 'enum' => CommentStatus::getSlugs()];
-    }
 
     /**
      * Statut demandé, null sans filtre
@@ -42,7 +28,22 @@ final class CommentStatusFilter implements FilterInterface, JsonSchemaFilterInte
      */
     public static function getValue(Operation $operation): ?CommentStatus
     {
-        $value = $operation->getParameters()?->get(self::PARAMETER)?->getValue(null);
-        return CommentStatus::tryFromSlug(is_string($value) ? $value : null);
+        return CommentStatus::tryFromSlug(self::getSlug($operation));
+    }
+
+    /**
+     * @return class-string<CommentStatus>
+     */
+    protected static function getEnum(): string
+    {
+        return CommentStatus::class;
+    }
+
+    /**
+     * @return string
+     */
+    protected static function getParameterName(): string
+    {
+        return self::PARAMETER;
     }
 }
