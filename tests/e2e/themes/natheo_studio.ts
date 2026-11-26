@@ -1,6 +1,6 @@
 /**
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 1.2
  * Gestes de liste de Natheo-Studio : grille, actions par ligne et barre de sélection
  */
 import { expect } from '@playwright/test';
@@ -28,6 +28,12 @@ export const natheoStudio: ThemeScreens = {
   },
   rowActions: (page, label) =>
     natheoStudio.row(page, label).getByRole('button', { name: /^(Modifier|Activer|Désactiver)$/ }),
+  async openRow(page, label) {
+    await natheoStudio.row(page, label).getByRole('button', { name: 'Modifier' }).click();
+  },
+  async backToList(page) {
+    await page.getByRole('button', { name: 'Retour' }).first().click();
+  },
   async search(page, term) {
     const box = page.getByRole('searchbox', { name: 'Rechercher dans le tableau' });
     await box.fill(term);

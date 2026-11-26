@@ -1,6 +1,6 @@
 /**
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 1.2
  * Gestes d'un écran de liste qui diffèrent d'un thème du back-office à l'autre
  */
 import type { Locator, Page } from '@playwright/test';
@@ -26,6 +26,10 @@ export interface ThemeScreens {
   rowAction(page: Page, label: string, action: string, list?: ListScreen): Promise<void>;
   /** Actions de ligne proposées à l'utilisateur (vide si aucune) */
   rowActions(page: Page, label: string, list?: ListScreen): Locator;
+  /** Ouvre un élément depuis sa ligne */
+  openRow(page: Page, label: string, list?: ListScreen): Promise<void>;
+  /** Revient à la liste depuis le formulaire (liste déjà affichée à côté dans Natheo-Atelier) */
+  backToList(page: Page): Promise<void>;
   /** Recherche dans la liste */
   search(page: Page, term: string): Promise<void>;
   /** Tri par libellé */
