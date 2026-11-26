@@ -64,7 +64,7 @@ class DashboardController extends AppAdminController
                     'load_block_dashboard' => $this->generateUrl('admin_dashboard_load_block', [
                         'id' => DashboardBlock::LAST_COMMENT->value,
                     ]),
-                    'url_comments' => $this->generateUrl('admin_comment_index'),
+                    'url_comments' => $this->generateUrl('admin_app', ['path' => 'comments']),
                 ],
                 'dashboard_last_pages' => [
                     'load_block_dashboard' => $this->generateUrl('admin_dashboard_load_block', [
@@ -108,7 +108,7 @@ class DashboardController extends AppAdminController
             'urlStat' => [
                 'stats' => $this->generateUrl('admin_dashboard_load_dashboard_stat'),
                 'page' => $this->generateUrl('admin_page_index'),
-                'comment' => $this->generateUrl('admin_comment_index'),
+                'comment' => $this->generateUrl('admin_app', ['path' => 'comments']),
                 'user' => $this->generateUrl('admin_user_index'),
             ],
         ]);

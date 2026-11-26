@@ -186,12 +186,7 @@ class ApiCommentService extends AppApiService
             $isMustValidate = true;
         }
 
-        $status = CommentStatus::VALIDATE->value;
-        $statusStr = $translator->trans('comment.status.validate', domain: 'comment');
-        if ($isMustValidate) {
-            $status = CommentStatus::WAIT_VALIDATION->value;
-            $statusStr = $translator->trans('comment.status.wait.validation', domain: 'comment');
-        }
+        $status = $isMustValidate ? CommentStatus::WAIT_VALIDATION : CommentStatus::VALIDATE;
 
         $comment = new Comment();
         $comment->setPage($page);
@@ -201,14 +196,14 @@ class ApiCommentService extends AppApiService
         $comment->setEmail($email);
         $comment->setIp($ip);
         $comment->setUserAgent($userAgent);
-        $comment->setStatus($status);
+        $comment->setStatus($status->value);
         $comment->setDisabled(false);
         $this->save($comment);
 
         $notificationFactory = new NotificationFactory($page->getUser());
         $notificationFactory->addNotification(Notification::NEW_COMMENT->value, [
             'author' => htmlspecialchars($comment->getAuthor(), ENT_QUOTES),
-            'status' => $statusStr,
+            'status' => $status->getLabel()->trans($translator),
             'page' => htmlspecialchars((string) $page->getPageTranslationByLocale($locale)?->getTitre(), ENT_QUOTES),
             'id' => $comment->getId(),
         ]);

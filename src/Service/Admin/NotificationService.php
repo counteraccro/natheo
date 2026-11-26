@@ -106,7 +106,7 @@ class NotificationService extends AppAdminService
 
             if (isset($parameter['id'])) {
                 $router = $this->getRouter();
-                $notification->setTmpObjectId($router->generate('admin_comment_see', ['id' => $parameter['id']]));
+                $notification->setTmpObjectId($router->generate('admin_app', ['path' => 'comments/' . (int) $parameter['id']]));
             }
             if (is_numeric($parameter['page_id'] ?? null)) {
                 $notification->setTmpObjectId(

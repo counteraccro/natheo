@@ -12,6 +12,7 @@ namespace App\Controller\Admin\Content;
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\Comment\CommentStatus;
 use App\Enum\Admin\Content\Page\PageCategory;
 use App\Enum\Admin\Content\Page\PageCsrfToken;
 use App\Enum\Admin\Content\Page\PageMeta;
@@ -23,7 +24,6 @@ use App\Enum\Admin\Global\Breadcrumb;
 use App\Enum\Admin\Module\CoreModuleId;
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Enum\Admin\System\Options\OptionUser;
-use App\Service\Admin\Content\Comment\CommentService;
 use App\Service\Admin\Content\Menu\MenuService;
 use App\Service\Admin\Content\Page\PageDraftService;
 use App\Service\Admin\Content\Page\PageService;
@@ -261,9 +261,9 @@ class PageController extends AppAdminController
      * @param PageService $pageService
      * @param PageTranslate $pageTranslate
      * @param MarkdownEditorTranslate $markdownEditorTranslate
-     * @param CommentService $commentService
      * @param OptionSystemService $optionSystemService
      * @param AdminMenuBuilder $menuBuilder
+     * @param TranslatorInterface $translator
      * @param int|null $id
      * @return Response
      * @throws ContainerExceptionInterface
@@ -275,9 +275,9 @@ class PageController extends AppAdminController
         PageService $pageService,
         PageTranslate $pageTranslate,
         MarkdownEditorTranslate $markdownEditorTranslate,
-        CommentService $commentService,
         OptionSystemService $optionSystemService,
         AdminMenuBuilder $menuBuilder,
+        TranslatorInterface $translator,
         ?int $id = null,
     ): Response {
         if ($id !== null) {
@@ -324,7 +324,13 @@ class PageController extends AppAdminController
                 'list_render' => $pageService->getAllRender(),
                 'list_content' => $pageService->getAllContent(),
                 'list_categories' => $pageService->getAllCategories(),
-                'list_comments_status' => $commentService->getAllStatus(),
+                'list_comments_status' => array_combine(
+                    array_map(fn(CommentStatus $status) => $status->value, CommentStatus::cases()),
+                    array_map(
+                        fn(CommentStatus $status) => $status->getLabel()->trans($translator),
+                        CommentStatus::cases(),
+                    ),
+                ),
                 'url_front' => $optionSystemService->getValueByKey(OptionSystem::OS_ADRESSE_SITE->value),
                 'options_commentaire' => [
                     'open' => $optionSystemService->getValueByKey(OptionSystem::OS_OPEN_COMMENT->value),
