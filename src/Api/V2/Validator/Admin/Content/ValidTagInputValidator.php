@@ -13,17 +13,16 @@ use App\Api\V2\Input\Admin\Content\CreateTagInput;
 use App\Api\V2\Input\Admin\Content\UpdateTagInput;
 use App\Api\V2\Input\Admin\Global\LabelTranslationInput;
 use App\Api\V2\Resource\Admin\Content\AdminTag;
+use App\Api\V2\Validator\AbstractTranslatedInputValidator;
 use App\Entity\Admin\Content\Tag\Tag;
 use App\Service\Api\Admin\Content\ApiAdminTagService;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\ConstraintValidator;
-use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 use function Symfony\Component\Translation\t;
 
-final class ValidTagInputValidator extends ConstraintValidator
+final class ValidTagInputValidator extends AbstractTranslatedInputValidator
 {
     /**
      * Longueur maximale d'un libellé
@@ -108,19 +107,5 @@ final class ValidTagInputValidator extends ConstraintValidator
     {
         $previous = $this->requestStack->getCurrentRequest()?->attributes->get('previous_data');
         return $previous instanceof AdminTag ? $previous->id : null;
-    }
-
-    /**
-     * @param TranslatableMessage $message
-     * @param string $path
-     * @return void
-     */
-    private function addViolation(TranslatableMessage $message, string $path): void
-    {
-        $this->context
-            ->buildViolation($message->getMessage(), $message->getParameters())
-            ->setTranslationDomain($message->getDomain())
-            ->atPath($path)
-            ->addViolation();
     }
 }

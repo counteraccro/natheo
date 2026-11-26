@@ -10,14 +10,13 @@ declare(strict_types=1);
 namespace App\Api\V2\Validator\Admin\Content;
 
 use App\Api\V2\Input\Admin\Content\UpdateCommentInput;
-use Symfony\Component\Translation\TranslatableMessage;
+use App\Api\V2\Validator\AbstractTranslatedInputValidator;
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 use function Symfony\Component\Translation\t;
 
-final class ValidCommentInputValidator extends ConstraintValidator
+final class ValidCommentInputValidator extends AbstractTranslatedInputValidator
 {
     /**
      * Longueur maximale de la raison de la modération
@@ -51,19 +50,5 @@ final class ValidCommentInputValidator extends ConstraintValidator
                 'moderationComment',
             );
         }
-    }
-
-    /**
-     * @param TranslatableMessage $message
-     * @param string $path
-     * @return void
-     */
-    private function addViolation(TranslatableMessage $message, string $path): void
-    {
-        $this->context
-            ->buildViolation($message->getMessage(), $message->getParameters())
-            ->setTranslationDomain($message->getDomain())
-            ->atPath($path)
-            ->addViolation();
     }
 }
