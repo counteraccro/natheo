@@ -1,12 +1,14 @@
 /**
  * @author Gourdon Aymeric
- * @version 1.2
+ * @version 1.3
  * Déclaration des écrans d'un module dans l'application du back-office (module.ts du dossier du module)
  */
 import type { RouteRecordRaw } from 'vue-router';
 import type { CollectionScreenDescriptor } from '@/ts/Admin/Screen/CollectionScreen.type';
 import type { FormScreenDescriptor } from '@/ts/Admin/Screen/FormScreen.type';
 import type { ScreenItem } from '@/ts/Admin/Screen/Screen.type';
+import type { AdminMenu } from '@/vue/Composables/Admin/useAdminMenu';
+import { onResourceChange } from '@/vue/Composables/Admin/Screen/resourceChanges';
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -30,6 +32,8 @@ export interface AdminModuleDefinition {
   debug?: boolean;
   /** Domaines de traduction de ses écrans */
   domains?: string[];
+  /** Ressources dont une écriture change les badges du menu (/admin/comments), relus après elle */
+  badges?: string[];
   routes: RouteRecordRaw[];
 }
 
@@ -98,6 +102,18 @@ export function formRoute<T extends ScreenItem>(
       operation: creation ? descriptor.create?.operation : descriptor.read.operation,
     },
   };
+}
+
+/**
+ * Recharge le menu, et ses badges, après l'écriture d'une ressource déclarée par badges
+ * @param modules
+ * @param menu
+ * @return arrêt de l'écoute
+ */
+export function reloadMenuBadges(modules: AdminModuleDefinition[], menu: Pick<AdminMenu, 'reload'>): () => void {
+  const resources = [...new Set(modules.flatMap((module) => module.badges ?? []))];
+  const stops = resources.map((resource) => onResourceChange(resource, () => void menu.reload()));
+  return () => stops.forEach((stop) => stop());
 }
 
 /**

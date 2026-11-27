@@ -83,7 +83,13 @@ export function bootstrap(values: Partial<AdminBootstrap> = {}): AdminBootstrap 
       search: '/admin/fr/search',
       notifications: '/admin/fr/notification/index',
     },
-    options: { notifications: true, confirmLeave: true, itemsPerPage: 20 },
+    options: {
+      notifications: true,
+      confirmLeave: true,
+      itemsPerPage: 20,
+      openComment: true,
+      commentWaitValidation: true,
+    },
     theme: 'natheo_studio',
     themes: [
       { id: 'natheo_studio', label: 'Natheo-Studio' },

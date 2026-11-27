@@ -90,6 +90,8 @@ class AdminAppControllerTest extends AppWebTestCase
         $this->assertSame($this->router->generate('admin_dashboard_index'), $bootstrap['urls']['dashboard']);
         $this->assertIsBool($bootstrap['options']['notifications']);
         $this->assertIsInt($bootstrap['options']['itemsPerPage']);
+        $this->assertIsBool($bootstrap['options']['openComment']);
+        $this->assertIsBool($bootstrap['options']['commentWaitValidation']);
         $this->assertSame(['admin_ui', 'admin_app'], array_keys($bootstrap['messages']));
         $this->assertArrayHasKey('admin_ui.dialog.close', $bootstrap['messages']['admin_ui']);
         $this->assertNull($bootstrap['debug']);

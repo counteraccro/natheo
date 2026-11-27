@@ -118,6 +118,7 @@ class DashboardServiceTest extends AppWebTestCase
         $this->assertArrayHasKey('author', $comment);
         $this->assertArrayHasKey('status', $comment);
         $this->assertArrayHasKey('date', $comment);
+        $this->assertStringContainsString('badge ', $comment['status']);
     }
 
     /**

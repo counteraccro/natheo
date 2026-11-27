@@ -18,16 +18,15 @@ use App\Api\V2\Input\Admin\Content\UpdateFaqInput;
 use App\Api\V2\Input\Admin\Content\UpdateFaqQuestionInput;
 use App\Api\V2\Input\Admin\Global\TitleTranslationInput;
 use App\Api\V2\Resource\Admin\Content\AdminFaqQuestion;
+use App\Api\V2\Validator\AbstractTranslatedInputValidator;
 use App\Service\Api\Admin\Content\ApiAdminFaqService;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 use function Symfony\Component\Translation\t;
 
-final class ValidFaqInputValidator extends ConstraintValidator
+final class ValidFaqInputValidator extends AbstractTranslatedInputValidator
 {
     /**
      * Longueur maximale du titre d'une FAQ ou d'une catégorie
@@ -135,19 +134,5 @@ final class ValidFaqInputValidator extends ConstraintValidator
         if ($value->category->faq?->id !== $previous->faq?->id) {
             $this->addViolation(t('faq.error.category_other_faq', domain: 'faq'), 'category');
         }
-    }
-
-    /**
-     * @param TranslatableMessage $message
-     * @param string $path
-     * @return void
-     */
-    private function addViolation(TranslatableMessage $message, string $path): void
-    {
-        $this->context
-            ->buildViolation($message->getMessage(), $message->getParameters())
-            ->setTranslationDomain($message->getDomain())
-            ->atPath($path)
-            ->addViolation();
     }
 }

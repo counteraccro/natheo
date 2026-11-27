@@ -1,6 +1,6 @@
 /*!
  * Author : Gourdon Aymeric
- * Version : 1.4
+ * Version : 1.5
  * Point d'entrée de l'application Vue du back-office
  */
 // Importée ici et non dans le CSS : Tailwind ne réécrit pas les chemins des fichiers de police
@@ -11,7 +11,7 @@ import AdminApp from '@admin/App/AdminApp.vue';
 import { ADMIN_CONTEXT, createAdminContext } from '@/vue/Composables/Admin/useAdminContext';
 import { createAdminRouter } from '@/vue/Composables/Admin/adminRouter';
 import { loadAdminTheme, themeLoaders } from '@/vue/Composables/Admin/loadAdminTheme';
-import { mergeModules, type AdminModuleDefinition } from '@/vue/Composables/Admin/defineAdminModule';
+import { mergeModules, reloadMenuBadges, type AdminModuleDefinition } from '@/vue/Composables/Admin/defineAdminModule';
 import type { AdminBootstrap } from '@/ts/Admin/App/AdminBootstrap.type';
 import type { AdminTheme } from '@/ts/Admin/Theme/AdminTheme.type';
 
@@ -32,6 +32,8 @@ const modules = mergeModules(
     })
   )
 );
+
+reloadMenuBadges(modules, context.menu);
 
 // Seul le thème de l'utilisateur est téléchargé, avec ses styles, avant le montage
 const loaders = themeLoaders(

@@ -6,6 +6,7 @@ namespace App\Entity\Admin\Content\Comment;
 
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\Comment\CommentStatus;
 use App\Enum\Installation\DoctrineStrategy;
 use App\Repository\Admin\Content\Comment\CommentRepository;
 use Doctrine\DBAL\Types\Types;
@@ -220,6 +221,29 @@ class Comment
     public function setModerationComment(?string $moderationComment): static
     {
         $this->moderationComment = $moderationComment;
+
+        return $this;
+    }
+
+    /**
+     * Change le statut. Un commentaire modéré garde son modérateur et la raison donnée, sans balises HTML.
+     * Avec un autre statut, il perd les deux.
+     * @param CommentStatus $status
+     * @param string|null $moderationComment
+     * @param User|null $moderator
+     * @return static
+     */
+    public function moderate(CommentStatus $status, ?string $moderationComment, ?User $moderator): static
+    {
+        $this->status = $status->value;
+        if ($status === CommentStatus::MODERATE) {
+            $reason = trim(strip_tags((string) $moderationComment));
+            $this->moderationComment = $reason === '' ? null : $reason;
+            $this->userModeration = $moderator;
+        } else {
+            $this->moderationComment = null;
+            $this->userModeration = null;
+        }
 
         return $this;
     }

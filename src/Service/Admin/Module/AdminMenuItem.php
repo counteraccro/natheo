@@ -25,7 +25,8 @@ final readonly class AdminMenuItem
      * @param bool $shortcut entrée de création reprise dans le bouton « Nouveau » du header
      * @param bool $hidden entrée connue du registre mais absente de la sidebar
      * @param string|null $route nom de la route Vue d'une entrée de l'application, à la place de $legacyRoute
-     * @param string|null $path chemin de cette route sous /admin/<langue>/ (tags, tags/new), donné avec $route
+     * @param string|null $path chemin de cette route sous /admin/<langue>/ (tags, tags/new), avec les filtres de sa liste
+     *     (comments?moderation=wait_validation), donné avec $route
      * @param string|null $operation opération d'API du module sans laquelle l'entrée est masquée (admin_tag_post)
      */
     public function __construct(

@@ -1,12 +1,12 @@
 /**
  * @author Gourdon Aymeric
- * @version 1.3
+ * @version 1.5
  * État et actions d'un écran de formulaire décrit par des données : lecture, champs par langue (recopie de la
- * langue de l'interface, cochée par défaut à la création), enregistrement, suppression, retour à la liste et
- * suivi des écritures faites ailleurs
+ * langue de l'interface, cochée par défaut à la création), enregistrement, suppression, retour à la liste avec sa
+ * recherche et ses filtres, suivi des écritures faites ailleurs
  */
 import { computed, onScopeDispose, ref } from 'vue';
-import { useRouter, type Router } from 'vue-router';
+import { useRoute, useRouter, type LocationQuery, type Router } from 'vue-router';
 import { notify } from '@/vue/Composables/Global/toast';
 import { useAdminContext } from '@/vue/Composables/Admin/useAdminContext';
 import { useConfirm, type ConfirmRequest } from '@/vue/Composables/Admin/useConfirm';
@@ -33,6 +33,8 @@ export interface FormScreenDeps<T> {
   resource: AdminResource<T>;
   locales: string[];
   currentLocale: string;
+  /** Adresse de la liste, reçue d'elle et rendue au retour */
+  listQuery?: () => LocationQuery;
 }
 
 /**
@@ -45,6 +47,8 @@ export function createFormScreen<T extends ScreenItem>(
   deps: FormScreenDeps<T>
 ): FormScreenState<T> {
   const { t, can, confirm, router, resource, locales, currentLocale } = deps;
+  const listQuery = deps.listQuery ?? (() => ({}));
+  const toList = (): Promise<unknown> => router.push({ name: descriptor.back, query: listQuery() });
   const data = (): Row => (resource.data.value ?? {}) as Row;
   const isNew = computed(() => resource.id.value === null);
   const rowsOf = (field: TranslationsField): Row[] => (data()[field.name] as Row[] | undefined) ?? [];
@@ -69,13 +73,15 @@ export function createFormScreen<T extends ScreenItem>(
     descriptor.sections.filter((section) => section.on === undefined || (section.on === 'create') === isNew.value)
   );
 
-  /** Données envoyées : champs des sections affichées, lignes par langue dans l'ordre des langues du site */
+  /**
+   * Données envoyées : champs affichés des sections affichées, lignes par langue dans l'ordre des langues du site
+   */
   const payload = (): Row => {
     const body: Row = {};
     sections.value
       .flatMap((section) => section.fields)
       .forEach((field) => {
-        if (field.type === 'component') return;
+        if (field.type === 'component' || field.visibleWhen?.(data()) === false) return;
         body[field.name] =
           field.type === 'translations'
             ? locales.map((locale) => ({ locale, [field.field]: translation(field, locale) }))
@@ -85,6 +91,9 @@ export function createFormScreen<T extends ScreenItem>(
   };
 
   const label = (): string => (resource.data.value ? descriptor.rowLabel(resource.data.value) : '');
+  // created, confirmDelete et deleted sont exigés par defineFormScreen avec leur opération
+  const message = (key: keyof FormScreenDescriptor['messages'], value: string): string =>
+    t(descriptor.messages[key] ?? '', { label: value });
 
   const canEdit = computed(() => isNew.value || can.can('edit', descriptor.update.operation, resource.data.value));
   const mode = computed(() => (isNew.value ? 'create' : canEdit.value ? 'edit' : 'view'));
@@ -132,14 +141,14 @@ export function createFormScreen<T extends ScreenItem>(
       const saved = await resource.save(payload());
       if (saved === null) return;
       notifyResourceChange(descriptor.resource, { ids: [saved.id], source: resource });
-      notify('success', t(created ? descriptor.messages.created : descriptor.messages.saved, { label: label() }));
-      if (created) {
-        await router.replace({ name: descriptor.editRoute, params: { id: String(saved.id) } });
+      notify('success', message(created ? 'created' : 'saved', label()));
+      if (created && descriptor.editRoute) {
+        await router.replace({ name: descriptor.editRoute, params: { id: String(saved.id) }, query: listQuery() });
       }
     },
     async remove(): Promise<void> {
       const confirmed = await confirm({
-        title: t(descriptor.messages.confirmDelete, { label: label() }),
+        title: message('confirmDelete', label()),
         message: t('admin_app.screen.confirm_irreversible'),
         tone: 'danger',
         icon: 'trash',
@@ -150,8 +159,8 @@ export function createFormScreen<T extends ScreenItem>(
       const id = resource.id.value;
       if (confirmed && id !== null && (await resource.remove())) {
         notifyResourceChange(descriptor.resource, { ids: [id], deleted: true, source: resource });
-        notify('success', t(descriptor.messages.deleted, { label: deleted }));
-        await router.push({ name: descriptor.back });
+        notify('success', message('deleted', deleted));
+        await toList();
       }
     },
     reload: () => resource.load(),
@@ -159,7 +168,7 @@ export function createFormScreen<T extends ScreenItem>(
       if (change.source === resource || isNew.value || !changeConcerns(change, resource.id.value)) return;
       if (change.deleted) {
         resource.dispose();
-        await router.push({ name: descriptor.back });
+        await toList();
       } else if (leaveGuard.isDirty(descriptor.leaveKey)) {
         resource.conflict.value = true;
       } else {
@@ -167,7 +176,7 @@ export function createFormScreen<T extends ScreenItem>(
       }
     },
     back(): void {
-      void router.push({ name: descriptor.back });
+      void toList();
     },
   };
 }
@@ -182,6 +191,7 @@ export function useFormScreen<T extends ScreenItem>(
   id: string | number | null
 ): FormScreenState<T> {
   const { t, can, bootstrap } = useAdminContext();
+  const route = useRoute();
   const resource = useAdminResource<T>(descriptor.resource, id, {
     initial: () => descriptor.initial() as T,
     leaveKey: descriptor.leaveKey,
@@ -194,6 +204,7 @@ export function useFormScreen<T extends ScreenItem>(
     resource,
     locales: bootstrap.locales,
     currentLocale: bootstrap.locale,
+    listQuery: () => route.query,
   });
   // Une action de la liste affichée à côté a modifié ou supprimé l'élément
   onScopeDispose(onResourceChange(descriptor.resource, (change) => void screen.externalChange(change)));

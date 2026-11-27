@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
+import { h } from 'vue';
 import { flushPromises, mount } from '@vue/test-utils';
 import { createMemoryHistory, createRouter } from 'vue-router';
 import AtelierList from '@/vue/Components/Admin/Themes/NatheoAtelier/AtelierList.vue';
@@ -56,7 +57,7 @@ const tag = (id: number, values: Partial<Tag> = {}): Tag => ({
   ...values,
 });
 
-async function mountList(path = '/tags/2', sql: string | null = null) {
+async function mountList(path = '/tags/2', sql: string | null = null, listDescriptor = descriptor) {
   const getCollection = vi.fn().mockResolvedValue({
     members: [tag(1), tag(2, { disabled: true })],
     total: 2,
@@ -67,20 +68,20 @@ async function mountList(path = '/tags/2', sql: string | null = null) {
   const router = createRouter({
     history: createMemoryHistory('/admin/fr/'),
     routes: [
-      { path: '/tags', name: 'tag_index', component: { render: () => null } },
-      { path: '/tags/new', name: 'tag_new', component: { render: () => null } },
-      { path: '/tags/:id', name: 'tag_edit', component: { render: () => null } },
+      { path: '/tags', name: 'tag_index', component: { render: () => null }, meta: { screenGroup: 'tag_index' } },
+      { path: '/tags/new', name: 'tag_new', component: { render: () => null }, meta: { screenGroup: 'tag_index' } },
+      { path: '/tags/:id', name: 'tag_edit', component: { render: () => null }, meta: { screenGroup: 'tag_index' } },
     ],
   });
   await router.push(path);
   const context = { ...createAdminContext(bootstrap()), t, can, api: { getCollection } as unknown as ApiClient };
   const wrapper = mount(AtelierList, {
     attachTo: document.body,
-    props: { descriptor: descriptor as unknown as CollectionScreenDescriptor },
+    props: { descriptor: listDescriptor as unknown as CollectionScreenDescriptor },
     global: { plugins: [router], provide: { [ADMIN_CONTEXT as symbol]: context, [UI_LABELS as symbol]: labels } },
   });
   await flushPromises();
-  return { wrapper, getCollection };
+  return { wrapper, getCollection, router };
 }
 
 describe('AtelierList', () => {
@@ -131,6 +132,37 @@ describe('AtelierList', () => {
     const { wrapper } = await mountList();
     await wrapper.findAll('li.atelier-row input[type="checkbox"]')[0].setValue(true);
     expect(wrapper.find('[role="region"]').exists()).toBe(true);
+  });
+});
+
+describe('AtelierList, ajouts du module', () => {
+  const moduleDescriptor = defineCollectionScreen<Tag>({
+    ...descriptor,
+    header: { render: () => h('p', { class: 'module-header' }, 'bandeau') },
+    filters: [
+      {
+        type: 'select',
+        param: 'moderation',
+        label: 'comment.filter.moderation',
+        allLabel: 'comment.filter.moderation_all',
+        options: [{ value: 'moderate', label: 'comment.status.moderate' }],
+      },
+    ],
+  });
+
+  it('lit le filtre du module dans l’adresse et écrit ses pastilles dedans', async () => {
+    const { wrapper, getCollection, router } = await mountList('/tags?moderation=moderate', null, moduleDescriptor);
+    expect(wrapper.find('.module-header').exists()).toBe(true);
+    expect(getCollection).toHaveBeenCalledWith('/admin/tags', expect.objectContaining({ moderation: 'moderate' }));
+    const group = wrapper.get('[role="group"][aria-label="comment.filter.moderation"]');
+    const chips = group.findAll('button.atelier-chip');
+    expect(chips.map((chip) => chip.attributes('aria-pressed'))).toEqual(['false', 'true']);
+
+    await chips[0].trigger('click');
+    await flushPromises();
+    expect(router.currentRoute.value.query.moderation).toBeUndefined();
+    expect(getCollection.mock.lastCall?.[1].moderation).toBeUndefined();
+    wrapper.unmount();
   });
 });
 

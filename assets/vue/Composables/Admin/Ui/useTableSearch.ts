@@ -1,7 +1,8 @@
 /**
  * @author Gourdon Aymeric
- * @version 1.0
- * Recherche en deux temps d'une grille : filtre de la page affichée, puis requête en base quand elle ne contient rien
+ * @version 1.1
+ * Recherche en deux temps d'une grille : filtre de la page affichée, puis requête en base quand elle ne contient rien ;
+ * un terme donné par l'appelant (adresse de la liste) est une recherche en base déjà faite
  */
 import { computed, getCurrentInstance, onBeforeUnmount, ref, watch, type ComputedRef, type Ref } from 'vue';
 import { filterRows } from '@/vue/Composables/Admin/Ui/tableSearch';
@@ -20,6 +21,8 @@ export interface TableSearchOptions<T extends DataTableRow> {
   search: (term: string) => void;
   /** Retour à la première page avant une recherche en base */
   resetPage: () => void;
+  /** Terme partagé avec l'appelant, qui peut le changer lui-même avec la recherche en base */
+  term?: Ref<string>;
 }
 
 export interface TableSearch<T extends DataTableRow> {
@@ -40,10 +43,29 @@ export interface TableSearch<T extends DataTableRow> {
  * @param options
  */
 export function useTableSearch<T extends DataTableRow>(options: TableSearchOptions<T>): TableSearch<T> {
-  const term = ref('');
+  const term = ref(options.term?.value ?? '');
   const mode = ref<DataTableSearchMode>('idle');
   let remoteTerm: string | null = null;
   let timer: ReturnType<typeof setTimeout> | undefined;
+
+  /** Terme posé par l'appelant : sa recherche en base est déjà lancée */
+  const adopt = (value: string): void => {
+    clearTimeout(timer);
+    term.value = value;
+    remoteTerm = value.trim() || null;
+    mode.value = remoteTerm === null ? 'idle' : 'remote';
+  };
+  adopt(term.value);
+  if (options.term) {
+    const shared = options.term;
+    // Le terme saisi est rendu à l'appelant, qui le renvoie : seul un terme différent vient de lui
+    watch(term, (value) => {
+      shared.value = value;
+    });
+    watch(shared, (value) => {
+      if (value !== term.value) adopt(value);
+    });
+  }
 
   const searchRemote = (value: string): void => {
     clearTimeout(timer);

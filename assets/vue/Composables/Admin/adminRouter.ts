@@ -1,6 +1,6 @@
 /**
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 1.2
  * Routeur de l'application du back-office : routes des modules (écrans spécifiques du thème), page introuvable
  * et gardes (départ d'un formulaire, module et opération visibles, domaines chargés)
  */
@@ -102,6 +102,8 @@ export function createAdminRouter(options: AdminRouterOptions): Router {
   });
 
   router.beforeEach(async (to, from) => {
+    // Même écran, seule l'adresse de la liste change (recherche, filtres) : le formulaire reste ouvert
+    if (from.matched.length > 0 && to.path === from.path) return true;
     // Premier affichage : aucun formulaire n'est encore ouvert
     if (from.matched.length > 0 && !(await options.confirmLeave())) {
       return false;

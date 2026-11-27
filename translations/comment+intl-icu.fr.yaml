@@ -1,80 +1,61 @@
-comment.index.title: 'Gestion des commentaires'
-comment.index.description: 'Gérer les commentaires de votre site web'
-comment.index.modal.help.title: Aide
-comment.index.modal.help.edit: Modérer
-comment.grid.id: '#'
-comment.grid.comment: Commentaire
-comment.grid.author: Auteur
-comment.grid.status: État
-comment.grid.created_at: Créé le
-comment.grid.page: Page
-comment.status.wait.validation: 'En attente de validation'
-comment.status.validate: Validé
-comment.status.moderate: Modéré
-comment.status.unknown: Inconnu
-comment.moderate.comments.title: 'Modération des commentaires'
-comment.see.title: Commentaire
-comment.see.title_id: 'Commentaire #{id}'
-comment.index.button.moderate: 'Modération globale'
-comment.see.loading: 'Chargement du commentaire'
-comment.see.author: Auteur
-comment.see.created: 'Créé le '
-comment.see.ip: IP
-comment.see.user_agent: 'Autres infos'
-comment.see.title_info: Informations du commentaire
-comment.see.moderation.comment: 'Commentaire de modération'
-comment.see.moderation.author: Modérateur
-comment.see.button.edit: Modifier le commentaire
-comment.see.save.success: Commentaire mis à jour avec succès
-comment.index.info: Information
-comment.index.info_comment_open: 'Les commentaires sont ouverts sur le site'
-comment.index.info_comment_moderate: 'et sont en attente de validation par défaut.'
-comment.index.info_comment_close: 'Les commentaires sont désactivés sur le site'
-comment.index.info_change_option: 'Modifier les options'
-comment.moderation.loading: Chargement de la liste des commentaires
-comment.moderate.comments.description: Valider ou modérer en une fois une liste de commentaires
-comment.moderation.legend.search: Filtre
-comment.moderation.status.label: Trier par statut
-comment.moderation.pages.label: 'Trier par pages'
-comment.moderation.pages.default: 'Toutes les pages'
-comment.moderation.selection.title: 'Action de modération'
-comment.moderation.status.default: Tous les statuts
-comment.index.button.moderate_nb_wait_validation_2: ' en attente de validation'
-comment.moderation.paginate.page: page
-comment.moderation.paginate.on: sur
-comment.moderation.paginate.row: commentaire(s)
-comment.moderation.comment.comment: Contenu
-comment.moderation.comment.page: 'Posté sur la page'
-comment.moderation.comment.info: Informations
-comment.moderation.comment.ip: IP
-comment.moderation.comment.user_agent: 'User Agent'
-comment.moderation.comment.date: 'écrit le'
-comment.moderation.comment.moderator: 'Modéré par'
-comment.moderation.comment.update: 'Modéré le'
-comment.moderation.comment.author: par
-comment.moderation.selection.comment: sélectionné(s)
-comment.moderation.selection.status: Nouveau statut
-comment.moderation.selection.comment_moderation: 'Commentaire de modération'
-comment.moderation.selection.submit: 'Mettre à jour'
-comment.moderation.update.success: commentaire(s) modifié(s) avec succès
-comment.moderation.no_result: Aucun commentaire trouvé pour le statut sélectionné
-comment.see.cancel: Retour
-comment.see.comment.title: 'Contenu du commentaire'
-comment.see.comment.status: Statut
-comment.see.comment.status_current: Statut actuel
-comment.see.comment.status_label: 'Modifier le statut'
-comment.see.comment.page.associated: 'Page associée'
-comment.see.comment.page.created: 'Créée le '
-comment.see.comment.page.link: 'Voir la page'
-comment.moderation.comment.select.all: 'Tout sélectionner'
-comment.moderation.comment.unselect.all: 'Tout désélectionner'
-comment.moderation.statistics: 'Statistiques globales'
-comment.moderation.status.short.validate: Validé
-comment.moderation.status.short.moderate: Modéré
-comment.moderation.status.short.waiting: 'En attente'
-comment.see.comment.error.no.comment.title: 'Aucun commentaire trouvé'
-comment.see.comment.error.no.comment.text: Ce commentaire n'existe pas ou a été supprimé. Vous pouvez retourner à la liste
-comment.see.comment.button.back: Retour
-comment.error.not_found: 'Ce commentaire n''existe pas ou a été supprimé.'
-comment.error.status_invalid: 'Ce statut de commentaire n''existe pas.'
-comment.moderation.selected: 'Commentaires sélectionnés'
+comment.error.not_found: "Ce commentaire n'existe pas ou a été supprimé."
+comment.error.status_invalid: "Ce statut de commentaire n'existe pas."
+comment.error.comment_required: 'Le commentaire ne peut pas être vide.'
+comment.error.moderation_comment_length: 'La raison de la modération ne peut pas dépasser {max} caractères.'
+comment.state.wait_validation: 'En attente'
+comment.state.validate: 'Validé'
+comment.state.moderate: 'Modéré'
+comment.collection.title: 'Commentaires'
+comment.collection.description: 'Commentaires envoyés depuis les pages du site.'
+comment.collection.column_id: '#'
+comment.collection.column_excerpt: 'Commentaire'
+comment.collection.column_author: 'Auteur'
+comment.collection.column_page: 'Page'
+comment.collection.column_status: 'Statut'
+comment.collection.column_created_at: 'Envoyé le'
+comment.collection.filter_moderation: 'Statut de modération'
+comment.collection.filter_moderation_all: 'Tous les statuts'
+comment.collection.bulk_validate: 'Valider'
+comment.collection.bulk_wait_validation: 'Remettre en attente'
+comment.collection.bulk_moderate: 'Modérer'
+comment.collection.filter_author_me: 'Modérés par moi'
+comment.editor.title_edit: 'Édition du commentaire #{id}'
+comment.editor.title_view: 'Commentaire #{id}'
+comment.editor.description_edit: 'Modification du texte et du statut du commentaire.'
+comment.editor.description_view: 'Votre compte a accès à ce commentaire en lecture.'
+comment.editor.section_comment: 'Commentaire'
+comment.editor.section_comment_description: 'Texte affiché sous la page quand le commentaire est validé.'
+comment.editor.comment: 'Texte'
+comment.editor.section_moderation: 'Modération'
+comment.editor.section_moderation_description: 'Le statut décide de l''affichage du commentaire sur le site.'
+comment.editor.status: 'Statut'
+comment.editor.moderation_comment: 'Commentaire de modération'
+comment.editor.moderation_comment_help: 'Note interne, affichée dans le back-office.'
+comment.editor.meta_author: 'Auteur'
+comment.editor.meta_email: 'E-mail'
+comment.editor.meta_page: 'Page'
+comment.editor.meta_ip: 'Adresse IP'
+comment.editor.meta_user_agent: 'Navigateur'
+comment.notify.saved: 'Commentaire de {label} enregistré'
+comment.banner.page_unknown: 'page #{id}'
+comment.banner.open: 'Commentaires ouverts sur le site'
+comment.banner.closed: 'Commentaires fermés sur le site'
+comment.banner.wait_on: 'Nouveaux commentaires en attente de validation'
+comment.banner.wait_off: 'Nouveaux commentaires publiés dès leur envoi'
+comment.banner.options_link: 'Modifier dans les options système'
+comment.banner.page_filter: 'Page : {title}'
+comment.banner.page_filter_remove: 'Retirer le filtre par page'
+comment.editor.status_help_validate: 'Le site affiche l''auteur et le texte.'
+comment.editor.status_help_moderate: 'Le site affiche l''auteur et la mention « Commentaire modéré » à la place du texte.'
+comment.editor.status_help_wait_validation: 'Le site affiche la mention « Commentaire en attente de validation » à la place de l''auteur et du texte.'
+comment.editor.status_help_moderator: 'Vous serez enregistré comme modérateur.'
+comment.editor.status_help_cleared: 'Le commentaire de modération et le modérateur seront effacés.'
+comment.editor.moderated_by: 'Modéré par {login}'
+comment.collection.page_filter_title: 'Afficher les commentaires de cette page'
+comment.dialog.moderate_title: 'Modérer {count, plural, one {# commentaire} other {# commentaires}}'
+comment.dialog.moderate_text: '{count, plural, one {Le site affichera le nom de son auteur et la mention « Commentaire modéré » à la place du texte.} other {Le site affichera le nom de leur auteur et la mention « Commentaire modéré » à la place du texte.}} Vous serez enregistré comme modérateur.'
+comment.dialog.moderate_kept: '{kept, plural, one {# commentaire sélectionné sera ignoré, votre compte n''a pas le droit de le modifier.} other {# commentaires sélectionnés seront ignorés, votre compte n''a pas le droit de les modifier.}}'
+comment.dialog.moderate_reason: 'Commentaire de modération'
+comment.dialog.moderate_help: '{count, plural, one {Facultatif. Note interne, affichée dans le back-office.} other {Facultatif. La même note interne est enregistrée sur chaque commentaire.}}'
+comment.dialog.moderate_cancel: 'Annuler'
+comment.dialog.moderate_confirm: 'Modérer'

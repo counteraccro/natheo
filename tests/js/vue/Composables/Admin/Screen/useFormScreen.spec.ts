@@ -64,6 +64,9 @@ const can: AdminCan = {
   hasRole: () => false,
 };
 
+/** Adresse de la liste reçue par le formulaire */
+const LIST_QUERY = { search: 'été', page: '2' };
+
 function screenWith(id: number | null, api: object = {}, screenDescriptor = descriptor) {
   const resource = createAdminResource<Tag>(api as unknown as ApiClient, t, '/admin/tags', id, {
     initial: () => descriptor.initial() as Tag,
@@ -79,6 +82,7 @@ function screenWith(id: number | null, api: object = {}, screenDescriptor = desc
     resource,
     locales: ['fr', 'en', 'es'],
     currentLocale: 'fr',
+    listQuery: () => LIST_QUERY,
   });
   return { screen, resource, router, confirm };
 }
@@ -140,7 +144,7 @@ describe('createFormScreen', () => {
       color: '#112233',
       disabled: false,
     });
-    expect(router.replace).toHaveBeenCalledWith({ name: 'tag_edit', params: { id: '9' } });
+    expect(router.replace).toHaveBeenCalledWith({ name: 'tag_edit', params: { id: '9' }, query: LIST_QUERY });
     expect(screen.isNew.value).toBe(false);
     expect(changed).toHaveBeenCalledOnce();
     stop();
@@ -194,7 +198,13 @@ describe('createFormScreen', () => {
     await screen.remove();
     expect(confirm.mock.lastCall?.[0]).toMatchObject({ title: 'tag.confirm.delete {"label":"Été"}', tone: 'danger' });
     expect(remove).toHaveBeenCalledWith('/admin/tags/4', { ifMatch: '"v1"' });
-    expect(router.push).toHaveBeenCalledWith({ name: 'tag_index' });
+    expect(router.push).toHaveBeenCalledWith({ name: 'tag_index', query: LIST_QUERY });
+  });
+
+  it('revient à la liste avec sa recherche, ses filtres et sa page', () => {
+    const { screen, router } = screenWith(4);
+    screen.back();
+    expect(router.push).toHaveBeenCalledWith({ name: 'tag_index', query: LIST_QUERY });
   });
 
   describe('écriture faite ailleurs', () => {
@@ -233,7 +243,7 @@ describe('createFormScreen', () => {
       await resource.load();
       screen.setTranslation(labelField, 'fr', 'Automne');
       await screen.externalChange({ ids: ['4'], deleted: true });
-      expect(router.push).toHaveBeenCalledWith({ name: 'tag_index' });
+      expect(router.push).toHaveBeenCalledWith({ name: 'tag_index', query: LIST_QUERY });
       expect(leaveGuard.isDirty('tag')).toBe(false);
     });
 
@@ -274,5 +284,46 @@ describe('createFormScreen', () => {
     const edited = screenWith(4, { getResource }, sectioned);
     await edited.resource.load();
     expect(edited.screen.sections.value.map((section) => section.title)).toEqual(['always', 'edit']);
+  });
+
+  it('n’envoie pas un champ masqué par visibleWhen', async () => {
+    const conditional = defineFormScreen<Tag>({
+      ...descriptor,
+      sections: [
+        {
+          title: 'style',
+          fields: [
+            { type: 'switch', name: 'disabled' },
+            { type: 'color', name: 'color', visibleWhen: (data) => data.disabled === true },
+          ],
+        },
+      ],
+    });
+    const postResource = vi.fn().mockResolvedValue({
+      data: { id: 9, color: '#112233', disabled: false, translations: [] },
+      etag: '"v1"',
+    });
+    const { screen, resource } = screenWith(null, { postResource }, conditional);
+    await resource.load();
+    await screen.save();
+    expect(postResource.mock.calls[0][1]).toEqual({ disabled: false });
+  });
+
+  it('se passe de création et de suppression sans leurs textes', async () => {
+    const readOnly = defineFormScreen<Tag>({
+      ...descriptor,
+      create: undefined,
+      delete: undefined,
+      editRoute: undefined,
+      messages: { saved: 'tag.notify.saved' },
+    });
+    const getResource = vi.fn().mockResolvedValue({
+      data: { id: 4, color: '#112233', disabled: false, translations: [] },
+      etag: '"v1"',
+    });
+    const { screen, resource } = screenWith(4, { getResource }, readOnly);
+    await resource.load();
+    expect(screen.canDelete.value).toBe(false);
+    expect(screen.canEdit.value).toBe(true);
   });
 });

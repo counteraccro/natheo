@@ -3,16 +3,19 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 2.0
+ * @version 2.1
  * Repository pour les commentaires
  */
 namespace App\Repository\Admin\Content\Comment;
 
+use App\Dto\Api\Admin\AdminCollectionQuery;
 use App\Dto\Api\Content\Comment\ApiCommentByPageDto;
 use App\Entity\Admin\Content\Comment\Comment;
 use App\Entity\Admin\Content\Page\Page;
-use App\Entity\Admin\Content\Page\PageTranslation;
+use App\Enum\Admin\Comment\CommentStatus;
+use App\Repository\Trait\AdminCollectionQueryTrait;
 use App\Repository\Trait\OrderedQueryTrait;
+use App\Repository\Trait\TranslatedFieldQueryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
@@ -22,11 +25,68 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class CommentRepository extends ServiceEntityRepository
 {
+    use AdminCollectionQueryTrait;
     use OrderedQueryTrait;
+    use TranslatedFieldQueryTrait;
 
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Comment::class);
+    }
+
+    /**
+     * Page de la collection d'administration. Le titre de la page et le modérateur sont lus en scalaires dans la
+     * même requête (pageId, pageTitle, moderatorId, moderatorLogin), sans jointure de collection
+     * @param AdminCollectionQuery $query
+     * @param CommentStatus|null $status
+     * @param int|null $pageId
+     * @param string $locale langue de contenu
+     * @param string $defaultLocale
+     * @return Paginator
+     */
+    public function getAdminCollection(
+        AdminCollectionQuery $query,
+        ?CommentStatus $status,
+        ?int $pageId,
+        string $locale,
+        string $defaultLocale,
+    ): Paginator {
+        $qb = $this->createQueryBuilder('comment')
+            ->addSelect(
+                'page.id AS pageId',
+                'moderator.id AS moderatorId',
+                'moderator.login AS moderatorLogin',
+            )
+            ->innerJoin('comment.page', 'page')
+            ->leftJoin('comment.userModeration', 'moderator');
+
+        $title = $this->joinTranslatedField($qb, 'page.pageTranslations', 'titre', $locale, $defaultLocale);
+        $qb->addSelect($title . ' AS pageTitle');
+
+        if ($status !== null) {
+            $qb->andWhere('comment.status = :status')->setParameter('status', $status->value);
+        }
+        if ($pageId !== null) {
+            $qb->andWhere('page.id = :page_id')->setParameter('page_id', $pageId);
+        }
+
+        return $this->paginateAdminCollection(
+            $qb,
+            $query,
+            [
+                'id' => 'comment.id',
+                'comment' => 'comment.comment',
+                'author' => 'comment.author',
+                'email' => 'comment.email',
+                'page' => $title,
+                'status' => 'comment.status',
+                'createdAt' => 'comment.createdAt',
+            ],
+            null,
+            'comment.id',
+            'comment.userModeration',
+            orderFields: ['page' => 'pageTitle'],
+        );
     }
 
     /**
@@ -42,88 +102,6 @@ class CommentRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
-    }
-
-    /**
-     * Retourne une liste de commentaires Paginé
-     * @param int $page
-     * @param int $limit
-     * @param array $queryParams
-     * @param int|null $userId
-     * @return Paginator
-     */
-    public function getAllPaginate(int $page, int $limit, array $queryParams, ?int $userId = null): Paginator
-    {
-        $orderField = 'id';
-        if (isset($queryParams['orderField']) && $queryParams['orderField'] !== '') {
-            $orderField = $queryParams['orderField'];
-        }
-
-        $query = $this->createQueryBuilder(Comment::DEFAULT_ALIAS);
-
-        if ($orderField === 'page') {
-            $query->join(Comment::DEFAULT_ALIAS . '.page', Page::DEFAULT_ALIAS);
-            $query->join(Page::DEFAULT_ALIAS . '.pageTranslations', PageTranslation::DEFAULT_ALIAS);
-            $queryParams['orderField'] = 'titre';
-            $this->applyOrdering($query, PageTranslation::class, $queryParams);
-        } else {
-            $this->applyOrdering($query, Comment::class, $queryParams);
-        }
-
-        if ($userId !== null) {
-            $query->andwhere(Comment::DEFAULT_ALIAS . '.userModeration = :userId')->setParameter('userId', $userId);
-        }
-
-        if (isset($queryParams['search']) && $queryParams['search'] !== '') {
-            $query
-                ->andWhere(
-                    Comment::DEFAULT_ALIAS .
-                        '.comment like :search OR ' .
-                        Comment::DEFAULT_ALIAS .
-                        '.author like :search OR ' .
-                        Comment::DEFAULT_ALIAS .
-                        '.email like :search',
-                )
-                ->setParameter('search', '%' . $queryParams['search'] . '%');
-        }
-
-        $paginator = new Paginator($query->getQuery(), true);
-        $paginator
-            ->getQuery()
-            ->setFirstResult($limit * ($page - 1))
-            ->setMaxResults($limit);
-        return $paginator;
-    }
-
-    /**
-     * Retourne une liste de commentaire en fonction de ses filtres
-     * @param int $status
-     * @param int $idPage
-     * @param int $limit
-     * @param int $page
-     * @return Paginator
-     */
-    public function getListCommentsByFilter(int $status, int $idPage, int $page, int $limit): Paginator
-    {
-        $query = $this->createQueryBuilder(Comment::DEFAULT_ALIAS)->addOrderBy(
-            Comment::DEFAULT_ALIAS . '.id',
-            \SortDirection::Descending,
-        );
-
-        if ($status !== 0) {
-            $query->andWhere(Comment::DEFAULT_ALIAS . '.status = :status')->setParameter('status', $status);
-        }
-
-        if ($idPage !== 0) {
-            $query->andWhere(Comment::DEFAULT_ALIAS . '.page = :page')->setParameter('page', $idPage);
-        }
-
-        $paginator = new Paginator($query->getQuery(), true);
-        $paginator
-            ->getQuery()
-            ->setFirstResult($limit * ($page - 1))
-            ->setMaxResults($limit);
-        return $paginator;
     }
 
     /**

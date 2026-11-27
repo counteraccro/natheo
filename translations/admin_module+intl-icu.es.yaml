@@ -5,8 +5,8 @@ admin_module.menu.api_token_back_office.label: Back-office
 admin_module.menu.api_token_new.label: 'Nuevo token'
 admin_module.menu.api_token_public.label: Front
 admin_module.menu.comment.label: Comentarios
-admin_module.menu.comment_index.label: 'Gestión de los comentarios'
-admin_module.menu.comment_moderate.label: Moderación
+admin_module.menu.comment_index.label: 'Todos los comentarios'
+admin_module.menu.comment_moderate.label: 'Por moderar'
 admin_module.menu.content.label: Contenidos
 admin_module.menu.dashboard.label: 'Panel de control'
 admin_module.menu.database_manager.label: 'Base de datos'

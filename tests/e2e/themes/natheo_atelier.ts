@@ -1,6 +1,6 @@
 /**
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 1.2
  * Gestes de liste de Natheo-Atelier : liste de l'établi, actions dans le menu de la ligne, tri dans les options
  */
 import { expect } from '@playwright/test';
@@ -30,6 +30,10 @@ export const natheoAtelier: ThemeScreens = {
   },
   rowActions: (page, label, screen = TAG_LIST) =>
     natheoAtelier.row(page, label, screen).getByRole('button', { name: "Plus d'actions" }),
+  async openRow(page, label, screen = TAG_LIST) {
+    await natheoAtelier.row(page, label, screen).getByRole('link', { name: label, exact: true }).click();
+  },
+  async backToList() {},
   async search(page, term) {
     await page.getByRole('searchbox', { name: 'Rechercher dans le tableau' }).fill(term);
   },

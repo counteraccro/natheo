@@ -61,4 +61,30 @@ describe('useTableSearch', () => {
     state.searchRemote();
     expect(search).toHaveBeenCalledWith('Été');
   });
+
+  it('prend un terme donné par l’appelant comme une recherche en base déjà faite, saisie comprise', async () => {
+    const term = ref('été');
+    const search = vi.fn();
+    const state = useTableSearch({
+      rows: () => [],
+      columns: () => columns,
+      loading: () => false,
+      search,
+      resetPage: vi.fn(),
+      term,
+    });
+    expect(state.mode.value).toBe('remote');
+    expect(state.highlightTerm.value).toBe('été');
+
+    term.value = '';
+    await nextTick();
+    expect(state.mode.value).toBe('idle');
+
+    state.term.value = 'hiv';
+    state.onInput();
+    await nextTick();
+    expect(state.mode.value).toBe('local');
+    expect(term.value).toBe('hiv');
+    expect(search).not.toHaveBeenCalled();
+  });
 });

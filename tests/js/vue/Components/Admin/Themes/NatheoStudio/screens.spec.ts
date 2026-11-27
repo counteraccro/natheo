@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
+import { defineComponent, h } from 'vue';
 
 import { flushPromises, mount } from '@vue/test-utils';
 import { createMemoryHistory, createRouter } from 'vue-router';
@@ -114,6 +115,78 @@ describe('CollectionScreen (Natheo-Studio)', () => {
     expect(rows[1].classes()).toContain('text-fg-subtle');
     expect(rows[1].text()).toContain('—');
     expect(screen.collection.sql.value).toBe('SELECT 1');
+  });
+});
+
+describe('CollectionScreen (Natheo-Studio), ajouts du module', () => {
+  it('affiche le composant du module, ses filtres et le dialogue de son action groupée', async () => {
+    const getCollection = vi.fn().mockResolvedValue({ members: [tag(1)], total: 1, page: 1, lastPage: 1 });
+    const patch = vi.fn().mockResolvedValue({});
+    const api = { getCollection, patch } as unknown as ApiClient;
+    const Header = defineComponent({
+      props: { screen: { type: Object, required: true } },
+      setup: (props) => () => h('p', { class: 'module-header' }, `${props.screen.descriptor.title}`),
+    });
+    const Dialog = defineComponent({
+      props: { count: { type: Number, required: true }, kept: { type: Number, required: true } },
+      emits: ['submit', 'cancel'],
+      setup:
+        (props, { emit }) =>
+        () =>
+          h('button', { class: 'module-dialog', onClick: () => emit('submit', { reason: 'x' }) }, `${props.count}`),
+    });
+    const descriptor = defineCollectionScreen<Tag>({
+      resource: '/admin/tags',
+      read: { operation: 'admin_tag_get_collection' },
+      title: 'tag.index.title',
+      columns: [{ key: 'label', label: 'tag.index.column_label' }],
+      header: Header,
+      filters: [
+        {
+          type: 'select',
+          param: 'moderation',
+          label: 'comment.filter.moderation',
+          allLabel: 'comment.filter.moderation_all',
+          options: [{ value: 'moderate', label: 'comment.status.moderate' }],
+        },
+      ],
+      bulkActions: [
+        { type: 'patch', id: 'moderate', label: 'm', icon: 'ban', operation: 'admin_tag_patch', dialog: Dialog },
+      ],
+      rowLabel: (row) => row.label,
+      messages: {},
+    });
+    const screen = createCollectionScreen(descriptor, {
+      api,
+      t,
+      can,
+      confirm: vi.fn(),
+      router: { push: vi.fn(), resolve: () => ({ href: '' }) },
+      collection: createAdminCollection<Tag>(api, '/admin/tags'),
+      locale: 'fr',
+    });
+    const wrapper = mount(CollectionScreen, {
+      props: { screen: screen as unknown as CollectionScreenState },
+      ...mountOptions(),
+    });
+    await flushPromises();
+    expect(wrapper.get('.module-header').text()).toBe('tag.index.title');
+    const select = wrapper.get('select[aria-label="comment.filter.moderation"]');
+    expect(select.findAll('option').map((option) => option.text())).toEqual([
+      'comment.filter.moderation_all',
+      'comment.status.moderate',
+    ]);
+    await select.setValue('moderate');
+    await flushPromises();
+    expect(getCollection).toHaveBeenLastCalledWith('/admin/tags', expect.objectContaining({ moderation: 'moderate' }));
+
+    const running = screen.runBulk('moderate', [1]);
+    await flushPromises();
+    await wrapper.get('.module-dialog').trigger('click');
+    await running;
+    expect(patch).toHaveBeenCalledWith('/admin/tags/1', { reason: 'x' });
+    await flushPromises();
+    expect(wrapper.find('.module-dialog').exists()).toBe(false);
   });
 });
 
@@ -250,5 +323,57 @@ describe('FormScreen (Natheo-Studio)', () => {
     expect(wrapper.findAll('[role="tab"]').every((tab) => tab.attributes('disabled') === undefined)).toBe(true);
     expect(wrapper.find('[aria-pressed]').exists()).toBe(false);
     leaveGuard.untrack('tag_view_test');
+  });
+
+  it('masque un champ selon visibleWhen et affiche les informations du module avec leur lien', async () => {
+    const getResource = vi.fn().mockResolvedValue({ data: tag(4, { disabled: false }), etag: '"v1"' });
+    const resource = createAdminResource<Tag>({ getResource } as unknown as ApiClient, t, '/admin/tags', 4, {
+      leaveKey: 'tag_visible_test',
+    });
+    const descriptor = defineFormScreen<Tag>({
+      resource: '/admin/tags',
+      read: { operation: 'admin_tag_get' },
+      title: { create: 'a', edit: 'b', view: 'c' },
+      back: 'tag_index',
+      leaveKey: 'tag_visible_test',
+      initial: () => ({}),
+      sections: [
+        {
+          title: 'tag.form.section_style',
+          fields: [
+            { type: 'switch', name: 'disabled', label: 'tag.form.disabled' },
+            { type: 'text', name: 'label', label: 'tag.form.reason', visibleWhen: (data) => data.disabled === true },
+          ],
+        },
+      ],
+      meta: [
+        { name: 'label', label: 'tag.meta.label', value: (item) => item.label, href: () => '/fr/page/tag' },
+        { name: 'empty', label: 'tag.meta.empty', value: () => null },
+      ],
+      update: { operation: 'admin_tag_patch' },
+      messages: { saved: 'b' },
+      rowLabel: (item) => item.label,
+    });
+    const screen = createFormScreen(descriptor, {
+      t,
+      can,
+      confirm: vi.fn(),
+      router: { push: vi.fn(), replace: vi.fn() },
+      resource,
+      locales: ['fr'],
+      currentLocale: 'fr',
+    });
+    await resource.load();
+    const wrapper = mount(FormScreen, { props: { screen: screen as unknown as FormScreenState }, ...mountOptions() });
+    await flushPromises();
+    expect(wrapper.text()).not.toContain('tag.form.reason');
+    await wrapper.get('button[role="switch"]').trigger('click');
+    expect(wrapper.text()).toContain('tag.form.reason');
+
+    const link = wrapper.get('aside dd a');
+    expect(link.text()).toBe('Tag 4');
+    expect(link.attributes('href')).toBe('/fr/page/tag');
+    expect(wrapper.get('aside').text()).toContain('—');
+    leaveGuard.untrack('tag_visible_test');
   });
 });

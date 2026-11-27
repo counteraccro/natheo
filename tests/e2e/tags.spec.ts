@@ -1,6 +1,6 @@
 /**
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 1.2
  * Parcours du module Tags dans l'application d'administration, joué dans chaque thème du back-office
  */
 import { expect, test, type Page } from '@playwright/test';
@@ -39,6 +39,25 @@ test.describe('administrateur', () => {
     await theme.search(page, '');
     await theme.sortByLabel(page);
     await expect(theme.rows(page).first()).toContainText('Actualité');
+  });
+
+  test('la recherche de la liste est gardée en ouvrant un tag, au retour et au rechargement', async ({ page }) => {
+    const theme = currentTheme();
+    const searchbox = page.getByRole('searchbox', { name: 'Rechercher dans le tableau' });
+    await openList(page);
+    await theme.search(page, 'Tuto');
+    await expect(theme.rows(page)).toHaveCount(1);
+
+    await theme.openRow(page, 'Tutoriel');
+    await expect(page).toHaveURL(/\/admin\/fr\/tags\/\d+\?search=Tuto$/);
+    await theme.backToList(page);
+    await expect(searchbox).toHaveValue('Tuto');
+    await expect(theme.rows(page)).toHaveCount(1);
+
+    await page.reload();
+    await expect(searchbox).toHaveValue('Tuto');
+    await expect(row(page, 'Tutoriel')).toBeVisible();
+    await expect(theme.rows(page)).toHaveCount(1);
   });
 
   test('création avec recopie des langues, aperçu puis édition', async ({ page }) => {

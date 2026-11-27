@@ -1,6 +1,6 @@
 /**
  * @author Gourdon Aymeric
- * @version 1.3
+ * @version 1.4
  * Description d'un écran de formulaire, état calculé par useFormScreen() et affiché par le thème
  */
 import type { Ref } from 'vue';
@@ -17,6 +17,8 @@ interface BaseField {
   /** Clé de traduction */
   label?: string;
   help?: string;
+  /** Champ affiché selon les valeurs du formulaire, non envoyé quand il est masqué */
+  visibleWhen?: (data: Record<string, unknown>) => boolean;
 }
 
 /** Réglages de l'éditeur de texte d'un champ */
@@ -63,8 +65,22 @@ export interface FormSection {
   fields: FormField[];
 }
 
-/** Informations affichées à côté du formulaire */
-export type FormMeta = 'createdAt' | 'updatedAt' | 'author' | 'pageCount';
+/** Information propre au module, lue dans l'élément */
+export interface FormMetaField<T extends ScreenItem = ScreenItem> {
+  name: string;
+  /** Clé de traduction */
+  label: string;
+  /** Valeur affichée, « — » quand elle est vide */
+  value: (item: T) => string | null;
+  /** Lien de la valeur */
+  href?: (item: T) => string | null;
+  /** Valeur en date ISO 8601, affichée en date relative */
+  date?: boolean;
+}
+
+/** Informations affichées à côté du formulaire : communes par leur nom, propres au module par leur description */
+export type FormMeta<T extends ScreenItem = ScreenItem> =
+  'createdAt' | 'updatedAt' | 'author' | 'pageCount' | FormMetaField<T>;
 
 export interface FormScreenDescriptor<T extends ScreenItem = ScreenItem> {
   /** Chemin de la collection (/admin/tags) */
@@ -76,12 +92,12 @@ export interface FormScreenDescriptor<T extends ScreenItem = ScreenItem> {
   icon?: IconName;
   /** Route de la liste */
   back: string;
-  /** Route d'édition, ouverte après une création */
-  editRoute: string;
+  /** Route d'édition, ouverte après une création (exigée avec create) */
+  editRoute?: string;
   leaveKey: string;
   initial: () => Partial<T>;
   sections: FormSection[];
-  meta?: FormMeta[];
+  meta?: FormMeta<T>[];
   /** Opération de lecture : page d'édition introuvable sans elle */
   read: { operation: string };
   /** Opération de création, exigée par une route de création : page introuvable sans elle */
@@ -89,8 +105,8 @@ export interface FormScreenDescriptor<T extends ScreenItem = ScreenItem> {
   /** Opération de modification, pour savoir si l'élément est modifiable */
   update: { operation: string };
   delete?: { operation: string };
-  /** Clés de traduction des notifications et de la suppression, {label} */
-  messages: { created: string; saved: string; confirmDelete: string; deleted: string };
+  /** Clés de traduction des notifications et de la suppression, {label} ; created avec create, les autres avec delete */
+  messages: { saved: string; created?: string; confirmDelete?: string; deleted?: string };
   rowLabel: (item: T) => string;
 }
 

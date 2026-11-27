@@ -1,12 +1,12 @@
 <script setup lang="ts" generic="T extends ScreenItem">
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.2
  * Rendu Natheo-Atelier d'un écran de formulaire, dans le volet : actions en haut, sections séparées par des filets,
  * informations de l'élément en pied ; lien de retour à la liste sur écran étroit
  */
 import { computed, useId } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { UiAlert, UiButton, UiErrorSummary, UiForm, UiIcon, UiSkeleton } from '@ui';
 import ScreenFormFields from '@admin/App/Screen/ScreenFormFields.vue';
 import { useAdminContext } from '@/vue/Composables/Admin/useAdminContext';
@@ -20,13 +20,14 @@ const props = defineProps<AdminScreenProps<FormScreenState<T>>>();
 
 const { t } = useAdminContext();
 const router = useRouter();
+const route = useRoute();
 const group = useScreenGroup();
 const descriptor = props.screen.descriptor;
 const { data, errors, loading, saving, conflict } = props.screen.resource;
 const { isNew, title, description, sections, canEdit, canDelete, dirty } = props.screen;
 const meta = useFormMeta(props.screen);
 const formId = useId();
-const backHref = computed(() => router.resolve({ name: descriptor.back }).href);
+const backHref = computed(() => router.resolve({ name: descriptor.back, query: route.query }).href);
 </script>
 
 <template>
@@ -112,7 +113,12 @@ const backHref = computed(() => router.resolve({ name: descriptor.back }).href);
     >
       <div v-for="item in meta" :key="item.name" class="grid gap-0.5">
         <dt class="text-[12.5px] text-fg-subtle">{{ item.label }}</dt>
-        <dd class="m-0 text-[13.5px] font-semibold" :title="item.title">{{ item.value }}</dd>
+        <dd class="m-0 text-[13.5px] font-semibold [overflow-wrap:anywhere]" :title="item.title">
+          <a v-if="item.href" :href="item.href" class="ui-ring rounded-sm text-primary underline underline-offset-3">{{
+            item.value
+          }}</a>
+          <template v-else>{{ item.value }}</template>
+        </dd>
       </div>
     </dl>
   </div>
