@@ -217,8 +217,9 @@ export interface Urls {
   load_tab_history: string;
   auto_save: string;
   reload_page_history: string;
-  auto_complete_tag: string;
-  tag_by_name: string;
+  /** null quand le module Tags est masqué */
+  auto_complete_tag: string | null;
+  tag_by_name: string | null;
   save: string;
   publish_draft: string;
   discard_draft: string;
@@ -230,7 +231,8 @@ export interface Urls {
   liste_content_by_id: string;
   is_unique_url_page: string;
   info_render_block: string;
-  load_media: string;
+  /** null quand la médiathèque est masquée */
+  load_media: string | null;
   listing: string;
   new_page: string;
 }

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Sessions API des utilisateurs du back-office : authentification, création, renouvellement et révocation
  */
 
@@ -61,6 +61,18 @@ class UserSessionService extends AppApiService
     public const int FRONT_RENEW_MARGIN = 45;
 
     /**
+     * Clé de la session PHP qui garde la session API de l'application du back-office
+     * @var string
+     */
+    public const string BACK_OFFICE_SESSION_KEY = 'back_office_api_user_session';
+
+    /**
+     * Durée de validité restante sous laquelle le back-office renouvelle l'access token, en minutes
+     * @var int
+     */
+    public const int BACK_OFFICE_RENEW_MARGIN = 2;
+
+    /**
      * Longueur des tokens générés
      * @var int
      */
@@ -99,6 +111,7 @@ class UserSessionService extends AppApiService
      * @param string|null $userAgent
      * @param string|null $ip
      * @param int $accessTokenLifetime durée de vie de l'access token, en minutes
+     * @param User|null $impersonator utilisateur d'origine pendant une usurpation
      * @return UserSessionTokens
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -109,11 +122,17 @@ class UserSessionService extends AppApiService
         ?string $userAgent,
         ?string $ip,
         int $accessTokenLifetime = self::ACCESS_TOKEN_LIFETIME,
+        ?User $impersonator = null,
     ): UserSessionTokens {
         $this->getUserSessionRepository()->deleteByUser($user, true);
 
         $session = new UserSession();
-        $session->setUser($user)->setApiToken($apiToken)->setUserAgent($userAgent)->setIp($ip);
+        $session
+            ->setUser($user)
+            ->setApiToken($apiToken)
+            ->setImpersonator($impersonator)
+            ->setUserAgent($userAgent)
+            ->setIp($ip);
         return $this->issueTokens($session, $accessTokenLifetime);
     }
 
@@ -218,28 +237,49 @@ class UserSessionService extends AppApiService
             return '';
         }
 
-        $tokens = null;
-        $stored = $phpSession->get(self::FRONT_SESSION_KEY);
-        if (is_array($stored) && ($stored['userId'] ?? null) === $user->getId()) {
-            $session = $this->findByAccessToken((string) $stored['accessToken']);
-            $renewAt = new \DateTimeImmutable('+' . self::FRONT_RENEW_MARGIN . ' minutes');
-            if ($session !== null && $session->getAccessTokenExpiresAt() > $renewAt) {
-                return (string) $stored['accessToken'];
-            }
-            $tokens = $this->refresh(
-                (string) $stored['refreshToken'],
-                $frontApiToken,
-                self::FRONT_ACCESS_TOKEN_LIFETIME,
-            );
-        }
+        return $this->getStoredAccessToken(
+            self::FRONT_SESSION_KEY,
+            $user,
+            null,
+            $frontApiToken,
+            self::FRONT_ACCESS_TOKEN_LIFETIME,
+            self::FRONT_RENEW_MARGIN,
+            $phpSession,
+            $userAgent,
+            $ip,
+        )->token;
+    }
 
-        $tokens ??= $this->create($user, $frontApiToken, $userAgent, $ip, self::FRONT_ACCESS_TOKEN_LIFETIME);
-        $phpSession->set(self::FRONT_SESSION_KEY, [
-            'userId' => $user->getId(),
-            'accessToken' => $tokens->accessToken,
-            'refreshToken' => $tokens->refreshToken,
-        ]);
-        return $tokens->accessToken;
+    /**
+     * Access token de l'application du back-office, sur le token interne. La session API est gardée dans la
+     * session PHP, renouvelée quand l'access token approche de son expiration, créée s'il n'y en a pas
+     * @param User $user utilisateur connecté (cible de l'usurpation le cas échéant)
+     * @param User|null $impersonator utilisateur d'origine pendant une usurpation
+     * @param SessionInterface $phpSession
+     * @param string|null $userAgent
+     * @param string|null $ip
+     * @return UserSessionAccessToken
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getBackOfficeAccessToken(
+        User $user,
+        ?User $impersonator,
+        SessionInterface $phpSession,
+        ?string $userAgent,
+        ?string $ip,
+    ): UserSessionAccessToken {
+        return $this->getStoredAccessToken(
+            self::BACK_OFFICE_SESSION_KEY,
+            $user,
+            $impersonator,
+            $this->getApiTokenService()->getInternalBackOfficeToken(),
+            self::ACCESS_TOKEN_LIFETIME,
+            self::BACK_OFFICE_RENEW_MARGIN,
+            $phpSession,
+            $userAgent,
+            $ip,
+        );
     }
 
     /**
@@ -251,18 +291,19 @@ class UserSessionService extends AppApiService
      */
     public function revokeFrontSession(SessionInterface $phpSession): void
     {
-        $stored = $phpSession->get(self::FRONT_SESSION_KEY);
-        $phpSession->remove(self::FRONT_SESSION_KEY);
-        if (!is_array($stored)) {
-            return;
-        }
+        $this->revokeStoredSession(self::FRONT_SESSION_KEY, $phpSession);
+    }
 
-        $session = $this->getUserSessionRepository()->findOneBy([
-            'refreshTokenHash' => TokenHasher::hash((string) ($stored['refreshToken'] ?? '')),
-        ]);
-        if ($session !== null) {
-            $this->revoke($session);
-        }
+    /**
+     * Révoque la session API gardée dans la session PHP par l'application du back-office
+     * @param SessionInterface $phpSession
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function revokeBackOfficeSession(SessionInterface $phpSession): void
+    {
+        $this->revokeStoredSession(self::BACK_OFFICE_SESSION_KEY, $phpSession);
     }
 
     /**
@@ -324,6 +365,83 @@ class UserSessionService extends AppApiService
         return in_array($minutes, self::REFRESH_TOKEN_LIFETIMES, true)
             ? $minutes
             : self::DEFAULT_REFRESH_TOKEN_LIFETIME;
+    }
+
+    /**
+     * Access token d'une session API gardée dans la session PHP sous $key : réutilisé tant qu'il reste valable
+     * plus de $renewMargin minutes, sinon renouvelé par le refresh token, sinon d'une nouvelle session.
+     * Une session gardée pour un autre utilisateur ou un autre utilisateur d'origine n'est pas reprise
+     * @param string $key clé de la session PHP
+     * @param User $user
+     * @param User|null $impersonator utilisateur d'origine pendant une usurpation
+     * @param ApiToken $apiToken token d'API dont la session porte les rôles
+     * @param int $accessTokenLifetime durée de vie de l'access token, en minutes
+     * @param int $renewMargin durée de validité restante sous laquelle l'access token est renouvelé, en minutes
+     * @param SessionInterface $phpSession
+     * @param string|null $userAgent
+     * @param string|null $ip
+     * @return UserSessionAccessToken
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function getStoredAccessToken(
+        string $key,
+        User $user,
+        ?User $impersonator,
+        ApiToken $apiToken,
+        int $accessTokenLifetime,
+        int $renewMargin,
+        SessionInterface $phpSession,
+        ?string $userAgent,
+        ?string $ip,
+    ): UserSessionAccessToken {
+        $tokens = null;
+        $stored = $phpSession->get($key);
+        if (
+            is_array($stored) &&
+            ($stored['userId'] ?? null) === $user->getId() &&
+            ($stored['impersonatorId'] ?? null) === $impersonator?->getId()
+        ) {
+            $session = $this->findByAccessToken((string) $stored['accessToken']);
+            $renewAt = new \DateTimeImmutable('+' . $renewMargin . ' minutes');
+            if ($session !== null && $session->getAccessTokenExpiresAt() > $renewAt) {
+                return new UserSessionAccessToken((string) $stored['accessToken'], $session->getAccessTokenExpiresAt());
+            }
+            $tokens = $this->refresh((string) $stored['refreshToken'], $apiToken, $accessTokenLifetime);
+        }
+
+        $tokens ??= $this->create($user, $apiToken, $userAgent, $ip, $accessTokenLifetime, $impersonator);
+        $phpSession->set($key, [
+            'userId' => $user->getId(),
+            'impersonatorId' => $impersonator?->getId(),
+            'accessToken' => $tokens->accessToken,
+            'refreshToken' => $tokens->refreshToken,
+        ]);
+        return new UserSessionAccessToken($tokens->accessToken, $tokens->session->getAccessTokenExpiresAt());
+    }
+
+    /**
+     * Révoque la session API gardée dans la session PHP sous $key et l'en retire
+     * @param string $key
+     * @param SessionInterface $phpSession
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function revokeStoredSession(string $key, SessionInterface $phpSession): void
+    {
+        $stored = $phpSession->get($key);
+        $phpSession->remove($key);
+        if (!is_array($stored)) {
+            return;
+        }
+
+        $session = $this->getUserSessionRepository()->findOneBy([
+            'refreshTokenHash' => TokenHasher::hash((string) ($stored['refreshToken'] ?? '')),
+        ]);
+        if ($session !== null) {
+            $this->revoke($session);
+        }
     }
 
     /**

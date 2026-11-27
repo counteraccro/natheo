@@ -209,3 +209,5 @@ user.update.information_description: 'Statistiques du compte'
 user.change_password.input.password_current: 'Mot de passe actuel'
 user.change_password.error.current_password: 'Le mot de passe actuel est incorrect'
 user.change_password.error.rule: 'Le mot de passe ne respecte pas les règles de sécurité'
+user.option.error.not_found: "Cette option n'existe pas."
+user.option.error.value: "Cette valeur n'est pas proposée par l'option, ou l'option n'est pas modifiable."

@@ -17,6 +17,19 @@ enum Template: string
 
     case NATHEO_BASE = 'natheo_base';
 
+    /**
+     * Classe CSS du texte des blocs du thème (HTML rendu depuis le Markdown)
+     * @return string
+     */
+    public function getTextClass(): string
+    {
+        return match ($this) {
+            self::NATHEO_HORIZON => 'nh-prose',
+            self::NATHEO_STORM => 'sf-prose',
+            self::NATHEO_BASE => 'natheo-base-content',
+        };
+    }
+
     public static function toArray(): array
     {
         $return = [];

@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace App\Enum\Admin;
 
+use App\Enum\Admin\Module\CoreModuleId;
+
 enum DashboardBlock: string
 {
     case HELP_FIRST_CONNEXION = 'help_first_connexion';
@@ -28,9 +30,21 @@ enum DashboardBlock: string
     public function getRole(): string
     {
         return match ($this) {
-            self::HELP_FIRST_CONNEXION => 'ROLE_SUPER_ADMIN',
+            self::HELP_FIRST_CONNEXION => 'ROLE_USER',
             self::PAGES_PENDING_VALIDATION => 'ROLE_ADMIN',
             self::LAST_COMMENT, self::LAST_PAGE_CREATE, self::PAGES_MOST_VIEWED => 'ROLE_CONTRIBUTEUR',
+        };
+    }
+
+    /**
+     * Modules du back-office que l'utilisateur doit voir pour accéder au block
+     * @return string[]
+     */
+    public function getModules(): array
+    {
+        return match ($this) {
+            self::HELP_FIRST_CONNEXION => [CoreModuleId::OPTION_SYSTEM->value, CoreModuleId::API_TOKEN->value],
+            default => [],
         };
     }
 }

@@ -175,7 +175,7 @@ class CommentTest extends AppApiV2TestCase
             headers: ['HTTP_USER_AGENT' => 'phpunit-agent'],
         );
         $this->assertEquals(201, $response->getStatusCode());
-        $this->assertMatchesResourceItemJsonSchema(CommentResource::class, '_api_/comments_post');
+        $this->assertMatchesResourceItemJsonSchema(CommentResource::class, 'comment_post');
         $content = $this->decode($response);
         $this->assertEquals('wait_validation', $content['status']);
         $this->assertNull($content['comment']);
@@ -286,7 +286,7 @@ class CommentTest extends AppApiV2TestCase
     }
 
     /**
-     * Modération par un utilisateur autorisé : champs absents inchangés, modérateur enregistré
+     * Modération par un utilisateur autorisé : champs absents inchangés, modérateur et raison effacés hors statut modéré
      * @return void
      */
     public function testPatch(): void
@@ -307,7 +307,7 @@ class CommentTest extends AppApiV2TestCase
             headers: $headers,
         );
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertMatchesResourceItemJsonSchema(CommentResource::class, '_api_/comments/{id}_patch');
+        $this->assertMatchesResourceItemJsonSchema(CommentResource::class, 'comment_patch');
         $content = $this->decode($response);
         $this->assertEquals('moderate', $content['status']);
         $this->assertEquals('Spam', $content['moderationComment']);
@@ -329,10 +329,10 @@ class CommentTest extends AppApiV2TestCase
             $this->requestV2('PATCH', $path, self::HEADER_WRITE, ['status' => 'validate'], headers: $headers),
         );
         $this->assertEquals('validate', $content['status']);
-        $this->assertEquals('Publicité', $content['moderationComment']);
+        $this->assertNull($content['moderationComment']);
 
         $content = $this->decode(
-            $this->requestV2('PATCH', $path, self::HEADER_WRITE, ['moderationComment' => ''], headers: $headers),
+            $this->requestV2('PATCH', $path, self::HEADER_WRITE, ['moderationComment' => 'Ignoré'], headers: $headers),
         );
         $this->assertEquals('validate', $content['status']);
         $this->assertNull($content['moderationComment']);
@@ -340,8 +340,8 @@ class CommentTest extends AppApiV2TestCase
         $this->em->clear();
         $saved = $this->em->getRepository(Comment::class)->find($comment->getId());
         $this->assertEquals(CommentStatus::VALIDATE->value, $saved->getStatus());
-        $this->assertEmpty($saved->getModerationComment());
-        $this->assertEquals($moderator->getId(), $saved->getUserModeration()->getId());
+        $this->assertNull($saved->getModerationComment());
+        $this->assertNull($saved->getUserModeration());
     }
 
     /**

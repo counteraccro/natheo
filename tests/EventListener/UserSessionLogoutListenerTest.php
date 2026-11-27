@@ -3,8 +3,8 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
- * Tests de la révocation de la session API du site public à la déconnexion du back-office
+ * @version 1.1
+ * Tests de la révocation des sessions API du site public et du back-office à la déconnexion du back-office
  */
 
 namespace App\Tests\EventListener;
@@ -23,22 +23,18 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 class UserSessionLogoutListenerTest extends AppWebTestCase
 {
     /**
-     * Déconnexion : session API du site public révoquée et retirée de la session PHP
+     * Déconnexion : sessions API du site public et du back-office révoquées et retirées de la session PHP
      * @return void
      */
-    public function testLogoutRevokesFrontSession(): void
+    public function testLogoutRevokesSessions(): void
     {
         $userSessionService = $this->container->get(UserSessionService::class);
+        $user = $this->createUserContributeur(['disabled' => false, 'anonymous' => false]);
         $frontToken = self::getFaker()->uuid();
         $this->createApiToken(['token' => TokenHasher::hash($frontToken), 'disabled' => false]);
         $phpSession = new Session(new MockArraySessionStorage());
-        $accessToken = $userSessionService->getFrontAccessToken(
-            $this->createUserContributeur(['disabled' => false, 'anonymous' => false]),
-            $frontToken,
-            $phpSession,
-            null,
-            null,
-        );
+        $accessToken = $userSessionService->getFrontAccessToken($user, $frontToken, $phpSession, null, null);
+        $backOffice = $userSessionService->getBackOfficeAccessToken($user, null, $phpSession, null, null);
 
         $request = new Request();
         $request->setSession($phpSession);
@@ -46,6 +42,8 @@ class UserSessionLogoutListenerTest extends AppWebTestCase
 
         $this->assertNull($phpSession->get(UserSessionService::FRONT_SESSION_KEY));
         $this->assertNull($userSessionService->findByAccessToken($accessToken));
+        $this->assertNull($phpSession->get(UserSessionService::BACK_OFFICE_SESSION_KEY));
+        $this->assertNull($userSessionService->findByAccessToken($backOffice->token));
     }
 
     /**

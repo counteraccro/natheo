@@ -1,0 +1,85 @@
+admin_app.atelier.command: 'Aller à un écran, une action'
+admin_app.atelier.count: '{count, plural, =0 {Aucun élément} one {# élément} other {# éléments}}'
+admin_app.atelier.group_create: 'Créer'
+admin_app.atelier.group_screens: 'Écrans'
+admin_app.atelier.group_search: 'Recherche'
+admin_app.atelier.hint_choose: '↑ ↓ pour choisir'
+admin_app.atelier.hint_open: 'Entrée pour ouvrir'
+admin_app.atelier.hint_search: 'Sans résultat, recherche dans tout le site'
+admin_app.atelier.key_escape: 'Échap'
+admin_app.atelier.palette_input: 'Rechercher une commande'
+admin_app.atelier.palette_label: 'Palette de commandes'
+admin_app.atelier.pane_choose_text: 'Ouvrez un élément de la liste : il s''affiche dans ce volet, la liste reste à côté.'
+admin_app.atelier.pane_choose_title: 'Choisir un élément'
+admin_app.atelier.pane_create_text: 'Le formulaire s''ouvre dans ce volet.'
+admin_app.atelier.search_site: 'Rechercher « {term} » dans tout le site'
+admin_app.atelier.sections: 'Sections'
+admin_app.atelier.sort: 'Tri'
+admin_app.atelier.sort_by: 'Trier par {column}'
+admin_app.debug.application: Application
+admin_app.debug.branch: Branche
+admin_app.debug.commit: Commit
+admin_app.debug.commit_date: Date
+admin_app.debug.database: 'Base de données'
+admin_app.debug.environment: Environnement
+admin_app.debug.git: Git
+admin_app.debug.php: PHP
+admin_app.debug.system: Système
+admin_app.debug.version: Version
+admin_app.error.navigation: "La page n'a pas pu être chargée. Réessayez dans un instant."
+admin_app.layout.subtitle: Back-office
+admin_app.leave.confirm: 'Quitter sans enregistrer'
+admin_app.leave.message: 'Les modifications non enregistrées de ce formulaire seront perdues.'
+admin_app.leave.title: 'Quitter la page ?'
+admin_app.not_found.back: 'Page précédente'
+admin_app.not_found.dashboard: 'Tableau de bord'
+admin_app.not_found.hint: "La page a peut-être été déplacée, ou votre compte n'a pas accès à ce module."
+admin_app.not_found.text: 'Aucune page du back-office ne correspond à cette adresse.'
+admin_app.not_found.title: 'Page introuvable'
+admin_app.resource.conflict_text: "Quelqu'un a enregistré cet élément après son ouverture. Rechargez-le pour voir la dernière version, puis refaites vos modifications."
+admin_app.resource.conflict_title: 'Modifié entre-temps'
+admin_app.role.admin: Administrateur
+admin_app.role.contributor: Contributeur
+admin_app.role.super_admin: 'Super administrateur'
+admin_app.role.user: Utilisateur
+admin_app.screen.action_delete: 'Supprimer'
+admin_app.screen.action_disable: 'Désactiver'
+admin_app.screen.action_edit: 'Modifier'
+admin_app.screen.action_enable: 'Activer'
+admin_app.screen.action_view: 'Consulter'
+admin_app.screen.bulk_delete_title: 'Supprimer {count, plural, one {# élément} other {# éléments}} ?'
+admin_app.screen.bulk_disable_title: 'Désactiver {count, plural, one {# élément} other {# éléments}} ?'
+admin_app.screen.bulk_kept: '{kept, plural, =0 {Tous les éléments sélectionnés sont concernés.} one {# élément sélectionné est conservé : déjà dans cet état, utilisé ou non autorisé.} other {# éléments sélectionnés sont conservés : déjà dans cet état, utilisés ou non autorisés.}}'
+admin_app.screen.bulk_none: 'Aucun élément sélectionné ne peut recevoir cette action.'
+admin_app.screen.bulk_result: '{done, plural, one {# élément traité} other {# éléments traités}}{failed, plural, =0 {} one {, # conservé} other {, # conservés}}'
+admin_app.screen.confirm_irreversible: 'Cette action est définitive.'
+admin_app.screen.filter_author: 'Auteur'
+admin_app.screen.filter_author_all: 'Tous les auteurs'
+admin_app.screen.filter_author_me: 'Mes éléments'
+admin_app.screen.filter_status: 'Statut'
+admin_app.screen.filter_status_all: 'Tous les statuts'
+admin_app.screen.filter_status_disabled: 'Désactivés'
+admin_app.screen.filter_status_enabled: 'Actifs'
+admin_app.screen.form_back: 'Retour'
+admin_app.screen.form_clean: 'Aucune modification'
+admin_app.screen.form_create: 'Créer'
+admin_app.screen.form_dirty: 'Modifications non enregistrées'
+admin_app.screen.form_read_only: 'Cet élément est en lecture seule.'
+admin_app.screen.form_reload: 'Recharger'
+admin_app.screen.form_save: 'Enregistrer'
+admin_app.screen.meta_author: 'Auteur'
+admin_app.screen.meta_author_none: 'Compte supprimé'
+admin_app.screen.meta_created_at: 'Création'
+admin_app.screen.meta_description: 'Auteur, dates et utilisation de l''élément.'
+admin_app.screen.meta_page_count: 'Pages'
+admin_app.screen.meta_title: 'Informations'
+admin_app.screen.meta_updated_at: 'Dernière modification'
+admin_app.screen.select_all_limit: 'Sélection limitée aux {limit} premiers éléments.'
+admin_app.screen.sql_saved: 'Requête enregistrée dans le gestionnaire SQL.'
+admin_app.screen.status_disabled: 'Désactivé'
+admin_app.screen.translations_copied: 'Recopié depuis l''onglet {locale}'
+admin_app.screen.translations_copy: 'Recopier le texte de l''onglet {locale} dans les autres langues'
+admin_app.screen.translations_label: 'Langues'
+admin_app.user_menu.logout: Déconnexion
+admin_app.user_menu.my_account: 'Mon compte'
+admin_app.user_menu.my_options: 'Mes options'

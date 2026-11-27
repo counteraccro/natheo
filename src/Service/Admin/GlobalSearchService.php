@@ -16,6 +16,7 @@ use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\Content\Tag\Tag;
 use App\Entity\Admin\System\User;
 use App\Enum\Admin\Content\Page\PageContentType;
+use App\Enum\Admin\Global\GlobalSearchEntity;
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Enum\Admin\System\Options\OptionUser;
 use App\Service\Admin\System\User\PersonalData;
@@ -39,8 +40,8 @@ class GlobalSearchService extends AppAdminService
     {
         $translate = $this->getTranslator();
 
-        $entity = $this->getEntityByString($entity);
-        if ($entity === '') {
+        $entity = GlobalSearchEntity::tryFrom($entity)?->getEntityClass();
+        if ($entity === null) {
             return [
                 'elements' => [],
                 'total' => 0,
@@ -52,23 +53,6 @@ class GlobalSearchService extends AppAdminService
         $result = $repository->search($search, $this->getLocales()['current'], $page, $limit);
 
         return $this->formatResult($result, $entity, $search);
-    }
-
-    /**
-     * Retourne
-     * @param string $entity
-     * @return string
-     */
-    private function getEntityByString(string $entity): string
-    {
-        return match ($entity) {
-            'page' => Page::class,
-            'menu' => Menu::class,
-            'faq' => Faq::class,
-            'tag' => Tag::class,
-            'user' => User::class,
-            default => '',
-        };
     }
 
     /**
@@ -167,7 +151,7 @@ class GlobalSearchService extends AppAdminService
                 'update' => $tag->getUpdateAt()->format('d/m/y H:i'),
             ],
             'urls' => [
-                'edit' => $router->generate('admin_tag_update', ['id' => $tag->getId()]),
+                'edit' => $router->generate('admin_app', ['path' => 'tags/' . $tag->getId()]),
             ],
         ];
     }
@@ -228,7 +212,7 @@ class GlobalSearchService extends AppAdminService
             ],
             'author' => $this->highlightText($search, $personalData->getPersonalData()),
             'urls' => [
-                'edit' => $router->generate('admin_faq_update', ['id' => $faq->getId()]),
+                'edit' => $router->generate('admin_app', ['path' => 'faqs/' . $faq->getId()]),
             ],
         ];
     }

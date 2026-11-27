@@ -63,24 +63,27 @@ class FrontThemeServiceTest extends AppWebTestCase
     }
 
     /**
-     * Test méthode getMenuPreviewTemplate() : gabarit du dossier du thème actif, présent pour chaque thème
+     * Test méthode getPreviewTemplate() : gabarits d'aperçu du dossier du thème actif, présents pour chaque thème
      * @return void
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function testGetMenuPreviewTemplate(): void
+    public function testGetPreviewTemplate(): void
     {
         $optionSystemService = $this->container->get(OptionSystemService::class);
 
         foreach (Template::cases() as $template) {
             $optionSystemService->saveValueByKee(OptionSystem::OS_THEME_FRONT_SITE->value, $template->value);
-            $this->assertSame(
-                [
-                    'template' => 'front/' . $template->value . '/menu_preview.html.twig',
-                    'scriptsTag' => 'front_' . $template->value,
-                ],
-                $this->frontThemeService->getMenuPreviewTemplate(),
-            );
+            foreach ([FrontThemeService::MENU_PREVIEW, FrontThemeService::TAG_PREVIEW] as $preview) {
+                $this->assertSame(
+                    [
+                        'template' => 'front/' . $template->value . '/' . $preview,
+                        'scriptsTag' => 'front_' . $template->value,
+                        'theme' => $template->value,
+                    ],
+                    $this->frontThemeService->getPreviewTemplate($preview),
+                );
+            }
         }
     }
 

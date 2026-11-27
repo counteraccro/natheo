@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller\Admin\Global;
 
+use App\Enum\Admin\Module\CoreModuleId;
+use App\Service\Admin\Module\ModuleActivationService;
 use App\Tests\AppWebTestCase;
 
 class MarkdownControllerTest extends AppWebTestCase
@@ -31,5 +33,14 @@ class MarkdownControllerTest extends AppWebTestCase
         $this->assertCount(2, $content);
         $this->assertArrayHasKey('media', $content);
         $this->assertArrayHasKey('internalLinks', $content);
+        $this->assertNotNull($content['media']);
+
+        $activationService = $this->container->get(ModuleActivationService::class);
+        $activationService->setModuleDisabled(CoreModuleId::MEDIA->value, true);
+        $activationService->setModuleDisabled(CoreModuleId::PAGE->value, true);
+        $this->client->request('GET', $this->router->generate('admin_markdown_load-datas'));
+        $content = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertNull($content['media']);
+        $this->assertNull($content['internalLinks']);
     }
 }

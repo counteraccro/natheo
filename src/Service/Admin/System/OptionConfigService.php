@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.2
  * Service de lecture et validation des fichiers de config des options (options_system.yaml, options_user.yaml)
  */
 
@@ -21,12 +21,21 @@ class OptionConfigService extends AppAdminService
      */
     public function findByKey(array $config, string $key): ?array
     {
+        return $this->flatten($config)[$key] ?? null;
+    }
+
+    /**
+     * Configuration de chaque option indexée par sa clé, dans l'ordre du fichier, sans les catégories
+     * @param array $config fichier de config lu
+     * @return array<string, array>
+     */
+    public function flatten(array $config): array
+    {
+        $options = [];
         foreach (reset($config) ?: [] as $category) {
-            if (isset($category['options'][$key])) {
-                return $category['options'][$key];
-            }
+            $options += $category['options'] ?? [];
         }
-        return null;
+        return $options;
     }
 
     /**
@@ -50,6 +59,24 @@ class OptionConfigService extends AppAdminService
     }
 
     /**
+     * Valeurs d'une option de type liste (« valeur:libellé|… »), indexées par valeur ; libellé vide s'il manque
+     * @param array $optionConfig
+     * @return array<string, string>
+     */
+    public function getListValues(array $optionConfig): array
+    {
+        $values = [];
+        if (!isset($optionConfig['list_value']) || $optionConfig['list_value'] === '') {
+            return $values;
+        }
+        foreach (explode('|', (string) $optionConfig['list_value']) as $item) {
+            [$value, $label] = array_pad(explode(':', $item, 2), 2, '');
+            $values[$value] = $label;
+        }
+        return $values;
+    }
+
+    /**
      * Vérifie qu'une valeur respecte la configuration de l'option (type, required, validation)
      * @param array $optionConfig
      * @param string $value
@@ -68,11 +95,7 @@ class OptionConfigService extends AppAdminService
             case 'boolean':
                 return in_array($value, ['0', '1'], true);
             case 'select':
-                $allowedValues = array_map(
-                    fn(string $item) => explode(':', $item)[0],
-                    explode('|', $optionConfig['list_value']),
-                );
-                return in_array($value, $allowedValues, true);
+                return array_key_exists($value, $this->getListValues($optionConfig));
         }
 
         if ($value === '' || !isset($optionConfig['validation'])) {

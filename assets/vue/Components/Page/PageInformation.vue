@@ -333,7 +333,7 @@ export default defineComponent({
             class="absolute inset-0 flex items-center justify-center gap-2 opacity-0 hover:opacity-100 transition-opacity"
             style="background-color: rgba(0, 0, 0, 0.45)"
           >
-            <button type="button" class="btn btn-sm btn-primary" @click="openMediaPicker">
+            <button v-if="urls.load_media" type="button" class="btn btn-sm btn-primary" @click="openMediaPicker">
               <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   stroke-linecap="round"
@@ -358,7 +358,7 @@ export default defineComponent({
           </div>
         </div>
 
-        <div v-else>
+        <div v-else-if="urls.load_media">
           <button
             type="button"
             class="w-full flex flex-col items-center justify-center gap-2 py-8 rounded-lg border-2 border-dashed transition-all cursor-pointer border-line-dark text-fg-muted"

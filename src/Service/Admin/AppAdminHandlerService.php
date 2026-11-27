@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace App\Service\Admin;
 
-use App\Service\Admin\Content\Comment\CommentService;
 use App\Service\Admin\Content\Page\PageService;
 use App\Service\Admin\Content\Tag\TagRender;
 use App\Service\Admin\System\OptionConfigService;
@@ -20,7 +19,7 @@ use App\Service\Global\Database\RawQueryManager;
 use App\Service\Global\Database\RawResultQueryManager;
 use App\Service\Global\EnvFile;
 use App\Service\Global\SupportedLocales;
-use App\Translate\Admin\Global\GridTranslate;
+use App\Translation\Admin\Global\GridTranslate;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Psr\Container\ContainerExceptionInterface;
@@ -69,7 +68,6 @@ class AppAdminHandlerService
         'rawQueryManager' => RawQueryManager::class,
         'rawResultQueryManager' => RawResultQueryManager::class,
         'pageService' => PageService::class,
-        'commentService' => CommentService::class,
         'accessDecisionManager' => AccessDecisionManagerInterface::class,
         'csrfTokenManager' => CsrfTokenManagerInterface::class,
         'tagRender' => TagRender::class,
@@ -330,17 +328,6 @@ class AppAdminHandlerService
     protected function getPageService(): PageService
     {
         return $this->handlers->get('pageService');
-    }
-
-    /**
-     * Retourne un CommentService
-     * @return CommentService
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    protected function getCommentService(): CommentService
-    {
-        return $this->handlers->get('commentService');
     }
 
     /**

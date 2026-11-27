@@ -13,6 +13,7 @@
 /* Seuls les fichiers du thème sont scannés */
 @source '../vue/controllers/Front/NatheoHorizon';
 @source '../vue/Components/Front/NatheoHorizon';
+@source '../vue/Components/Global/Ui';
 @source '../../templates/front/natheo_horizon';
 
 @custom-variant dark (&:where(.dark, .dark *));

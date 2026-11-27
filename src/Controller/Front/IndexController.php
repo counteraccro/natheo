@@ -18,7 +18,7 @@ use App\Service\Api\System\User\UserSessionService;
 use App\Service\Front\FrontPreviewService;
 use App\Service\Front\FrontThemeService;
 use App\Service\Global\User\AvatarUrl;
-use App\Translate\Front\FrontTranslate;
+use App\Translation\Front\FrontTranslate;
 use League\CommonMark\Exception\CommonMarkException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -116,7 +116,7 @@ class IndexController extends AppFrontController
         if (!$this->isOpenSite()) {
             return $this->render(
                 $this->getPathTemplate() . DIRECTORY_SEPARATOR . 'close.html.twig',
-                ['scriptsTag' => $this->getScriptTags(), 'locale' => $locale],
+                ['scriptsTag' => $this->getScriptTags(), 'theme' => $this->getThemeId(), 'locale' => $locale],
                 new Response(status: Response::HTTP_SERVICE_UNAVAILABLE),
             );
         }
@@ -175,6 +175,7 @@ class IndexController extends AppFrontController
             'datas' => $datas,
             'translate' => $frontTranslate->getTranslate($locale),
             'scriptsTag' => $this->getScriptTags(),
+            'theme' => $this->getThemeId(),
             'frontScripts' => $frontScripts,
             'consentRequired' => $consentRequired,
             'metaSeo' => $this->getMetaSeo($locale, $slug),

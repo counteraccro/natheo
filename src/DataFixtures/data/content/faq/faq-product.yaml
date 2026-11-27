@@ -180,11 +180,11 @@ faq-product:
                         es: '¿Puedo modificar una pantalla de la administración?'
                     answer:
                         fr: |
-                            Oui, sans toucher au code de Nathéo. Un contrôleur placé dans `src/Overwrite/Controller/` peut remplacer un écran existant, et la correspondance entre l'ancienne route et la nouvelle se déclare dans `config/cms/overwrite.yaml`. Le guide de [configuration](/fr/documentation/configuration) donne un exemple.
+                            Oui, sans toucher au code de Nathéo. Un fichier placé dans `assets/overwrite/vue/Components/Admin/` remplace l'écran ou le composant du back-office qui a le même chemin. Côté serveur, `config/cms/overwrite.yaml` donne à une opération de l'API un autre provider ou processor, rangé dans `src/Overwrite/`. Le guide de [configuration](/fr/documentation/configuration) décrit l'exemple livré avec Nathéo.
                         en: |
-                            Yes, without touching Nathéo's code. A controller placed in `src/Overwrite/Controller/` can replace an existing screen, and the mapping between the old route and the new one is declared in `config/cms/overwrite.yaml`. The [configuration](/en/documentation/configuration) guide gives an example.
+                            Yes, without touching Nathéo's code. A file placed in `assets/overwrite/vue/Components/Admin/` replaces the back-office screen or component with the same path. On the server side, `config/cms/overwrite.yaml` gives an API operation another provider or processor, stored in `src/Overwrite/`. The [configuration](/en/documentation/configuration) guide describes the example shipped with Nathéo.
                         es: |
-                            Sí, sin tocar el código de Nathéo. Un controlador colocado en `src/Overwrite/Controller/` puede sustituir una pantalla existente, y la correspondencia entre la ruta antigua y la nueva se declara en `config/cms/overwrite.yaml`. La guía de [configuración](/es/documentation/configuracion) da un ejemplo.
+                            Sí, sin tocar el código de Nathéo. Un archivo colocado en `assets/overwrite/vue/Components/Admin/` sustituye a la pantalla o al componente del back-office con la misma ruta. En el servidor, `config/cms/overwrite.yaml` da a una operación de la API otro provider o processor, guardado en `src/Overwrite/`. La guía de [configuración](/es/documentation/configuracion) describe el ejemplo incluido en Nathéo.
                 -   title:
                         fr: 'Nathéo est-il gratuit ?'
                         en: 'Is Nathéo free?'

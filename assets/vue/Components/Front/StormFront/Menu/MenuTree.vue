@@ -7,7 +7,7 @@
 import { computed } from 'vue';
 import { useFrontContext } from '@/vue/Composables/Front/useFrontContext';
 import { useMenus } from '@/vue/Composables/Front/useMenus';
-import FrontIcon from '@/vue/Components/Front/Global/FrontIcon.vue';
+import UiIcon from '@/vue/Components/Global/Ui/UiIcon.vue';
 import MegaColumns from '@/vue/Components/Front/StormFront/Menu/MegaColumns.vue';
 import MenuLink from '@/vue/Components/Front/StormFront/Menu/MenuLink.vue';
 import NestedMenuList from '@/vue/Components/Front/StormFront/Menu/NestedMenuList.vue';
@@ -37,7 +37,7 @@ const SUB =
         <details v-else :open="isActive(element)" class="group">
           <summary :class="ENTRY" class="list-none [&::-webkit-details-marker]:hidden">
             {{ element.label }}
-            <FrontIcon name="chevron-down" class="size-5 transition-transform group-open:rotate-180" />
+            <UiIcon name="chevron-down" class="size-5 transition-transform group-open:rotate-180" />
           </summary>
           <MegaColumns v-if="layout.kind === 'mega'" :element="element" :columns="layout.columns" class="pb-4" />
           <NestedMenuList v-else :elements="element.children" :link-class="SUB" nested-class="pl-4" class="pb-3 pl-4" />

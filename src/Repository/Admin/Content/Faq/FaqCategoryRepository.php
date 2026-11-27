@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repository\Admin\Content\Faq;
 
+use App\Entity\Admin\Content\Faq\Faq;
 use App\Entity\Admin\Content\Faq\FaqCategory;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -36,5 +37,23 @@ class FaqCategoryRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, FaqCategory::class);
+    }
+
+    /**
+     * Catégories triées d'une FAQ, avec leurs traductions
+     * @param Faq $faq
+     * @return FaqCategory[]
+     */
+    public function getAdminTreeCategories(Faq $faq): array
+    {
+        return $this->createQueryBuilder('category')
+            ->addSelect('translation')
+            ->leftJoin('category.faqCategoryTranslations', 'translation')
+            ->where('category.faq = :faq')
+            ->setParameter('faq', $faq)
+            ->orderBy('category.renderOrder', 'ASC')
+            ->addOrderBy('category.id', 'ASC')
+            ->getQuery()
+            ->getResult();
     }
 }

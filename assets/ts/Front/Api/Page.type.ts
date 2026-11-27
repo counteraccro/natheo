@@ -3,7 +3,7 @@
  * @version 1.1
  * Ressource Page de l'API v2
  */
-import type { JsonLdResource } from '@/ts/Front/Api/Hydra.type';
+import type { JsonLdResource } from '@/ts/Global/Api/Hydra.type';
 import type { Menu } from '@/ts/Front/Api/Menu.type';
 import type { PageContentSummary } from '@/ts/Front/Api/PageContent.type';
 

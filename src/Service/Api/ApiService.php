@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace App\Service\Api;
 
 use App\Entity\Admin\System\ApiToken;
-use App\Entity\Admin\System\User;
+use App\Security\ApiUser;
 use App\Enum\Admin\System\Options\OptionSystem;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -18,18 +18,6 @@ use App\Service\Global\Token\TokenHasher;
 
 class ApiService extends AppApiService
 {
-    /**
-     * Attribut de requête : token d'API de l'appel (celui de la session pour un access token utilisateur)
-     * @var string
-     */
-    public const string ATTRIBUTE_API_TOKEN = '_api_token';
-
-    /**
-     * Attribut de requête : session utilisateur de l'appel, absent pour un token d'API seul
-     * @var string
-     */
-    public const string ATTRIBUTE_USER_SESSION = '_api_user_session';
-
     /**
      * Détermine si on peut accéder à l'API ou non
      * @return bool
@@ -68,14 +56,13 @@ class ApiService extends AppApiService
     }
 
     /**
-     * Converti un objet ApiToken en User pour le ApiProvider Si les conditions suivantes sont remplis
-     *  - IP autorisée, Token valide, actif et non expiré
+     * Convertit un token d'API en ApiUser pour le ApiProvider, si l'IP est autorisée et le token actif et non expiré
      * @param string $token
-     * @return User|null
+     * @return ApiUser|null
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getUserByApiToken(string $token): ?User
+    public function getUserByApiToken(string $token): ?ApiUser
     {
         if (!$this->canAccessToApi()) {
             return null;
@@ -91,19 +78,18 @@ class ApiService extends AppApiService
         }
 
         $this->updateLastUsedAt($apiToken);
-        $this->getRequestStack()->getCurrentRequest()?->attributes->set(self::ATTRIBUTE_API_TOKEN, $apiToken);
-        return $this->createSecurityUser($apiToken);
+        return new ApiUser($apiToken);
     }
 
     /**
-     * Converti l'access token d'une session utilisateur en User pour le ApiProvider, avec les rôles du token d'API
-     * de la session, si l'IP est autorisée et la session valide
+     * Convertit l'access token d'une session utilisateur en ApiUser pour le ApiProvider, avec les rôles du token d'API
+     * de la session et ceux de l'utilisateur, si l'IP est autorisée et la session valide
      * @param string $token
-     * @return User|null
+     * @return ApiUser|null
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getUserBySessionToken(string $token): ?User
+    public function getUserBySessionToken(string $token): ?ApiUser
     {
         if (!$this->canAccessToApi()) {
             return null;
@@ -113,24 +99,7 @@ class ApiService extends AppApiService
         if ($session === null) {
             return null;
         }
-
-        $attributes = $this->getRequestStack()->getCurrentRequest()?->attributes;
-        $attributes?->set(self::ATTRIBUTE_API_TOKEN, $session->getApiToken());
-        $attributes?->set(self::ATTRIBUTE_USER_SESSION, $session);
-        return $this->createSecurityUser($session->getApiToken());
-    }
-
-    /**
-     * User de sécurité du firewall API, qui porte les rôles du token d'API
-     * @param ApiToken $apiToken
-     * @return User
-     */
-    private function createSecurityUser(ApiToken $apiToken): User
-    {
-        $user = new User();
-        $user->setRoles($apiToken->getRoles());
-        $user->setUpdateAt(new \DateTime());
-        return $user;
+        return new ApiUser($session->getApiToken(), $session);
     }
 
     /**

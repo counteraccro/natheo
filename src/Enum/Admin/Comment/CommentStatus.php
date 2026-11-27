@@ -10,6 +10,9 @@ declare(strict_types=1);
 namespace App\Enum\Admin\Comment;
 
 use App\Enum\Trait\EnumSlugTrait;
+use Symfony\Component\Translation\TranslatableMessage;
+
+use function Symfony\Component\Translation\t;
 
 enum CommentStatus: int
 {
@@ -47,5 +50,18 @@ enum CommentStatus: int
     public function getClassCss(): string
     {
         return self::CONF[$this->value]['css_class'];
+    }
+
+    /**
+     * Libellé traduisible du statut
+     * @return TranslatableMessage
+     */
+    public function getLabel(): TranslatableMessage
+    {
+        return match ($this) {
+            self::WAIT_VALIDATION => t('comment.state.wait_validation', domain: 'comment'),
+            self::VALIDATE => t('comment.state.validate', domain: 'comment'),
+            self::MODERATE => t('comment.state.moderate', domain: 'comment'),
+        };
     }
 }

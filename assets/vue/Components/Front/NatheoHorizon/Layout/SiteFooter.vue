@@ -11,8 +11,8 @@ import { useLanguages } from '@/vue/Composables/Front/useLanguages';
 import { useMenus } from '@/vue/Composables/Front/useMenus';
 import { useSiteOptions } from '@/vue/Composables/Front/useSiteOptions';
 import { useSocialLinks } from '@/vue/Composables/Front/useSocialLinks';
-import BrandLogo from '@/vue/Components/Front/Global/BrandLogo.vue';
-import FrontIcon from '@/vue/Components/Front/Global/FrontIcon.vue';
+import BrandLogo from '@/vue/Components/Global/Ui/BrandLogo.vue';
+import UiIcon from '@/vue/Components/Global/Ui/UiIcon.vue';
 import FooterMenu from '@/vue/Components/Front/NatheoHorizon/Menu/FooterMenu.vue';
 import type { Page } from '@/ts/Front/Api/Page.type';
 
@@ -50,7 +50,7 @@ const socials = useSocialLinks();
                 class="grid size-11 place-items-center rounded-nh text-on-night shadow-[inset_0_0_0_1.5px_rgb(201_184_255/0.35)] hover:shadow-[inset_0_0_0_1.5px_#fff]"
               >
                 <span class="sr-only">{{ social.label }}</span>
-                <FrontIcon :name="social.icon" class="size-5.5" />
+                <UiIcon :name="social.icon" class="size-5.5" />
               </a>
             </li>
           </ul>

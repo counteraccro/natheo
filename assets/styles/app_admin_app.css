@@ -1,0 +1,20 @@
+/*!
+ * Author : Gourdon Aymeric
+ * Version : 1.1
+ * Point d'entrée du design du nouveau back-office
+ */
+
+@import 'tailwindcss' source(none);
+@import './admin_app/tokens.css';
+@import './admin_app/theme.css';
+@import './admin_app/base.css';
+@import './admin_app/natheo-editor.css';
+
+/* Seuls les fichiers du nouveau back-office et de ses surcharges sont scannés */
+@source '../vue/Components/Admin';
+@source '../overwrite/vue/Components/Admin';
+@source '../vue/Components/Global/Ui';
+@source '../vue/Composables/Admin/Ui';
+@source '../vue/Composables/Admin/Editor';
+
+@custom-variant dark (&:where(.dark, .dark *));

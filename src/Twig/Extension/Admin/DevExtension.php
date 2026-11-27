@@ -3,40 +3,24 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 2.0
+ * @version 2.1
  * Retourne des infos pour le développement
  */
 
 namespace App\Twig\Extension\Admin;
 
-use App\Entity\Admin\System\User;
-use App\Enum\Installation\DoctrineStrategy;
-use App\Service\Admin\Dev\GitService;
+use App\Service\Admin\Dev\DevInfoService;
 use App\Service\Admin\GridService;
-use App\Service\Global\User\AvatarUrl;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Http\LoginLink\LoginLinkHandlerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Attribute\AsTwigFunction;
 
 class DevExtension extends AppAdminExtension
 {
-    /**
-     * @var ParameterBagInterface
-     */
-    private ParameterBagInterface $parameterBag;
-
-    /**
-     * @var GitService
-     */
-    private GitService $gitService;
-
     /**
      * @param ContainerInterface $handlers
      * @throws ContainerExceptionInterface
@@ -47,17 +31,12 @@ class DevExtension extends AppAdminExtension
             AutowireLocator([
                 'translator' => TranslatorInterface::class,
                 'router' => RouterInterface::class,
-                'parameterBag' => ParameterBagInterface::class,
-                'gitService' => GitService::class,
-                'entityManager' => EntityManagerInterface::class,
-                'loginLinkHandler' => LoginLinkHandlerInterface::class,
+                'devInfoService' => DevInfoService::class,
                 'gridService' => GridService::class,
             ]),
         ]
         private readonly ContainerInterface $handlers,
     ) {
-        $this->parameterBag = $this->handlers->get('parameterBag');
-        $this->gitService = $this->handlers->get('gitService');
         parent::__construct($this->handlers);
     }
 
@@ -70,27 +49,16 @@ class DevExtension extends AppAdminExtension
     #[AsTwigFunction('devInfo', isSafe: ['html'])]
     public function getDevInfo(): array
     {
-        $version = $this->parameterBag->get('app.version');
-        $env = $this->parameterBag->get('kernel.environment');
-        $infoGit = $this->gitService->getInfoGit();
-        $database = match (DoctrineStrategy::current()) {
-            DoctrineStrategy::MYSQL->value => 'Mysql',
-            DoctrineStrategy::POSTGRESQL->value => 'PostgreSQL',
-        };
+        $info = $this->getDevInfoService()->getInfo();
 
         return [
-            'php' => phpversion(),
-            'git_branche' => $infoGit[GitService::KEY_BRANCHE],
-            'last_commit' =>
-                '<abbr title="' .
-                $infoGit[GitService::KEY_HASH] .
-                '">' .
-                substr($infoGit[GitService::KEY_HASH], 0, 7) .
-                '</abbr>',
-            'last_commit_date' => $infoGit[GitService::KEY_LAST_COMMIT],
-            'version' => $version,
-            'env' => $env,
-            'database' => $database,
+            'php' => $info['php'],
+            'git_branche' => $info['branch'],
+            'last_commit' => '<abbr title="' . $info['commit'] . '">' . substr($info['commit'], 0, 7) . '</abbr>',
+            'last_commit_date' => $info['commitDate'],
+            'version' => $info['version'],
+            'env' => $info['env'],
+            'database' => $info['database'],
         ];
     }
 
@@ -107,33 +75,28 @@ class DevExtension extends AppAdminExtension
     #[AsTwigFunction('listeUsersToLogin', isSafe: ['html'])]
     public function getListeUsers(): array
     {
-        /** @var EntityManagerInterface $entityManager */
-        $entityManager = $this->handlers->get('entityManager');
-
-        /** @var LoginLinkHandlerInterface $loginLinkHandler */
-        $loginLinkHandler = $this->handlers->get('loginLinkHandler');
-
         /** @var GridService $gridService */
         $gridService = $this->handlers->get('gridService');
 
-        $users = $entityManager->getRepository(User::class)->findBy(['disabled' => false]);
+        return array_map(
+            fn(array $user): array => [
+                'url' => $user['url'],
+                'firstLetter' => ucfirst($user['login'][0]),
+                'login' => $user['login'],
+                'avatar' => $user['avatar'],
+                'role' => $gridService->renderRole($user['role']),
+            ],
+            $this->getDevInfoService()->getLoginUsers(),
+        );
+    }
 
-        $return = [];
-        foreach ($users as $user) {
-            /** @var User $user */
-            $url = $loginLinkHandler->createLoginLink($user);
-
-            $avatar = AvatarUrl::file($user->getAvatar(), $this->parameterBag->get('app.path.avatar'));
-
-            $return[] = [
-                'url' => $url,
-                'firstLetter' => ucfirst($user->getLogin()[0]),
-                'login' => $user->getLogin(),
-                'avatar' => $avatar,
-                'role' => $gridService->renderRole($user->getRoles()[0]),
-            ];
-        }
-
-        return $return;
+    /**
+     * @return DevInfoService
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function getDevInfoService(): DevInfoService
+    {
+        return $this->handlers->get('devInfoService');
     }
 }

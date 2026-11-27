@@ -1,0 +1,161 @@
+admin_ui.alert.close: "Fermer l'alerte"
+admin_ui.breadcrumb.nav: "Fil d'Ariane"
+admin_ui.button.loading: Chargement…
+admin_ui.color_input.hex: 'Code hexadécimal'
+admin_ui.color_input.more: 'Autres couleurs'
+admin_ui.color_input.picker: 'Choisir une couleur'
+admin_ui.color_input.suggestions: 'Couleurs proposées'
+admin_ui.color_input.use: 'Choisir {color}'
+admin_ui.confirm_dialog.cancel: Annuler
+admin_ui.confirm_dialog.confirm: Confirmer
+admin_ui.data_table.actions: Actions
+admin_ui.data_table.clear_selection: 'Tout désélectionner'
+admin_ui.data_table.columns: Colonnes
+admin_ui.data_table.empty_text: 'Aucune ligne ne correspond à ces critères.'
+admin_ui.data_table.empty_title: 'Aucun résultat'
+admin_ui.data_table.more_actions: "Plus d'actions"
+admin_ui.data_table.options: Options
+admin_ui.data_table.search_back: 'Revenir au tableau'
+admin_ui.data_table.search_hint: 'Entrée pour chercher dans toute la base'
+admin_ui.data_table.search_label: 'Rechercher dans le tableau'
+admin_ui.data_table.search_local: '{count} sur {total} lignes de cette page'
+admin_ui.data_table.search_pending: 'Recherche dans la base de données…'
+admin_ui.data_table.search_placeholder: Rechercher…
+admin_ui.data_table.search_remote: '{count, plural, =0 {Aucun résultat} one {# résultat} other {# résultats}} dans toute la base'
+admin_ui.data_table.select_all: 'Sélectionner les {total}'
+admin_ui.data_table.select_page: 'Sélectionner les lignes de la page'
+admin_ui.data_table.select_row: 'Sélectionner {label}'
+admin_ui.data_table.selected: '{count, plural, one {# élément sélectionné} other {# éléments sélectionnés}}'
+admin_ui.data_table.selection_region: Sélection
+admin_ui.data_table.sql_copied: Copié
+admin_ui.data_table.sql_copy: Copier
+admin_ui.data_table.sql_hide: Masquer
+admin_ui.data_table.sql_save: Enregistrer
+admin_ui.data_table.sql_saved: Enregistrée
+admin_ui.data_table.sql_show: 'Afficher le SQL'
+admin_ui.data_table.sql_title: 'Requête SQL'
+admin_ui.debug_bar.close: 'Fermer la barre de debug'
+admin_ui.debug_bar.current_user: connecté
+admin_ui.debug_bar.login_as: 'Se connecter avec'
+admin_ui.debug_bar.open: 'Barre de debug'
+admin_ui.dialog.close: Fermer
+admin_ui.error_summary.item: '{label} : {message}'
+admin_ui.error_summary.title: "{count, plural, one {# erreur empêche l'enregistrement} other {# erreurs empêchent l'enregistrement}}"
+admin_ui.field.required: obligatoire
+admin_ui.header.appearance: Apparence
+admin_ui.header.color: Couleur
+admin_ui.header.impersonation: 'Connecté en tant que {name}'
+admin_ui.header.impersonation_exit: 'Revenir à mon compte'
+admin_ui.header.layout: 'Disposition'
+admin_ui.header.layout_help: 'Recharge la page, enregistré dans vos options'
+admin_ui.header.mode: Mode
+admin_ui.header.mode_dark: Sombre
+admin_ui.header.mode_light: Clair
+admin_ui.header.new: Nouveau
+admin_ui.header.notifications: Notifications
+admin_ui.header.open_menu: 'Ouvrir le menu'
+admin_ui.header.search_label: 'Recherche globale'
+admin_ui.header.search_placeholder: Rechercher…
+admin_ui.header.theme_blue: Bleu
+admin_ui.header.theme_green: Vert
+admin_ui.header.theme_red: Rouge
+admin_ui.header.theme_violet: Violet
+admin_ui.input.counter: '{count} / {max} caractères'
+admin_ui.natheo_editor.block_menu: 'Type de bloc : {block}'
+admin_ui.natheo_editor.bubble_toolbar: 'Mise en forme de la sélection'
+admin_ui.natheo_editor.command.blockquote: 'Citation'
+admin_ui.natheo_editor.command.bold: 'Gras'
+admin_ui.natheo_editor.command.bullet_list: 'Liste à puces'
+admin_ui.natheo_editor.command.clear_formatting: 'Effacer la mise en forme'
+admin_ui.natheo_editor.command.code: 'Code'
+admin_ui.natheo_editor.command.code_block: 'Bloc de code'
+admin_ui.natheo_editor.command.heading_2: 'Titre 2'
+admin_ui.natheo_editor.command.heading_3: 'Titre 3'
+admin_ui.natheo_editor.command.heading_4: 'Titre 4'
+admin_ui.natheo_editor.command.horizontal_rule: 'Séparateur'
+admin_ui.natheo_editor.command.image: 'Image'
+admin_ui.natheo_editor.command.italic: 'Italique'
+admin_ui.natheo_editor.command.link: 'Lien'
+admin_ui.natheo_editor.command.ordered_list: 'Liste numérotée'
+admin_ui.natheo_editor.command.paragraph: 'Paragraphe'
+admin_ui.natheo_editor.command.redo: 'Rétablir'
+admin_ui.natheo_editor.command.strike: 'Barré'
+admin_ui.natheo_editor.command.table: 'Tableau'
+admin_ui.natheo_editor.command.table_add_column: 'Ajouter une colonne à droite'
+admin_ui.natheo_editor.command.table_add_row: 'Ajouter une ligne dessous'
+admin_ui.natheo_editor.command.table_delete: 'Supprimer le tableau'
+admin_ui.natheo_editor.command.table_delete_column: 'Supprimer la colonne'
+admin_ui.natheo_editor.command.table_delete_row: 'Supprimer la ligne'
+admin_ui.natheo_editor.command.undo: 'Annuler'
+admin_ui.natheo_editor.hint.blockquote: 'Texte mis en avant'
+admin_ui.natheo_editor.hint.bullet_list: 'Liste simple'
+admin_ui.natheo_editor.hint.code_block: 'Code sur plusieurs lignes'
+admin_ui.natheo_editor.hint.heading_2: 'Grand titre de section'
+admin_ui.natheo_editor.hint.heading_3: 'Sous-titre'
+admin_ui.natheo_editor.hint.heading_4: 'Petit titre'
+admin_ui.natheo_editor.hint.horizontal_rule: 'Ligne horizontale'
+admin_ui.natheo_editor.hint.image: 'Par son adresse'
+admin_ui.natheo_editor.hint.link: 'Adresse web ou page du site'
+admin_ui.natheo_editor.hint.ordered_list: 'Liste dans l''ordre'
+admin_ui.natheo_editor.hint.paragraph: 'Texte courant'
+admin_ui.natheo_editor.hint.table: '3 colonnes, en-tête compris'
+admin_ui.natheo_editor.image_dialog.alt: 'Texte alternatif'
+admin_ui.natheo_editor.image_dialog.alt_help: 'Décrit l''image pour les lecteurs d''écran. Laissez vide pour une image décorative.'
+admin_ui.natheo_editor.image_dialog.cancel: 'Annuler'
+admin_ui.natheo_editor.image_dialog.error: 'Cette adresse n''est pas autorisée : utilisez http, https ou une adresse commençant par /.'
+admin_ui.natheo_editor.image_dialog.submit_edit: 'Modifier l''image'
+admin_ui.natheo_editor.image_dialog.submit_new: 'Insérer l''image'
+admin_ui.natheo_editor.image_dialog.title_edit: 'Modifier l''image'
+admin_ui.natheo_editor.image_dialog.title_new: 'Insérer une image'
+admin_ui.natheo_editor.image_dialog.url: 'Adresse de l''image'
+admin_ui.natheo_editor.insert_menu: 'Insérer'
+admin_ui.natheo_editor.key_shift: 'Maj'
+admin_ui.natheo_editor.keyword_menu: 'Mot-clé'
+admin_ui.natheo_editor.link_dialog.cancel: 'Annuler'
+admin_ui.natheo_editor.link_dialog.error: 'Cette adresse n''est pas autorisée : utilisez http, https, mailto, tel ou une adresse commençant par /.'
+admin_ui.natheo_editor.link_dialog.remove: 'Retirer le lien'
+admin_ui.natheo_editor.link_dialog.submit_edit: 'Modifier le lien'
+admin_ui.natheo_editor.link_dialog.submit_new: 'Insérer le lien'
+admin_ui.natheo_editor.link_dialog.text: 'Texte du lien'
+admin_ui.natheo_editor.link_dialog.title_edit: 'Modifier le lien'
+admin_ui.natheo_editor.link_dialog.title_new: 'Insérer un lien'
+admin_ui.natheo_editor.link_dialog.url: 'Adresse'
+admin_ui.natheo_editor.link_dialog.url_help: 'Adresse web, e-mail (mailto:), téléphone (tel:) ou adresse du site commençant par /'
+admin_ui.natheo_editor.link_keyword: 'Adresse remplacée à l''envoi : {keyword}'
+admin_ui.natheo_editor.link_page: 'Page du site #{id}'
+admin_ui.natheo_editor.markdown: 'Markdown'
+admin_ui.natheo_editor.raw_html: 'HTML conservé tel quel'
+admin_ui.natheo_editor.short.table_add_column: 'Colonne à droite'
+admin_ui.natheo_editor.short.table_add_row: 'Ligne dessous'
+admin_ui.natheo_editor.short.table_delete: 'Supprimer le tableau'
+admin_ui.natheo_editor.short.table_delete_column: 'Supprimer la colonne'
+admin_ui.natheo_editor.short.table_delete_row: 'Supprimer la ligne'
+admin_ui.natheo_editor.site_render: 'Rendu du site'
+admin_ui.natheo_editor.slash.empty: 'Aucune commande ne correspond'
+admin_ui.natheo_editor.slash.group_block: 'Listes et blocs'
+admin_ui.natheo_editor.slash.group_heading: 'Titres'
+admin_ui.natheo_editor.slash.group_insert: 'Insérer'
+admin_ui.natheo_editor.slash.group_keyword: 'Mots-clés'
+admin_ui.natheo_editor.slash.help: '↑ ↓ pour choisir, Entrée pour insérer, Échap pour fermer'
+admin_ui.natheo_editor.slash.list: 'Commandes'
+admin_ui.natheo_editor.slash.search: 'Tapez pour filtrer'
+admin_ui.natheo_editor.slash_hint: 'Raccourci : / sur une ligne vide'
+admin_ui.natheo_editor.table_toolbar: 'Tableau'
+admin_ui.natheo_editor.toolbar: 'Mise en forme'
+admin_ui.natheo_editor.words: '{count, plural, =0 {Aucun mot} one {# mot} other {# mots}}'
+admin_ui.pagination.items_per_page: 'Lignes par page'
+admin_ui.pagination.nav: Pagination
+admin_ui.pagination.next: 'Page suivante'
+admin_ui.pagination.page: 'Page {page}'
+admin_ui.pagination.previous: 'Page précédente'
+admin_ui.pagination.range: '{from} à {to} sur {total}'
+admin_ui.shell.skip_to_content: 'Aller au contenu'
+admin_ui.sidebar.close: 'Fermer le menu'
+admin_ui.sidebar.nav: 'Menu principal'
+admin_ui.sidebar.user_menu: 'Menu utilisateur'
+admin_ui.sidebar.version: 'Version {version}'
+admin_ui.tabs.has_errors: 'contient des erreurs'
+admin_ui.text_editor.load_error: 'L''éditeur n''a pas pu être chargé. Le texte reste modifiable en Markdown.'
+admin_ui.text_editor.loading: 'Chargement de l''éditeur…'
+admin_ui.toast.close: 'Fermer la notification'
+admin_ui.toast.region: Notifications

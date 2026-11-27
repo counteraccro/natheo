@@ -174,6 +174,26 @@ class NotificationServiceTest extends AppWebTestCase
     }
 
     /**
+     * Une notification de nouveau commentaire mène à son écran dans l'application du back-office
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testGetByUserPaginateCommentLink(): void
+    {
+        $user = $this->createUser();
+        $this->notificationService->add($user, NotificationEnum::NEW_COMMENT->value, [
+            'author' => 'Jean',
+            'status' => 'Validé',
+            'page' => 'Accueil',
+            'id' => 42,
+        ]);
+
+        $notification = $this->notificationService->getByUserPaginate(1, 1, $user, true)->getIterator()->current();
+        $this->assertStringEndsWith('/admin/fr/comments/42', $notification->getTmpObjectId());
+    }
+
+    /**
      * test méthode purge()
      * @return void
      * @throws ContainerExceptionInterface

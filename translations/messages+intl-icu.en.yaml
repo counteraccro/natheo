@@ -226,6 +226,10 @@ options_system.user_session_validity.label: 'Lifetime of back-office users'' API
 options_system.user_session_validity.value.one_day: '1 day'
 options_system.user_session_validity.value.seven_days: '7 days'
 options_system.user_session_validity.value.thirty_days: '30 days'
+options_user.admin_theme.help: "Layout of the back-office screens: side menu (Natheo-Studio) or top menu with the list and the item side by side (Natheo-Atelier)"
+options_user.admin_theme.label: "Administration layout"
+options_user.admin_theme.value.natheo_atelier: Natheo-Atelier
+options_user.admin_theme.value.natheo_studio: Natheo-Studio
 options_user.category.interface.description: Customize the administration with these options
 options_user.category.interface.label: Interface
 options_user.category.interface.title: Administration customization
@@ -242,57 +246,7 @@ options_user.default_personal_data_render.value.login: Nickname
 options_user.default_personal_data_render.value.name: Your first and last name
 options_user.nb_element.help: Sets the default number of items in tables for your session
 options_user.nb_element.label: Number of items per page
-pagedemo.index.description: 'This page is only displayed if the overwrite of the {route} route is disabled in {file}. It is the original page of the overwrite example.'
-pagedemo.index.title: 'Original page of the overwrite demo'
 response.ajax.error: An error occurred, check the logs to find out more
 response.ajax.success: Action completed successfully
-sidebar.advanced_options.description: Manage the options for the development of the CMS
-sidebar.advanced_options.label: Advanced options
-sidebar.api_token.description: Manage the access tokens to the Nathéo CMS APIs
-sidebar.api_token.label: API tokens
-sidebar.comment.description: Comment management
-sidebar.comment.label: Comments
-sidebar.content.description: Groups all the content modules of the site
-sidebar.content.label: Content
-sidebar.dashboard.description: Home page of the CMS administration
-sidebar.dashboard.label: Dashboard
-sidebar.database_manager.description: View the database and its statistics
-sidebar.database_manager.label: Database
-sidebar.demo_overwrite.description: Example of overriding a CMS page
-sidebar.demo_overwrite.label: Override example
-sidebar.faq.description: FAQ management
-sidebar.faq.label: FAQ
-sidebar.info.description: Information about the CMS
-sidebar.info.label: Information
-sidebar.log.description: Management and viewing of the application logs
-sidebar.log.label: Logs
-sidebar.mail.description: Management of the emails sent from the CMS
-sidebar.mail.label: Emails
-sidebar.media.description: Media management
-sidebar.media.label: Media library
-sidebar.member.description: Management of the members registered on the site
-sidebar.member.label: Members
-sidebar.menu.description: Menu management
-sidebar.menu.label: Menus
-sidebar.option_system.description: CMS configuration
-sidebar.option_system.label: System options
-sidebar.page.description: Page management
-sidebar.page.label: Pages
-sidebar.sidebar.description: Management of the main administration menu
-sidebar.sidebar.label: Sidebar
-sidebar.sql_manager.description: Create / run SQL queries (SELECT only)
-sidebar.sql_manager.label: SQL manager
-sidebar.system.description: Groups all the system modules of the CMS
-sidebar.system.label: System
-sidebar.tag.description: Tag management
-sidebar.tag.label: Tags
-sidebar.tools.description: Groups all the modules that help develop the CMS
-sidebar.tools.label: Tools
-sidebar.translate.description: Management of the CMS translations
-sidebar.translate.label: Translations
-sidebar.update.description: Management of the CMS updates
-sidebar.update.label: Update
-sidebar.user.description: Management of the users who can log in to the site administration
-sidebar.user.label: Users
 options_system.page_validation.label: 'Page validation'
 options_system.page_validation.help: 'If this option is enabled, contributors submit their pages for validation instead of publishing them; administrators approve or reject them'

@@ -1,39 +1,64 @@
-demo_overwrite.index.title: Overriding back-office pages
-demo_overwrite.index.description: Guide to override back-office pages
-demo_overwrite.guide.introduction.title: Introduction
-demo_overwrite.guide.introduction.text_1: You are currently viewing a custom page that overrides an existing page of the CMS. <br />Nathéo CMS lets you very easily override any page of the CMS to add your own code logic
-demo_overwrite.guide.introduction.sub_title_1: How does it work?
-demo_overwrite.guide.introduction.text_2: The original page is called from the controller {controller} and rendered with the Twig view {vue}. However, it is overridden and is therefore called from the controller {controller2} with the associated view {vue2}
-demo_overwrite.guide.introduction.text_3: In the same way, the URL {url} is turned into {url2} to redirect the user to the overridden page.
-demo_overwrite.guide.introduction.text_4: 'Example: <a class="link" href="{url}">the non-overridden page</a> and <a class="link" href="{url2}">the overridden page</a> both point to the same page, the one you are currently viewing.'
-demo_overwrite.guide.prerequisites.title: Prerequisites
-demo_overwrite.guide.prerequisites.text_1: Here are the prerequisites to create a new custom page.
-demo_overwrite.guide.prerequisites.required_1: Have at least some knowledge of PHP and Symfony.
-demo_overwrite.guide.prerequisites.required_2: Have a complete development environment.
-demo_overwrite.guide.prerequisites.required_3: Know the Symfony conventions.
-demo_overwrite.guide.prerequisites.alert.title: Good to know!
-demo_overwrite.guide.prerequisites.alert.text_1: Only create an override to add new code logic or to deeply change the existing logic.
-demo_overwrite.guide.prerequisites.alert.text_2: If you only want to change the design, use the back-office APIs (coming soon).
-demo_overwrite.guide.prerequisites.required_4: Throughout this tutorial, we will use the code that displays this page as an example.
-demo_overwrite.guide.step_1.title: Step 1 - Creating the custom controller
-demo_overwrite.guide.step_1.text_1: The first step is to create a custom controller that will be called instead of the original controller. This is where you will put all your business logic.
-demo_overwrite.guide.step_1.text_2: 'Create your controller in the <code>Overwrite</code> folder: {controller}'
-demo_overwrite.guide.step_1.text_3: From this file, you will have access to all the features of the CMS (enums, services, repositories, etc.)
-demo_overwrite.guide.step_1.text_4: Code example with the <code>DemoOverwriteController.php</code> controller
-demo_overwrite.guide.step_1.alert.title: Warning
-demo_overwrite.guide.step_1.alert.text_1: Why put my code in the <code>Overwrite</code> folder rather than in the <code>Controller</code> folder?
-demo_overwrite.guide.step_2.alert.text_2: As the CMS keeps evolving, putting your custom code in the <code>Controller</code> folder may make you lose your work during an update. The <code>Overwrite</code> folder is reserved for custom code, so its content will never be changed by future CMS updates.
-demo_overwrite.guide.step_2.title: Step 2 - Creating the Twig view
-demo_overwrite.guide.step_2.text_1: Add the view used for rendering and put it in the {dossier} folder.
-demo_overwrite.guide.step_2.text_2: As with the controller, it is recommended to put your code in the {dossier} folder to avoid any risk of loss during an update.
-demo_overwrite.guide.step_3.title: Step 3 - Configuration
-demo_overwrite.guide.step_3.text_1: 'Once your controller and its view are created, all that is left is to tell the CMS which route must be overridden by your new route. Nothing could be simpler: open the {dossier} file.'
-demo_overwrite.guide.step_3.text_2: Here is the configuration to override this page.
-demo_overwrite.guide.step_3.text_3: Quick explanation of this configuration.
-demo_overwrite.guide.step_3.text_4: '<b>controller</b>: the controller to override, in our example {controller}.'
-demo_overwrite.guide.step_3.text_5: '<b>route</b>: the route to override, in our example <code>admin_dashboard_page_demo</code>.'
-demo_overwrite.guide.step_3.text_6: '<b>overwrite</b>: the override configuration.'
-demo_overwrite.guide.step_3.text_7: '<b>route</b>: the new route, in our example <code>admin_overwrite_page_demo</code>.'
-demo_overwrite.guide.step_3.text_8: '<b>parameters</b>: if your route has parameters, list them here as key: value, where key is the parameter name and value its data type.'
-demo_overwrite.guide.step_4.title: Step 4 - All done!
-demo_overwrite.guide.step_4.text_1: Congratulations, you have just overridden an internal URL of the CMS with your own code. Well done!
+demo_overwrite.editor.note_hint: 'Box saved as a quote'
+demo_overwrite.editor.note_label: 'Note'
+demo_overwrite.menu.label: 'Override example'
+demo_overwrite.module.description: 'Example of overriding an API operation and a back-office screen'
+demo_overwrite.module.label: 'Override example'
+demo_overwrite.screen.description: "This tutorial explains how to customize the API and the back-office without changing Nathéo's code. Each step relies on the files of this screen."
+demo_overwrite.screen.title: 'Override example'
+demo_overwrite.tutorial.api_intro: "The override changes the class that produces the response of an operation. The operation keeps its address and its rights, and API clients have nothing to change."
+demo_overwrite.tutorial.api_step1_text: "Each operation has a unique name. It appears in the `operationId` field of the API documentation, and the `php bin/console debug:api-resource` command shows the operations of a resource. The operation of this example is called `info_get`. The names of administration operations start with `admin_`, like `admin_module_get`."
+demo_overwrite.tutorial.api_step1_title: 'Find the name of the operation'
+demo_overwrite.tutorial.api_step2_processor: "For a write, the class implements `ProcessorInterface`. An administration write extends `AbstractAdminProcessor` instead, like Nathéo's processors, to keep the `If-Match` header check and the action log."
+demo_overwrite.tutorial.api_step2_text: "Create the class in `src/Overwrite/`, here `src/Overwrite/Api/State/Provider/System/InfoProvider.php`. It implements `ProviderInterface` for a read. To keep the original behavior, ask for Nathéo's provider in the constructor. Symfony injects it, and your `provide()` method calls it, then changes its response. Here, it copies the `Info` object and fills the `extra` field."
+demo_overwrite.tutorial.api_step2_title: 'Write the replacement class'
+demo_overwrite.tutorial.api_step3_errors: "On an error, building the cache stops with a message. This happens with an unknown operation, a missing class, a class that is not an API provider or processor, a processor given to a read or a provider given to an operation that does not read the resource."
+demo_overwrite.tutorial.api_step3_text: "Add an entry under `overwrite.api` in `config/cms/overwrite.yaml`, with the name of the operation and the class under the `provider` key, or `processor` for a write. The file is read when the cache is built. In development, the cache rebuilds itself after a change. In production, run `php bin/console cache:clear`."
+demo_overwrite.tutorial.api_step3_title: 'Declare the override'
+demo_overwrite.tutorial.api_title: 'Override an API operation'
+demo_overwrite.tutorial.editor_intro: 'Natheo-Editor, the text editor of the back-office, is extended with modules. A project can also replace it with another editor. The Note module of this example declares `requires: ''demo_overwrite''`, so it shows in the editors of the users who see this screen. The field below lets you try it with the Note button of the toolbar.'
+demo_overwrite.tutorial.editor_sample: 'This note is saved as a quote.'
+demo_overwrite.tutorial.editor_step1_markdown: 'The site displays the saved Markdown without knowing your modules. The note is therefore written as a quote whose first line is `**Note**`. The site shows it as a quote, and the editor reads it back as a note.'
+demo_overwrite.tutorial.editor_step1_text: 'Create a folder in `assets/overwrite/vue/Components/Admin/Editors/NatheoEditor/Modules/`, here `Note`, with a `module.ts` file. It declares the TipTap extensions of the module, with how they read and write Markdown, then its commands, which each back-office theme places in its toolbar. A module that reuses the identifier of a Nathéo module replaces it.'
+demo_overwrite.tutorial.editor_step1_title: 'Add a module to Natheo-Editor'
+demo_overwrite.tutorial.editor_step2_text: 'Command labels are full keys, written with `translationKey`. The domain of these keys is listed in `domains` of the module, and the editor loads it before showing its commands. The `full` preset of a field shows every module, `basic` the modules of its list, and a field can also give its own list of identifiers.'
+demo_overwrite.tutorial.editor_step2_title: 'Translate the commands'
+demo_overwrite.tutorial.editor_step3_example: 'This example, a plain text area, is not installed, so that the demo keeps Natheo-Editor. Its code is stored in the folder of this screen, under `Examples/`.'
+demo_overwrite.tutorial.editor_step3_text: 'Another editor is a Vue component placed in `assets/overwrite/vue/Components/Admin/Editors/`, here in the `PlainText` folder. It receives the props of `AdminEditorProps` and emits `update:modelValue` with the modified Markdown. Its input area takes `id`, `aria-labelledby` and `aria-invalid`, so that the label and the errors of the field stay linked to it.'
+demo_overwrite.tutorial.editor_step3_title: 'Write another editor'
+demo_overwrite.tutorial.editor_step4_text: 'The `editor.ts` file of the same folder declares the component with `defineAdminEditor()`. Every text field of the back-office then uses this editor, loaded on first use. The override accepts a single editor.'
+demo_overwrite.tutorial.editor_step4_title: 'Declare the editor'
+demo_overwrite.tutorial.editor_title: 'Extend or replace the text editor'
+demo_overwrite.tutorial.editor_try: 'Try the Note module'
+demo_overwrite.tutorial.error: 'Reading GET /api/v2/info failed.'
+demo_overwrite.tutorial.field_api_version: 'API version'
+demo_overwrite.tutorial.field_extra: 'extra field'
+demo_overwrite.tutorial.field_natheo_version: 'Nathéo version'
+demo_overwrite.tutorial.field_site_name: 'Site name'
+demo_overwrite.tutorial.inactive_text: 'The extra field is null because config/cms/overwrite.yaml no longer overrides the info_get operation. Put the entry back, then clear the cache.'
+demo_overwrite.tutorial.intro_text_1: "An override replaces a part of Nathéo with your code. It applies to an operation of the API v2 or to the Vue files of the back-office. The four parts of this tutorial cover each case."
+demo_overwrite.tutorial.intro_text_2: "Your PHP code goes in `src/Overwrite/` and your Vue files in `assets/overwrite/`. A Nathéo update does not touch these two folders. A file changed elsewhere, in `src/Api/` or `assets/vue/` for example, would be replaced by the next update."
+demo_overwrite.tutorial.intro_text_3: 'You need to know Symfony and Vue 3, and to have a development installation where you can run `php bin/console` and `yarn`.'
+demo_overwrite.tutorial.intro_title: 'Before you start'
+demo_overwrite.tutorial.live_text: 'This response of `GET /api/v2/info` comes from the provider overridden in the first part. Without the override, its `extra` field is `null`.'
+demo_overwrite.tutorial.live_title: 'The result'
+demo_overwrite.tutorial.module_intro: 'This screen is itself a module added by an override. It relies on two files, the declaration of its routes on the Vue side and its module class on the PHP side.'
+demo_overwrite.tutorial.module_raw_note: "This screen shows the code of its files through Vite `?raw` imports. A file imported this way is copied into `public/build`, readable without logging in. Keep them for files without secrets."
+demo_overwrite.tutorial.module_step1_text: "Create a folder in `assets/overwrite/vue/Components/Admin/Modules/`, here `DemoOverwrite`, with a `module.ts` file. It gives the module identifier, its translation domains and its routes. The component of each route is imported with `@admin/` and loaded on the first visit. A `module.ts` that reuses the identifier of a Nathéo module replaces it."
+demo_overwrite.tutorial.module_step1_title: 'Declare the routes of the screen'
+demo_overwrite.tutorial.module_step2_text: "The class goes in `src/Overwrite/Module/`, with the `AsAdminModule` attribute. Its definition sets the required role, here `ROLE_SUPER_ADMIN`, and its menu entry places the screen in the Tools menu. The `route` and `path` fields of the entry repeat the name and the path of the route in `module.ts`. Without this class, the address of the screen shows \"Page not found\"."
+demo_overwrite.tutorial.module_step2_title: 'Create the module class'
+demo_overwrite.tutorial.module_step3_text: "The texts of the screen are written with the `t()` function and the full key, like `demo_overwrite.screen.title`. The `php bin/console translation:extract --force --format=yaml fr` command adds the new keys to `translations/demo_overwrite+intl-icu.fr.yaml`, and the same goes for `en` and `es`. The domain is listed in `domains` of `module.ts`, and the application loads it before showing the screen."
+demo_overwrite.tutorial.module_step3_title: 'Add the texts'
+demo_overwrite.tutorial.module_title: 'Add a screen'
+demo_overwrite.tutorial.remove_text: "Delete the `info_get` entry from `config/cms/overwrite.yaml`, then the `src/Overwrite/Api/`, `src/Overwrite/Module/`, `assets/overwrite/` `tests/Overwrite/` and `tests/js/overwrite/` folders with the `translations/demo_overwrite+intl-icu.*.yaml` files. Also remove `demo_overwrite` from the `DOMAINS` constant of `tests/Translation/ExtractedKeysTest.php` and `tests/Translation/TranslationKeyConventionTest.php`. Then run `php bin/console cache:clear` and `yarn build`."
+demo_overwrite.tutorial.remove_title: 'Remove the example'
+demo_overwrite.tutorial.screen_note: 'Composables and the API client cannot be overridden this way. To change data, override the API operation that provides it.'
+demo_overwrite.tutorial.screen_text_1: 'The back-office files are in `assets/vue/Components/Admin/`. Copy the one to change into `assets/overwrite/vue/Components/Admin/`, at the same path, then edit the copy. A version of `assets/overwrite/vue/Components/Admin/Ui/Form/UiButton.vue` thus replaces the button across the whole back-office.'
+demo_overwrite.tutorial.screen_text_2: "The replacement goes through the `@admin/` alias, used by every import between back-office files. An import written `@admin/Ui/Form/UiButton.vue` serves your file when it exists, and Nathéo's otherwise. Keep the props and events of the original, because the other components still use them."
+demo_overwrite.tutorial.screen_text_3: 'Then run `yarn build` again. With `yarn dev`, restart the server after adding a file, because Vite keeps the resolution of imports in memory.'
+demo_overwrite.tutorial.screen_text_wrap: "To reuse the original instead of copying it, import it by its full path, such as `@/vue/Components/Admin/Ui/Form/UiButton.vue`. The `@admin/` alias would point to your own file."
+demo_overwrite.tutorial.screen_title: 'Replace a screen or a component'
+demo_overwrite.tutorial.status_active: 'Override active'
+demo_overwrite.tutorial.status_inactive: 'Override inactive'
+demo_overwrite.tutorial.step: 'Step {number}'
+demo_overwrite.tutorial.summary: 'Contents'

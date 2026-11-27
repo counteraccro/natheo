@@ -20,8 +20,15 @@ class FrontThemeService extends AppFrontService
 {
     /**
      * Gabarit de l'aperçu de menu, dans le dossier de chaque thème
+     * @var string
      */
-    private const string MENU_PREVIEW_TEMPLATE = 'menu_preview.html.twig';
+    public const string MENU_PREVIEW = 'menu_preview.html.twig';
+
+    /**
+     * Gabarit de l'aperçu de tag, dans le dossier de chaque thème
+     * @var string
+     */
+    public const string TAG_PREVIEW = 'tag_preview.html.twig';
 
     /**
      * @param ContainerInterface $handlers
@@ -86,21 +93,23 @@ class FrontThemeService extends AppFrontService
     }
 
     /**
-     * Gabarit de l'aperçu de menu du thème actif et son entrée Vite, ceux de Natheo-Base si le thème n'en a pas
-     * @return array{template: string, scriptsTag: string}
+     * Gabarit d'aperçu du thème actif, son entrée Vite et son identifiant, ceux de Natheo-Base si le thème n'en a pas
+     * @param string $preview MENU_PREVIEW ou TAG_PREVIEW
+     * @return array{template: string, scriptsTag: string, theme: string}
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getMenuPreviewTemplate(): array
+    public function getPreviewTemplate(string $preview): array
     {
-        $template = $this->getPathTemplate() . '/' . self::MENU_PREVIEW_TEMPLATE;
+        $template = $this->getPathTemplate() . '/' . $preview;
         if (is_file($this->getKernel()->getProjectDir() . '/templates/' . $template)) {
-            return ['template' => $template, 'scriptsTag' => $this->getScriptTags()];
+            return ['template' => $template, 'scriptsTag' => $this->getScriptTags(), 'theme' => $this->getThemeId()];
         }
 
         return [
-            'template' => 'front/' . Template::NATHEO_BASE->value . '/' . self::MENU_PREVIEW_TEMPLATE,
+            'template' => 'front/' . Template::NATHEO_BASE->value . '/' . $preview,
             'scriptsTag' => 'front_' . Template::NATHEO_BASE->value,
+            'theme' => Template::NATHEO_BASE->value,
         ];
     }
 }

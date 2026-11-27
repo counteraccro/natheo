@@ -5,10 +5,6 @@ global.role.super_admin: Super administrator
 global.footer.licence: Copyright &copy; 2023-{year} &mdash; Powered by Nathéo CMS
 global.breadcrumb.dashboard: Dashboard
 global.header.new.button: New
-global.header.new.page: New page
-global.header.new.menu: New menu
-global.header.new.faq: New FAQ
-global.header.new.tag: New tag
 global.header.menu.impersonation: Back to my account
 global.header.search.placeholder: Search for a page, a tag, a menu...
 global.header.menu.my_account: My account

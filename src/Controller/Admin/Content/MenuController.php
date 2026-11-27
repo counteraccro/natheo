@@ -22,8 +22,8 @@ use App\Service\Admin\Content\Menu\MenuConvertToArray;
 use App\Service\Admin\Content\Menu\MenuService;
 use App\Service\Admin\Content\Page\PageService;
 use App\Service\Front\FrontThemeService;
-use App\Translate\Admin\Content\MenuTranslate;
-use App\Translate\Front\FrontTranslate;
+use App\Translation\Admin\Content\MenuTranslate;
+use App\Translation\Front\FrontTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
@@ -298,13 +298,14 @@ class MenuController extends AppAdminController
         FrontTranslate $frontTranslate,
         string $locale,
     ): Response {
-        $theme = $frontThemeService->getMenuPreviewTemplate();
+        $theme = $frontThemeService->getPreviewTemplate(FrontThemeService::MENU_PREVIEW);
 
         $response = $this->render($theme['template'], [
             'urls' => $frontThemeService->getUrls(),
             'datas' => $frontThemeService->getDatas($locale),
             'translate' => $frontTranslate->getTranslate($locale),
             'scriptsTag' => $theme['scriptsTag'],
+            'theme' => $theme['theme'],
             'locale' => $locale,
         ]);
         $response->headers->set('X-Robots-Tag', 'noindex');

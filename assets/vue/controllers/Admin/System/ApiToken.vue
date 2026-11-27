@@ -349,13 +349,25 @@ export default defineComponent({
       </div>
 
       <div class="form-group mt-3">
+        <label for="scope" class="form-label">{{ translate.select_label_scope }}</label>
+        <select class="form-input" id="scope" v-model="apiToken.scope">
+          <option v-for="(scope, key) in datas.scopes" :value="key">{{ scope }}</option>
+        </select>
+        <div class="form-text">{{ translate.help_scope }}</div>
+        <ul class="form-text list-disc list-inside">
+          <li>{{ translate.help_scope_public }}</li>
+          <li>{{ translate.help_scope_back_office }}</li>
+        </ul>
+      </div>
+
+      <div v-if="apiToken.scope === datas.scopeWithRoles" class="form-group mt-3">
         <label for="roles" class="form-label">{{ translate.select_label_role }}</label>
         <select class="form-input" id="roles" v-model="apiToken.roles[0]">
           <option v-for="(role, key) in datas.roles" :value="key">{{ role }}</option>
         </select>
       </div>
 
-      <div class="alert alert-info-bordered">
+      <div v-if="apiToken.scope === datas.scopeWithRoles" class="alert alert-info-bordered">
         <svg class="alert-icon text-alert-info" fill="currentColor" viewBox="0 0 20 20">
           <path
             fill-rule="evenodd"

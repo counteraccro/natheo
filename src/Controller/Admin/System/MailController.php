@@ -16,8 +16,8 @@ use App\Enum\Admin\Global\Breadcrumb;
 use App\Enum\Admin\System\Options\OptionUser;
 use App\Service\Admin\System\MailService;
 use App\Service\Admin\System\TranslateService;
-use App\Translate\Admin\Global\MarkdownEditorTranslate;
-use App\Translate\Admin\System\MailTranslate;
+use App\Translation\Admin\Global\MarkdownEditorTranslate;
+use App\Translation\Admin\System\MailTranslate;
 use League\CommonMark\Exception\CommonMarkException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -31,7 +31,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/admin/{_locale}/mail', name: 'admin_mail_', requirements: ['_locale' => '%app.supported_locales%'])]
-#[IsGranted('ROLE_SUPER_ADMIN')]
+#[IsGranted('ROLE_ADMIN')]
 class MailController extends AppAdminController
 {
     /**

@@ -3,7 +3,7 @@
  * @version 1.0
  * Ressource Comment de l'API v2
  */
-import type { JsonLdResource } from '@/ts/Front/Api/Hydra.type';
+import type { JsonLdResource } from '@/ts/Global/Api/Hydra.type';
 
 export type CommentStatus = 'wait_validation' | 'validate' | 'moderate';
 

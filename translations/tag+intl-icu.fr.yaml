@@ -1,65 +1,46 @@
-tag.index.title: 'Gestion des tags'
-tag.index.button.new: 'Nouveau tag'
-tag.index.description: 'Gérer les tags associés au contenu de votre site'
-tag.grid.id: ID
-tag.grid.label: Libellé
-tag.grid.color: Couleur
-tag.grid.created_at: Date de création
-tag.grid.update_at: Date de mise à jour
-tag.confirm.disabled.message: La désactivation du tag <strong>{label}</strong> le rend invisible sur le site. Aucune donnée n'est supprimée, mais les contenus liés à ce tag peuvent être masqués
-tag.success.no.disabled: 'Le tag <strong>{label}</strong> est maintenant activé'
-tag.success.disabled: 'Le tag <strong>{label}</strong> est maintenant désactivé'
-tag.confirm.delete.message: La suppression du tag <strong>{label}</strong> est définitive. Seul le tag est supprimé, pas les données associées
-tag.add.title: 'Nouveau tag'
-tag.update.title_id: 'Édition du tag #{id}'
-tag.update.title: 'Édition du tag'
-tag.index.modal.help.title: Aide
-tag.index.modal.help.disabled_user: 'Désactiver un tag'
-tag.index.modal.help.enable_user: 'Activer un tag'
-tag.index.modal.help.delete: 'Supprimer un tag'
-tag.index.modal.help.edit: 'Modifier un tag'
-tag.remove.success: Le tag <strong>{label}</strong> a été supprimé avec succès
-tag.form.loading: 'Chargement des données...'
-tag.add.description: Ajouter un nouveau tag pour organiser votre contenu
-tag.update.description: La modification du tag ne modifie pas les contenus qui lui sont associés
-tag.form.input.label.label: Libellé en
-tag.form.input.color.error: 'Le format attendu est « #rrggbb », où rr, gg et bb sont deux valeurs hexadécimales.'
-tag.form.color.title: 'Couleur du tag'
-tag.form.check.auto.copy: Dupliquer le libellé pour les autres langues
-tag.form.input.label.error: Le libellé du tag ne peut pas être vide
-tag.form.render.title: 'Aperçu du tag'
-tag.form.submit.update: Modifier
-tag.form.submit.create: 'Créer le tag'
-tag.save.new: Le tag <strong>{label}</strong> a été créé avec succès
-tag.save.edit: Le tag <strong>{label}</strong> a été modifié avec succès
-tag.form.stat.title: Statistiques
-tag.page_date_update.created: 'Date de création'
-tag.page_date_update.last_update: 'Dernière modification'
 tag.page.error.tag.disabled: "Ce tag est désactivé, son ajout n'est pas possible"
-tag.form.input.label.placeholder: Libellé du tag
-tag.form.button.cancel: Retour
-tag.form.button.delete: Supprimer
-tag.form.success.save: 'Tag sauvegardé avec succès'
-tag.form.error.save: 'Une erreur est survenue lors de la sauvegarde du tag'
-tag.form.modal.confirm.delete.message: La suppression de ce tag est définitive et irréversible, votre contenu ne sera pas impacté par cette action
-tag.form.modal.confirm.delete.button.ok: Oui, je confirme
-tag.form.modal.confirm.delete.button.ko: Non
-tag.form.modal.confirm.delete.title: Confirmez-vous la suppression de ce tag ?
-tag.form.style.title: 'Style du tag'
-tag.form.style.description: 'Définition de la couleur'
-tag.form.text.title: 'Autres informations'
-tag.form.text.description: Définition du libellé
-tag.update.page.no.tag.title: 'Aucun tag trouvé'
-tag.update.page.no.tag.text: Ce tag n'existe pas ou a été supprimé. Vous pouvez retourner à la liste ou en créer un nouveau
-tag.update.page.back: Retour
-tag.update.page.new: 'Nouveau tag'
 tag.error.forbidden: 'Vous n''avez pas les droits pour effectuer cette action sur ce tag.'
 tag.error.not_found: 'Ce tag n''existe pas ou a été supprimé.'
-tag.grid.author: Auteur
 tag.error.label.blank: 'Le libellé du tag ne peut pas être vide.'
 tag.error.label.length: 'Le libellé du tag ne peut pas dépasser 255 caractères.'
 tag.error.color: 'La couleur doit être au format #rrggbb.'
-tag.error.label.duplicate: 'Le libellé <strong>{label}</strong> est déjà utilisé par un autre tag.'
-tag.error.delete.used: 'Ce tag est utilisé par {nb, plural, one {# page} other {# pages}}, il ne peut pas être supprimé. Corrigez plutôt son libellé ou retirez-le des pages concernées.'
+tag.error.delete_used: 'Ce tag est utilisé par {count, plural, one {# page} other {# pages}}, il ne peut pas être supprimé. Corrigez plutôt son libellé ou retirez-le des pages concernées.'
+tag.error.translations_required: 'Indiquez au moins un libellé.'
+tag.error.locale: 'Langue non prise en charge : {locale}.'
+tag.error.locale_duplicate: 'La langue {locale} est envoyée deux fois.'
+tag.error.duplicate_label: 'Le libellé « {label} » est déjà utilisé par un autre tag dans cette langue.'
 tag.error.tag_by_name: 'Le libellé ou la langue du tag est invalide.'
-tag.form.input.color.help: 'Choisissez une couleur pour identifier visuellement ce tag'
+tag.collection.button_new: 'Nouveau tag'
+tag.collection.column_author: 'Auteur'
+tag.collection.column_id: 'ID'
+tag.collection.column_label: 'Libellé'
+tag.collection.column_pages: 'Pages'
+tag.collection.column_updated_at: 'Mise à jour'
+tag.collection.description: 'Les tags regroupent les pages par sujet. Un tag rattaché à une page ne peut pas être supprimé.'
+tag.collection.title: 'Gestion des tags'
+tag.dialog.confirm_delete: 'Supprimer le tag « {label} » ?'
+tag.dialog.confirm_disable: 'Désactiver le tag « {label} » ?'
+tag.editor.color: 'Couleur'
+tag.editor.color_help: 'Couleur du tag sur le site, au format #rrggbb.'
+tag.editor.description_edit: 'Modifiez le libellé, la couleur ou le statut du tag.'
+tag.editor.description_new: 'Créez un tag pour regrouper les pages qui traitent du même sujet.'
+tag.editor.disabled: 'Désactivé'
+tag.editor.disabled_help: 'Un tag désactivé n''est plus proposé dans les pages ni affiché sur le site.'
+tag.editor.label: 'Libellé'
+tag.editor.preview: 'Aperçu sur le site'
+tag.editor.preview_dark: 'Mode sombre'
+tag.editor.preview_help: 'Rendu du thème actif du site, dans chaque langue.'
+tag.editor.section_label: 'Libellé'
+tag.editor.section_label_description: 'Affiché sur le site dans la langue du visiteur.'
+tag.editor.section_status: 'Statut'
+tag.editor.section_status_description: 'Disponibilité du tag dans les pages et sur le site.'
+tag.editor.section_style: 'Apparence'
+tag.editor.section_style_description: 'Couleur de la pastille sur le site et dans l''administration.'
+tag.editor.title_edit: 'Édition du tag #{id}'
+tag.editor.title_new: 'Nouveau tag'
+tag.editor.title_view: 'Tag #{id}'
+tag.notify.created: 'Tag « {label} » créé.'
+tag.notify.deleted: 'Tag « {label} » supprimé.'
+tag.notify.disabled: 'Tag « {label} » désactivé.'
+tag.notify.enabled: 'Tag « {label} » activé.'
+tag.notify.saved: 'Tag « {label} » enregistré.'

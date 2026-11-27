@@ -3,7 +3,7 @@
  * @version 1.0
  * Ressource OptionSystem de l'API v2 : options publiques du site
  */
-import type { JsonLdResource } from '@/ts/Front/Api/Hydra.type';
+import type { JsonLdResource } from '@/ts/Global/Api/Hydra.type';
 
 export interface OptionSystem extends JsonLdResource {
   /** Clé en minuscules, sans le préfixe OS_ */

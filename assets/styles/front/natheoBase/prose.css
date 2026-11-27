@@ -1,0 +1,21 @@
+/*!
+ * Author : Gourdon Aymeric
+ * Version : 1.0
+ * Texte des blocs (HTML rendu depuis le Markdown) du thème Natheo-Base
+ */
+
+@layer components {
+    .natheo-base-content :where(h1, h2, h3) {
+        margin-top: 1rem;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+    }
+
+    .natheo-base-content :where(p, ul, ol) {
+        margin-bottom: 0.75rem;
+    }
+
+    .natheo-base-content :where(a) {
+        text-decoration-line: underline;
+    }
+}

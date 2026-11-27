@@ -7,9 +7,10 @@ namespace App\Controller\Admin\System;
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\System\ApiToken;
 use App\Enum\Admin\Global\Breadcrumb;
+use App\Enum\Admin\System\ApiToken\ApiTokenScope;
 use App\Enum\Admin\System\Options\OptionUser;
 use App\Service\Admin\System\ApiTokenService;
-use App\Translate\Admin\System\ApiTokenTranslate;
+use App\Translation\Admin\System\ApiTokenTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
@@ -22,18 +23,20 @@ use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/admin/{_locale}/api-token', name: 'admin_api_token_', requirements: ['_locale' => '%app.supported_locales%'])]
-#[IsGranted('ROLE_SUPER_ADMIN')]
+#[IsGranted('ROLE_ADMIN')]
 class ApiTokenController extends AppAdminController
 {
     /**
-     * Point d'entrée pour la gestion des tokens
+     * Point d'entrée pour la gestion des tokens, limitée à un type avec le paramètre scope
+     * @param Request $request
      * @return Response
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
     #[Route('/', name: 'index')]
-    public function index(): Response
+    public function index(Request $request): Response
     {
+        $scope = ApiTokenScope::tryFrom((string) $request->query->get('scope'));
         $breadcrumb = [
             Breadcrumb::DOMAIN->value => 'api_token',
             Breadcrumb::BREADCRUMB->value => [
@@ -43,6 +46,7 @@ class ApiTokenController extends AppAdminController
 
         return $this->render('admin/system/api_token/index.html.twig', [
             'breadcrumb' => $breadcrumb,
+            'gridParams' => $scope === null ? [] : ['scope' => $scope->value],
             'page' => 1,
             'limit' => $this->optionUserService->getValueByKey(OptionUser::OU_NB_ELEMENT->value),
         ]);
@@ -69,6 +73,7 @@ class ApiTokenController extends AppAdminController
             'search' => $request->query->get('search'),
             'orderField' => $request->query->get('orderField'),
             'order' => $request->query->get('order'),
+            'scope' => ApiTokenScope::tryFrom((string) $request->query->get('scope')),
         ];
 
         $grid = $apiTokenService->getAllFormatToGrid($page, $limit, $queryParams);
@@ -92,6 +97,7 @@ class ApiTokenController extends AppAdminController
         TranslatorInterface $translator,
         Request $request,
     ): JsonResponse {
+        $this->denyInternal($apiToken);
         $csrfError = $this->checkCsrf(ApiTokenService::CSRF_TOKEN_UPDATE_DISABLED, $request);
         if ($csrfError !== null) {
             return $csrfError;
@@ -125,6 +131,7 @@ class ApiTokenController extends AppAdminController
         TranslatorInterface $translator,
         Request $request,
     ): JsonResponse {
+        $this->denyInternal($apiToken);
         $csrfError = $this->checkCsrf(ApiTokenService::CSRF_TOKEN_DELETE, $request);
         if ($csrfError !== null) {
             return $csrfError;
@@ -154,16 +161,25 @@ class ApiTokenController extends AppAdminController
         #[MapEntity(id: 'id')] ?ApiToken $apiToken = null,
         ?int $id = null,
     ): Response {
+        if ($apiToken !== null) {
+            $this->denyInternal($apiToken);
+        }
         $breadcrumbTitle = 'api_token.update.title';
+        $scope = $apiToken?->getScope();
         if ($apiToken === null && $id === null) {
             $apiToken = new ApiToken();
             $breadcrumbTitle = 'api_token.add.title';
+            $scope = ApiTokenScope::tryFrom((string) $request->query->get('scope'));
+            if ($scope !== null) {
+                $apiToken->setScope($scope);
+            }
         }
+        $indexParameters = $scope === null ? [] : ['scope' => $scope->value];
 
         $breadcrumb = [
             Breadcrumb::DOMAIN->value => 'api_token',
             Breadcrumb::BREADCRUMB->value => [
-                'api_token.index.title' => 'admin_api_token_index',
+                'api_token.index.title' => ['admin_api_token_index', $indexParameters],
                 $breadcrumbTitle => '#',
             ],
         ];
@@ -180,11 +196,13 @@ class ApiTokenController extends AppAdminController
             'urls' => [
                 'regenerate_token' => $this->generateUrl('admin_api_token_regenerate', ['id' => $apiToken['id'] ?? 0]),
                 'save_api_token' => $this->generateUrl('admin_api_token_save'),
-                'index_api_token' => $this->generateUrl('admin_api_token_index'),
+                'index_api_token' => $this->generateUrl('admin_api_token_index', $indexParameters),
                 'delete_api_token' => $this->generateUrl('admin_api_token_delete', ['id' => $apiToken['id'] ?? 0]),
             ],
             'datas' => [
                 'roles' => $apiTokenService->getRolesApi(),
+                'scopes' => $apiTokenService->getScopes(),
+                'scopeWithRoles' => ApiTokenScope::PUBLIC->value,
             ],
             'csrfTokens' => [
                 'save' => ApiTokenService::CSRF_TOKEN_SAVE,
@@ -211,6 +229,7 @@ class ApiTokenController extends AppAdminController
         TranslatorInterface $translator,
         Request $request,
     ): JsonResponse {
+        $this->denyInternal($apiToken);
         $csrfError = $this->checkCsrf(ApiTokenService::CSRF_TOKEN_REGENERATE, $request);
         if ($csrfError !== null) {
             return $csrfError;
@@ -257,9 +276,12 @@ class ApiTokenController extends AppAdminController
         $id = intval($dataApiToken['id'] ?? 0);
         if ($id > 0) {
             $apiToken = $apiTokenService->findOneById(ApiToken::class, $id);
-            if ($apiToken === null) {
+            if ($apiToken === null || $apiToken->isInternal()) {
                 return $this->json(
-                    ['success' => false, 'msg' => $translator->trans('api_token.update.not_found_title', domain: 'api_token')],
+                    [
+                        'success' => false,
+                        'msg' => $translator->trans('api_token.update.not_found_title', domain: 'api_token'),
+                    ],
                     Response::HTTP_NOT_FOUND,
                 );
             }
@@ -277,5 +299,17 @@ class ApiTokenController extends AppAdminController
         );
         $response['token'] = $response['success'] === true ? $result['token'] : '';
         return $this->json($response);
+    }
+
+    /**
+     * Le token interne du back-office n'est ni affiché ni modifiable
+     * @param ApiToken $apiToken
+     * @return void
+     */
+    private function denyInternal(ApiToken $apiToken): void
+    {
+        if ($apiToken->isInternal()) {
+            throw $this->createNotFoundException();
+        }
     }
 }

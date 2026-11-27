@@ -14,7 +14,7 @@ use App\Enum\Admin\Global\Breadcrumb;
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Admin\Content\Page\PageValidationService;
 use App\Service\Admin\System\OptionSystemService;
-use App\Translate\Admin\System\OptionSystemTranslate;
+use App\Translation\Admin\System\OptionSystemTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -31,7 +31,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
         requirements: ['_locale' => '%app.supported_locales%'],
     ),
 ]
-#[IsGranted('ROLE_SUPER_ADMIN')]
+#[IsGranted('ROLE_ADMIN')]
 class OptionSystemController extends AppAdminController
 {
     const CSRF_TOKEN_UPDATE = 'option_system_update';

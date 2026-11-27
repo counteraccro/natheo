@@ -10,10 +10,10 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Entity\Admin\System\User;
 use App\Service\Admin\GridService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Formatter\Global\FileSizeFormatter;
+use App\Security\ApiUser;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -191,8 +191,7 @@ class LoggerService extends AppService
             return;
         }
 
-        /** @var User|null $currentUser */
-        $currentUser = $this->security->getUser();
+        $currentUser = ApiUser::realUser($this->security->getUser());
         $parameters = [
             'entity' => $entity,
             'id' => $id,

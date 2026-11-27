@@ -12,6 +12,7 @@ namespace App\Controller\Admin\Content;
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\Comment\CommentStatus;
 use App\Enum\Admin\Content\Page\PageCategory;
 use App\Enum\Admin\Content\Page\PageCsrfToken;
 use App\Enum\Admin\Content\Page\PageMeta;
@@ -20,13 +21,14 @@ use App\Enum\Admin\Content\Page\PageStatus;
 use App\Enum\Admin\Content\Page\PageValidationStatus;
 use App\Enum\Admin\Content\Tag\TagCsrfToken;
 use App\Enum\Admin\Global\Breadcrumb;
+use App\Enum\Admin\Module\CoreModuleId;
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Enum\Admin\System\Options\OptionUser;
-use App\Service\Admin\Content\Comment\CommentService;
 use App\Service\Admin\Content\Menu\MenuService;
 use App\Service\Admin\Content\Page\PageDraftService;
 use App\Service\Admin\Content\Page\PageService;
 use App\Service\Admin\Content\Page\PageValidationService;
+use App\Service\Admin\Module\AdminMenuBuilder;
 use App\Service\Admin\System\OptionSystemService;
 use App\Service\Global\DateService;
 use App\Factory\Admin\Content\Page\PageFactory;
@@ -34,8 +36,8 @@ use App\Populate\Admin\Content\Page\PagePopulate;
 use App\Security\Voter\ContentVoter;
 use App\Service\Admin\Content\Page\PageHistory;
 use App\Service\Admin\System\User\PersonalData;
-use App\Translate\Admin\Content\PageTranslate;
-use App\Translate\Admin\Global\MarkdownEditorTranslate;
+use App\Translation\Admin\Content\PageTranslate;
+use App\Translation\Admin\Global\MarkdownEditorTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
@@ -259,8 +261,9 @@ class PageController extends AppAdminController
      * @param PageService $pageService
      * @param PageTranslate $pageTranslate
      * @param MarkdownEditorTranslate $markdownEditorTranslate
-     * @param CommentService $commentService
      * @param OptionSystemService $optionSystemService
+     * @param AdminMenuBuilder $menuBuilder
+     * @param TranslatorInterface $translator
      * @param int|null $id
      * @return Response
      * @throws ContainerExceptionInterface
@@ -272,8 +275,9 @@ class PageController extends AppAdminController
         PageService $pageService,
         PageTranslate $pageTranslate,
         MarkdownEditorTranslate $markdownEditorTranslate,
-        CommentService $commentService,
         OptionSystemService $optionSystemService,
+        AdminMenuBuilder $menuBuilder,
+        TranslatorInterface $translator,
         ?int $id = null,
     ): Response {
         if ($id !== null) {
@@ -299,6 +303,7 @@ class PageController extends AppAdminController
         $translate = $pageTranslate->getTranslate();
         $translate['page_content_form']['mediatheque'] = $markdownEditorTranslate->getTranslateMediateque();
         $locales = $pageService->getLocales();
+        $tagVisible = $menuBuilder->isModuleVisible(CoreModuleId::TAG->value);
 
         return $this->render('admin/content/page/add_update.html.twig', [
             'breadcrumb' => $breadcrumb,
@@ -319,7 +324,13 @@ class PageController extends AppAdminController
                 'list_render' => $pageService->getAllRender(),
                 'list_content' => $pageService->getAllContent(),
                 'list_categories' => $pageService->getAllCategories(),
-                'list_comments_status' => $commentService->getAllStatus(),
+                'list_comments_status' => array_combine(
+                    array_map(fn(CommentStatus $status) => $status->value, CommentStatus::cases()),
+                    array_map(
+                        fn(CommentStatus $status) => $status->getLabel()->trans($translator),
+                        CommentStatus::cases(),
+                    ),
+                ),
                 'url_front' => $optionSystemService->getValueByKey(OptionSystem::OS_ADRESSE_SITE->value),
                 'options_commentaire' => [
                     'open' => $optionSystemService->getValueByKey(OptionSystem::OS_OPEN_COMMENT->value),
@@ -333,8 +344,9 @@ class PageController extends AppAdminController
                 'load_tab_history' => $this->generateUrl('admin_page_load_tab_history'),
                 'auto_save' => $this->generateUrl('admin_page_auto_save'),
                 'reload_page_history' => $this->generateUrl('admin_page_reload_page_history'),
-                'auto_complete_tag' => $this->generateUrl('admin_tag_search'),
-                'tag_by_name' => $this->generateUrl('admin_tag_tag_by_name'),
+                // null quand le module est masqué : l'éditeur retire la fonction
+                'auto_complete_tag' => $tagVisible ? $this->generateUrl('admin_tag_search') : null,
+                'tag_by_name' => $tagVisible ? $this->generateUrl('admin_tag_tag_by_name') : null,
                 'save' => $this->generateUrl('admin_page_save'),
                 'publish_draft' => $this->generateUrl('admin_page_publish_draft', ['id' => 0]),
                 'discard_draft' => $this->generateUrl('admin_page_discard_draft', ['id' => 0]),
@@ -346,7 +358,9 @@ class PageController extends AppAdminController
                 'liste_content_by_id' => $this->generateUrl('admin_page_liste_content_by_id'),
                 'is_unique_url_page' => $this->generateUrl('admin_page_is_unique_url_page'),
                 'info_render_block' => $this->generateUrl('admin_page_info_render_block'),
-                'load_media' => $this->generateUrl('admin_media_load_medias'),
+                'load_media' => $menuBuilder->isModuleVisible(CoreModuleId::MEDIA->value)
+                    ? $this->generateUrl('admin_media_load_medias')
+                    : null,
                 'listing' => $this->generateUrl('admin_page_index'),
                 'new_page' => $this->generateUrl('admin_page_add'),
             ],

@@ -17,7 +17,6 @@ use App\Enum\Admin\DashboardBlock;
 use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Admin\System\OptionSystemService;
 use App\Tests\AppWebTestCase;
-use Symfony\Component\DomCrawler\Crawler;
 
 class DashboardControllerTest extends AppWebTestCase
 {
@@ -56,6 +55,27 @@ class DashboardControllerTest extends AppWebTestCase
     }
 
     /**
+     * L'aide de première connexion est proposée à qui voit les options système et les tokens
+     * @return void
+     */
+    public function testIndexHelpFirstConnexion(): void
+    {
+        foreach ([[$this->createUserContributeur(), false], [$this->createUserAdmin(), true]] as [$user, $expected]) {
+            $this->client->loginUser($user, 'admin');
+            $this->client->request('GET', $this->router->generate('admin_dashboard_index'));
+            $this->assertResponseIsSuccessful();
+            $props = json_decode(
+                $this->client
+                    ->getCrawler()
+                    ->filter('[data-symfony--ux-vue--vue-component-value="Admin/Dashboard/Dashboard"]')
+                    ->attr('data-symfony--ux-vue--vue-props-value'),
+                true,
+            );
+            $this->assertSame($expected, $props['roles']['canSeeHelpFirstConnexion']);
+        }
+    }
+
+    /**
      * Test méthode loadDashboardBlock()
      * @return void
      */
@@ -67,7 +87,7 @@ class DashboardControllerTest extends AppWebTestCase
         $this->checkNoAccess(
             'admin_dashboard_load_block',
             ['id' => DashboardBlock::HELP_FIRST_CONNEXION->value],
-            user: $this->createUserAdmin(),
+            user: $this->createUserContributeur(),
         );
 
         $contributeur = $this->createUserContributeur();
@@ -85,7 +105,7 @@ class DashboardControllerTest extends AppWebTestCase
             $this->assertTrue($content['success']);
         }
 
-        $user = $this->createUserSuperAdmin();
+        $user = $this->createUserAdmin();
         $this->client->loginUser($user, 'admin');
         $this->client->request(
             'GET',
@@ -214,27 +234,6 @@ class DashboardControllerTest extends AppWebTestCase
         $this->assertEquals(0, $content['nbWaitComments']);
         $this->assertEquals(2, $content['nbUsers']);
         $this->assertEquals(0, $content['nbViews']);
-    }
-
-    /**
-     * Test méthode pageDemo() : fil d'Ariane traduit
-     * La route est redirigée par OverwriteListener (config/cms/overwrite.yaml), le contrôleur est donc appelé directement
-     * @return void
-     */
-    public function testPageDemo(): void
-    {
-        $this->client->loginUser($this->createUserSuperAdmin(), 'admin');
-        $this->client->request('GET', $this->router->generate('admin_dashboard_index'));
-
-        $container = static::getContainer();
-        $container->get('request_stack')->push($this->client->getRequest());
-        $content = $container->get(DashboardController::class)->pageDemo()->getContent();
-        $container->get('request_stack')->pop();
-
-        $crawler = new Crawler($content);
-        $label = $this->translator->trans('pagedemo.index.title');
-        $this->assertStringContainsString($label, $crawler->filter('nav[aria-label="Breadcrumb"]')->text());
-        $this->assertStringNotContainsString('pagedemo.index.title', $content);
     }
 
     /**

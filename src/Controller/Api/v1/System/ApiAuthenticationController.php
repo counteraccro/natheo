@@ -12,7 +12,7 @@ namespace App\Controller\Api\v1\System;
 use App\Controller\Api\v1\AppApiController;
 use App\Dto\Api\Authentication\ApiAuthUserDto;
 use App\Resolver\Api\ApiAuthUserResolver;
-use App\Service\Api\ApiService;
+use App\Security\ApiUser;
 use App\Service\Api\System\User\UserSessionService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -36,7 +36,7 @@ use App\Enum\Api\ApiMessage;
 class ApiAuthenticationController extends AppApiController
 {
     /**
-     * Retourne le role si l'authentification est un succès
+     * Retourne les rôles du token d'API si l'authentification est un succès
      * @return JsonResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -53,8 +53,10 @@ class ApiAuthenticationController extends AppApiController
     ]
     public function auth(): JsonResponse
     {
+        /** @var ApiUser $apiUser */
+        $apiUser = $this->getUser();
         return $this->apiResponse(ApiMessage::SUCCESS->value, [
-            'roles' => $this->getUser()->getRoles(),
+            'roles' => array_values(array_unique([...$apiUser->getApiToken()->getRoles(), 'ROLE_USER'])),
         ]);
     }
 
@@ -96,9 +98,11 @@ class ApiAuthenticationController extends AppApiController
             );
         }
 
+        /** @var ApiUser $apiUser */
+        $apiUser = $this->getUser();
         $tokens = $userSessionService->create(
             $result->user,
-            $request->attributes->get(ApiService::ATTRIBUTE_API_TOKEN),
+            $apiUser->getApiToken(),
             $request->headers->get('User-Agent'),
             $clientIp,
         );

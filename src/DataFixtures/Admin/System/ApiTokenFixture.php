@@ -7,6 +7,7 @@ namespace App\DataFixtures\Admin\System;
 use App\DataFixtures\AppFixtures;
 use App\Entity\Admin\System\ApiToken;
 use App\Entity\Admin\System\OptionSystem;
+use App\Enum\Admin\System\ApiToken\ApiTokenScope;
 use App\Enum\Admin\System\Options\OptionSystem as OptionSystemEnum;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
@@ -32,6 +33,7 @@ class ApiTokenFixture extends AppFixtures implements FixtureGroupInterface, Orde
         $data = Yaml::parseFile($this->pathDataFixtures . self::API_TOKEN_FIXTURES_DATA_FILE);
 
         $this->loadFrontToken($data['api_token_front'], $manager);
+        $manager->persist($this->createApiToken($data['api_token_back_office'], TokenGenerator::generate()));
 
         // Tokens d'exemple uniquement en mode debug
         if ((bool) $this->container->get('app.debug_mode')) {
@@ -71,6 +73,8 @@ class ApiTokenFixture extends AppFixtures implements FixtureGroupInterface, Orde
         foreach ($dataApiToken as $key => $value) {
             if ($key === 'roles') {
                 $apiToken->setRoles([$value]);
+            } elseif ($key === 'scope') {
+                $apiToken->setScope($this->enumCase(ApiTokenScope::class, $value));
             } elseif ($key !== 'token') {
                 $this->setData($key, $value, $apiToken);
             }

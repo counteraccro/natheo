@@ -14,11 +14,9 @@ use App\Entity\Admin\Content\Faq\FaqCategory;
 use App\Entity\Admin\Content\Faq\FaqCategoryTranslation;
 use App\Entity\Admin\Content\Faq\FaqQuestion;
 use App\Entity\Admin\Content\Faq\FaqQuestionTranslation;
-use App\Entity\Admin\Content\Faq\FaqStatistique;
 use App\Entity\Admin\Content\Faq\FaqTranslation;
 use App\Entity\Admin\System\User;
 use App\Tests\Helper\FakerTrait;
-use App\Enum\Admin\Content\Faq\FaqStatistiqueKey;
 
 trait FaqFixturesTrait
 {
@@ -51,7 +49,7 @@ trait FaqFixturesTrait
     }
 
     /**
-     * Création d'une FaqTranslate
+     * Création d'une FaqTranslation
      * @param Faq|null $faq
      * @param array $customData
      * @param bool $persist
@@ -195,7 +193,7 @@ trait FaqFixturesTrait
             'locale' => self::getFaker()->languageCode(),
             'title' => self::getFaker()->text(),
             'answer' => self::getFaker()->text(),
-            'FaqQuestion' => $faqQuestion,
+            'faqQuestion' => $faqQuestion,
         ];
 
         $faqQuestionTranslation = $this->initEntity(FaqQuestionTranslation::class, array_merge($data, $customData));
@@ -207,33 +205,6 @@ trait FaqFixturesTrait
     }
 
     /**
-     * Création FaqStatistique
-     * @param Faq|null $faq
-     * @param array $customData
-     * @param bool $persist
-     * @return FaqStatistique
-     */
-    public function createFaqStatistique(?Faq $faq = null, array $customData = [], bool $persist = true): FaqStatistique
-    {
-        if ($faq === null) {
-            $faq = $this->createFaq();
-        }
-
-        $data = [
-            'key' => self::getFaker()->text(),
-            'value' => self::getFaker()->text(),
-            'faq' => $faq,
-        ];
-
-        $faqStatistique = $this->initEntity(FaqStatistique::class, array_merge($data, $customData));
-        $faq->addFaqStatistique($faqStatistique);
-        if ($persist) {
-            $this->persistAndFlush($faqStatistique);
-        }
-        return $faqStatistique;
-    }
-
-    /**
      * Créer une FAQ et toutes les données associées par défaut
      * @param User|null $user propriétaire, un contributeur créé à la volée par défaut
      * @return Faq
@@ -241,15 +212,6 @@ trait FaqFixturesTrait
     public function createFaqAllDataDefault(?User $user = null): Faq
     {
         $faq = $this->createFaq($user, customData: ['disabled' => false]);
-
-        $this->createFaqStatistique($faq, [
-            'key' => FaqStatistiqueKey::NB_CATEGORIES->value,
-            'value' => strval(self::getFaker()->numberBetween(1, 1000)),
-        ]);
-        $this->createFaqStatistique($faq, [
-            'key' => FaqStatistiqueKey::NB_QUESTIONS->value,
-            'value' => strval(self::getFaker()->numberBetween(1, 5)),
-        ]);
 
         foreach ($this->locales as $locale) {
             $data = ['locale' => $locale];

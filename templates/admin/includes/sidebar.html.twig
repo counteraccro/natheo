@@ -1,0 +1,68 @@
+{# Entrées de la sidebar, un appel de la macro par niveau #}
+{% macro icon(path, class) %}
+    <svg class="{{ class }} flex-shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ path }}"/>
+    </svg>
+{% endmacro %}
+
+{% macro badge(node) %}
+    {% if node.badge %}
+        <span class="ml-auto pl-2 shrink-0">
+            <span class="inline-flex items-center justify-center px-2 py-0.5 text-xs font-bold text-white bg-btn-danger rounded-full">{{ node.badge }}</span>
+        </span>
+    {% endif %}
+{% endmacro %}
+
+{% macro chevron(node) %}
+    <svg class="w-4 h-4 flex-shrink-0 chevron {{ node.open ? 'rotate' }}" id="chevron-{{ node.item.id }}" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+    </svg>
+{% endmacro %}
+
+{% macro nodes(nodes, level) %}
+    {% for node in nodes|filter(node => node.displayed) %}
+        {% set first = level == 1 %}
+        {% set item_class = first ? 'px-4 py-3' : 'px-4 py-2 text-sm' %}
+        {% set icon_class = first ? 'w-5 h-5 mr-3' : 'w-4 h-4 mr-2' %}
+        {% set children = node.displayedChildren %}
+
+        {% if children is empty %}
+            <a href="{{ node.url }}" class="sidebar-item {{ node.active ? 'active' }} flex items-center {{ item_class }} rounded-lg"{% if node.active %} aria-current="page"{% endif %}>
+                {{ _self.icon(node.item.icon, icon_class) }}
+                <span>{{ node.label }}</span>
+                {{ _self.badge(node) }}
+            </a>
+        {% else %}
+            <div>
+                {% if node.url is null %}
+                    <button type="button" class="sidebar-item flex items-center justify-between w-full {{ item_class }} rounded-lg" onclick="toggleSubmenu('{{ node.item.id }}')" aria-expanded="{{ node.open ? 'true' : 'false' }}" aria-controls="submenu-{{ node.item.id }}">
+                        <span class="flex items-center">
+                            {{ _self.icon(node.item.icon, icon_class) }}
+                            <span>{{ node.label }}</span>
+                        </span>
+                        <span class="flex items-center gap-2 ml-2 shrink-0">
+                            {{ _self.badge(node) }}
+                            {{ _self.chevron(node) }}
+                        </span>
+                    </button>
+                {% else %}
+                    <div class="sidebar-item {{ node.active ? 'active' }} flex items-center justify-between w-full {{ item_class }} rounded-lg">
+                        <a href="{{ node.url }}" class="flex items-center grow"{% if node.active %} aria-current="page"{% endif %}>
+                            {{ _self.icon(node.item.icon, icon_class) }}
+                            <span>{{ node.label }}</span>
+                        </a>
+                        {{ _self.badge(node) }}
+                        <button type="button" class="ml-2" onclick="toggleSubmenu('{{ node.item.id }}')" aria-expanded="{{ node.open ? 'true' : 'false' }}" aria-controls="submenu-{{ node.item.id }}" aria-label="{{ node.label }}">
+                            {{ _self.chevron(node) }}
+                        </button>
+                    </div>
+                {% endif %}
+                <div class="submenu {{ first ? 'ml-8' : 'ml-4' }} mt-1 space-y-1 {{ node.open ? 'open' }}" id="submenu-{{ node.item.id }}">
+                    {{ _self.nodes(children, level + 1) }}
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endmacro %}
+
+{{ _self.nodes(nodes, 1) }}

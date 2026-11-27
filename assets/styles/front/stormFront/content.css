@@ -1,0 +1,26 @@
+/*!
+ * Author : Gourdon Aymeric
+ * Version : 1.0
+ * Texte des blocs du thème StormFront montré hors de ses pages : fond, police, liens et titres de la page
+ */
+
+@layer components {
+    [data-front-theme='natheo_storm'].sf-prose {
+        max-width: none;
+        background: var(--page);
+        color: var(--fg);
+        font-family: var(--font);
+    }
+
+    [data-front-theme='natheo_storm'].sf-prose a {
+        color: var(--primary);
+        text-underline-offset: 0.2em;
+        text-decoration-thickness: 1px;
+    }
+
+    [data-front-theme='natheo_storm'].sf-prose :where(h1, h2, h3) {
+        font-weight: 650;
+        letter-spacing: -0.035em;
+        line-height: 1.1;
+    }
+}

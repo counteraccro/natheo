@@ -17,9 +17,10 @@ _Ce que corrige ou apporte cette PR._
 _Choix discutables, effets de bord, zones à tester en priorité. Sinon : « Aucun »._
 
 ## Vérifications
-_PHPUnit (MySQL / PostgreSQL) et `yarn build` sont lancés par la CI (workflow `tests`)._
+_PHPUnit (MySQL / PostgreSQL), `yarn build` et Playwright (`yarn test:e2e`) sont lancés par la CI (workflow `tests`)._
 - [ ] Nouveaux tests ajoutés pour le code modifié
 - [ ] Traductions fr / en / es à jour
 - [ ] Migration Doctrine : aucune / ajoutée
 - [ ] Fixtures et helpers de test à jour
+- [ ] Écrans du back-office contrôlés dans les deux thèmes (Natheo-Studio, Natheo-Atelier) / sans objet
 - [ ] `CHANGELOG.md` : ligne ajoutée dans « Non publié » / sans objet

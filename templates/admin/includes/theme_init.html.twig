@@ -1,5 +1,5 @@
-{# Thème et mode sombre appliqués dans le <head>, avant le premier rendu, pour éviter le flash du mode clair #}
-<script id="theme-init">
+{# Thème et mode sombre appliqués dans le <head>, avant le premier rendu, pour éviter le flash du mode clair ; nonce de la page si elle a une CSP #}
+<script id="theme-init"{% if nonce is defined %} nonce="{{ nonce }}"{% endif %}>
     (function () {
         const root = document.documentElement;
         root.classList.add('no-transition');

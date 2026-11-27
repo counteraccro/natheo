@@ -218,6 +218,15 @@ export default defineComponent({
 
     const urls = reactive<MarkdownEditorDatas>({ media: '', internalLinks: '' });
 
+    // Un module dont l'adresse est null (module du back-office masqué) n'a pas de bouton
+    const availableModules = computed<EditorModule[]>(() =>
+      props.meModules.filter(
+        (mod) =>
+          !(mod.name === MediaModule.name && urls.media === null) &&
+          !(mod.name === InternalLinkModule.name && urls.internalLinks === null)
+      )
+    );
+
     function loadDatas(): void {
       if (!hasInternalLinkModule.value && !hasMediaModule.value) return;
       loadEditorDatas()
@@ -397,6 +406,7 @@ export default defineComponent({
       hasSave,
       hasInternalLinkModule,
       hasMediaModule,
+      availableModules,
       textareaStyle,
       t,
       buttonTitle,
@@ -535,10 +545,10 @@ export default defineComponent({
       </template>
 
       <!-- 2. Modules custom -->
-      <template v-if="meModules.length > 0">
+      <template v-if="availableModules.length > 0">
         <div class="tb-sep" />
         <button
-          v-for="mod in meModules"
+          v-for="mod in availableModules"
           :key="mod.name"
           type="button"
           class="tb-btn"
@@ -643,13 +653,13 @@ export default defineComponent({
   </div>
 
   <InternalLink
-    v-if="hasInternalLinkModule"
+    v-if="hasInternalLinkModule && urls.internalLinks !== null"
     :editor-id="uid"
     :url="urls.internalLinks"
     :translate="meTranslate.modaleInternalLink"
   />
   <MediathequeModale
-    v-if="hasMediaModule"
+    v-if="hasMediaModule && urls.media !== null"
     :editor-id="uid"
     :url-media="urls.media"
     :translate="meTranslate.modaleMediatheque"

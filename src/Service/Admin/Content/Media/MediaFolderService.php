@@ -18,7 +18,7 @@ use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
 use App\Service\Admin\MarkdownEditorService;
 use App\Service\Admin\System\OptionSystemService;
-use App\Translate\Admin\Content\MediaTranslate;
+use App\Translation\Admin\Content\MediaTranslate;
 use App\Formatter\Global\FileSizeFormatter;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;

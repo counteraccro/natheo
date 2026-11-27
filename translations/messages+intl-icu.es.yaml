@@ -226,6 +226,10 @@ options_system.user_session_validity.label: 'Duración de las sesiones API de lo
 options_system.user_session_validity.value.one_day: '1 día'
 options_system.user_session_validity.value.seven_days: '7 días'
 options_system.user_session_validity.value.thirty_days: '30 días'
+options_user.admin_theme.help: "Organización de las pantallas del back-office: menú lateral (Natheo-Studio) o menú superior con la lista y el elemento uno al lado del otro (Natheo-Atelier)"
+options_user.admin_theme.label: "Disposición de la administración"
+options_user.admin_theme.value.natheo_atelier: Natheo-Atelier
+options_user.admin_theme.value.natheo_studio: Natheo-Studio
 options_user.category.interface.description: Personalice la administración con estas opciones
 options_user.category.interface.label: Interfaz
 options_user.category.interface.title: Personalización de la administración
@@ -242,57 +246,7 @@ options_user.default_personal_data_render.value.login: Seudónimo
 options_user.default_personal_data_render.value.name: Su nombre y apellidos
 options_user.nb_element.help: Define el número de elementos por defecto de las tablas para su sesión
 options_user.nb_element.label: Número de elementos por página
-pagedemo.index.description: 'Esta página solo se muestra si la sobrescritura de la ruta {route} está desactivada en {file}. Es la página original del ejemplo de sobrescritura.'
-pagedemo.index.title: 'Página original de la demo de sobrescritura'
 response.ajax.error: Se ha producido un error, consulte los logs para saber más
 response.ajax.success: Acción realizada correctamente
-sidebar.advanced_options.description: Permite gestionar las opciones para el desarrollo del CMS
-sidebar.advanced_options.label: Opciones avanzadas
-sidebar.api_token.description: Gestionar los tokens de acceso a las API de Nathéo CMS
-sidebar.api_token.label: Tokens API
-sidebar.comment.description: Gestión de los comentarios
-sidebar.comment.label: Comentarios
-sidebar.content.description: Agrupa todos los módulos de contenido del sitio
-sidebar.content.label: Contenidos
-sidebar.dashboard.description: Página de inicio de la administración del CMS
-sidebar.dashboard.label: Panel de control
-sidebar.database_manager.description: Permite visualizar la base de datos y sus estadísticas
-sidebar.database_manager.label: Base de datos
-sidebar.demo_overwrite.description: Ejemplo de sobrescritura de una página del CMS
-sidebar.demo_overwrite.label: Ejemplo de sobrescritura
-sidebar.faq.description: Gestión de las FAQ
-sidebar.faq.label: FAQ
-sidebar.info.description: Información sobre el CMS
-sidebar.info.label: Información
-sidebar.log.description: Gestión y visualización de los logs de la aplicación
-sidebar.log.label: Logs
-sidebar.mail.description: Gestión de los correos electrónicos enviados desde el CMS
-sidebar.mail.label: Correos electrónicos
-sidebar.media.description: Gestión de los medios
-sidebar.media.label: Mediateca
-sidebar.member.description: Gestión de los miembros registrados en el sitio
-sidebar.member.label: Miembros
-sidebar.menu.description: Gestión de los menús
-sidebar.menu.label: Menús
-sidebar.option_system.description: Configuración del CMS
-sidebar.option_system.label: Opciones del sistema
-sidebar.page.description: Gestión de las páginas
-sidebar.page.label: Páginas
-sidebar.sidebar.description: Gestión del menú general de la administración
-sidebar.sidebar.label: Barra lateral
-sidebar.sql_manager.description: Crear / ejecutar consultas SQL (solo SELECT)
-sidebar.sql_manager.label: Gestor SQL
-sidebar.system.description: Agrupa todos los módulos del sistema del CMS
-sidebar.system.label: Sistema
-sidebar.tag.description: Gestión de las etiquetas
-sidebar.tag.label: Etiquetas
-sidebar.tools.description: Agrupa todos los módulos que ayudan al desarrollo del CMS
-sidebar.tools.label: Herramientas
-sidebar.translate.description: Gestión de las traducciones del CMS
-sidebar.translate.label: Traducciones
-sidebar.update.description: Gestión de las actualizaciones del CMS
-sidebar.update.label: Actualización
-sidebar.user.description: Gestión de los usuarios que pueden conectarse a la administración del sitio
-sidebar.user.label: Usuarios
 options_system.page_validation.label: 'Validación de páginas'
 options_system.page_validation.help: 'Si esta opción está activada, los colaboradores envían sus páginas a validación en lugar de publicarlas; los administradores las validan o las rechazan'

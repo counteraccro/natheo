@@ -63,6 +63,8 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/admin, roles: ROLE_USER }
+        # La v1 n'a que des opérations publiques
+        - { path: ^/api/v1, roles: ROLE_API_PUBLIC }
         # - { path: ^/profile, roles: ROLE_USER }
 
 when@test:

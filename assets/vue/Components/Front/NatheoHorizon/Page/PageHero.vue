@@ -9,7 +9,8 @@ import { useFrontContext } from '@/vue/Composables/Front/useFrontContext';
 import { useFormat } from '@/vue/Composables/Front/useFormat';
 import { useBreadcrumb } from '@/vue/Composables/Front/useBreadcrumb';
 import { useEditLink } from '@/vue/Composables/Front/useEditLink';
-import FrontIcon from '@/vue/Components/Front/Global/FrontIcon.vue';
+import UiIcon from '@/vue/Components/Global/Ui/UiIcon.vue';
+import TagList from '@/vue/Components/Front/NatheoHorizon/Page/TagList.vue';
 import type { Page } from '@/ts/Front/Api/Page.type';
 
 const props = defineProps<{ page: Page; readingTime: number | null }>();
@@ -66,27 +67,14 @@ const updatedAt = computed(() => format.date(props.page.updatedAt));
           <p>{{ format.plural(page.reads, translate.main.articleFooter.reads) }}</p>
         </div>
 
-        <ul
-          v-if="page.tags.length"
-          class="mt-6 flex flex-wrap gap-2 motion-safe:animate-rise motion-safe:[animation-delay:120ms]"
-          :aria-label="translate.main.tagsLabel"
-        >
-          <li
-            v-for="tag in page.tags"
-            :key="tag.id"
-            class="inline-flex items-center gap-2 rounded-nh bg-white/8 px-2.5 py-1 text-[0.88rem] font-medium"
-          >
-            <span class="size-2.5 rounded-[2px]" :style="{ backgroundColor: tag.color }" aria-hidden="true" />
-            {{ tag.label }}
-          </li>
-        </ul>
+        <TagList :tags="page.tags" class="mt-6 motion-safe:animate-rise motion-safe:[animation-delay:120ms]" />
 
         <a
           v-if="editLink"
           :href="editLink"
           class="mt-7 inline-flex min-h-11 items-center gap-2 rounded-nh px-4 font-semibold text-on-night no-underline shadow-[inset_0_0_0_1.5px_rgb(201_184_255/0.55)] hover:shadow-[inset_0_0_0_1.5px_#fff]"
         >
-          <FrontIcon name="edit" class="size-5" />
+          <UiIcon name="edit" class="size-5" />
           {{ translate.main.editLink }}
         </a>
       </div>

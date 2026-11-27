@@ -34,4 +34,10 @@ enum OptionUser: string
      * @var string
      */
     case OU_DEFAULT_PERSONAL_DATA_RENDER = 'OU_DEFAULT_PERSONAL_DATA_RENDER';
+
+    /**
+     * Clé option thème du back-office pour le user
+     * @var string
+     */
+    case OU_ADMIN_THEME = 'OU_ADMIN_THEME';
 }

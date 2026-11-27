@@ -11,6 +11,7 @@ namespace App\Service\Admin;
 use App\Entity\Admin\Content\Comment\Comment;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\System\ApiToken;
+use App\Enum\Admin\Comment\CommentStatus;
 use App\Enum\Admin\Content\Page\PageStatistics;
 use App\Enum\Admin\Content\Page\PageStatus;
 use App\Enum\Admin\System\Options\OptionSystem;
@@ -24,6 +25,7 @@ use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use App\Service\Global\Token\TokenHasher;
 use App\Enum\Admin\System\ApiToken\ApiTokenDefault;
+use App\Enum\Admin\System\ApiToken\ApiTokenScope;
 
 class DashboardService extends AppAdminService
 {
@@ -56,7 +58,7 @@ class DashboardService extends AppAdminService
                 [ApiTokenDefault::READ->value, ApiTokenDefault::WRITE->value, ApiTokenDefault::ADMIN->value],
             ),
         ]);
-        $nbApiToken = $this->apiTokenRepo->count([]);
+        $nbApiToken = $this->apiTokenRepo->count(['internal' => false]);
 
         $configComplete = true;
         $body = [
@@ -161,7 +163,7 @@ class DashboardService extends AppAdminService
             ],
             'link_tokens' => [
                 'label' => $translator->trans('dashboard.help_first_connection.link_tokens', domain: 'dashboard'),
-                'link' => $router->generate('admin_api_token_index'),
+                'link' => $router->generate('admin_api_token_index', ['scope' => ApiTokenScope::PUBLIC->value]),
             ],
         ];
 
@@ -176,17 +178,19 @@ class DashboardService extends AppAdminService
      */
     public function getBlockLastComment(): array
     {
-        $commentService = $this->getCommentService();
+        $translator = $this->getTranslator();
 
         $result = $this->commentRepo->findBy([], ['id' => \SortDirection::Descending], 10);
 
         $body = [];
         foreach ($result as $comment) {
             /** @var Comment $comment */
+            $status = CommentStatus::tryFrom($comment->getStatus());
+            $label = htmlspecialchars((string) $status?->getLabel()->trans($translator), ENT_QUOTES);
             $body[] = [
                 'id' => $comment->getId(),
                 'author' => $comment->getAuthor(),
-                'status' => $commentService->getStatusFormatedByCode($comment->getStatus()),
+                'status' => '<span class="badge ' . $status?->getClassCss() . '">' . $label . '</span>',
                 'date' => $comment->getCreatedAt()->format('Y-m-d H:i:s'),
             ];
         }

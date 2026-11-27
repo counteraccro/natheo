@@ -6,7 +6,7 @@
  */
 import { useFrontContext } from '@/vue/Composables/Front/useFrontContext';
 import { useColorScheme } from '@/vue/Composables/Front/useColorScheme';
-import FrontIcon from '@/vue/Components/Front/Global/FrontIcon.vue';
+import UiIcon from '@/vue/Components/Global/Ui/UiIcon.vue';
 
 const { translate } = useFrontContext();
 const { scheme, toggle } = useColorScheme();
@@ -20,6 +20,6 @@ const { scheme, toggle } = useColorScheme();
     @click="toggle"
   >
     <span class="sr-only">{{ translate.header.darkMode }}</span>
-    <FrontIcon :name="scheme === 'dark' ? 'sun' : 'moon'" class="size-5.5" />
+    <UiIcon :name="scheme === 'dark' ? 'sun' : 'moon'" class="size-5.5" />
   </button>
 </template>

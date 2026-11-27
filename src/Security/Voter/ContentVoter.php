@@ -13,7 +13,7 @@ use App\Entity\Admin\Content\Faq\Faq;
 use App\Entity\Admin\Content\Menu\Menu;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\Content\Tag\Tag;
-use App\Entity\Admin\System\User;
+use App\Security\ApiUser;
 use App\Service\Admin\System\OptionSystemService;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
@@ -66,17 +66,22 @@ class ContentVoter extends Voter
     }
 
     /**
-     * Ordre des vérifications : option de suppression (DELETE), rôle admin, puis propriétaire
+     * Vérifie l'option de suppression (DELETE), puis le rôle admin, puis le propriétaire.
+     * Dans l'API, le vote porte sur l'utilisateur réel de la session
      * @param string $attribute
      * @param Page|Faq|Menu|Tag $subject
      * @param TokenInterface $token
      * @param Vote|null $vote
      * @return bool
      */
-    protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token, ?Vote $vote = null): bool
-    {
-        $user = $token->getUser();
-        if (!$user instanceof User) {
+    protected function voteOnAttribute(
+        string $attribute,
+        mixed $subject,
+        TokenInterface $token,
+        ?Vote $vote = null,
+    ): bool {
+        $user = ApiUser::realUser($token->getUser());
+        if ($user === null) {
             return false;
         }
 

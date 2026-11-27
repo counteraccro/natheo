@@ -1,0 +1,7 @@
+# Surcharges des ressources de test (tests/Api/V2/Resource), lues en env test en plus de config/cms/overwrite.yaml
+overwrite:
+    api:
+        - operation: admin_overwrite_probe_get
+          provider: App\Tests\Api\V2\State\Overwrite\OverwriteProbeProvider
+        - operation: admin_overwrite_probe_patch
+          processor: App\Tests\Api\V2\State\Overwrite\OverwriteProbeProcessor

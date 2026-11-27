@@ -18,7 +18,6 @@ use App\Tests\Helper\Fixtures\System\ApiTokenFixturesTrait;
 use App\Tests\Helper\Fixtures\System\MailFixturesTrait;
 use App\Tests\Helper\Fixtures\System\NotificationFixturesTrait;
 use App\Tests\Helper\Fixtures\System\OptionSystemFixturesTrait;
-use App\Tests\Helper\Fixtures\System\SidebarElementFixturesTrait;
 use App\Tests\Helper\Fixtures\System\TranslateFixturesTrait;
 use App\Tests\Helper\Fixtures\System\User\OptionUserFixturesTrait;
 use App\Tests\Helper\Fixtures\System\User\UserDataFixturesTrait;
@@ -37,7 +36,6 @@ trait FixturesTrait
         UserDataFixturesTrait,
         UserSessionFixturesTrait,
         NotificationFixturesTrait,
-        SidebarElementFixturesTrait,
         TagFixturesTrait,
         ApiTokenFixturesTrait,
         TranslateFixturesTrait,

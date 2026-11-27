@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity\Admin\System;
 
 use App\Entity\Trait\LastUsedAtTrait;
+use App\Enum\Admin\System\ApiToken\ApiTokenScope;
 use App\Enum\Installation\DoctrineStrategy;
 use App\Repository\Admin\System\ApiTokenRepository;
 use Doctrine\DBAL\Types\Types;
@@ -40,6 +41,15 @@ class ApiToken
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $comment = null;
+
+    #[ORM\Column(length: 20, enumType: ApiTokenScope::class, options: ['default' => 'public'])]
+    private ApiTokenScope $scope = ApiTokenScope::PUBLIC;
+
+    /**
+     * Token interne du back-office, jamais affiché ni supprimable
+     */
+    #[ORM\Column(options: ['default' => false])]
+    private bool $internal = false;
 
     #[ORM\Column]
     private ?bool $disabled = null;
@@ -149,6 +159,30 @@ class ApiToken
     public function setName(string $name): static
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getScope(): ApiTokenScope
+    {
+        return $this->scope;
+    }
+
+    public function setScope(ApiTokenScope $scope): static
+    {
+        $this->scope = $scope;
+
+        return $this;
+    }
+
+    public function isInternal(): bool
+    {
+        return $this->internal;
+    }
+
+    public function setInternal(bool $internal): static
+    {
+        $this->internal = $internal;
 
         return $this;
     }

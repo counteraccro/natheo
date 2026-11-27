@@ -23,3 +23,10 @@ api_token_front:
     roles: ROLE_WRITE_API
     comment: "Token utilisé par le front du site (option système OS_FRONT_API_TOKEN). Visible publiquement dans le navigateur des visiteurs"
     disabled: false
+# Token interne du back-office. Sa valeur aléatoire n'est conservée nulle part, le serveur ouvre les sessions depuis l'entité
+api_token_back_office:
+    name: 'Back-office'
+    scope: BACK_OFFICE
+    internal: true
+    comment: "Token interne utilisé par le back-office pour ouvrir la session API de l'utilisateur connecté"
+    disabled: false

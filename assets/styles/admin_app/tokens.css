@@ -1,0 +1,192 @@
+/*!
+ * Author : Gourdon Aymeric
+ * Version : 1.0
+ * Jetons du back-office : neutres et sidebar communs, couleur principale par thème (data-theme), clair et sombre (.dark)
+ */
+
+:root {
+    --canvas: #f2f2f4;
+    --bg: #ffffff;
+    --surface: #f4f4f5;
+    --surface-raised: #ffffff;
+    --row-disabled: #f8f8f9;
+    /* Établi de Natheo-Atelier : colonne de liste un ton sous le volet */
+    --bench: #ececef;
+    --bench-hover: #e3e3e7;
+    --fg: #18181b;
+    --fg-muted: #4a4a52;
+    --fg-subtle: #5f5f69;
+    --line: #e7e7ea;
+    --line-strong: #d6d6db;
+    --field: #8a8a93;
+
+    /* Couleur principale de chaque thème en mode clair, puis sa teinte du mode sombre, reprises par le sélecteur */
+    --theme-violet: #5b3fd1;
+    --theme-blue: #1d4ed8;
+    --theme-green: #047857;
+    --theme-red: #b91c1c;
+    --theme-violet-tint: #b3a0ff;
+    --theme-blue-tint: #9cb8ff;
+    --theme-green-tint: #6fd8b0;
+    --theme-red-tint: #ffa3a3;
+
+    /* Miniatures clair et sombre du sélecteur d'apparence, identiques dans les deux modes */
+    --preview-light-canvas: #f2f2f4;
+    --preview-light-bg: #ffffff;
+    --preview-light-bar: #d6d6db;
+    --preview-light-side: #1e1e21;
+    --preview-dark-canvas: #111113;
+    --preview-dark-bg: #202024;
+    --preview-dark-bar: #3b3b42;
+    --preview-dark-side: #19191c;
+    --preview-side-bar: #4a4a52;
+
+    --primary: var(--theme-violet);
+    --primary-hover: #4a31b3;
+    --on-primary: #ffffff;
+    --primary-soft: #f1eefc;
+    --on-primary-soft: #4229a8;
+    --primary-on-dark: var(--theme-violet-tint);
+    --focus: var(--primary);
+
+    --side-bg: #1e1e21;
+    --on-side: #fafafa;
+    --on-side-muted: #b4b4bc;
+    --on-side-subtle: #94949d;
+    --side-hover: #2a2a2e;
+    --side-active: #333338;
+    --side-line: #303035;
+    --side-card: #26262a;
+    --on-side-accent: #111113;
+
+    --danger: #b42318;
+    --danger-soft: #fdeceb;
+    --success: #067647;
+    --success-soft: #e6f5ed;
+    --warning: #8a5a00;
+    --warning-soft: #fcf1d6;
+    --info: #1d4ed8;
+    --info-soft: #eaf0fd;
+
+    --tooltip-bg: #18181b;
+    --on-tooltip: #ffffff;
+
+    /* Couleurs du logo, identiques dans tous les thèmes */
+    --mod-full: #c9b8ff;
+    --mod-half: #8f6cff;
+    --mod-third-a: #6a45ec;
+    --mod-third-b: #5cc8f0;
+
+    /* Blocs de code et barre de debug, sombres dans les deux modes */
+    --code-bg: #18181b;
+    --code-raised: #2c2c31;
+    --on-code: #ededef;
+    --on-code-muted: #a8a8b0;
+    --code-keyword: var(--mod-full);
+    --code-string: #7ee0b5;
+    --code-number: #ffc56b;
+    --on-code-number: #3d2c00;
+    --code-identifier: #7cd4f8;
+    --code-comment: #8f9ba8;
+
+    --panel-shadow: 0 1px 2px rgb(17 17 20 / 0.04), 0 1px 0 rgb(17 17 20 / 0.02);
+    --overlay-shadow: 0 12px 32px -8px rgb(17 17 20 / 0.22), 0 0 0 1px rgb(17 17 20 / 0.06);
+    --dialog-shadow: 0 32px 64px -16px rgb(17 17 20 / 0.4), 0 0 0 1px rgb(17 17 20 / 0.05);
+    --arrow-edge: rgb(17 17 20 / 0.07);
+    --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+    --font: 'Figtree Variable', ui-sans-serif, system-ui, sans-serif;
+    --font-code: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+    color-scheme: light;
+}
+
+:root.dark {
+    --canvas: #111113;
+    --bg: #18181b;
+    --surface: #202024;
+    --surface-raised: #1f1f23;
+    --row-disabled: #1d1d21;
+    --bench: #131315;
+    --bench-hover: #1b1b1e;
+    --fg: #ededef;
+    --fg-muted: #a8a8b0;
+    --fg-subtle: #8e8e97;
+    --line: #2c2c31;
+    --line-strong: #3b3b42;
+    --field: #6e6e77;
+
+    --primary: var(--theme-violet-tint);
+    --primary-hover: #c7b8ff;
+    --on-primary: #111113;
+    --primary-soft: #2a2640;
+    --on-primary-soft: #d9d2fb;
+
+    --side-bg: #161618;
+
+    --danger: #ff8a80;
+    --danger-soft: #3a1418;
+    --success: #7ad9a6;
+    --success-soft: #0e2c20;
+    --warning: #f5c56b;
+    --warning-soft: #2e2309;
+    --info: #9cb8ff;
+    --info-soft: #14203f;
+
+    --tooltip-bg: #ededef;
+    --on-tooltip: #18181b;
+
+    --code-bg: #0c0c0e;
+
+    --panel-shadow: 0 0 0 1px rgb(255 255 255 / 0.02);
+    --overlay-shadow: 0 12px 32px -8px rgb(0 0 0 / 0.65), 0 0 0 1px rgb(255 255 255 / 0.08);
+    --dialog-shadow: 0 32px 64px -16px rgb(0 0 0 / 0.8), 0 0 0 1px rgb(255 255 255 / 0.08);
+    --arrow-edge: rgb(255 255 255 / 0.09);
+
+    color-scheme: dark;
+}
+
+:root[data-theme='blue'] {
+    --primary: var(--theme-blue);
+    --primary-hover: #1e40af;
+    --primary-soft: #e8eefd;
+    --on-primary-soft: #1e3a8a;
+    --primary-on-dark: var(--theme-blue-tint);
+}
+
+:root.dark[data-theme='blue'] {
+    --primary: var(--theme-blue-tint);
+    --primary-hover: #b8ccff;
+    --primary-soft: #172554;
+    --on-primary-soft: #c7d6ff;
+}
+
+:root[data-theme='green'] {
+    --primary: var(--theme-green);
+    --primary-hover: #065f46;
+    --primary-soft: #e4f5ee;
+    --on-primary-soft: #064e3b;
+    --primary-on-dark: var(--theme-green-tint);
+}
+
+:root.dark[data-theme='green'] {
+    --primary: var(--theme-green-tint);
+    --primary-hover: #8fe3c3;
+    --primary-soft: #0b2e25;
+    --on-primary-soft: #bfeedd;
+}
+
+:root[data-theme='red'] {
+    --primary: var(--theme-red);
+    --primary-hover: #991b1b;
+    --primary-soft: #fdecec;
+    --on-primary-soft: #7f1d1d;
+    --primary-on-dark: var(--theme-red-tint);
+}
+
+:root.dark[data-theme='red'] {
+    --primary: var(--theme-red-tint);
+    --primary-hover: #ffbcbc;
+    --primary-soft: #3a1116;
+    --on-primary-soft: #ffd0d0;
+}
