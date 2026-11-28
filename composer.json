@@ -6,6 +6,7 @@
     "require": {
         "php": ">=8.2",
         "ext-ctype": "*",
+        "ext-gd": "*",
         "ext-iconv": "*",
         "amphp/http-client": "^5.0",
         "api-platform/symfony": "^5.0",
@@ -15,6 +16,8 @@
         "doctrine/sql-formatter": "^1.5",
         "fakerphp/faker": "^1.24",
         "league/commonmark": "^2.4",
+        "league/flysystem": "^3.36",
+        "league/flysystem-local": "^3.35",
         "martin-georgiev/postgresql-for-doctrine": "^2.1",
         "pentatrion/vite-bundle": "^8.0",
         "phpdocumentor/reflection-docblock": "^5.3",
