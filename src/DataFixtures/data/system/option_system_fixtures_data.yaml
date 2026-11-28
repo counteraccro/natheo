@@ -102,15 +102,15 @@ option_system:
     OS_MAIL_RESET_PASSWORD_TIME:
         key: 'OS_MAIL_RESET_PASSWORD_TIME'
         value: '20'
-    OS_MEDIA_CREATE_PHYSICAL_FOLDER:
-        key: 'OS_MEDIA_CREATE_PHYSICAL_FOLDER'
-        value: '1'
+    OS_MEDIA_VIDEO_MAX_SIZE:
+        key: 'OS_MEDIA_VIDEO_MAX_SIZE'
+        value: '200'
     OS_MEDIA_PATH:
         key: 'OS_MEDIA_PATH'
         value: 'natheotheque'
     OS_MEDIA_URL:
         key: 'OS_MEDIA_URL'
-        value: 'http://dev.natheo:8888'
+        value: ''
     OS_OPEN_API:
         key: 'OS_OPEN_API'
         value: '1'

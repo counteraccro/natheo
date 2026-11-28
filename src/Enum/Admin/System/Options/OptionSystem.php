@@ -135,10 +135,10 @@ enum OptionSystem: string
     case OS_MAIL_RESET_PASSWORD_TIME = 'OS_MAIL_RESET_PASSWORD_TIME';
 
     /**
-     * Défini si on créé des dossiers physiques ou non pour la médiathèque
+     * Taille maximale d'une vidéo envoyée dans la médiathèque, en Mo
      * @var string
      */
-    case OS_MEDIA_CREATE_PHYSICAL_FOLDER = 'OS_MEDIA_CREATE_PHYSICAL_FOLDER';
+    case OS_MEDIA_VIDEO_MAX_SIZE = 'OS_MEDIA_VIDEO_MAX_SIZE';
 
     /**
      * Path du dossier média

@@ -167,17 +167,17 @@ options_system.mail_signature.help: Texto presente al pie de cada correo enviado
 options_system.mail_signature.label: Firma del correo electrónico
 options_system.mail_signature.placeholder: Introduzca una firma
 options_system.media_path.error: Debe introducir una ruta para los medios
-options_system.media_path.help: 'Puede almacenar sus medios en una herramienta externa, indique simplemente la URL de su servidor - valor por defecto: public'
+options_system.media_path.help: 'Carpeta de los medios dentro de public/assets, natheotheque por defecto. Cambiarla no mueve los archivos ya subidos.'
 options_system.media_path.label: Ruta de la carpeta de medios
 options_system.media_path.placeholder: Ruta o URL de la carpeta de medios
 options_system.media_path.success: Carpeta de medios cambiada correctamente
-options_system.media_physical_folder.help: Si la opción está activada, se creará una carpeta física en la mediateca para cada carpeta virtual
-options_system.media_physical_folder.label: Creación de carpetas físicas
 options_system.media_url.error: Debe introducir una URL
-options_system.media_url.help: Cámbiela solo si utiliza un almacenamiento externo para sus medios
+options_system.media_url.help: 'Dirección colocada delante de la ruta de los medios, por ejemplo la de un CDN. Si está vacía, los enlaces se escriben sin nombre de dominio. Cambiarla no mueve los archivos.'
 options_system.media_url.label: URL pública de acceso a las imágenes almacenadas
 options_system.media_url.placeholder: URL pública con el formato http://
 options_system.media_url.success: URL de los medios cambiada correctamente
+options_system.media_video_max_size.help: 'Sigue limitado por upload_max_filesize y post_max_size de PHP. Para vídeos grandes, ajuste también el tamaño aceptado por el servidor web (client_max_body_size en Nginx, LimitRequestBody en Apache) y max_execution_time.'
+options_system.media_video_max_size.label: 'Tamaño máximo de un vídeo (MB)'
 options_system.multilingual.empty_count_label: 'Campos sin traducir:'
 options_system.multilingual.empty_fallback_default: 'Sin traducir: se mostrará el texto en {language}.'
 options_system.multilingual.empty_fallback_other: 'Sin traducir: se mostrará el texto de otro idioma.'

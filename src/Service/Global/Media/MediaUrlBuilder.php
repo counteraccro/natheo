@@ -26,6 +26,16 @@ class MediaUrlBuilder
     }
 
     /**
+     * Chemin public d'un fichier, sans hôte
+     * @param string $key clé du fichier dans le stockage
+     * @return string
+     */
+    public function path(string $key): string
+    {
+        return $this->configResolver->resolve()->path($key);
+    }
+
+    /**
      * URL de la miniature ou de la couverture d'un fichier
      * @param string $key clé du fichier dans le stockage
      * @return string

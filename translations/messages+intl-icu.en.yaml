@@ -167,17 +167,17 @@ options_system.mail_signature.help: Text at the bottom of every email sent from 
 options_system.mail_signature.label: Email signature
 options_system.mail_signature.placeholder: Enter a signature
 options_system.media_path.error: You must enter a path for the media
-options_system.media_path.help: 'You can store your media on an external tool, just enter the URL of your server - default value: public'
+options_system.media_path.help: 'Media folder inside public/assets, natheotheque by default. Changing it does not move files already uploaded.'
 options_system.media_path.label: Media folder path
 options_system.media_path.placeholder: Path or URL of the media folder
 options_system.media_path.success: Media folder changed successfully
-options_system.media_physical_folder.help: If the option is enabled, a physical folder will be created in the media library for each virtual folder
-options_system.media_physical_folder.label: Create physical folders
 options_system.media_url.error: You must enter a URL
-options_system.media_url.help: Only change it if you use external storage for your media
+options_system.media_url.help: 'Address placed before the media path, for example a CDN. When empty, links are written without a domain name. Changing it does not move files.'
 options_system.media_url.label: Public URL to access the stored images
 options_system.media_url.placeholder: Public URL in the http:// format
 options_system.media_url.success: Media URL changed successfully
+options_system.media_video_max_size.help: 'Still limited by the PHP settings upload_max_filesize and post_max_size. For large videos, also raise the size accepted by the web server (client_max_body_size for Nginx, LimitRequestBody for Apache) and max_execution_time.'
+options_system.media_video_max_size.label: 'Maximum video size (MB)'
 options_system.multilingual.empty_count_label: 'Untranslated fields:'
 options_system.multilingual.empty_fallback_default: 'Not translated: the {language} text will be shown.'
 options_system.multilingual.empty_fallback_other: 'Not translated: the text of another language will be shown.'

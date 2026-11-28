@@ -16,7 +16,6 @@ admin_module.menu.faq_new.label: 'New FAQ'
 admin_module.menu.info.label: Information
 admin_module.menu.log.label: Logs
 admin_module.menu.mail.label: Emails
-admin_module.menu.media.label: 'Media library'
 admin_module.menu.menu.label: Menus
 admin_module.menu.menu_index.label: 'Menu management'
 admin_module.menu.menu_new.label: 'New menu'

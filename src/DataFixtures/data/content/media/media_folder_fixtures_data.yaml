@@ -1,21 +1,13 @@
 media_folder:
     Folder_headers:
         name: en-tetes
-        path: /
-        parent:
     Folder_captures:
         name: captures
-        path: /
-        parent:
     Folder_captures_admin:
         name: back-office
-        path: /captures
         parent: Folder_captures
     Folder_captures_front:
         name: site-public
-        path: /captures
         parent: Folder_captures
     Folder_documents:
         name: documents
-        path: /
-        parent:

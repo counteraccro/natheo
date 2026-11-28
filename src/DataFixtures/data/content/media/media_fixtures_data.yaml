@@ -2,255 +2,608 @@ media:
     hdr-home:
         folder: Folder_headers
         user: User
-        description: 'Le site public sur écran, portable, tablette et téléphone'
-        image: hdr-home.jpg
+        file: hdr-home.jpg
+        title:
+            fr: 'Accueil'
+            en: 'Home'
+            es: 'Inicio'
+        alt:
+            fr: 'Le site public sur écran, portable, tablette et téléphone'
+            en: 'The public site on a monitor, laptop, tablet and phone'
+            es: 'El sitio público en pantalla, portátil, tableta y teléfono'
     hdr-features:
         folder: Folder_headers
         user: User
-        description: 'Les écrans du back-office en perspective'
-        image: hdr-features.jpg
+        file: hdr-features.jpg
+        title:
+            fr: 'Fonctionnalités'
+            en: 'Features'
+            es: 'Funcionalidades'
+        alt:
+            fr: 'Les écrans du back-office en perspective'
+            en: 'Back-office screens in perspective'
+            es: 'Las pantallas del back-office en perspectiva'
     hdr-pages:
         folder: Folder_headers
         user: User
-        description: 'L''édition d''une page et ses dispositions'
-        image: hdr-pages.jpg
+        file: hdr-pages.jpg
+        title:
+            fr: 'Pages'
+            en: 'Pages'
+            es: 'Páginas'
+        alt:
+            fr: 'L''édition d''une page et ses dispositions'
+            en: 'Editing a page and its layouts'
+            es: 'La edición de una página y sus disposiciones'
     hdr-menus:
         folder: Folder_headers
         user: User
-        description: 'L''éditeur de menu et le méga menu du site'
-        image: hdr-menus.jpg
+        file: hdr-menus.jpg
+        title:
+            fr: 'Menus'
+            en: 'Menus'
+            es: 'Menús'
+        alt:
+            fr: 'L''éditeur de menu et le méga menu du site'
+            en: 'The menu editor and the site''s mega menu'
+            es: 'El editor de menús y el megamenú del sitio'
     hdr-faq:
         folder: Folder_headers
         user: User
-        description: 'L''édition d''une FAQ'
-        image: hdr-faq.jpg
+        file: hdr-faq.jpg
+        title:
+            fr: 'FAQ'
+            en: 'FAQ'
+            es: 'FAQ'
+        alt:
+            fr: 'L''édition d''une FAQ'
+            en: 'Editing a FAQ'
+            es: 'La edición de una FAQ'
     hdr-languages:
         folder: Folder_headers
         user: User
-        description: 'Une page en français, anglais et espagnol'
-        image: hdr-languages.jpg
+        file: hdr-languages.jpg
+        title:
+            fr: 'Langues'
+            en: 'Languages'
+            es: 'Idiomas'
+        alt:
+            fr: 'Une page en français, anglais et espagnol'
+            en: 'A page in French, English and Spanish'
+            es: 'Una página en francés, inglés y español'
     hdr-media:
         folder: Folder_headers
         user: User
-        description: 'La médiathèque'
-        image: hdr-media.jpg
+        file: hdr-media.jpg
+        title:
+            fr: 'Médiathèque'
+            en: 'Media library'
+            es: 'Mediateca'
+        alt:
+            fr: 'La médiathèque'
+            en: 'The media library'
+            es: 'La mediateca'
     hdr-rights:
         folder: Folder_headers
         user: User
-        description: 'Les pages en attente de validation sur le tableau de bord'
-        image: hdr-rights.jpg
+        file: hdr-rights.jpg
+        title:
+            fr: 'Droits'
+            en: 'Rights'
+            es: 'Permisos'
+        alt:
+            fr: 'Les pages en attente de validation sur le tableau de bord'
+            en: 'Pages awaiting approval on the dashboard'
+            es: 'Las páginas pendientes de validación en el panel'
     hdr-api:
         folder: Folder_headers
         user: User
-        description: 'La documentation OpenAPI de l''API v2'
-        image: hdr-api.jpg
+        file: hdr-api.jpg
+        title:
+            fr: 'API'
+            en: 'API'
+            es: 'API'
+        alt:
+            fr: 'La documentation OpenAPI de l''API v2'
+            en: 'The OpenAPI documentation of API v2'
+            es: 'La documentación OpenAPI de la API v2'
     hdr-docs:
         folder: Folder_headers
         user: User
-        description: 'La documentation sur téléphone et tablette'
-        image: hdr-docs.jpg
+        file: hdr-docs.jpg
+        title:
+            fr: 'Documentation'
+            en: 'Documentation'
+            es: 'Documentación'
+        alt:
+            fr: 'La documentation sur téléphone et tablette'
+            en: 'The documentation on a phone and a tablet'
+            es: 'La documentación en teléfono y tableta'
     hdr-blog:
         folder: Folder_headers
         user: User
-        description: 'Le blog en mode clair et en mode sombre'
-        image: hdr-blog.jpg
+        file: hdr-blog.jpg
+        title:
+            fr: 'Blog'
+            en: 'Blog'
+            es: 'Blog'
+        alt:
+            fr: 'Le blog en mode clair et en mode sombre'
+            en: 'The blog in light and dark mode'
+            es: 'El blog en modo claro y en modo oscuro'
     hdr-blog-2-1:
         folder: Folder_headers
         user: User
-        description: 'Le thème Natheo-Horizon incliné'
-        image: hdr-blog-2-1.jpg
+        file: hdr-blog-2-1.jpg
+        title:
+            fr: 'Nathéo 2.1'
+            en: 'Nathéo 2.1'
+            es: 'Nathéo 2.1'
+        alt:
+            fr: 'Le thème Natheo-Horizon incliné'
+            en: 'The Natheo-Horizon theme, tilted'
+            es: 'El tema Natheo-Horizon inclinado'
     hdr-blog-2-0:
         folder: Folder_headers
         user: User
-        description: 'Le tableau de bord du back-office'
-        image: hdr-blog-2-0.jpg
+        file: hdr-blog-2-0.jpg
+        title:
+            fr: 'Nathéo 2.0'
+            en: 'Nathéo 2.0'
+            es: 'Nathéo 2.0'
+        alt:
+            fr: 'Le tableau de bord du back-office'
+            en: 'The back-office dashboard'
+            es: 'El panel del back-office'
     hdr-blog-db:
         folder: Folder_headers
         user: User
-        description: 'Les options système'
-        image: hdr-blog-db.jpg
+        file: hdr-blog-db.jpg
+        title:
+            fr: 'Bases de données'
+            en: 'Databases'
+            es: 'Bases de datos'
+        alt:
+            fr: 'Les options système'
+            en: 'System options'
+            es: 'Las opciones del sistema'
     hdr-blog-1-0:
         folder: Folder_headers
         user: User
-        description: 'Le thème Natheo-Base'
-        image: hdr-blog-1-0.jpg
+        file: hdr-blog-1-0.jpg
+        title:
+            fr: 'Nathéo 1.0'
+            en: 'Nathéo 1.0'
+            es: 'Nathéo 1.0'
+        alt:
+            fr: 'Le thème Natheo-Base'
+            en: 'The Natheo-Base theme'
+            es: 'El tema Natheo-Base'
     hdr-faq-page:
         folder: Folder_headers
         user: User
-        description: 'La FAQ sur téléphone'
-        image: hdr-faq-page.jpg
+        file: hdr-faq-page.jpg
+        title:
+            fr: 'Page FAQ'
+            en: 'FAQ page'
+            es: 'Página FAQ'
+        alt:
+            fr: 'La FAQ sur téléphone'
+            en: 'The FAQ on a phone'
+            es: 'La FAQ en el teléfono'
     hdr-about:
         folder: Folder_headers
         user: User
-        description: 'Le back-office et le site public côte à côte'
-        image: hdr-about.jpg
+        file: hdr-about.jpg
+        title:
+            fr: 'À propos'
+            en: 'About'
+            es: 'Acerca de'
+        alt:
+            fr: 'Le back-office et le site public côte à côte'
+            en: 'The back-office and the public site side by side'
+            es: 'El back-office y el sitio público uno al lado del otro'
     hdr-docs-install:
         folder: Folder_headers
         user: User
-        description: 'Le guide d''installation sur un portable'
-        image: hdr-docs-install.jpg
+        file: hdr-docs-install.jpg
+        title:
+            fr: 'Installation'
+            en: 'Installation'
+            es: 'Instalación'
+        alt:
+            fr: 'Le guide d''installation sur un portable'
+            en: 'The installation guide on a laptop'
+            es: 'La guía de instalación en un portátil'
     hdr-docs-config:
         folder: Folder_headers
         user: User
-        description: 'Le guide de configuration et les options système'
-        image: hdr-docs-config.jpg
+        file: hdr-docs-config.jpg
+        title:
+            fr: 'Configuration'
+            en: 'Configuration'
+            es: 'Configuración'
+        alt:
+            fr: 'Le guide de configuration et les options système'
+            en: 'The configuration guide and system options'
+            es: 'La guía de configuración y las opciones del sistema'
     hdr-docs-theme:
         folder: Folder_headers
         user: User
-        description: 'Natheo-Base et Natheo-Horizon côte à côte'
-        image: hdr-docs-theme.jpg
+        file: hdr-docs-theme.jpg
+        title:
+            fr: 'Thèmes'
+            en: 'Themes'
+            es: 'Temas'
+        alt:
+            fr: 'Natheo-Base et Natheo-Horizon côte à côte'
+            en: 'Natheo-Base and Natheo-Horizon side by side'
+            es: 'Natheo-Base y Natheo-Horizon uno al lado del otro'
     hdr-docs-api:
         folder: Folder_headers
         user: User
-        description: 'Le guide de l''API sur écran et sur téléphone'
-        image: hdr-docs-api.jpg
+        file: hdr-docs-api.jpg
+        title:
+            fr: 'Guide de l''API'
+            en: 'API guide'
+            es: 'Guía de la API'
+        alt:
+            fr: 'Le guide de l''API sur écran et sur téléphone'
+            en: 'The API guide on a monitor and a phone'
+            es: 'La guía de la API en pantalla y en teléfono'
     hdr-roadmap:
         folder: Folder_headers
         user: User
-        description: 'La feuille de route sur écran et sur téléphone'
-        image: hdr-roadmap.jpg
+        file: hdr-roadmap.jpg
+        title:
+            fr: 'Feuille de route'
+            en: 'Roadmap'
+            es: 'Hoja de ruta'
+        alt:
+            fr: 'La feuille de route sur écran et sur téléphone'
+            en: 'The roadmap on a monitor and a phone'
+            es: 'La hoja de ruta en pantalla y en teléfono'
     hdr-contribute:
         folder: Folder_headers
         user: User
-        description: 'La page Contribuer en mode sombre et sur tablette'
-        image: hdr-contribute.jpg
+        file: hdr-contribute.jpg
+        title:
+            fr: 'Contribuer'
+            en: 'Contribute'
+            es: 'Contribuir'
+        alt:
+            fr: 'La page Contribuer en mode sombre et sur tablette'
+            en: 'The Contribute page in dark mode and on a tablet'
+            es: 'La página Contribuir en modo oscuro y en tableta'
     hdr-blog-2-2:
         folder: Folder_headers
         user: User
-        description: 'Un article soumis à validation dans l''éditeur'
-        image: hdr-blog-2-2.jpg
+        file: hdr-blog-2-2.jpg
+        title:
+            fr: 'Validation des articles'
+            en: 'Article approval'
+            es: 'Validación de artículos'
+        alt:
+            fr: 'Un article soumis à validation dans l''éditeur'
+            en: 'An article submitted for approval in the editor'
+            es: 'Un artículo enviado a validación en el editor'
     cap-admin-dashboard-fr:
         folder: Folder_captures_admin
         user: User
-        description: 'Tableau de bord, interface en français'
-        image: cap-admin-dashboard-fr.jpg
+        file: cap-admin-dashboard-fr.jpg
+        title:
+            fr: 'Tableau de bord FR'
+            en: 'Dashboard FR'
+            es: 'Panel FR'
+        alt:
+            fr: 'Tableau de bord, interface en français'
+            en: 'Dashboard, interface in French'
+            es: 'Panel, interfaz en francés'
     cap-admin-dashboard-en:
         folder: Folder_captures_admin
         user: User
-        description: 'Tableau de bord, interface en anglais'
-        image: cap-admin-dashboard-en.jpg
+        file: cap-admin-dashboard-en.jpg
+        title:
+            fr: 'Tableau de bord EN'
+            en: 'Dashboard EN'
+            es: 'Panel EN'
+        alt:
+            fr: 'Tableau de bord, interface en anglais'
+            en: 'Dashboard, interface in English'
+            es: 'Panel, interfaz en inglés'
     cap-admin-dashboard-es:
         folder: Folder_captures_admin
         user: User
-        description: 'Tableau de bord, interface en espagnol'
-        image: cap-admin-dashboard-es.jpg
+        file: cap-admin-dashboard-es.jpg
+        title:
+            fr: 'Tableau de bord ES'
+            en: 'Dashboard ES'
+            es: 'Panel ES'
+        alt:
+            fr: 'Tableau de bord, interface en espagnol'
+            en: 'Dashboard, interface in Spanish'
+            es: 'Panel, interfaz en español'
     cap-admin-page-fr:
         folder: Folder_captures_admin
         user: User
-        description: 'Édition d''une page, interface en français'
-        image: cap-admin-page-fr.jpg
+        file: cap-admin-page-fr.jpg
+        title:
+            fr: 'Édition d''une page FR'
+            en: 'Editing a page FR'
+            es: 'Edición de una página FR'
+        alt:
+            fr: 'Édition d''une page, interface en français'
+            en: 'Editing a page, interface in French'
+            es: 'Edición de una página, interfaz en francés'
     cap-admin-page-en:
         folder: Folder_captures_admin
         user: User
-        description: 'Édition d''une page, interface en anglais'
-        image: cap-admin-page-en.jpg
+        file: cap-admin-page-en.jpg
+        title:
+            fr: 'Édition d''une page EN'
+            en: 'Editing a page EN'
+            es: 'Edición de una página EN'
+        alt:
+            fr: 'Édition d''une page, interface en anglais'
+            en: 'Editing a page, interface in English'
+            es: 'Edición de una página, interfaz en inglés'
     cap-admin-page-es:
         folder: Folder_captures_admin
         user: User
-        description: 'Édition d''une page, interface en espagnol'
-        image: cap-admin-page-es.jpg
+        file: cap-admin-page-es.jpg
+        title:
+            fr: 'Édition d''une page ES'
+            en: 'Editing a page ES'
+            es: 'Edición de una página ES'
+        alt:
+            fr: 'Édition d''une page, interface en espagnol'
+            en: 'Editing a page, interface in Spanish'
+            es: 'Edición de una página, interfaz en español'
     cap-admin-menu-fr:
         folder: Folder_captures_admin
         user: User
-        description: 'Édition d''un menu, interface en français'
-        image: cap-admin-menu-fr.jpg
+        file: cap-admin-menu-fr.jpg
+        title:
+            fr: 'Édition d''un menu FR'
+            en: 'Editing a menu FR'
+            es: 'Edición de un menú FR'
+        alt:
+            fr: 'Édition d''un menu, interface en français'
+            en: 'Editing a menu, interface in French'
+            es: 'Edición de un menú, interfaz en francés'
     cap-admin-menu-en:
         folder: Folder_captures_admin
         user: User
-        description: 'Édition d''un menu, interface en anglais'
-        image: cap-admin-menu-en.jpg
+        file: cap-admin-menu-en.jpg
+        title:
+            fr: 'Édition d''un menu EN'
+            en: 'Editing a menu EN'
+            es: 'Edición de un menú EN'
+        alt:
+            fr: 'Édition d''un menu, interface en anglais'
+            en: 'Editing a menu, interface in English'
+            es: 'Edición de un menú, interfaz en inglés'
     cap-admin-menu-es:
         folder: Folder_captures_admin
         user: User
-        description: 'Édition d''un menu, interface en espagnol'
-        image: cap-admin-menu-es.jpg
+        file: cap-admin-menu-es.jpg
+        title:
+            fr: 'Édition d''un menu ES'
+            en: 'Editing a menu ES'
+            es: 'Edición de un menú ES'
+        alt:
+            fr: 'Édition d''un menu, interface en espagnol'
+            en: 'Editing a menu, interface in Spanish'
+            es: 'Edición de un menú, interfaz en español'
     cap-admin-faq-fr:
         folder: Folder_captures_admin
         user: User
-        description: 'Édition d''une FAQ, interface en français'
-        image: cap-admin-faq-fr.jpg
+        file: cap-admin-faq-fr.jpg
+        title:
+            fr: 'Édition d''une FAQ FR'
+            en: 'Editing a FAQ FR'
+            es: 'Edición de una FAQ FR'
+        alt:
+            fr: 'Édition d''une FAQ, interface en français'
+            en: 'Editing a FAQ, interface in French'
+            es: 'Edición de una FAQ, interfaz en francés'
     cap-admin-faq-en:
         folder: Folder_captures_admin
         user: User
-        description: 'Édition d''une FAQ, interface en anglais'
-        image: cap-admin-faq-en.jpg
+        file: cap-admin-faq-en.jpg
+        title:
+            fr: 'Édition d''une FAQ EN'
+            en: 'Editing a FAQ EN'
+            es: 'Edición de una FAQ EN'
+        alt:
+            fr: 'Édition d''une FAQ, interface en anglais'
+            en: 'Editing a FAQ, interface in English'
+            es: 'Edición de una FAQ, interfaz en inglés'
     cap-admin-faq-es:
         folder: Folder_captures_admin
         user: User
-        description: 'Édition d''une FAQ, interface en espagnol'
-        image: cap-admin-faq-es.jpg
+        file: cap-admin-faq-es.jpg
+        title:
+            fr: 'Édition d''une FAQ ES'
+            en: 'Editing a FAQ ES'
+            es: 'Edición de una FAQ ES'
+        alt:
+            fr: 'Édition d''une FAQ, interface en espagnol'
+            en: 'Editing a FAQ, interface in Spanish'
+            es: 'Edición de una FAQ, interfaz en español'
     cap-admin-media-fr:
         folder: Folder_captures_admin
         user: User
-        description: 'Médiathèque, interface en français'
-        image: cap-admin-media-fr.jpg
+        file: cap-admin-media-fr.jpg
+        title:
+            fr: 'Médiathèque FR'
+            en: 'Media library FR'
+            es: 'Mediateca FR'
+        alt:
+            fr: 'Médiathèque, interface en français'
+            en: 'Media library, interface in French'
+            es: 'Mediateca, interfaz en francés'
     cap-admin-media-en:
         folder: Folder_captures_admin
         user: User
-        description: 'Médiathèque, interface en anglais'
-        image: cap-admin-media-en.jpg
+        file: cap-admin-media-en.jpg
+        title:
+            fr: 'Médiathèque EN'
+            en: 'Media library EN'
+            es: 'Mediateca EN'
+        alt:
+            fr: 'Médiathèque, interface en anglais'
+            en: 'Media library, interface in English'
+            es: 'Mediateca, interfaz en inglés'
     cap-admin-media-es:
         folder: Folder_captures_admin
         user: User
-        description: 'Médiathèque, interface en espagnol'
-        image: cap-admin-media-es.jpg
+        file: cap-admin-media-es.jpg
+        title:
+            fr: 'Médiathèque ES'
+            en: 'Media library ES'
+            es: 'Mediateca ES'
+        alt:
+            fr: 'Médiathèque, interface en espagnol'
+            en: 'Media library, interface in Spanish'
+            es: 'Mediateca, interfaz en español'
     cap-admin-translate-fr:
         folder: Folder_captures_admin
         user: User
-        description: 'Outil de traduction, interface en français'
-        image: cap-admin-translate-fr.jpg
+        file: cap-admin-translate-fr.jpg
+        title:
+            fr: 'Outil de traduction FR'
+            en: 'Translation tool FR'
+            es: 'Herramienta de traducción FR'
+        alt:
+            fr: 'Outil de traduction, interface en français'
+            en: 'Translation tool, interface in French'
+            es: 'Herramienta de traducción, interfaz en francés'
     cap-admin-translate-en:
         folder: Folder_captures_admin
         user: User
-        description: 'Outil de traduction, interface en anglais'
-        image: cap-admin-translate-en.jpg
+        file: cap-admin-translate-en.jpg
+        title:
+            fr: 'Outil de traduction EN'
+            en: 'Translation tool EN'
+            es: 'Herramienta de traducción EN'
+        alt:
+            fr: 'Outil de traduction, interface en anglais'
+            en: 'Translation tool, interface in English'
+            es: 'Herramienta de traducción, interfaz en inglés'
     cap-admin-translate-es:
         folder: Folder_captures_admin
         user: User
-        description: 'Outil de traduction, interface en espagnol'
-        image: cap-admin-translate-es.jpg
+        file: cap-admin-translate-es.jpg
+        title:
+            fr: 'Outil de traduction ES'
+            en: 'Translation tool ES'
+            es: 'Herramienta de traducción ES'
+        alt:
+            fr: 'Outil de traduction, interface en espagnol'
+            en: 'Translation tool, interface in Spanish'
+            es: 'Herramienta de traducción, interfaz en español'
     cap-front-megamenu-fr:
         folder: Folder_captures_front
         user: User
-        description: 'Méga menu des fonctionnalités, interface en français'
-        image: cap-front-megamenu-fr.jpg
+        file: cap-front-megamenu-fr.jpg
+        title:
+            fr: 'Méga menu des fonctionnalités FR'
+            en: 'Features mega menu FR'
+            es: 'Megamenú de funcionalidades FR'
+        alt:
+            fr: 'Méga menu des fonctionnalités, interface en français'
+            en: 'Features mega menu, interface in French'
+            es: 'Megamenú de funcionalidades, interfaz en francés'
     cap-front-megamenu-en:
         folder: Folder_captures_front
         user: User
-        description: 'Méga menu des fonctionnalités, interface en anglais'
-        image: cap-front-megamenu-en.jpg
+        file: cap-front-megamenu-en.jpg
+        title:
+            fr: 'Méga menu des fonctionnalités EN'
+            en: 'Features mega menu EN'
+            es: 'Megamenú de funcionalidades EN'
+        alt:
+            fr: 'Méga menu des fonctionnalités, interface en anglais'
+            en: 'Features mega menu, interface in English'
+            es: 'Megamenú de funcionalidades, interfaz en inglés'
     cap-front-megamenu-es:
         folder: Folder_captures_front
         user: User
-        description: 'Méga menu des fonctionnalités, interface en espagnol'
-        image: cap-front-megamenu-es.jpg
+        file: cap-front-megamenu-es.jpg
+        title:
+            fr: 'Méga menu des fonctionnalités ES'
+            en: 'Features mega menu ES'
+            es: 'Megamenú de funcionalidades ES'
+        alt:
+            fr: 'Méga menu des fonctionnalités, interface en espagnol'
+            en: 'Features mega menu, interface in Spanish'
+            es: 'Megamenú de funcionalidades, interfaz en español'
     cap-admin-options:
         folder: Folder_captures_admin
         user: User
-        description: 'Options système'
-        image: cap-admin-options.jpg
+        file: cap-admin-options.jpg
+        title:
+            fr: 'Options système'
+            en: 'System options'
+            es: 'Opciones del sistema'
+        alt:
+            fr: 'Options système'
+            en: 'System options'
+            es: 'Opciones del sistema'
     cap-api-docs:
         folder: Folder_captures_admin
         user: User
-        description: 'Documentation OpenAPI de l''API v2'
-        image: cap-api-docs.jpg
+        file: cap-api-docs.jpg
+        title:
+            fr: 'Documentation de l''API'
+            en: 'API documentation'
+            es: 'Documentación de la API'
+        alt:
+            fr: 'Documentation OpenAPI de l''API v2'
+            en: 'OpenAPI documentation of API v2'
+            es: 'Documentación OpenAPI de la API v2'
     cap-front-horizon:
         folder: Folder_captures_front
         user: User
-        description: 'Natheo-Horizon, mode clair'
-        image: cap-front-horizon.jpg
+        file: cap-front-horizon.jpg
+        title:
+            fr: 'Natheo-Horizon clair'
+            en: 'Natheo-Horizon light'
+            es: 'Natheo-Horizon claro'
+        alt:
+            fr: 'Natheo-Horizon, mode clair'
+            en: 'Natheo-Horizon, light mode'
+            es: 'Natheo-Horizon, modo claro'
     cap-front-horizon-dark:
         folder: Folder_captures_front
         user: User
-        description: 'Natheo-Horizon, mode sombre'
-        image: cap-front-horizon-dark.jpg
+        file: cap-front-horizon-dark.jpg
+        title:
+            fr: 'Natheo-Horizon sombre'
+            en: 'Natheo-Horizon dark'
+            es: 'Natheo-Horizon oscuro'
+        alt:
+            fr: 'Natheo-Horizon, mode sombre'
+            en: 'Natheo-Horizon, dark mode'
+            es: 'Natheo-Horizon, modo oscuro'
     cap-front-base:
         folder: Folder_captures_front
         user: User
-        description: 'Natheo-Base'
-        image: cap-front-base.jpg
+        file: cap-front-base.jpg
+        title:
+            fr: 'Natheo-Base'
+            en: 'Natheo-Base'
+            es: 'Natheo-Base'
+        alt:
+            fr: 'Natheo-Base'
+            en: 'Natheo-Base'
+            es: 'Natheo-Base'
     doc-product-sheet:
         folder: Folder_documents
         user: User
-        description: 'Fiche produit de Nathéo (PDF, en anglais)'
-        image: natheo-product-sheet.pdf
+        file: natheo-product-sheet.pdf
+        title:
+            fr: 'Fiche produit de Nathéo'
+            en: 'Nathéo product sheet'
+            es: 'Ficha de producto de Nathéo'

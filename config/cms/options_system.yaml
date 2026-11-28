@@ -289,7 +289,7 @@ options_system:
         icon: 'm3 16 5-7 6 6.5m6.5 2.5L16 13l-4.286 6M14 10h.01M4 19h16a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Z'
         options:
             OS_MEDIA_PATH:
-                default: 'public'
+                default: 'natheotheque'
                 label: 'options_system.media_path.label'
                 type: 'text'
                 required: true
@@ -299,20 +299,20 @@ options_system:
                 success: 'options_system.media_path.success'
                 disabled: true
             OS_MEDIA_URL:
-                default: 'public'
+                default: ''
                 label: 'options_system.media_url.label'
                 type: 'text'
-                required: true
                 msg_error: 'options_system.media_url.error'
                 help: 'options_system.media_url.help'
                 placeholder: 'options_system.media_url.placeholder'
                 success: 'options_system.media_url.success'
                 disabled: true
-            OS_MEDIA_CREATE_PHYSICAL_FOLDER:
-                type: 'boolean'
-                label: 'options_system.media_physical_folder.label'
-                help: 'options_system.media_physical_folder.help'
-                default: 1
+            OS_MEDIA_VIDEO_MAX_SIZE:
+                type: 'select'
+                label: 'options_system.media_video_max_size.label'
+                list_value: '50:50|100:100|200:200|500:500|1000:1000'
+                help: 'options_system.media_video_max_size.help'
+                default: '200'
     options_system.category.api.label:
         title: 'options_system.category.api.title'
         description: 'options_system.category.api.description'

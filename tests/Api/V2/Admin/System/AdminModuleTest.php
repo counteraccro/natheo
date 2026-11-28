@@ -20,7 +20,7 @@ class AdminModuleTest extends AppApiV2TestCase
      * Modules des contenus, rangés dans l'ordre du menu
      * @var string[]
      */
-    private const array CONTENT_MODULES = ['dashboard', 'menu', 'page', 'comment', 'tag', 'media', 'faq'];
+    private const array CONTENT_MODULES = ['dashboard', 'menu', 'page', 'comment', 'tag', 'faq'];
 
     /**
      * Refus sans session, avec un token seul et avec une session ouverte par un token public
@@ -47,8 +47,8 @@ class AdminModuleTest extends AppApiV2TestCase
         $adminModules = ['option_system', 'api_token', 'api_doc', 'mail', 'translation'];
         $cases = [
             'createUser' => ['dashboard', 'my_account'],
-            'createUserContributeur' => [...self::CONTENT_MODULES, 'my_account', ProbeModule::ID],
-            'createUserAdmin' => [...self::CONTENT_MODULES, ...$adminModules, 'my_account', ProbeModule::ID],
+            'createUserContributeur' => [...self::CONTENT_MODULES, 'media', 'my_account', ProbeModule::ID],
+            'createUserAdmin' => [...self::CONTENT_MODULES, ...$adminModules, 'media', 'my_account', ProbeModule::ID],
         ];
         foreach ($cases as $factory => $expected) {
             $headers = $this->adminSessionHeaders($this->$factory(['disabled' => false, 'anonymous' => false]));

@@ -39,7 +39,17 @@ final readonly class MediaStorageConfig
             $base = $base === '/' ? '' : $base;
         }
 
-        return $base . '/' . implode('/', [...self::segments($this->webPath), ...self::segments($key)]);
+        return $base . $this->path($key);
+    }
+
+    /**
+     * Chemin public d'un fichier du stockage, sans hôte
+     * @param string $key clé du fichier
+     * @return string
+     */
+    public function path(string $key): string
+    {
+        return '/' . implode('/', [...self::segments($this->webPath), ...self::segments($key)]);
     }
 
     /**

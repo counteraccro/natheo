@@ -3,76 +3,68 @@
 declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
- * @version 1.0
- * Fixture pour les médias
+ * @version 2.0
+ * Fixture pour les médias, fichiers rangés dans le stockage de test
  */
 
 namespace App\Tests\Helper\Fixtures\Content\Media;
 
 use App\Entity\Admin\Content\Media\Media;
 use App\Entity\Admin\Content\Media\MediaFolder;
+use App\Entity\Admin\Content\Media\MediaTranslation;
 use App\Entity\Admin\System\User;
+use App\Populate\Admin\Content\Media\MediaPopulate;
+use App\Service\Global\Media\MediaStorage;
 use App\Tests\Helper\FakerTrait;
-use App\Enum\Admin\Content\Media\MediaType;
+use App\Tests\Helper\Media\TestImage;
 
 trait MediaFixturesTrait
 {
     use FakerTrait;
 
     /**
-     * Créer un média
+     * Créer un média dont le fichier est rangé dans le stockage de test
      * @param MediaFolder|null $mediaFolder
-     * @param User|null $user
+     * @param User|null $user contributeur créé si null
      * @param array $customData
-     * @param bool $persist
+     * @param string|null $content contenu du fichier, une image PNG si null
+     * @param string $fileName nom du fichier envoyé
      * @return Media
      */
     public function createMedia(
         ?MediaFolder $mediaFolder = null,
         ?User $user = null,
         array $customData = [],
-        bool $persist = true,
+        ?string $content = null,
+        string $fileName = 'image.png',
     ): Media {
-        $name = self::getFaker()->slug(2);
-        $extension = 'jpg';
-        $path = DIRECTORY_SEPARATOR . $name . '.' . $extension;
-        if ($mediaFolder !== null) {
-            if ($mediaFolder->getParent() !== null) {
-                $path = $mediaFolder->getPath() . DIRECTORY_SEPARATOR . $name . '.' . $extension;
-            } else {
-                $path =
-                    $mediaFolder->getPath() . $mediaFolder->getName() . DIRECTORY_SEPARATOR . $name . '.' . $extension;
-            }
+        $source = TestImage::file($content ?? TestImage::png());
+        try {
+            $stored = $this->container->get(MediaStorage::class)->store($source, $fileName);
+        } finally {
+            @unlink($source);
         }
 
-        if ($user === null) {
-            $user = $this->createUserContributeur();
-        }
-
-        $types = [MediaType::IMG->value, MediaType::FILE->value];
-
-        $data = [
-            'name' => $name,
-            'title' => self::getFaker()->text(100),
-            'description' => self::getFaker()->text(),
-            'type' => $types[array_rand($types)],
-            'extension' => $extension,
-            'size' => self::getFaker()->randomNumber(6, false),
-            'thumbnail' => self::getFaker()->bothify('#??#?##??'),
-            'path' => $path,
-            'webPath' => '/assets/natheotheque' . $path,
-            'disabled' => self::getFaker()->boolean(),
-            'trash' => self::getFaker()->boolean(),
-            'mediaFolder' => $mediaFolder,
-            'user' => $user,
-        ];
-
-        $media = $this->initEntity(Media::class, array_merge($data, $customData));
-        $mediaFolder?->addMedia($media);
-
-        if ($persist) {
-            $this->persistAndFlush($media);
-        }
+        $media = MediaPopulate::fromStoredFile(new Media(), $stored, $fileName)
+            ->setMediaFolder($mediaFolder)
+            ->setUser($user ?? $this->createUserContributeur());
+        $media->addMediaTranslation(
+            (new MediaTranslation())
+                ->setLocale('fr')
+                ->setTitle(self::getFaker()->text(50))
+                ->setAlt(self::getFaker()->text(80)),
+        );
+        $this->initEntity(Media::class, $customData, $media);
+        $this->persistAndFlush($media);
         return $media;
+    }
+
+    /**
+     * Vide le stockage de test
+     * @return void
+     */
+    public function clearMediaStorage(): void
+    {
+        $this->container->get(MediaStorage::class)->clear();
     }
 }

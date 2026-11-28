@@ -26,9 +26,9 @@ use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+// Nom entre backticks : « user » est un mot réservé de PostgreSQL, Doctrine le cite pour chaque SGBD
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity('email')]
-// Nom entre backticks : « user » est un mot réservé de PostgreSQL, Doctrine le cite pour chaque SGBD
 #[ORM\Table(name: '`user`')]
 #[ORM\HasLifecycleCallbacks]
 class User implements UserInterface, PasswordAuthenticatedUserInterface, EquatableInterface
@@ -87,7 +87,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     #[ORM\OneToMany(targetEntity: UserData::class, mappedBy: 'user', cascade: ['persist'], orphanRemoval: true)]
     private Collection $userData;
 
-    #[ORM\OneToMany(targetEntity: Media::class, mappedBy: 'user', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Media::class, mappedBy: 'user')]
     private Collection $medias;
 
     #[ORM\OneToMany(targetEntity: Page::class, mappedBy: 'user', orphanRemoval: true)]

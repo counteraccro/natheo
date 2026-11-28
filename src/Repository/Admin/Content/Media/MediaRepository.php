@@ -6,7 +6,6 @@ namespace App\Repository\Admin\Content\Media;
 
 use App\Entity\Admin\Content\Media\Media;
 use App\Entity\Admin\Content\Media\MediaFolder;
-use App\Repository\Trait\PathPrefixQueryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -20,7 +19,6 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class MediaRepository extends ServiceEntityRepository
 {
-    use PathPrefixQueryTrait;
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Media::class);
@@ -45,54 +43,28 @@ class MediaRepository extends ServiceEntityRepository
     }
 
     /**
-     * Retourne une liste de medias en fonction d'un mediaFolder
+     * Médias hors corbeille d'un dossier (racine si null), avec leurs traductions
      * @param MediaFolder|null $mediaFolder
-     * @return float|int|mixed|string
+     * @param string $orderField name ou createdAt
+     * @param string $direction ASC ou DESC
+     * @return Media[]
      */
-    public function findByMediaFolder(?MediaFolder $mediaFolder = null): mixed
-    {
-        $query = $this->createQueryBuilder('m');
-        $query->where('m.trash = false');
-
-        if ($mediaFolder !== null) {
-            $query->andWhere('m.mediaFolder = :val')->setParameter('val', $mediaFolder);
-        } else {
-            $query->andWhere('m.mediaFolder IS NULL');
-        }
-
-        return $query->orderBy('m.createdAt', \SortDirection::Ascending)->getQuery()->getResult();
-    }
-
-    /**
-     * Retourne une liste de médias dont le path est exactement $pathPrefix ou commence
-     * par $pathPrefix suivi d'un séparateur de répertoire (segment de chemin complet, jamais
-     * une simple sous-chaîne : "/Doc" ne matche pas "/Docker")
-     * @param string $pathPrefix
-     * @return mixed
-     */
-    public function getAllByLikePath(string $pathPrefix): mixed
-    {
-        return $this->applyPathPrefixFilter($this->createQueryBuilder('m'), 'm', $pathPrefix)
-            ->orderBy('m.id', \SortDirection::Ascending)
-            ->getQuery()
-            ->getResult();
-    }
-
-    /**
-     * Retourne le nombre de médias tagué pour la corbeille
-     * @return int
-     */
-    public function getNbInTrash(): int
-    {
-        $result = $this->createQueryBuilder('m')
-            ->select('count(m.id) as nb')
-            ->where('m.trash = true')
-            ->getQuery()
-            ->getScalarResult();
-
-        if (isset($result[0]['nb'])) {
-            return $result[0]['nb'];
-        }
-        return 0;
+    public function findInFolder(
+        ?MediaFolder $mediaFolder,
+        string $orderField = 'createdAt',
+        string $direction = 'ASC',
+    ): array {
+        $qb = $this->createQueryBuilder('media')
+            ->addSelect('mediaTranslation')
+            ->leftJoin('media.mediaTranslations', 'mediaTranslation')
+            ->where('media.trashedAt IS NULL')
+            ->orderBy(
+                'media.' . ($orderField === 'name' ? 'name' : 'createdAt'),
+                $direction === 'DESC' ? 'DESC' : 'ASC',
+            );
+        $mediaFolder === null
+            ? $qb->andWhere('media.mediaFolder IS NULL')
+            : $qb->andWhere('media.mediaFolder = :folder')->setParameter('folder', $mediaFolder);
+        return $qb->getQuery()->getResult();
     }
 }

@@ -140,6 +140,20 @@ class MediaStorage
     }
 
     /**
+     * Vide le stockage servi et la corbeille, avant de recharger les fixtures
+     * @return void
+     * @throws FilesystemException
+     */
+    public function clear(): void
+    {
+        foreach ([$this->servedFilesystem(), $this->trashFilesystem()] as $filesystem) {
+            foreach ($filesystem->listContents('') as $item) {
+                $item->isDir() ? $filesystem->deleteDirectory($item->path()) : $filesystem->delete($item->path());
+            }
+        }
+    }
+
+    /**
      * Fichier présent dans le stockage servi
      * @param string $key
      * @return bool

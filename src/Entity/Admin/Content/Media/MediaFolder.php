@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Admin\Content\Media;
 
+use App\Entity\Admin\System\User;
 use App\Enum\Installation\DoctrineStrategy;
 use App\Repository\Admin\Content\Media\MediaFolderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -13,40 +14,52 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MediaFolderRepository::class)]
 #[ORM\Table(name: 'media_folder')]
+#[ORM\Index(name: 'IDX_MEDIA_FOLDER_TREE_PATH', columns: ['tree_path'])]
 #[ORM\HasLifecycleCallbacks]
 class MediaFolder
 {
+    public const string DEFAULT_ALIAS = 'mediaFolder';
+
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: DoctrineStrategy::CURRENT)]
     #[ORM\Column]
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'children')]
-    #[ORM\JoinColumn(onDelete: 'CASCADE')]
     private ?self $parent = null;
 
-    #[ORM\OneToMany(mappedBy: 'parent', targetEntity: self::class, cascade: ['remove'])]
+    #[ORM\OneToMany(mappedBy: 'parent', targetEntity: self::class)]
     private Collection $children;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    private ?User $user = null;
 
     #[ORM\Column(length: 150)]
     private ?string $name = null;
 
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $path = null;
+    /**
+     * Chemin des identifiants depuis la racine (/3/7/), pour lire un sous-arbre en une requête
+     */
+    #[ORM\Column(name: 'tree_path', length: 255)]
+    private string $treePath = '/';
 
-    #[ORM\Column]
-    private ?bool $disabled = false;
+    #[ORM\Column(name: 'trashed_at', type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $trashedAt = null;
 
-    #[ORM\Column]
-    private ?bool $trash = false;
+    /**
+     * Élément mis à la corbeille lui-même, et non avec son dossier parent
+     */
+    #[ORM\Column(name: 'trash_root')]
+    private bool $trashRoot = false;
 
     #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
 
-    #[ORM\Column(name: 'update_at', type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[ORM\Column(name: 'update_at', type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $updateAt = null;
 
-    #[ORM\OneToMany(mappedBy: 'mediaFolder', targetEntity: Media::class, cascade: ['remove'])]
+    #[ORM\OneToMany(mappedBy: 'mediaFolder', targetEntity: Media::class)]
     private Collection $medias;
 
     public function __construct()
@@ -58,7 +71,7 @@ class MediaFolder
     #[ORM\PrePersist]
     public function onPrePersist(): void
     {
-        $this->createdAt = new \DateTime();
+        $this->createdAt ??= new \DateTime();
         $this->updateAt = new \DateTime();
     }
 
@@ -93,24 +106,14 @@ class MediaFolder
         return $this->children;
     }
 
-    public function addChild(self $child): static
+    public function getUser(): ?User
     {
-        if (!$this->children->contains($child)) {
-            $this->children->add($child);
-            $child->setParent($this);
-        }
-
-        return $this;
+        return $this->user;
     }
 
-    public function removeChild(self $child): static
+    public function setUser(?User $user): static
     {
-        if ($this->children->removeElement($child)) {
-            // set the owning side to null (unless already changed)
-            if ($child->getParent() === $this) {
-                $child->setParent(null);
-            }
-        }
+        $this->user = $user;
 
         return $this;
     }
@@ -127,14 +130,52 @@ class MediaFolder
         return $this;
     }
 
-    public function isDisabled(): ?bool
+    public function getTreePath(): string
     {
-        return $this->disabled;
+        return $this->treePath;
     }
 
-    public function setDisabled(bool $disabled): static
+    public function setTreePath(string $treePath): static
     {
-        $this->disabled = $disabled;
+        $this->treePath = $treePath;
+
+        return $this;
+    }
+
+    /**
+     * Chemin des identifiants calculé depuis le parent, une fois l'identifiant connu
+     * @return string
+     */
+    public function buildTreePath(): string
+    {
+        return ($this->parent?->getTreePath() ?? '/') . $this->id . '/';
+    }
+
+    public function getTrashedAt(): ?\DateTimeInterface
+    {
+        return $this->trashedAt;
+    }
+
+    public function setTrashedAt(?\DateTimeInterface $trashedAt): static
+    {
+        $this->trashedAt = $trashedAt;
+
+        return $this;
+    }
+
+    public function isTrashed(): bool
+    {
+        return $this->trashedAt !== null;
+    }
+
+    public function isTrashRoot(): bool
+    {
+        return $this->trashRoot;
+    }
+
+    public function setTrashRoot(bool $trashRoot): static
+    {
+        $this->trashRoot = $trashRoot;
 
         return $this;
     }
@@ -156,21 +197,9 @@ class MediaFolder
         return $this->updateAt;
     }
 
-    public function setUpdateAt(?\DateTimeInterface $updateAt): static
+    public function setUpdateAt(\DateTimeInterface $updateAt): static
     {
         $this->updateAt = $updateAt;
-
-        return $this;
-    }
-
-    public function isTrash(): ?bool
-    {
-        return $this->trash;
-    }
-
-    public function setTrash(bool $trash): static
-    {
-        $this->trash = $trash;
 
         return $this;
     }
@@ -181,39 +210,5 @@ class MediaFolder
     public function getMedias(): Collection
     {
         return $this->medias;
-    }
-
-    public function addMedia(Media $media): static
-    {
-        if (!$this->medias->contains($media)) {
-            $this->medias->add($media);
-            $media->setMediaFolder($this);
-        }
-
-        return $this;
-    }
-
-    public function removeMedia(Media $media): static
-    {
-        if ($this->medias->removeElement($media)) {
-            // set the owning side to null (unless already changed)
-            if ($media->getMediaFolder() === $this) {
-                $media->setMediaFolder(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getPath(): ?string
-    {
-        return $this->path;
-    }
-
-    public function setPath(string $path): static
-    {
-        $this->path = $path;
-
-        return $this;
     }
 }

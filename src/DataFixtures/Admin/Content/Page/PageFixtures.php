@@ -28,11 +28,15 @@ use App\Enum\Admin\Content\Page\PageStatistics;
 use App\Enum\Admin\Content\Page\PageStatus;
 use App\Enum\Admin\Content\Page\PageValidationStatus;
 use App\Service\Admin\Content\Page\PageHistory;
+use App\Service\Global\Media\MediaUrlBuilder;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
+use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\Yaml\Yaml;
 
 class PageFixtures extends AppFixtures implements FixtureGroupInterface, OrderedFixtureInterface
@@ -46,6 +50,26 @@ class PageFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
      * Valeurs communes à toutes les pages
      */
     const PAGE_DEFAULTS_FILE = '_defaults.yaml';
+
+    private MediaUrlBuilder $mediaUrlBuilder;
+
+    /**
+     * @param ContainerInterface $handlers
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function __construct(
+        #[
+            AutowireLocator([
+                'container' => ContainerBagInterface::class,
+                'mediaUrlBuilder' => MediaUrlBuilder::class,
+            ]),
+        ]
+        private readonly ContainerInterface $handlers,
+    ) {
+        $this->mediaUrlBuilder = $this->handlers->get('mediaUrlBuilder');
+        parent::__construct($this->handlers);
+    }
 
     /**
      * @throws ContainerExceptionInterface
@@ -162,8 +186,7 @@ class PageFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
      */
     private function getMediaPath(string $ref): string
     {
-        $webPath = (string) $this->getReference($ref, Media::class)->getWebPath();
-        return (string) parse_url($webPath, PHP_URL_PATH);
+        return $this->mediaUrlBuilder->path((string) $this->getReference($ref, Media::class)->getPath());
     }
 
     /**
